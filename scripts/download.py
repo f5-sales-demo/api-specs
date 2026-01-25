@@ -121,6 +121,12 @@ def download_specs(
     # Check ETag for incremental updates
     cached_etag = get_cached_etag(etag_cache) if not force else None
 
+    # Check if output directory has actual spec files
+    existing_files = list(output_dir.glob("*.json"))
+    if cached_etag and not existing_files:
+        console.print("[yellow]ETag cache exists but no spec files found, forcing download[/yellow]")
+        cached_etag = None
+
     headers = {}
     if cached_etag:
         headers["If-None-Match"] = cached_etag

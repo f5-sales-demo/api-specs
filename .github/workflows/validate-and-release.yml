@@ -148,6 +148,7 @@ jobs:
           name: spec-metadata
           path: specs/original/.spec_metadata.json
           retention-days: 7
+          include-hidden-files: true
 
   check-release-needed:
     name: Check if Release Needed

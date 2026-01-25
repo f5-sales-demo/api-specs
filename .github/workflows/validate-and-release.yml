@@ -242,6 +242,8 @@ jobs:
     needs: [validate, check-release-needed]
     if: needs.check-release-needed.outputs.should_release == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout

@@ -1,0 +1,163 @@
+# F5 XC Target Endpoints for Baseline Validation
+
+# These 10 endpoints form the baseline for validation framework development
+# The framework should be extensible to all APIs in the OpenAPI spec
+
+endpoints:
+  # Virtual Domain (virtual.json)
+  healthcheck:
+    resource: healthchecks
+    domain_file: virtual.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/healthchecks
+      read: GET /api/config/namespaces/{namespace}/healthchecks/{name}
+      list: GET /api/config/namespaces/{namespace}/healthchecks
+      update: PUT /api/config/namespaces/{namespace}/healthchecks/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/healthchecks/{name}
+    test_priority: high
+    description: "Health check configurations for origin monitoring"
+
+  origin_pool:
+    resource: origin_pools
+    domain_file: virtual.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/origin_pools
+      read: GET /api/config/namespaces/{namespace}/origin_pools/{name}
+      list: GET /api/config/namespaces/{namespace}/origin_pools
+      update: PUT /api/config/namespaces/{namespace}/origin_pools/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/origin_pools/{name}
+    test_priority: high
+    description: "Origin server pool definitions"
+
+  app_firewall:
+    resource: app_firewalls
+    domain_file: virtual.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/app_firewalls
+      read: GET /api/config/namespaces/{namespace}/app_firewalls/{name}
+      list: GET /api/config/namespaces/{namespace}/app_firewalls
+      update: PUT /api/config/namespaces/{namespace}/app_firewalls/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/app_firewalls/{name}
+    test_priority: high
+    description: "Web Application Firewall configurations"
+
+  service_policy:
+    resource: service_policys
+    domain_file: virtual.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/service_policys
+      read: GET /api/config/namespaces/{namespace}/service_policys/{name}
+      list: GET /api/config/namespaces/{namespace}/service_policys
+      update: PUT /api/config/namespaces/{namespace}/service_policys/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/service_policys/{name}
+    test_priority: medium
+    description: "Service-level security policies"
+
+  # API Domain (api.json)
+  api_definition:
+    resource: api_definitions
+    domain_file: api.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/api_definitions
+      read: GET /api/config/namespaces/{namespace}/api_definitions/{name}
+      list: GET /api/config/namespaces/{namespace}/api_definitions
+      update: PUT /api/config/namespaces/{namespace}/api_definitions/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/api_definitions/{name}
+    test_priority: high
+    description: "API endpoint definitions for discovery and protection"
+
+  api_discovery:
+    resource: api_discoverys
+    domain_file: api.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/api_discoverys
+      read: GET /api/config/namespaces/{namespace}/api_discoverys/{name}
+      list: GET /api/config/namespaces/{namespace}/api_discoverys
+      update: PUT /api/config/namespaces/{namespace}/api_discoverys/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/api_discoverys/{name}
+    test_priority: medium
+    description: "API discovery configurations"
+
+  api_groups:
+    resource: api_groups
+    domain_file: api.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/api_groups
+      read: GET /api/config/namespaces/{namespace}/api_groups/{name}
+      list: GET /api/config/namespaces/{namespace}/api_groups
+      update: PUT /api/config/namespaces/{namespace}/api_groups/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/api_groups/{name}
+    test_priority: medium
+    description: "API grouping and categorization"
+
+  code_base_integration:
+    resource: code_base_integrations
+    domain_file: api.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/code_base_integrations
+      read: GET /api/config/namespaces/{namespace}/code_base_integrations/{name}
+      list: GET /api/config/namespaces/{namespace}/code_base_integrations
+      update: PUT /api/config/namespaces/{namespace}/code_base_integrations/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/code_base_integrations/{name}
+    test_priority: low
+    description: "Source code repository integrations"
+
+  # Data and Privacy Security Domain (data_and_privacy_security.json)
+  data_type:
+    resource: data_types
+    domain_file: data_and_privacy_security.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/data_types
+      read: GET /api/config/namespaces/{namespace}/data_types/{name}
+      list: GET /api/config/namespaces/{namespace}/data_types
+      update: PUT /api/config/namespaces/{namespace}/data_types/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/data_types/{name}
+    test_priority: medium
+    description: "Sensitive data type definitions"
+
+  sensitive_data_policy:
+    resource: sensitive_data_policys
+    domain_file: data_and_privacy_security.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/sensitive_data_policys
+      read: GET /api/config/namespaces/{namespace}/sensitive_data_policys/{name}
+      list: GET /api/config/namespaces/{namespace}/sensitive_data_policys
+      update: PUT /api/config/namespaces/{namespace}/sensitive_data_policys/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/sensitive_data_policys/{name}
+    test_priority: medium
+    description: "Sensitive data protection policies"
+
+# Domain file mappings
+domain_files:
+  virtual.json:
+    description: "Virtual services, load balancers, and network policies"
+    priority: 1
+  api.json:
+    description: "API security and discovery features"
+    priority: 2
+  data_and_privacy_security.json:
+    description: "Data protection and privacy controls"
+    priority: 3
+
+# Test execution order (by priority)
+test_order:
+  - healthcheck
+  - origin_pool
+  - app_firewall
+  - api_definition
+  - service_policy
+  - api_discovery
+  - api_groups
+  - data_type
+  - sensitive_data_policy
+  - code_base_integration

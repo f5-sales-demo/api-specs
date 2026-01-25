@@ -1,0 +1,109 @@
+# F5 XC API Spec Validation Configuration
+
+# API Configuration
+api:
+  base_url: "https://f5-amer-ent.console.ves.volterra.io"
+  tenant: "example-tenant"
+  namespace: "example-namespace"
+  timeout: 30
+  retries: 3
+  retry_delay: 2
+
+# Spec Download Configuration
+download:
+  url: "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
+  output_dir: "specs/original"
+  etag_cache: ".etag_cache"
+
+# Validation Categories (all 10 from OpenAPI spec)
+validation_categories:
+  string_length:
+    enabled: true
+    keywords: ["minLength", "maxLength"]
+    description: "Validate string length boundaries"
+
+  pattern:
+    enabled: true
+    keywords: ["pattern"]
+    description: "Validate regex pattern matching"
+
+  numeric_bounds:
+    enabled: true
+    keywords: ["minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum"]
+    description: "Validate numeric range boundaries"
+
+  required_fields:
+    enabled: true
+    keywords: ["required"]
+    description: "Validate required field presence"
+
+  enum_values:
+    enabled: true
+    keywords: ["enum"]
+    description: "Validate enumeration constraints"
+
+  array_bounds:
+    enabled: true
+    keywords: ["minItems", "maxItems", "uniqueItems"]
+    description: "Validate array size and uniqueness"
+
+  object_structure:
+    enabled: true
+    keywords: ["additionalProperties", "properties", "propertyNames"]
+    description: "Validate object structure constraints"
+
+  composition:
+    enabled: true
+    keywords: ["oneOf", "anyOf", "allOf"]
+    description: "Validate schema composition"
+
+  dependencies:
+    enabled: true
+    keywords: ["dependentRequired", "dependentSchemas"]
+    description: "Validate field dependencies"
+
+  data_types:
+    enabled: true
+    keywords: ["type", "format"]
+    description: "Validate data types and formats"
+
+# Schemathesis Configuration
+schemathesis:
+  enabled: true
+  max_examples: 100
+  hypothesis_phases:
+    - generate
+    - target
+  stateful_testing: true
+  base_url_override: null  # Use API base_url if null
+  auth_header: "Authorization"
+  auth_prefix: "APIToken"
+
+# Reconciliation Settings
+reconciliation:
+  priority:
+    - existing  # Use existing spec constraint if valid
+    - discovery # Use discovered live API behavior
+    - inferred  # Infer from patterns
+  fix_strategies:
+    tighter_spec: "relax"      # Spec stricter than API → relax constraint
+    looser_spec: "tighten"     # Spec looser than API → tighten constraint
+    missing_constraint: "add"   # Spec missing constraint → add it
+    extra_constraint: "remove"  # Spec has constraint API ignores → remove it
+
+# Report Generation
+reports:
+  output_dir: "reports"
+  formats:
+    - json
+    - html
+    - markdown
+  include_examples: true
+  max_examples_per_issue: 5
+
+# Release Configuration
+release:
+  output_dir: "release"
+  include_changelog: true
+  include_validation_report: true
+  version_from: "git"  # git tag or manual

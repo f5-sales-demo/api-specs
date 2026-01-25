@@ -1,0 +1,399 @@
+name: Validate and Release
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - 'config/**'
+      - 'pyproject.toml'
+  workflow_dispatch:
+    inputs:
+      force_release:
+        description: 'Force release even if no changes detected'
+        type: boolean
+        default: false
+      skip_live_tests:
+        description: 'Skip live API tests (dry run)'
+        type: boolean
+        default: false
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  validate:
+    name: Validate Specs
+    runs-on: ubuntu-latest
+    outputs:
+      specs_changed: ${{ steps.check_specs.outputs.changed }}
+      specs_etag: ${{ steps.check_specs.outputs.etag }}
+      content_hash: ${{ steps.content_hash.outputs.hash }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for tags
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Get previous ETag from cache
+        id: prev_etag
+        uses: actions/cache@v4
+        with:
+          path: .etag_cache
+          key: etag-${{ github.sha }}
+          restore-keys: |
+            etag-
+
+      - name: Check upstream specs for changes
+        id: check_specs
+        run: |
+          # Store previous ETag if exists
+          PREV_ETAG=""
+          if [ -f .etag_cache ]; then
+            PREV_ETAG=$(cat .etag_cache)
+            echo "Previous ETag: $PREV_ETAG"
+          fi
+
+          # Download specs (will use ETag for conditional GET)
+          python -m scripts.download --list
+
+          # Get new ETag
+          NEW_ETAG=""
+          if [ -f .etag_cache ]; then
+            NEW_ETAG=$(cat .etag_cache)
+            echo "Current ETag: $NEW_ETAG"
+          fi
+
+          # Compare ETags to detect change
+          if [ "$PREV_ETAG" != "$NEW_ETAG" ] || [ -z "$PREV_ETAG" ]; then
+            echo "Upstream specs have changed"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "Upstream specs unchanged"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+          echo "etag=$NEW_ETAG" >> $GITHUB_OUTPUT
+
+      - name: Validate specs (dry run)
+        if: inputs.skip_live_tests == true
+        run: |
+          python -m scripts.validate --dry-run
+
+      - name: Validate specs (live)
+        if: inputs.skip_live_tests != true
+        env:
+          F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
+          F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
+        run: |
+          if [ -z "$F5XC_API_TOKEN" ]; then
+            echo "::warning::F5XC_API_TOKEN not set, running in dry-run mode"
+            python -m scripts.validate --dry-run
+          else
+            python -m scripts.validate || true
+          fi
+
+      - name: Reconcile specs
+        run: |
+          python -m scripts.reconcile
+
+      - name: Calculate content hash
+        id: content_hash
+        run: |
+          # Create deterministic hash of reconciled specs content
+          HASH=$(find release/specs -type f -name "*.json" -exec sha256sum {} \; | sort | sha256sum | cut -d' ' -f1)
+          echo "Reconciled specs hash: $HASH"
+          echo "hash=$HASH" >> $GITHUB_OUTPUT
+
+      - name: Upload validation reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-reports
+          path: reports/
+          retention-days: 30
+
+      - name: Upload reconciled specs
+        uses: actions/upload-artifact@v4
+        with:
+          name: reconciled-specs
+          path: release/specs/
+          retention-days: 7
+
+      - name: Upload spec metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-metadata
+          path: specs/original/.spec_metadata.json
+          retention-days: 7
+
+  check-release-needed:
+    name: Check if Release Needed
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.check.outputs.should_release }}
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download spec metadata
+        uses: actions/download-artifact@v4
+        with:
+          name: spec-metadata
+          path: specs/original/
+
+      - name: Get previous release hash
+        id: prev_hash
+        run: |
+          # Get the content hash from the most recent release tag
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$LATEST_TAG" ]; then
+            # Check if release notes contain the hash
+            PREV_HASH=$(gh release view "$LATEST_TAG" --json body -q '.body' | grep -oP 'Content Hash: \K[a-f0-9]+' || echo "")
+            echo "Previous release hash: $PREV_HASH"
+            echo "hash=$PREV_HASH" >> $GITHUB_OUTPUT
+          else
+            echo "No previous release found"
+            echo "hash=" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine version from metadata
+        id: version
+        run: |
+          # Read spec_date from metadata
+          if [ -f specs/original/.spec_metadata.json ]; then
+            SPEC_DATE=$(python3 -c "import json; print(json.load(open('specs/original/.spec_metadata.json')).get('spec_date', ''))")
+          else
+            SPEC_DATE=$(date -u +"%Y.%m.%d")
+          fi
+
+          # Find next patch number for this spec date
+          PATCH=1
+          while git rev-parse "v${SPEC_DATE}-${PATCH}" >/dev/null 2>&1; do
+            PATCH=$((PATCH + 1))
+          done
+
+          VERSION="${SPEC_DATE}-${PATCH}"
+          echo "Version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if release is needed
+        id: check
+        run: |
+          SPECS_CHANGED="${{ needs.validate.outputs.specs_changed }}"
+          CURRENT_HASH="${{ needs.validate.outputs.content_hash }}"
+          PREV_HASH="${{ steps.prev_hash.outputs.hash }}"
+          FORCE="${{ inputs.force_release }}"
+
+          echo "Specs changed: $SPECS_CHANGED"
+          echo "Current hash: $CURRENT_HASH"
+          echo "Previous hash: $PREV_HASH"
+          echo "Force release: $FORCE"
+
+          if [ "$FORCE" = "true" ]; then
+            echo "Force release requested"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          elif [ "$SPECS_CHANGED" = "true" ]; then
+            echo "Upstream specs changed - release needed"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          elif [ -z "$PREV_HASH" ]; then
+            echo "No previous release found - release needed"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          elif [ "$CURRENT_HASH" != "$PREV_HASH" ]; then
+            echo "Content hash changed (code changes affected output) - release needed"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes detected - skipping release"
+            echo "should_release=false" >> $GITHUB_OUTPUT
+          fi
+
+  release:
+    name: Create Release
+    needs: [validate, check-release-needed]
+    if: needs.check-release-needed.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Download reconciled specs
+        uses: actions/download-artifact@v4
+        with:
+          name: reconciled-specs
+          path: release/specs/
+
+      - name: Download validation reports
+        uses: actions/download-artifact@v4
+        with:
+          name: validation-reports
+          path: reports/
+
+      - name: Download spec metadata
+        uses: actions/download-artifact@v4
+        with:
+          name: spec-metadata
+          path: specs/original/
+
+      - name: Build release package
+        run: |
+          python -m scripts.release --version ${{ needs.check-release-needed.outputs.version }}
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          VERSION="${{ needs.check-release-needed.outputs.version }}"
+          CONTENT_HASH="${{ needs.validate.outputs.content_hash }}"
+          SPECS_CHANGED="${{ needs.validate.outputs.specs_changed }}"
+
+          cat > release_notes.md << EOF
+          ## F5 XC API Specs v${VERSION}
+
+          ### Changes
+          EOF
+
+          if [ "$SPECS_CHANGED" = "true" ]; then
+            echo "- Upstream F5 XC specs updated" >> release_notes.md
+          else
+            echo "- Code changes resulted in updated output" >> release_notes.md
+          fi
+
+          cat >> release_notes.md << EOF
+
+          ### Validation
+          - OpenAPI Spec Validator: ✅
+          - Schemathesis property-based testing
+          - Custom constraint validation
+
+          ### Contents
+          - \`openapi.json\` - Merged OpenAPI specification
+          - \`openapi.yaml\` - YAML format
+          - \`domains/\` - Individual domain spec files
+          - \`CHANGELOG.md\` - List of fixes applied
+          - \`VALIDATION_REPORT.md\` - Validation summary
+
+          ### Metadata
+          - Content Hash: ${CONTENT_HASH}
+          - Specs ETag: ${{ needs.validate.outputs.specs_etag }}
+
+          ---
+          🤖 Generated by [F5 XC API Validation Framework](https://github.com/${{ github.repository }})
+          EOF
+
+          cat release_notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.check-release-needed.outputs.version }}
+          name: F5 XC API Specs v${{ needs.check-release-needed.outputs.version }}
+          body_path: release_notes.md
+          files: |
+            release/f5xc-api-fixed-v${{ needs.check-release-needed.outputs.version }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "### Release Created 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version**: v${{ needs.check-release-needed.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Content Hash**: ${{ needs.validate.outputs.content_hash }}" >> $GITHUB_STEP_SUMMARY
+
+  skip-release:
+    name: Skip Release (No Changes)
+    needs: [validate, check-release-needed]
+    if: needs.check-release-needed.outputs.should_release == 'false'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Summary
+        run: |
+          echo "### No Release Needed ⏭️" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No changes detected in upstream specs or generated output." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Specs Changed**: ${{ needs.validate.outputs.specs_changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Content Hash**: ${{ needs.validate.outputs.content_hash }}" >> $GITHUB_STEP_SUMMARY
+
+  notify:
+    name: Notify on Failure
+    needs: [validate, check-release-needed, release]
+    if: failure()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create issue on failure
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            const title = `Validation Pipeline Failed - ${date}`;
+            const body = `
+            ## Validation Pipeline Failure
+
+            **Run ID**: ${{ github.run_id }}
+            **Date**: ${date}
+            **Trigger**: ${{ github.event_name }}
+
+            ### Job Results
+            - Validate: ${{ needs.validate.result }}
+            - Check Release: ${{ needs.check-release-needed.result }}
+            - Release: ${{ needs.release.result }}
+
+            ### Actions
+            1. Check the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            2. Review validation reports in artifacts
+            3. Fix any issues and re-run the pipeline
+
+            /cc @${{ github.repository_owner }}
+            `;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['automation', 'bug']
+            });

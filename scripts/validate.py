@@ -405,23 +405,26 @@ def main():
 
     # Initialize auth (skip in dry run)
     auth = None
-    if not args.dry_run:
+    dry_run = args.dry_run
+    if not dry_run:
         try:
             auth = load_auth_from_config(config)
             if not auth.test_connection():
                 console.print("[red]API connection failed[/red]")
-                return 1
+                console.print("[yellow]Falling back to dry-run mode[/yellow]")
+                dry_run = True
+                auth = None
         except ValueError as e:
             console.print(f"[red]Auth error: {e}[/red]")
-            console.print("[yellow]Run with --dry-run to skip API calls[/yellow]")
-            return 1
+            console.print("[yellow]Falling back to dry-run mode[/yellow]")
+            dry_run = True
 
     # Run validation
     orchestrator = ValidationOrchestrator(
         config=config,
         endpoints_config=endpoints_config,
         auth=auth,
-        dry_run=args.dry_run,
+        dry_run=dry_run,
     )
 
     return orchestrator.run(

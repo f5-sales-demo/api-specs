@@ -4,10 +4,10 @@
 # The framework should be extensible to all APIs in the OpenAPI spec
 
 endpoints:
-  # Virtual Domain (virtual.json)
+  # Virtual Domain
   healthcheck:
     resource: healthchecks
-    domain_file: virtual.json
+    domain_file: docs-cloud-f5-com.0124.public.ves.io.schema.healthcheck.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/healthchecks
@@ -20,7 +20,7 @@ endpoints:
 
   origin_pool:
     resource: origin_pools
-    domain_file: virtual.json
+    domain_file: docs-cloud-f5-com.0177.public.ves.io.schema.views.origin_pool.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/origin_pools
@@ -33,7 +33,7 @@ endpoints:
 
   app_firewall:
     resource: app_firewalls
-    domain_file: virtual.json
+    domain_file: docs-cloud-f5-com.0019.public.ves.io.schema.app_firewall.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/app_firewalls
@@ -46,7 +46,7 @@ endpoints:
 
   service_policy:
     resource: service_policys
-    domain_file: virtual.json
+    domain_file: docs-cloud-f5-com.0208.public.ves.io.schema.service_policy.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/service_policys
@@ -57,10 +57,10 @@ endpoints:
     test_priority: medium
     description: "Service-level security policies"
 
-  # API Domain (api.json)
+  # API Domain
   api_definition:
     resource: api_definitions
-    domain_file: api.json
+    domain_file: docs-cloud-f5-com.0002.public.ves.io.schema.views.api_definition.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/api_definitions
@@ -73,7 +73,7 @@ endpoints:
 
   api_discovery:
     resource: api_discoverys
-    domain_file: api.json
+    domain_file: docs-cloud-f5-com.0003.public.ves.io.schema.api_sec.api_discovery.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/api_discoverys
@@ -86,7 +86,7 @@ endpoints:
 
   api_groups:
     resource: api_groups
-    domain_file: api.json
+    domain_file: docs-cloud-f5-com.0004.public.ves.io.schema.api_group.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/api_groups
@@ -99,7 +99,7 @@ endpoints:
 
   code_base_integration:
     resource: code_base_integrations
-    domain_file: api.json
+    domain_file: docs-cloud-f5-com.0064.public.ves.io.schema.api_sec.code_base_integration.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/code_base_integrations
@@ -110,10 +110,10 @@ endpoints:
     test_priority: low
     description: "Source code repository integrations"
 
-  # Data and Privacy Security Domain (data_and_privacy_security.json)
+  # Data and Privacy Security Domain
   data_type:
     resource: data_types
-    domain_file: data_and_privacy_security.json
+    domain_file: docs-cloud-f5-com.0096.public.ves.io.schema.data_type.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/data_types
@@ -126,7 +126,7 @@ endpoints:
 
   sensitive_data_policy:
     resource: sensitive_data_policys
-    domain_file: data_and_privacy_security.json
+    domain_file: docs-cloud-f5-com.0206.public.ves.io.schema.sensitive_data_policy.ves-swagger.json
     api_group: config
     crud_operations:
       create: POST /api/config/namespaces/{namespace}/sensitive_data_policys
@@ -139,14 +139,35 @@ endpoints:
 
 # Domain file mappings
 domain_files:
-  virtual.json:
-    description: "Virtual services, load balancers, and network policies"
+  docs-cloud-f5-com.0124.public.ves.io.schema.healthcheck.ves-swagger.json:
+    description: "Health check configurations"
     priority: 1
-  api.json:
-    description: "API security and discovery features"
+  docs-cloud-f5-com.0177.public.ves.io.schema.views.origin_pool.ves-swagger.json:
+    description: "Origin pool configurations"
+    priority: 1
+  docs-cloud-f5-com.0019.public.ves.io.schema.app_firewall.ves-swagger.json:
+    description: "Application firewall configurations"
+    priority: 1
+  docs-cloud-f5-com.0208.public.ves.io.schema.service_policy.ves-swagger.json:
+    description: "Service policy configurations"
     priority: 2
-  data_and_privacy_security.json:
-    description: "Data protection and privacy controls"
+  docs-cloud-f5-com.0002.public.ves.io.schema.views.api_definition.ves-swagger.json:
+    description: "API definition configurations"
+    priority: 2
+  docs-cloud-f5-com.0003.public.ves.io.schema.api_sec.api_discovery.ves-swagger.json:
+    description: "API discovery configurations"
+    priority: 2
+  docs-cloud-f5-com.0004.public.ves.io.schema.api_group.ves-swagger.json:
+    description: "API group configurations"
+    priority: 2
+  docs-cloud-f5-com.0064.public.ves.io.schema.api_sec.code_base_integration.ves-swagger.json:
+    description: "Code base integration configurations"
+    priority: 3
+  docs-cloud-f5-com.0096.public.ves.io.schema.data_type.ves-swagger.json:
+    description: "Data type configurations"
+    priority: 3
+  docs-cloud-f5-com.0206.public.ves.io.schema.sensitive_data_policy.ves-swagger.json:
+    description: "Sensitive data policy configurations"
     priority: 3
 
 # Test execution order (by priority)

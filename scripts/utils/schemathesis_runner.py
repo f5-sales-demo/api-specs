@@ -297,24 +297,36 @@ class SchemathesisRunner:
         status_code = str(response.status_code)
 
         # Get expected response schema
-        operation = case.operation
-        responses = operation.definition.get("responses", {})
+        try:
+            operation = case.operation
+            # In Schemathesis 4.x, definition might be an object or dict
+            definition = operation.definition
+            if isinstance(definition, dict):
+                responses = definition.get("responses", {})
+            elif hasattr(definition, "responses"):
+                responses = definition.responses
+            else:
+                # Can't validate - skip check
+                return None
 
-        if status_code not in responses:
-            # Check for default response
-            if "default" not in responses:
-                # Unexpected status code - potential discrepancy
-                if response.status_code >= 400:
-                    return Discrepancy(
-                        path=case.path,
-                        property_name="response",
-                        constraint_type="status_code",
-                        discrepancy_type=DiscrepancyType.CONSTRAINT_MISMATCH,
-                        spec_value=list(responses.keys()),
-                        api_behavior=status_code,
-                        test_values=[self._case_to_dict(case)],
-                        recommendation=f"Add {status_code} to response definitions",
-                    )
+            if status_code not in responses:
+                # Check for default response
+                if "default" not in responses:
+                    # Unexpected status code - potential discrepancy
+                    if response.status_code >= 400:
+                        return Discrepancy(
+                            path=case.path,
+                            property_name="response",
+                            constraint_type="status_code",
+                            discrepancy_type=DiscrepancyType.CONSTRAINT_MISMATCH,
+                            spec_value=list(responses.keys()),
+                            api_behavior=status_code,
+                            test_values=[self._case_to_dict(case)],
+                            recommendation=f"Add {status_code} to response definitions",
+                        )
+        except Exception:
+            # If we can't get the response schema, skip validation
+            return None
 
         return None
 

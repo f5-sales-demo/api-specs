@@ -160,13 +160,20 @@ class SchemathesisRunner:
                     else:
                         # Not a Result object, use as-is
                         op = op_result
-
-                    # Verify we have a valid operation
-                    if hasattr(op, "path") and hasattr(op, "method"):
-                        all_operations.append(op)
                 except Exception:
-                    # Skip Err results or invalid operations
+                    # Skip Err results
                     continue
+
+                # Check if the unwrapped result is an Err object
+                # Err objects only have an 'err' attribute, not 'path' or 'method'
+                if (
+                    type(op).__name__ == "Err"
+                    or not hasattr(op, "path")
+                    or not hasattr(op, "method")
+                ):
+                    continue
+
+                all_operations.append(op)
 
             # Filter endpoints if specified
             operations = all_operations
@@ -351,25 +358,17 @@ class SchemathesisRunner:
                     else:
                         # Not a Result object, use as-is
                         op = op_result
-                except Exception as e:
+                except Exception:
                     # This is an Err result or unwrapping failed - skip it
-                    console.print(f"[dim]Skipping Err result: {type(op_result).__name__}[/dim]")
                     continue
 
-                # Debug: Show what we got
-                console.print(
-                    f"[dim]Got operation type: {type(op).__name__}, "
-                    f"has path: {hasattr(op, 'path')}, "
-                    f"has method: {hasattr(op, 'method')}[/dim]"
-                )
+                # Check if the unwrapped result is an Err object
+                # Err objects only have an 'err' attribute, not 'path' or 'method'
+                if type(op).__name__ == "Err" or not hasattr(op, "path"):
+                    continue
 
                 # Verify we have a valid operation with required attributes
-                if not hasattr(op, "path") or not hasattr(op, "method"):
-                    # Try to see what attributes it does have
-                    attrs = [a for a in dir(op) if not a.startswith("_")]
-                    console.print(
-                        f"[dim]Operation missing path/method. Available: {attrs[:10]}[/dim]"
-                    )
+                if not hasattr(op, "method"):
                     continue
 
                 # Check if this operation matches our resource

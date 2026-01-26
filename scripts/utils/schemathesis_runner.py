@@ -271,9 +271,10 @@ class SchemathesisRunner:
         # Build request with authentication
         kwargs = case.as_transport_kwargs()
 
-        # Remove method from kwargs to avoid "got multiple values for argument" error
-        # since we pass it as a positional argument to auth.request()
+        # Remove method and url from kwargs to avoid "got multiple values for argument" error
+        # since we pass them as positional arguments to auth.request()
         kwargs.pop("method", None)
+        kwargs.pop("url", None)
 
         # Add auth headers
         headers = kwargs.get("headers", {})

@@ -13,7 +13,7 @@ if (!window.__navigationFixInitialized) {
   window.__navigationFixInitialized = true;
 
   function isHomePage(path) {
-    return path.endsWith('/xcsh/') || path.endsWith('/xcsh/index.html') || path === '/';
+    return path.endsWith('/f5xc-api-fixed/') || path.endsWith('/f5xc-api-fixed/index.html') || path === '/';
   }
 
   function fixSidebar() {
@@ -50,7 +50,7 @@ if (!window.__navigationFixInitialized) {
       // Check if this tab matches the current path
       // Match if the current path starts with the tab path (for section matching)
       // But not for home page (exact match only)
-      var isHome = tabPath === '/xcsh/' || tabPath.endsWith('/xcsh/');
+      var isHome = tabPath === '/f5xc-api-fixed/' || tabPath.endsWith('/f5xc-api-fixed/');
       var pathMatches = isHome
         ? isHomePage(path)
         : path.startsWith(tabPath) && !isHomePage(path);

@@ -50,7 +50,9 @@ class SchemathesisConfig:
     hypothesis_phases: list[str] = field(default_factory=lambda: ["generate", "target"])
     stateful_testing: bool = True
     timeout_per_test: int = 60
-    suppress_health_check: bool = True
+    suppress_health_check: list[str] = field(
+        default_factory=list
+    )  # List of health checks to suppress
     verbosity: str = "normal"
 
 
@@ -68,6 +70,20 @@ class SchemathesisRunner:
         self._rate_limiter = RateLimiter()
 
         # Configure hypothesis settings
+        # Map verbosity string to valid Verbosity enum
+        verbosity_map = {
+            "quiet": Verbosity.quiet,
+            "normal": Verbosity.normal,
+            "verbose": Verbosity.verbose,
+            "debug": Verbosity.debug,
+        }
+        verbosity = verbosity_map.get(self.config.verbosity.lower(), Verbosity.normal)
+
+        # Build suppress_health_check tuple if needed
+        suppress_hc = (
+            tuple(self.config.suppress_health_check) if self.config.suppress_health_check else ()
+        )
+
         self._hypothesis_settings = settings(
             max_examples=self.config.max_examples,
             phases=[
@@ -76,20 +92,22 @@ class SchemathesisRunner:
                 if hasattr(Phase, phase.upper())
             ],
             deadline=self.config.timeout_per_test * 1000,  # ms
-            suppress_health_check=self.config.suppress_health_check,
-            verbosity=Verbosity[self.config.verbosity.upper()],
+            suppress_health_check=suppress_hc,
+            verbosity=verbosity,
         )
 
     def load_schema(self, spec: dict, base_url: str | None = None) -> Any:
         """Load OpenAPI schema for Schemathesis."""
         base_url = base_url or self.auth.api_url
 
-        # Create schema from dictionary
-        schema = schemathesis.from_dict(
-            spec,
-            base_url=base_url,
-            validate_schema=False,  # We may have intentionally invalid specs
-        )
+        # In schemathesis 4.x, base_url must be in the spec's servers field
+        # Make a copy to avoid modifying the original
+        spec_copy = spec.copy()
+        if base_url and "servers" not in spec_copy:
+            spec_copy["servers"] = [{"url": base_url}]
+
+        # Create schema from dictionary (schemathesis 4.x API)
+        schema = schemathesis.openapi.from_dict(spec_copy)
 
         return schema
 
@@ -99,14 +117,21 @@ class SchemathesisRunner:
         base_url: str | None = None,
     ) -> Any:
         """Load OpenAPI schema from file."""
+        import json
+
         filepath = Path(filepath)
         base_url = base_url or self.auth.api_url
 
-        schema = schemathesis.from_path(
-            str(filepath),
-            base_url=base_url,
-            validate_schema=False,
-        )
+        # Load spec from file first
+        with open(filepath) as f:
+            spec = json.load(f)
+
+        # Add base_url to servers field if not present
+        if base_url and "servers" not in spec:
+            spec["servers"] = [{"url": base_url}]
+
+        # Load schema from dictionary (schemathesis 4.x API)
+        schema = schemathesis.openapi.from_dict(spec)
 
         return schema
 
@@ -124,8 +149,27 @@ class SchemathesisRunner:
             TextColumn("[progress.description]{task.description}"),
             console=console,
         ) as progress:
+            # Get all operations and unwrap Result objects
+            all_operations = []
+            for op_result in schema.get_all_operations():
+                try:
+                    # Check if this is a Result object with .ok() method
+                    if hasattr(op_result, "ok") and callable(op_result.ok):
+                        # Try to unwrap - this will raise if it's an Err result
+                        op = op_result.ok()
+                    else:
+                        # Not a Result object, use as-is
+                        op = op_result
+
+                    # Verify we have a valid operation
+                    if hasattr(op, "path") and hasattr(op, "method"):
+                        all_operations.append(op)
+                except Exception:
+                    # Skip Err results or invalid operations
+                    continue
+
             # Filter endpoints if specified
-            operations = list(schema.get_all_operations())
+            operations = all_operations
             if endpoint_filter:
                 operations = [op for op in operations if endpoint_filter in op.path]
             if method_filter:
@@ -206,7 +250,10 @@ class SchemathesisRunner:
         """Generate test cases for an operation using Hypothesis."""
         count = 0
         try:
-            for case in operation.as_strategy().example():
+            # In schemathesis 4.x, we need to use the test method
+            # which generates cases directly
+            test_func = operation.as_strategy()
+            for case in test_func.example():
                 if count >= max_cases:
                     break
                 yield case
@@ -293,13 +340,38 @@ class SchemathesisRunner:
 
         for operation in crud_operations:
             # Find matching endpoint
-            for op in schema.get_all_operations():
-                if resource in op.path:
-                    method = op.method.upper()
-                    if self._matches_crud_operation(method, op.path, operation):
-                        result = self._test_operation(op)
-                        results.append(result)
-                        break
+            # In schemathesis 4.x, get_all_operations() returns Result objects
+            for op_result in schema.get_all_operations():
+                # Try to unwrap the result - schemathesis 4.x uses Result types
+                try:
+                    # Check if this is a Result object with .ok() method
+                    if hasattr(op_result, "ok") and callable(op_result.ok):
+                        # Try to unwrap - this will raise if it's an Err result
+                        op = op_result.ok()
+                    else:
+                        # Not a Result object, use as-is
+                        op = op_result
+                except Exception:
+                    # This is an Err result or unwrapping failed - skip it
+                    console.print("[dim]Skipping invalid operation (Err result)[/dim]")
+                    continue
+
+                # Verify we have a valid operation with required attributes
+                if not hasattr(op, "path") or not hasattr(op, "method"):
+                    console.print("[dim]Skipping operation without path/method[/dim]")
+                    continue
+
+                # Check if this operation matches our resource
+                try:
+                    if resource in op.path:
+                        method = op.method.upper()
+                        if self._matches_crud_operation(method, op.path, operation):
+                            result = self._test_operation(op)
+                            results.append(result)
+                            break
+                except Exception as e:
+                    console.print(f"[yellow]Error checking operation: {e}[/yellow]")
+                    continue
 
         return results
 

@@ -249,10 +249,26 @@ class F5XCAuth:
     def test_connection(self) -> bool:
         """Test API connectivity and authentication."""
         try:
-            # Use a lightweight endpoint to test
-            response = self.get(f"/api/config/namespaces/{self.namespace}")
+            # Use the web API namespaces endpoint to test
+            response = self.get("/api/web/namespaces")
             if response.status_code == 200:
-                console.print("[green]API connection successful[/green]")
+                # Verify our namespace exists
+                try:
+                    data = response.json()
+                    namespaces = [item.get("name") for item in data.get("items", [])]
+                    if self.namespace in namespaces:
+                        console.print(
+                            f"[green]API connection successful (namespace: {self.namespace})[/green]"
+                        )
+                    else:
+                        console.print(
+                            f"[yellow]API connected but namespace '{self.namespace}' not found[/yellow]"
+                        )
+                        console.print(
+                            f"[yellow]Available namespaces: {', '.join(namespaces[:5])}...[/yellow]"
+                        )
+                except Exception:
+                    console.print("[green]API connection successful[/green]")
                 return True
             console.print(f"[red]API connection failed: {response.status_code}[/red]")
             return False

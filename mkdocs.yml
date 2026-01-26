@@ -74,7 +74,3 @@ extra_css:
 
 extra_javascript:
   - javascripts/sidebar-fix.js
-
-nav:
-  - Home: index.md
-  - Modifications: modifications/index.md

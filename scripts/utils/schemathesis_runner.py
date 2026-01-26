@@ -351,14 +351,25 @@ class SchemathesisRunner:
                     else:
                         # Not a Result object, use as-is
                         op = op_result
-                except Exception:
+                except Exception as e:
                     # This is an Err result or unwrapping failed - skip it
-                    console.print("[dim]Skipping invalid operation (Err result)[/dim]")
+                    console.print(f"[dim]Skipping Err result: {type(op_result).__name__}[/dim]")
                     continue
+
+                # Debug: Show what we got
+                console.print(
+                    f"[dim]Got operation type: {type(op).__name__}, "
+                    f"has path: {hasattr(op, 'path')}, "
+                    f"has method: {hasattr(op, 'method')}[/dim]"
+                )
 
                 # Verify we have a valid operation with required attributes
                 if not hasattr(op, "path") or not hasattr(op, "method"):
-                    console.print("[dim]Skipping operation without path/method[/dim]")
+                    # Try to see what attributes it does have
+                    attrs = [a for a in dir(op) if not a.startswith("_")]
+                    console.print(
+                        f"[dim]Operation missing path/method. Available: {attrs[:10]}[/dim]"
+                    )
                     continue
 
                 # Check if this operation matches our resource

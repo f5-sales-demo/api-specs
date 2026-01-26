@@ -30,9 +30,11 @@ def load_validation_report(report_path: Path) -> dict | None:
 def generate_modifications_page(report: dict | None, output_path: Path) -> None:
     """Generate the modifications/index.md page from validation report."""
     lines = [
-        "# Spec Modifications",
+        "# F5 XC API Fixed Specs",
         "",
-        "This page shows all modifications applied to reconcile F5 XC OpenAPI specs with live API behavior.",
+        "Validated and reconciled F5 Distributed Cloud OpenAPI specifications.",
+        "",
+        "This project validates F5 XC OpenAPI specifications against the live API, identifies discrepancies, and produces corrected spec files.",
         "",
     ]
 
@@ -203,7 +205,7 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("docs/modifications/index.md"),
+        default=Path("docs/index.md"),
         help="Output path for modifications page",
     )
 

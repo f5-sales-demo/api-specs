@@ -380,6 +380,8 @@ class SchemathesisRunner:
                     console.print(f"[yellow]Error checking operation: {e}[/yellow]")
                     continue
 
+        # Update self.results for get_summary()
+        self.results.extend(results)
         return results
 
     def _matches_crud_operation(

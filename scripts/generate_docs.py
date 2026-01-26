@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from rich.console import Console
@@ -39,7 +39,7 @@ def generate_modifications_page(report: dict | None, output_path: Path) -> None:
     ]
 
     # Add generation timestamp
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    now = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
     lines.extend(
         [
             f"*Last updated: {now}*",
@@ -167,7 +167,9 @@ def _format_value(value) -> str:
         return (
             f"`{json.dumps(value)[:50]}...`" if len(str(value)) > 50 else f"`{json.dumps(value)}`"
         )
-    return f"`{value}`"
+    # Replace newlines with HTML line breaks for markdown tables
+    str_value = str(value).replace("\n", "<br>")
+    return f"`{str_value}`"
 
 
 def _get_type_badge(dtype: str) -> str:

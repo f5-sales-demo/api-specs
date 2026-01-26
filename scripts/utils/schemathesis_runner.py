@@ -255,16 +255,13 @@ class SchemathesisRunner:
         max_cases: int = 10,
     ) -> Generator[Case]:
         """Generate test cases for an operation using Hypothesis."""
-        count = 0
         try:
-            # In schemathesis 4.x, we need to use the test method
-            # which generates cases directly
+            # In schemathesis 4.x, we use as_strategy() to get a strategy
+            # and call .example() multiple times to generate different cases
             test_func = operation.as_strategy()
-            for case in test_func.example():
-                if count >= max_cases:
-                    break
+            for _ in range(max_cases):
+                case = test_func.example()
                 yield case
-                count += 1
         except Exception as e:
             console.print(f"[yellow]Failed to generate cases for {operation.path}: {e}[/yellow]")
 

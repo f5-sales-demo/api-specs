@@ -373,15 +373,27 @@ class SchemathesisRunner:
                     if resource in op.path:
                         method = op.method.upper()
                         if self._matches_crud_operation(method, op.path, operation):
+                            console.print(
+                                f"[green]DEBUG: Matched {operation} operation: {method} {op.path}[/green]"
+                            )
                             result = self._test_operation(op)
                             results.append(result)
+                            console.print(
+                                f"[green]DEBUG: Added result, total results: {len(results)}[/green]"
+                            )
                             break
                 except Exception as e:
                     console.print(f"[yellow]Error checking operation: {e}[/yellow]")
                     continue
 
+        # Debug logging
+        console.print(f"[cyan]DEBUG: Collected {len(results)} results from stateful tests[/cyan]")
+        console.print(f"[cyan]DEBUG: self.results before extend: {len(self.results)}[/cyan]")
+
         # Update self.results for get_summary()
         self.results.extend(results)
+
+        console.print(f"[cyan]DEBUG: self.results after extend: {len(self.results)}[/cyan]")
         return results
 
     def _matches_crud_operation(

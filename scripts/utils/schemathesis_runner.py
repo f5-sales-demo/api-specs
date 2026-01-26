@@ -227,7 +227,26 @@ class SchemathesisRunner:
                         )
                         result.status = TestStatus.ERROR
 
-                    # Check for validation discrepancies
+                    # Validate response against schema using Schemathesis
+                    try:
+                        # Schemathesis 4.x validation
+                        case.validate_response(response)
+                    except Exception as validation_error:
+                        # Schema validation failed - this is a discrepancy
+                        discrepancy = Discrepancy(
+                            path=case.path,
+                            property_name="response_schema",
+                            constraint_type="schema_validation",
+                            discrepancy_type=DiscrepancyType.CONSTRAINT_MISMATCH,
+                            spec_value="Valid per OpenAPI schema",
+                            api_behavior=str(validation_error),
+                            test_values=[self._case_to_dict(case)],
+                            recommendation=f"Update schema or fix API response: {validation_error}",
+                        )
+                        result.discrepancies.append(discrepancy)
+                        result.status = TestStatus.FAILED
+
+                    # Additional validation checks
                     discrepancy = self._check_response(case, response)
                     if discrepancy:
                         result.discrepancies.append(discrepancy)

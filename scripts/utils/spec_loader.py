@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
-from typing import Any, Optional
 from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
 
 import yaml
 from openapi_spec_validator import validate
-from openapi_spec_validator.versions import consts as openapi_versions
 from rich.console import Console
 
 console = Console()
@@ -39,8 +38,8 @@ class EndpointInfo:
 
     path: str
     method: str
-    operation_id: Optional[str]
-    request_schema: Optional[SchemaInfo]
+    operation_id: str | None
+    request_schema: SchemaInfo | None
     response_schemas: dict[str, SchemaInfo] = field(default_factory=dict)
     parameters: list[dict] = field(default_factory=list)
 
@@ -49,26 +48,45 @@ class SpecLoader:
     """Load and parse OpenAPI specifications."""
 
     # Constraint keywords to extract from schemas
-    CONSTRAINT_KEYWORDS = frozenset([
-        # String constraints
-        "minLength", "maxLength", "pattern",
-        # Numeric constraints
-        "minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum",
-        "multipleOf",
-        # Array constraints
-        "minItems", "maxItems", "uniqueItems",
-        # Object constraints
-        "minProperties", "maxProperties", "additionalProperties",
-        "propertyNames",
-        # Type constraints
-        "type", "format", "enum",
-        # Composition
-        "oneOf", "anyOf", "allOf",
-        # Dependencies
-        "dependentRequired", "dependentSchemas",
-        # Other
-        "required", "nullable", "readOnly", "writeOnly",
-    ])
+    CONSTRAINT_KEYWORDS = frozenset(
+        [
+            # String constraints
+            "minLength",
+            "maxLength",
+            "pattern",
+            # Numeric constraints
+            "minimum",
+            "maximum",
+            "exclusiveMinimum",
+            "exclusiveMaximum",
+            "multipleOf",
+            # Array constraints
+            "minItems",
+            "maxItems",
+            "uniqueItems",
+            # Object constraints
+            "minProperties",
+            "maxProperties",
+            "additionalProperties",
+            "propertyNames",
+            # Type constraints
+            "type",
+            "format",
+            "enum",
+            # Composition
+            "oneOf",
+            "anyOf",
+            "allOf",
+            # Dependencies
+            "dependentRequired",
+            "dependentSchemas",
+            # Other
+            "required",
+            "nullable",
+            "readOnly",
+            "writeOnly",
+        ]
+    )
 
     def __init__(self, spec_dir: Path | str):
         self.spec_dir = Path(spec_dir)
@@ -125,7 +143,9 @@ class SpecLoader:
         # Get schemas from components
         components = spec.get("components", {})
         for schema_name, schema_def in components.get("schemas", {}).items():
-            schema_info = self._parse_schema(schema_name, f"#/components/schemas/{schema_name}", schema_def)
+            schema_info = self._parse_schema(
+                schema_name, f"#/components/schemas/{schema_name}", schema_def
+            )
             schemas[schema_name] = schema_info
 
         return schemas
@@ -202,18 +222,20 @@ class SpecLoader:
                 parameters = operation.get("parameters", [])
                 parameters.extend(path_item.get("parameters", []))
 
-                endpoints.append(EndpointInfo(
-                    path=path,
-                    method=method.upper(),
-                    operation_id=operation.get("operationId"),
-                    request_schema=request_schema,
-                    response_schemas=response_schemas,
-                    parameters=parameters,
-                ))
+                endpoints.append(
+                    EndpointInfo(
+                        path=path,
+                        method=method.upper(),
+                        operation_id=operation.get("operationId"),
+                        request_schema=request_schema,
+                        response_schemas=response_schemas,
+                        parameters=parameters,
+                    )
+                )
 
         return endpoints
 
-    def find_schema_by_ref(self, spec: dict, ref: str) -> Optional[dict]:
+    def find_schema_by_ref(self, spec: dict, ref: str) -> dict | None:
         """Resolve a $ref to its schema definition."""
         if not ref.startswith("#/"):
             return None
@@ -256,7 +278,7 @@ class SpecLoader:
         spec: dict,
         resource: str,
         operation: str,
-    ) -> Optional[EndpointInfo]:
+    ) -> EndpointInfo | None:
         """Find the endpoint for a specific resource and operation."""
         endpoints = self.extract_endpoints(spec)
 
@@ -297,9 +319,7 @@ class SpecLoader:
 
             # Merge schemas
             components = spec.get("components", {})
-            merged["components"]["schemas"].update(
-                components.get("schemas", {})
-            )
+            merged["components"]["schemas"].update(components.get("schemas", {}))
 
         return merged
 

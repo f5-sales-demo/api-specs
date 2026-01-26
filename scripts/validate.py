@@ -5,22 +5,20 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-from typing import Optional
 
 import yaml
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from .utils.auth import F5XCAuth, load_auth_from_config
-from .utils.spec_loader import SpecLoader
 from .utils.constraint_validator import (
     ConstraintValidator,
     Discrepancy,
-    DiscrepancyType,
     ValidationTestCase,
 )
+from .utils.report_generator import create_report_generator
 from .utils.schemathesis_runner import SchemathesisRunner, create_runner
-from .utils.report_generator import ReportGenerator, create_report_generator
+from .utils.spec_loader import SpecLoader
 
 console = Console()
 
@@ -52,7 +50,7 @@ class ValidationOrchestrator:
         self,
         config: dict,
         endpoints_config: dict,
-        auth: Optional[F5XCAuth] = None,
+        auth: F5XCAuth | None = None,
         dry_run: bool = False,
     ):
         self.config = config
@@ -67,7 +65,7 @@ class ValidationOrchestrator:
 
         # Auth and Schemathesis only if not dry run
         self.auth = auth
-        self.schemathesis_runner: Optional[SchemathesisRunner] = None
+        self.schemathesis_runner: SchemathesisRunner | None = None
 
         if not dry_run and auth:
             self.schemathesis_runner = create_runner(
@@ -76,17 +74,15 @@ class ValidationOrchestrator:
             )
 
         # Report generator
-        self.report_generator = create_report_generator(
-            config.get("reports", {})
-        )
+        self.report_generator = create_report_generator(config.get("reports", {}))
 
         # Results storage
         self.discrepancies: list[Discrepancy] = []
-        self.test_results = []
+        self.test_results: list[dict] = []
 
     def run(
         self,
-        endpoint_filter: Optional[str] = None,
+        endpoint_filter: str | None = None,
         schemathesis_only: bool = False,
     ) -> int:
         """Run the full validation pipeline."""
@@ -213,7 +209,7 @@ class ValidationOrchestrator:
     def _run_schemathesis_tests(
         self,
         specs: dict[str, dict],
-        endpoint_filter: Optional[str] = None,
+        endpoint_filter: str | None = None,
     ) -> None:
         """Run Schemathesis property-based tests."""
         if not self.schemathesis_runner:
@@ -223,7 +219,7 @@ class ValidationOrchestrator:
         endpoints_config = self.endpoints_config.get("endpoints", {})
 
         # Group specs by domain file
-        domain_endpoints = {}
+        domain_endpoints: dict[str, list] = {}
         for endpoint_name, endpoint_config in endpoints_config.items():
             domain_file = endpoint_config.get("domain_file")
             if domain_file not in domain_endpoints:
@@ -266,7 +262,7 @@ class ValidationOrchestrator:
     def _run_constraint_tests(
         self,
         test_cases: dict[str, list[ValidationTestCase]],
-        endpoint_filter: Optional[str] = None,
+        endpoint_filter: str | None = None,
     ) -> None:
         """Run constraint validation tests against live API."""
         if not self.auth:
@@ -347,7 +343,7 @@ class ValidationOrchestrator:
 
         if self.discrepancies:
             # Group by type
-            by_type = {}
+            by_type: dict[str, int] = {}
             for d in self.discrepancies:
                 dtype = d.discrepancy_type.value
                 by_type[dtype] = by_type.get(dtype, 0) + 1
@@ -358,16 +354,14 @@ class ValidationOrchestrator:
 
         if self.schemathesis_runner:
             summary = self.schemathesis_runner.get_summary()
-            console.print(f"\n[bold]Schemathesis Summary:[/bold]")
+            console.print("\n[bold]Schemathesis Summary:[/bold]")
             console.print(f"  Operations tested: {summary['total_operations']}")
             console.print(f"  Pass rate: {summary['pass_rate']:.1%}")
 
 
 def main():
     """Main entry point for validation command."""
-    parser = argparse.ArgumentParser(
-        description="Validate F5 XC OpenAPI specs against live API"
-    )
+    parser = argparse.ArgumentParser(description="Validate F5 XC OpenAPI specs against live API")
     parser.add_argument(
         "--config",
         type=Path,

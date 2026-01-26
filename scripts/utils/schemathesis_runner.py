@@ -2,18 +2,17 @@
 
 from __future__ import annotations
 
-import json
+from collections.abc import Generator
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any, Optional, Generator
 from enum import Enum
+from pathlib import Path
+from typing import Any
 
 import schemathesis
-from schemathesis import Case
-from schemathesis.specs.openapi import definitions
-from hypothesis import settings, Verbosity, Phase
+from hypothesis import Phase, Verbosity, settings
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from schemathesis import Case
 
 from .auth import F5XCAuth, RateLimiter
 from .constraint_validator import Discrepancy, DiscrepancyType
@@ -48,9 +47,7 @@ class SchemathesisConfig:
     """Configuration for Schemathesis testing."""
 
     max_examples: int = 100
-    hypothesis_phases: list[str] = field(
-        default_factory=lambda: ["generate", "target"]
-    )
+    hypothesis_phases: list[str] = field(default_factory=lambda: ["generate", "target"])
     stateful_testing: bool = True
     timeout_per_test: int = 60
     suppress_health_check: bool = True
@@ -63,7 +60,7 @@ class SchemathesisRunner:
     def __init__(
         self,
         auth: F5XCAuth,
-        config: Optional[SchemathesisConfig] = None,
+        config: SchemathesisConfig | None = None,
     ):
         self.auth = auth
         self.config = config or SchemathesisConfig()
@@ -83,7 +80,7 @@ class SchemathesisRunner:
             verbosity=Verbosity[self.config.verbosity.upper()],
         )
 
-    def load_schema(self, spec: dict, base_url: Optional[str] = None) -> Any:
+    def load_schema(self, spec: dict, base_url: str | None = None) -> Any:
         """Load OpenAPI schema for Schemathesis."""
         base_url = base_url or self.auth.api_url
 
@@ -99,7 +96,7 @@ class SchemathesisRunner:
     def load_schema_from_file(
         self,
         filepath: Path | str,
-        base_url: Optional[str] = None,
+        base_url: str | None = None,
     ) -> Any:
         """Load OpenAPI schema from file."""
         filepath = Path(filepath)
@@ -116,8 +113,8 @@ class SchemathesisRunner:
     def run_tests(
         self,
         schema: Any,
-        endpoint_filter: Optional[str] = None,
-        method_filter: Optional[str] = None,
+        endpoint_filter: str | None = None,
+        method_filter: str | None = None,
     ) -> list[SchemathesisResult]:
         """Run Schemathesis tests against the API."""
         results = []
@@ -130,15 +127,9 @@ class SchemathesisRunner:
             # Filter endpoints if specified
             operations = list(schema.get_all_operations())
             if endpoint_filter:
-                operations = [
-                    op for op in operations
-                    if endpoint_filter in op.path
-                ]
+                operations = [op for op in operations if endpoint_filter in op.path]
             if method_filter:
-                operations = [
-                    op for op in operations
-                    if op.method.upper() == method_filter.upper()
-                ]
+                operations = [op for op in operations if op.method.upper() == method_filter.upper()]
 
             task = progress.add_task(
                 f"Testing {len(operations)} operations...",
@@ -176,11 +167,13 @@ class SchemathesisRunner:
 
                     # Check for failures
                     if response.status_code >= 500:
-                        result.errors.append({
-                            "status_code": response.status_code,
-                            "body": self._safe_json(response),
-                            "case": self._case_to_dict(case),
-                        })
+                        result.errors.append(
+                            {
+                                "status_code": response.status_code,
+                                "body": self._safe_json(response),
+                                "case": self._case_to_dict(case),
+                            }
+                        )
                         result.status = TestStatus.ERROR
 
                     # Check for validation discrepancies
@@ -192,10 +185,12 @@ class SchemathesisRunner:
                     self._rate_limiter.record_success()
 
                 except Exception as e:
-                    result.errors.append({
-                        "error": str(e),
-                        "case": self._case_to_dict(case),
-                    })
+                    result.errors.append(
+                        {
+                            "error": str(e),
+                            "case": self._case_to_dict(case),
+                        }
+                    )
 
         except Exception as e:
             result.status = TestStatus.ERROR
@@ -207,7 +202,7 @@ class SchemathesisRunner:
         self,
         operation: Any,
         max_cases: int = 10,
-    ) -> Generator[Case, None, None]:
+    ) -> Generator[Case]:
         """Generate test cases for an operation using Hypothesis."""
         count = 0
         try:
@@ -217,9 +212,7 @@ class SchemathesisRunner:
                 yield case
                 count += 1
         except Exception as e:
-            console.print(
-                f"[yellow]Failed to generate cases for {operation.path}: {e}[/yellow]"
-            )
+            console.print(f"[yellow]Failed to generate cases for {operation.path}: {e}[/yellow]")
 
     def _execute_case(self, case: Case) -> Any:
         """Execute a test case against the API."""
@@ -241,7 +234,7 @@ class SchemathesisRunner:
         self,
         case: Case,
         response: Any,
-    ) -> Optional[Discrepancy]:
+    ) -> Discrepancy | None:
         """Check response for validation discrepancies."""
         # Check if response matches expected schema
         status_code = str(response.status_code)
@@ -356,7 +349,7 @@ class SchemathesisRunner:
 
 def create_runner(
     auth: F5XCAuth,
-    config: Optional[dict] = None,
+    config: dict | None = None,
 ) -> SchemathesisRunner:
     """Create a Schemathesis runner with configuration."""
     schemathesis_config = None

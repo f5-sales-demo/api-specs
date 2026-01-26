@@ -10,7 +10,6 @@ import sys
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
 
 import yaml
 from rich.console import Console
@@ -27,7 +26,7 @@ def load_config(config_path: Path) -> dict:
         return yaml.safe_load(f) or {}
 
 
-def load_spec_metadata(specs_dir: Path) -> Optional[dict]:
+def load_spec_metadata(specs_dir: Path) -> dict | None:
     """Load spec metadata from download."""
     metadata_path = specs_dir / ".spec_metadata.json"
     if metadata_path.exists():
@@ -59,7 +58,7 @@ def get_existing_patch_numbers(base_date: str) -> list[int]:
         return []
 
 
-def get_version_from_metadata(specs_dir: Path, patch: Optional[int] = None) -> str:
+def get_version_from_metadata(specs_dir: Path, patch: int | None = None) -> str:
     """
     Get version from spec metadata with patch number.
 
@@ -137,14 +136,16 @@ class ReleaseBuilder:
         self,
         specs_dir: Path,
         output_dir: Path,
-        original_specs_dir: Optional[Path] = None,
-        version: Optional[str] = None,
-        patch: Optional[int] = None,
+        original_specs_dir: Path | None = None,
+        version: str | None = None,
+        patch: int | None = None,
     ):
         self.specs_dir = Path(specs_dir)
         self.output_dir = Path(output_dir)
         # Original specs dir contains the metadata from download
-        self.original_specs_dir = Path(original_specs_dir) if original_specs_dir else Path("specs/original")
+        self.original_specs_dir = (
+            Path(original_specs_dir) if original_specs_dir else Path("specs/original")
+        )
 
         # Version precedence: explicit version > metadata-based > git fallback
         if version:
@@ -246,9 +247,7 @@ class ReleaseBuilder:
 
                 # Merge schemas
                 components = spec.get("components", {})
-                merged["components"]["schemas"].update(
-                    components.get("schemas", {})
-                )
+                merged["components"]["schemas"].update(components.get("schemas", {}))
             except Exception as e:
                 console.print(f"[yellow]Could not merge {spec_file.name}: {e}[/yellow]")
 
@@ -260,7 +259,7 @@ class ReleaseBuilder:
             yaml.safe_dump(merged, f, default_flow_style=False, sort_keys=False)
 
         console.print(f"  [dim]Created: openapi.json ({len(merged['paths'])} paths)[/dim]")
-        console.print(f"  [dim]Created: openapi.yaml[/dim]")
+        console.print("  [dim]Created: openapi.yaml[/dim]")
 
     def _copy_changelog(self, staging_dir: Path) -> None:
         """Copy changelog to staging directory."""
@@ -330,10 +329,12 @@ See full validation details in the repository.
         for filepath in staging_dir.rglob("*"):
             if filepath.is_file():
                 rel_path = filepath.relative_to(staging_dir)
-                manifest["files"].append({
-                    "path": str(rel_path),
-                    "size": filepath.stat().st_size,
-                })
+                manifest["files"].append(
+                    {
+                        "path": str(rel_path),
+                        "size": filepath.stat().st_size,
+                    }
+                )
 
         with open(staging_dir / "manifest.json", "w") as f:
             json.dump(manifest, f, indent=2)
@@ -395,9 +396,7 @@ See full validation details in the repository.
 
 def main():
     """Main entry point for release command."""
-    parser = argparse.ArgumentParser(
-        description="Build release package for F5 XC fixed specs"
-    )
+    parser = argparse.ArgumentParser(description="Build release package for F5 XC fixed specs")
     parser.add_argument(
         "--config",
         type=Path,

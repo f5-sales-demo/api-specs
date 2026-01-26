@@ -1,4 +1,4 @@
-.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate
+.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update
 
 PYTHON := python3
 VENV := .venv
@@ -22,6 +22,11 @@ help:
 	@echo "  make typecheck     Run type checker"
 	@echo "  make clean         Clean generated files"
 	@echo "  make all           Full pipeline: download → validate → reconcile → release"
+	@echo ""
+	@echo "Pre-commit:"
+	@echo "  make pre-commit-install  Install pre-commit hooks"
+	@echo "  make pre-commit          Run all pre-commit hooks"
+	@echo "  make pre-commit-update   Update pre-commit hooks"
 	@echo ""
 	@echo "Documentation:"
 	@echo "  make docs          Build MkDocs documentation"
@@ -104,3 +109,14 @@ docs: docs-generate
 
 docs-serve: docs-generate
 	$(BIN)/mkdocs serve
+
+# Pre-commit targets
+pre-commit-install: dev-install
+	$(BIN)/pre-commit install --install-hooks
+	$(BIN)/pre-commit install --hook-type commit-msg
+
+pre-commit: dev-install
+	$(BIN)/pre-commit run --all-files
+
+pre-commit-update:
+	$(BIN)/pre-commit autoupdate

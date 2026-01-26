@@ -4,7 +4,9 @@ Reconcile live F5 Distributed Cloud API behavior with published OpenAPI specs, p
 
 ## Overview
 
-This framework validates F5 XC OpenAPI specifications against the live API, identifies discrepancies, and produces corrected spec files. The release package contains either:
+This framework validates F5 XC OpenAPI specifications against the live API, identifies
+discrepancies, and produces corrected spec files. The release package contains either:
+
 - **Fixed specs** where modifications were needed
 - **Original specs** where no modifications were needed (pass-through)
 

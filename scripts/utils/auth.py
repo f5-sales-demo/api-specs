@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 import os
-import time
 import threading
-from dataclasses import dataclass, field
-from typing import Optional
+import time
 from collections import deque
+from dataclasses import dataclass, field
 
 import httpx
 from rich.console import Console
@@ -39,7 +38,7 @@ class RateLimitConfig:
 class RateLimiter:
     """Adaptive rate limiter with sliding window and exponential backoff."""
 
-    def __init__(self, config: Optional[RateLimitConfig] = None):
+    def __init__(self, config: RateLimitConfig | None = None):
         self.config = config or RateLimitConfig()
         self._lock = threading.Lock()
         self._request_times: deque = deque(maxlen=100)
@@ -61,9 +60,7 @@ class RateLimiter:
                 oldest = self._request_times[0]
                 wait_time = 60 - (now - oldest) + 0.1
                 if wait_time > 0:
-                    console.print(
-                        f"[yellow]Rate limit: waiting {wait_time:.1f}s[/yellow]"
-                    )
+                    console.print(f"[yellow]Rate limit: waiting {wait_time:.1f}s[/yellow]")
                     time.sleep(wait_time)
                     now = time.time()
 
@@ -93,9 +90,7 @@ class RateLimiter:
                 )
                 if new_rpm > self._current_rpm:
                     self._current_rpm = new_rpm
-                    console.print(
-                        f"[green]Rate limit increased to {self._current_rpm} RPM[/green]"
-                    )
+                    console.print(f"[green]Rate limit increased to {self._current_rpm} RPM[/green]")
                 self._success_streak = 0
 
     def record_rate_limit(self) -> float:
@@ -109,9 +104,7 @@ class RateLimiter:
                     5,  # Minimum 5 RPM
                     int(self._current_rpm * self.config.decrease_factor),
                 )
-                console.print(
-                    f"[red]Rate limit hit, reduced to {self._current_rpm} RPM[/red]"
-                )
+                console.print(f"[red]Rate limit hit, reduced to {self._current_rpm} RPM[/red]")
 
             # Calculate backoff
             backoff = self._current_backoff
@@ -137,25 +130,24 @@ class RateLimiter:
 class F5XCAuth:
     """F5 XC API authentication handler with rate limiting."""
 
-    api_url: str = field(default_factory=lambda: os.getenv(
-        "F5XC_API_URL", "https://f5-amer-ent.console.ves.volterra.io"
-    ))
+    api_url: str = field(
+        default_factory=lambda: os.getenv(
+            "F5XC_API_URL", "https://f5-amer-ent.console.ves.volterra.io"
+        )
+    )
     api_token: str = field(default_factory=lambda: os.getenv("F5XC_API_TOKEN", ""))
-    namespace: str = field(default_factory=lambda: os.getenv(
-        "F5XC_NAMESPACE", "r-mordasiewicz"
-    ))
+    namespace: str = field(default_factory=lambda: os.getenv("F5XC_NAMESPACE", "r-mordasiewicz"))
     tenant: str = field(default_factory=lambda: os.getenv("F5XC_TENANT", "f5-amer-ent"))
     timeout: int = 30
     retries: int = 3
 
     _rate_limiter: RateLimiter = field(default_factory=RateLimiter, init=False)
-    _client: Optional[httpx.Client] = field(default=None, init=False)
+    _client: httpx.Client | None = field(default=None, init=False)
 
     def __post_init__(self):
         if not self.api_token:
             raise ValueError(
-                "F5XC_API_TOKEN environment variable not set. "
-                "Please set it with your API token."
+                "F5XC_API_TOKEN environment variable not set. Please set it with your API token."
             )
 
     @property
@@ -226,9 +218,7 @@ class F5XCAuth:
 
             except httpx.TimeoutException as e:
                 last_exception = e
-                console.print(
-                    f"[yellow]Timeout on attempt {attempt + 1}/{self.retries}[/yellow]"
-                )
+                console.print(f"[yellow]Timeout on attempt {attempt + 1}/{self.retries}[/yellow]")
                 time.sleep(self._rate_limiter.config.initial_backoff * (attempt + 1))
 
             except httpx.RequestError as e:
@@ -264,9 +254,7 @@ class F5XCAuth:
             if response.status_code == 200:
                 console.print("[green]API connection successful[/green]")
                 return True
-            console.print(
-                f"[red]API connection failed: {response.status_code}[/red]"
-            )
+            console.print(f"[red]API connection failed: {response.status_code}[/red]")
             return False
         except Exception as e:
             console.print(f"[red]API connection error: {e}[/red]")

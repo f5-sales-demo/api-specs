@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.utils.spec_loader import SpecLoader, SchemaInfo, EndpointInfo
+from scripts.utils.spec_loader import EndpointInfo, SchemaInfo, SpecLoader
 
 
 class TestSpecLoader:
@@ -97,23 +97,15 @@ class TestSpecLoader:
 
     def test_find_schema_by_ref(self, loader: SpecLoader, sample_openapi_spec: dict):
         """Test finding schema by $ref."""
-        schema = loader.find_schema_by_ref(
-            sample_openapi_spec,
-            "#/components/schemas/TestRequest"
-        )
+        schema = loader.find_schema_by_ref(sample_openapi_spec, "#/components/schemas/TestRequest")
 
         assert schema is not None
         assert schema["type"] == "object"
         assert "properties" in schema
 
-    def test_find_schema_by_ref_not_found(
-        self, loader: SpecLoader, sample_openapi_spec: dict
-    ):
+    def test_find_schema_by_ref_not_found(self, loader: SpecLoader, sample_openapi_spec: dict):
         """Test finding non-existent schema by $ref."""
-        schema = loader.find_schema_by_ref(
-            sample_openapi_spec,
-            "#/components/schemas/NonExistent"
-        )
+        schema = loader.find_schema_by_ref(sample_openapi_spec, "#/components/schemas/NonExistent")
 
         assert schema is None
 

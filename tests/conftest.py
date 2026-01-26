@@ -4,15 +4,15 @@ from __future__ import annotations
 
 import json
 import tempfile
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 import pytest
 import yaml
 
 
 @pytest.fixture
-def temp_dir() -> Generator[Path, None, None]:
+def temp_dir() -> Generator[Path]:
     """Create a temporary directory for test files."""
     with tempfile.TemporaryDirectory() as tmpdir:
         yield Path(tmpdir)
@@ -36,31 +36,23 @@ def sample_openapi_spec() -> dict:
                             "description": "Success",
                             "content": {
                                 "application/json": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/TestResponse"
-                                    }
+                                    "schema": {"$ref": "#/components/schemas/TestResponse"}
                                 }
-                            }
+                            },
                         }
-                    }
+                    },
                 },
                 "post": {
                     "operationId": "createTest",
                     "requestBody": {
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TestRequest"
-                                }
+                                "schema": {"$ref": "#/components/schemas/TestRequest"}
                             }
                         }
                     },
-                    "responses": {
-                        "201": {
-                            "description": "Created"
-                        }
-                    }
-                }
+                    "responses": {"201": {"description": "Created"}},
+                },
             }
         },
         "components": {
@@ -73,39 +65,29 @@ def sample_openapi_spec() -> dict:
                             "type": "string",
                             "minLength": 1,
                             "maxLength": 100,
-                            "pattern": "^[a-z][a-z0-9-]*$"
+                            "pattern": "^[a-z][a-z0-9-]*$",
                         },
-                        "count": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 1000
-                        },
+                        "count": {"type": "integer", "minimum": 0, "maximum": 1000},
                         "tags": {
                             "type": "array",
                             "items": {"type": "string"},
                             "minItems": 0,
                             "maxItems": 10,
-                            "uniqueItems": True
+                            "uniqueItems": True,
                         },
-                        "status": {
-                            "type": "string",
-                            "enum": ["active", "inactive", "pending"]
-                        }
-                    }
+                        "status": {"type": "string", "enum": ["active", "inactive", "pending"]},
+                    },
                 },
                 "TestResponse": {
                     "type": "object",
                     "properties": {
                         "id": {"type": "string"},
                         "name": {"type": "string"},
-                        "created_at": {
-                            "type": "string",
-                            "format": "date-time"
-                        }
-                    }
-                }
+                        "created_at": {"type": "string", "format": "date-time"},
+                    },
+                },
             }
-        }
+        },
     }
 
 

@@ -8,17 +8,18 @@ import io
 import json
 import zipfile
 from pathlib import Path
-from typing import Optional
 
 import requests
 import yaml
 from rich.console import Console
-from rich.progress import Progress, BarColumn, DownloadColumn, TransferSpeedColumn
+from rich.progress import BarColumn, DownloadColumn, Progress, TransferSpeedColumn
 
 console = Console()
 
 # Default configuration
-DEFAULT_DOWNLOAD_URL = "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
+DEFAULT_DOWNLOAD_URL = (
+    "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
+)
 DEFAULT_OUTPUT_DIR = "specs/original"
 DEFAULT_ETAG_CACHE = ".etag_cache"
 DEFAULT_METADATA_FILE = ".spec_metadata.json"
@@ -33,7 +34,7 @@ def load_config(config_path: Path) -> dict:
         return yaml.safe_load(f) or {}
 
 
-def get_cached_etag(cache_path: Path) -> Optional[str]:
+def get_cached_etag(cache_path: Path) -> str | None:
     """Get cached ETag from previous download."""
     if cache_path.exists():
         return cache_path.read_text().strip()
@@ -47,8 +48,8 @@ def save_etag(cache_path: Path, etag: str) -> None:
 
 def save_metadata(
     output_dir: Path,
-    etag: Optional[str],
-    last_modified: Optional[str],
+    etag: str | None,
+    last_modified: str | None,
     file_count: int,
 ) -> None:
     """Save download metadata for versioning."""
@@ -89,7 +90,7 @@ def save_metadata(
         console.print(f"[dim]Upstream spec date: {spec_date}[/dim]")
 
 
-def load_metadata(output_dir: Path) -> Optional[dict]:
+def load_metadata(output_dir: Path) -> dict | None:
     """Load download metadata for versioning."""
     metadata_path = output_dir / DEFAULT_METADATA_FILE
     if metadata_path.exists():
@@ -124,7 +125,9 @@ def download_specs(
     # Check if output directory has actual spec files
     existing_files = list(output_dir.glob("*.json"))
     if cached_etag and not existing_files:
-        console.print("[yellow]ETag cache exists but no spec files found, forcing download[/yellow]")
+        console.print(
+            "[yellow]ETag cache exists but no spec files found, forcing download[/yellow]"
+        )
         cached_etag = None
 
     headers = {}
@@ -140,7 +143,9 @@ def download_specs(
         if response.status_code == 304:
             console.print("[green]Specs unchanged (ETag match), using cached version[/green]")
             # Return existing files
-            existing_files = [str(f.relative_to(output_dir)) for f in output_dir.glob("**/*") if f.is_file()]
+            existing_files = [
+                str(f.relative_to(output_dir)) for f in output_dir.glob("**/*") if f.is_file()
+            ]
             return False, existing_files
 
         response.raise_for_status()
@@ -239,9 +244,7 @@ def compute_checksum(filepath: Path) -> str:
 
 def main():
     """Main entry point for download command."""
-    parser = argparse.ArgumentParser(
-        description="Download F5 XC OpenAPI specifications"
-    )
+    parser = argparse.ArgumentParser(description="Download F5 XC OpenAPI specifications")
     parser.add_argument(
         "--config",
         type=Path,

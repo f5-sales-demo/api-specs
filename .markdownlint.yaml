@@ -1,0 +1,100 @@
+# Markdownlint configuration
+# https://github.com/DavidAnson/markdownlint
+
+# Default state for all rules
+default: true
+
+# MD003 - Heading style (atx)
+MD003:
+  style: atx
+
+# MD004 - Unordered list style
+MD004:
+  style: dash
+
+# MD007 - Unordered list indentation
+MD007:
+  indent: 2
+
+# MD009 - Trailing spaces (allow 2 for line breaks)
+MD009:
+  br_spaces: 2
+
+# MD012 - Multiple consecutive blank lines
+MD012:
+  maximum: 2
+
+# MD013 - Line length
+MD013:
+  line_length: 150
+  code_blocks: false
+  tables: false
+  headings: false
+
+# MD022 - Headings should be surrounded by blank lines
+MD022:
+  lines_above: 1
+  lines_below: 1
+
+# MD024 - Multiple headings with the same content
+MD024:
+  siblings_only: true
+
+# MD025 - Single title/top-level heading
+MD025:
+  front_matter_title: ""
+
+# MD026 - Trailing punctuation in heading
+MD026:
+  punctuation: ".,;:!?"
+
+# MD029 - Ordered list item prefix (allow actual numbers)
+MD029:
+  style: ordered
+
+# MD030 - Spaces after list markers
+MD030:
+  ul_single: 1
+  ol_single: 1
+  ul_multi: 1
+  ol_multi: 1
+
+# MD033 - Inline HTML (allow certain elements)
+MD033:
+  allowed_elements:
+    - br
+    - details
+    - summary
+    - sub
+    - sup
+    - kbd
+    - img
+
+# MD035 - Horizontal rule style
+MD035:
+  style: "---"
+
+# MD041 - First line in file should be a top-level heading
+MD041: false
+
+# MD046 - Code block style
+MD046:
+  style: fenced
+
+# MD036 - Emphasis used instead of heading (allow for generated docs)
+MD036: false
+
+# MD040 - Fenced code blocks should have a language (warning only, not error)
+MD040: false
+
+# MD048 - Code fence style
+MD048:
+  style: backtick
+
+# MD049 - Emphasis style
+MD049:
+  style: asterisk
+
+# MD050 - Strong style
+MD050:
+  style: asterisk

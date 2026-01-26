@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
 
-from jinja2 import Environment, BaseLoader
+from jinja2 import BaseLoader, Environment
 from rich.console import Console
 from rich.table import Table
 
@@ -60,25 +59,17 @@ class ReportGenerator:
     ) -> dict[str, Path]:
         """Generate reports in all configured formats."""
         # Create summary
-        summary = self._create_summary(
-            results, discrepancies, modified_files, unmodified_files
-        )
+        summary = self._create_summary(results, discrepancies, modified_files, unmodified_files)
 
         output_files = {}
 
         for fmt in self.config.formats:
             if fmt == "json":
-                output_files["json"] = self._generate_json(
-                    summary, results, discrepancies
-                )
+                output_files["json"] = self._generate_json(summary, results, discrepancies)
             elif fmt == "html":
-                output_files["html"] = self._generate_html(
-                    summary, results, discrepancies
-                )
+                output_files["html"] = self._generate_html(summary, results, discrepancies)
             elif fmt == "markdown":
-                output_files["markdown"] = self._generate_markdown(
-                    summary, results, discrepancies
-                )
+                output_files["markdown"] = self._generate_markdown(summary, results, discrepancies)
 
         return output_files
 
@@ -185,11 +176,13 @@ class ReportGenerator:
         for dtype, count in summary.discrepancies_by_type.items():
             lines.append(f"- {dtype}: {count}")
 
-        lines.extend([
-            "",
-            "## Modified Files",
-            "",
-        ])
+        lines.extend(
+            [
+                "",
+                "## Modified Files",
+                "",
+            ]
+        )
 
         if summary.modified_files:
             for f in summary.modified_files:
@@ -197,11 +190,13 @@ class ReportGenerator:
         else:
             lines.append("*No files required modification*")
 
-        lines.extend([
-            "",
-            "## Unmodified Files (Pass-through)",
-            "",
-        ])
+        lines.extend(
+            [
+                "",
+                "## Unmodified Files (Pass-through)",
+                "",
+            ]
+        )
 
         if summary.unmodified_files:
             for f in summary.unmodified_files:
@@ -209,34 +204,40 @@ class ReportGenerator:
         else:
             lines.append("*All files required modification*")
 
-        lines.extend([
-            "",
-            "## Discrepancy Details",
-            "",
-        ])
+        lines.extend(
+            [
+                "",
+                "## Discrepancy Details",
+                "",
+            ]
+        )
 
-        for i, d in enumerate(discrepancies[:self.config.max_examples_per_issue * 10]):
-            lines.extend([
-                f"### {i + 1}. {d.path} - {d.property_name}",
-                "",
-                f"- **Type:** {d.discrepancy_type.value}",
-                f"- **Constraint:** {d.constraint_type}",
-                f"- **Spec Value:** `{d.spec_value}`",
-                f"- **API Behavior:** `{d.api_behavior}`",
-                "",
-            ])
+        for i, d in enumerate(discrepancies[: self.config.max_examples_per_issue * 10]):
+            lines.extend(
+                [
+                    f"### {i + 1}. {d.path} - {d.property_name}",
+                    "",
+                    f"- **Type:** {d.discrepancy_type.value}",
+                    f"- **Constraint:** {d.constraint_type}",
+                    f"- **Spec Value:** `{d.spec_value}`",
+                    f"- **API Behavior:** `{d.api_behavior}`",
+                    "",
+                ]
+            )
 
             if d.recommendation:
                 lines.append(f"**Recommendation:** {d.recommendation}")
                 lines.append("")
 
-        lines.extend([
-            "",
-            "## Test Results by Endpoint",
-            "",
-            "| Endpoint | Method | Status | Tests | Discrepancies |",
-            "|----------|--------|--------|-------|---------------|",
-        ])
+        lines.extend(
+            [
+                "",
+                "## Test Results by Endpoint",
+                "",
+                "| Endpoint | Method | Status | Tests | Discrepancies |",
+                "|----------|--------|--------|-------|---------------|",
+            ]
+        )
 
         for r in results:
             status_icon = {
@@ -266,9 +267,7 @@ class ReportGenerator:
             "examples_tested": result.examples_tested,
             "failures": result.failures,
             "errors": result.errors,
-            "discrepancies": [
-                self._discrepancy_to_dict(d) for d in result.discrepancies
-            ],
+            "discrepancies": [self._discrepancy_to_dict(d) for d in result.discrepancies],
         }
 
     def _discrepancy_to_dict(self, discrepancy: Discrepancy) -> dict:
@@ -280,7 +279,7 @@ class ReportGenerator:
             "discrepancy_type": discrepancy.discrepancy_type.value,
             "spec_value": discrepancy.spec_value,
             "api_behavior": discrepancy.api_behavior,
-            "test_values": discrepancy.test_values[:self.config.max_examples_per_issue],
+            "test_values": discrepancy.test_values[: self.config.max_examples_per_issue],
             "recommendation": discrepancy.recommendation,
         }
 

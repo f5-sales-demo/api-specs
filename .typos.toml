@@ -1,0 +1,33 @@
+# Typos configuration
+# https://github.com/crate-ci/typos
+
+[default]
+extend-ignore-identifiers-re = [
+    # Technical abbreviations and identifiers
+    "ves",
+    "waf",
+    "xc",
+    "f5xc",
+]
+
+[default.extend-words]
+# Allow specific words that might be flagged
+ves = "ves"
+# F5 XC API uses non-standard pluralization in endpoint names
+policys = "policys"
+discoverys = "discoverys"
+
+[files]
+# Ignore generated files and dependencies
+extend-exclude = [
+    ".git/",
+    ".venv/",
+    "*.lock",
+    "specs/",
+    "release/",
+    "site/",
+    "htmlcov/",
+    ".pytest_cache/",
+    "__pycache__/",
+    "*.egg-info/",
+]

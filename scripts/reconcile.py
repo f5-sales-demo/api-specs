@@ -8,15 +8,14 @@ import json
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import yaml
-from deepdiff import DeepDiff
 from openapi_spec_validator import validate
 from rich.console import Console
 
 from .utils.constraint_validator import Discrepancy, DiscrepancyType
-from .utils.spec_loader import SpecLoader, save_spec_to_file
+from .utils.spec_loader import save_spec_to_file
 
 console = Console()
 
@@ -29,7 +28,7 @@ class ReconciliationResult:
     original_path: Path
     modified: bool
     changes: list[dict] = field(default_factory=list)
-    fixed_spec: Optional[dict] = None
+    fixed_spec: dict | None = None
     validation_errors: list[str] = field(default_factory=list)
 
 
@@ -37,15 +36,15 @@ class ReconciliationResult:
 class ReconciliationConfig:
     """Configuration for spec reconciliation."""
 
-    priority: list[str] = field(
-        default_factory=lambda: ["existing", "discovery", "inferred"]
+    priority: list[str] = field(default_factory=lambda: ["existing", "discovery", "inferred"])
+    fix_strategies: dict[str, str] = field(
+        default_factory=lambda: {
+            "tighter_spec": "relax",
+            "looser_spec": "tighten",
+            "missing_constraint": "add",
+            "extra_constraint": "remove",
+        }
     )
-    fix_strategies: dict[str, str] = field(default_factory=lambda: {
-        "tighter_spec": "relax",
-        "looser_spec": "tighten",
-        "missing_constraint": "add",
-        "extra_constraint": "remove",
-    })
 
 
 class SpecReconciler:
@@ -55,7 +54,7 @@ class SpecReconciler:
         self,
         original_dir: Path,
         output_dir: Path,
-        config: Optional[ReconciliationConfig] = None,
+        config: ReconciliationConfig | None = None,
     ):
         self.original_dir = Path(original_dir)
         self.output_dir = Path(output_dir)
@@ -98,7 +97,7 @@ class SpecReconciler:
         discrepancies: list[Discrepancy],
     ) -> dict[str, list[Discrepancy]]:
         """Group discrepancies by source file."""
-        grouped = {}
+        grouped: dict[str, list[Discrepancy]] = {}
 
         for d in discrepancies:
             # Extract filename from path
@@ -163,9 +162,7 @@ class SpecReconciler:
                 )
             except Exception as e:
                 result.validation_errors.append(str(e))
-                console.print(
-                    f"[red]{spec_path.name}: Fixed spec invalid: {e}[/red]"
-                )
+                console.print(f"[red]{spec_path.name}: Fixed spec invalid: {e}[/red]")
                 # Fall back to original
                 result.fixed_spec = original
                 result.modified = False
@@ -178,7 +175,7 @@ class SpecReconciler:
         self,
         spec: dict,
         discrepancy: Discrepancy,
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """Apply a fix for a single discrepancy."""
         fix_strategy = self._get_fix_strategy(discrepancy)
 
@@ -196,12 +193,8 @@ class SpecReconciler:
     def _get_fix_strategy(self, discrepancy: Discrepancy) -> str:
         """Determine fix strategy based on discrepancy type."""
         strategy_map = {
-            DiscrepancyType.SPEC_STRICTER: self.config.fix_strategies.get(
-                "tighter_spec", "relax"
-            ),
-            DiscrepancyType.SPEC_LOOSER: self.config.fix_strategies.get(
-                "looser_spec", "tighten"
-            ),
+            DiscrepancyType.SPEC_STRICTER: self.config.fix_strategies.get("tighter_spec", "relax"),
+            DiscrepancyType.SPEC_LOOSER: self.config.fix_strategies.get("looser_spec", "tighten"),
             DiscrepancyType.MISSING_CONSTRAINT: self.config.fix_strategies.get(
                 "missing_constraint", "add"
             ),
@@ -215,7 +208,7 @@ class SpecReconciler:
         self,
         spec: dict,
         discrepancy: Discrepancy,
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """Relax a constraint that is too strict."""
         # Navigate to the constraint location
         schema = self._find_schema(spec, discrepancy.property_name)
@@ -249,7 +242,7 @@ class SpecReconciler:
         self,
         spec: dict,
         discrepancy: Discrepancy,
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """Tighten a constraint that is too loose."""
         schema = self._find_schema(spec, discrepancy.property_name)
         if not schema:
@@ -282,7 +275,7 @@ class SpecReconciler:
         self,
         spec: dict,
         discrepancy: Discrepancy,
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """Add a missing constraint."""
         schema = self._find_schema(spec, discrepancy.property_name)
         if not schema:
@@ -307,7 +300,7 @@ class SpecReconciler:
         self,
         spec: dict,
         discrepancy: Discrepancy,
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """Remove an extra constraint that API ignores."""
         schema = self._find_schema(spec, discrepancy.property_name)
         if not schema:
@@ -331,7 +324,7 @@ class SpecReconciler:
         self,
         spec: dict,
         property_path: str,
-    ) -> Optional[dict]:
+    ) -> dict | None:
         """Find schema definition for a property path."""
         # Try components/schemas first
         components = spec.get("components", {})
@@ -449,9 +442,7 @@ class SpecReconciler:
             "modified_files": [r.filename for r in modified],
             "unmodified_files": [r.filename for r in unmodified],
             "total_changes": total_changes,
-            "changes_by_file": {
-                r.filename: r.changes for r in modified
-            },
+            "changes_by_file": {r.filename: r.changes for r in modified},
         }
 
     def generate_changelog(self) -> str:
@@ -470,10 +461,12 @@ class SpecReconciler:
             return "\n".join(lines)
 
         for result in modified:
-            lines.extend([
-                f"### {result.filename}",
-                "",
-            ])
+            lines.extend(
+                [
+                    f"### {result.filename}",
+                    "",
+                ]
+            )
 
             for change in result.changes:
                 action = change.get("action", "unknown")
@@ -484,23 +477,16 @@ class SpecReconciler:
 
                 if action == "relax":
                     lines.append(
-                        f"- **Relaxed** `{constraint}` on `{prop}`: "
-                        f"`{old_val}` → `{new_val}`"
+                        f"- **Relaxed** `{constraint}` on `{prop}`: `{old_val}` → `{new_val}`"
                     )
                 elif action == "tighten":
                     lines.append(
-                        f"- **Tightened** `{constraint}` on `{prop}`: "
-                        f"`{old_val}` → `{new_val}`"
+                        f"- **Tightened** `{constraint}` on `{prop}`: `{old_val}` → `{new_val}`"
                     )
                 elif action == "add":
-                    lines.append(
-                        f"- **Added** `{constraint}` to `{prop}`: `{new_val}`"
-                    )
+                    lines.append(f"- **Added** `{constraint}` to `{prop}`: `{new_val}`")
                 elif action == "remove":
-                    lines.append(
-                        f"- **Removed** `{constraint}` from `{prop}` "
-                        f"(was `{old_val}`)"
-                    )
+                    lines.append(f"- **Removed** `{constraint}` from `{prop}` (was `{old_val}`)")
 
             lines.append("")
 
@@ -517,25 +503,25 @@ def load_discrepancies(report_path: Path) -> list[Discrepancy]:
 
     discrepancies = []
     for d in report.get("discrepancies", []):
-        discrepancies.append(Discrepancy(
-            path=d.get("path", ""),
-            property_name=d.get("property_name", ""),
-            constraint_type=d.get("constraint_type", ""),
-            discrepancy_type=DiscrepancyType(d.get("discrepancy_type", "constraint_mismatch")),
-            spec_value=d.get("spec_value"),
-            api_behavior=d.get("api_behavior"),
-            test_values=d.get("test_values", []),
-            recommendation=d.get("recommendation", ""),
-        ))
+        discrepancies.append(
+            Discrepancy(
+                path=d.get("path", ""),
+                property_name=d.get("property_name", ""),
+                constraint_type=d.get("constraint_type", ""),
+                discrepancy_type=DiscrepancyType(d.get("discrepancy_type", "constraint_mismatch")),
+                spec_value=d.get("spec_value"),
+                api_behavior=d.get("api_behavior"),
+                test_values=d.get("test_values", []),
+                recommendation=d.get("recommendation", ""),
+            )
+        )
 
     return discrepancies
 
 
 def main():
     """Main entry point for reconciliation command."""
-    parser = argparse.ArgumentParser(
-        description="Reconcile F5 XC OpenAPI specs with API behavior"
-    )
+    parser = argparse.ArgumentParser(description="Reconcile F5 XC OpenAPI specs with API behavior")
     parser.add_argument(
         "--config",
         type=Path,
@@ -574,9 +560,7 @@ def main():
     download_config = config.get("download", {})
     reconciliation_config = config.get("reconciliation", {})
 
-    original_dir = args.original_dir or Path(
-        download_config.get("output_dir", "specs/original")
-    )
+    original_dir = args.original_dir or Path(download_config.get("output_dir", "specs/original"))
     output_dir = args.output_dir or Path("release/specs")
 
     # Load discrepancies from report
@@ -610,7 +594,7 @@ def main():
 
     # Print summary
     summary = reconciler.get_summary()
-    console.print(f"\n[bold]Summary:[/bold]")
+    console.print("\n[bold]Summary:[/bold]")
     console.print(f"  Modified: {len(summary['modified_files'])} files")
     console.print(f"  Unmodified: {len(summary['unmodified_files'])} files")
     console.print(f"  Total changes: {summary['total_changes']}")

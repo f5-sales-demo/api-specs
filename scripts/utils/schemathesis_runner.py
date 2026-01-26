@@ -242,6 +242,7 @@ class SchemathesisRunner:
                             "case": self._case_to_dict(case),
                         }
                     )
+                    result.status = TestStatus.ERROR
 
         except Exception as e:
             result.status = TestStatus.ERROR
@@ -270,16 +271,20 @@ class SchemathesisRunner:
         # Build request with authentication
         kwargs = case.as_transport_kwargs()
 
+        # Remove method from kwargs to avoid "got multiple values for argument" error
+        # since we pass it as a positional argument to auth.request()
+        kwargs.pop("method", None)
+
         # Add auth headers
         headers = kwargs.get("headers", {})
         headers.update(self.auth.headers)
         kwargs["headers"] = headers
 
         # Make request using auth client
-        method = case.method.lower()
+        method = case.method.upper()
         path = case.formatted_path
 
-        return self.auth.request(method.upper(), path, **kwargs)
+        return self.auth.request(method, path, **kwargs)
 
     def _check_response(
         self,

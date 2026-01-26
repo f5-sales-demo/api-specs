@@ -169,6 +169,9 @@ def _format_value(value) -> str:
         )
     # Replace newlines with HTML line breaks for markdown tables
     str_value = str(value).replace("\n", "<br>")
+    # Don't wrap in backticks if it contains HTML (backticks escape HTML entities)
+    if "<br>" in str_value:
+        return str_value
     return f"`{str_value}`"
 
 

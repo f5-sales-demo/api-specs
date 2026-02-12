@@ -1,211 +1,58 @@
-# Pre-commit hooks for F5 XC API Spec Validation Framework
-# See https://pre-commit.com for more information
-# Run: pre-commit install && pre-commit run --all-files
-
-default_install_hook_types: [pre-commit, commit-msg]
-default_stages: [pre-commit]
-fail_fast: true
-
+---
 repos:
-  # =============================================================================
-  # General File Hygiene & Unix Standards
-  # =============================================================================
+  - repo: local
+    hooks:
+      - id: local-hooks
+        name: Repository-specific hooks
+        entry: bash -c 'if [ -x scripts/pre-commit-local.sh ]; then scripts/pre-commit-local.sh; fi'
+        language: system
+        always_run: true
+        pass_filenames: false
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: no-commit-to-branch
-        args: [--branch, main, --branch, master]
-      # Whitespace & Line Endings
+        args: ["--branch", "main"]
       - id: trailing-whitespace
-        args: [--markdown-linebreak-ext=md]
       - id: end-of-file-fixer
       - id: mixed-line-ending
-        args: [--fix=lf]
-      - id: fix-byte-order-marker
-
-      # File Validation
+        args: ["--fix=lf"]
       - id: check-yaml
-        args: [--unsafe]
+        args: ["--allow-multiple-documents"]
       - id: check-json
-      - id: check-toml
-      - id: check-xml
-      - id: check-ast
-      - id: check-executables-have-shebangs
-      - id: check-shebang-scripts-are-executable
-
-      # Git Safety
-      - id: check-merge-conflict
-      - id: check-case-conflict
       - id: check-added-large-files
-        args: [--maxkb=1000]
-
-      # Security - Private Keys
+        args: ["--maxkb=1024"]
+      - id: check-merge-conflict
       - id: detect-private-key
 
-      # Python Specific
-      - id: check-docstring-first
-      - id: debug-statements
-      - id: name-tests-test
-        args: [--pytest-test-first]
-      - id: requirements-txt-fixer
-
-  # =============================================================================
-  # Python Linting & Formatting (Ruff - Fast, All-in-One)
-  # =============================================================================
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.4
-    hooks:
-      # Linter with auto-fix
-      - id: ruff
-        name: ruff (lint + fix)
-        args: [--fix, --exit-non-zero-on-fix]
-        types_or: [python, pyi]
-      # Formatter
-      - id: ruff-format
-        name: ruff (format)
-        types_or: [python, pyi]
-
-  # =============================================================================
-  # Python Type Checking
-  # =============================================================================
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.14.1
-    hooks:
-      - id: mypy
-        name: mypy (type check)
-        additional_dependencies:
-          - types-requests>=2.32.0
-          - types-PyYAML>=6.0.0
-        args:
-          - --ignore-missing-imports
-          - --no-error-summary
-          - --disable-error-code=no-any-return
-          - --disable-error-code=assignment
-          - --disable-error-code=attr-defined
-          - --disable-error-code=arg-type
-          - --disable-error-code=return-value
-          - --disable-error-code=misc
-          - --disable-error-code=index
-        exclude: ^tests/
-
-  # =============================================================================
-  # Python Security Scanning
-  # =============================================================================
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.8.2
-    hooks:
-      - id: bandit
-        name: bandit (security scan)
-        args: [-c, pyproject.toml, -r, scripts/]
-        additional_dependencies: ["bandit[toml]"]
-
-  # =============================================================================
-  # Secret Detection (Gitleaks)
-  # =============================================================================
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.22.1
+    rev: v8.30.0
     hooks:
       - id: gitleaks
-        name: gitleaks (secret detection)
 
-  # =============================================================================
-  # Shell Script Analysis
-  # =============================================================================
-  - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
-    hooks:
-      - id: shellcheck
-        name: shellcheck (shell lint)
-        args: [--severity=warning]
-
-  # =============================================================================
-  # YAML Linting
-  # =============================================================================
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.35.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
-        name: yamllint (YAML lint)
-        args: [-c, .yamllint.yaml]
 
-  # =============================================================================
-  # Markdown Linting
-  # =============================================================================
-  - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.17.2
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.47.0
     hooks:
-      - id: markdownlint-cli2
-        name: markdownlint (Markdown lint)
+      - id: markdownlint
+        args: ["--fix"]
 
-  # =============================================================================
-  # GitHub Actions Linting
-  # =============================================================================
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.6
+    rev: v1.7.10
     hooks:
       - id: actionlint
-        name: actionlint (GitHub Actions lint)
-        args: [-shellcheck=]  # Disable shellcheck integration (too noisy)
 
-  # =============================================================================
-  # JSON Formatting
-  # =============================================================================
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
-    hooks:
-      - id: pretty-format-json
-        name: pretty-format-json
-        args: [--autofix, --no-sort-keys, --indent=2]
-        exclude: |
-          (?x)^(
-            specs/.*|
-            release/.*
-          )$
-
-  # =============================================================================
-  # Pyproject.toml Validation
-  # =============================================================================
-  - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.23
-    hooks:
-      - id: validate-pyproject
-        name: validate-pyproject
-
-  # =============================================================================
-  # Typo Detection
-  # =============================================================================
-  - repo: https://github.com/crate-ci/typos
-    rev: v1.29.4
-    hooks:
-      - id: typos
-        name: typos (spell check)
-        args: [--force-exclude]
-        exclude: |
-          (?x)^(
-            \.git/.*|
-            specs/.*|
-            release/.*
-          )$
-
-  # =============================================================================
-  # Commit Message Linting
-  # =============================================================================
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.2.2
-    hooks:
-      - id: commitizen
-        name: commitizen (commit message lint)
-        stages: [commit-msg]
-
-# CI Configuration
 ci:
-  autofix_commit_msg: |
-    [pre-commit.ci] auto fixes from pre-commit.com hooks
-
-    for more information, see https://pre-commit.ci
   autofix_prs: true
-  autoupdate_branch: ''
-  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
   autoupdate_schedule: weekly
-  skip: [mypy, actionlint]  # Skip hooks that need additional setup in CI
-  submodules: false
+  skip: [local-hooks, gitleaks]

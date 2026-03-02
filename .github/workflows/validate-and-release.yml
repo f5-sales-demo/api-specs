@@ -171,7 +171,7 @@ jobs:
           fetch-depth: 0
 
       - name: Download spec metadata
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: spec-metadata
           path: specs/original/
@@ -266,19 +266,19 @@ jobs:
           pip install -e .
 
       - name: Download reconciled specs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: reconciled-specs
           path: release/specs/
 
       - name: Download validation reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: validation-reports
           path: reports/
 
       - name: Download spec metadata
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: spec-metadata
           path: specs/original/
@@ -432,7 +432,7 @@ jobs:
           pip install -e .
 
       - name: Download validation reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: validation-reports
           path: reports/

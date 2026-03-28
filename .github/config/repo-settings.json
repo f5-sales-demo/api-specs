@@ -1,7 +1,7 @@
 {
   "repository": {
     "description": "Validated F5 Distributed Cloud OpenAPI specifications",
-    "homepage": "https://robinmordasiewicz.github.io/f5xc-api-fixed/"
+    "homepage": "https://f5xc-salesdemos.github.io/api-specs/"
   },
   "topics": [
     "f5xc",

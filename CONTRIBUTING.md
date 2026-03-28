@@ -82,4 +82,4 @@ If you are Claude Code, Copilot, or another AI coding assistant, follow these ru
 5. **Never force push** or attempt to bypass branch protection.
 6. **Fill out the PR template checklist** completely.
 7. **Follow the branch naming convention**: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`.
-8. **Respect CODEOWNERS** — `@robinmordasiewicz` is the default reviewer.
+8. **Respect CODEOWNERS** — review assignments are managed by the CODEOWNERS file.

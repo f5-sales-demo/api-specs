@@ -165,7 +165,7 @@ class ReleaseBuilder:
         console.print(f"[bold blue]Building Release v{self.version}[/bold blue]")
 
         # Create staging directory
-        staging_dir = self.output_dir / f"f5xc-api-fixed-v{self.version}"
+        staging_dir = self.output_dir / f"api-specs-v{self.version}"
         if staging_dir.exists():
             shutil.rmtree(staging_dir)
         staging_dir.mkdir(parents=True)
@@ -343,7 +343,7 @@ See full validation details in the repository.
 
     def _create_zip(self, staging_dir: Path) -> Path:
         """Create ZIP archive from staging directory."""
-        zip_name = f"f5xc-api-fixed-v{self.version}.zip"
+        zip_name = f"api-specs-v{self.version}.zip"
         zip_path = self.output_dir / zip_name
 
         with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
@@ -374,8 +374,8 @@ See full validation details in the repository.
             "",
             "```bash",
             "# Download and extract",
-            f"curl -LO https://github.com/YOUR_ORG/f5xc-api-fixed/releases/download/v{self.version}/f5xc-api-fixed-v{self.version}.zip",
-            f"unzip f5xc-api-fixed-v{self.version}.zip",
+            f"curl -LO https://github.com/f5xc-salesdemos/api-specs/releases/download/v{self.version}/api-specs-v{self.version}.zip",
+            f"unzip api-specs-v{self.version}.zip",
             "",
             "# Use with your preferred OpenAPI tool",
             "openapi-generator generate -i openapi.json -g python -o ./client",

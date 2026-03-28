@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 packages = ["scripts"]
 
 [project]
-name = "f5xc-api-fixed"
+name = "api-specs"
 version = "0.1.0"
 description = "F5 XC API Spec Validation Framework - Reconcile live API behavior with OpenAPI specs"
 readme = "README.md"

@@ -337,7 +337,7 @@ jobs:
           name: F5 XC API Specs v${{ needs.check-release-needed.outputs.version }}
           body_path: release_notes.md
           files: |
-            release/f5xc-api-fixed-v${{ needs.check-release-needed.outputs.version }}.zip
+            release/api-specs-v${{ needs.check-release-needed.outputs.version }}.zip
           draft: false
           prerelease: false
         env:

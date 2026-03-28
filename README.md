@@ -103,7 +103,7 @@ make all  # download → validate → reconcile → release
 ## Project Structure
 
 ```
-f5xc-api-fixed/
+api-specs/
 ├── .github/workflows/
 │   └── validate-and-release.yml    # CI/CD pipeline
 ├── config/
@@ -129,7 +129,7 @@ f5xc-api-fixed/
 ## Release Package Contents
 
 ```
-f5xc-api-fixed-vX.Y.Z.zip
+api-specs-vX.Y.Z.zip
 ├── openapi.json              # Fixed or original
 ├── openapi.yaml              # Fixed or original
 ├── domains/

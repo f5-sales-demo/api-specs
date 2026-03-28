@@ -233,7 +233,7 @@ docker run --rm -it \
   -v "$(pwd)/docs:/content/docs" \
   -p 4321:4321 \
   --entrypoint sh \
-  ghcr.io/robinmordasiewicz/f5xc-docs-builder:latest \
+  ghcr.io/f5xc-salesdemos/f5xc-docs-builder:latest \
   -c '
     npm install --legacy-peer-deps && \
     npm update --legacy-peer-deps && \
@@ -267,14 +267,14 @@ docker run --rm \
   -v "$(pwd)/docs:/content/docs:ro" \
   -v "$(pwd)/output:/output" \
   -e GITHUB_REPOSITORY="<owner>/<repo>" \
-  ghcr.io/robinmordasiewicz/f5xc-docs-builder:latest
+  ghcr.io/f5xc-salesdemos/f5xc-docs-builder:latest
 ```
 
 Serve with `npx serve output/ -l 8080` and open
 `http://localhost:8080/<repo>/`.
 
 Full content authoring guide:
-<https://robinmordasiewicz.github.io/f5xc-docs-builder/06-content-authors/>
+<https://f5xc-salesdemos.github.io/f5xc-docs-builder/06-content-authors/>
 
 ## Reference
 

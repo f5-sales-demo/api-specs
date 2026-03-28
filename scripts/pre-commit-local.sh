@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Repository-specific pre-commit hooks for f5xc-api-fixed
+# Repository-specific pre-commit hooks for api-specs
 # Called by the universal .pre-commit-config.yaml local-hooks entry
 set -euo pipefail
 

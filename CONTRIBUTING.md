@@ -27,9 +27,9 @@ Blank issues are disabled. Pick the template that best fits your change.
 Branch from `main` using one of these naming conventions:
 
 | Prefix | Use for | Example |
-|--------|---------|---------|
+| -------- | --------- | --------- |
 | `feature/` | New features | `feature/42-add-rate-limiting` |
-| `fix/` | Bug fixes | `fix/17-correct-threshold-calc` |
+| `fix/` | Bugfixes | `fix/17-correct-threshold-calc` |
 | `docs/` | Documentation | `docs/8-update-setup-guide` |
 
 Format: `<prefix>/<issue-number>-short-description`
@@ -53,12 +53,12 @@ git checkout -b feature/42-add-rate-limiting
 1. Push your branch and open a PR against `main`
 2. **Link the issue** — use `Closes #42` in the PR description, or link from the sidebar
 3. Fill out the PR template (it loads automatically)
-4. The **"Check linked issues"** CI check will block merge if no issue is linked
+4. The `Check linked issues` and `Lint Code Base` CI checks will block merge if no issue is linked or linting fails
 
 ## Step 5: Review and Merge
 
 - All CI checks must pass before merge
-- Auto-merge is enabled — PRs merge automatically once all checks pass
+- PRs require manual review and approval before merge
 - Squash merge is preferred
 - The branch is automatically deleted after merge (`delete_branch_on_merge` is enabled)
 
@@ -68,7 +68,7 @@ The `main` branch is protected. The following rules are enforced:
 
 - No direct pushes to `main` — all changes go through PRs
 - No force pushes
-- Required status check: **"Check linked issues"** must pass
+- Required status checks: `Check linked issues` and `Lint Code Base` must pass
 - Admin enforcement enabled — these rules apply to everyone
 
 ## AI Assistant Guidelines
@@ -82,4 +82,4 @@ If you are Claude Code, Copilot, or another AI coding assistant, follow these ru
 5. **Never force push** or attempt to bypass branch protection.
 6. **Fill out the PR template checklist** completely.
 7. **Follow the branch naming convention**: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`.
-8. **Respect CODEOWNERS** — review assignments are managed by the CODEOWNERS file.
+8. **Respect CODEOWNERS** — Review the CODEOWNERS file for the default reviewer.

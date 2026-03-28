@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "terminology": {
+      "defaultTerms": true,
+      "exclude": [
+        "repo\\b",
+        "bug[- ]fix(es)?",
+        "build system(s)?"
+      ]
+    }
+  }
+}

@@ -46,6 +46,31 @@ wheels/
 .installed.cfg
 *.egg
 
+# Docker
+.docker-data/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.dylib
+*.test
+*.out
+vendor/
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
 # Python virtual environments
 venv/
 env/
@@ -64,6 +89,9 @@ reports/
 projects/
 
 # Tool-specific
+.claude/settings.local.json
+.claude/todos/
+.claude/worktrees/
 .playwright-mcp/
 .serena/
 .auto-claude/
@@ -72,11 +100,11 @@ cache/
 src/generated/
 out/
 
+# Documentation build artifacts
+docs/_data/
+
 # API spec pipeline
-specs/original/
-specs/discovered/diffs/
-specs/discovered/endpoints/
-specs/discovered/schemas/
+specs/
 docs/specifications/api/
 docs/api-reference/
 .version

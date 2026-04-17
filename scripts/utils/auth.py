@@ -2,16 +2,24 @@
 
 from __future__ import annotations
 
+import contextlib
 import os
 import threading
 import time
 from collections import deque
 from dataclasses import dataclass, field
+from typing import Any
 
 import httpx
 from rich.console import Console
 
 console = Console()
+
+# Rate limiting constants
+RATE_LIMIT_WINDOW_SECONDS = 60
+HTTP_TOO_MANY_REQUESTS = 429
+HTTP_OK = 200
+MIN_RPM = 5
 
 
 @dataclass
@@ -38,7 +46,8 @@ class RateLimitConfig:
 class RateLimiter:
     """Adaptive rate limiter with sliding window and exponential backoff."""
 
-    def __init__(self, config: RateLimitConfig | None = None):
+    def __init__(self, config: RateLimitConfig | None = None) -> None:
+        """Initialize RateLimiter with optional configuration."""
         self.config = config or RateLimitConfig()
         self._lock = threading.Lock()
         self._request_times: deque = deque(maxlen=100)
@@ -52,13 +61,13 @@ class RateLimiter:
             now = time.time()
 
             # Clean old entries (older than 60 seconds)
-            while self._request_times and now - self._request_times[0] > 60:
+            while self._request_times and now - self._request_times[0] > RATE_LIMIT_WINDOW_SECONDS:
                 self._request_times.popleft()
 
             # Check requests per minute
             if len(self._request_times) >= self._current_rpm:
                 oldest = self._request_times[0]
-                wait_time = 60 - (now - oldest) + 0.1
+                wait_time = RATE_LIMIT_WINDOW_SECONDS - (now - oldest) + 0.1
                 if wait_time > 0:
                     console.print(f"[yellow]Rate limit: waiting {wait_time:.1f}s[/yellow]")
                     time.sleep(wait_time)
@@ -101,7 +110,7 @@ class RateLimiter:
             # Decrease rate limit
             if self.config.adaptive:
                 self._current_rpm = max(
-                    5,  # Minimum 5 RPM
+                    MIN_RPM,
                     int(self._current_rpm * self.config.decrease_factor),
                 )
                 console.print(f"[red]Rate limit hit, reduced to {self._current_rpm} RPM[/red]")
@@ -144,11 +153,11 @@ class F5XCAuth:
     _rate_limiter: RateLimiter = field(default_factory=RateLimiter, init=False)
     _client: httpx.Client | None = field(default=None, init=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
+        """Validate required fields after initialization."""
         if not self.api_token:
-            raise ValueError(
-                "F5XC_API_TOKEN environment variable not set. Please set it with your API token."
-            )
+            msg = "F5XC_API_TOKEN environment variable not set. Please set it with your API token."
+            raise ValueError(msg)
 
     @property
     def headers(self) -> dict[str, str]:
@@ -180,7 +189,7 @@ class F5XCAuth:
         self,
         method: str,
         path: str,
-        **kwargs,
+        **kwargs: Any,
     ) -> httpx.Response:
         """Make an authenticated request with rate limiting and retries."""
         last_exception = None
@@ -194,16 +203,14 @@ class F5XCAuth:
                 response = self.client.request(method, path, **kwargs)
 
                 # Check for rate limiting response
-                if response.status_code == 429:
+                if response.status_code == HTTP_TOO_MANY_REQUESTS:
                     backoff = self._rate_limiter.record_rate_limit()
 
                     # Check for Retry-After header
                     retry_after = response.headers.get("Retry-After")
                     if retry_after:
-                        try:
+                        with contextlib.suppress(ValueError):
                             backoff = max(backoff, float(retry_after))
-                        except ValueError:
-                            pass
 
                     console.print(
                         f"[yellow]Rate limited, backing off {backoff:.1f}s "
@@ -214,7 +221,7 @@ class F5XCAuth:
 
                 # Success
                 self._rate_limiter.record_success()
-                return response
+                return response  # noqa: TRY300
 
             except httpx.TimeoutException as e:
                 last_exception = e
@@ -230,19 +237,19 @@ class F5XCAuth:
 
         raise last_exception or RuntimeError("Request failed after all retries")
 
-    def get(self, path: str, **kwargs) -> httpx.Response:
+    def get(self, path: str, **kwargs: Any) -> httpx.Response:
         """Make a GET request."""
         return self.request("GET", path, **kwargs)
 
-    def post(self, path: str, **kwargs) -> httpx.Response:
+    def post(self, path: str, **kwargs: Any) -> httpx.Response:
         """Make a POST request."""
         return self.request("POST", path, **kwargs)
 
-    def put(self, path: str, **kwargs) -> httpx.Response:
+    def put(self, path: str, **kwargs: Any) -> httpx.Response:
         """Make a PUT request."""
         return self.request("PUT", path, **kwargs)
 
-    def delete(self, path: str, **kwargs) -> httpx.Response:
+    def delete(self, path: str, **kwargs: Any) -> httpx.Response:
         """Make a DELETE request."""
         return self.request("DELETE", path, **kwargs)
 
@@ -251,7 +258,7 @@ class F5XCAuth:
         try:
             # Use the web API namespaces endpoint to test
             response = self.get("/api/web/namespaces")
-            if response.status_code == 200:
+            if response.status_code == HTTP_OK:
                 # Verify our namespace exists
                 try:
                     data = response.json()
@@ -271,12 +278,12 @@ class F5XCAuth:
                     console.print("[green]API connection successful[/green]")
                 return True
             console.print(f"[red]API connection failed: {response.status_code}[/red]")
-            return False
+            return False  # noqa: TRY300
         except Exception as e:
             console.print(f"[red]API connection error: {e}[/red]")
             return False
 
-    def format_endpoint(self, template: str, **kwargs) -> str:
+    def format_endpoint(self, template: str, **kwargs: Any) -> str:
         """Format an endpoint template with namespace and other params."""
         return template.format(
             namespace=self.namespace,
@@ -284,10 +291,12 @@ class F5XCAuth:
             **kwargs,
         )
 
-    def __enter__(self):
+    def __enter__(self) -> F5XCAuth:
+        """Enter context manager."""
         return self
 
-    def __exit__(self, *args):
+    def __exit__(self, *args: Any) -> None:
+        """Exit context manager and close client."""
         self.close()
 
 

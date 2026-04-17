@@ -6,14 +6,19 @@ import argparse
 import hashlib
 import io
 import json
+import sys
 import zipfile
-from datetime import UTC
+from datetime import UTC, datetime
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 import requests
 import yaml
 from rich.console import Console
 from rich.progress import BarColumn, DownloadColumn, Progress, TransferSpeedColumn
+
+# HTTP status codes
+HTTP_NOT_MODIFIED = 304
 
 console = Console()
 
@@ -31,7 +36,7 @@ def load_config(config_path: Path) -> dict:
     if not config_path.exists():
         return {}
 
-    with open(config_path) as f:
+    with config_path.open() as f:
         return yaml.safe_load(f) or {}
 
 
@@ -54,9 +59,6 @@ def save_metadata(
     file_count: int,
 ) -> None:
     """Save download metadata for versioning."""
-    from datetime import datetime
-    from email.utils import parsedate_to_datetime
-
     metadata_path = output_dir / DEFAULT_METADATA_FILE
 
     # Parse Last-Modified header to get the upstream spec date
@@ -83,7 +85,7 @@ def save_metadata(
         "source_url": DEFAULT_DOWNLOAD_URL,
     }
 
-    with open(metadata_path, "w") as f:
+    with metadata_path.open("w") as f:
         json.dump(metadata, f, indent=2)
 
     console.print(f"[dim]Metadata saved: {metadata_path}[/dim]")
@@ -95,7 +97,7 @@ def load_metadata(output_dir: Path) -> dict | None:
     """Load download metadata for versioning."""
     metadata_path = output_dir / DEFAULT_METADATA_FILE
     if metadata_path.exists():
-        with open(metadata_path) as f:
+        with metadata_path.open() as f:
             return json.load(f)
     return None
 
@@ -106,8 +108,7 @@ def download_specs(
     etag_cache: str | Path = DEFAULT_ETAG_CACHE,
     force: bool = False,
 ) -> tuple[bool, list[str]]:
-    """
-    Download and extract OpenAPI specs from F5.
+    """Download and extract OpenAPI specs from F5.
 
     Returns:
         Tuple of (changed, list of extracted files)
@@ -141,7 +142,7 @@ def download_specs(
         response = requests.get(url, headers=headers, stream=True, timeout=60)
 
         # Not modified - use cached version
-        if response.status_code == 304:
+        if response.status_code == HTTP_NOT_MODIFIED:
             console.print("[green]Specs unchanged (ETag match), using cached version[/green]")
             # Return existing files
             existing_files = [
@@ -184,11 +185,12 @@ def download_specs(
         save_metadata(output_dir, new_etag, last_modified, len(extracted_files))
 
         console.print(f"[green]Extracted {len(extracted_files)} files to {output_dir}[/green]")
-        return True, extracted_files
 
     except requests.exceptions.RequestException as e:
         console.print(f"[red]Download failed: {e}[/red]")
         raise
+    else:
+        return True, extracted_files
 
 
 def extract_zip(content: io.BytesIO, output_dir: Path) -> list[str]:
@@ -205,7 +207,7 @@ def extract_zip(content: io.BytesIO, output_dir: Path) -> list[str]:
             filename = Path(info.filename).name
             output_path = output_dir / filename
 
-            with zf.open(info) as src, open(output_path, "wb") as dst:
+            with zf.open(info) as src, output_path.open("wb") as dst:
                 dst.write(src.read())
 
             extracted.append(filename)
@@ -220,7 +222,7 @@ def list_domain_files(output_dir: Path) -> dict[str, list[str]]:
 
     for filepath in output_dir.glob("*.json"):
         try:
-            with open(filepath) as f:
+            with filepath.open() as f:
                 spec = json.load(f)
 
             paths = list(spec.get("paths", {}).keys())
@@ -237,13 +239,13 @@ def list_domain_files(output_dir: Path) -> dict[str, list[str]]:
 def compute_checksum(filepath: Path) -> str:
     """Compute SHA256 checksum of a file."""
     sha256 = hashlib.sha256()
-    with open(filepath, "rb") as f:
+    with filepath.open("rb") as f:
         for chunk in iter(lambda: f.read(8192), b""):
             sha256.update(chunk)
     return sha256.hexdigest()
 
 
-def main():
+def main() -> int:
     """Main entry point for download command."""
     parser = argparse.ArgumentParser(description="Download F5 XC OpenAPI specifications")
     parser.add_argument(
@@ -282,7 +284,7 @@ def main():
     etag_cache = Path(download_config.get("etag_cache", DEFAULT_ETAG_CACHE))
 
     # Download specs
-    changed, files = download_specs(
+    _changed, files = download_specs(
         url=url,
         output_dir=output_dir,
         etag_cache=etag_cache,
@@ -305,4 +307,4 @@ def main():
 
 
 if __name__ == "__main__":
-    exit(main())
+    sys.exit(main())

@@ -64,7 +64,8 @@ def map_violation_to_discrepancy(violation: dict[str, Any]) -> Discrepancy:
 class SpectralAdapter:
     """Run Spectral CLI and convert output to pipeline-compatible format."""
 
-    def __init__(self, ruleset: str = ".spectral.yaml"):
+    def __init__(self, ruleset: str = ".spectral.yaml") -> None:
+        """Initialize the Spectral adapter with a ruleset path."""
         self.ruleset = ruleset
 
     def run_lint(self, spec_dir: Path) -> list[dict[str, Any]]:
@@ -92,7 +93,7 @@ class SpectralAdapter:
         ]
 
         console.print(f"[dim]Running Spectral on {len(spec_files)} specs...[/dim]")
-        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)  # noqa: S603
 
         if result.stdout.strip():
             return json.loads(result.stdout)
@@ -188,7 +189,7 @@ def main() -> int:
 
     config: dict[str, Any] = {}
     if args.config.exists():
-        with open(args.config) as f:
+        with args.config.open() as f:
             config = yaml.safe_load(f) or {}
 
     spectral_config = config.get("spectral", {})
@@ -211,19 +212,19 @@ def main() -> int:
         console.print(f"[bold]Spectral discover: {len(violations)} violations found[/bold]")
         return 0
 
-    else:  # gate
-        spec_dir = args.spec_dir or Path("release/specs")
-        output = args.output or Path("reports/spectral_gate_report.json")
-        gate_config = spectral_config.get("gate", {})
-        max_errors = gate_config.get("max_errors")
-        max_warnings = gate_config.get("max_warnings")
+    # gate mode
+    spec_dir = args.spec_dir or Path("release/specs")
+    output = args.output or Path("reports/spectral_gate_report.json")
+    gate_config = spectral_config.get("gate", {})
+    max_errors = gate_config.get("max_errors")
+    max_warnings = gate_config.get("max_warnings")
 
-        violations = adapter.run_lint(spec_dir)
-        adapter.write_report(violations, output)
+    violations = adapter.run_lint(spec_dir)
+    adapter.write_report(violations, output)
 
-        if adapter.check_gate(violations, max_errors, max_warnings) is False:
-            return 1
-        return 0
+    if adapter.check_gate(violations, max_errors, max_warnings) is False:
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

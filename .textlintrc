@@ -5,7 +5,9 @@
       "exclude": [
         "repo\\b",
         "bug[- ]fix(es)?",
-        "build system(s)?"
+        "build system(s)?",
+        "readme(s)?",
+        "to-?do(s)?(?=[ ,.])"
       ]
     }
   }

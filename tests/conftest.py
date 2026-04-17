@@ -95,7 +95,7 @@ def sample_openapi_spec() -> dict:
 def sample_spec_file(temp_dir: Path, sample_openapi_spec: dict) -> Path:
     """Create a sample spec file."""
     spec_path = temp_dir / "test_spec.json"
-    with open(spec_path, "w") as f:
+    with spec_path.open("w") as f:
         json.dump(sample_openapi_spec, f)
     return spec_path
 
@@ -138,7 +138,7 @@ def sample_config() -> dict:
 def sample_config_file(temp_dir: Path, sample_config: dict) -> Path:
     """Create a sample config file."""
     config_path = temp_dir / "validation.yaml"
-    with open(config_path, "w") as f:
+    with config_path.open("w") as f:
         yaml.safe_dump(sample_config, f)
     return config_path
 

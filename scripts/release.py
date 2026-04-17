@@ -22,7 +22,7 @@ def load_config(config_path: Path) -> dict:
     if not config_path.exists():
         return {}
 
-    with open(config_path) as f:
+    with config_path.open() as f:
         return yaml.safe_load(f) or {}
 
 
@@ -30,7 +30,7 @@ def load_spec_metadata(specs_dir: Path) -> dict | None:
     """Load spec metadata from download."""
     metadata_path = specs_dir / ".spec_metadata.json"
     if metadata_path.exists():
-        with open(metadata_path) as f:
+        with metadata_path.open() as f:
             return json.load(f)
     return None
 
@@ -38,8 +38,8 @@ def load_spec_metadata(specs_dir: Path) -> dict | None:
 def get_existing_patch_numbers(base_date: str) -> list[int]:
     """Get existing patch numbers for a given base date from git tags."""
     try:
-        result = subprocess.run(
-            ["git", "tag", "-l", f"v{base_date}-*"],
+        result = subprocess.run(  # noqa: S603
+            ["git", "tag", "-l", f"v{base_date}-*"],  # noqa: S607
             capture_output=True,
             text=True,
             check=True,
@@ -59,8 +59,7 @@ def get_existing_patch_numbers(base_date: str) -> list[int]:
 
 
 def get_version_from_metadata(specs_dir: Path, patch: int | None = None) -> str:
-    """
-    Get version from spec metadata with patch number.
+    """Get version from spec metadata with patch number.
 
     Version format: YYYY.MM.DD-PATCH
     - YYYY.MM.DD: Date when F5 published the specs (from Last-Modified header)
@@ -99,27 +98,26 @@ def get_version_from_git() -> str:
     try:
         # Try to get latest tag
         result = subprocess.run(
-            ["git", "describe", "--tags", "--abbrev=0"],
+            ["git", "describe", "--tags", "--abbrev=0"],  # noqa: S607
             capture_output=True,
             text=True,
             check=True,
         )
         tag = result.stdout.strip()
+    except subprocess.CalledProcessError:
+        # Generate version from date
+        return datetime.now(UTC).strftime("%Y.%m.%d")
+    else:
         if tag.startswith("v"):
             return tag[1:]
         return tag
-    except subprocess.CalledProcessError:
-        pass
-
-    # Generate version from date
-    return datetime.now(UTC).strftime("%Y.%m.%d")
 
 
 def get_git_sha() -> str:
     """Get current git commit SHA."""
     try:
         result = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
+            ["git", "rev-parse", "--short", "HEAD"],  # noqa: S607
             capture_output=True,
             text=True,
             check=True,
@@ -139,7 +137,8 @@ class ReleaseBuilder:
         original_specs_dir: Path | None = None,
         version: str | None = None,
         patch: int | None = None,
-    ):
+    ) -> None:
+        """Initialize ReleaseBuilder with paths and version info."""
         self.specs_dir = Path(specs_dir)
         self.output_dir = Path(output_dir)
         # Original specs dir contains the metadata from download
@@ -239,7 +238,7 @@ class ReleaseBuilder:
 
         for spec_file in domains_dir.glob("*.json"):
             try:
-                with open(spec_file) as f:
+                with spec_file.open() as f:
                     spec = json.load(f)
 
                 # Merge paths
@@ -252,10 +251,10 @@ class ReleaseBuilder:
                 console.print(f"[yellow]Could not merge {spec_file.name}: {e}[/yellow]")
 
         # Save merged specs
-        with open(staging_dir / "openapi.json", "w") as f:
+        with (staging_dir / "openapi.json").open("w") as f:
             json.dump(merged, f, indent=2)
 
-        with open(staging_dir / "openapi.yaml", "w") as f:
+        with (staging_dir / "openapi.yaml").open("w") as f:
             yaml.safe_dump(merged, f, default_flow_style=False, sort_keys=False)
 
         console.print(f"  [dim]Created: openapi.json ({len(merged['paths'])} paths)[/dim]")
@@ -279,7 +278,7 @@ class ReleaseBuilder:
 
 ## Version {self.version}
 
-Release date: {datetime.utcnow().strftime("%Y-%m-%d")}
+Release date: {datetime.now(UTC).strftime("%Y-%m-%d")}
 
 ### Changes
 
@@ -296,11 +295,10 @@ Release date: {datetime.utcnow().strftime("%Y-%m-%d")}
         ]
 
         for source in report_sources:
-            if source.exists():
-                if source.suffix == ".md":
-                    shutil.copy2(source, staging_dir / "VALIDATION_REPORT.md")
-                    console.print("  [dim]Added: VALIDATION_REPORT.md[/dim]")
-                    return
+            if source.exists() and source.suffix == ".md":
+                shutil.copy2(source, staging_dir / "VALIDATION_REPORT.md")
+                console.print("  [dim]Added: VALIDATION_REPORT.md[/dim]")
+                return
 
         # Generate placeholder report
         report_content = f"""# Validation Report
@@ -308,7 +306,7 @@ Release date: {datetime.utcnow().strftime("%Y-%m-%d")}
 ## Summary
 
 - **Version**: {self.version}
-- **Generated**: {datetime.utcnow().isoformat()}
+- **Generated**: {datetime.now(UTC).isoformat()}
 - **Status**: Validated
 
 See full validation details in the repository.
@@ -336,7 +334,7 @@ See full validation details in the repository.
                     }
                 )
 
-        with open(staging_dir / "manifest.json", "w") as f:
+        with (staging_dir / "manifest.json").open("w") as f:
             json.dump(manifest, f, indent=2)
 
         console.print("  [dim]Generated: manifest.json[/dim]")
@@ -394,7 +392,7 @@ See full validation details in the repository.
         return "\n".join(notes)
 
 
-def main():
+def main() -> int:
     """Main entry point for release command."""
     parser = argparse.ArgumentParser(description="Build release package for F5 XC fixed specs")
     parser.add_argument(
@@ -477,7 +475,7 @@ def main():
         print(builder.get_release_notes())
         return 0
 
-    zip_path = builder.build(
+    builder.build(
         include_changelog=not args.no_changelog,
         include_report=not args.no_report,
     )

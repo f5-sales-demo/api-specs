@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 from jinja2 import BaseLoader, Environment
@@ -46,7 +46,8 @@ class ReportConfig:
 class ReportGenerator:
     """Generate validation reports in multiple formats."""
 
-    def __init__(self, config: ReportConfig):
+    def __init__(self, config: ReportConfig) -> None:
+        """Initialize ReportGenerator with config."""
         self.config = config
         self.config.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -88,7 +89,7 @@ class ReportGenerator:
             discrepancies_by_type[dtype] = discrepancies_by_type.get(dtype, 0) + 1
 
         return ValidationSummary(
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
             total_endpoints=len(results),
             total_tests=sum(r.examples_tested for r in results),
             passed=sum(1 for r in results if r.status == TestStatus.PASSED),
@@ -115,7 +116,7 @@ class ReportGenerator:
             "discrepancies": [self._discrepancy_to_dict(d) for d in discrepancies],
         }
 
-        with open(output_path, "w") as f:
+        with output_path.open("w") as f:
             json.dump(report, f, indent=2, default=str)
 
         console.print(f"[green]JSON report: {output_path}[/green]")
@@ -130,7 +131,7 @@ class ReportGenerator:
         """Generate HTML report."""
         output_path = self.config.output_dir / "validation_report.html"
 
-        template = Environment(loader=BaseLoader()).from_string(HTML_TEMPLATE)
+        template = Environment(loader=BaseLoader(), autoescape=True).from_string(HTML_TEMPLATE)
 
         html = template.render(
             summary=summary,
@@ -140,7 +141,7 @@ class ReportGenerator:
             DiscrepancyType=DiscrepancyType,
         )
 
-        with open(output_path, "w") as f:
+        with output_path.open("w") as f:
             f.write(html)
 
         console.print(f"[green]HTML report: {output_path}[/green]")
@@ -173,8 +174,7 @@ class ReportGenerator:
             "",
         ]
 
-        for dtype, count in summary.discrepancies_by_type.items():
-            lines.append(f"- {dtype}: {count}")
+        lines.extend(f"- {dtype}: {count}" for dtype, count in summary.discrepancies_by_type.items())
 
         lines.extend(
             [
@@ -185,8 +185,7 @@ class ReportGenerator:
         )
 
         if summary.modified_files:
-            for f in summary.modified_files:
-                lines.append(f"- `{f}` (fixed)")
+            lines.extend(f"- `{f}` (fixed)" for f in summary.modified_files)
         else:
             lines.append("*No files required modification*")
 
@@ -199,8 +198,7 @@ class ReportGenerator:
         )
 
         if summary.unmodified_files:
-            for f in summary.unmodified_files:
-                lines.append(f"- `{f}`")
+            lines.extend(f"- `{f}`" for f in summary.unmodified_files)
         else:
             lines.append("*All files required modification*")
 
@@ -252,7 +250,7 @@ class ReportGenerator:
                 f"{r.examples_tested} | {len(r.discrepancies)} |"
             )
 
-        with open(output_path, "w") as f:
+        with output_path.open("w") as f:
             f.write("\n".join(lines))
 
         console.print(f"[green]Markdown report: {output_path}[/green]")

@@ -88,7 +88,8 @@ class SpecLoader:
         ]
     )
 
-    def __init__(self, spec_dir: Path | str):
+    def __init__(self, spec_dir: Path | str) -> None:
+        """Initialize SpecLoader with a spec directory path."""
         self.spec_dir = Path(spec_dir)
         self._specs: dict[str, dict] = {}
         self._schemas: dict[str, SchemaInfo] = {}
@@ -101,10 +102,11 @@ class SpecLoader:
             return self._specs[filename]
 
         if not filepath.exists():
-            raise FileNotFoundError(f"Spec file not found: {filepath}")
+            msg = f"Spec file not found: {filepath}"
+            raise FileNotFoundError(msg)
 
-        with open(filepath) as f:
-            if filename.endswith(".yaml") or filename.endswith(".yml"):
+        with filepath.open() as f:
+            if filename.endswith((".yaml", ".yml")):
                 spec = yaml.safe_load(f)
             else:
                 spec = json.load(f)
@@ -131,10 +133,11 @@ class SpecLoader:
         errors = []
         try:
             validate(spec)
-            return True, []
         except Exception as e:
             errors.append(str(e))
             return False, errors
+        else:
+            return True, []
 
     def extract_schemas(self, spec: dict) -> dict[str, SchemaInfo]:
         """Extract all schemas from an OpenAPI spec."""
@@ -327,19 +330,19 @@ class SpecLoader:
 def load_spec_from_file(filepath: Path | str) -> dict:
     """Convenience function to load a single spec file."""
     filepath = Path(filepath)
-    with open(filepath) as f:
+    with filepath.open() as f:
         if filepath.suffix in (".yaml", ".yml"):
             return yaml.safe_load(f)
         return json.load(f)
 
 
-def save_spec_to_file(spec: dict, filepath: Path | str, format: str = "json") -> None:
+def save_spec_to_file(spec: dict, filepath: Path | str, fmt: str = "json") -> None:
     """Save a spec to file in JSON or YAML format."""
     filepath = Path(filepath)
     filepath.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(filepath, "w") as f:
-        if format == "yaml":
+    with filepath.open("w") as f:
+        if fmt == "yaml":
             yaml.safe_dump(spec, f, default_flow_style=False, sort_keys=False)
         else:
             json.dump(spec, f, indent=2)

@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
-from collections.abc import Generator
+import json
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
 
 import schemathesis
 from hypothesis import Phase, Verbosity, settings
@@ -18,6 +21,10 @@ from .auth import F5XCAuth, RateLimiter
 from .constraint_validator import Discrepancy, DiscrepancyType
 
 console = Console()
+
+# HTTP status code thresholds
+HTTP_SERVER_ERROR = 500
+HTTP_CLIENT_ERROR = 400
 
 
 class TestStatus(Enum):
@@ -63,7 +70,8 @@ class SchemathesisRunner:
         self,
         auth: F5XCAuth,
         config: SchemathesisConfig | None = None,
-    ):
+    ) -> None:
+        """Initialize SchemathesisRunner with auth and config."""
         self.auth = auth
         self.config = config or SchemathesisConfig()
         self.results: list[SchemathesisResult] = []
@@ -107,9 +115,7 @@ class SchemathesisRunner:
             spec_copy["servers"] = [{"url": base_url}]
 
         # Create schema from dictionary (schemathesis 4.x API)
-        schema = schemathesis.openapi.from_dict(spec_copy)
-
-        return schema
+        return schemathesis.openapi.from_dict(spec_copy)
 
     def load_schema_from_file(
         self,
@@ -117,13 +123,11 @@ class SchemathesisRunner:
         base_url: str | None = None,
     ) -> Any:
         """Load OpenAPI schema from file."""
-        import json
-
         filepath = Path(filepath)
         base_url = base_url or self.auth.api_url
 
         # Load spec from file first
-        with open(filepath) as f:
+        with filepath.open() as f:
             spec = json.load(f)
 
         # Add base_url to servers field if not present
@@ -131,9 +135,7 @@ class SchemathesisRunner:
             spec["servers"] = [{"url": base_url}]
 
         # Load schema from dictionary (schemathesis 4.x API)
-        schema = schemathesis.openapi.from_dict(spec)
-
-        return schema
+        return schemathesis.openapi.from_dict(spec)
 
     def run_tests(
         self,
@@ -160,7 +162,7 @@ class SchemathesisRunner:
                     else:
                         # Not a Result object, use as-is
                         op = op_result
-                except Exception:
+                except Exception:  # noqa: S112
                     # Skip Err results
                     continue
 
@@ -217,7 +219,7 @@ class SchemathesisRunner:
                     response = self._execute_case(case)
 
                     # Check for failures
-                    if response.status_code >= 500:
+                    if response.status_code >= HTTP_SERVER_ERROR:
                         result.errors.append(
                             {
                                 "status_code": response.status_code,
@@ -344,21 +346,21 @@ class SchemathesisRunner:
                 # Can't validate - skip check
                 return None
 
-            if status_code not in responses:
-                # Check for default response
-                if "default" not in responses:
-                    # Unexpected status code - potential discrepancy
-                    if response.status_code >= 400:
-                        return Discrepancy(
-                            path=case.path,
-                            property_name="response",
-                            constraint_type="status_code",
-                            discrepancy_type=DiscrepancyType.CONSTRAINT_MISMATCH,
-                            spec_value=list(responses.keys()),
-                            api_behavior=status_code,
-                            test_values=[self._case_to_dict(case)],
-                            recommendation=f"Add {status_code} to response definitions",
-                        )
+            if (
+                status_code not in responses
+                and "default" not in responses
+                and response.status_code >= HTTP_CLIENT_ERROR
+            ):
+                return Discrepancy(
+                    path=case.path,
+                    property_name="response",
+                    constraint_type="status_code",
+                    discrepancy_type=DiscrepancyType.CONSTRAINT_MISMATCH,
+                    spec_value=list(responses.keys()),
+                    api_behavior=status_code,
+                    test_values=[self._case_to_dict(case)],
+                    recommendation=f"Add {status_code} to response definitions",
+                )
         except Exception:
             # If we can't get the response schema, skip validation
             return None
@@ -408,7 +410,7 @@ class SchemathesisRunner:
                     else:
                         # Not a Result object, use as-is
                         op = op_result
-                except Exception:
+                except Exception:  # noqa: S112
                     # This is an Err result or unwrapping failed - skip it
                     continue
 

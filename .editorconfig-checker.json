@@ -1,4 +1,7 @@
 {
-  "Exclude": ["\\.md$", "\\.mdx$"],
-  "DisableIndentSize": true
+  "Disable": {
+    "IndentSize": true,
+    "Indentation": true
+  },
+  "Exclude": ["[.]md$", "[.]mdx$"]
 }

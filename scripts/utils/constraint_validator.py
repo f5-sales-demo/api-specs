@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from rich.console import Console
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 console = Console()
 
@@ -67,7 +69,8 @@ class ValidationTestCase:
 class ConstraintValidator:
     """Validate constraints and generate test cases."""
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Initialize the constraint validator with test generators."""
         self._test_generators: dict[str, Callable] = {
             "minLength": self._generate_min_length_tests,
             "maxLength": self._generate_max_length_tests,
@@ -99,7 +102,7 @@ class ConstraintValidator:
     def _generate_min_length_tests(
         self,
         min_length: int,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for minLength constraint."""
         tests = []
@@ -151,7 +154,7 @@ class ConstraintValidator:
     def _generate_max_length_tests(
         self,
         max_length: int,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for maxLength constraint."""
         tests = []
@@ -201,7 +204,7 @@ class ConstraintValidator:
     def _generate_pattern_tests(
         self,
         pattern: str,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for pattern constraint."""
         tests = []
@@ -256,9 +259,9 @@ class ConstraintValidator:
 
         return samples
 
-    def _generate_non_matching_strings(self, pattern: str) -> list[str]:
+    def _generate_non_matching_strings(self, pattern: str) -> list[str]:  # noqa: ARG002
         """Generate strings that should NOT match a pattern."""
-        invalids = [
+        return [
             "123test",  # Starts with number (often invalid)
             "-test",  # Starts with hyphen
             "TEST_NAME",  # Uppercase and underscore
@@ -266,12 +269,11 @@ class ConstraintValidator:
             "",  # Empty
             "test!@#",  # Special characters
         ]
-        return invalids
 
     def _generate_minimum_tests(
         self,
         minimum: float,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for minimum constraint."""
         tests = []
@@ -311,7 +313,7 @@ class ConstraintValidator:
     def _generate_maximum_tests(
         self,
         maximum: float,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for maximum constraint."""
         tests = []
@@ -351,7 +353,7 @@ class ConstraintValidator:
     def _generate_exclusive_minimum_tests(
         self,
         exclusive_min: float,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for exclusiveMinimum constraint."""
         tests = []
@@ -381,7 +383,7 @@ class ConstraintValidator:
     def _generate_exclusive_maximum_tests(
         self,
         exclusive_max: float,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for exclusiveMaximum constraint."""
         tests = []
@@ -411,7 +413,7 @@ class ConstraintValidator:
     def _generate_min_items_tests(
         self,
         min_items: int,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for minItems constraint."""
         tests = []
@@ -453,7 +455,7 @@ class ConstraintValidator:
     def _generate_max_items_tests(
         self,
         max_items: int,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for maxItems constraint."""
         tests = []
@@ -493,7 +495,7 @@ class ConstraintValidator:
     def _generate_unique_items_tests(
         self,
         unique_items: bool,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for uniqueItems constraint."""
         tests = []
@@ -524,7 +526,7 @@ class ConstraintValidator:
     def _generate_enum_tests(
         self,
         enum_values: list,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for enum constraint."""
         tests = []
@@ -557,7 +559,7 @@ class ConstraintValidator:
     def _generate_type_tests(
         self,
         expected_type: str,
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for type constraint."""
         tests = []
@@ -601,23 +603,19 @@ class ConstraintValidator:
     def _generate_required_tests(
         self,
         required_fields: list[str],
-        schema: dict,
+        schema: dict,  # noqa: ARG002
     ) -> list[ValidationTestCase]:
         """Generate tests for required fields."""
-        tests = []
-
         # Test omitting each required field
-        for field_name in required_fields:
-            tests.append(
-                ValidationTestCase(
-                    name=f"required_missing_{field_name}",
-                    value={"_omit_field": field_name},
-                    expected_valid=False,
-                    description=f"Missing required field: {field_name}",
-                )
+        return [
+            ValidationTestCase(
+                name=f"required_missing_{field_name}",
+                value={"_omit_field": field_name},
+                expected_valid=False,
+                description=f"Missing required field: {field_name}",
             )
-
-        return tests
+            for field_name in required_fields
+        ]
 
     def compare_results(
         self,

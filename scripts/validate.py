@@ -29,7 +29,7 @@ def load_config(config_path: Path) -> dict:
         console.print(f"[red]Config file not found: {config_path}[/red]")
         sys.exit(1)
 
-    with open(config_path) as f:
+    with config_path.open() as f:
         return yaml.safe_load(f)
 
 
@@ -39,7 +39,7 @@ def load_endpoints_config(config_path: Path) -> dict:
         console.print(f"[red]Endpoints config not found: {config_path}[/red]")
         sys.exit(1)
 
-    with open(config_path) as f:
+    with config_path.open() as f:
         return yaml.safe_load(f)
 
 
@@ -52,7 +52,8 @@ class ValidationOrchestrator:
         endpoints_config: dict,
         auth: F5XCAuth | None = None,
         dry_run: bool = False,
-    ):
+    ) -> None:
+        """Initialize ValidationOrchestrator with config and auth."""
         self.config = config
         self.endpoints_config = endpoints_config
         self.dry_run = dry_run
@@ -101,7 +102,7 @@ class ValidationOrchestrator:
 
         # Step 2: Validate spec structure
         console.print("\n[bold]Step 2: Validating Spec Structure[/bold]")
-        spec_errors = self._validate_spec_structure(specs)
+        self._validate_spec_structure(specs)
 
         # Step 3: Extract constraints
         console.print("\n[bold]Step 3: Extracting Constraints[/bold]")
@@ -220,7 +221,7 @@ class ValidationOrchestrator:
 
         # Group specs by domain file
         domain_endpoints: dict[str, list] = {}
-        for endpoint_name, endpoint_config in endpoints_config.items():
+        for endpoint_config in endpoints_config.values():
             domain_file = endpoint_config.get("domain_file")
             if domain_file not in domain_endpoints:
                 domain_endpoints[domain_file] = []
@@ -286,7 +287,6 @@ class ValidationOrchestrator:
                     progress.update(task, advance=1)
                     continue
 
-                resource = endpoint_config.get("resource")
                 crud_ops = endpoint_config.get("crud_operations", {})
 
                 # Test create operation
@@ -302,8 +302,8 @@ class ValidationOrchestrator:
     def _test_endpoint_constraints(
         self,
         endpoint_name: str,
-        create_path: str,
-        test_cases: dict[str, list[ValidationTestCase]],
+        create_path: str,  # noqa: ARG002
+        test_cases: dict[str, list[ValidationTestCase]],  # noqa: ARG002
     ) -> None:
         """Test constraints for a specific endpoint."""
         # This would be implemented to actually test constraints
@@ -318,7 +318,7 @@ class ValidationOrchestrator:
 
         # For now, all files are considered unmodified until reconciliation
         specs = self.spec_loader.load_all_domain_files()
-        for filename in specs.keys():
+        for filename in specs:
             if any(d.path and filename in d.path for d in self.discrepancies):
                 modified_files.append(filename)
             else:
@@ -359,7 +359,7 @@ class ValidationOrchestrator:
             console.print(f"  Pass rate: {summary['pass_rate']:.1%}")
 
 
-def main():
+def main() -> int:
     """Main entry point for validation command."""
     parser = argparse.ArgumentParser(description="Validate F5 XC OpenAPI specs against live API")
     parser.add_argument(

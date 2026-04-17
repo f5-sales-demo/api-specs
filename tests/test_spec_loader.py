@@ -18,7 +18,7 @@ class TestSpecLoader:
         """Create a spec loader with sample spec."""
         # Write sample spec to temp dir
         spec_path = temp_dir / "test.json"
-        with open(spec_path, "w") as f:
+        with spec_path.open("w") as f:
             json.dump(sample_openapi_spec, f)
 
         return SpecLoader(temp_dir)

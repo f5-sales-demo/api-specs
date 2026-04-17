@@ -27,7 +27,7 @@ def load_json_report(report_path: Path, report_type: str = "report") -> dict | N
         return None
 
     try:
-        with open(report_path) as f:
+        with report_path.open() as f:
             return json.load(f)
     except json.JSONDecodeError as e:
         console.print(f"[red]Failed to parse {report_type}: {e}[/red]")
@@ -311,7 +311,11 @@ def _generate_legend() -> list[str]:
     ]
 
 
-def _format_value(value) -> str:
+_MAX_JSON_DISPLAY_LEN = 50
+_JSON_TRUNCATE_LEN = 47
+
+
+def _format_value(value: object) -> str:
     """Format a value for display in markdown table."""
     if value is None:
         return "-"
@@ -319,8 +323,8 @@ def _format_value(value) -> str:
         return "true" if value else "false"
     if isinstance(value, (list, dict)):
         json_str = json.dumps(value)
-        if len(json_str) > 50:
-            return f"`{json_str[:47]}...`"
+        if len(json_str) > _MAX_JSON_DISPLAY_LEN:
+            return f"`{json_str[:_JSON_TRUNCATE_LEN]}...`"
         return f"`{json_str}`"
     # Replace newlines with HTML line breaks for markdown tables
     str_value = str(value).replace("\n", "<br>")
@@ -359,7 +363,7 @@ def _get_type_badge(dtype: str) -> str:
 def _write_file(path: Path, lines: list[str]) -> None:
     """Write lines to file."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w") as f:
+    with path.open("w") as f:
         f.write("\n".join(lines))
     console.print(f"[green]Generated: {path}[/green]")
 

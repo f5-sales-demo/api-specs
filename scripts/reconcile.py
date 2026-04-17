@@ -20,6 +20,12 @@ from .utils.spec_loader import save_spec_to_file
 
 console = Console()
 
+# Minimum parts for dotted property paths like "paths.{path}.{method}"
+_MIN_PATH_PARTS = 3
+
+# Index of the tag segment in URL path segments (e.g., /api/namespace → "namespace")
+_TAG_SEGMENT_INDEX = 1
+
 
 @dataclass
 class ReconciliationResult:
@@ -57,7 +63,8 @@ class SpecReconciler:
         output_dir: Path,
         config: ReconciliationConfig | None = None,
         spectral_config: dict[str, Any] | None = None,
-    ):
+    ) -> None:
+        """Initialize the spec reconciler with paths and configuration."""
         self.original_dir = Path(original_dir)
         self.output_dir = Path(output_dir)
         self.config = config or ReconciliationConfig()
@@ -104,10 +111,7 @@ class SpecReconciler:
 
         for d in discrepancies:
             # Extract filename from path
-            if ":" in d.path:
-                filename = d.path.split(":")[0]
-            else:
-                filename = d.path
+            filename = d.path.split(":")[0] if ":" in d.path else d.path
 
             if filename not in grouped:
                 grouped[filename] = []
@@ -129,7 +133,7 @@ class SpecReconciler:
 
         # Load original spec
         try:
-            with open(spec_path) as f:
+            with spec_path.open() as f:
                 if spec_path.suffix == ".yaml":
                     original = yaml.safe_load(f)
                 else:
@@ -184,13 +188,13 @@ class SpecReconciler:
 
         if fix_strategy == "spectral":
             return self._apply_spectral_fix(spec, discrepancy)
-        elif fix_strategy == "relax":
+        if fix_strategy == "relax":
             return self._relax_constraint(spec, discrepancy)
-        elif fix_strategy == "tighten":
+        if fix_strategy == "tighten":
             return self._tighten_constraint(spec, discrepancy)
-        elif fix_strategy == "add":
+        if fix_strategy == "add":
             return self._add_constraint(spec, discrepancy)
-        elif fix_strategy == "remove":
+        if fix_strategy == "remove":
             return self._remove_constraint(spec, discrepancy)
 
         return None
@@ -348,7 +352,7 @@ class SpecReconciler:
             return fixer(spec, discrepancy)
         return None
 
-    def _add_servers(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+    def _add_servers(self, spec: dict, discrepancy: Discrepancy) -> dict | None:  # noqa: ARG002
         """Add servers block from spectral config."""
         servers = self.spectral_config.get("servers")
         if servers is None:
@@ -356,7 +360,7 @@ class SpecReconciler:
         spec["servers"] = copy.deepcopy(servers)
         return spec
 
-    def _add_contact(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+    def _add_contact(self, spec: dict, discrepancy: Discrepancy) -> dict | None:  # noqa: ARG002
         """Add contact info to spec.info."""
         contact = self.spectral_config.get("contact")
         if contact is None:
@@ -367,7 +371,7 @@ class SpecReconciler:
     def _add_tags(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
         """Derive and add tags from the API path prefix."""
         parts = discrepancy.property_name.split(".")
-        if len(parts) < 3 or parts[0] != "paths":
+        if len(parts) < _MIN_PATH_PARTS or parts[0] != "paths":
             return None
 
         path_key = parts[1]
@@ -380,8 +384,8 @@ class SpecReconciler:
 
         segments = [s for s in path_key.split("/") if s and s.startswith("{") is False]
         tag = "default"
-        if len(segments) >= 2:
-            tag = segments[1]
+        if len(segments) > _TAG_SEGMENT_INDEX:
+            tag = segments[_TAG_SEGMENT_INDEX]
         elif segments:
             tag = segments[0]
 
@@ -396,7 +400,7 @@ class SpecReconciler:
     def _remove_unused_component(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
         """Remove an unused component schema."""
         parts = discrepancy.property_name.split(".")
-        if len(parts) < 3 or parts[0] != "components" or parts[1] != "schemas":
+        if len(parts) < _MIN_PATH_PARTS or parts[0] != "components" or parts[1] != "schemas":
             return None
 
         schema_name = parts[2]
@@ -409,7 +413,7 @@ class SpecReconciler:
     def _deduplicate_operation_id(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
         """Append HTTP method suffix to duplicate operationIds."""
         parts = discrepancy.property_name.split(".")
-        if len(parts) < 3 or parts[0] != "paths":
+        if len(parts) < _MIN_PATH_PARTS or parts[0] != "paths":
             return None
 
         path_key = parts[1]
@@ -425,7 +429,7 @@ class SpecReconciler:
     def _fix_schema_example(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
         """Remove invalid default/example values from schemas."""
         parts = discrepancy.property_name.split(".")
-        if len(parts) < 3:
+        if len(parts) < _MIN_PATH_PARTS:
             return None
 
         target_key = parts[-1]
@@ -502,24 +506,19 @@ class SpecReconciler:
         api_behavior: Any,
     ) -> Any:
         """Calculate a relaxed constraint value."""
-        if constraint_type == "minLength":
+        if constraint_type == "minLength" and isinstance(api_behavior, int):
             # Lower the minimum
-            if isinstance(api_behavior, int):
-                return min(old_value or 0, api_behavior)
-        elif constraint_type == "maxLength":
+            return min(old_value or 0, api_behavior)
+        if constraint_type == "maxLength" and isinstance(api_behavior, int):
             # Raise the maximum
-            if isinstance(api_behavior, int):
-                return max(old_value or 0, api_behavior)
-        elif constraint_type == "minimum":
-            if isinstance(api_behavior, (int, float)):
-                return min(old_value or 0, api_behavior)
-        elif constraint_type == "maximum":
-            if isinstance(api_behavior, (int, float)):
-                return max(old_value or 0, api_behavior)
-        elif constraint_type == "enum":
+            return max(old_value or 0, api_behavior)
+        if constraint_type == "minimum" and isinstance(api_behavior, (int, float)):
+            return min(old_value or 0, api_behavior)
+        if constraint_type == "maximum" and isinstance(api_behavior, (int, float)):
+            return max(old_value or 0, api_behavior)
+        if constraint_type == "enum" and isinstance(api_behavior, list) and isinstance(old_value, list):
             # Add missing enum values
-            if isinstance(api_behavior, list) and isinstance(old_value, list):
-                return list(set(old_value) | set(api_behavior))
+            return list(set(old_value) | set(api_behavior))
 
         return api_behavior
 
@@ -530,24 +529,19 @@ class SpecReconciler:
         api_behavior: Any,
     ) -> Any:
         """Calculate a tightened constraint value."""
-        if constraint_type == "minLength":
+        if constraint_type == "minLength" and isinstance(api_behavior, int):
             # Raise the minimum
-            if isinstance(api_behavior, int):
-                return max(old_value or 0, api_behavior)
-        elif constraint_type == "maxLength":
+            return max(old_value or 0, api_behavior)
+        if constraint_type == "maxLength" and isinstance(api_behavior, int):
             # Lower the maximum
-            if isinstance(api_behavior, int):
-                return min(old_value or float("inf"), api_behavior)
-        elif constraint_type == "minimum":
-            if isinstance(api_behavior, (int, float)):
-                return max(old_value or float("-inf"), api_behavior)
-        elif constraint_type == "maximum":
-            if isinstance(api_behavior, (int, float)):
-                return min(old_value or float("inf"), api_behavior)
-        elif constraint_type == "enum":
+            return min(old_value or float("inf"), api_behavior)
+        if constraint_type == "minimum" and isinstance(api_behavior, (int, float)):
+            return max(old_value or float("-inf"), api_behavior)
+        if constraint_type == "maximum" and isinstance(api_behavior, (int, float)):
+            return min(old_value or float("inf"), api_behavior)
+        if constraint_type == "enum" and isinstance(api_behavior, list):
             # Restrict to only observed enum values
-            if isinstance(api_behavior, list):
-                return api_behavior
+            return api_behavior
 
         return api_behavior
 
@@ -643,28 +637,25 @@ def load_discrepancies(report_path: Path) -> list[Discrepancy]:
     if not report_path.exists():
         return []
 
-    with open(report_path) as f:
+    with report_path.open() as f:
         report = json.load(f)
 
-    discrepancies = []
-    for d in report.get("discrepancies", []):
-        discrepancies.append(
-            Discrepancy(
-                path=d.get("path", ""),
-                property_name=d.get("property_name", ""),
-                constraint_type=d.get("constraint_type", ""),
-                discrepancy_type=DiscrepancyType(d.get("discrepancy_type", "constraint_mismatch")),
-                spec_value=d.get("spec_value"),
-                api_behavior=d.get("api_behavior"),
-                test_values=d.get("test_values", []),
-                recommendation=d.get("recommendation", ""),
-            )
+    return [
+        Discrepancy(
+            path=d.get("path", ""),
+            property_name=d.get("property_name", ""),
+            constraint_type=d.get("constraint_type", ""),
+            discrepancy_type=DiscrepancyType(d.get("discrepancy_type", "constraint_mismatch")),
+            spec_value=d.get("spec_value"),
+            api_behavior=d.get("api_behavior"),
+            test_values=d.get("test_values", []),
+            recommendation=d.get("recommendation", ""),
         )
+        for d in report.get("discrepancies", [])
+    ]
 
-    return discrepancies
 
-
-def main():
+def main() -> int:
     """Main entry point for reconciliation command."""
     parser = argparse.ArgumentParser(description="Reconcile F5 XC OpenAPI specs with API behavior")
     parser.add_argument(
@@ -697,7 +688,7 @@ def main():
 
     # Load configuration
     if args.config.exists():
-        with open(args.config) as f:
+        with args.config.open() as f:
             config = yaml.safe_load(f)
     else:
         config = {}
@@ -730,7 +721,7 @@ def main():
     )
 
     # Run reconciliation
-    results = reconciler.reconcile_all(discrepancies)
+    reconciler.reconcile_all(discrepancies)
 
     # Save results
     saved = reconciler.save_results()

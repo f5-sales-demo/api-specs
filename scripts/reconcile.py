@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -55,10 +56,12 @@ class SpecReconciler:
         original_dir: Path,
         output_dir: Path,
         config: ReconciliationConfig | None = None,
+        spectral_config: dict[str, Any] | None = None,
     ):
         self.original_dir = Path(original_dir)
         self.output_dir = Path(output_dir)
         self.config = config or ReconciliationConfig()
+        self.spectral_config = spectral_config or {}
         self.results: list[ReconciliationResult] = []
 
         # Ensure output directory exists
@@ -179,7 +182,9 @@ class SpecReconciler:
         """Apply a fix for a single discrepancy."""
         fix_strategy = self._get_fix_strategy(discrepancy)
 
-        if fix_strategy == "relax":
+        if fix_strategy == "spectral":
+            return self._apply_spectral_fix(spec, discrepancy)
+        elif fix_strategy == "relax":
             return self._relax_constraint(spec, discrepancy)
         elif fix_strategy == "tighten":
             return self._tighten_constraint(spec, discrepancy)
@@ -192,6 +197,9 @@ class SpecReconciler:
 
     def _get_fix_strategy(self, discrepancy: Discrepancy) -> str:
         """Determine fix strategy based on discrepancy type."""
+        if discrepancy.constraint_type.startswith("spectral:"):
+            return "spectral"
+
         strategy_map = {
             DiscrepancyType.SPEC_STRICTER: self.config.fix_strategies.get("tighter_spec", "relax"),
             DiscrepancyType.SPEC_LOOSER: self.config.fix_strategies.get("looser_spec", "tighten"),
@@ -318,6 +326,143 @@ class SpecReconciler:
                 "old_value": old_value,
             }
 
+        return None
+
+    def _apply_spectral_fix(
+        self,
+        spec: dict,
+        discrepancy: Discrepancy,
+    ) -> dict | None:
+        """Route Spectral discrepancy to the appropriate fix method."""
+        spectral_fixers = {
+            "spectral:oas3-api-servers": self._add_servers,
+            "spectral:info-contact": self._add_contact,
+            "spectral:operation-tags": self._add_tags,
+            "spectral:oas3-unused-component": self._remove_unused_component,
+            "spectral:operation-operationId-unique": self._deduplicate_operation_id,
+            "spectral:oas3-valid-schema-example": self._fix_schema_example,
+            "spectral:no-script-tags-in-markdown": self._strip_script_tags,
+        }
+        fixer = spectral_fixers.get(discrepancy.constraint_type)
+        if fixer:
+            return fixer(spec, discrepancy)
+        return None
+
+    def _add_servers(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+        """Add servers block from spectral config."""
+        servers = self.spectral_config.get("servers")
+        if servers is None:
+            return None
+        spec["servers"] = copy.deepcopy(servers)
+        return spec
+
+    def _add_contact(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+        """Add contact info to spec.info."""
+        contact = self.spectral_config.get("contact")
+        if contact is None:
+            return None
+        spec.setdefault("info", {})["contact"] = copy.deepcopy(contact)
+        return spec
+
+    def _add_tags(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+        """Derive and add tags from the API path prefix."""
+        parts = discrepancy.property_name.split(".")
+        if len(parts) < 3 or parts[0] != "paths":
+            return None
+
+        path_key = parts[1]
+        method = parts[2]
+
+        path_obj = spec.get("paths", {}).get(path_key, {})
+        operation = path_obj.get(method)
+        if operation is None:
+            return None
+
+        segments = [s for s in path_key.split("/") if s and s.startswith("{") is False]
+        tag = "default"
+        if len(segments) >= 2:
+            tag = segments[1]
+        elif segments:
+            tag = segments[0]
+
+        operation["tags"] = [tag]
+
+        existing_tags = spec.setdefault("tags", [])
+        if not any(t.get("name") == tag for t in existing_tags):
+            existing_tags.append({"name": tag})
+
+        return spec
+
+    def _remove_unused_component(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+        """Remove an unused component schema."""
+        parts = discrepancy.property_name.split(".")
+        if len(parts) < 3 or parts[0] != "components" or parts[1] != "schemas":
+            return None
+
+        schema_name = parts[2]
+        schemas = spec.get("components", {}).get("schemas", {})
+        if schema_name in schemas:
+            del schemas[schema_name]
+            return spec
+        return None
+
+    def _deduplicate_operation_id(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+        """Append HTTP method suffix to duplicate operationIds."""
+        parts = discrepancy.property_name.split(".")
+        if len(parts) < 3 or parts[0] != "paths":
+            return None
+
+        path_key = parts[1]
+        method = parts[2]
+
+        operation = spec.get("paths", {}).get(path_key, {}).get(method)
+        if operation is None or "operationId" not in operation:
+            return None
+
+        operation["operationId"] = f"{operation['operationId']}_{method}"
+        return spec
+
+    def _fix_schema_example(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+        """Remove invalid default/example values from schemas."""
+        parts = discrepancy.property_name.split(".")
+        if len(parts) < 3:
+            return None
+
+        target_key = parts[-1]
+        if target_key not in ("default", "example"):
+            return None
+
+        obj = spec
+        for part in parts[:-1]:
+            obj = obj.get(part, {})
+            if isinstance(obj, dict) is False:
+                return None
+
+        if target_key in obj:
+            del obj[target_key]
+            return spec
+        return None
+
+    def _strip_script_tags(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+        """Strip script tags from description fields."""
+        parts = discrepancy.property_name.split(".")
+        if len(parts) == 0 or parts[-1] != "description":
+            return None
+
+        obj = spec
+        for part in parts[:-1]:
+            obj = obj.get(part, {})
+            if isinstance(obj, dict) is False:
+                return None
+
+        if "description" in obj and isinstance(obj["description"], str):
+            obj["description"] = re.sub(
+                r"<script[^>]*>.*?</script>",
+                "",
+                obj["description"],
+                flags=re.DOTALL | re.IGNORECASE,
+            ).strip()
+            return spec
         return None
 
     def _find_schema(
@@ -543,8 +688,9 @@ def main():
     parser.add_argument(
         "--report",
         type=Path,
-        default=Path("reports/validation_report.json"),
-        help="Validation report with discrepancies",
+        nargs="+",
+        default=[Path("reports/validation_report.json")],
+        help="Validation report(s) with discrepancies",
     )
 
     args = parser.parse_args()
@@ -564,8 +710,11 @@ def main():
     output_dir = args.output_dir or Path("release/specs")
 
     # Load discrepancies from report
-    discrepancies = load_discrepancies(args.report)
-    console.print(f"[dim]Loaded {len(discrepancies)} discrepancies from report[/dim]")
+    discrepancies = []
+    for report_path in args.report:
+        loaded = load_discrepancies(report_path)
+        discrepancies.extend(loaded)
+        console.print(f"[dim]Loaded {len(loaded)} discrepancies from {report_path}[/dim]")
 
     # Create reconciler
     recon_config = ReconciliationConfig(
@@ -577,6 +726,7 @@ def main():
         original_dir=original_dir,
         output_dir=output_dir,
         config=recon_config,
+        spectral_config=config.get("spectral", {}),
     )
 
     # Run reconciliation

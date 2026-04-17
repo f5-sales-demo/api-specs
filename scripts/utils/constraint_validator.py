@@ -22,6 +22,9 @@ class DiscrepancyType(Enum):
     EXTRA_CONSTRAINT = "extra_constraint"  # Spec has constraint API ignores
     CONSTRAINT_MISMATCH = "constraint_mismatch"  # Different constraint values
     TYPE_MISMATCH = "type_mismatch"  # Different data types
+    SPECTRAL_MISSING = "spectral_missing"  # Required OAS element absent (tags, servers, contact)
+    SPECTRAL_INVALID = "spectral_invalid"  # Element present but invalid (bad example, script tag)
+    SPECTRAL_UNUSED = "spectral_unused"  # Dead code (unused component schema)
 
 
 @dataclass

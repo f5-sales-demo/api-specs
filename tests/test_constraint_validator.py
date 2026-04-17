@@ -326,3 +326,10 @@ class TestValidationTestCase:
         assert tc.value == "aaaaa"
         assert tc.expected_valid is True
         assert tc.description == "String of exactly 5 characters"
+
+
+def test_spectral_discrepancy_types_exist():
+    """Verify Spectral-specific discrepancy types are defined."""
+    assert DiscrepancyType.SPECTRAL_MISSING.value == "spectral_missing"
+    assert DiscrepancyType.SPECTRAL_INVALID.value == "spectral_invalid"
+    assert DiscrepancyType.SPECTRAL_UNUSED.value == "spectral_unused"

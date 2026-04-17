@@ -107,3 +107,30 @@ release:
   include_changelog: true
   include_validation_report: true
   version_from: "git"  # git tag or manual
+
+# Spectral OAS3 Linting Configuration
+spectral:
+  enabled: true
+  ruleset: ".spectral.yaml"
+  auto_fix:
+    oas3-api-servers: true
+    info-contact: true
+    operation-tags: true
+    oas3-unused-component: true
+    operation-operationId-unique: true
+    oas3-valid-schema-example: true
+    no-script-tags-in-markdown: true
+  gate:
+    max_errors: null  # Phase 1: warn-only (set to 0 for Phase 2)
+    max_warnings: null
+  contact:
+    name: "F5 Distributed Cloud"
+    url: "https://docs.cloud.f5.com"
+    email: "dana@example.com"
+  servers:
+    - url: "https://{tenant}.console.ves.volterra.io"
+      description: "F5 Distributed Cloud API"
+      variables:
+        tenant:
+          example-tenant"f5-amer-ent"
+          description: "Your F5 XC tenant name"

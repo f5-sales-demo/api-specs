@@ -8,7 +8,7 @@ import shutil
 import subprocess
 import sys
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
@@ -77,11 +77,11 @@ def get_version_from_metadata(specs_dir: Path, patch: int | None = None) -> str:
         if base_date:
             console.print(f"[dim]Using upstream spec date: {base_date}[/dim]")
         else:
-            base_date = datetime.now(timezone.utc).strftime("%Y.%m.%d")
+            base_date = datetime.now(UTC).strftime("%Y.%m.%d")
             console.print("[yellow]No spec date in metadata, using current date[/yellow]")
     else:
         # Fallback to current date if no metadata
-        base_date = datetime.now(timezone.utc).strftime("%Y.%m.%d")
+        base_date = datetime.now(UTC).strftime("%Y.%m.%d")
         console.print("[yellow]No spec metadata found, using current date[/yellow]")
 
     if patch is not None:
@@ -112,7 +112,7 @@ def get_version_from_git() -> str:
         pass
 
     # Generate version from date
-    return datetime.now(timezone.utc).strftime("%Y.%m.%d")
+    return datetime.now(UTC).strftime("%Y.%m.%d")
 
 
 def get_git_sha() -> str:
@@ -320,7 +320,7 @@ See full validation details in the repository.
         """Generate manifest file with release metadata."""
         manifest = {
             "version": self.version,
-            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "generated_at": datetime.now(UTC).isoformat(),
             "git_sha": get_git_sha(),
             "files": [],
         }
@@ -388,7 +388,7 @@ See full validation details in the repository.
             "- Schemathesis property-based testing",
             "- Custom constraint validation against live F5 XC API",
             "",
-            f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
+            f"Generated: {datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')}",
         ]
 
         return "\n".join(notes)

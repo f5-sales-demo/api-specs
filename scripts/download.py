@@ -7,6 +7,7 @@ import hashlib
 import io
 import json
 import zipfile
+from datetime import UTC
 from pathlib import Path
 
 import requests
@@ -53,7 +54,7 @@ def save_metadata(
     file_count: int,
 ) -> None:
     """Save download metadata for versioning."""
-    from datetime import datetime, timezone
+    from datetime import datetime
     from email.utils import parsedate_to_datetime
 
     metadata_path = output_dir / DEFAULT_METADATA_FILE
@@ -70,7 +71,7 @@ def save_metadata(
             pass
 
     # Fallback to download date if Last-Modified not available
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     metadata = {
         "spec_date": spec_date or now.strftime("%Y.%m.%d"),
         "spec_timestamp": spec_timestamp,

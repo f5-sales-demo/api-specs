@@ -1,4 +1,4 @@
-.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update
+.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update spectral-lint spectral-gate
 
 PYTHON := python3
 VENV := .venv
@@ -22,6 +22,8 @@ help:
 	@echo "  make typecheck     Run type checker"
 	@echo "  make clean         Clean generated files"
 	@echo "  make all           Full pipeline: download → validate → reconcile → release"
+	@echo "  make spectral-lint Run Spectral OAS3 linting (pre-reconcile)"
+	@echo "  make spectral-gate Run Spectral quality gate (post-reconcile)"
 	@echo ""
 	@echo "Pre-commit:"
 	@echo "  make pre-commit-install  Install pre-commit hooks"
@@ -61,7 +63,13 @@ schemathesis:
 	$(BIN)/python -m scripts.validate --schemathesis-only
 
 reconcile:
-	$(BIN)/python -m scripts.reconcile
+	$(BIN)/python -m scripts.reconcile --report reports/validation_report.json reports/spectral_report.json
+
+spectral-lint:
+	$(BIN)/python -m scripts.spectral_lint --mode discover
+
+spectral-gate:
+	$(BIN)/python -m scripts.spectral_lint --mode gate
 
 release:
 	$(BIN)/python -m scripts.release
@@ -92,13 +100,13 @@ clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete 2>/dev/null || true
 
-all: download validate reconcile release
+all: download validate spectral-lint reconcile spectral-gate release
 	@echo "Full pipeline completed"
 
 # CI/CD targets
 ci-test: dev-install test lint typecheck
 
-ci-validate: install download validate reconcile release
+ci-validate: install download validate spectral-lint reconcile spectral-gate release
 
 # Documentation targets
 docs-generate:

@@ -1,0 +1,30 @@
+extends:
+  - "spectral:oas"
+
+functionsDir: "./spectral/functions"
+functions:
+  - f5-path-params
+
+rules:
+  # Disable broken built-in path-params, replace with custom
+  path-params: off
+  f5-path-params:
+    description: "Path parameters must be declared and used (supports dotted names like metadata.namespace)"
+    message: "{{error}}"
+    severity: error
+    given: "$.paths[*]"
+    then:
+      function: f5-path-params
+
+  # Auto-fixable rules - keep enabled at warn for discovery
+  operation-tags: warn
+  oas3-api-servers: warn
+  info-contact: warn
+  oas3-unused-component: warn
+  operation-operationId-unique: error
+  oas3-valid-schema-example: error
+  no-script-tags-in-markdown: warn
+
+  # Not auto-fixable - downgrade to info
+  operation-description: info
+  info-description: info

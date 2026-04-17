@@ -49,6 +49,14 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Set up Node.js (for Spectral)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Spectral
+        run: npm install -g @stoplight/spectral-cli
+
       - name: Cache pip packages
         uses: actions/cache@v4
         with:
@@ -120,11 +128,23 @@ jobs:
             python -m scripts.validate || true
           fi
 
+      - name: Run Spectral OAS3 linting
+        run: |
+          echo "Running Spectral analysis on downloaded specs..."
+          python -m scripts.spectral_lint --mode discover
+          echo "Spectral report saved to reports/spectral_report.json"
+
       - name: Reconcile specs and apply fixes
         run: |
-          echo "Reconciling specs based on validation results..."
-          python -m scripts.reconcile
+          echo "Reconciling specs based on validation and Spectral results..."
+          python -m scripts.reconcile --report reports/validation_report.json reports/spectral_report.json
           echo "Fix report saved to reports/fixes_applied.json"
+
+      - name: Spectral quality gate
+        run: |
+          echo "Running Spectral quality gate on reconciled specs..."
+          python -m scripts.spectral_lint --mode gate
+          echo "Gate report saved to reports/spectral_gate_report.json"
 
       - name: Calculate content hash
         id: content_hash

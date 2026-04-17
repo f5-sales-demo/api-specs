@@ -1,0 +1,65 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Test API",
+    "version": "1.0.0",
+    "contact": { "name": "Test" }
+  },
+  "servers": [{ "url": "https://example.com" }],
+  "paths": {
+    "/api/config/namespaces/{metadata.namespace}/resources": {
+      "post": {
+        "operationId": "createResource",
+        "tags": ["config"],
+        "description": "Create a resource",
+        "parameters": [
+          {
+            "name": "metadata.namespace",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/config/namespaces/{metadata.namespace}/resources/{metadata.name}": {
+      "get": {
+        "operationId": "getResource",
+        "tags": ["config"],
+        "description": "Get a resource",
+        "parameters": [
+          {
+            "name": "metadata.namespace",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "metadata.name",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/bad/namespaces/{namespace}/items/{item_id}": {
+      "get": {
+        "operationId": "getBadItem",
+        "tags": ["bad"],
+        "description": "Missing item_id parameter declaration",
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

@@ -1,14 +1,46 @@
 ---
-title: API Specs
-description: Validated and reconciled F5 Distributed Cloud OpenAPI specifications
+title: F5 XC API Specs
+description: Validated, enriched, and OAS3-compliant OpenAPI specifications for F5 Distributed Cloud
 template: splash
 sidebar:
   hidden: true
 hero:
-  tagline: Validated and reconciled F5 Distributed Cloud OpenAPI specifications
+  tagline: Production-ready OpenAPI specs for F5 Distributed Cloud — validated against the live API, auto-repaired, and enriched with security metadata, server definitions, and operation tags.
   actions:
-    - text: View Report
-      link: 01-validation-report/
+    - text: Pipeline Overview
+      link: 02-pipeline/
       icon: right-arrow
       variant: primary
+    - text: View Latest Report
+      link: 01-validation-report/
+      variant: secondary
 ---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="Pipeline Overview" icon="rocket">
+    Six-stage automated pipeline: download, validate, lint, reconcile, gate, release.
+    [Read more](/02-pipeline/)
+  </Card>
+  <Card title="Fixes Applied" icon="pencil">
+    Constraint repairs, Spectral enrichments, security metadata, and JSON formatting.
+    [Read more](/03-fixes-applied/)
+  </Card>
+  <Card title="Spectral Rules" icon="warning">
+    Two-config linting architecture with a custom `f5-path-params` function.
+    [Read more](/04-spectral-rules/)
+  </Card>
+  <Card title="Configuration" icon="setting">
+    Reference for `validation.yaml` and `endpoints.yaml`.
+    [Read more](/05-configuration/)
+  </Card>
+  <Card title="Validation Report" icon="document">
+    Auto-generated report of all fixes applied in the latest pipeline run.
+    [Read more](/01-validation-report/)
+  </Card>
+  <Card title="Contributing" icon="github">
+    Development setup, local pipeline, tests, and PR workflow.
+    [Read more](/06-contributing/)
+  </Card>
+</CardGrid>

@@ -1,0 +1,80 @@
+---
+title: Pipeline Overview
+description: Six-stage automated pipeline that downloads, validates, lints, reconciles, gates, and releases F5 XC OpenAPI specs
+---
+
+The pipeline runs daily at 6 AM UTC via GitHub Actions (`validate-and-release.yml`) and on every push to `main` that touches `scripts/`, `config/`, or `pyproject.toml`. It can also be triggered manually with options to force a release or skip live API tests.
+
+## Pipeline Stages
+
+```
+ Download         Validate          Spectral Lint
+ ┌──────┐        ┌──────────┐      ┌─────────────┐
+ │ Fetch │───────▶│Schemathesis│────▶│  Discover   │
+ │ specs │        │Constraints│     │  violations │
+ └──────┘        └──────────┘      └─────────────┘
+                                          │
+                 Spectral Gate       Reconcile
+                ┌─────────────┐    ┌──────────┐
+                │  Enforce    │◀───│Apply fixes│
+                │  thresholds │    │to specs   │
+                └─────────────┘    └──────────┘
+                       │
+                    Release
+                 ┌──────────┐
+                 │  Package  │
+                 │  & tag    │
+                 └──────────┘
+```
+
+### 1. Download
+
+`scripts/download.py` fetches the official F5 XC OpenAPI spec ZIP from `docs.cloud.f5.com`. It uses HTTP ETag headers for conditional GET requests -- if the upstream bundle has not changed, the download is skipped. Extracted JSON specs land in `specs/original/`.
+
+### 2. Validate
+
+`scripts/validate.py` orchestrates two kinds of testing against the live F5 XC API:
+
+- **Schemathesis** -- property-based testing that generates random valid/invalid payloads per the spec and checks whether the API agrees with the spec's constraints.
+- **Constraint validation** -- targeted tests for all 10 OpenAPI constraint categories (string length, pattern, numeric bounds, required fields, enums, array bounds, object structure, composition, dependencies, data types).
+
+Discrepancies are written to `reports/validation_report.json`.
+
+### 3. Spectral Lint (Discover)
+
+`scripts/spectral_lint.py --mode discover` runs the Spectral CLI against the original specs using `spectral-pipeline.yaml`. This finds OAS3 quality issues -- missing servers blocks, missing contact info, untagged operations, unused component schemas, duplicate operationIds, invalid examples, and script tags in descriptions.
+
+Violations are converted to `Discrepancy` objects and written to `reports/spectral_report.json`. See [Spectral Rules](/04-spectral-rules/) for the full rule set.
+
+### 4. Reconcile
+
+`scripts/reconcile.py` consumes both report files and applies fixes to every spec:
+
+- **Constraint fixes** adjust schema constraints (relax, tighten, add, remove) based on observed API behavior. See [Fixes Applied](/03-fixes-applied/).
+- **Spectral fixes** enrich specs with servers, contact info, tags, security metadata, and remove dead components.
+- **Security metadata** is always injected if the `security_scheme` config is present, even when Spectral did not flag it.
+
+Fixed specs are written to `release/specs/` and validated with `openapi-spec-validator` before saving. If a fixed spec fails validation, the original is used as a fallback.
+
+### 5. Spectral Gate
+
+`scripts/spectral_lint.py --mode gate` re-runs Spectral against the reconciled specs in `release/specs/`. The gate checks error and warning counts against configurable thresholds (`spectral.gate.max_errors` and `spectral.gate.max_warnings` in `validation.yaml`).
+
+:::note
+Phase 1 (current): thresholds are `null` (warn-only). Set `max_errors: 0` to enforce a zero-error gate.
+:::
+
+### 6. Release
+
+`scripts/release.py` packages the reconciled specs into a versioned ZIP archive. Versions use the format `YYYY.MM.DD-<patch>` derived from the upstream spec metadata date. The release includes:
+
+- Individual domain spec files (268 JSON files)
+- A merged `openapi.json` combining all domains
+- A `CHANGELOG.md` listing every fix applied
+- A `VALIDATION_REPORT.md` summary
+
+The CI job creates a GitHub Release with the ZIP attached, tagged `v<version>`. A content hash prevents duplicate releases when nothing has changed.
+
+## Documentation Update
+
+A parallel CI job generates `docs/01-validation-report.mdx` from the validation reports using `scripts/generate_docs.py`, then opens a PR if the content changed.

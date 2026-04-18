@@ -1,0 +1,158 @@
+---
+title: Fixes Applied to Upstream Specs
+description: Complete reference of every fix the reconciliation engine applies to F5 XC OpenAPI specifications
+---
+
+The reconciler (`scripts/reconcile.py`) applies four categories of fixes to upstream specs. Constraint fixes change API contracts to match observed behavior. All other fixes are metadata-only and do not alter API contracts.
+
+## Constraint Fixes
+
+These fixes adjust OpenAPI schema constraints so the spec matches what the live API actually enforces. Each fix is driven by a `Discrepancy` object produced during [validation](/02-pipeline/#2-validate).
+
+| Strategy | Trigger | What It Does | Contract Change |
+|----------|---------|--------------|-----------------|
+| **Relax** | `SPEC_STRICTER` | Spec rejects values the API accepts. Lowers `minLength`/`minimum`, raises `maxLength`/`maximum`, adds missing enum values. | Yes -- widens accepted values |
+| **Tighten** | `SPEC_LOOSER` | Spec accepts values the API rejects. Raises `minLength`/`minimum`, lowers `maxLength`/`maximum`, restricts enums to observed values. | Yes -- narrows accepted values |
+| **Add** | `MISSING_CONSTRAINT` | API enforces a constraint not documented in the spec. Adds the constraint to the schema. | Yes -- adds new constraint |
+| **Remove** | `EXTRA_CONSTRAINT` | Spec declares a constraint the API ignores. Removes the constraint from the schema. | Yes -- removes constraint |
+
+:::caution
+Constraint fixes change the API contract. They are only applied when backed by evidence from Schemathesis or constraint validation testing against the live API.
+:::
+
+### Supported Constraint Types
+
+The 10 OpenAPI constraint categories tested and fixed:
+
+- **String length** -- `minLength`, `maxLength`
+- **Pattern** -- `pattern` (regex)
+- **Numeric bounds** -- `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum`
+- **Required fields** -- `required`
+- **Enum values** -- `enum`
+- **Array bounds** -- `minItems`, `maxItems`, `uniqueItems`
+- **Object structure** -- `additionalProperties`, `properties`, `propertyNames`
+- **Composition** -- `oneOf`, `anyOf`, `allOf`
+- **Dependencies** -- `dependentRequired`, `dependentSchemas`
+- **Data types** -- `type`, `format`
+
+## Spectral Enrichments
+
+These fixes address OAS3 quality issues found by [Spectral linting](/04-spectral-rules/). They add or correct metadata without changing API behavior.
+
+### Servers Block Injection
+
+**Rule**: `oas3-api-servers` | **Contract change**: No
+
+Adds the F5 XC tenant URL template to specs missing a `servers` block:
+
+```json
+"servers": [{
+  "url": "https://{tenant}.console.ves.volterra.io",
+  "description": "F5 Distributed Cloud API",
+  "variables": {
+    "tenant": {
+      "default": "f5-amer-ent",
+      "description": "Your F5 XC tenant name"
+    }
+  }
+}]
+```
+
+The server URL and variable values come from `spectral.servers` in [validation.yaml](/05-configuration/).
+
+### Contact Info Injection
+
+**Rule**: `info-contact` | **Contract change**: No
+
+Adds contact information to `info.contact` for specs missing it:
+
+```json
+"contact": {
+  "name": "F5 Distributed Cloud",
+  "url": "https://docs.cloud.f5.com",
+  "email": "dana@example.com"
+}
+```
+
+Values come from `spectral.contact` in [validation.yaml](/05-configuration/).
+
+### Operation Tag Derivation
+
+**Rule**: `operation-tags` | **Contract change**: No
+
+Derives a tag from the URL path prefix for untagged operations. For a path like `/api/config/namespaces/{namespace}/healthchecks`, the tag is `config` (the second non-parameter segment). The tag is added to both the operation's `tags` array and the spec-level `tags` list.
+
+### Unused Component Removal
+
+**Rule**: `oas3-unused-component` | **Contract change**: No
+
+Removes component schemas from `components.schemas` that are not referenced anywhere in the spec. Reduces spec size without affecting any operation.
+
+### OperationId Deduplication
+
+**Rule**: `operation-operationId-unique` | **Contract change**: No
+
+Appends the HTTP method as a suffix (e.g., `ListItems_get`) when multiple operations share the same `operationId`. This makes each operationId unique for code generators.
+
+### Invalid Example/Default Removal
+
+**Rule**: `oas3-valid-schema-example` | **Contract change**: No
+
+Removes `example` or `default` values from schemas when the value does not conform to the schema's own constraints (wrong type, out of range, etc.). Prevents code generators from producing invalid sample payloads.
+
+### Script Tag Stripping
+
+**Rule**: `no-script-tags-in-markdown` | **Contract change**: No
+
+Strips `<script>` tags from `description` fields using a regex replacement. Some upstream specs contain injected script tags that break documentation renderers.
+
+## Security Metadata
+
+**Contract change**: No (documentation-only)
+
+Every spec receives an `apiKeyAuth` security scheme if one is not already present. This is always injected regardless of whether Spectral flagged it.
+
+```json
+"components": {
+  "securitySchemes": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "F5 XC API Token (format: APIToken <token>)"
+    }
+  }
+},
+"security": [{ "apiKeyAuth": [] }]
+```
+
+The scheme definition comes from `spectral.security_scheme` in [validation.yaml](/05-configuration/). This tells API consumers how to authenticate but does not change runtime behavior.
+
+## JSON Formatting
+
+**Contract change**: No
+
+All output JSON specs pass through a Biome-compatible array compactor (`_compact_short_arrays` in `scripts/utils/spec_loader.py`). Short arrays that fit within 120 characters are collapsed to a single line:
+
+```json
+// Before
+"enum": [
+  "ACTIVE",
+  "INACTIVE"
+]
+
+// After
+"enum": ["ACTIVE", "INACTIVE"]
+```
+
+Arrays exceeding the line-length threshold remain multi-line.
+
+## Fix Priority
+
+When multiple fix strategies could apply, the reconciler uses a priority order configured in `reconciliation.priority`:
+
+1. **existing** -- Use the existing spec constraint if it is valid
+2. **discovery** -- Use the discovered live API behavior
+3. **inferred** -- Infer from patterns across similar endpoints
+
+Every fixed spec is validated with `openapi-spec-validator` after all fixes are applied. If validation fails, the original spec is used as a fallback and the fix is logged as an error.

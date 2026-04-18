@@ -1,0 +1,191 @@
+---
+title: Development Guide
+description: How to set up, run, test, and contribute to the F5 XC API Specs project
+---
+
+## Setup
+
+```bash
+# Clone and install dev dependencies
+git clone https://github.com/f5xc-salesdemos/api-specs.git
+cd api-specs
+make dev-install
+
+# Install Spectral CLI (required for linting stages)
+npm install -g @stoplight/spectral-cli
+```
+
+`make dev-install` creates a virtualenv in `.venv/` and installs the project with dev extras (pytest, ruff, mypy).
+
+### Environment Variables
+
+Live API validation requires:
+
+```bash
+export F5XC_API_URL="https://f5-amer-ent.console.ves.volterra.io"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+Without these, `make validate` falls back to dry-run mode.
+
+## Running the Pipeline
+
+### Full Pipeline
+
+```bash
+make all
+# Runs: download → validate → spectral-lint → reconcile → spectral-gate → release
+```
+
+### Individual Stages
+
+```bash
+make download        # Fetch upstream specs
+make validate        # Run live API tests (requires API token)
+make validate-dry    # Dry run (no API calls)
+make spectral-lint   # Spectral discover mode on original specs
+make reconcile       # Apply fixes from both reports
+make spectral-gate   # Spectral quality gate on reconciled specs
+make release         # Build release package
+```
+
+### Documentation
+
+```bash
+make docs-generate   # Regenerate docs/01-validation-report.mdx from reports
+make docs            # Build full documentation site
+make docs-serve      # Local dev server with hot reload
+```
+
+## Running Tests
+
+```bash
+make test           # pytest with coverage
+make lint           # ruff check + format check
+make typecheck      # mypy type checking
+make ci-test        # All three (used in CI)
+```
+
+Pre-commit hooks run automatically on commit if installed:
+
+```bash
+make pre-commit-install   # Install git hooks
+make pre-commit           # Run all hooks manually
+```
+
+## Project Structure
+
+```
+scripts/
+  download.py           # Stage 1: Fetch specs from F5
+  validate.py           # Stage 2: Live API testing
+  spectral_lint.py      # Stage 3/5: Spectral linting adapter
+  reconcile.py          # Stage 4: Apply fixes to specs
+  release.py            # Stage 6: Package release
+  generate_docs.py      # Generate MDX from reports
+  utils/
+    auth.py             # F5 XC API authentication
+    constraint_validator.py  # Constraint testing + Discrepancy types
+    report_generator.py      # Report formatting
+    schemathesis_runner.py   # Schemathesis test orchestration
+    spec_loader.py           # Spec I/O + JSON formatting
+
+config/
+  validation.yaml       # Pipeline configuration
+  endpoints.yaml        # Baseline endpoints for live testing
+
+spectral/
+  functions/
+    f5-path-params.js   # Custom Spectral function
+
+docs/                   # Starlight MDX documentation
+tests/                  # pytest test suite
+release/specs/          # Output: reconciled spec files
+reports/                # Output: validation and Spectral reports
+```
+
+## Adding a New Fix Method
+
+To add a new Spectral auto-fix to the reconciler:
+
+1. **Add the rule** to `.spectral.yaml` with the desired severity.
+
+2. **Enable auto-fix** in `config/validation.yaml` under `spectral.auto_fix`:
+   ```yaml
+   spectral:
+     auto_fix:
+       your-new-rule: true
+   ```
+
+3. **Add the fixer method** to `SpecReconciler` in `scripts/reconcile.py`:
+   ```python
+   def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+       """Fix description."""
+       # Modify spec in place
+       # Return spec if changed, None if no change needed
+       return spec
+   ```
+
+4. **Register it** in the `_apply_spectral_fix` dispatcher:
+   ```python
+   spectral_fixers = {
+       # ... existing fixers ...
+       "spectral:your-new-rule": self._fix_your_rule,
+   }
+   ```
+
+5. **Add tests** covering the new fix method.
+
+## Adding a New Spectral Rule
+
+To add a custom Spectral rule with a JavaScript function:
+
+1. Create the function in `spectral/functions/your-rule.js`. Export a default function that receives `(targetVal, options, context)` and returns an array of `{message, path}` objects.
+
+2. Register it in `spectral-pipeline.yaml`:
+   ```yaml
+   functions:
+     - f5-path-params
+     - your-rule
+
+   rules:
+     your-rule:
+       description: "What it checks"
+       message: "{{error}}"
+       severity: error
+       given: "$.paths[*]"
+       then:
+         function: your-rule
+   ```
+
+:::caution
+Custom functions only work in `spectral-pipeline.yaml`. Do not add `functionsDir` or `functions` to `.spectral.yaml` -- that config must remain compatible with Super-Linter and other external tools.
+:::
+
+## CI Pipeline
+
+The GitHub Actions workflow (`validate-and-release.yml`) runs on:
+
+- **Schedule**: Daily at 6 AM UTC
+- **Push to main**: When `scripts/`, `config/`, or `pyproject.toml` changes
+- **Manual dispatch**: With options for forced release or dry-run
+
+The workflow has four jobs:
+
+1. **validate** -- Downloads specs, runs validation, Spectral lint, reconcile, Spectral gate
+2. **check-release-needed** -- Compares content hashes to decide if a release is warranted
+3. **release** -- Packages and creates a GitHub Release (only if content changed)
+4. **update-docs** -- Regenerates `01-validation-report.mdx` and opens a PR if changed
+
+A **notify** job creates a GitHub issue if any job fails.
+
+## Branch and PR Workflow
+
+All changes follow: **Issue -> Branch -> PR -> CI passes -> Merge**.
+
+- Branch names: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`
+- PRs must link an issue (`Closes #N` in the description)
+- Required CI checks: `Check linked issues` and `Lint Code Base`
+- Squash merge preferred; branches auto-delete after merge
+
+See `CONTRIBUTING.md` for the complete workflow rules.

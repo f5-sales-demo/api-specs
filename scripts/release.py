@@ -230,7 +230,7 @@ class ReleaseBuilder:
                     "url": "https://{tenant}.console.ves.volterra.io",
                     "variables": {
                         "tenant": {
-                            "default": "your-tenant",
+                            "default": "example-tenant",
                             "description": "F5 XC tenant name",
                         }
                     },

@@ -11,7 +11,7 @@ All pipeline behavior is controlled by two YAML files in `config/`.
 
 ```yaml
 api:
-  base_url: "https://f5-amer-ent.console.ves.volterra.io"
+  base_url: "https://example-tenant.console.ves.volterra.io"
   tenant: "example-tenant"
   namespace: "example-namespace"
   timeout: 30
@@ -27,6 +27,19 @@ api:
 | `timeout` | HTTP request timeout in seconds. |
 | `retries` | Number of retry attempts on failure. |
 | `retry_delay` | Seconds between retries. |
+
+:::caution
+The `base_url`, `tenant`, and `namespace` values in `validation.yaml` are generic placeholders. You **must** configure these for your environment via environment variables before running the pipeline:
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_TENANT="example-tenant"
+export F5XC_NAMESPACE="example-namespace"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+Environment variables take precedence over the YAML defaults at runtime.
+:::
 
 ### Download Settings
 
@@ -139,7 +152,7 @@ spectral:
       description: "F5 Distributed Cloud API"
       variables:
         tenant:
-          example-tenant"f5-amer-ent"
+          example-tenant"example-tenant"
           description: "Your F5 XC tenant name"
   security_scheme:
     type: "apiKey"

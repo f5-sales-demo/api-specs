@@ -150,14 +150,16 @@ class F5XCAuth:
 
     api_url: str = field(
         default_factory=lambda: os.getenv(
-            "F5XC_API_URL", "https://f5-amer-ent.console.ves.volterra.io"
+            "F5XC_API_URL", "https://example-tenant.console.ves.volterra.io"
         )
     )
     api_token: str = field(default_factory=lambda: os.getenv("F5XC_API_TOKEN", ""))
     namespace: str = field(
-        default_factory=lambda: os.getenv("F5XC_NAMESPACE", "r-mordasiewicz")
+        default_factory=lambda: os.getenv("F5XC_NAMESPACE", "example-namespace")
     )
-    tenant: str = field(default_factory=lambda: os.getenv("F5XC_TENANT", "f5-amer-ent"))
+    tenant: str = field(
+        default_factory=lambda: os.getenv("F5XC_TENANT", "example-tenant")
+    )
     timeout: int = 30
     retries: int = 3
 

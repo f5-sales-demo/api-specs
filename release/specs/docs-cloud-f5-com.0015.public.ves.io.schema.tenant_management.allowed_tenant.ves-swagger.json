@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tenant_management.allowed_tenant",
     "description": "\nAllowed tenant object will allow tenant in the name field to manage tenant in which its created.\nAdmin can create allowed_tenant configuration if the tenant needs to be managed by tenant in allowed_tenant\nconfiguration - by \"allow\"ing access to manage.\nAdmin can precisely limit access of allowed tenant via selecting required groups (`user_groups`) which underlying\nhas the namespace and roles configured.\n\nTenant which is creating allowed_tenant configuration is called `Managed Tenant` or `MT` and tenant ID specified\nin the spec configuration is called as `Original Tenant` or `OT`.\n\nAdmin of OT can create a corresponding managed_tenant configuration in their tenant which can be treated as an\nintent to manage and creation of this allowed_tenant configuration in MT grants access for OT into MT.\nBoth configuration - allowed_tenant in MT and managed_tenant in OT, need to exist for managed tenant access to work.\n\nDepending on a tenant's current plan, certain tenant may already have default allowed tenant configurations to provide\naccess for Support Team which can be precisely managed via additional APIs.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/system/allowed_tenants/support-tenant/access": {
@@ -107,7 +112,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-allowed_tenant-customapi-getsupporttenantaccess"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.CustomAPI.GetSupportTenantAccess"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.CustomAPI.GetSupportTenantAccess",
+        "tags": ["web"]
       },
       "post": {
         "summary": "Update Support Tenant Access",
@@ -219,7 +225,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-allowed_tenant-customapi-updatesupporttenantaccess"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.CustomAPI.UpdateSupportTenantAccess"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.CustomAPI.UpdateSupportTenantAccess",
+        "tags": ["web"]
       },
       "x-displayname": "Allowed Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.allowed_tenant.CustomAPI",
@@ -644,7 +651,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-allowed_tenant-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.List",
+        "tags": ["web"]
       },
       "x-displayname": "Allowed Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.allowed_tenant.API",
@@ -793,7 +801,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-allowed_tenant-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.Get",
+        "tags": ["web"]
       },
       "delete": {
         "summary": "Delete Allowed Tenant",
@@ -925,7 +934,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-allowed_tenant-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.Delete",
+        "tags": ["web"]
       },
       "x-displayname": "Allowed Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.allowed_tenant.API",
@@ -1567,10 +1577,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1918,21 +1925,6 @@
           }
         }
       },
-      "tenant_managementallowed_tenantGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "tenant_managementallowed_tenantGetSpecType": {
         "type": "object",
         "description": "Get allowed_tenant reads a given object from storage backend for metadata.namespace.",
@@ -2111,6 +2103,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

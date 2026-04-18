@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.subscription",
     "description": "Use this API to subscribe to Shape Bot Defense",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/bot/namespaces/system/bot-defense/addon/subscribe": {
@@ -110,7 +115,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-subscription-customapi-subscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Subscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Subscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Subscription API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.subscription.CustomAPI",
@@ -220,7 +226,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-subscription-customapi-unsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Unsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Unsubscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Subscription API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.subscription.CustomAPI",
@@ -230,7 +237,7 @@
       "post": {
         "summary": "Subscribe to Shape Bot Defense",
         "description": "Subscribe to Shape Bot Defense",
-        "operationId": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Subscribe",
+        "operationId": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Subscribe_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -330,7 +337,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-subscription-customapi-subscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Subscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Subscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Subscription API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.subscription.CustomAPI",
@@ -340,7 +348,7 @@
       "post": {
         "summary": "Unsubscribe to Shape Bot Defense",
         "description": "Unsubscribe to Shape Bot Defense",
-        "operationId": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Unsubscribe",
+        "operationId": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Unsubscribe_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -440,7 +448,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-subscription-customapi-unsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Unsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.subscription.CustomAPI.Unsubscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Subscription API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.subscription.CustomAPI",
@@ -480,40 +489,12 @@
         "x-displayname": "Empty",
         "x-ves-proto-message": "ves.io.schema.Empty"
       },
-      "subscriptionAdvancedTier": {
-        "type": "object",
-        "description": "x-displayName: \"AdvancedTier\"\nBot Defense Tier - Advanced.",
-        "title": "AdvancedTier",
-        "properties": {
-          "data_storage_region": {
-            "$ref": "#/components/schemas/subscriptionBotDefenseRegion"
-          },
-          "namespace": {
-            "type": "string",
-            "description": "x-displayName: \"Namespace\"\nx-required",
-            "title": "Namespace"
-          }
-        }
-      },
-      "subscriptionBasicTier": {
-        "type": "object",
-        "description": "x-displayName: \"BasicTier\"\nBot Defense Tier - Basic.",
-        "title": "BasicTier"
-      },
       "subscriptionBotDefenseRegion": {
         "type": "string",
         "description": "x-displayName: \"Bot Defense Region\"\nDefines a selection for Bot Defense region\n\n - US: US\n\nx-displayName: \"US\"\nUnited States of America\n - EU: EU\n\nx-displayName: \"EU\"\nEuropean Union",
         "title": "BotDefenseRegion",
-        "enum": [
-          "US",
-          "EU"
-        ],
+        "enum": ["US", "EU"],
         "default": "US"
-      },
-      "subscriptionPremiumTier": {
-        "type": "object",
-        "description": "x-displayName: \"PremiumTier\"\nBot Defense Tier - Premium.",
-        "title": "PremiumTier"
       },
       "subscriptionSubscribeRequest": {
         "type": "object",
@@ -549,6 +530,36 @@
         "x-displayname": "Unsubscribe Response",
         "x-ves-proto-message": "ves.io.schema.shape.bot_defense.subscription.UnsubscribeResponse"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

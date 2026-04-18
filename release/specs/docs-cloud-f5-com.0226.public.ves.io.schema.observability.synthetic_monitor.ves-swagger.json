@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.observability.synthetic_monitor",
     "description": "Custom handler for DNS Monitor and HTTP Monitor",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/observability/synthetic_monitor/namespaces/{namespace}/certificate-report-detail": {
@@ -119,7 +124,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getcertificatereportdetail"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetCertificateReportDetail"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetCertificateReportDetail",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -249,7 +255,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getcertsummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetCertSummary"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetCertSummary",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -398,7 +405,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getdnsmonitorsummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetDNSMonitorSummary"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetDNSMonitorSummary",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -527,7 +535,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getdnsmonitorhealth"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetDNSMonitorHealth"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetDNSMonitorHealth",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -686,7 +695,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getglobalhistory"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetGlobalHistory"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetGlobalHistory",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -815,7 +825,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getglobalsummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetGlobalSummary"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetGlobalSummary",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -934,7 +945,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-gethealth"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetHealth"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetHealth",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -1083,7 +1095,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-gethttpmonitordetail"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetHTTPMonitorDetail"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetHTTPMonitorDetail",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -1232,7 +1245,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-gethttpmonitorsummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetHTTPMonitorSummary"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetHTTPMonitorSummary",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -1361,7 +1375,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-gethttpmonitorhealth"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetHTTPMonitorHealth"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetHTTPMonitorHealth",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -1490,7 +1505,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getmetricquerydata"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetMetricQueryData"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetMetricQueryData",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -1649,7 +1665,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getmonitorevents"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetMonitorEvents"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetMonitorEvents",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -1818,7 +1835,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getmonitorhistory"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetMonitorHistory"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetMonitorHistory",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -1937,7 +1955,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getrecordtypesummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetRecordTypeSummary"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetRecordTypeSummary",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -2086,7 +2105,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-getsourcesummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetSourceSummary"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetSourceSummary",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -2215,7 +2235,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-suggestvalues"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.SuggestValues"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.SuggestValues",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -2344,7 +2365,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-gettlsreportdetail"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetTLSReportDetail"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetTLSReportDetail",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -2473,7 +2495,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-gettlsreportsummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetTLSReportSummary"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetTLSReportSummary",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -2592,7 +2615,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-customapi-gettlssummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetTLSSummary"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.CustomAPI.GetTLSSummary",
+        "tags": ["observability"]
       },
       "x-displayname": "Synthetic Monitor Custom APIs",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.CustomAPI",
@@ -2833,13 +2857,7 @@
         "type": "string",
         "description": "Supported functions of metric query metric\n",
         "title": "Function",
-        "enum": [
-          "MEAN",
-          "MIN",
-          "MAX",
-          "SUM",
-          "DIFFERENCE"
-        ],
+        "enum": ["MEAN", "MIN", "MAX", "SUM", "DIFFERENCE"],
         "default": "MEAN",
         "x-displayname": "Function",
         "x-ves-proto-enum": "ves.io.schema.observability.synthetic_monitor.Function"
@@ -3893,16 +3911,7 @@
         "type": "string",
         "description": "x-example: \"SSLv2\"\nProtocol name of HTTP monitor\n\n - SSLv2: SSLv2\n\n - SSLv3: SSLv3\n\n - TLS1: TLS1\n\n - TLS1_1: TLS1_1\n\n - TLS1_2: TLS1_2\n\n - TLS1_3: TLS1_3\n\n - NPN: NPN\n\n - ALPN: ALPN\n",
         "title": "Protocol",
-        "enum": [
-          "SSLv2",
-          "SSLv3",
-          "TLS1",
-          "TLS1_1",
-          "TLS1_2",
-          "TLS1_3",
-          "NPN",
-          "ALPN"
-        ],
+        "enum": ["SSLv2", "SSLv3", "TLS1", "TLS1_1", "TLS1_2", "TLS1_3", "NPN", "ALPN"],
         "default": "SSLv2",
         "x-displayname": "Protocol",
         "x-ves-proto-enum": "ves.io.schema.observability.synthetic_monitor.Protocol"
@@ -4184,6 +4193,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "observability"
+    }
+  ]
 }

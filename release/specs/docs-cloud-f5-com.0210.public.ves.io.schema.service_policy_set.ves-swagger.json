@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.service_policy_set",
     "description": "A service_policy_set object consists of an ordered list of references to service_policy objects. The policies are evaluated in the specified order against\na set of input fields that are extracted from or derived from an L7 request API. The evaluation of the policy set terminates when the request API matches a\npolicy which results in an \"allow\" or \"deny\" action. If the request API does not match a policy, the next policy in the list is evaluated. If the request API\ndoes not match any of the policies in the set, the result is a \"default_deny\" action.\n\nThere can be no more than one service policy set configured under a namespace. That policy set is applied to requests destined to all virtual_hosts in that\nnamespace.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{namespace}/service_policy_sets": {
@@ -157,7 +162,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy_set-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy_set.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy_set.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Service Policy Set",
       "x-ves-proto-service": "ves.io.schema.service_policy_set.API",
@@ -304,7 +310,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy_set-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy_set.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy_set.API.Get",
+        "tags": ["config"]
       },
       "x-displayname": "Service Policy Set",
       "x-ves-proto-service": "ves.io.schema.service_policy_set.API",
@@ -363,67 +370,6 @@
             "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
           }
         }
-      },
-      "policyDenyInformation": {
-        "type": "object",
-        "description": "x-displayName: \"Deny Information\"\nDetailed information including HTTP response code and error message to be sent when the policy or policy set action is DENY.",
-        "title": "Deny Information",
-        "properties": {
-          "api_sec_event": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "error_message": {
-            "type": "string",
-            "description": "x-displayName: \"Error Message\"\nx-example: \"Denied because the URL path contains an unknown object type\"\nAn error message associated with a DENY action in a policy or policy set, that is meaningful to the end user. Note that this error message is included\nin the body but does not constitute the entire body.",
-            "title": "error_message"
-          },
-          "response_code": {
-            "type": "integer",
-            "description": "x-displayName: \"HTTP Response Code\"\nx-example: 400\nThe HTTP status code to use in the response. The default code is Forbidden (403).",
-            "title": "response_code",
-            "format": "int64"
-          },
-          "undefined_sec_event": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
-      "policyPolicySetScope": {
-        "type": "string",
-        "description": "x-displayName: \"Policy Set Scope\"\nThe scope of a policy set. This could be per namespace or per virtual host.\n\n - POLICY_SET_SCOPE_NAMESPACE: per namespace\n\nx-displayName: \"Policy Set for Namespace\"\nPolicy Set is used for the entire namespace.\n - POLICY_SET_SCOPE_VIRTUAL_HOST: per virtual host\n\nx-displayName: \"Policy Set for Namespace\"\nPolicy Set is used for a specific virtual host.",
-        "title": "PolicySetScope",
-        "enum": [
-          "POLICY_SET_SCOPE_NAMESPACE",
-          "POLICY_SET_SCOPE_VIRTUAL_HOST"
-        ],
-        "default": "POLICY_SET_SCOPE_NAMESPACE"
-      },
-      "policyPolicySetType": {
-        "type": "string",
-        "description": "x-displayName: \"Policy Set Type\"\nThe type a policy set indicates it's purpose.\nThe primary use of the type is to determine the relative order of evaluation when there are multiple policy sets in a namespace. For example, a rate limiting\npolicy set is evaluated before a network security policy set. The type is also used to enforce constraints on the action in rules that are part of the policy\nset. For example, a rate limiting policy set cannot contain a rule with an ALLOW or DENY action - the only valid actions are NEXT_POLICY and NEXT_POLICY_SET.\n\n- NETWORK_SECURITY Policy Set is used to apply L7 security to API requests\n- RATE_LIMITING Policy Set is used to rate limit API requests\n\n - NETWORK_SECURITY: Network Security\n\nx-displayName: \"Policy Set for Network Security\"\nPolicy Set is used to apply L7 security to API requests\n - RATE_LIMITING: Rate Limiting\n\nx-displayName: \"Policy Set for Rate Limiting\"\nPolicy Set is used to rate limit API requests\n - POLICY_BASED_ROUTING: Policy Based Routing\n\nx-displayName: \"Policy Set for Policy Based Routing\"\nPolicy Set is used to perform policy based routing\n - WAF_EXCLUSION: WAF Exclusion\n\nx-displayName: \"Policy Set for WAF Exclusion\"\nPolicy Set is used to exclude WAF detections that result in false positives in the WAF module\n - SHAPE_BOT_PROTECTION: Bot Protection\n\nx-displayName: \"Policy Set for Bot Defense\"\nPolicy Set is used to provide Bot Defense for Web or Mobile applications",
-        "title": "PolicySetType",
-        "enum": [
-          "NETWORK_SECURITY",
-          "RATE_LIMITING",
-          "POLICY_BASED_ROUTING",
-          "WAF_EXCLUSION",
-          "SHAPE_BOT_PROTECTION"
-        ],
-        "default": "NETWORK_SECURITY"
-      },
-      "policyRuleAction": {
-        "type": "string",
-        "description": "x-displayName: \"Rule Action\"\nThe rule action determines the disposition of the input request API. If a policy matches a rule with an ALLOW action, the processing of the request proceeds\nforward. If it matches a rule with a DENY action, the processing of the request is terminated and an appropriate message/code returned to the originator. If\nit matches a rule with a NEXT_POLICY_SET action, evaluation of the current policy set terminates and evaluation of the next policy set in the chain begins.\n\n - DENY: DENY\n\nx-displayName: \"Deny\"\nDeny the request.\n - ALLOW: ALLOW\n\nx-displayName: \"Allow\"\nAllow the request to proceed.\n - NEXT_POLICY_SET: NEXT_POLICY_SET\n\nx-displayName: \"Next Policy Set\"\nTerminate evaluation of the current policy set and begin evaluating the next policy set in the chain. Note that the evaluation of any remaining policies\nin the current policy set is skipped.\n - NEXT_POLICY: NEXT_POLICY\n\nx-displayName: \"Next Policy\"\nTerminate evaluation of the current policy and begin evaluating the next policy in the policy set. Note that the evaluation of any remaining rules in the\ncurrent policy is skipped.\n - LAST_POLICY: LAST_POLICY\n\nx-displayName: \"Last Policy\"\nTerminate evaluation of the current policy and begin evaluating the last policy in the policy set. Note that the evaluation of any remaining rules in the\ncurrent policy is skipped.\n - GOTO_POLICY: GOTO_POLICY\n\nx-displayName: \"Goto Policy\"\nTerminate evaluation of the current policy and begin evaluating a specific policy in the policy set. The policy is specified using the goto_policy field in\nthe rule and must be after the current policy in the policy set.",
-        "title": "Rule Action",
-        "enum": [
-          "DENY",
-          "ALLOW",
-          "NEXT_POLICY_SET",
-          "NEXT_POLICY",
-          "LAST_POLICY",
-          "GOTO_POLICY"
-        ],
-        "default": "DENY"
       },
       "protobufAny": {
         "type": "object",
@@ -701,10 +647,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -941,19 +884,6 @@
           }
         }
       },
-      "service_policy_setGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "service_policy_setListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -1094,6 +1024,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

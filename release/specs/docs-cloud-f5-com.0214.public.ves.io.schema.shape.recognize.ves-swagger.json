@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.recognize",
     "description": "Use this API to forward API calls into the Shape APIs",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/recognize/namespaces/system/recognize/addon/dashboard/channel": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-channel"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Channel"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Channel",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-conversion"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Conversion"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Conversion",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -351,7 +358,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-enjoy"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Enjoy"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Enjoy",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -468,7 +476,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-frictionaggregation"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.FrictionAggregation"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.FrictionAggregation",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -585,7 +594,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-frictionhistogram"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.FrictionHistogram"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.FrictionHistogram",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -692,7 +702,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-health"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Health"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Health",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -809,7 +820,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-lift"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Lift"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Lift",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -926,7 +938,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-rescue"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Rescue"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Rescue",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -1043,7 +1056,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-topreasoncodes"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.TopReasonCodes"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.TopReasonCodes",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -1150,7 +1164,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-getstatusaddon"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.GetStatusAddon"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.GetStatusAddon",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -1257,7 +1272,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-state"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.State"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.State",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -1374,7 +1390,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-subscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Subscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Subscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -1491,7 +1508,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-unsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Unsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.Unsubscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -1608,7 +1626,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-recognize-customapi-validatesrctaginjectionaddon"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.ValidateSrcTagInjectionAddon"
+        "x-ves-proto-rpc": "ves.io.schema.shape.recognize.CustomAPI.ValidateSrcTagInjectionAddon",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Recognize Proxy",
       "x-ves-proto-service": "ves.io.schema.shape.recognize.CustomAPI",
@@ -2520,7 +2539,7 @@
           },
           "tag": {
             "type": "string",
-            "description": " Javascript tag injected to URL paths that user configures\n\nExample: ` \"<script async defer src=\\\"https://us.dev.zeronaught.com/__imp_apg__/js/abc.js\\\"></script>\"`",
+            "description": "Javascript tag injected to URL paths that user configures\n\nExample: ` \"\"`",
             "title": "Tag",
             "x-displayname": "Tag",
             "x-ves-example": "<script async defer src=\\\"https://us.dev.zeronaught.com/__imp_apg__/js/abc.js\\\"></script>"
@@ -3204,6 +3223,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

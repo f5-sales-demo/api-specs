@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.mobile_base_config",
     "description": "Configures Mobile SDK Base Configuration",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/mobile/security/namespaces/{metadata.namespace}/mobile_base_configs": {
@@ -397,7 +402,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-mobile_base_config-customapi-getmobilebaseconfigurationfile"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.mobile_base_config.CustomAPI.GetMobileBaseConfigurationFile"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.mobile_base_config.CustomAPI.GetMobileBaseConfigurationFile",
+        "tags": ["mobile"]
       },
       "x-displayname": "Mobile SDK Base Configuration",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.mobile_base_config.CustomAPI",
@@ -554,7 +560,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-mobile_base_config-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.mobile_base_config.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.mobile_base_config.API.List",
+        "tags": ["mobile"]
       },
       "x-displayname": "Mobile SDK Base Configuration",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.mobile_base_config.API",
@@ -702,7 +709,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-mobile_base_config-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.mobile_base_config.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.mobile_base_config.API.Get",
+        "tags": ["mobile"]
       },
       "delete": {
         "summary": "Delete Mobile SDK Base Configuration",
@@ -834,7 +842,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-mobile_base_config-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.mobile_base_config.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.mobile_base_config.API.Delete",
+        "tags": ["mobile"]
       },
       "x-displayname": "Mobile SDK Base Configuration",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.mobile_base_config.API",
@@ -978,20 +987,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "mobile_base_configGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "mobile_base_configGetSpecType": {
         "type": "object",
@@ -1148,11 +1143,7 @@
         "type": "string",
         "description": "Defines an operation system for Mobile SDK\n\n - MOBILE_OS_UNDEFINED: MOBILE_OS_UNDEFINED\n\nUndefined Operating System\n - ANDROID: ANDROID\n\nAndroid\n - IOS: IOS\n\niOS",
         "title": "MobileOS",
-        "enum": [
-          "MOBILE_OS_UNDEFINED",
-          "ANDROID",
-          "IOS"
-        ],
+        "enum": ["MOBILE_OS_UNDEFINED", "ANDROID", "IOS"],
         "default": "MOBILE_OS_UNDEFINED",
         "x-displayname": "Mobile SDK Operating System",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.mobile_base_config.MobileOS"
@@ -1685,6 +1676,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "mobile"
+    }
+  ]
 }

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.device_id",
     "description": "Use this API to interact with Application Traffic Insights endpoitns\nAll calls allow a blob as the payload and return a blob as the return parameter",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/dip/namespaces/system/app_provision": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-applicationprovision"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.ApplicationProvision"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.ApplicationProvision",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -236,7 +242,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-deleteapplication"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.DeleteApplication"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.DeleteApplication",
+        "tags": ["shape"]
       },
       "post": {
         "summary": "Update Application",
@@ -348,7 +355,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-updateapplication"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.UpdateApplication"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.UpdateApplication",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -455,7 +463,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getapplications"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetApplications"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetApplications",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -572,7 +581,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getbotassessmenttopasn"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetBotAssessmentTopAsn"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetBotAssessmentTopAsn",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -689,7 +699,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getbotassessmenttransactions"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetBotAssessmentTransactions"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetBotAssessmentTransactions",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -806,7 +817,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getbotassessmenttopurls"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetBotAssessmentTopUrls"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetBotAssessmentTopUrls",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -923,7 +935,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getdashboardbyage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByAge"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByAge",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -1040,7 +1053,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getdashboardbyapplications"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByApplications"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByApplications",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -1157,7 +1171,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getdashboardbyasn"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByAsn"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByAsn",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -1274,7 +1289,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getdashboardbycountry"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByCountry"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByCountry",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -1391,7 +1407,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getdashboardbysession"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardBySession"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardBySession",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -1508,7 +1525,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getdashboardbyua"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByUa"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardByUa",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -1625,7 +1643,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getdashboarduniqueaccess"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardUniqueAccess"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetDashboardUniqueAccess",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -1742,7 +1761,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-enable"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.Enable"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.Enable",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -1849,7 +1869,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getregions"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetRegions"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetRegions",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -1956,7 +1977,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-getstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetStatus"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.GetStatus",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -2073,7 +2095,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_id-customapi-validatesrctaginjection"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.ValidateSrcTagInjection"
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_id.CustomAPI.ValidateSrcTagInjection",
+        "tags": ["shape"]
       },
       "x-displayname": "Application Traffic Insights",
       "x-ves-proto-service": "ves.io.schema.shape.device_id.CustomAPI",
@@ -2702,6 +2725,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

@@ -92,6 +92,7 @@ projects/
 .claude/settings.local.json
 .claude/todos/
 .claude/worktrees/
+.claude/scheduled_tasks.lock
 .playwright-mcp/
 .serena/
 .auto-claude/
@@ -99,6 +100,38 @@ claudedocs/
 cache/
 src/generated/
 out/
+
+# Bun
+*.bun-build
+
+# OpenCode plugin
+.sisyphus/*
+!.sisyphus/rules/
+packages/*/bin/
+test-injection/
+notepad.md
+oauth-success.html
+.omx/
+
+# Lock file preferences (Bun-based repos)
+package-lock.json
+yarn.lock
+
+# Monorepo build
+.turbo/
+ts-dist/
+target/
+.sst/
+tsconfig.tsbuildinfo
+
+# Nix
+.direnv/
+/result
+
+# Workspace
+.worktrees/
+.codex/
+playground/
 
 # Documentation build artifacts
 docs/_data/

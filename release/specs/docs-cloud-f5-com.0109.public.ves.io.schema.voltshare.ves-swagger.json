@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.voltshare",
     "description": "F5XC VoltShare service serves APIs for users to securing the secrets to share it with each other.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/secret_management/namespaces/system/voltshare/decrypt_secret": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-customapi-decryptsecret"
         },
-        "x-ves-proto-rpc": "ves.io.schema.voltshare.CustomAPI.DecryptSecret"
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.CustomAPI.DecryptSecret",
+        "tags": ["secret_management"]
       },
       "x-displayname": "F5XC VoltShare",
       "x-ves-proto-service": "ves.io.schema.voltshare.CustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-customapi-processpolicyinformation"
         },
-        "x-ves-proto-rpc": "ves.io.schema.voltshare.CustomAPI.ProcessPolicyInformation"
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.CustomAPI.ProcessPolicyInformation",
+        "tags": ["secret_management"]
       },
       "x-displayname": "F5XC VoltShare",
       "x-ves-proto-service": "ves.io.schema.voltshare.CustomAPI",
@@ -363,7 +370,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-voltshareaccesscountquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.VoltShareAccessCountQuery"
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.VoltShareAccessCountQuery",
+        "tags": ["secret_management"]
       },
       "x-displayname": "F5XC VoltShare",
       "x-ves-proto-service": "ves.io.schema.voltshare.MonitoringAPI",
@@ -492,7 +500,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogQuery"
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogQuery",
+        "tags": ["secret_management"]
       },
       "x-displayname": "F5XC VoltShare",
       "x-ves-proto-service": "ves.io.schema.voltshare.MonitoringAPI",
@@ -621,7 +630,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogAggregationQuery",
+        "tags": ["secret_management"]
       },
       "x-displayname": "F5XC VoltShare",
       "x-ves-proto-service": "ves.io.schema.voltshare.MonitoringAPI",
@@ -750,12 +760,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery",
+        "tags": ["secret_management"]
       },
       "post": {
         "summary": "Audit Log Scroll Query",
         "description": "The response for audit log query contain no more than 500 messages.\nOne can use scroll request to scroll through more than 500 messages or all messages\nin multiple batches. empty scroll_id in the response indicates no more messages to fetch (EOF).",
-        "operationId": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery",
+        "operationId": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -874,7 +885,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery",
+        "tags": ["secret_management"]
       },
       "x-displayname": "F5XC VoltShare",
       "x-ves-proto-service": "ves.io.schema.voltshare.MonitoringAPI",
@@ -885,19 +897,6 @@
   "x-ves-proto-package": "ves.io.schema.voltshare",
   "components": {
     "schemas": {
-      "logAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the log response",
-        "title": "Aggregation Request",
-        "properties": {
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregation"
-          }
-        }
-      },
       "logAvgAggregationData": {
         "type": "object",
         "description": "x-displayName: \"Avg Aggregation Data\"\nAverage Aggregation data",
@@ -991,29 +990,6 @@
           }
         }
       },
-      "logDateSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\nAggregate audit logs based on one of the sub aggregation types",
-        "title": "Date SubAggregation",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregation"
-          }
-        }
-      },
-      "logDateSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\n\nDate subaggregation data",
-        "title": "DateSubAggregationData",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          }
-        }
-      },
       "logFieldAggregation": {
         "type": "object",
         "description": "x-displayName: \"Field Aggregation\"\nAggregate audit logs based on the key fields in the log.",
@@ -1095,39 +1071,6 @@
           }
         }
       },
-      "logFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field SubAggregation\"\nField subaggregation data",
-        "title": "FieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field values and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubAggregationBucket"
-            }
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
-          }
-        }
-      },
       "logFieldSubFieldAggregationBucket": {
         "type": "object",
         "description": "x-displayName: \"Field Sub Field Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
@@ -1146,21 +1089,6 @@
           }
         }
       },
-      "logFieldSubFieldAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field Sub Field Aggregation Data\"\nField Aggregation data as Field Sub-aggregation",
-        "title": "FieldSubFieldAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubFieldAggregationBucket"
-            }
-          }
-        }
-      },
       "logFilterAggregationData": {
         "type": "object",
         "description": "x-displayName: \"Filter Aggregation Data\"\nFilter Aggregation Data",
@@ -1176,21 +1104,6 @@
             "type": "object",
             "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
             "title": "sub aggregation"
-          }
-        }
-      },
-      "logFilterSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"FilterSubAggregation\"\nFilter subaggregation data",
-        "title": "FilterSubAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFilterSubFieldAggregationBucket"
-            }
           }
         }
       },
@@ -1235,43 +1148,6 @@
           "USER"
         ],
         "default": "ASN"
-      },
-      "logLogAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Log Aggregation\"\nLog aggregation response data",
-        "title": "LogAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logDateAggregationData"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/logMetricsAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
-          }
-        }
       },
       "logMaxAggregationData": {
         "type": "object",
@@ -1347,28 +1223,6 @@
             "items": {
               "$ref": "#/components/schemas/logMultiFieldAggregationBucket"
             }
-          }
-        }
-      },
-      "logMultiFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Multi Field SubAggregation\"\nField subaggregation data",
-        "title": "MultiFieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "top_hits_aggregation": {
-            "$ref": "#/components/schemas/logTopHitsAggregationData"
           }
         }
       },
@@ -1497,12 +1351,7 @@
         "type": "string",
         "description": "VoltShare Access metric can be sliced and diced based\non one or more labels listed below.\n",
         "title": "MetricLabel",
-        "enum": [
-          "OPERATION",
-          "RESULT",
-          "USER_TENANT",
-          "COUNTRY"
-        ],
+        "enum": ["OPERATION", "RESULT", "USER_TENANT", "COUNTRY"],
         "default": "OPERATION",
         "x-displayname": "VoltShare Access Metric Labels",
         "x-ves-proto-enum": "ves.io.schema.voltshare.metrics.VoltShareMetricLabel"
@@ -1533,10 +1382,7 @@
         "type": "string",
         "description": "The operator to use when querying VoltShare Access metrics with labels.\n",
         "title": "MetricLabelOp",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "VoltShare Access Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.voltshare.metrics.VoltShareMetricLabelOp"
@@ -1569,10 +1415,7 @@
         "type": "string",
         "description": "Sort algorithm\n\nSort in descending order\nSort in ascending order",
         "title": "SortOrder",
-        "enum": [
-          "DESCENDING",
-          "ASCENDING"
-        ],
+        "enum": ["DESCENDING", "ASCENDING"],
         "default": "DESCENDING",
         "x-displayname": "Sort Order",
         "x-ves-proto-enum": "ves.io.schema.SortOrder"
@@ -1581,11 +1424,7 @@
         "type": "string",
         "description": "x-displayName: \"Trend Sentiment\"\ntrend sentiment\n\n - TREND_SENTIMENT_NONE: x-displayName: \"None\"\n - TREND_SENTIMENT_POSITIVE: x-displayName: \"Positive\"\nIndicates trend sentiment is positive\n - TREND_SENTIMENT_NEGATIVE: x-displayName: \"Negative\"\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE"
       },
       "schemaTrendValue": {
@@ -2121,6 +1960,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "secret_management"
+    }
+  ]
 }

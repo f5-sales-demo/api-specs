@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.known_label",
     "description": "Known labels serves two purposes\n\nIts let users declare labels so that they can be consistently used across their namespaces. Declared labels can be used by the Web UI in drop down. Description field in the label lets everyone know what this label means.\n\nSystem allocates unique integer (ID) values for known labels. These ID(s) are used in Network Policy or Service Policy enforcement. Hence only Known labels can be used in Network Policy or L7 Policy.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{namespace}/known_label/create": {
@@ -129,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-known_label-customapi-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.known_label.CustomAPI.Create"
+        "x-ves-proto-rpc": "ves.io.schema.known_label.CustomAPI.Create",
+        "tags": ["config"]
       },
       "x-displayname": "Known Label",
       "x-ves-proto-service": "ves.io.schema.known_label.CustomAPI",
@@ -258,7 +264,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-known_label-customapi-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.known_label.CustomAPI.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.known_label.CustomAPI.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Known Label",
       "x-ves-proto-service": "ves.io.schema.known_label.CustomAPI",
@@ -380,12 +387,7 @@
             "x-displayname": "Label Key Prefix",
             "schema": {
               "type": "string",
-              "enum": [
-                "QUERY_ALL_LABELS",
-                "QUERY_EXACT_LABEL",
-                "QUERY_VALUE_PREFIX_LABELS",
-                "QUERY_KEY_PREFIX_LABELS"
-              ],
+              "enum": ["QUERY_ALL_LABELS", "QUERY_EXACT_LABEL", "QUERY_VALUE_PREFIX_LABELS", "QUERY_KEY_PREFIX_LABELS"],
               "default": "QUERY_ALL_LABELS"
             }
           },
@@ -414,7 +416,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-known_label-customapi-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.known_label.CustomAPI.Get"
+        "x-ves-proto-rpc": "ves.io.schema.known_label.CustomAPI.Get",
+        "tags": ["config"]
       },
       "x-displayname": "Known Label",
       "x-ves-proto-service": "ves.io.schema.known_label.CustomAPI",
@@ -564,19 +567,37 @@
             "x-ves-example": "ves-io-par"
           }
         }
-      },
-      "known_labelQueryType": {
-        "type": "string",
-        "description": "x-displayName: \"Query Type\"\nType of label query\n\n - QUERY_ALL_LABELS: x-displayName: \"All Labels\"\nGeneric Get of all available labels for a given tenant\n - QUERY_EXACT_LABEL: x-displayName: \"Exact Label\"\nGet exact match of label.key = label.value Or label.key(label.value)\n - QUERY_VALUE_PREFIX_LABELS: x-displayName: \"Label Value Prefix\"\nGet prefix match of label.key = label.value\n - QUERY_KEY_PREFIX_LABELS: x-displayName: \"Label Key Prefix\"\nGet prefix match of label.key",
-        "title": "QueryType",
-        "enum": [
-          "QUERY_ALL_LABELS",
-          "QUERY_EXACT_LABEL",
-          "QUERY_VALUE_PREFIX_LABELS",
-          "QUERY_KEY_PREFIX_LABELS"
-        ],
-        "default": "QUERY_ALL_LABELS"
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

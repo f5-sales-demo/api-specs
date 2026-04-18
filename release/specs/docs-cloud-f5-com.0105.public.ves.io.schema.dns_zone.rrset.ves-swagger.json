@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_zone.rrset",
     "description": "x-required\nAPIs to create, update or delete individual records of a DNS zone without having to send the whole DNS zone information.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/dns/namespaces/system/dns_zones/{dns_zone_name}/rrsets/{group_name}": {
@@ -138,7 +143,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-rrset-customapi-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.rrset.CustomAPI.Create"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.rrset.CustomAPI.Create",
+        "tags": ["config"]
       },
       "x-displayname": "F5XC DNS Management RRSet API",
       "x-ves-proto-service": "ves.io.schema.dns_zone.rrset.CustomAPI",
@@ -286,7 +292,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-rrset-customapi-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.rrset.CustomAPI.Get"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.rrset.CustomAPI.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete",
@@ -429,7 +436,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-rrset-customapi-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.rrset.CustomAPI.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.rrset.CustomAPI.Delete",
+        "tags": ["config"]
       },
       "put": {
         "summary": "Replace",
@@ -582,7 +590,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-rrset-customapi-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.rrset.CustomAPI.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.rrset.CustomAPI.Replace",
+        "tags": ["config"]
       },
       "x-displayname": "F5XC DNS Management RRSet API",
       "x-ves-proto-service": "ves.io.schema.dns_zone.rrset.CustomAPI",
@@ -597,11 +606,7 @@
         "type": "string",
         "description": "AFS Volume Location Server or DCE Authentication Server.\n\n - NONE: NONE\n\n - AFSVolumeLocationServer: AFS Volume Location Server\n\n - DCEAuthenticationServer: DCE Authentication Server\n",
         "title": "AFSDB Record Subtype",
-        "enum": [
-          "NONE",
-          "AFSVolumeLocationServer",
-          "DCEAuthenticationServer"
-        ],
+        "enum": ["NONE", "AFSVolumeLocationServer", "DCEAuthenticationServer"],
         "default": "NONE",
         "x-displayname": "AFSDB Record Subtype",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.AFSDBRecordSubtype"
@@ -788,26 +793,6 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "1024",
               "ves.io.schema.rules.string.min_len": "1"
-            }
-          }
-        }
-      },
-      "dns_zoneDLVResourceRecord": {
-        "type": "object",
-        "description": "x-displayName: \"DNS DLV Record\"\nDNS DLV Record",
-        "title": "DLVResourceRecord",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Record Name (Excluding Domain name)\"\nx-example: \"www or mail or * or ww* or *ab\"\nDLV Record name, please provide only the specific subdomain or record name without the base domain.",
-            "title": "Record Name"
-          },
-          "values": {
-            "type": "array",
-            "description": "x-displayName: \"DLV Value\"\nx-example: \"values\"\nx-required\nIt uses the same format as the DS record.",
-            "title": "DLV Value",
-            "items": {
-              "$ref": "#/components/schemas/dns_zoneDSRecordValue"
             }
           }
         }
@@ -1633,10 +1618,7 @@
         "type": "string",
         "description": "Latitude hemisphere can only be N or S\n\n - N: North Hemisphere\n\n - S: South Hemisphere\n",
         "title": "Latitude Hemisphere",
-        "enum": [
-          "N",
-          "S"
-        ],
+        "enum": ["N", "S"],
         "default": "N",
         "x-displayname": "Latitude hemisphere",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.LatitudeHemisphere"
@@ -1645,10 +1627,7 @@
         "type": "string",
         "description": "Longitude hemisphere can only be E or W\n\n - E: East Hemisphere\n\n - W: West Hemisphere\n",
         "title": "Longitude Hemisphere",
-        "enum": [
-          "E",
-          "W"
-        ],
+        "enum": ["E", "W"],
         "default": "E",
         "x-displayname": "Longitude hemisphere",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.LongitudeHemisphere"
@@ -2023,28 +2002,10 @@
         "type": "string",
         "description": "SSHFP algorithm value must be compatible with the specified algorithm.\n\n - UNSPECIFIEDALGORITHM: UNSPECIFIEDALGORITHM\n\n - RSA: RSA\n\n - DSA: DSA\n\n - ECDSA: ECDSA\n\n - Ed25519: Ed25519\n\n - Ed448: Ed448\n",
         "title": "SSHFP Algorithm",
-        "enum": [
-          "UNSPECIFIEDALGORITHM",
-          "RSA",
-          "DSA",
-          "ECDSA",
-          "Ed25519",
-          "Ed448"
-        ],
+        "enum": ["UNSPECIFIEDALGORITHM", "RSA", "DSA", "ECDSA", "Ed25519", "Ed448"],
         "default": "UNSPECIFIEDALGORITHM",
         "x-displayname": "SSHFP Algorithm",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.SSHFPAlgorithm"
-      },
-      "dns_zoneSSHFPFingerprintType": {
-        "type": "string",
-        "description": "x-displayName: \"SSHFP Fingerprint Type\"\nSSHFP Fingerprint Type must be compatible with the specified values.\n\n - INVALIDFINGERPRINTTYPE: INVALIDFINGERPRINTTYPE\n\nx-displayName: \"Invalid Fingerprint Type\"\n - SHA1ALGORITHM: SHA1ALGORITHM\n\nx-displayName: \"SHA1\"\n - SHA256ALGORITHM: SHA256ALGORITHM\n\nx-displayName: \"SHA256\"",
-        "title": "SSHFP Fingerprint Type",
-        "enum": [
-          "INVALIDFINGERPRINTTYPE",
-          "SHA1ALGORITHM",
-          "SHA256ALGORITHM"
-        ],
-        "default": "INVALIDFINGERPRINTTYPE"
       },
       "dns_zoneSSHFPRecordValue": {
         "type": "object",
@@ -2105,10 +2066,7 @@
         "type": "string",
         "description": "\n - FullCertificate: Full Certificate\n\n - UseSubjectPublicKey: Use Subject Public Key\n",
         "title": "TLSA Record Selector",
-        "enum": [
-          "FullCertificate",
-          "UseSubjectPublicKey"
-        ],
+        "enum": ["FullCertificate", "UseSubjectPublicKey"],
         "default": "FullCertificate",
         "x-displayname": "TLSA Record Selector",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.TLSARecordCSelector"
@@ -2131,11 +2089,7 @@
         "type": "string",
         "description": "\n - NoHash: No Hash\n\n - SHA256: SHA-256\n\n - SHA512: SHA-512\n",
         "title": "TLSA Record Matching Type",
-        "enum": [
-          "NoHash",
-          "SHA256",
-          "SHA512"
-        ],
+        "enum": ["NoHash", "SHA256", "SHA512"],
         "default": "NoHash",
         "x-displayname": "TLSA Record Matching Type",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.TLSARecordMatchingType"
@@ -2383,6 +2337,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

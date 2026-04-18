@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.route",
     "description": "route object is used to configuring L7 routing decision. route is made of three things\n1. Match condition for incoming request\n2. Actions to take if match is true\n3. Whether custom java script processing is enabled for this route match.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/routes": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-route-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.route.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.route.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Route",
       "x-ves-proto-service": "ves.io.schema.route.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-route-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.route.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.route.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Route",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-route-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.route.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.route.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Route",
       "x-ves-proto-service": "ves.io.schema.route.API",
@@ -967,12 +975,7 @@
         "type": "string",
         "description": "x-displayName: \"HTML Position\"\nPosition of the HTML tag to insert in HTML document\n\n - BEGINNING: x-displayName: \"Beginning of HTML tag\"\nBeginning of HTML tag.\n - END: x-displayName: \"End of HTML tag\"\nEnd of HTML tag.\n - BEFORE: x-displayName: \"Before HTML tag\"\nBefore HTML tag.\n - AFTER: x-displayName: \"After HTML tag\"\nAfter HTML tag.",
         "title": "HTMLPosition",
-        "enum": [
-          "BEGINNING",
-          "END",
-          "BEFORE",
-          "AFTER"
-        ],
+        "enum": ["BEGINNING", "END", "BEFORE", "AFTER"],
         "default": "BEGINNING"
       },
       "protobufAny": {
@@ -1017,38 +1020,6 @@
               "ves.io.schema.rules.repeated.min_items": "1",
               "ves.io.schema.rules.repeated.unique": "true"
             }
-          }
-        }
-      },
-      "routeContentRewriteType": {
-        "type": "object",
-        "description": "x-displayName: \"Content Rewrite Type\"\nRewrite HTML response to insert HTML content such as Javascript <script> tags into the HTML document",
-        "title": "ContentRewriteType",
-        "properties": {
-          "element_selector": {
-            "type": "string",
-            "description": "x-displayName: \"Element selector to rewrite\"\nx-example: \"value\"\nx-required\nElement selector to insert into.",
-            "title": "Element selector"
-          },
-          "insert_content": {
-            "type": "string",
-            "description": "x-displayName: \"HTML Content to insert\"\nx-example: \"value\"\nHTML content to insert.",
-            "title": "Insert Content"
-          },
-          "position": {
-            "$ref": "#/components/schemas/policyHTMLPosition"
-          }
-        }
-      },
-      "routeContextExtensionInfo": {
-        "type": "object",
-        "description": "x-displayName: \"Context Extension Configuration\"\nContext Extension Configuration details",
-        "title": "ContextExtensionInfo",
-        "properties": {
-          "context_extensions": {
-            "type": "object",
-            "description": "x-displayName: \"Context Extensions\"\nx-example: \"value\"\nprovide extra context for the external authorization server on specific virtual hosts or routes.",
-            "title": "context_extensions"
           }
         }
       },
@@ -1238,21 +1209,6 @@
           }
         }
       },
-      "routeGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "routeHashPolicyType": {
         "type": "object",
         "description": "HashPolicyType specifies the field of the incoming request that will be used for\ngenerating hash key. When multiple hash policies are configured, this can also specify\nif the current hash policy is terminal policy or not.",
@@ -1297,11 +1253,7 @@
         "type": "string",
         "description": "All inside networks.\n\nInsert JavaScript after <head> tag\nInsert JavaScript after </title> tag.\nInsert JavaScript before first <script> tag",
         "title": "JavaScriptLocation",
-        "enum": [
-          "AFTER_HEAD",
-          "AFTER_TITLE_END",
-          "BEFORE_SCRIPT"
-        ],
+        "enum": ["AFTER_HEAD", "AFTER_TITLE_END", "BEFORE_SCRIPT"],
         "default": "AFTER_HEAD",
         "x-displayname": "JavaScript Location",
         "x-ves-proto-enum": "ves.io.schema.route.JavaScriptLocation"
@@ -1743,21 +1695,6 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.uint32.gte": "100",
               "ves.io.schema.rules.uint32.lte": "599"
-            }
-          }
-        }
-      },
-      "routeRouteQueryParams": {
-        "type": "object",
-        "description": "x-displayName: \"Query Parameters\"\nQuery params keys to strip while manipulating the HTTP request",
-        "title": "RouteQueryParams",
-        "properties": {
-          "query_params": {
-            "type": "array",
-            "description": "x-displayName: \"Query Parameters\"\nx-example: \"userid\"\nQuery params keys to strip while manipulating the HTTP request",
-            "title": "query_params",
-            "items": {
-              "type": "string"
             }
           }
         }
@@ -2524,11 +2461,7 @@
         "type": "string",
         "description": "Denominator used in fraction where sampling percentages are needed. example sampled requests\n\nUse hundred as denominator\nUse ten thousand as denominator\nUse million as denominator",
         "title": "DenominatorType",
-        "enum": [
-          "HUNDRED",
-          "TEN_THOUSAND",
-          "MILLION"
-        ],
+        "enum": ["HUNDRED", "TEN_THOUSAND", "MILLION"],
         "default": "HUNDRED",
         "x-displayname": "Denominator",
         "x-ves-proto-enum": "ves.io.schema.DenominatorType"
@@ -2679,19 +2612,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -3110,10 +3031,7 @@
         "type": "string",
         "description": "Priority routing for each request.\nDifferent connection pools are used based on the priority selected for the request.\nAlso, circuit-breaker configuration at destination cluster is chosen based on selected priority.\n\nDefault routing mechanism\nHigh-Priority routing mechanism",
         "title": "RoutingPriority",
-        "enum": [
-          "DEFAULT",
-          "HIGH"
-        ],
+        "enum": ["DEFAULT", "HIGH"],
         "default": "DEFAULT",
         "x-displayname": "Routing Priority",
         "x-ves-proto-enum": "ves.io.schema.RoutingPriority"
@@ -3122,10 +3040,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -3348,10 +3263,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -3476,37 +3388,6 @@
           }
         }
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -3560,18 +3441,6 @@
           },
           "inherit_waf": {
             "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
           }
         }
       },
@@ -3690,6 +3559,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

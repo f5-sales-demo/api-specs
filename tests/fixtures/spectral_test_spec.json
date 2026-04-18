@@ -6,6 +6,8 @@
     "contact": { "name": "Test" }
   },
   "servers": [{ "url": "https://example.com" }],
+  "security": [{ "apiKeyAuth": [] }],
+  "tags": [{ "name": "config" }, { "name": "bad" }],
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/resources": {
       "post": {
@@ -49,16 +51,32 @@
       "get": {
         "operationId": "getBadItem",
         "tags": ["bad"],
-        "description": "Missing item_id parameter declaration",
+        "description": "Get an item by ID",
         "parameters": [
           {
             "name": "namespace",
             "in": "path",
             "required": true,
             "schema": { "type": "string" }
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
           }
         ],
         "responses": { "200": { "description": "OK" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "API Token"
       }
     }
   }

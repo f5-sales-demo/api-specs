@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.observability.synthetic_monitor.v1_dns_monitor",
     "description": "\nDNS Monitor defines a DNS synthetic monitor.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/observability/synthetic_monitor/namespaces/{metadata.namespace}/v1_dns_monitors": {
@@ -429,7 +434,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-v1_dns_monitor-customapi-getfiltereddnsmonitorlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.CustomAPI.GetFilteredDNSMonitorList"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.CustomAPI.GetFilteredDNSMonitorList",
+        "tags": ["observability"]
       },
       "x-displayname": "DNS Monitor",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.CustomAPI",
@@ -586,7 +592,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-v1_dns_monitor-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.API.List",
+        "tags": ["observability"]
       },
       "x-displayname": "DNS Monitor",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.API",
@@ -735,7 +742,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-v1_dns_monitor-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.API.Get",
+        "tags": ["observability"]
       },
       "delete": {
         "summary": "Delete DNS Monitor",
@@ -867,7 +875,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-observability-synthetic_monitor-v1_dns_monitor-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.API.Delete",
+        "tags": ["observability"]
       },
       "x-displayname": "DNS Monitor",
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.API",
@@ -1405,10 +1414,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1788,12 +1794,7 @@
         "type": "string",
         "description": "\n - EVAL_PERIOD_3_MINS: EVAL_PERIOD_3_MINS\n\n - EVAL_PERIOD_5_MINS: EVAL_PERIOD_5_MINS\n\n - EVAL_PERIOD_10_MINS: EVAL_PERIOD_10_MINS\n\n - EVAL_PERIOD_15_MINS: EVAL_PERIOD_15_MINS\n",
         "title": "EvalPeriod",
-        "enum": [
-          "EVAL_PERIOD_3_MINS",
-          "EVAL_PERIOD_5_MINS",
-          "EVAL_PERIOD_10_MINS",
-          "EVAL_PERIOD_15_MINS"
-        ],
+        "enum": ["EVAL_PERIOD_3_MINS", "EVAL_PERIOD_5_MINS", "EVAL_PERIOD_10_MINS", "EVAL_PERIOD_15_MINS"],
         "default": "EVAL_PERIOD_3_MINS",
         "x-displayname": "Evaluation Period",
         "x-ves-proto-enum": "ves.io.schema.observability.synthetic_monitor.EvalPeriod"
@@ -1963,12 +1964,7 @@
         "type": "string",
         "description": "\n - STD_DEV_VAL_3: STD_DEV_VAL_3\n\n - STD_DEV_VAL_4: STD_DEV_VAL_4\n\n - STD_DEV_VAL_5: STD_DEV_VAL_5\n\n - STD_DEV_VAL_6: STD_DEV_VAL_6\n",
         "title": "StdDevVal",
-        "enum": [
-          "STD_DEV_VAL_3",
-          "STD_DEV_VAL_4",
-          "STD_DEV_VAL_5",
-          "STD_DEV_VAL_6"
-        ],
+        "enum": ["STD_DEV_VAL_3", "STD_DEV_VAL_4", "STD_DEV_VAL_5", "STD_DEV_VAL_6"],
         "default": "STD_DEV_VAL_3",
         "x-displayname": "Standard Deviation Value",
         "x-ves-proto-enum": "ves.io.schema.observability.synthetic_monitor.StdDevVal"
@@ -2276,21 +2272,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "v1_dns_monitorGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "v1_dns_monitorGetSpecType": {
         "type": "object",
@@ -2994,6 +2975,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "observability"
+    }
+  ]
 }

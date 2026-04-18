@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.reporting",
     "description": "Use this API to generate reports for Shape Bot Defense",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/bot/namespaces/system/reporting/peers/check": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-peerstatuscheck"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeerStatusCheck"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeerStatusCheck",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -246,7 +252,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-atbstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ATBStatus"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ATBStatus",
+        "tags": ["shape"]
       },
       "post": {
         "summary": "ATB",
@@ -370,7 +377,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-atb"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ATB"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ATB",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -509,7 +517,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-consumptionsummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ConsumptionSummary"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ConsumptionSummary",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -631,7 +640,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-endpointcategories"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointCategories"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointCategories",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -763,7 +773,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-endpointcategorieslabel"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointCategoriesLabel"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointCategoriesLabel",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -885,7 +896,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-endpointlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointList"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointList",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -1007,7 +1019,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-endpointsummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointSummary"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointSummary",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -1129,7 +1142,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-reportendpoints"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ReportEndpoints"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ReportEndpoints",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -1251,7 +1265,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-credentialstuffingattack"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.CredentialStuffingAttack"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.CredentialStuffingAttack",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -1373,7 +1388,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-insightbadbotreduction"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.InsightBadBotReduction"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.InsightBadBotReduction",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -1495,7 +1511,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-insightunaddressedautomations"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.InsightUnaddressedAutomations"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.InsightUnaddressedAutomations",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -1617,7 +1634,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-insightpersonalstats"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.InsightPersonalStats"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.InsightPersonalStats",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -1739,7 +1757,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-totalautomation"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TotalAutomation"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TotalAutomation",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -1861,7 +1880,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreportendpoints"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportEndpoints"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportEndpoints",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -1983,7 +2003,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsasn"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsASN"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsASN",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -2105,7 +2126,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsbrowser"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsBrowser"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsBrowser",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -2227,7 +2249,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsip"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsIP"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsIP",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -2349,7 +2372,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsos"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsOS"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsOS",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -2471,7 +2495,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsua"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsUA"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsUA",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -2593,7 +2618,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topattackedendpoints"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpoints"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpoints",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -2715,7 +2741,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-toplatencyoverview"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopLatencyOverview"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopLatencyOverview",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -2837,7 +2864,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-toplatencyoverviewapps"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopLatencyOverviewApps"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopLatencyOverviewApps",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -2959,7 +2987,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyasorg"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByASOrg"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByASOrg",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -3081,7 +3110,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topautomationtypes"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAutomationTypes"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAutomationTypes",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -3203,7 +3233,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyip"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByIP"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByIP",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -3325,7 +3356,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyua"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByUA"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByUA",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -3447,7 +3479,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-toptransactionsbyapp"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopTransactionsByApp"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopTransactionsByApp",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -3569,7 +3602,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topcategories"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopCategories"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopCategories",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -3691,7 +3725,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topendpointlabels"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopEndpointLabels"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopEndpointLabels",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -3813,7 +3848,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topgoodbots"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopGoodBots"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopGoodBots",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -3935,7 +3971,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-tophumanbrowser"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanBrowser"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanBrowser",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -4057,7 +4094,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-tophumandevice"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanDevice"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanDevice",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -4179,7 +4217,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-tophumangeolocation"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanGeolocation"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanGeolocation",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -4301,7 +4340,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-tophumanplatform"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanPlatform"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanPlatform",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -4423,7 +4463,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyapp"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByApp"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByApp",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -4545,7 +4586,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreportapptimeseries"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportAPPTimeSeries"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportAPPTimeSeries",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -4667,7 +4709,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyasorgv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByASOrgV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByASOrgV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -4799,7 +4842,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsattackintentbyasorg"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByASOrg"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByASOrg",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -4921,7 +4965,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotbyattackintent"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotByAttackIntent"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotByAttackIntent",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -5043,7 +5088,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topautomationtypesv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAutomationTypesV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAutomationTypesV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -5165,7 +5211,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topattackedbfp"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedBFP"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedBFP",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -5287,7 +5334,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topattackedendpointsv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpointsV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpointsV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -5409,7 +5457,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyipv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByIPV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByIPV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -5541,7 +5590,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsattackintentbyip"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByIP"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByIP",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -5663,7 +5713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyuav2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByUAV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByUAV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -5795,7 +5846,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsattackintentbyua"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByUA"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByUA",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -5917,7 +5969,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-attackintenttimeseries"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.AttackIntentTimeSeries"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.AttackIntentTimeSeries",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -6039,7 +6092,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-categoriestimeseries"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.CategoriesTimeSeries"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.CategoriesTimeSeries",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -6161,7 +6215,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousattackintenttimeseries"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousAttackIntentTimeSeries"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousAttackIntentTimeSeries",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -6283,7 +6338,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-malicioustrafficoverviewactions"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficOverviewActions"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficOverviewActions",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -6405,7 +6461,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-malicioustrafficoverviewmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficOverviewMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficOverviewMetrics",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -6527,7 +6584,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-malicioustraffictimeseriesactions"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficTimeseriesActions"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficTimeseriesActions",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -6649,7 +6707,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverview"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverview"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverview",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -6771,7 +6830,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewexpanded"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpanded"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpanded",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -6893,7 +6953,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewtimeseries"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewTimeseries"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewTimeseries",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -7032,7 +7093,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-transactionusagesummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TransactionUsageSummary"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TransactionUsageSummary",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -7161,7 +7223,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-forensicfields"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ForensicFields"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.ForensicFields",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -7283,7 +7346,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-automatedtrafficactions"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.AutomatedTrafficActions"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.AutomatedTrafficActions",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -7405,7 +7469,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-endpointsummaryv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointSummaryV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.EndpointSummaryV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -7527,7 +7592,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreportendpointsv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportEndpointsV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportEndpointsV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -7649,7 +7715,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsasnv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsASNV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsASNV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -7771,7 +7838,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsbrowserv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsBrowserV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsBrowserV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -7893,7 +7961,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsipv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsIPV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsIPV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -8015,7 +8084,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsosv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsOSV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsOSV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -8137,7 +8207,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreporttransactionsuav2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsUAV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportTransactionsUAV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -8259,7 +8330,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topgoodbotsv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopGoodBotsV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopGoodBotsV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -8381,7 +8453,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-tophumanbrowserv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanBrowserV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanBrowserV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -8503,7 +8576,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-tophumandevicev2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanDeviceV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanDeviceV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -8625,7 +8699,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-tophumangeolocationv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanGeolocationV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanGeolocationV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -8747,7 +8822,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-tophumanplatformv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanPlatformV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopHumanPlatformV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -8869,7 +8945,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousreportapptimeseriesv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportAPPTimeSeriesV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousReportAPPTimeSeriesV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -9001,7 +9078,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsattackintentbyasorgv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByASOrgV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByASOrgV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -9123,7 +9201,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotbyattackintentv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotByAttackIntentV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotByAttackIntentV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -9245,7 +9324,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topattackedendpointsv3"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpointsV3"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpointsV3",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -9377,7 +9457,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsattackintentbyipv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByIPV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByIPV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -9509,7 +9590,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsattackintentbyuav2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByUAV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsAttackIntentByUAV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -9631,7 +9713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-maliciousattackintenttimeseriesv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousAttackIntentTimeSeriesV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousAttackIntentTimeSeriesV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -9753,7 +9836,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-malicioustrafficoverviewactionsv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficOverviewActionsV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficOverviewActionsV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -9875,7 +9959,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-malicioustrafficoverviewmetricsv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficOverviewMetricsV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficOverviewMetricsV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -9997,7 +10082,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-malicioustraffictimeseriesactionsv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficTimeseriesActionsV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.MaliciousTrafficTimeseriesActionsV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -10119,7 +10205,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -10241,7 +10328,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewexpandedv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpandedV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpandedV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -10363,7 +10451,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewtimeseriesv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewTimeseriesV2"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewTimeseriesV2",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -10485,7 +10574,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topgoodbotsv3"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopGoodBotsV3"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopGoodBotsV3",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -10607,7 +10697,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyasorgv3"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByASOrgV3"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByASOrgV3",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -10729,7 +10820,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topautomationtypesv3"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAutomationTypesV3"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAutomationTypesV3",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -10851,7 +10943,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyipv3"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByIPV3"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByIPV3",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -10973,7 +11066,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyuav3"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByUAV3"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByUAV3",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -11095,7 +11189,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewv3"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewV3"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewV3",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -11217,7 +11312,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewexpandedv3"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpandedV3"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpandedV3",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -11339,7 +11435,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewtimeseriesv3"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewTimeseriesV3"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewTimeseriesV3",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -11461,7 +11558,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topattackedendpointsv4"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpointsV4"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpointsV4",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -11583,7 +11681,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topmaliciousbotsbyuav4"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByUAV4"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopMaliciousBotsByUAV4",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -11705,7 +11804,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewexpandedv4"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpandedV4"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpandedV4",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -11834,7 +11934,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewtimeseriesv4"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewTimeseriesV4"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewTimeseriesV4",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -11956,7 +12057,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-topattackedendpointsv5"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpointsV5"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TopAttackedEndpointsV5",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -12085,7 +12187,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-trafficoverviewexpandedv5"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpandedV5"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.TrafficOverviewExpandedV5",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -12195,7 +12298,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-peersthreattypes"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeersThreatTypes"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeersThreatTypes",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -12305,7 +12409,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-peerstopgoodbots"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeersTopGoodBots"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeersTopGoodBots",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -12415,7 +12520,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-peerstopreasoncodes"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeersTopReasonCodes"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeersTopReasonCodes",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -12525,7 +12631,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-peerstrafficoverview"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeersTrafficOverview"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.reporting.CustomAPI.PeersTrafficOverview",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape Bot Defense Reporting API",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
@@ -12602,12 +12709,7 @@
         "type": "string",
         "description": "Defines a selection for Bot Defense region\n\n - US: US\n\nUnited States of America\n - EU: EU\n\nEuropean Union\n - ASIA: ASIA\n\nAsia\n - CA: CA\n\nCanada",
         "title": "BotDefenseRegion",
-        "enum": [
-          "US",
-          "EU",
-          "ASIA",
-          "CA"
-        ],
+        "enum": ["US", "EU", "ASIA", "CA"],
         "default": "US",
         "x-displayname": "Bot Defense Region",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.protected_application.BotDefenseRegion"
@@ -14298,10 +14400,7 @@
         "type": "string",
         "description": "x-example: \"aggregate\"\nForensic Mode Types\n\n - AGGREGATE: Aggregate Mode\n\nUse Aggregate Mode as key to query\n - SUGGEST: Suggest Mode\n\nUse Suggest Mode as key to query",
         "title": "Forensic Mode Types",
-        "enum": [
-          "AGGREGATE",
-          "SUGGEST"
-        ],
+        "enum": ["AGGREGATE", "SUGGEST"],
         "default": "AGGREGATE",
         "x-displayname": "Forensic Mode Types",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.reporting.ForensicModeTypes"
@@ -18544,14 +18643,41 @@
         "type": "string",
         "description": "Sort algorithm\n\nSort in descending order\nSort in ascending order",
         "title": "SortOrder",
-        "enum": [
-          "DESCENDING",
-          "ASCENDING"
-        ],
+        "enum": ["DESCENDING", "ASCENDING"],
         "default": "DESCENDING",
         "x-displayname": "Sort Order",
         "x-ves-proto-enum": "ves.io.schema.SortOrder"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

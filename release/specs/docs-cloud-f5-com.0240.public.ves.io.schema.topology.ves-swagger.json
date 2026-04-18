@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.topology",
     "description": "APIs to get topology of all the resources associated/connected to a site such as other CEs (Customer Edge),\nREs (Regional Edge), VPCs (Virtual Private Cloud) networks, etc., and the associated metrics. Relationship between\nthe resources associated with a site is represented as a graph, where each resource/entity is represented as a node\n(example: CE, RE, VPC, Subnet, etc.,) and their association is represented as edge (example: CE - RE connection,\nNetwork - Subnets association, etc.,)",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/data/namespaces/system/topology/dc_cluster_group/{dc_cluster_group}": {
@@ -129,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-topology-customdataapi-dcclustertopology"
         },
-        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.DCClusterTopology"
+        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.DCClusterTopology",
+        "tags": ["data"]
       },
       "x-displayname": "Topology",
       "x-ves-proto-service": "ves.io.schema.topology.CustomDataAPI",
@@ -236,7 +242,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-topology-customdataapi-dcclustergroupssummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.DCClusterGroupsSummary"
+        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.DCClusterGroupsSummary",
+        "tags": ["data"]
       },
       "x-displayname": "Topology",
       "x-ves-proto-service": "ves.io.schema.topology.CustomDataAPI",
@@ -421,7 +428,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-topology-customdataapi-getnetworkroutetables"
         },
-        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.GetNetworkRouteTables"
+        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.GetNetworkRouteTables",
+        "tags": ["data"]
       },
       "x-displayname": "Topology",
       "x-ves-proto-service": "ves.io.schema.topology.CustomDataAPI",
@@ -540,7 +548,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-topology-customdataapi-getroutetable"
         },
-        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.GetRouteTable"
+        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.GetRouteTable",
+        "tags": ["data"]
       },
       "x-displayname": "Topology",
       "x-ves-proto-service": "ves.io.schema.topology.CustomDataAPI",
@@ -659,7 +668,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-topology-customdataapi-getsitenetworks"
         },
-        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.GetSiteNetworks"
+        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.GetSiteNetworks",
+        "tags": ["data"]
       },
       "x-displayname": "Topology",
       "x-ves-proto-service": "ves.io.schema.topology.CustomDataAPI",
@@ -788,7 +798,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-topology-customdataapi-sitetopology"
         },
-        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.SiteTopology"
+        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.SiteTopology",
+        "tags": ["data"]
       },
       "x-displayname": "Topology",
       "x-ves-proto-service": "ves.io.schema.topology.CustomDataAPI",
@@ -917,7 +928,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-topology-customdataapi-sitemeshtopology"
         },
-        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.SiteMeshTopology"
+        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.SiteMeshTopology",
+        "tags": ["data"]
       },
       "x-displayname": "Topology",
       "x-ves-proto-service": "ves.io.schema.topology.CustomDataAPI",
@@ -1024,7 +1036,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-topology-customdataapi-sitemeshgroupssummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.SiteMeshGroupsSummary"
+        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.SiteMeshGroupsSummary",
+        "tags": ["data"]
       },
       "x-displayname": "Topology",
       "x-ves-proto-service": "ves.io.schema.topology.CustomDataAPI",
@@ -1171,7 +1184,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-topology-customdataapi-gettgwroutetables"
         },
-        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.GetTGWRouteTables"
+        "x-ves-proto-rpc": "ves.io.schema.topology.CustomDataAPI.GetTGWRouteTables",
+        "tags": ["data"]
       },
       "x-displayname": "Topology",
       "x-ves-proto-service": "ves.io.schema.topology.CustomDataAPI",
@@ -1357,11 +1371,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -1507,12 +1517,7 @@
         "type": "string",
         "description": "Site Type which can either RE or CE\n\nInvalid type of site\nRegional Edge site\nCustomer Edge site",
         "title": "SiteType",
-        "enum": [
-          "INVALID",
-          "REGIONAL_EDGE",
-          "CUSTOMER_EDGE",
-          "NGINX_ONE"
-        ],
+        "enum": ["INVALID", "REGIONAL_EDGE", "CUSTOMER_EDGE", "NGINX_ONE"],
         "default": "INVALID",
         "x-displayname": "Site Type",
         "x-ves-proto-enum": "ves.io.schema.site.SiteType"
@@ -1789,11 +1794,7 @@
         "type": "string",
         "description": "Active/Backup state for the interface\n\nUnknown state\nInterface in active state\nInterface in backup state",
         "title": "Active State",
-        "enum": [
-          "STATE_UNKNOWN",
-          "STATE_ACTIVE",
-          "STATE_BACKUP"
-        ],
+        "enum": ["STATE_UNKNOWN", "STATE_ACTIVE", "STATE_BACKUP"],
         "default": "STATE_UNKNOWN",
         "x-displayname": "Active State",
         "x-ves-proto-enum": "ves.io.schema.site.ActiveState"
@@ -1802,10 +1803,7 @@
         "type": "string",
         "description": "AddressMode identifies the mode of address assignment on an interface\n\n - STATIC: Static\n\nInterface Address is assigned statically\n - DHCP: DHCP\n\nInterface Address is obtained via DHCP",
         "title": "Interface Address Mode",
-        "enum": [
-          "STATIC",
-          "DHCP"
-        ],
+        "enum": ["STATIC", "DHCP"],
         "default": "STATIC",
         "x-displayname": "AddressMode",
         "x-ves-proto-enum": "ves.io.schema.site.AddressMode"
@@ -1914,12 +1912,7 @@
         "type": "string",
         "description": "Link quality determined by VER using different probes\n\nUnknown quality\nLink quality is good\nLink quality is poor\nQuality disabled",
         "title": "Link quality",
-        "enum": [
-          "QUALITY_UNKNOWN",
-          "QUALITY_GOOD",
-          "QUALITY_POOR",
-          "QUALITY_DISABLED"
-        ],
+        "enum": ["QUALITY_UNKNOWN", "QUALITY_GOOD", "QUALITY_POOR", "QUALITY_DISABLED"],
         "default": "QUALITY_UNKNOWN",
         "x-displayname": "Link quality",
         "x-ves-proto-enum": "ves.io.schema.site.LinkQuality"
@@ -2369,10 +2362,7 @@
         "type": "string",
         "description": "Gateway Type\n\n - INGRESS_GATEWAY: Ingress gateway\n\nIngress gateway (single nic)\n - INGRESS_EGRESS_GATEWAY: Ingress and Egress gateway\n\nIngress and Egress gateway (dual nic)",
         "title": "GatewayType",
-        "enum": [
-          "INGRESS_GATEWAY",
-          "INGRESS_EGRESS_GATEWAY"
-        ],
+        "enum": ["INGRESS_GATEWAY", "INGRESS_EGRESS_GATEWAY"],
         "default": "INGRESS_GATEWAY",
         "x-displayname": "Gateway type",
         "x-ves-proto-enum": "ves.io.schema.topology.GatewayTypeEnum"
@@ -2469,12 +2459,7 @@
         "type": "string",
         "description": " - INSIDE: INSIDE Interface\n\n - WORKLOAD: Workload Interface\n\n - NOT_APPLICABLE: NOT_APPLICABLE\n\nEx - When the subnet belongs to a azure spoke vnet",
         "title": "- OUTSIDE: OUTSIDE Interface",
-        "enum": [
-          "OUTSIDE",
-          "INSIDE",
-          "WORKLOAD",
-          "NOT_APPLICABLE"
-        ],
+        "enum": ["OUTSIDE", "INSIDE", "WORKLOAD", "NOT_APPLICABLE"],
         "default": "OUTSIDE",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.topology.InterfaceTypeEnum"
@@ -3209,44 +3194,10 @@
         "type": "string",
         "description": "Orchestration mode of a given site\n\n - NOT_MANAGED: Unmanaged mode\n\nUnmanaged mode\n - MANAGED: Managed mode\n\nManaged mode",
         "title": "Orchestration Mode",
-        "enum": [
-          "NOT_MANAGED",
-          "MANAGED"
-        ],
+        "enum": ["NOT_MANAGED", "MANAGED"],
         "default": "NOT_MANAGED",
         "x-displayname": "Orchestration Mode",
         "x-ves-proto-enum": "ves.io.schema.topology.OrchestrationMode"
-      },
-      "topologyProviderInfo": {
-        "type": "object",
-        "description": "x-displayName: \"Provider Info\"\nCloud provider information",
-        "title": "ProviderInfo",
-        "properties": {
-          "azure_rg_info": {
-            "$ref": "#/components/schemas/topologyAzureResourceGroupInfo"
-          },
-          "cloud_link": {
-            "type": "array",
-            "description": "x-displayName: \"Cloud Link\"\nReference to cloud link",
-            "title": "Cloud Link",
-            "items": {
-              "$ref": "#/components/schemas/ioschemaObjectRefType"
-            }
-          },
-          "gcp_zones": {
-            "type": "array",
-            "description": "x-displayName: \"GCP Zones\"\nGCP Zones for the resource",
-            "title": "GCP Zones",
-            "items": {
-              "type": "string"
-            }
-          },
-          "region": {
-            "type": "string",
-            "description": "x-displayName: \"Region\"\nRegion in which the resource exists",
-            "title": "Region"
-          }
-        }
       },
       "topologyProviderType": {
         "type": "string",
@@ -3496,10 +3447,7 @@
         "type": "string",
         "description": "Route table backend.\n\nRoute table for network\nRoute Table for transit gateway",
         "title": "RouteTableTypeEnum",
-        "enum": [
-          "ROUTE_TABLE_NETWORK",
-          "ROUTE_TABLE_TGW"
-        ],
+        "enum": ["ROUTE_TABLE_NETWORK", "ROUTE_TABLE_TGW"],
         "default": "ROUTE_TABLE_NETWORK",
         "x-displayname": "Route Table Type",
         "x-ves-proto-enum": "ves.io.schema.topology.RouteTableTypeEnum"
@@ -3551,11 +3499,7 @@
         "type": "string",
         "description": "Site App Type\n\n - SITE_APPTYPE_NONE: Not applicable \n\nNot applicable\n - SITE_APPTYPE_APPSTACK: AppStack Site\n\nAppStack Site\n - SITE_APPTYPE_MESH: Mesh site \n\nMesh site",
         "title": "Site App Type",
-        "enum": [
-          "SITE_APPTYPE_NONE",
-          "SITE_APPTYPE_APPSTACK",
-          "SITE_APPTYPE_MESH"
-        ],
+        "enum": ["SITE_APPTYPE_NONE", "SITE_APPTYPE_APPSTACK", "SITE_APPTYPE_MESH"],
         "default": "SITE_APPTYPE_NONE",
         "x-displayname": "Site App type",
         "x-ves-proto-enum": "ves.io.schema.topology.SiteAppTypeEnum"
@@ -3953,6 +3897,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    }
+  ]
 }

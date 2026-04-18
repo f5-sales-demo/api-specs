@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_lb_pool",
     "description": "DNS Load Balancer Pool  object is used for configuring DNS Load Balancer Pool",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/dns/namespaces/{metadata.namespace}/dns_lb_pools": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_lb_pool-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_lb_pool.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.dns_lb_pool.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Load Balancer Pool",
       "x-ves-proto-service": "ves.io.schema.dns_lb_pool.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_lb_pool-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_lb_pool.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.dns_lb_pool.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete DNS Load Balancer Pool",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_lb_pool-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_lb_pool.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.dns_lb_pool.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Load Balancer Pool",
       "x-ves-proto-service": "ves.io.schema.dns_lb_pool.API",
@@ -1110,21 +1118,6 @@
           }
         }
       },
-      "dns_lb_poolGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "dns_lb_poolGetSpecType": {
         "type": "object",
         "description": "Get DNS Load Balancer Pool details.",
@@ -1290,12 +1283,7 @@
         "type": "string",
         "description": "\n - ROUND_ROBIN: Round-Robin\n\nRound Robin will ensure random equal distribution of requests among all pool members in a pool.\n - RATIO_MEMBER: Ratio-Member\n\nRatio-Member performs load balancing of requests across the pool members based on the ratio assigned to each pool member\n - STATIC_PERSIST: Static-Persist\n\nThe Static Persist load balancing method uses the persist mask, with the source IP address of the Local Domain Name Server (LDNS), in a deterministic algorithm to send requests to a specific pool member. If the DNS resolver passes ECS (EDNS-Client-Subnet) information, then a hash of it will be used, to send the client to the same pool member\n - PRIORITY: Priority\n\nThe Priority load balancing method returns all available endpoints in a pool with the highest priority. Pool Members have a priority value, starting from zero, where a lower value means a higher priority.",
         "title": "LoadBalancing Mode",
-        "enum": [
-          "ROUND_ROBIN",
-          "RATIO_MEMBER",
-          "STATIC_PERSIST",
-          "PRIORITY"
-        ],
+        "enum": ["ROUND_ROBIN", "RATIO_MEMBER", "STATIC_PERSIST", "PRIORITY"],
         "default": "ROUND_ROBIN",
         "x-displayname": "LoadBalancing Algorithm",
         "x-ves-proto-enum": "ves.io.schema.dns_lb_pool.LoadBalancingMode"
@@ -2077,10 +2065,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2288,6 +2273,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

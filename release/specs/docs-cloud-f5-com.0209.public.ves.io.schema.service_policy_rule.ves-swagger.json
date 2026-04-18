@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.service_policy_rule",
     "description": "A service_policy_rule object consists of an unordered list of predicates and an action. The predicates are evaluated against a set of input fields that are\nextracted from or derived from an L7 request API. A request API is considered to match a rule if all predicates in the rule evaluate to true for that request.\nAny predicates that are not specified in a rule are implicitly considered to be true. If a request API matches a rule, the action specified for the rule is\nenforced for that request.\n\nA service_policy_rule can be part of exactly one service_policy and must belong to the same namespace as the service policy.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/service_policy_rules": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy_rule-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy_rule.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy_rule.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Service Policy Rule",
       "x-ves-proto-service": "ves.io.schema.service_policy_rule.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy_rule-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy_rule.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy_rule.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Service Policy Rule",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy_rule-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy_rule.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy_rule.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Service Policy Rule",
       "x-ves-proto-service": "ves.io.schema.service_policy_rule.API",
@@ -1013,10 +1021,7 @@
         "type": "string",
         "description": "x-displayName: \"App Traffic type\"\nApplication traffic type\n\n - WEB: WebTrafficType\n\nx-displayName: \"Web Traffic\"\nWeb application traffic type.\n - MOBILE: MobileTrafficType\n\nx-displayName: \"Mobile Traffic\"\nMobile application traffic type.",
         "title": "AppTrafficType",
-        "enum": [
-          "WEB",
-          "MOBILE"
-        ],
+        "enum": ["WEB", "MOBILE"],
         "default": "WEB"
       },
       "policyArgMatcherType": {
@@ -1133,44 +1138,6 @@
           }
         }
       },
-      "policyChallengeAction": {
-        "type": "string",
-        "description": "x-displayName: \"Challenge Action\"\nThe challenge options to use when a policy based challenge is configured.\n\n - DEFAULT_CHALLENGE: DEFAULT_CHALLENGE\n\nx-displayName: \"Default Challenge\"\nDefault challenge.\n - ENABLE_JAVASCRIPT_CHALLENGE: ENABLE_JAVASCRIPT_CHALLENGE\n\nx-displayName: \"Enable Javascript Challenge\"\nEnable javascript challenge.\n - ENABLE_CAPTCHA_CHALLENGE: ENABLE_CAPTCHA_CHALLENGE\n\nx-displayName: \"Enable Captcha Challenge\"\nCaptcha challenge.\n - DISABLE_CHALLENGE: DISABLE_CHALLENGE\n\nx-displayName: \"Disable Challenge\"\nDisable challenge\n - TEMPORARY_BLOCKING: TEMPORARY_BLOCKING\n\nx-displayName: \"Block Temporarily\"\nBlock the user temporarily.",
-        "title": "Challenge Action",
-        "enum": [
-          "DEFAULT_CHALLENGE",
-          "ENABLE_JAVASCRIPT_CHALLENGE",
-          "ENABLE_CAPTCHA_CHALLENGE",
-          "DISABLE_CHALLENGE",
-          "TEMPORARY_BLOCKING"
-        ],
-        "default": "DEFAULT_CHALLENGE"
-      },
-      "policyContentRewriteAction": {
-        "type": "object",
-        "description": "x-displayName: \"Content Rewrite Action\"\nRewrite HTML response action to insert HTML content such as Javascript <script> tags into the HTML document",
-        "title": "ContentRewriteAction",
-        "properties": {
-          "element_selector": {
-            "type": "string",
-            "description": "x-displayName: \"Element selector to rewrite\"\nx-example: \"value\"\nx-required\nElement selector to insert into.",
-            "title": "Element selector"
-          },
-          "insert_content": {
-            "type": "string",
-            "description": "x-displayName: \"HTML Content to insert\"\nx-example: \"value\"\nHTML content to insert.",
-            "title": "Insert Content"
-          },
-          "inserted_types": {
-            "type": "object",
-            "description": "x-displayName: \"Inserted types\"\nInserted types of security configuration like Bot Defense, Client Side Defense.",
-            "title": "Inserted types"
-          },
-          "position": {
-            "$ref": "#/components/schemas/policyHTMLPosition"
-          }
-        }
-      },
       "policyCookieMatcherType": {
         "type": "object",
         "description": "A cookie matcher specifies the name of a single cookie and the criteria to match it. The input has a list of values for each\ncookie in the request.\nA cookie matcher can check for one of the following:\n* Presence or absence of the cookie\n* At least one of the values for the cookie in the request satisfies the MatcherType item",
@@ -1211,18 +1178,6 @@
           }
         }
       },
-      "policyDataGuardControl": {
-        "type": "object",
-        "description": "x-displayName: \"Data Guard Control\"\nData Guard changes to be applied for this request",
-        "title": "Data Guard Control",
-        "properties": {
-          "policy_name": {
-            "type": "string",
-            "description": "x-displayName: \"Policy Name\"\nx-example: \"value\"\nSets the BD Policy to use",
-            "title": "Set BD Policy name"
-          }
-        }
-      },
       "policyDetectionContext": {
         "type": "string",
         "description": "The available contexts for Exclusion rules.\n\n - CONTEXT_ANY: CONTEXT_ANY\n\nDetection will be excluded for all contexts.\n - CONTEXT_BODY: CONTEXT_BODY\n\nDetection will be excluded for the request body.\n - CONTEXT_REQUEST: CONTEXT_REQUEST\n\nDetection will be excluded for the request.\n - CONTEXT_RESPONSE: CONTEXT_RESPONSE\n\n - CONTEXT_PARAMETER: CONTEXT_PARAMETER\n\nDetection will be excluded for the parameters. The parameter name is required in the Context name field. If the field is left empty, the detection will be excluded for all parameters.\n - CONTEXT_HEADER: CONTEXT_HEADER\n\nDetection will be excluded for the headers. The header name is required in the Context name field. If the field is left empty, the detection will be excluded for all headers.\n - CONTEXT_COOKIE: CONTEXT_COOKIE\n\nDetection will be excluded for the cookies. The cookie name is required in the Context name field. If the field is left empty, the detection will be excluded for all cookies.\n - CONTEXT_URL: CONTEXT_URL\n\nDetection will be excluded for the request URL.\n - CONTEXT_URI: CONTEXT_URI\n",
@@ -1246,12 +1201,7 @@
         "type": "string",
         "description": "x-displayName: \"HTML Position\"\nPosition of the HTML tag to insert in HTML document\n\n - BEGINNING: x-displayName: \"Beginning of HTML tag\"\nBeginning of HTML tag.\n - END: x-displayName: \"End of HTML tag\"\nEnd of HTML tag.\n - BEFORE: x-displayName: \"Before HTML tag\"\nBefore HTML tag.\n - AFTER: x-displayName: \"After HTML tag\"\nAfter HTML tag.",
         "title": "HTMLPosition",
-        "enum": [
-          "BEGINNING",
-          "END",
-          "BEFORE",
-          "AFTER"
-        ],
+        "enum": ["BEGINNING", "END", "BEFORE", "AFTER"],
         "default": "BEGINNING"
       },
       "policyHttpMethodMatcherType": {
@@ -1533,31 +1483,6 @@
           }
         }
       },
-      "policyMobileIdentifierMatcherAction": {
-        "type": "object",
-        "description": "x-displayName: \"Mobile Identifier Matcher Action\"\nMobile Identifier Matcher Action",
-        "title": "Mobile Identifier Matcher Action",
-        "properties": {
-          "mobile_identifier": {
-            "type": "boolean",
-            "description": "x-displayName: \"Mobile Identifier\"\nIf request matches mobile identifier service policy, mobile identifier is true",
-            "title": "Mobile Identifier",
-            "format": "boolean"
-          },
-          "mobile_traffic": {
-            "type": "boolean",
-            "description": "x-displayName: \"Mobile Traffic\"\nIf request matches mobile endpoint service policy, mobile traffic is true",
-            "title": "Mobile Traffic",
-            "format": "boolean"
-          },
-          "web_traffic": {
-            "type": "boolean",
-            "description": "x-displayName: \"Web Traffic\"\nIf request matches web endpoint service policy, web traffic is true",
-            "title": "Web Traffic",
-            "format": "boolean"
-          }
-        }
-      },
       "policyModifyAction": {
         "type": "object",
         "description": "Modify behavior for a matching request. The modification could be to entirely skip processing.",
@@ -1823,27 +1748,11 @@
           }
         }
       },
-      "policyRoleMatcherType": {
-        "type": "object",
-        "description": "x-displayName: \"Role Matcher\"\nA role matcher specifies a single value for matching an input list of roles. The match is considered successful if the specified value is present in the input\nlist.",
-        "title": "RoleMatcherType",
-        "properties": {
-          "match": {
-            "type": "string",
-            "description": "x-displayName: \"Role\"\nx-required\nx-example: \"ves-io-monitor-role\"\nx-example: \"ves-io-uam-role\"\nx-example: \"custom-role-security-czar'\"\nValue of the expected role.",
-            "title": "match"
-          }
-        }
-      },
       "policyRuleAction": {
         "type": "string",
         "description": "The rule action determines the disposition of the input request API. If a policy matches a rule with an ALLOW action, the processing of the request proceeds\nforward. If it matches a rule with a DENY action, the processing of the request is terminated and an appropriate message/code returned to the originator. If\nit matches a rule with a NEXT_POLICY_SET action, evaluation of the current policy set terminates and evaluation of the next policy set in the chain begins.\n\n - DENY: DENY\n\nDeny the request.\n - ALLOW: ALLOW\n\nAllow the request to proceed.\n - NEXT_POLICY_SET: NEXT_POLICY_SET\n\nTerminate evaluation of the current policy set and begin evaluating the next policy set in the chain. Note that the evaluation of any remaining policies\nin the current policy set is skipped.\n - NEXT_POLICY: NEXT_POLICY\n\nTerminate evaluation of the current policy and begin evaluating the next policy in the policy set. Note that the evaluation of any remaining rules in the\ncurrent policy is skipped.\n - LAST_POLICY: LAST_POLICY\n\nTerminate evaluation of the current policy and begin evaluating the last policy in the policy set. Note that the evaluation of any remaining rules in the\ncurrent policy is skipped.\n - GOTO_POLICY: GOTO_POLICY\n\nTerminate evaluation of the current policy and begin evaluating a specific policy in the policy set. The policy is specified using the goto_policy field in\nthe rule and must be after the current policy in the policy set.",
         "title": "Rule Action",
-        "enum": [
-          "DENY",
-          "ALLOW",
-          "NEXT_POLICY"
-        ],
+        "enum": ["DENY", "ALLOW", "NEXT_POLICY"],
         "default": "DENY",
         "x-displayname": "Rule Action",
         "x-ves-proto-enum": "ves.io.schema.policy.RuleAction"
@@ -1955,39 +1864,6 @@
           }
         }
       },
-      "policyShapeProtectedEndpointAction": {
-        "type": "object",
-        "description": "x-displayName: \"Protected Endpoint Action\"\nProtected Endpoint Action",
-        "title": "ShapeProtectedEndpointAction",
-        "properties": {
-          "allow_goodbot": {
-            "type": "boolean",
-            "description": "x-displayName: \"Good bot\"\nx-required\nGood bot",
-            "title": "GoodBot",
-            "format": "boolean"
-          },
-          "app_traffic_type": {
-            "$ref": "#/components/schemas/policyAppTrafficType"
-          },
-          "flow_label": {
-            "type": "string",
-            "description": "x-displayName: \"Flow Label\"\nx-example: \"Flight.CheckIn\"\nx-required\nFlow label",
-            "title": "Flow label"
-          },
-          "mitigation": {
-            "$ref": "#/components/schemas/policyShapeBotMitigationAction"
-          },
-          "transaction_result": {
-            "$ref": "#/components/schemas/schemaBotDefenseTransactionResultType"
-          },
-          "web_scraping": {
-            "type": "boolean",
-            "description": "x-displayName: \"Web scraping\"\nx-required\nWeb scraping protection enabled for protected endpoint",
-            "title": "Web scraping",
-            "format": "boolean"
-          }
-        }
-      },
       "policyStringMatcherType": {
         "type": "object",
         "description": "A matcher specifies a list of values for matching an input string. The match is considered successful if the input value is present in the list. The result of\nthe match is inverted if invert_matcher is true.",
@@ -2093,7 +1969,6 @@
           "TRIM_RIGHT",
           "TRIM"
         ],
-        "default": "TRANSFORMER_NONE",
         "x-displayname": "Transformer",
         "x-ves-proto-enum": "ves.io.schema.policy.Transformer"
       },
@@ -2126,27 +2001,6 @@
             "type": "string",
             "description": "x-displayName: \"Path Value\"\nx-example: \"/api/web/namespaces/project179/users/user1\"\nAn exact value to match the path against.",
             "title": "path value"
-          }
-        }
-      },
-      "policyURLMatcherType": {
-        "type": "object",
-        "description": "x-displayName: \"URL Matcher\"\nA URL matcher specifies a list of URL items as match criteria. The match is considered successful if the input domain and path match any of the URL items.\nThe result of the match is inverted if invert_matcher is true.",
-        "title": "url matcher type",
-        "properties": {
-          "invert_matcher": {
-            "type": "boolean",
-            "description": "x-displayName: \"Invert URL Matcher\"\nInvert the match result.",
-            "title": "invert_matcher",
-            "format": "boolean"
-          },
-          "url_items": {
-            "type": "array",
-            "description": "x-displayName: \"URL Items\"\nx-required\nA list of URL items used as match criteria. The match is considered successful if the domain and path match any of the URL items.",
-            "title": "url items",
-            "items": {
-              "$ref": "#/components/schemas/policyURLItem"
-            }
           }
         }
       },
@@ -2330,19 +2184,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -2762,10 +2604,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -3855,21 +3694,6 @@
           }
         }
       },
-      "service_policy_ruleGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "service_policy_ruleListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -4051,6 +3875,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule",
     "description": "Configures Bot Detection Rule",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/bot/custom/namespaces/{namespace}/bot_detection_rules": {
@@ -121,7 +126,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-customapi-deploybotdetectionrules"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.DeployBotDetectionRules"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.DeployBotDetectionRules",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Rule",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI",
@@ -264,7 +270,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-customapi-getbotdetectionrulesdeployments"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRulesDeployments"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRulesDeployments",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Rule",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI",
@@ -392,7 +399,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-customapi-getbotdetectionrulesdeploymentdetails"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRulesDeploymentDetails"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRulesDeploymentDetails",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Rule",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI",
@@ -510,7 +518,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-customapi-getbotdetectionrulesdraft"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRulesDraft"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRulesDraft",
+        "tags": ["shape"]
       },
       "delete": {
         "summary": "Discard draft",
@@ -623,7 +632,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-customapi-discarddraft"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.DiscardDraft"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.DiscardDraft",
+        "tags": ["shape"]
       },
       "post": {
         "summary": "Save draft",
@@ -739,7 +749,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-customapi-savedraft"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.SaveDraft"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.SaveDraft",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Rule",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI",
@@ -857,7 +868,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-customapi-getbotdetectionrulessummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRulesSummary"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRulesSummary",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Rule",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI",
@@ -1014,7 +1026,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.API.List",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Rule",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.API",
@@ -1142,7 +1155,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-customapi-getbotdetectionrulechangehistory"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRuleChangeHistory"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI.GetBotDetectionRuleChangeHistory",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Rule",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.CustomAPI",
@@ -1288,7 +1302,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_rule-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.API.Get",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Rule",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.API",
@@ -1842,18 +1857,6 @@
           }
         }
       },
-      "bot_detection_ruleGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "bot_detection_ruleListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -2094,10 +2097,7 @@
         "type": "string",
         "description": "Identifies the environment as either Production or Testing. Production environments have two infrastructure regions in an Active-Active configuration where traffic is routed equally between the two regions. Test environments have a single infrastructure region.\n\nProduction Protect live production applications and services from automated attacks.\nTest Evaluate new features, settings, and system performance.",
         "title": "EnvironmentType",
-        "enum": [
-          "PRODUCTION",
-          "TESTING"
-        ],
+        "enum": ["PRODUCTION", "TESTING"],
         "default": "PRODUCTION",
         "x-displayname": "Environment Type",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.EnvironmentType"
@@ -2106,10 +2106,7 @@
         "type": "string",
         "description": "The type of traffic that is routed to and processed by this infrastructure (Web or Mobile).\n\nOnly web traffic, including browser-based traffic from mobile devices, is routed through this Bot Defense infrastructure.\nOnly mobile traffic from native mobile apps with the Bot Defense SDK are routed through this Bot Defense infrastructure.",
         "title": "TrafficType",
-        "enum": [
-          "WEB",
-          "MOBILE"
-        ],
+        "enum": ["WEB", "MOBILE"],
         "default": "WEB",
         "x-displayname": "Traffic Type",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.TrafficType"
@@ -2664,6 +2661,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

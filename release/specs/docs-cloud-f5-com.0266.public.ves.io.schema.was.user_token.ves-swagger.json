@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.was.user_token",
     "description": "Use this API to get one time user token to connect to Web App Scanning Service",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/system/was/user_token": {
@@ -107,7 +112,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-was-user_token-customapi-getusertoken"
         },
-        "x-ves-proto-rpc": "ves.io.schema.was.user_token.CustomAPI.GetUserToken"
+        "x-ves-proto-rpc": "ves.io.schema.was.user_token.CustomAPI.GetUserToken",
+        "tags": ["config"]
       },
       "x-displayname": "Web App Scanning Service User Token API",
       "x-ves-proto-service": "ves.io.schema.was.user_token.CustomAPI",
@@ -148,6 +154,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

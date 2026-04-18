@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.http_loadbalancer",
     "description": "HTTP Load Balancer view defines a required parameters that can be used in CRUD, to create and manage HTTP Load Balancer.\nIt can be used to create HTTP Load Balancer and HTTPS Load Balancer.\n\nView will create following child objects.\n\n* virtual_host\n* routes\n* clusters\n* endpoints\n* advertise_policy",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/http_loadbalancers": {
@@ -397,7 +402,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-cdncustomapi-getserviceoperationhttplbcacheenabled"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.GetServiceOperationHTTPLBCacheEnabled"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.GetServiceOperationHTTPLBCacheEnabled",
+        "tags": ["cdn"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI",
@@ -526,7 +532,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-cdncustomapi-listserviceoperationshttplbcacheenabled"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.ListServiceOperationsHTTPLBCacheEnabled"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.ListServiceOperationsHTTPLBCacheEnabled",
+        "tags": ["cdn"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI",
@@ -665,7 +672,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-cdncustomapi-cdncachepurgehttplbcacheenabled"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.CDNCachePurgeHTTPLBCacheEnabled"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.CDNCachePurgeHTTPLBCacheEnabled",
+        "tags": ["cdn"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI",
@@ -822,7 +830,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.API",
@@ -951,7 +960,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-getsecurityconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetSecurityConfig"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetSecurityConfig",
+        "tags": ["config"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -1100,7 +1110,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Configure HTTP Load Balancer",
@@ -1232,7 +1243,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.API",
@@ -1372,7 +1384,8 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-assignapidefinition"
         },
         "x-ves-deprecated": "instead use virtual host public custom api - AssignAPIDefinition",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.AssignAPIDefinition"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.AssignAPIDefinition",
+        "tags": ["config"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -1502,7 +1515,8 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-listavailableapidefinitions"
         },
         "x-ves-deprecated": "instead use public crud api definition - GET List",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.ListAvailableAPIDefinitions"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.ListAvailableAPIDefinitions",
+        "tags": ["config"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -1642,7 +1656,8 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-apieplbcustomapi-getapiendpointsforgroups"
         },
         "x-ves-deprecated": "Use GetAPIEndpoints in virtual_host.ApiepCustomAPI",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetAPIEndpointsForGroups"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetAPIEndpointsForGroups",
+        "tags": ["ml"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI",
@@ -1771,7 +1786,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-apieplbcustomapi-getswaggerspec"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetSwaggerSpec"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetSwaggerSpec",
+        "tags": ["ml"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI",
@@ -1911,7 +1927,8 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-apieplbcustomapi-getapiendpointsschemaupdates"
         },
         "x-ves-deprecated": "USE virtual host custom api GetAPIEndpointsSchemaUpdates",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetAPIEndpointsSchemaUpdates"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetAPIEndpointsSchemaUpdates",
+        "tags": ["ml"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI",
@@ -2051,7 +2068,8 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-apieplbcustomapi-updateapiendpointsschemas"
         },
         "x-ves-deprecated": "USE virtual host custom api UpdateAPIEndpointsSchemas",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.UpdateAPIEndpointsSchemas"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.UpdateAPIEndpointsSchemas",
+        "tags": ["ml"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI",
@@ -2180,7 +2198,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-getdosautomitigationrules"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetDoSAutoMitigationRules"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetDoSAutoMitigationRules",
+        "tags": ["config"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -2319,7 +2338,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-deletedosautomitigationrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.DeleteDoSAutoMitigationRule"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.DeleteDoSAutoMitigationRule",
+        "tags": ["config"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -2448,7 +2468,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-getdnsinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetDnsInfo"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetDnsInfo",
+        "tags": ["config"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -2587,7 +2608,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-setl7ddosrpsthreshold"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.SetL7DDoSRPSThreshold"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.SetL7DDoSRPSThreshold",
+        "tags": ["config"]
       },
       "x-displayname": "Configure HTTP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -2935,29 +2957,6 @@
           }
         }
       },
-      "app_typeSensitiveDataDetectionRules": {
-        "type": "object",
-        "description": "x-displayName: \"Sensitive Data Detection Rules\"\nRules to manage/configure sensitive data detection in requests and/or response sections.",
-        "title": "Sensitive Data Detection Rules",
-        "properties": {
-          "custom_sensitive_data_detection_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Defined Custom Sensitive Data Types\"\nRules to detect custom sensitive data in requests and/or responses sections.",
-            "title": "custom sensitive data rules",
-            "items": {
-              "$ref": "#/components/schemas/app_typeCustomSensitiveDataDetectionRule"
-            }
-          },
-          "disabled_built_in_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Disabled Built-In Sensitive Data Types\"\nx-example: \"[EMAIL, CC]\"\nList of disabled built-in sensitive data detection rules.",
-            "title": "disabled_built_in_rules",
-            "items": {
-              "$ref": "#/components/schemas/app_typeBuiltInSensitiveDataType"
-            }
-          }
-        }
-      },
       "app_typeSensitiveDataType": {
         "type": "string",
         "description": "List of possible types of sensitive data that can be discovered for an APIEP.\n\nThe Sensitive Data detected as credit card number.\nThe sensitive data detected as social security number.\nThe sensitive data detected as IP address.\nThe sensitive data detected as email address.\nThe sensitive data detected as phone number.\nThe sensitive data detected as credentials info(e.g password, username etc).\nThe sensitive data detected as information leakage.\nThe sensitive data detected as masked PII (CCN, SSN)\nThe sensitive data detected as Location.",
@@ -3055,11 +3054,7 @@
         "type": "string",
         "description": "Policy for selection of endpoints from local site/remote site/both\n\nConsider both remote and local endpoints for load balancing\nLOCAL_ONLY: Consider only local endpoints for load balancing\nEnable this policy to load balance ONLY among locally discovered endpoints\nPrefer the local endpoints for load balancing. If local endpoints are not present\nremote endpoints will be considered.",
         "title": "EndpointSelectionPolicy",
-        "enum": [
-          "DISTRIBUTED",
-          "LOCAL_ONLY",
-          "LOCAL_PREFERRED"
-        ],
+        "enum": ["DISTRIBUTED", "LOCAL_ONLY", "LOCAL_PREFERRED"],
         "default": "DISTRIBUTED",
         "x-displayname": "Endpoint Selection Policy",
         "x-ves-proto-enum": "ves.io.schema.cluster.EndpointSelectionPolicy"
@@ -3110,13 +3105,7 @@
         "type": "string",
         "description": "Different load balancing algorithms supported\nWhen a connection to a endpoint in an upstream cluster is required, the load balancer uses loadbalancer_algorithm\nto determine which host is selected.\n\n - ROUND_ROBIN: ROUND_ROBIN\n\nPolicy in which each healthy/available upstream endpoint is selected in round robin order.\n - LEAST_REQUEST: LEAST_REQUEST\n\nPolicy in which loadbalancer picks the upstream endpoint which has the fewest active requests\n - RING_HASH: RING_HASH\n\nPolicy implements consistent hashing to upstream endpoints using ring hash of endpoint names\nHash of the incoming request is calculated using request hash policy.\nThe ring/modulo hash load balancer implements consistent hashing to upstream hosts.\nThe algorithm is based on mapping all hosts onto a circle such that the addition or\nremoval of a host from the host set changes only affect 1/N requests. This technique\nis also commonly known as \u201cketama\u201d hashing. A consistent hashing load balancer is only\neffective when protocol routing is used that specifies a value to hash on. The minimum\nring size governs the replication factor for each host in the ring. For example, if the\nminimum ring size is 1024 and there are 16 hosts, each host will be replicated 64 times.\n - RANDOM: RANDOM\n\nPolicy in which each available upstream endpoint is selected in random order.\nThe random load balancer selects a random healthy host. The random load balancer generally\nperforms better than round robin if no health checking policy is configured. Random selection\navoids bias towards the host in the set that comes after a failed host.\n - LB_OVERRIDE: Load Balancer Override\n\nHash policy is taken from from the load balancer which is using this origin pool",
         "title": "LoadbalancerAlgorithm",
-        "enum": [
-          "ROUND_ROBIN",
-          "LEAST_REQUEST",
-          "RING_HASH",
-          "RANDOM",
-          "LB_OVERRIDE"
-        ],
+        "enum": ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "LB_OVERRIDE"],
         "default": "ROUND_ROBIN",
         "x-displayname": "Load Balancer Algorithm",
         "x-ves-proto-enum": "ves.io.schema.cluster.LoadbalancerAlgorithm"
@@ -3201,18 +3190,6 @@
               "$ref": "#/components/schemas/schemaviewsObjectRefType"
             },
             "x-displayname": "CDN Cache Rule"
-          }
-        }
-      },
-      "common_cache_ruleDefaultCacheTTLProps": {
-        "type": "object",
-        "description": "x-displayName: \"Default Cache TTL Props\"\nDefault Cache TTL Enable Values",
-        "title": "Default Cache TTL Props",
-        "properties": {
-          "cache_ttl": {
-            "type": "string",
-            "description": "x-displayName: \"Cache TTL\"\nx-required\nx-example: \"5m, 60s, 120s, 3h, 1d, 15d\"\nCache TTL value is used to cache the resource/content for the specified amount of time\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
-            "title": "Cache TTL Key"
           }
         }
       },
@@ -4155,9 +4132,7 @@
         "type": "string",
         "description": "Mobile identifier type\n\n - HEADERS: Headers\n\nHeaders",
         "title": "MobileIdentifier",
-        "enum": [
-          "HEADERS"
-        ],
+        "enum": ["HEADERS"],
         "default": "HEADERS",
         "x-displayname": "Mobile Identifier",
         "x-ves-proto-enum": "ves.io.schema.views.common_security.MobileIdentifier"
@@ -4273,12 +4248,7 @@
         "type": "string",
         "description": "Defines a selection for Bot Defense region\n\n - AUTO: AUTO\n\nAutomatic selection based on client IP address\n - US: US\n\nUS region\n - EU: EU\n\nEuropean Union region\n - ASIA: ASIA\n\nAsia region",
         "title": "ShapeBotDefenseRegion",
-        "enum": [
-          "AUTO",
-          "US",
-          "EU",
-          "ASIA"
-        ],
+        "enum": ["AUTO", "US", "EU", "ASIA"],
         "default": "AUTO",
         "x-displayname": "Bot Defense Region",
         "x-ves-proto-enum": "ves.io.schema.views.common_security.ShapeBotDefenseRegion"
@@ -4447,11 +4417,7 @@
         "type": "string",
         "description": "SchemeType is used to indicate URL scheme.\n\n - BOTH: BOTH\n\nURL scheme for https:// or http://.\n - HTTP: HTTP\n\nURL scheme http:// only.\n - HTTPS: HTTPS\n\nURL scheme https:// only.",
         "title": "URLSchemeType",
-        "enum": [
-          "BOTH",
-          "HTTP",
-          "HTTPS"
-        ],
+        "enum": ["BOTH", "HTTP", "HTTPS"],
         "default": "BOTH",
         "x-displayname": "URL Scheme",
         "x-ves-proto-enum": "ves.io.schema.views.common_security.URLScheme"
@@ -4707,41 +4673,6 @@
           }
         }
       },
-      "common_wafAPIRateLimitLegacy": {
-        "type": "object",
-        "description": "x-displayName: \"APIRateLimit Legacy\"\ntemporary message type used pre-migration. This will be removed later.",
-        "title": "APIRateLimit Legacy",
-        "properties": {
-          "api_endpoint_rules": {
-            "type": "array",
-            "description": "x-displayName: \"API Endpoints\"\nSets of rules for a specific endpoints.\nOrder is matter as it uses first match policy.\nFor creating rule that contain a whole domain or group of endpoints, please use the server URL rules above.",
-            "title": "api_endpoint_policy",
-            "items": {
-              "$ref": "#/components/schemas/common_wafApiEndpointRule"
-            }
-          },
-          "bypass_rate_limiting_rules": {
-            "$ref": "#/components/schemas/common_wafBypassRateLimitingRules"
-          },
-          "custom_ip_allowed_list": {
-            "$ref": "#/components/schemas/common_wafCustomIpAllowedList"
-          },
-          "ip_allowed_list": {
-            "$ref": "#/components/schemas/viewsPrefixStringListType"
-          },
-          "no_ip_allowed_list": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "server_url_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Server URLs\"\nSet of rules for entire domain or base path that contain multiple endpoints.\nOrder is matter as it uses first match policy.\nFor matching also specific endpoints you can use the API endpoint rules set bellow.",
-            "title": "server_url_policy",
-            "items": {
-              "$ref": "#/components/schemas/common_wafServerUrlRule"
-            }
-          }
-        }
-      },
       "common_wafAPISpecificationSettings": {
         "type": "object",
         "description": "Settings for api specification (api definition, OpenAPI validation, etc.)",
@@ -4823,21 +4754,6 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
               "ves.io.schema.rules.repeated.max_items": "32"
-            }
-          }
-        }
-      },
-      "common_wafApiDefinitionList": {
-        "type": "object",
-        "description": "x-displayName: \"API Definition List\"\nList of api definitions.",
-        "title": "api definition list",
-        "properties": {
-          "api_definitions": {
-            "type": "array",
-            "description": "x-displayName: \"API Definitions\"\nAPI Definitions using OpenAPI specification files",
-            "title": "API Definitions",
-            "items": {
-              "$ref": "#/components/schemas/schemaviewsObjectRefType"
             }
           }
         }
@@ -6006,19 +5922,6 @@
           }
         }
       },
-      "common_wafValidationSettingForHeaders": {
-        "type": "object",
-        "description": "x-displayName: \"Validation Settings For Headers\"\nCustom settings for headers validation",
-        "title": "Validation Settings For Headers",
-        "properties": {
-          "allow_additional_headers": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "disallow_additional_headers": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
       "common_wafValidationSettingForQueryParameters": {
         "type": "object",
         "description": "Custom settings for query parameters validation",
@@ -6383,11 +6286,7 @@
         "type": "string",
         "description": "API Inventory Schema Query Type\n\n - API_INVENTORY_SCHEMA_FULL_RESPONSE: Full Response\n\n - API_INVENTORY_SCHEMA_CURRENT: Current Schema\n\n - API_INVENTORY_SCHEMA_UPDATED: Updated Schema\n",
         "title": "API Inventory Schema Query Type",
-        "enum": [
-          "API_INVENTORY_SCHEMA_FULL_RESPONSE",
-          "API_INVENTORY_SCHEMA_CURRENT",
-          "API_INVENTORY_SCHEMA_UPDATED"
-        ],
+        "enum": ["API_INVENTORY_SCHEMA_FULL_RESPONSE", "API_INVENTORY_SCHEMA_CURRENT", "API_INVENTORY_SCHEMA_UPDATED"],
         "default": "API_INVENTORY_SCHEMA_FULL_RESPONSE",
         "x-displayname": "API Inventory Schema Query Type",
         "x-ves-proto-enum": "ves.io.schema.views.http_loadbalancer.ApiInventorySchemaQueryType"
@@ -6867,21 +6766,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "http_loadbalancerGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "http_loadbalancerGetSecurityConfigReq": {
         "type": "object",
@@ -8841,10 +8725,7 @@
         "type": "string",
         "description": "Type of protocol\n\n - PROTOCOL_TCP: TCP\n\n - PROTOCOL_UDP: UDP\n",
         "title": "Protocol Type",
-        "enum": [
-          "PROTOCOL_TCP",
-          "PROTOCOL_UDP"
-        ],
+        "enum": ["PROTOCOL_TCP", "PROTOCOL_UDP"],
         "default": "PROTOCOL_TCP",
         "x-displayname": "Protocol Type",
         "x-ves-proto-enum": "ves.io.schema.views.origin_pool.ProtocolType"
@@ -10568,7 +10449,6 @@
           "TRIM_RIGHT",
           "TRIM"
         ],
-        "default": "TRANSFORMER_NONE",
         "x-displayname": "Transformer",
         "x-ves-proto-enum": "ves.io.schema.policy.Transformer"
       },
@@ -10586,14 +10466,6 @@
             "format": "byte"
           }
         }
-      },
-      "protobufNullValue": {
-        "type": "string",
-        "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value.",
-        "enum": [
-          "NULL_VALUE"
-        ],
-        "default": "NULL_VALUE"
       },
       "rate_limiterInputHours": {
         "type": "object",
@@ -10685,11 +10557,7 @@
         "type": "string",
         "description": "Unit for the period per which the rate limit is applied.\n\n - SECOND: Second\n\nRate limit period unit is seconds\n - MINUTE: Minute\n\nRate limit period unit is minutes\n - HOUR: Hour\n\nRate limit period unit is hours\n - DAY: Day\n\nRate limit period unit is days",
         "title": "RateLimitPeriodUnit",
-        "enum": [
-          "SECOND",
-          "MINUTE",
-          "HOUR"
-        ],
+        "enum": ["SECOND", "MINUTE", "HOUR"],
         "default": "SECOND",
         "x-displayname": "Rate Limit Period Unit",
         "x-ves-proto-enum": "ves.io.schema.rate_limiter.RateLimitPeriodUnit"
@@ -11019,21 +10887,6 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.uint32.gte": "100",
               "ves.io.schema.rules.uint32.lte": "599"
-            }
-          }
-        }
-      },
-      "routeRouteQueryParams": {
-        "type": "object",
-        "description": "x-displayName: \"Query Parameters\"\nQuery params keys to strip while manipulating the HTTP request",
-        "title": "RouteQueryParams",
-        "properties": {
-          "query_params": {
-            "type": "array",
-            "description": "x-displayName: \"Query Parameters\"\nx-example: \"userid\"\nQuery params keys to strip while manipulating the HTTP request",
-            "title": "query_params",
-            "items": {
-              "type": "string"
             }
           }
         }
@@ -11882,11 +11735,7 @@
         "type": "string",
         "description": "Denominator used in fraction where sampling percentages are needed. example sampled requests\n\nUse hundred as denominator\nUse ten thousand as denominator\nUse million as denominator",
         "title": "DenominatorType",
-        "enum": [
-          "HUNDRED",
-          "TEN_THOUSAND",
-          "MILLION"
-        ],
+        "enum": ["HUNDRED", "TEN_THOUSAND", "MILLION"],
         "default": "HUNDRED",
         "x-displayname": "Denominator",
         "x-ves-proto-enum": "ves.io.schema.DenominatorType"
@@ -12062,11 +11911,7 @@
         "type": "string",
         "description": "Specifies the Hash Algorithm to be used\n\nInvalid hash algorithm\nsha256 hash algorithm\nsha1 hash algorithm",
         "title": "HashAlgoritm",
-        "enum": [
-          "INVALID_HASH_ALGORITHM",
-          "SHA256",
-          "SHA1"
-        ],
+        "enum": ["INVALID_HASH_ALGORITHM", "SHA256", "SHA1"],
         "default": "INVALID_HASH_ALGORITHM",
         "x-displayname": "Hash Algorithm",
         "x-ves-proto-enum": "ves.io.schema.HashAlgorithm"
@@ -12168,19 +12013,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -12306,12 +12139,7 @@
         "type": "string",
         "description": "Web Client JavaScript Mode.\n\nBot Defense JavaScript for telemetry collection is requested asynchronously, and it is non-cacheable\nBot Defense JavaScript for telemetry collection is requested asynchronously, and it is cacheable\nBot Defense JavaScript for telemetry collection is requested synchronously, and it is non-cacheable\nBot Defense JavaScript for telemetry collection is requested synchronously, and it is cacheable",
         "title": "JavaScript Mode",
-        "enum": [
-          "ASYNC_JS_NO_CACHING",
-          "ASYNC_JS_CACHING",
-          "SYNC_JS_NO_CACHING",
-          "SYNC_JS_CACHING"
-        ],
+        "enum": ["ASYNC_JS_NO_CACHING", "ASYNC_JS_CACHING", "SYNC_JS_NO_CACHING", "SYNC_JS_CACHING"],
         "default": "ASYNC_JS_NO_CACHING",
         "x-displayname": "Web Client JavaScript Mode",
         "x-ves-proto-enum": "ves.io.schema.JavaScriptMode"
@@ -12729,10 +12557,7 @@
         "type": "string",
         "description": "Priority routing for each request.\nDifferent connection pools are used based on the priority selected for the request.\nAlso, circuit-breaker configuration at destination cluster is chosen based on selected priority.\n\nDefault routing mechanism\nHigh-Priority routing mechanism",
         "title": "RoutingPriority",
-        "enum": [
-          "DEFAULT",
-          "HIGH"
-        ],
+        "enum": ["DEFAULT", "HIGH"],
         "default": "DEFAULT",
         "x-displayname": "Routing Priority",
         "x-ves-proto-enum": "ves.io.schema.RoutingPriority"
@@ -12741,10 +12566,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -12967,10 +12789,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -13160,26 +12979,10 @@
         "type": "string",
         "description": "TlsProtocol is enumeration of supported TLS versions\n\nF5 Distributed Cloud will choose the optimal TLS version.",
         "title": "TlsProtocol",
-        "enum": [
-          "TLS_AUTO",
-          "TLSv1_0",
-          "TLSv1_1",
-          "TLSv1_2",
-          "TLSv1_3"
-        ],
+        "enum": ["TLS_AUTO", "TLSv1_0", "TLSv1_1", "TLSv1_2", "TLSv1_3"],
         "default": "TLS_AUTO",
         "x-displayname": "TLS Protocol",
         "x-ves-proto-enum": "ves.io.schema.TlsProtocol"
-      },
-      "schemaURLSchemeType": {
-        "type": "string",
-        "description": "x-displayName: \"URL Scheme\"\nSchemeType is used to indicate URL scheme\n\n - HTTP: x-displayName: \"HTTP\"\nhttp:// scheme\n - HTTPS: x-displayName: \"HTTPS\"\nhttps:// scheme",
-        "title": "URLSchemeType",
-        "enum": [
-          "HTTP",
-          "HTTPS"
-        ],
-        "default": "HTTP"
       },
       "schemaUpstreamConnPoolReuseType": {
         "type": "object",
@@ -13194,37 +12997,6 @@
           },
           "enable_conn_pool_reuse": {
             "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
           }
         }
       },
@@ -13265,30 +13037,11 @@
           }
         }
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemaXfccElement": {
         "type": "string",
         "description": "X-Forwarded-Client-Cert custom cookie elements\n\nThe entire client certificate in URL encoded PEM format.\nThe entire client certificate chain (including the leaf certificate) in URL encoded PEM format.\nThe Subject field of the current client certificate. The value is always double-quoted.\nThe URI type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple URI type Subject Alternative Names,\neach will be a separate key-value pair.\nThe DNS type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple DNS type Subject Alternative Names,\neach will be a separate key-value pair.",
         "title": "XfccElement",
-        "enum": [
-          "XFCC_NONE",
-          "XFCC_CERT",
-          "XFCC_CHAIN",
-          "XFCC_SUBJECT",
-          "XFCC_URI",
-          "XFCC_DNS"
-        ],
+        "enum": ["XFCC_NONE", "XFCC_CERT", "XFCC_CHAIN", "XFCC_SUBJECT", "XFCC_URI", "XFCC_DNS"],
         "default": "XFCC_NONE",
         "x-displayname": "XFCC Elements",
         "x-ves-proto-enum": "ves.io.schema.XfccElement"
@@ -13422,10 +13175,7 @@
         "type": "string",
         "description": "DoS Mitigation can either be manually added by a user (SRE), or can be automatically generated based on\n\nMITIGATION_MANUAL\nMITIGATION_AUTOMATIC",
         "title": "Type",
-        "enum": [
-          "MITIGATION_MANUAL",
-          "MITIGATION_AUTOMATIC"
-        ],
+        "enum": ["MITIGATION_MANUAL", "MITIGATION_AUTOMATIC"],
         "default": "MITIGATION_MANUAL",
         "x-displayname": "DoS Mitigation Type",
         "x-ves-proto-enum": "ves.io.schema.dos_mitigation.Type"
@@ -13645,11 +13395,7 @@
         "type": "string",
         "description": "All inside networks.\n\nInsert JavaScript after <head> tag\nInsert JavaScript after </title> tag.\nInsert JavaScript before first <script> tag",
         "title": "JavaScriptLocation",
-        "enum": [
-          "AFTER_HEAD",
-          "AFTER_TITLE_END",
-          "BEFORE_SCRIPT"
-        ],
+        "enum": ["AFTER_HEAD", "AFTER_TITLE_END", "BEFORE_SCRIPT"],
         "default": "AFTER_HEAD",
         "x-displayname": "JavaScript Location",
         "x-ves-proto-enum": "ves.io.schema.route.JavaScriptLocation"
@@ -14380,10 +14126,7 @@
         "type": "string",
         "description": "This defines network types to be used on virtual-site with specified VIP\n\nAll outside networks.\nAll inside networks.",
         "title": "SiteNetworkSpecifiedVIP",
-        "enum": [
-          "SITE_NETWORK_SPECIFIED_VIP_OUTSIDE",
-          "SITE_NETWORK_SPECIFIED_VIP_INSIDE"
-        ],
+        "enum": ["SITE_NETWORK_SPECIFIED_VIP_OUTSIDE", "SITE_NETWORK_SPECIFIED_VIP_INSIDE"],
         "default": "SITE_NETWORK_SPECIFIED_VIP_OUTSIDE",
         "x-displayname": "Site Network",
         "x-ves-proto-enum": "ves.io.schema.views.SiteNetworkSpecifiedVIP"
@@ -14427,49 +14170,6 @@
           }
         }
       },
-      "viewsWhereCloudEdgeSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Segment on a Cloud Edge\"\nThis defines a reference to a Segment on a Cloud Edge and an optional ip address where a load balancer could be advertised",
-        "title": "WhereCloudEdgeSegment",
-        "properties": {
-          "cloud_edge": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "ip": {
-            "type": "string",
-            "description": "x-displayName: \"IP Address\"\nx-required\nx-example: \"8.8.8.8\"\nUse given IP address as VIP on the Cloud Edge",
-            "title": "IP address on the Cloud Edge"
-          },
-          "ipv6": {
-            "type": "string",
-            "description": "x-displayName: \"IPv6 Address\"\nx-example: \"2001::1\"\nUse given IPv6 address as VIP on the Cloud Edge",
-            "title": "IPv6 address on the Cloud Edge"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
-      "viewsWhereSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Virtual Network\"\nParameters to advertise on a given virtual network",
-        "title": "WhereVirtualNetwork",
-        "properties": {
-          "ipv4_vip": {
-            "type": "string",
-            "description": "x-displayName: \"IPV4 VIP\"\nx-required\nConfigure IPV4 VIP address",
-            "title": "IPv4 VIP"
-          },
-          "ipv6_vip": {
-            "type": "string",
-            "description": "x-displayName: \"IPV6 VIP\"\nConfigure IPV6 VIP address",
-            "title": "IPv6 VIP"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
       "viewsWhereSite": {
         "type": "object",
         "description": "This defines a reference to a CE site along with network type and an optional ip address where a load balancer could be advertised",
@@ -14490,29 +14190,6 @@
           },
           "network": {
             "$ref": "#/components/schemas/viewsSiteNetwork"
-          },
-          "site": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
-      "viewsWhereSiteSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Segment on Site\"\nThis defines a reference to a Segment on a Site and an optional ip address where a load balancer could be advertised",
-        "title": "WhereSiteSegment",
-        "properties": {
-          "ip": {
-            "type": "string",
-            "description": "x-displayName: \"IP Address\"\nx-required\nx-example: \"8.8.8.8\"\nUse given IP address as VIP on the site",
-            "title": "IP address on the site"
-          },
-          "ipv6": {
-            "type": "string",
-            "description": "x-displayName: \"IPv6 Address\"\nx-example: \"2001::1\"\nUse given IPv6 address as VIP on the site",
-            "title": "IPv6 address on the site"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
           },
           "site": {
             "$ref": "#/components/schemas/schemaviewsObjectRefType"
@@ -14650,29 +14327,6 @@
           }
         }
       },
-      "viewsWhereVirtualSiteSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Virtual Site\"\nThis defines a reference to a customer site virtual site along with network type where a load balancer could be advertised",
-        "title": "WhereVirtualSiteSegment",
-        "properties": {
-          "ip": {
-            "type": "string",
-            "description": "x-displayName: \"IP Address\"\nx-required\nx-example: \"8.8.8.8\"\nUse given IP address as VIP on the site",
-            "title": "IP address on the site"
-          },
-          "ipv6": {
-            "type": "string",
-            "description": "x-displayName: \"IPv6 Address\"\nx-example: \"2001::1\"\nUse given IPv6 address as VIP on the site",
-            "title": "IPv6 address on the site"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "virtual_site": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
       "viewsWhereVirtualSiteSpecifiedVIP": {
         "type": "object",
         "description": "This defines a reference to a customer site virtual site along with network type and IP where a load balancer could be advertised",
@@ -14757,11 +14411,7 @@
         "type": "string",
         "description": "All inside networks.\n\nInsert JavaScript after <head> tag\nInsert JavaScript after </title> tag.\nInsert JavaScript before first <script> tag",
         "title": "JavaScriptLocation",
-        "enum": [
-          "AFTER_HEAD",
-          "AFTER_TITLE_END",
-          "BEFORE_SCRIPT"
-        ],
+        "enum": ["AFTER_HEAD", "AFTER_TITLE_END", "BEFORE_SCRIPT"],
         "default": "AFTER_HEAD",
         "x-displayname": "JavaScript Location",
         "x-ves-proto-enum": "ves.io.schema.views.common_security.JavaScriptLocation"
@@ -16483,28 +16133,6 @@
           }
         }
       },
-      "virtual_hostJavaScriptConfigType": {
-        "type": "object",
-        "description": "x-displayName: \"JavaScript Configuration\"\nCustom JavaScript Configuration. Custom JavaScript code can be executed at various stages of request processing.",
-        "title": "JavaScriptConfigType",
-        "properties": {
-          "cache_prefix": {
-            "type": "string",
-            "description": "x-displayName: \"Cache Identifier\"\nx-example: \"value\"\nIdentifier for data store to be used by JavaScript. Data store can be\nKeyValue store referred by script.",
-            "title": "CachePrefix"
-          },
-          "custom_script_url": {
-            "type": "string",
-            "description": "x-displayName: \"Path of Javascript\"\nx-example: \"value\"\nURL of JavaScript that gets executed",
-            "title": "ScriptURL"
-          },
-          "script_config": {
-            "type": "object",
-            "description": "x-displayName: \"Configuration for Script\"\nInput passed to the script",
-            "title": "ScriptConfig"
-          }
-        }
-      },
       "virtual_hostJavascriptChallengeType": {
         "type": "object",
         "description": "\nEnables loadbalancer to perform client browser compatibility test by redirecting to a page\nwith Javascript.\n\nWith this feature enabled, only clients that are capable of executing Javascript(mostly browsers)\nwill be allowed to complete the HTTP request.\n\nWhen loadbalancer is configured to do Javascript Challenge, it will redirect the browser to an\nHTML page on every new HTTP request. This HTML page will have Javascript embedded in it.\nLoadbalancer chooses a set of random numbers for every new client and sends these numbers along with an\nencrypted answer with the request such that it embed these numbers as input in the Javascript.\nJavascript will run on the requestor browser and perform a complex Math operation.\nScript will submit the answer to loadbalancer. Loadbalancer will validate the answer by comparing the calculated\nanswer with the decrypted answer (which was encrypted when it was sent back as reply) and allow\nthe request to the upstream server only if the answer is correct.\nLoadbalancer will tag response header with a cookie to avoid Javascript challenge for subsequent requests.\n\nJavascript challenge serves following purposes\n   * Validate that the request is coming via a browser that is capable for running Javascript\n   * Force the browser to run a complex operation, f(X), that requires it to spend a large number\n     of CPU cycles. This is to slow down a potential DoS attacker by making it difficult to launch\n   a large request flood without having to spend even larger CPU cost at their end.\n\nYou can enable either Javascript challenge or Captcha challenge on a virtual host",
@@ -16644,6 +16272,42 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "cdn"
+    },
+    {
+      "name": "config"
+    },
+    {
+      "name": "ml"
+    }
+  ]
 }

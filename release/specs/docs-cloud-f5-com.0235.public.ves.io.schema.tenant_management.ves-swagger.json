@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tenant_management",
     "description": "Public APIs for Tenant Management feature.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/system/tenant_management/delegated_access/subscribe": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-customapi-delegatedaccesssubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.CustomAPI.DelegatedAccessSubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.CustomAPI.DelegatedAccessSubscribe",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant Management",
       "x-ves-proto-service": "ves.io.schema.tenant_management.CustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-customapi-delegatedaccessunsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.CustomAPI.DelegatedAccessUnsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.CustomAPI.DelegatedAccessUnsubscribe",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant Management",
       "x-ves-proto-service": "ves.io.schema.tenant_management.CustomAPI",
@@ -273,6 +280,36 @@
         "x-displayname": "Unsubscribe Response",
         "x-ves-proto-message": "ves.io.schema.tenant_management.UnsubscribeResponse"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

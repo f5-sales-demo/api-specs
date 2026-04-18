@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.securemesh_site_v2",
     "description": "Secure Mesh site defines a required parameters that can be used in CRUD, to create and manage an Secure Mesh site.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/securemesh_site_v2s": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-securemesh_site_v2-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site_v2.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site_v2.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Configure Secure Mesh Site",
       "x-ves-proto-service": "ves.io.schema.views.securemesh_site_v2.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-securemesh_site_v2-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site_v2.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site_v2.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Configure Secure Mesh Site",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-securemesh_site_v2-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site_v2.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site_v2.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Configure Secure Mesh Site",
       "x-ves-proto-service": "ves.io.schema.views.securemesh_site_v2.API",
@@ -1161,10 +1169,7 @@
         "type": "string",
         "description": "Identifies the how to pick the network for Interface.\n\nAddress ranges in DHCP pool list are used for IP Address allocation\nAddress ranges in DHCP pool list are excluded from IP Address allocation",
         "title": "DHCP POOL SETTING",
-        "enum": [
-          "INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS",
-          "EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS"
-        ],
+        "enum": ["INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS", "EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS"],
         "default": "INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS",
         "x-displayname": "Interface Network Type",
         "x-ves-proto-enum": "ves.io.schema.network_interface.DHCPPoolSettingType"
@@ -1189,40 +1194,6 @@
             "type": "string",
             "description": "x-displayName: \"Starting IP\"\nx-example: \"10.1.1.5\"\nStarting IP of the pool range.\nIn case of address allocator, offset is derived based on network prefix.\n10.1.1.5 with prefix length of 24, start offset is 0.0.0.5",
             "title": "Start IP"
-          }
-        }
-      },
-      "network_interfaceDHCPServerParametersType": {
-        "type": "object",
-        "description": "x-displayName: \"DHCPServerParametersType\"",
-        "title": "DHCPServerParametersType",
-        "properties": {
-          "automatic_from_end": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "automatic_from_start": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "dhcp_networks": {
-            "type": "array",
-            "description": "x-displayName: \"DHCP Networks\"\nx-required\nList of networks from which DHCP Server can allocate IPv4 Addresses",
-            "title": "DHCP Networks",
-            "items": {
-              "$ref": "#/components/schemas/network_interfaceDHCPNetworkType"
-            }
-          },
-          "dhcp_option82_tag": {
-            "type": "string",
-            "description": "x-displayName: \"Option 82 Tag\"\nx-example: \"network_red\"\nOptional tag that can be given to this configuration",
-            "title": "Option 82 Tag"
-          },
-          "fixed_ip_map": {
-            "type": "object",
-            "description": "x-displayName: \"Fixed MAC Address to IPv4 Assignments\"\nx-example: \"value\"\nAssign fixed IPv4 addresses based on the MAC Address of the DHCP Client.",
-            "title": "Fixed IP Assignments"
-          },
-          "interface_ip_map": {
-            "$ref": "#/components/schemas/network_interfaceDHCPInterfaceIPType"
           }
         }
       },
@@ -1375,26 +1346,6 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.max_pairs": "128"
             }
-          }
-        }
-      },
-      "network_interfaceStaticIpParametersFleetType": {
-        "type": "object",
-        "description": "x-displayName: \"Fleet: Static IP Parameters\"\nConfigure Static IP parameters",
-        "title": "Static IP Parameters",
-        "properties": {
-          "default_gw": {
-            "type": "string",
-            "description": "x-displayName: \"Default Gateway\"\nx-example: \"192.168.20.1\"\nIP address offset of the default gateway, prefix len is used to calculate offset",
-            "title": "Default Gateway"
-          },
-          "dns_server": {
-            "type": "string",
-            "description": "x-displayName: \"DNS Server\"\nx-example: \"192.168.20.1\"\nIP address offset of the DNS server, prefix len is used to calculate offset",
-            "title": "DNS Server"
-          },
-          "network_prefix_allocator": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
           }
         }
       },
@@ -1906,10 +1857,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -1932,11 +1880,7 @@
         "type": "string",
         "description": "Tunnel encapsulation to be used between sites\n\nTunnel can operate in both IPsec and SSL, with IPsec being prefered over SSL.\nTunnel is of type IPsec\nTunnel is of type SSL",
         "title": "Site to site tunnel type",
-        "enum": [
-          "SITE_TO_SITE_TUNNEL_IPSEC_OR_SSL",
-          "SITE_TO_SITE_TUNNEL_IPSEC",
-          "SITE_TO_SITE_TUNNEL_SSL"
-        ],
+        "enum": ["SITE_TO_SITE_TUNNEL_IPSEC_OR_SSL", "SITE_TO_SITE_TUNNEL_IPSEC", "SITE_TO_SITE_TUNNEL_SSL"],
         "default": "SITE_TO_SITE_TUNNEL_IPSEC_OR_SSL",
         "x-displayname": "Tunnel type",
         "x-ves-proto-enum": "ves.io.schema.SiteToSiteTunnelType"
@@ -2004,10 +1948,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2132,37 +2073,6 @@
           }
         }
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -2204,11 +2114,7 @@
         "type": "string",
         "description": "VRRP advertisement mode for VIP\n\nInvalid VRRP mode",
         "title": "VipVrrpType",
-        "enum": [
-          "VIP_VRRP_INVALID",
-          "VIP_VRRP_ENABLE",
-          "VIP_VRRP_DISABLE"
-        ],
+        "enum": ["VIP_VRRP_INVALID", "VIP_VRRP_ENABLE", "VIP_VRRP_DISABLE"],
         "default": "VIP_VRRP_INVALID",
         "x-displayname": "VRRP Virtual-IP",
         "x-ves-proto-enum": "ves.io.schema.VipVrrpType"
@@ -2235,18 +2141,6 @@
         "default": "VIRTUAL_NETWORK_SITE_LOCAL",
         "x-displayname": "Virtual Network Type",
         "x-ves-proto-enum": "ves.io.schema.VirtualNetworkType"
-      },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
       },
       "schemaviewsCloudSubnetParamType": {
         "type": "object",
@@ -2333,78 +2227,6 @@
             "type": "string",
             "description": "x-displayName: \"Choose Subnet Name\"\nSpecify the Subnet Name",
             "title": "name"
-          }
-        }
-      },
-      "securemesh_site_v2AWSManagedMode": {
-        "type": "object",
-        "description": "x-displayName: \"Managed By F5XC\"\nF5 Distributed Cloud will automate provisioning (ex: node bringup) for this AWS site.",
-        "title": "AWSManagedMode",
-        "properties": {
-          "aws_cred": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "aws_region": {
-            "type": "string",
-            "description": "x-displayName: \"AWS Region\"\nx-example: \"us-east-1\"\nx-required\nAWS Region of your services vpc, where F5XC site will be deployed.",
-            "title": "AWS Region"
-          },
-          "custom_security_group": {
-            "$ref": "#/components/schemas/viewsSecurityGroupType"
-          },
-          "disabled": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "disk_size": {
-            "type": "integer",
-            "description": "x-displayName: \"Node Disk Size\"\nx-example: \"80\"\nNode disk size for all node in the F5XC site. Unit is GiB",
-            "title": "Node Disk size",
-            "format": "int64"
-          },
-          "egress_gateway_default": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "egress_nat_gw": {
-            "$ref": "#/components/schemas/viewsAWSNATGatewaychoiceType"
-          },
-          "egress_virtual_private_gateway": {
-            "$ref": "#/components/schemas/viewsAWSVirtualPrivateGatewaychoiceType"
-          },
-          "f5xc_security_group": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "instance_type": {
-            "type": "string",
-            "description": "x-displayName: \"AWS Instance Type for Node\"\nx-example: \"a1.xlarge\"\nx-required\nInstance size based on the performance.",
-            "title": "AWS Instance Type"
-          },
-          "multiple_interface": {
-            "$ref": "#/components/schemas/securemesh_site_v2MultipleInterface"
-          },
-          "new_vpc": {
-            "$ref": "#/components/schemas/viewsAWSVPCParamsType"
-          },
-          "private_connectivity": {
-            "$ref": "#/components/schemas/viewsPrivateConnectConfigType"
-          },
-          "private_connectivity_disabled": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "single_interface": {
-            "$ref": "#/components/schemas/securemesh_site_v2SingleInterface"
-          },
-          "tags": {
-            "type": "object",
-            "description": "x-displayName: \"AWS Tags\"\nx-example: \"dev: staging\"\nAWS Tags is a label consisting of a user-defined key and value.\nIt helps to manage, identify, organize, search for, and filter resources in AWS console.",
-            "title": "AWS Tags"
-          },
-          "tgw": {
-            "$ref": "#/components/schemas/securemesh_site_v2TGWType"
-          },
-          "vpc_id": {
-            "type": "string",
-            "description": "x-displayName: \"Existing VPC ID\"\nx-example: \"vpc-12345678901234567\"\nExisting VPC ID",
-            "title": "Existing VPC ID"
           }
         }
       },
@@ -2503,60 +2325,6 @@
           },
           "subnet_param": {
             "$ref": "#/components/schemas/securemesh_site_v2AWSCloudSubnetParamType"
-          }
-        }
-      },
-      "securemesh_site_v2AzureManagedMode": {
-        "type": "object",
-        "description": "x-displayName: \"Managed By F5XC\"\nF5 Distributed Cloud will automate provisioning (ex: node bringup) for this Azure site.",
-        "title": "AzureManagedMode",
-        "properties": {
-          "accelerated_networking": {
-            "$ref": "#/components/schemas/viewsAcceleratedNetworkingType"
-          },
-          "azure_cred": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "azure_region": {
-            "type": "string",
-            "description": "x-displayName: \"Recommended Azure Region Name\"\nx-example: \"eastus\"\nx-required\nName of the azure region which supports availability zones.",
-            "title": "Recommended Azure Region Name"
-          },
-          "disabled": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "disk_size": {
-            "type": "integer",
-            "description": "x-displayName: \"Cloud Disk Size\"\nx-example: \"80\"\nDisk size to be used for this instance in GiB. 80 is 80 GiB",
-            "title": "Cloud Disk size",
-            "format": "int64"
-          },
-          "enabled": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "machine_type": {
-            "type": "string",
-            "description": "x-displayName: \"Azure Machine Type for Node\"\nx-example: \"Standard_D3_v2\"\nx-required\nSelect Instance size based on performance needed.\nThe default setting for Accelerated Networking is enabled, thus make sure \nyou select a Virtual Machine that supports accelerated networking or \ndisable the setting under, Select Ingress Gateway or Ingress/Egress Gateway \n> advanced options.",
-            "title": "Machine Type"
-          },
-          "multiple_interface": {
-            "$ref": "#/components/schemas/securemesh_site_v2AzureMultipleInterface"
-          },
-          "resource_group": {
-            "type": "string",
-            "description": "x-displayName: \"Resource Group\"\nx-example: \"my-resources\"\nx-required\nAzure resource group for resources that will be created",
-            "title": "Resource Group"
-          },
-          "single_interface": {
-            "$ref": "#/components/schemas/securemesh_site_v2AzureSingleInterface"
-          },
-          "tags": {
-            "type": "object",
-            "description": "x-displayName: \"Azure Tags\"\nx-example: \"dev: staging\"\nAzure Tags is a label consisting of a user-defined key and value.\nIt helps to manage, identify, organize, search for, and filter resources in Azure console.",
-            "title": "Azure Tags"
-          },
-          "vnet": {
-            "$ref": "#/components/schemas/viewsAzureVnetChoiceType"
           }
         }
       },
@@ -2929,49 +2697,6 @@
           }
         }
       },
-      "securemesh_site_v2GCPManagedMode": {
-        "type": "object",
-        "description": "x-displayName: \"Managed By F5XC\"\nF5 Distributed Cloud will automate all provisioning (ex: node bringup, cloud route table addition) for this site.",
-        "title": "GCPManagedMode",
-        "properties": {
-          "disk_size": {
-            "type": "integer",
-            "description": "x-displayName: \"Node Disk Size\"\nx-example: \"80\"\nSelect the disk size of the node. The default value is 80GB.",
-            "title": "Node Disk size",
-            "format": "int64"
-          },
-          "gcp_cred": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "gcp_region": {
-            "type": "string",
-            "description": "x-displayName: \"GCP Region\"\nx-example: \"us-east-1\"\nx-required\nSelect the GCP Region where you want to deploy F5 Distributed Cloud Customer Edge site.",
-            "title": "GCP Region"
-          },
-          "instance_type": {
-            "type": "string",
-            "description": "x-displayName: \"GCP Instance Type\"\nx-example: \"a1.xlarge\"\nx-required\nSelect the GCP instance type for deploying nodes of CE (customer edge) site.",
-            "title": "GCP Instance Type"
-          },
-          "multiple_interface": {
-            "$ref": "#/components/schemas/securemesh_site_v2GCPMultipleInterface"
-          },
-          "private_connectivity": {
-            "$ref": "#/components/schemas/viewsPrivateConnectConfigType"
-          },
-          "private_connectivity_disabled": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "single_interface": {
-            "$ref": "#/components/schemas/securemesh_site_v2GCPSingleInterface"
-          },
-          "tags": {
-            "type": "object",
-            "description": "x-displayName: \"GCP Tags\"\nx-example: \"dev: staging\"\nGCP Tags is a label consisting of a user-defined key and value.\nIt helps to manage, identify, organize, search for, and filter resources in GCP console.",
-            "title": "GCP Tags"
-          }
-        }
-      },
       "securemesh_site_v2GCPManagedNode": {
         "type": "object",
         "description": "x-displayName: \"Nodes\"\nThis section will show nodes associated with this site.",
@@ -3162,21 +2887,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "securemesh_site_v2GetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "securemesh_site_v2Interface": {
         "type": "object",
@@ -3523,16 +3233,6 @@
           }
         }
       },
-      "securemesh_site_v2RSeriesProviderType": {
-        "type": "object",
-        "description": "x-displayName: \"RSeries Provider Type\"\nRSeries Provider Type",
-        "title": "RSeries Provider Type",
-        "properties": {
-          "not_managed": {
-            "$ref": "#/components/schemas/securemesh_site_v2NodeList"
-          }
-        }
-      },
       "securemesh_site_v2ReplaceRequest": {
         "type": "object",
         "description": "This is the input message of the 'Replace' RPC",
@@ -3578,19 +3278,6 @@
           },
           "static_v6_routes": {
             "$ref": "#/components/schemas/virtual_networkStaticV6RoutesListType"
-          }
-        }
-      },
-      "securemesh_site_v2SegmentVRFSettingType": {
-        "type": "object",
-        "description": "x-displayName: \"Segment VRF Settings\"\nThe Segment VRF is valid across all Sites of a Tenant. These are identified with a Segment name. Though these VRFs are across all Sites of a Tenant, there are some configurations that are valid\nper Site that can be configured here",
-        "title": "Segment VRF Settings",
-        "properties": {
-          "segment_config": {
-            "$ref": "#/components/schemas/securemesh_site_v2SegmentNetworkConfiguration"
-          },
-          "segment_network": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
           }
         }
       },
@@ -5102,6 +4789,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

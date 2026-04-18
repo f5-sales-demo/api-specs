@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.discovery",
     "description": "Service discovery in F5XC performs following\n\nDynamic service discovery: Resolving the load balancer endpoints for a ADC cluster\nDynamic VIP discovery: Publishing virtual IP to attract traffic from clients",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/discoverys": {
@@ -407,7 +412,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-customapi-downloadcertificates"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.CustomAPI.DownloadCertificates"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.CustomAPI.DownloadCertificates",
+        "tags": ["config"]
       },
       "x-displayname": "Discovery",
       "x-ves-proto-service": "ves.io.schema.discovery.CustomAPI",
@@ -564,7 +570,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Discovery",
       "x-ves-proto-service": "ves.io.schema.discovery.API",
@@ -713,7 +720,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Discovery",
@@ -845,7 +853,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Discovery",
       "x-ves-proto-service": "ves.io.schema.discovery.API",
@@ -995,34 +1004,6 @@
           }
         }
       },
-      "discoveryCbipDiscoveryType": {
-        "type": "object",
-        "description": "x-displayName: \"Classic BIG-IP Discovery Configuration\"\nDiscovery configuration for Classic BIG-IP",
-        "title": "Classic BIG-IP Discovery Type",
-        "properties": {
-          "cbip_clusters": {
-            "type": "array",
-            "description": "x-displayName: \"Classic BIG-IP Clusters\"\nx-required\nList of Classic BIG-IP clusters. A BIG-IP cluster is a set of BIG-IP devices which\nare in an Active-Active or Active-Standby setup or even a standalone BIG-IP device.",
-            "title": "Classic BIG-IP Clusters",
-            "items": {
-              "$ref": "#/components/schemas/discoveryCbipCluster"
-            }
-          },
-          "internal_lb_domain": {
-            "type": "string",
-            "description": "x-displayName: \"Internal LB domain\"\nDomain name of the internal LB",
-            "title": "Internal LB"
-          },
-          "server_ca": {
-            "type": "array",
-            "description": "x-displayName: \"Server CA certificate\"\nServer CA certificate to connect to LB",
-            "title": "Server CA certificate to connect to internal LB",
-            "items": {
-              "$ref": "#/components/schemas/ioschemaObjectRefType"
-            }
-          }
-        }
-      },
       "discoveryConsulAccessInfo": {
         "type": "object",
         "description": "Hashicorp Consul API server information",
@@ -1073,21 +1054,6 @@
             "x-ves-example": "Joe",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "64"
-            }
-          }
-        }
-      },
-      "discoveryConsulNamespaceMapping": {
-        "type": "object",
-        "description": "x-displayName: \"Consul Namespace Mapping\"\nSelect the mapping between Consul namespaces from which services will be discovered and App Namespace to which the discovered services will be shared.",
-        "title": "Consul Namespace Mapping",
-        "properties": {
-          "items": {
-            "type": "array",
-            "description": "x-displayName: \"Regex Matching\"\nx-required\nMap Consul namespace(s) to App Namespaces",
-            "title": "Consul Namespace to App Namespace Mapping",
-            "items": {
-              "$ref": "#/components/schemas/discoveryConsulNamespaceMappingItem"
             }
           }
         }
@@ -1416,21 +1382,6 @@
           }
         }
       },
-      "discoveryGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "discoveryGetSpecType": {
         "type": "object",
         "description": "API to Get discovery object for a site or virtual site in system namespace",
@@ -1491,10 +1442,7 @@
         "type": "string",
         "description": "Two modes are possible\n\nCoreDNS: Whether external K8s cluster is running core-dns\nKubeDNS: External K8s cluster is running kube-dns",
         "title": "K8SDNSMode",
-        "enum": [
-          "CORE_DNS",
-          "KUBE_DNS"
-        ],
+        "enum": ["CORE_DNS", "KUBE_DNS"],
         "default": "CORE_DNS",
         "x-displayname": "DNS Mode",
         "x-ves-proto-enum": "ves.io.schema.discovery.K8SDNSMode"
@@ -1944,16 +1892,6 @@
           }
         }
       },
-      "discoverySchemeType": {
-        "type": "string",
-        "description": "x-displayName: \"Scheme\"\nScheme to use when doing REST API to discovery server\n\n - HTTP: x-displayName: \"HTTP\"\nhttp:// Scheme\n - HTTPS: x-displayName: \"HTTPS\"\nhttps:// Scheme",
-        "title": "REST scheme",
-        "enum": [
-          "HTTP",
-          "HTTPS"
-        ],
-        "default": "HTTP"
-      },
       "discoveryStatusObject": {
         "type": "object",
         "description": "Most recently observed status of object",
@@ -2037,35 +1975,6 @@
           }
         }
       },
-      "discoveryThirdPartyDiscoveryType": {
-        "type": "object",
-        "description": "x-displayName: \"Discovery\"\nConfigure third party log source applications to send logs to your XC environment. Define application names and allowed IP ranges using CIDR notation.\nSee Tech Docs for details setup instractions.",
-        "title": "Third Party Application",
-        "properties": {
-          "applications": {
-            "type": "array",
-            "description": "x-required\nx-displayName: \"Application Source Name\"\nDefines names to identify and distingish log source system or platforms",
-            "title": "Third Party Application",
-            "items": {
-              "type": "string"
-            }
-          },
-          "expiration_timestamp": {
-            "type": "string",
-            "description": "x-displayName: \"Expiration Time\"\nThis discovery service expiration timestamp",
-            "title": "expiration_timestamp",
-            "format": "date-time"
-          },
-          "source_cidr": {
-            "type": "array",
-            "description": "x-required\nx-displayName: \"Source Subnet IP\"\nx-example: \"1.1.1.0/24 or 2001:10/64\"\nSource IP of the packet to match",
-            "title": "source IP",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "discoveryVerStatusType": {
         "type": "object",
         "description": "This VER status is per site on which discovery is happening and it lists all services that site has discovered.",
@@ -2100,43 +2009,11 @@
           }
         }
       },
-      "discoveryVipDiscoveryInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"VIP Publish Configuration\"\nK8S Configuration to publish VIPs",
-        "title": "VIP Discovery Info Type",
-        "properties": {
-          "dns_mode": {
-            "$ref": "#/components/schemas/discoveryK8SDNSMode"
-          },
-          "namespace": {
-            "type": "string",
-            "description": "x-displayName: \"Default Namespace\"\nWhen virtual IP is published with \"PUBLISH_SERVICE\" mode, this field indicates the namespace\nwhere the service/endpoints needs to be created if the domain name doesn't specify it\nexplicitly. K8S administrator of the external K8s should ensure this namespace is created",
-            "title": "default namespace"
-          },
-          "publish_virtual_ip": {
-            "type": "boolean",
-            "description": "x-displayName: \"VIP Publish Enable\"\nAre we publishing Virtual Host domains to Virtual IP mapping to external cluster",
-            "title": "enable/disable publish VIP",
-            "format": "boolean"
-          },
-          "subdomain": {
-            "type": "string",
-            "description": "x-displayName: \"Subdomain\"\nSubdomain for which DNS delegation is done\nF5XC Edge Router will only respond for DNS queries on this sub-domain\nWhile programming the DNS DELEGATE on external cluster, VER will take ownership of this\nsub-domain",
-            "title": "DNS delegation sub-domain"
-          },
-          "type": {
-            "$ref": "#/components/schemas/discoveryVirtualIPDiscoveryType"
-          }
-        }
-      },
       "discoveryVirtualIPDiscoveryType": {
         "type": "string",
         "description": "x-displayName: \"Virtual IP Discovery\"\nHow is the Virtual IP discovery done\nTwo modes are possible\n  DNS_DELEGATION: Program DNS delegation for a sub-domain in external K8s cluster\n  PUBLISH_SERVICE: Create/Register a service in external K8s/consul cluster\n\n - DNS_DELEGATION: x-displayName: \"DNS Delegation\"\nDNS sub domain is delegated to volterra site.\n - PUBLISH_SERVICE: x-displayName: \"Publish\"\nName to VIP mapping is published in external discovery service",
         "title": "VirtualIPDiscoveryType",
-        "enum": [
-          "DNS_DELEGATION",
-          "PUBLISH_SERVICE"
-        ],
+        "enum": ["DNS_DELEGATION", "PUBLISH_SERVICE"],
         "default": "DNS_DELEGATION"
       },
       "discoveryVirtualServerFilter": {
@@ -2367,13 +2244,7 @@
         "type": "string",
         "description": "Specifies whether the discovery is from Kubernetes or Consul cluster\n\nInvalid Discovery mechanism\nDiscover from Kubernetes cluster\nDiscover from Consul service\nDiscover from Classic BIG-IP Clusters\nDiscover for Third Party Application",
         "title": "DiscoveryType",
-        "enum": [
-          "INVALID_DISCOVERY",
-          "K8S",
-          "CONSUL",
-          "CLASSIC_BIGIP",
-          "THIRD_PARTY"
-        ],
+        "enum": ["INVALID_DISCOVERY", "K8S", "CONSUL", "CLASSIC_BIGIP", "THIRD_PARTY"],
         "default": "INVALID_DISCOVERY",
         "x-displayname": "Discovery Type",
         "x-ves-proto-enum": "ves.io.schema.DiscoveryType"
@@ -2718,10 +2589,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -2837,10 +2705,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2999,37 +2864,6 @@
           }
         }
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -3090,18 +2924,6 @@
         "x-displayname": "Virtual Network Type",
         "x-ves-proto-enum": "ves.io.schema.VirtualNetworkType"
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemaviewsObjectRefType": {
         "type": "object",
         "description": "x-displayName: \"Object reference\"\nThis type establishes a direct reference from one object(the referrer) to another(the referred).\nSuch a reference is in form of tenant/namespace/name",
@@ -3124,6 +2946,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

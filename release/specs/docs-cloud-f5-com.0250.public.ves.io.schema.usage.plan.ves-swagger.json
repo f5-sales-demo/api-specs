@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.usage.plan",
     "description": "Usage plan related RPCs. Used for billing and onboarding.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/system/usage_plans/current": {
@@ -107,7 +112,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-usage-plan-customapi-getcurrentplan"
         },
-        "x-ves-proto-rpc": "ves.io.schema.usage.plan.CustomAPI.GetCurrentPlan"
+        "x-ves-proto-rpc": "ves.io.schema.usage.plan.CustomAPI.GetCurrentPlan",
+        "tags": ["web"]
       },
       "x-displayname": "Usage plan",
       "x-ves-proto-service": "ves.io.schema.usage.plan.CustomAPI",
@@ -214,7 +220,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-usage-plan-customapi-listusageplans"
         },
-        "x-ves-proto-rpc": "ves.io.schema.usage.plan.CustomAPI.ListUsagePlans"
+        "x-ves-proto-rpc": "ves.io.schema.usage.plan.CustomAPI.ListUsagePlans",
+        "tags": ["web"]
       },
       "x-displayname": "Usage plan",
       "x-ves-proto-service": "ves.io.schema.usage.plan.CustomAPI",
@@ -295,13 +302,7 @@
         "type": "string",
         "description": "Temporal period type\n\n - PERIOD_UNKNOWN: unknown, undefined period of time\n - PERIOD_DAY: Day\n - PERIOD_WEEK: Week\n - PERIOD_MONTH: Month\n - PERIOD_YEAR: Year",
         "title": "Period type",
-        "enum": [
-          "PERIOD_UNKNOWN",
-          "PERIOD_DAY",
-          "PERIOD_WEEK",
-          "PERIOD_MONTH",
-          "PERIOD_YEAR"
-        ],
+        "enum": ["PERIOD_UNKNOWN", "PERIOD_DAY", "PERIOD_WEEK", "PERIOD_MONTH", "PERIOD_YEAR"],
         "default": "PERIOD_UNKNOWN",
         "x-displayname": "Period type",
         "x-ves-proto-enum": "ves.io.schema.usage.plan.PeriodUnitType"
@@ -414,11 +415,7 @@
         "type": "string",
         "description": "State of the\n\n - STATE_UNSPECIFIED: zero value\n - STATE_READY: the plan is in default state\n - STATE_TRANSITION_PENDING: the plan is in the state of plan transitioning. If the plan has current flag equals to true and in\nTRANSITION_PENDING then tenant moves to another plan which is in state TRANSITION_PENDING.\nAt the same moment in time no more than 2 plans should have TRANSITION_PENDING state",
         "title": "PlanTransitionState",
-        "enum": [
-          "STATE_UNSPECIFIED",
-          "STATE_READY",
-          "STATE_TRANSITION_PENDING"
-        ],
+        "enum": ["STATE_UNSPECIFIED", "STATE_READY", "STATE_TRANSITION_PENDING"],
         "default": "STATE_UNSPECIFIED",
         "x-displayname": "PlanTransitionState",
         "x-ves-proto-enum": "ves.io.schema.usage.plan.PlanState"
@@ -476,56 +473,6 @@
             "title": "Manual approval",
             "format": "boolean",
             "x-displayname": "Manual approval"
-          }
-        }
-      },
-      "quotaFloatLimitType": {
-        "type": "object",
-        "description": "x-displayName: \"Limit (float)\"\nFloatLimitType defines a float quota value that should not be exceeded. Useful for items that have\nquotas in fractions.",
-        "title": "FloatLimitType",
-        "properties": {
-          "maximum": {
-            "type": "number",
-            "description": "x-displayName: \"Maximum\"\nx-example: \"100\"\nThe maximum value",
-            "title": "maximum",
-            "format": "double"
-          }
-        }
-      },
-      "quotaLimitType": {
-        "type": "object",
-        "description": "x-displayName: \"Limit\"\nLimitType defines a quota value for a specific object kind that should not be exceeded",
-        "title": "LimitType",
-        "properties": {
-          "maximum": {
-            "type": "integer",
-            "description": "x-displayName: \"Maximum\"\nx-example: \"100\"\nThe maximum value for the object kind",
-            "title": "maximum",
-            "format": "int32"
-          }
-        }
-      },
-      "quotaRateLimitType": {
-        "type": "object",
-        "description": "x-displayName: \"Rate Limit\"\nRateLimitType defines a rate quota value for a specific object kind that should not be exceeded in terms access per time unit",
-        "title": "RateLimitType",
-        "properties": {
-          "burst": {
-            "type": "integer",
-            "description": "x-displayName: \"Burst\"\nx-example: \"100\"\nThe burst which is to be allowed per quanta",
-            "title": "burst",
-            "format": "int32"
-          },
-          "rate": {
-            "type": "integer",
-            "description": "x-displayName: \"Rate\"\nx-example: \"100\"\nThe sustained rate which is to be allowed per quanta",
-            "title": "rate",
-            "format": "int32"
-          },
-          "unit": {
-            "type": "string",
-            "description": "x-displayName: \"Unit\"\nx-example: \"per-second\"\nThe unit for the quanta",
-            "title": "unit"
           }
         }
       },
@@ -593,53 +540,8 @@
         "type": "string",
         "description": "x-displayName: \"Rate Limit Period Unit\"\nUnit for the period per which the rate limit is applied.\n\n - SECOND: Second\n\nx-displayName: \"Seconds\"\nRate limit period unit is seconds\n - MINUTE: Minute\n\nx-displayName: \"Minutes\"\nRate limit period unit is minutes\n - HOUR: Hour\n\nx-displayName: \"Hours\"\nRate limit period unit is hours\n - DAY: Day\n\nx-displayName: \"Days\"\nRate limit period unit is days",
         "title": "RateLimitPeriodUnit",
-        "enum": [
-          "SECOND",
-          "MINUTE",
-          "HOUR",
-          "DAY"
-        ],
+        "enum": ["SECOND", "MINUTE", "HOUR", "DAY"],
         "default": "SECOND"
-      },
-      "rate_limiterRateLimitValue": {
-        "type": "object",
-        "description": "x-displayName: \"Rate Limit Value\"\nA tuple consisting of a rate limit period unit and the total number of allowed requests for that period.",
-        "title": "RateLimitValue",
-        "properties": {
-          "action_block": {
-            "$ref": "#/components/schemas/rate_limiterRateLimitBlockAction"
-          },
-          "burst_multiplier": {
-            "type": "integer",
-            "description": "x-displayName: \"Burst Multiplier\"\nx-example: \"1\"\nThe maximum burst of requests to accommodate, expressed as a multiple of the rate.",
-            "title": "burst_multiplier",
-            "format": "int64"
-          },
-          "disabled": {
-            "$ref": "#/components/schemas/schemaEmpty"
-          },
-          "leaky_bucket": {
-            "$ref": "#/components/schemas/rate_limiterLeakyBucketRateLimiter"
-          },
-          "period_multiplier": {
-            "type": "integer",
-            "description": "x-displayName: \"Periods\"\nx-example: \"1\"\nThis setting, combined with Per Period units, provides a duration",
-            "title": "period_multiplier",
-            "format": "int64"
-          },
-          "token_bucket": {
-            "$ref": "#/components/schemas/rate_limiterTokenBucketRateLimiter"
-          },
-          "total_number": {
-            "type": "integer",
-            "description": "x-displayName: \"Number Of Requests\"\nx-example: \"1\"\nx-required\nThe total number of allowed requests per rate-limiting period.",
-            "title": "total_number",
-            "format": "int64"
-          },
-          "unit": {
-            "$ref": "#/components/schemas/rate_limiterRateLimitPeriodUnit"
-          }
-        }
       },
       "rate_limiterTokenBucketRateLimiter": {
         "type": "object",
@@ -655,13 +557,7 @@
         "type": "string",
         "description": "PlanType is the type of billing plan for the customer\n",
         "title": "PlanType",
-        "enum": [
-          "FREE",
-          "INDIVIDUAL",
-          "TEAM",
-          "ORGANIZATION",
-          "PLAN_TYPE_UNSPECIFIED"
-        ],
+        "enum": ["FREE", "INDIVIDUAL", "TEAM", "ORGANIZATION", "PLAN_TYPE_UNSPECIFIED"],
         "default": "FREE",
         "x-displayname": "Plan Type",
         "x-ves-proto-enum": "ves.io.schema.PlanType"
@@ -670,11 +566,7 @@
         "type": "string",
         "description": "TenantType is the type of the customer\n\nUNKNOWN indicates the field not being set\nFREEMIUM are customer that don't have their domain\nENTERPRiISE customer have their domain",
         "title": "TenantType",
-        "enum": [
-          "UNKNOWN",
-          "FREEMIUM",
-          "ENTERPRISE"
-        ],
+        "enum": ["UNKNOWN", "FREEMIUM", "ENTERPRISE"],
         "default": "UNKNOWN",
         "x-displayname": "Tenant type",
         "x-ves-proto-enum": "ves.io.schema.TenantType"
@@ -732,6 +624,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

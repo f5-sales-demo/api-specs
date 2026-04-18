@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.ai_assistant",
     "description": "Custom handler for ai assistant related microservice",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/gen-ai/namespaces/{namespace}/eval_query": {
@@ -122,7 +127,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ai_assistant-sahayaapi-evalaiassistantquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ai_assistant.SahayaAPI.EvalAIAssistantQuery"
+        "x-ves-proto-rpc": "ves.io.schema.ai_assistant.SahayaAPI.EvalAIAssistantQuery",
+        "tags": ["gen-ai"]
       },
       "x-displayname": "AI Assistant APIs",
       "x-ves-proto-service": "ves.io.schema.ai_assistant.SahayaAPI",
@@ -244,7 +250,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ai_assistant-sahayaapi-evalaiassistantfeedback"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ai_assistant.SahayaAPI.EvalAIAssistantFeedback"
+        "x-ves-proto-rpc": "ves.io.schema.ai_assistant.SahayaAPI.EvalAIAssistantFeedback",
+        "tags": ["gen-ai"]
       },
       "x-displayname": "AI Assistant APIs",
       "x-ves-proto-service": "ves.io.schema.ai_assistant.SahayaAPI",
@@ -366,7 +373,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ai_assistant-sahayaapi-aiassistantquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ai_assistant.SahayaAPI.AIAssistantQuery"
+        "x-ves-proto-rpc": "ves.io.schema.ai_assistant.SahayaAPI.AIAssistantQuery",
+        "tags": ["gen-ai"]
       },
       "x-displayname": "AI Assistant APIs",
       "x-ves-proto-service": "ves.io.schema.ai_assistant.SahayaAPI",
@@ -488,7 +496,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ai_assistant-sahayaapi-aiassistantfeedback"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ai_assistant.SahayaAPI.AIAssistantFeedback"
+        "x-ves-proto-rpc": "ves.io.schema.ai_assistant.SahayaAPI.AIAssistantFeedback",
+        "tags": ["gen-ai"]
       },
       "x-displayname": "AI Assistant APIs",
       "x-ves-proto-service": "ves.io.schema.ai_assistant.SahayaAPI",
@@ -680,13 +689,7 @@
         "type": "string",
         "description": "x-displayName \"Negative Feedback Type\"\nType of Negative Feedback\n\n - OTHER: x-displayName \"Other\"\nOther\n - INACCURATE_DATA: x-displayName \"Inaccurate data\"\nInaccurate data\n - IRRELEVANT_CONTENT: x-displayName \"Irrelevant content\"\nIrrelevant content\n - POOR_FORMAT: x-displayName \"Poor format\"\nPoor format\n - SLOW_RESPONSE: x-displayName \"Slow response\"\nSlow response",
         "title": "Negative Feedback Type",
-        "enum": [
-          "OTHER",
-          "INACCURATE_DATA",
-          "IRRELEVANT_CONTENT",
-          "POOR_FORMAT",
-          "SLOW_RESPONSE"
-        ],
+        "enum": ["OTHER", "INACCURATE_DATA", "IRRELEVANT_CONTENT", "POOR_FORMAT", "SLOW_RESPONSE"],
         "default": "OTHER",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.NegativeFeedbackType"
@@ -695,12 +698,7 @@
         "type": "string",
         "description": "Unit Type defines the unit for each fields.\n\n - UNIT_TYPE_NONE: None\n\nNone type\n - GB: GB\n\n - PERCENT: Percent\n\n - BYTE: Byte\n",
         "title": "UnitType",
-        "enum": [
-          "UNIT_TYPE_NONE",
-          "GB",
-          "PERCENT",
-          "BYTE"
-        ],
+        "enum": ["UNIT_TYPE_NONE", "GB", "PERCENT", "BYTE"],
         "default": "UNIT_TYPE_NONE",
         "x-displayname": "Unit Type",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.common.UnitType"
@@ -709,12 +707,7 @@
         "type": "string",
         "description": "Action taken for the request\n\n - ACTION_NONE: None\n\nNo action\n - ALLOW: Allow\n\nThe request was allowed to pass\n - BLOCK: Block\n\nThe request was blocked\n - REDIRECT: Redirect\n\nThe request was redirected",
         "title": "Action",
-        "enum": [
-          "ACTION_NONE",
-          "ALLOW",
-          "BLOCK",
-          "REDIRECT"
-        ],
+        "enum": ["ACTION_NONE", "ALLOW", "BLOCK", "REDIRECT"],
         "default": "ACTION_NONE",
         "x-displayname": "Action",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.explain_log_record.Action"
@@ -732,15 +725,7 @@
         "type": "string",
         "description": "Colour Type defines the colour of fields to be displayed.\n\n - COLOUR_TYPE_NONE: None\n\nNo colour\n - DANGER: danger\n\ncolour type red\n - INFO: info\n\ncolour type blue\n - WARNING: warning\n\ncolour type orange\n - AMBER: amber\n\ncolour type yellow\n - SUCCESS: success\n\ncolour type green\n - MALIBU: malibu\n\ncolour type blue",
         "title": "ColourType",
-        "enum": [
-          "COLOUR_TYPE_NONE",
-          "DANGER",
-          "INFO",
-          "WARNING",
-          "AMBER",
-          "SUCCESS",
-          "MALIBU"
-        ],
+        "enum": ["COLOUR_TYPE_NONE", "DANGER", "INFO", "WARNING", "AMBER", "SUCCESS", "MALIBU"],
         "default": "COLOUR_TYPE_NONE",
         "x-displayname": "Colour Type",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.common.ColourType"
@@ -749,13 +734,7 @@
         "type": "string",
         "description": "Column Type defines the data type for each column.\n\n - COLUMN_TYPE_NONE: None\n\n - STRING: string\n\n - INT: integer\n\n - FLOAT: float\n\n - BOOL: boolean\n",
         "title": "ColumnType",
-        "enum": [
-          "COLUMN_TYPE_NONE",
-          "STRING",
-          "INT",
-          "FLOAT",
-          "BOOL"
-        ],
+        "enum": ["COLUMN_TYPE_NONE", "STRING", "INT", "FLOAT", "BOOL"],
         "default": "COLUMN_TYPE_NONE",
         "x-displayname": "Column Type",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.common.ColumnType"
@@ -873,15 +852,7 @@
         "type": "string",
         "description": "Render Type defines the format to which data has to be rendered on UI.\n\n - DISPLAY_TYPE_NONE: None\n\nNone type\n - ICON: icon\n\nValue to be displayed as ICON\n - PROGRESS_BAR: progress bar\n\n - DATE: date\n\n - DURATION: duration\n\n - PROVIDER_ICON: provider icon\n",
         "title": "DisplayType",
-        "enum": [
-          "DISPLAY_TYPE_NONE",
-          "ICON",
-          "DOT_WITH_VALUE",
-          "PROGRESS_BAR",
-          "DATE",
-          "DURATION",
-          "PROVIDER_ICON"
-        ],
+        "enum": ["DISPLAY_TYPE_NONE", "ICON", "DOT_WITH_VALUE", "PROGRESS_BAR", "DATE", "DURATION", "PROVIDER_ICON"],
         "default": "DISPLAY_TYPE_NONE",
         "x-displayname": "DisplayType Type",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.common.DisplayType"
@@ -925,10 +896,7 @@
         "type": "string",
         "description": "Operator for query filter\n\n - IN: Filter Operator\n\nSpecifies that query result includes filter values\n - NOT_IN: Filter Operator\n\nSpecifies that query result excludes filter values",
         "title": "Filter Operator",
-        "enum": [
-          "IN",
-          "NOT_IN"
-        ],
+        "enum": ["IN", "NOT_IN"],
         "default": "IN",
         "x-displayname": "Filter Operator",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.common.FilterOperator"
@@ -937,13 +905,7 @@
         "type": "string",
         "description": "Format Type defines the format type for each fields.\n\n - FORMAT_TYPE_NONE: None\n\nNo format\n - INLINE: Inline\n\nKey value to be displayed in inline format\n - BOLD: Bold\n\nValue to be displayed in bold format\n - REVERSE_KEY_VALUE_ORDER: ReverseKeyValueOrder\n\nKey value to be displayed in Reverse Key Value Order format\n - WRAP: Wrap\n\nValue to be wrapped",
         "title": "FormatType",
-        "enum": [
-          "FORMAT_TYPE_NONE",
-          "INLINE",
-          "BOLD",
-          "REVERSE_KEY_VALUE_ORDER",
-          "WRAP"
-        ],
+        "enum": ["FORMAT_TYPE_NONE", "INLINE", "BOLD", "REVERSE_KEY_VALUE_ORDER", "WRAP"],
         "default": "FORMAT_TYPE_NONE",
         "x-displayname": "Format Type",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.common.FormatType"
@@ -1150,15 +1112,7 @@
         "type": "string",
         "description": "Widget Type defines the data type for widget.\n\n - WIDGET_TYPE_NONE: None\n\nNone type\n - TWO_VALUE: two_value\n\nTwo Value type widget\n - DISTRIBUTION_CHART: distribution_chart\n\nDistribution Chart type widget\n - TABLE: table\n\nTable type widget\n - LIST: list\n\nList type widget\n - GRID: grid\n\nGrid type widget\n - PIE: pie\n\npie type widget",
         "title": "WidgetType",
-        "enum": [
-          "WIDGET_TYPE_NONE",
-          "TWO_VALUE",
-          "DISTRIBUTION_CHART",
-          "TABLE",
-          "LIST",
-          "GRID",
-          "PIE"
-        ],
+        "enum": ["WIDGET_TYPE_NONE", "TWO_VALUE", "DISTRIBUTION_CHART", "TABLE", "LIST", "GRID", "PIE"],
         "default": "WIDGET_TYPE_NONE",
         "x-displayname": "Widget Type",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.common.WidgetType"
@@ -1167,12 +1121,7 @@
         "type": "string",
         "description": "Specifies accuracy of the signature\n\n - ACCURACY_NONE: None\n\nNo accuracy\n - ACCURACY_LOW: Low\n\nSpecifies low accuracy of the signature\n - ACCURACY_MEDIUM: Medium\n\nSpecifies medium accuracy of the signature\n - ACCURACY_HIGH: High\n\nSpecifies high accuracy of the signature",
         "title": "Accuracy",
-        "enum": [
-          "ACCURACY_NONE",
-          "ACCURACY_LOW",
-          "ACCURACY_MEDIUM",
-          "ACCURACY_HIGH"
-        ],
+        "enum": ["ACCURACY_NONE", "ACCURACY_LOW", "ACCURACY_MEDIUM", "ACCURACY_HIGH"],
         "default": "ACCURACY_NONE",
         "x-displayname": "Accuracy",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.explain_log_record.Accuracy"
@@ -1251,11 +1200,7 @@
         "type": "string",
         "description": "Enforcement mode of WAF\n\n - ENFORCEMENT_NONE: None\n\nNo enforcement\n - MONITORING: Monitoring\n\nMonitoring mode of waf\n - BLOCKING: Blocking\n\nBlocking mode of waf",
         "title": "EnforcementMode",
-        "enum": [
-          "ENFORCEMENT_NONE",
-          "MONITORING",
-          "BLOCKING"
-        ],
+        "enum": ["ENFORCEMENT_NONE", "MONITORING", "BLOCKING"],
         "default": "ENFORCEMENT_NONE",
         "x-displayname": "Enforcement Mode",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.explain_log_record.EnforcementMode"
@@ -1307,11 +1252,7 @@
         "type": "string",
         "description": "Specifies IP risk/trustworthiness\n\n - IP_REPUTATION_NONE: None\n\nNo IP reputation\n - IP_REPUTATION_LOW: Low\n\nSpecifies low IP risk/trustworthiness\n - IP_REPUTATION_HIGH: High\n\nSpecifies high IP risk/trustworthiness",
         "title": "IPReputation",
-        "enum": [
-          "IP_REPUTATION_NONE",
-          "IP_REPUTATION_LOW",
-          "IP_REPUTATION_HIGH"
-        ],
+        "enum": ["IP_REPUTATION_NONE", "IP_REPUTATION_LOW", "IP_REPUTATION_HIGH"],
         "default": "IP_REPUTATION_NONE",
         "x-displayname": "IP Reputation",
         "x-ves-proto-enum": "ves.io.schema.ai_assistant.explain_log_record.IPReputation"
@@ -1930,6 +1871,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "gen-ai"
+    }
+  ]
 }

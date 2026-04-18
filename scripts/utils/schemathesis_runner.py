@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from collections.abc import Generator
 
 import schemathesis
-from hypothesis import Phase, Verbosity, settings
+from hypothesis import HealthCheck, Phase, Verbosity, settings
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from schemathesis import Case
@@ -88,8 +88,10 @@ class SchemathesisRunner:
         verbosity = verbosity_map.get(self.config.verbosity.lower(), Verbosity.normal)
 
         # Build suppress_health_check tuple if needed
-        suppress_hc = (
-            tuple(self.config.suppress_health_check) if self.config.suppress_health_check else ()
+        suppress_hc: tuple[HealthCheck, ...] = (
+            tuple(HealthCheck[hc] for hc in self.config.suppress_health_check)
+            if self.config.suppress_health_check
+            else ()
         )
 
         self._hypothesis_settings = settings(
@@ -162,7 +164,7 @@ class SchemathesisRunner:
                     else:
                         # Not a Result object, use as-is
                         op = op_result
-                except Exception:  # noqa: S112
+                except Exception:  # noqa: S112  # pylint: disable=broad-exception-caught
                     # Skip Err results
                     continue
 
@@ -182,7 +184,11 @@ class SchemathesisRunner:
             if endpoint_filter:
                 operations = [op for op in operations if endpoint_filter in op.path]
             if method_filter:
-                operations = [op for op in operations if op.method.upper() == method_filter.upper()]
+                operations = [
+                    op
+                    for op in operations
+                    if op.method.upper() == method_filter.upper()
+                ]
 
             task = progress.add_task(
                 f"Testing {len(operations)} operations...",
@@ -236,43 +242,27 @@ class SchemathesisRunner:
                     except BaseExceptionGroup as eg:
                         # Schemathesis 4.x raises FailureGroup (exception group) for validation failures
                         # Extract individual validation failures and create discrepancies
-                        for validation_error in eg.exceptions:
-                            discrepancy = Discrepancy(
-                                path=case.path,
-                                property_name="response_schema",
-                                constraint_type="schema_validation",
-                                discrepancy_type=DiscrepancyType.CONSTRAINT_MISMATCH,
-                                spec_value="Valid per OpenAPI schema",
-                                api_behavior=str(validation_error),
-                                test_values=[self._case_to_dict(case)],
-                                recommendation=f"Update schema or fix API response: {validation_error}",
+                        for validation_error in eg.exceptions:  # pylint: disable=not-an-iterable
+                            result.discrepancies.append(
+                                self._make_schema_discrepancy(case, validation_error)
                             )
-                            result.discrepancies.append(discrepancy)
                         result.status = TestStatus.FAILED
-                    except Exception as validation_error:
+                    except Exception as validation_error:  # pylint: disable=broad-exception-caught
                         # Fallback for non-group exceptions
-                        discrepancy = Discrepancy(
-                            path=case.path,
-                            property_name="response_schema",
-                            constraint_type="schema_validation",
-                            discrepancy_type=DiscrepancyType.CONSTRAINT_MISMATCH,
-                            spec_value="Valid per OpenAPI schema",
-                            api_behavior=str(validation_error),
-                            test_values=[self._case_to_dict(case)],
-                            recommendation=f"Update schema or fix API response: {validation_error}",
+                        result.discrepancies.append(
+                            self._make_schema_discrepancy(case, validation_error)
                         )
-                        result.discrepancies.append(discrepancy)
                         result.status = TestStatus.FAILED
 
                     # Additional validation checks
-                    discrepancy = self._check_response(case, response)
-                    if discrepancy:
-                        result.discrepancies.append(discrepancy)
+                    response_discrepancy = self._check_response(case, response)
+                    if response_discrepancy:
+                        result.discrepancies.append(response_discrepancy)
                         result.status = TestStatus.FAILED
 
                     self._rate_limiter.record_success()
 
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     result.errors.append(
                         {
                             "error": str(e),
@@ -281,7 +271,7 @@ class SchemathesisRunner:
                     )
                     result.status = TestStatus.ERROR
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             result.status = TestStatus.ERROR
             result.errors.append({"error": str(e)})
 
@@ -300,8 +290,10 @@ class SchemathesisRunner:
             for _ in range(max_cases):
                 case = test_func.example()
                 yield case
-        except Exception as e:
-            console.print(f"[yellow]Failed to generate cases for {operation.path}: {e}[/yellow]")
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            console.print(
+                f"[yellow]Failed to generate cases for {operation.path}: {e}[/yellow]"
+            )
 
     def _execute_case(self, case: Case) -> Any:
         """Execute a test case against the API."""
@@ -323,6 +315,21 @@ class SchemathesisRunner:
         path = case.formatted_path
 
         return self.auth.request(method, path, **kwargs)
+
+    def _make_schema_discrepancy(
+        self, case: Case, validation_error: BaseException
+    ) -> Discrepancy:
+        """Create a schema validation discrepancy from a validation error."""
+        return Discrepancy(
+            path=case.path,
+            property_name="response_schema",
+            constraint_type="schema_validation",
+            discrepancy_type=DiscrepancyType.CONSTRAINT_MISMATCH,
+            spec_value="Valid per OpenAPI schema",
+            api_behavior=str(validation_error),
+            test_values=[self._case_to_dict(case)],
+            recommendation=f"Update schema or fix API response: {validation_error}",
+        )
 
     def _check_response(
         self,
@@ -361,7 +368,7 @@ class SchemathesisRunner:
                     test_values=[self._case_to_dict(case)],
                     recommendation=f"Add {status_code} to response definitions",
                 )
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             # If we can't get the response schema, skip validation
             return None
 
@@ -381,7 +388,7 @@ class SchemathesisRunner:
         """Safely extract JSON from response."""
         try:
             return response.json()
-        except Exception:
+        except (ValueError, TypeError, AttributeError):
             return response.text[:500] if hasattr(response, "text") else str(response)
 
     def run_stateful_tests(
@@ -410,7 +417,7 @@ class SchemathesisRunner:
                     else:
                         # Not a Result object, use as-is
                         op = op_result
-                except Exception:  # noqa: S112
+                except Exception:  # noqa: S112  # pylint: disable=broad-exception-caught
                     # This is an Err result or unwrapping failed - skip it
                     continue
 
@@ -437,18 +444,24 @@ class SchemathesisRunner:
                                 f"[green]DEBUG: Added result, total results: {len(results)}[/green]"
                             )
                             break
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     console.print(f"[yellow]Error checking operation: {e}[/yellow]")
                     continue
 
         # Debug logging
-        console.print(f"[cyan]DEBUG: Collected {len(results)} results from stateful tests[/cyan]")
-        console.print(f"[cyan]DEBUG: self.results before extend: {len(self.results)}[/cyan]")
+        console.print(
+            f"[cyan]DEBUG: Collected {len(results)} results from stateful tests[/cyan]"
+        )
+        console.print(
+            f"[cyan]DEBUG: self.results before extend: {len(self.results)}[/cyan]"
+        )
 
         # Update self.results for get_summary()
         self.results.extend(results)
 
-        console.print(f"[cyan]DEBUG: self.results after extend: {len(self.results)}[/cyan]")
+        console.print(
+            f"[cyan]DEBUG: self.results after extend: {len(self.results)}[/cyan]"
+        )
         return results
 
     def _matches_crud_operation(

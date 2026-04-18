@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.billing.plan_transition",
     "description": "Package plan transition is responsible for storing and managing requests to move from one\nbilling plan to another.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/no_auth/namespaces/system/billing/plan_transition": {
@@ -119,7 +124,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-billing-plan_transition-customapi-getplantransition"
         },
-        "x-ves-proto-rpc": "ves.io.schema.billing.plan_transition.CustomAPI.GetPlanTransition"
+        "x-ves-proto-rpc": "ves.io.schema.billing.plan_transition.CustomAPI.GetPlanTransition",
+        "tags": ["namespaces"]
       },
       "x-displayname": "Plan transition CustomAPI",
       "x-ves-proto-service": "ves.io.schema.billing.plan_transition.CustomAPI",
@@ -248,7 +254,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-billing-plan_transition-customapi-initiateplantransition"
         },
-        "x-ves-proto-rpc": "ves.io.schema.billing.plan_transition.CustomAPI.InitiatePlanTransition"
+        "x-ves-proto-rpc": "ves.io.schema.billing.plan_transition.CustomAPI.InitiatePlanTransition",
+        "tags": ["web"]
       },
       "x-displayname": "Plan transition CustomAPI",
       "x-ves-proto-service": "ves.io.schema.billing.plan_transition.CustomAPI",
@@ -263,11 +270,7 @@
         "type": "string",
         "description": "Determines the contact type\n\nIndicates snail mail address (used for correspondence)\nIndicates billing address (this address will appear on invoices)\nIndicates contact used for a payment method (this address is used when charging a payment method)",
         "title": "Contact Type",
-        "enum": [
-          "MAILING",
-          "BILLING",
-          "PAYMENT"
-        ],
+        "enum": ["MAILING", "BILLING", "PAYMENT"],
         "default": "MAILING",
         "x-displayname": "Contact Type",
         "x-ves-proto-enum": "ves.io.schema.contact.ContactType"
@@ -337,13 +340,7 @@
         "type": "string",
         "description": "State of the plan transition FSM\n\n - STATE_UNSPECIFIED: Zero value for this state. Should be considered as an invalid state. User has to always explicitly\nspecify which other state should be.\n - STATE_CREATING: Initial state after plan transition object creation.\n - STATE_FAILED: Some step(-s) failed during plan transition execution.\n - STATE_FINISHED: All steps were successfully done during plan transition execution.\n - STATE_WAITING_FOR_APPROVAL: Request is awaiting for manual approval by SRE",
         "title": "State",
-        "enum": [
-          "STATE_UNSPECIFIED",
-          "STATE_CREATING",
-          "STATE_FAILED",
-          "STATE_FINISHED",
-          "STATE_WAITING_FOR_APPROVAL"
-        ],
+        "enum": ["STATE_UNSPECIFIED", "STATE_CREATING", "STATE_FAILED", "STATE_FINISHED", "STATE_WAITING_FOR_APPROVAL"],
         "default": "STATE_UNSPECIFIED",
         "x-displayname": "State",
         "x-ves-proto-enum": "ves.io.schema.billing.plan_transition.State"
@@ -525,6 +522,39 @@
         "x-displayname": "DeletionReason",
         "x-ves-proto-enum": "ves.io.schema.tenant.DeletionReason"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "namespaces"
+    },
+    {
+      "name": "web"
+    }
+  ]
 }

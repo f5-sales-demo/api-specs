@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.segment",
     "description": "Network Segment.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/segments": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-segment-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.segment.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.segment.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Segment",
       "x-ves-proto-service": "ves.io.schema.segment.API",
@@ -554,7 +560,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-segment-customdataapi-segmentsgraph"
         },
-        "x-ves-proto-rpc": "ves.io.schema.segment.CustomDataAPI.SegmentsGraph"
+        "x-ves-proto-rpc": "ves.io.schema.segment.CustomDataAPI.SegmentsGraph",
+        "tags": ["data"]
       },
       "x-displayname": "Segment",
       "x-ves-proto-service": "ves.io.schema.segment.CustomDataAPI",
@@ -703,7 +710,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-segment-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.segment.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.segment.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Segment",
@@ -835,7 +843,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-segment-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.segment.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.segment.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Segment",
       "x-ves-proto-service": "ves.io.schema.segment.API",
@@ -1048,10 +1057,7 @@
         "type": "string",
         "description": "The operator to use when filtering metrics based on label values.\n",
         "title": "Metric Label Operator",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
@@ -1339,10 +1345,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1471,11 +1474,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -1690,10 +1689,7 @@
       "schemasegmentLabel": {
         "type": "string",
         "description": "Label.\n\nLabels to aggregate/filter for segment metrics.\n\nIndicates the field not being set\nlabel for getting segment_name for segments.",
-        "enum": [
-          "SEGMENT_LABEL_NONE",
-          "SEGMENT_NAME"
-        ],
+        "enum": ["SEGMENT_LABEL_NONE", "SEGMENT_NAME"],
         "default": "SEGMENT_LABEL_NONE",
         "x-displayname": "Label",
         "x-ves-proto-enum": "ves.io.schema.segment.Label"
@@ -1917,21 +1913,6 @@
           }
         }
       },
-      "segmentGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "segmentListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -2045,13 +2026,7 @@
       "segmentMetricSelector": {
         "type": "string",
         "description": "Metric Selector for segment.\n\nBelow metrics will queried and timeseries data will be sent.\n\nIndicates the field not being set\nin_bytes or received bytes for a segment node/edge\nout_bytes or transmitted bytes for a segment node/edge\ntotal attachments for a segment node\ntotal sites for a segment node",
-        "enum": [
-          "METRIC_NONE",
-          "IN_BYTES",
-          "OUT_BYTES",
-          "NODE_ATTACHMENTS",
-          "NODE_SITES"
-        ],
+        "enum": ["METRIC_NONE", "IN_BYTES", "OUT_BYTES", "NODE_ATTACHMENTS", "NODE_SITES"],
         "default": "METRIC_NONE",
         "x-displayname": "Segment Metric Selector",
         "x-ves-proto-enum": "ves.io.schema.segment.MetricSelector"
@@ -2235,6 +2210,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "data"
+    }
+  ]
 }

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.role",
     "description": "Defines the role the user has in a namespace. There are two kinds of roles:\n* user defines roles - each tenant can define a set of their roles suiting their needs.\n* built-in roles - volterra defined roles. Admins are free to use them but can't amend them nor can they remove them.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/custom/namespaces/{namespace}/roles": {
@@ -119,7 +124,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-role-customapi-customlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.role.CustomAPI.CustomList"
+        "x-ves-proto-rpc": "ves.io.schema.role.CustomAPI.CustomList",
+        "tags": ["web"]
       },
       "post": {
         "summary": "Custom Create Role",
@@ -243,7 +249,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-role-customapi-customcreate"
         },
-        "x-ves-proto-rpc": "ves.io.schema.role.CustomAPI.CustomCreate"
+        "x-ves-proto-rpc": "ves.io.schema.role.CustomAPI.CustomCreate",
+        "tags": ["web"]
       },
       "x-displayname": "Role",
       "x-ves-proto-service": "ves.io.schema.role.CustomAPI",
@@ -372,7 +379,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-role-customapi-customget"
         },
-        "x-ves-proto-rpc": "ves.io.schema.role.CustomAPI.CustomGet"
+        "x-ves-proto-rpc": "ves.io.schema.role.CustomAPI.CustomGet",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Custom Replace Role",
@@ -502,7 +510,8 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.role.CustomAPI.CustomReplace"
+        "x-ves-proto-rpc": "ves.io.schema.role.CustomAPI.CustomReplace",
+        "tags": ["web"]
       },
       "x-displayname": "Role",
       "x-ves-proto-service": "ves.io.schema.role.CustomAPI",
@@ -927,7 +936,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-role-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.role.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.role.API.List",
+        "tags": ["web"]
       },
       "x-displayname": "Role",
       "x-ves-proto-service": "ves.io.schema.role.API",
@@ -1076,7 +1086,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-role-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.role.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.role.API.Get",
+        "tags": ["web"]
       },
       "delete": {
         "summary": "Delete Role",
@@ -1208,7 +1219,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-role-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.role.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.role.API.Delete",
+        "tags": ["web"]
       },
       "x-displayname": "Role",
       "x-ves-proto-service": "ves.io.schema.role.API",
@@ -1481,21 +1493,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "roleGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "roleGetSpecType": {
         "type": "object",
@@ -2303,10 +2300,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2618,6 +2612,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

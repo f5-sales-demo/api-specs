@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.forward_proxy_policy",
     "description": "Forward Proxy policy defines access control rules for connections going via forward\nProxy. It is view type of config object that uses service policy mechanism to achieve\nRequired functionality.\n\nView will create following child objects.\n\n* Service Policy\n* Service Policy Rule",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/forward_proxy_policys": {
@@ -389,7 +394,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-forward_proxy_policy-customdataapi-forwardproxypolicyhits"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.CustomDataAPI.ForwardProxyPolicyHits"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.CustomDataAPI.ForwardProxyPolicyHits",
+        "tags": ["data"]
       },
       "x-displayname": "Configure Forward Proxy Policy",
       "x-ves-proto-service": "ves.io.schema.views.forward_proxy_policy.CustomDataAPI",
@@ -542,7 +548,8 @@
             }
           }
         ],
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Configure Forward Proxy Policy",
       "x-ves-proto-service": "ves.io.schema.views.forward_proxy_policy.API",
@@ -687,7 +694,8 @@
             }
           }
         ],
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Configure Forward Proxy Policy",
@@ -815,7 +823,8 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Configure Forward Proxy Policy",
       "x-ves-proto-service": "ves.io.schema.views.forward_proxy_policy.API",
@@ -1139,14 +1148,7 @@
         "type": "string",
         "description": "Forward Proxy policy hits can be sliced and diced based on one or more labels listed below.\n",
         "title": "Forward Proxy Policy Metric Labels",
-        "enum": [
-          "NAMESPACE",
-          "POLICY",
-          "POLICY_RULE",
-          "ACTION",
-          "SITE",
-          "VIRTUAL_HOST"
-        ],
+        "enum": ["NAMESPACE", "POLICY", "POLICY_RULE", "ACTION", "SITE", "VIRTUAL_HOST"],
         "default": "NAMESPACE",
         "x-displayname": "Forward Proxy Policy Metric Labels",
         "x-ves-proto-enum": "ves.io.schema.views.forward_proxy_policy.ForwardProxyPolicyMetricLabel"
@@ -1321,21 +1323,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "forward_proxy_policyGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "forward_proxy_policyListResponse": {
         "type": "object",
@@ -1725,36 +1712,10 @@
         "type": "string",
         "description": "The rule action determines the disposition of the input request API. If a policy matches a rule with an ALLOW action, the processing of the request proceeds\nforward. If it matches a rule with a DENY action, the processing of the request is terminated and an appropriate message/code returned to the originator. If\nit matches a rule with a NEXT_POLICY_SET action, evaluation of the current policy set terminates and evaluation of the next policy set in the chain begins.\n\n - DENY: DENY\n\nDeny the request.\n - ALLOW: ALLOW\n\nAllow the request to proceed.\n - NEXT_POLICY_SET: NEXT_POLICY_SET\n\nTerminate evaluation of the current policy set and begin evaluating the next policy set in the chain. Note that the evaluation of any remaining policies\nin the current policy set is skipped.\n - NEXT_POLICY: NEXT_POLICY\n\nTerminate evaluation of the current policy and begin evaluating the next policy in the policy set. Note that the evaluation of any remaining rules in the\ncurrent policy is skipped.\n - LAST_POLICY: LAST_POLICY\n\nTerminate evaluation of the current policy and begin evaluating the last policy in the policy set. Note that the evaluation of any remaining rules in the\ncurrent policy is skipped.\n - GOTO_POLICY: GOTO_POLICY\n\nTerminate evaluation of the current policy and begin evaluating a specific policy in the policy set. The policy is specified using the goto_policy field in\nthe rule and must be after the current policy in the policy set.",
         "title": "Rule Action",
-        "enum": [
-          "DENY",
-          "ALLOW",
-          "NEXT_POLICY"
-        ],
+        "enum": ["DENY", "ALLOW", "NEXT_POLICY"],
         "default": "DENY",
         "x-displayname": "Rule Action",
         "x-ves-proto-enum": "ves.io.schema.policy.RuleAction"
-      },
-      "policySegmentPolicyType": {
-        "type": "object",
-        "description": "x-displayName: \"Configure Segments\"\nConfigure source and destination segment for policy",
-        "title": "Segment Choice",
-        "properties": {
-          "dst_any": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "dst_segments": {
-            "$ref": "#/components/schemas/viewsSegmentRefList"
-          },
-          "intra_segment": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "src_any": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "src_segments": {
-            "$ref": "#/components/schemas/viewsSegmentRefList"
-          }
-        }
       },
       "policyURLCategory": {
         "type": "string",
@@ -2175,10 +2136,7 @@
         "type": "string",
         "description": "The operator to use when filtering metrics based on label values.\n",
         "title": "Metric Label Operator",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
@@ -2466,10 +2424,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2598,11 +2553,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -2902,6 +2853,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

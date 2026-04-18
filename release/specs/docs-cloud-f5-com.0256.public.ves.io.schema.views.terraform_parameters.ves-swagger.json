@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.terraform_parameters",
     "description": "View Terraform Parameters is set of parameters that are used by terraform scripts \nto instantiate view objects external to volterra",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/terraform/namespaces/{namespace}/terraform/{view_kind}/{view_name}/force-delete": {
@@ -149,7 +154,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-terraform_parameters-customactionapi-forcedelete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.terraform_parameters.CustomActionAPI.ForceDelete"
+        "x-ves-proto-rpc": "ves.io.schema.views.terraform_parameters.CustomActionAPI.ForceDelete",
+        "tags": ["terraform"]
       },
       "x-displayname": "View Terraform Parameters",
       "x-ves-proto-service": "ves.io.schema.views.terraform_parameters.CustomActionAPI",
@@ -298,7 +304,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-terraform_parameters-customactionapi-run"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.terraform_parameters.CustomActionAPI.Run"
+        "x-ves-proto-rpc": "ves.io.schema.views.terraform_parameters.CustomActionAPI.Run",
+        "tags": ["terraform"]
       },
       "x-displayname": "View Terraform Parameters",
       "x-ves-proto-service": "ves.io.schema.views.terraform_parameters.CustomActionAPI",
@@ -437,7 +444,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-terraform_parameters-customapi-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.terraform_parameters.CustomAPI.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.terraform_parameters.CustomAPI.Get",
+        "tags": ["config"]
       },
       "x-displayname": "View Terraform Parameters",
       "x-ves-proto-service": "ves.io.schema.views.terraform_parameters.CustomAPI",
@@ -576,7 +584,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-terraform_parameters-customapi-getstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.terraform_parameters.CustomAPI.GetStatus"
+        "x-ves-proto-rpc": "ves.io.schema.views.terraform_parameters.CustomAPI.GetStatus",
+        "tags": ["config"]
       },
       "x-displayname": "View Terraform Parameters",
       "x-ves-proto-service": "ves.io.schema.views.terraform_parameters.CustomAPI",
@@ -764,10 +773,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -847,12 +853,7 @@
       "terraform_parametersDestroyStageState": {
         "type": "string",
         "title": "- DESTROYED: x-displayName: \"Destroyed\"\n - DESTROY_ERRORED: x-displayName: \"Destroy errored\"\n - DESTROYING: x-displayName: \"Destroying\"\n - DESTROY_QUEUED: x-displayName: \"Destroy Queued\"",
-        "enum": [
-          "DESTROYED",
-          "DESTROY_ERRORED",
-          "DESTROYING",
-          "DESTROY_QUEUED"
-        ],
+        "enum": ["DESTROYED", "DESTROY_ERRORED", "DESTROYING", "DESTROY_QUEUED"],
         "default": "DESTROYED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.DestroyStageState"
@@ -921,12 +922,7 @@
       "terraform_parametersInfraState": {
         "type": "string",
         "title": "- PROVISIONED: x-displayName: \"Provisioned\"\n - TIMED_OUT: x-displayName: \"Timed out\"\n - ERRORED: x-displayName: \"Errored\"\n - PROVISIONING: x-displayName: \"Provisioning\"",
-        "enum": [
-          "PROVISIONED",
-          "TIMED_OUT",
-          "ERRORED",
-          "PROVISIONING"
-        ],
+        "enum": ["PROVISIONED", "TIMED_OUT", "ERRORED", "PROVISIONING"],
         "default": "PROVISIONED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.InfraState"
@@ -989,25 +985,11 @@
           }
         }
       },
-      "terraform_parametersRollbackState": {
-        "type": "string",
-        "title": "- ROLLBACK_SUCCESSFUL: x-displayName: \"Rollback successful\"\n - ROLLBACK_ERRORED: x-displayName: \"Rollback errored\"\n - ROLLBACK_NOT_REQUIRED: x-displayName: \"Rollback not required\"",
-        "enum": [
-          "ROLLBACK_SUCCESSFUL",
-          "ROLLBACK_ERRORED",
-          "ROLLBACK_NOT_REQUIRED"
-        ],
-        "default": "ROLLBACK_SUCCESSFUL"
-      },
       "terraform_parametersRunAction": {
         "type": "string",
         "description": "Terraform action to be performed for a given view e.g. plan, apply\n\nApply action used to apply the changes required to reach the desired state of the configuration\nPlan action is a convenient way to check whether the execution plan for a set of changes matches your expectations without making any changes to real resources or to the state\nDESTROY action is used to destroy the Terraform-managed infrastructure",
         "title": "Terraform Action",
-        "enum": [
-          "APPLY",
-          "PLAN",
-          "DESTROY"
-        ],
+        "enum": ["APPLY", "PLAN", "DESTROY"],
         "default": "APPLY",
         "x-displayname": "Terraform action to be performed",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.RunAction"
@@ -1088,17 +1070,6 @@
           }
         }
       },
-      "terraform_parametersUpgradeState": {
-        "type": "string",
-        "description": "x-displayName: \"Upgrade State\"\nTerraform State after version Upgrade\n\n - UPGRADE_SUCCESSFUL: x-displayName: \"Upgrade successful\"\n - UPGRADE_ERRORED: x-displayName: \"Upgrade errored\"\n - UPGRADE_NOT_REQUIRED: x-displayName: \"Upgrade not required\"",
-        "title": "Upgrade State",
-        "enum": [
-          "UPGRADE_SUCCESSFUL",
-          "UPGRADE_ERRORED",
-          "UPGRADE_NOT_REQUIRED"
-        ],
-        "default": "UPGRADE_SUCCESSFUL"
-      },
       "viewsterraform_parametersGlobalSpecType": {
         "type": "object",
         "description": "Shape of the view terraform parameters specification",
@@ -1132,6 +1103,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "terraform"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

@@ -2,7 +2,12 @@
   "openapi": "3.0.0",
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.stored_object",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/object_store/namespaces/{namespace}/stored_objects/mobile-app-shield": {
@@ -141,10 +146,7 @@
             "x-displayname": "PREFIX MATCH",
             "schema": {
               "type": "string",
-              "enum": [
-                "EXACT_MATCH",
-                "PREFIX_MATCH"
-              ],
+              "enum": ["EXACT_MATCH", "PREFIX_MATCH"],
               "default": "EXACT_MATCH"
             }
           },
@@ -164,7 +166,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-stored_object-mobileappshieldcustomapi-listmobileappshields"
         },
-        "x-ves-proto-rpc": "ves.io.schema.stored_object.MobileAppShieldCustomAPI.ListMobileAppShields"
+        "x-ves-proto-rpc": "ves.io.schema.stored_object.MobileAppShieldCustomAPI.ListMobileAppShields",
+        "tags": ["object_store"]
       },
       "x-displayname": "Stored Object",
       "x-ves-proto-service": "ves.io.schema.stored_object.MobileAppShieldCustomAPI",
@@ -313,7 +316,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-stored_object-mobileappshieldcustomapi-getmobileappshield"
         },
-        "x-ves-proto-rpc": "ves.io.schema.stored_object.MobileAppShieldCustomAPI.GetMobileAppShield"
+        "x-ves-proto-rpc": "ves.io.schema.stored_object.MobileAppShieldCustomAPI.GetMobileAppShield",
+        "tags": ["object_store"]
       },
       "x-displayname": "Stored Object",
       "x-ves-proto-service": "ves.io.schema.stored_object.MobileAppShieldCustomAPI",
@@ -455,10 +459,7 @@
             "x-displayname": "PREFIX MATCH",
             "schema": {
               "type": "string",
-              "enum": [
-                "EXACT_MATCH",
-                "PREFIX_MATCH"
-              ],
+              "enum": ["EXACT_MATCH", "PREFIX_MATCH"],
               "default": "EXACT_MATCH"
             }
           },
@@ -478,7 +479,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-stored_object-mobileintegratorcustomapi-listmobileintegrators"
         },
-        "x-ves-proto-rpc": "ves.io.schema.stored_object.MobileIntegratorCustomAPI.ListMobileIntegrators"
+        "x-ves-proto-rpc": "ves.io.schema.stored_object.MobileIntegratorCustomAPI.ListMobileIntegrators",
+        "tags": ["object_store"]
       },
       "x-displayname": "Stored Object",
       "x-ves-proto-service": "ves.io.schema.stored_object.MobileIntegratorCustomAPI",
@@ -627,7 +629,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-stored_object-mobileintegratorcustomapi-getmobileintegrator"
         },
-        "x-ves-proto-rpc": "ves.io.schema.stored_object.MobileIntegratorCustomAPI.GetMobileIntegrator"
+        "x-ves-proto-rpc": "ves.io.schema.stored_object.MobileIntegratorCustomAPI.GetMobileIntegrator",
+        "tags": ["object_store"]
       },
       "x-displayname": "Stored Object",
       "x-ves-proto-service": "ves.io.schema.stored_object.MobileIntegratorCustomAPI",
@@ -769,10 +772,7 @@
             "x-displayname": "PREFIX MATCH",
             "schema": {
               "type": "string",
-              "enum": [
-                "EXACT_MATCH",
-                "PREFIX_MATCH"
-              ],
+              "enum": ["EXACT_MATCH", "PREFIX_MATCH"],
               "default": "EXACT_MATCH"
             }
           },
@@ -792,7 +792,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-stored_object-customapi-listobjects"
         },
-        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.ListObjects"
+        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.ListObjects",
+        "tags": ["object_store"]
       },
       "x-displayname": "Stored Object",
       "x-ves-proto-service": "ves.io.schema.stored_object.CustomAPI",
@@ -952,7 +953,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-stored_object-customapi-deleteobject"
         },
-        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.DeleteObject"
+        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.DeleteObject",
+        "tags": ["object_store"]
       },
       "put": {
         "summary": "Create Stored Object",
@@ -1096,7 +1098,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-stored_object-customapi-createobject"
         },
-        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.CreateObject"
+        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.CreateObject",
+        "tags": ["object_store"]
       },
       "x-displayname": "Stored Object",
       "x-ves-proto-service": "ves.io.schema.stored_object.CustomAPI",
@@ -1245,12 +1248,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-stored_object-customapi-getobject"
         },
-        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.GetObject"
+        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.GetObject",
+        "tags": ["object_store"]
       },
       "delete": {
         "summary": "Delete Stored Object(s)",
         "description": "DeleteObjects is an API to delete object(s) in object store",
-        "operationId": "ves.io.schema.stored_object.CustomAPI.DeleteObject",
+        "operationId": "ves.io.schema.stored_object.CustomAPI.DeleteObject_delete_delete_delete",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1400,7 +1404,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-stored_object-customapi-deleteobject"
         },
-        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.DeleteObject"
+        "x-ves-proto-rpc": "ves.io.schema.stored_object.CustomAPI.DeleteObject",
+        "tags": ["object_store"]
       },
       "x-displayname": "Stored Object",
       "x-ves-proto-service": "ves.io.schema.stored_object.CustomAPI",
@@ -1422,19 +1427,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -1761,10 +1754,7 @@
         "type": "string",
         "description": "Defines a selection for operating system type. Its either ANDROID or IOS\n\n - ANDROID: ANDROID\n\n - IOS: IOS\n",
         "title": "OSType",
-        "enum": [
-          "ANDROID",
-          "IOS"
-        ],
+        "enum": ["ANDROID", "IOS"],
         "default": "ANDROID",
         "x-displayname": "Operating System type",
         "x-ves-proto-enum": "ves.io.schema.stored_object.OSType"
@@ -1799,16 +1789,6 @@
             "x-displayname": "url"
           }
         }
-      },
-      "stored_objectQueryType": {
-        "type": "string",
-        "description": "x-displayName: \"Query Type\"\nThe type of search query needs to be performed. Could be EXACT_MATCH or PREFIX_MATCH.\nEXACT_MATCH returns the objects with exact match on the name filed, while PREFIX_MATCH returns the list of object having the 'name' as prefix. Default is EXACT_MATCH.\n\n - EXACT_MATCH: EXACT_MATCH\n\nx-displayName: \"EXACT MATCH\"\nReturns list of objects with exact match on the name filed.\n - PREFIX_MATCH: PREFIX_MATCH\n\nx-displayName: \"PREFIX MATCH\"\nReturns the list of object matching the 'name' prefix.",
-        "title": "QueryType",
-        "enum": [
-          "EXACT_MATCH",
-          "PREFIX_MATCH"
-        ],
-        "default": "EXACT_MATCH"
       },
       "stored_objectStoredObjectDescriptor": {
         "type": "object",
@@ -1960,6 +1940,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "object_store"
+    }
+  ]
 }

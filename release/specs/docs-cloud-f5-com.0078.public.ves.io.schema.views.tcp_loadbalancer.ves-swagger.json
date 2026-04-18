@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.tcp_loadbalancer",
     "description": "TCP load balancer view defines a required parameters that can be used in CRUD, to create and manage TCP load balancer.\nIt can be used to create TCP load balancer and TCP load balancer with SNI.\n\nView will create following child objects.\n\n* Virtual-host\n* default route\n* clusters\n* endpoints\n* advertise policy",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/tcp_loadbalancers": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Configure TCP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.tcp_loadbalancer.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Configure TCP Load Balancer",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Configure TCP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.tcp_loadbalancer.API",
@@ -835,7 +843,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-customapi-getdnsinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.CustomAPI.GetDnsInfo"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.CustomAPI.GetDnsInfo",
+        "tags": ["config"]
       },
       "x-displayname": "Configure TCP Load Balancer",
       "x-ves-proto-service": "ves.io.schema.views.tcp_loadbalancer.CustomAPI",
@@ -1079,11 +1088,7 @@
         "type": "string",
         "description": "Specifies the Hash Algorithm to be used\n\nInvalid hash algorithm\nsha256 hash algorithm\nsha1 hash algorithm",
         "title": "HashAlgoritm",
-        "enum": [
-          "INVALID_HASH_ALGORITHM",
-          "SHA256",
-          "SHA1"
-        ],
+        "enum": ["INVALID_HASH_ALGORITHM", "SHA256", "SHA1"],
         "default": "INVALID_HASH_ALGORITHM",
         "x-displayname": "Hash Algorithm",
         "x-ves-proto-enum": "ves.io.schema.HashAlgorithm"
@@ -1348,10 +1353,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -1433,10 +1435,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1610,47 +1609,10 @@
         "type": "string",
         "description": "TlsProtocol is enumeration of supported TLS versions\n\nF5 Distributed Cloud will choose the optimal TLS version.",
         "title": "TlsProtocol",
-        "enum": [
-          "TLS_AUTO",
-          "TLSv1_0",
-          "TLSv1_1",
-          "TLSv1_2",
-          "TLSv1_3"
-        ],
+        "enum": ["TLS_AUTO", "TLSv1_0", "TLSv1_1", "TLSv1_2", "TLSv1_3"],
         "default": "TLS_AUTO",
         "x-displayname": "TLS Protocol",
         "x-ves-proto-enum": "ves.io.schema.TlsProtocol"
-      },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
       },
       "schemaViewRefType": {
         "type": "object",
@@ -1689,30 +1651,11 @@
           }
         }
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemaXfccElement": {
         "type": "string",
         "description": "X-Forwarded-Client-Cert custom cookie elements\n\nThe entire client certificate in URL encoded PEM format.\nThe entire client certificate chain (including the leaf certificate) in URL encoded PEM format.\nThe Subject field of the current client certificate. The value is always double-quoted.\nThe URI type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple URI type Subject Alternative Names,\neach will be a separate key-value pair.\nThe DNS type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple DNS type Subject Alternative Names,\neach will be a separate key-value pair.",
         "title": "XfccElement",
-        "enum": [
-          "XFCC_NONE",
-          "XFCC_CERT",
-          "XFCC_CHAIN",
-          "XFCC_SUBJECT",
-          "XFCC_URI",
-          "XFCC_DNS"
-        ],
+        "enum": ["XFCC_NONE", "XFCC_CERT", "XFCC_CHAIN", "XFCC_SUBJECT", "XFCC_URI", "XFCC_DNS"],
         "default": "XFCC_NONE",
         "x-displayname": "XFCC Elements",
         "x-ves-proto-enum": "ves.io.schema.XfccElement"
@@ -1964,21 +1907,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "tcp_loadbalancerGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "tcp_loadbalancerListResponse": {
         "type": "object",
@@ -2575,10 +2503,7 @@
         "type": "string",
         "description": "This defines network types to be used on virtual-site with specified VIP\n\nAll outside networks.\nAll inside networks.",
         "title": "SiteNetworkSpecifiedVIP",
-        "enum": [
-          "SITE_NETWORK_SPECIFIED_VIP_OUTSIDE",
-          "SITE_NETWORK_SPECIFIED_VIP_INSIDE"
-        ],
+        "enum": ["SITE_NETWORK_SPECIFIED_VIP_OUTSIDE", "SITE_NETWORK_SPECIFIED_VIP_INSIDE"],
         "default": "SITE_NETWORK_SPECIFIED_VIP_OUTSIDE",
         "x-displayname": "Site Network",
         "x-ves-proto-enum": "ves.io.schema.views.SiteNetworkSpecifiedVIP"
@@ -2606,49 +2531,6 @@
           }
         }
       },
-      "viewsWhereCloudEdgeSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Segment on a Cloud Edge\"\nThis defines a reference to a Segment on a Cloud Edge and an optional ip address where a load balancer could be advertised",
-        "title": "WhereCloudEdgeSegment",
-        "properties": {
-          "cloud_edge": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "ip": {
-            "type": "string",
-            "description": "x-displayName: \"IP Address\"\nx-required\nx-example: \"8.8.8.8\"\nUse given IP address as VIP on the Cloud Edge",
-            "title": "IP address on the Cloud Edge"
-          },
-          "ipv6": {
-            "type": "string",
-            "description": "x-displayName: \"IPv6 Address\"\nx-example: \"2001::1\"\nUse given IPv6 address as VIP on the Cloud Edge",
-            "title": "IPv6 address on the Cloud Edge"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
-      "viewsWhereSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Virtual Network\"\nParameters to advertise on a given virtual network",
-        "title": "WhereVirtualNetwork",
-        "properties": {
-          "ipv4_vip": {
-            "type": "string",
-            "description": "x-displayName: \"IPV4 VIP\"\nx-required\nConfigure IPV4 VIP address",
-            "title": "IPv4 VIP"
-          },
-          "ipv6_vip": {
-            "type": "string",
-            "description": "x-displayName: \"IPV6 VIP\"\nConfigure IPV6 VIP address",
-            "title": "IPv6 VIP"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
       "viewsWhereSite": {
         "type": "object",
         "description": "This defines a reference to a CE site along with network type and an optional ip address where a load balancer could be advertised",
@@ -2669,29 +2551,6 @@
           },
           "network": {
             "$ref": "#/components/schemas/viewsSiteNetwork"
-          },
-          "site": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
-      "viewsWhereSiteSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Segment on Site\"\nThis defines a reference to a Segment on a Site and an optional ip address where a load balancer could be advertised",
-        "title": "WhereSiteSegment",
-        "properties": {
-          "ip": {
-            "type": "string",
-            "description": "x-displayName: \"IP Address\"\nx-required\nx-example: \"8.8.8.8\"\nUse given IP address as VIP on the site",
-            "title": "IP address on the site"
-          },
-          "ipv6": {
-            "type": "string",
-            "description": "x-displayName: \"IPv6 Address\"\nx-example: \"2001::1\"\nUse given IPv6 address as VIP on the site",
-            "title": "IPv6 address on the site"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
           },
           "site": {
             "$ref": "#/components/schemas/schemaviewsObjectRefType"
@@ -2823,29 +2682,6 @@
         "properties": {
           "network": {
             "$ref": "#/components/schemas/viewsSiteNetwork"
-          },
-          "virtual_site": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
-      "viewsWhereVirtualSiteSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Virtual Site\"\nThis defines a reference to a customer site virtual site along with network type where a load balancer could be advertised",
-        "title": "WhereVirtualSiteSegment",
-        "properties": {
-          "ip": {
-            "type": "string",
-            "description": "x-displayName: \"IP Address\"\nx-required\nx-example: \"8.8.8.8\"\nUse given IP address as VIP on the site",
-            "title": "IP address on the site"
-          },
-          "ipv6": {
-            "type": "string",
-            "description": "x-displayName: \"IPv6 Address\"\nx-example: \"2001::1\"\nUse given IPv6 address as VIP on the site",
-            "title": "IPv6 address on the site"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
           },
           "virtual_site": {
             "$ref": "#/components/schemas/schemaviewsObjectRefType"
@@ -3520,6 +3356,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

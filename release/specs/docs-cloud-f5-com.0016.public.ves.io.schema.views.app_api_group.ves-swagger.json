@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.app_api_group",
     "description": "The app_api_group construct provides a mechanism to classify the universal set of request APIs into a much smaller number of logical groups in order\nto make it easier to author and maintain API level access control policies. The app_api_group holds api_group child object with the same content for\ninternal use by data path and other services.\n\nAn app_api_group object consists of an unordered list of api group elements. The method and path from the input request API are matched against all\nelements in an app_api_group to determine if the request API belongs to the api group in question. The request API belongs to an api group if it\nmatches at least one element in the api group.\n\nThe App API Group may be created using API Group Builder which defines path filter and label selectors to match\nAPI Endpoints from a referenced object, like HTTP Loadbalancer. For example, if there is a HTTP LB with API Discovery enabled\nthen all discovered API Endpoints serve as a base set and filters define which API Endpoints would be the group members.\n\n The view creates the following child objects:\n * api_group",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/app_api_groups": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "App API Group",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.API",
@@ -554,7 +560,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-customapi-evaluateapigroup"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.CustomAPI.EvaluateApiGroup"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.CustomAPI.EvaluateApiGroup",
+        "tags": ["ml"]
       },
       "x-displayname": "App API Group",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.CustomAPI",
@@ -683,7 +690,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-customapi-getapigroupsstats"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.CustomAPI.GetApiGroupsStats"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.CustomAPI.GetApiGroupsStats",
+        "tags": ["ml"]
       },
       "x-displayname": "App API Group",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.CustomAPI",
@@ -832,7 +840,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete App API Group",
@@ -964,7 +973,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "App API Group",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.API",
@@ -975,40 +985,6 @@
   "x-ves-proto-package": "ves.io.schema.views.app_api_group",
   "components": {
     "schemas": {
-      "api_definitionApiGroupBuilder": {
-        "type": "object",
-        "description": "x-displayName: \"API Group Builder\"\nDefine a group of application operations using path matching and label filtering.",
-        "title": "ApiGroupBuilder",
-        "properties": {
-          "excluded_operations": {
-            "type": "array",
-            "description": "x-displayName: \"Excluded Operations\"\nList of operations matched by the filters to be excluded from a group.\nThe list should only include operations matched by the filters.\nThe paths appear here with parameters as defined in OpenAPI spec file.",
-            "title": "excluded_operations",
-            "items": {
-              "$ref": "#/components/schemas/viewsApiOperation"
-            }
-          },
-          "included_operations": {
-            "type": "array",
-            "description": "x-displayName: \"Included Operations\"\nList of operations not matched by the filters to be included in a group.\nThe list should not include operations matched by the filters.\nThe paths appear here with parameters as defined in OpenAPI spec file.",
-            "title": "included_operations",
-            "items": {
-              "$ref": "#/components/schemas/viewsApiOperation"
-            }
-          },
-          "label_filter": {
-            "$ref": "#/components/schemas/schemaLabelSelectorType"
-          },
-          "metadata": {
-            "$ref": "#/components/schemas/schemaMessageMetaType"
-          },
-          "path_filter": {
-            "type": "string",
-            "description": "x-displayName: \"Path Filter\"\nx-example: \"/api/config/.*/path[123]/$\"\nRegular expression to match the input request API path against.\nThe match is considered to succeed if the input request API path matches the specified path regex.",
-            "title": "path_filter"
-          }
-        }
-      },
       "app_api_groupApiEndpoint": {
         "type": "object",
         "description": "The API Endpoint according to OpenAPI specification.",
@@ -1057,16 +1033,6 @@
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "shared"
-          }
-        }
-      },
-      "app_api_groupApiGroupScopeApiDefinition": {
-        "type": "object",
-        "description": "x-displayName: \"API Group Scope API Definition\"\nSet the scope of the API Group to a specific API Definition",
-        "title": "ApiGroupScopeApiDefinition",
-        "properties": {
-          "api_definition": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
           }
         }
       },
@@ -1339,21 +1305,6 @@
           }
         }
       },
-      "app_api_groupGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "app_api_groupListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -1512,11 +1463,6 @@
             "x-displayname": "Config Object"
           }
         }
-      },
-      "ioschemaEmpty": {
-        "type": "object",
-        "description": "x-displayName: \"Empty\"\nThis can be used for messages where no values are needed",
-        "title": "Empty"
       },
       "ioschemaObjectRefType": {
         "type": "object",
@@ -1677,19 +1623,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -2024,10 +1958,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2442,6 +2373,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "ml"
+    }
+  ]
 }

@@ -6,6 +6,11 @@ ignore: |
   docs/specifications/
 rules:
   line-length: disable
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
   truthy:
     allowed-values: ["true", "false", "on"]
   comments:

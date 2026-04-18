@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.graph.l3l4",
     "description": "l3l4 graph APIs are used to get data for a tenant.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/infraprotect/namespaces/{namespace}/graph/l3l4/by_application/{network_id}": {
@@ -139,7 +144,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-l3l4-customapi-byapplication"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.ByApplication"
+        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.ByApplication",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "l3l4 Graph",
       "x-ves-proto-service": "ves.io.schema.graph.l3l4.CustomAPI",
@@ -278,7 +284,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-l3l4-customapi-bymitigation"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.ByMitigation"
+        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.ByMitigation",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "l3l4 Graph",
       "x-ves-proto-service": "ves.io.schema.graph.l3l4.CustomAPI",
@@ -417,7 +424,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-l3l4-customapi-bynetwork"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.ByNetwork"
+        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.ByNetwork",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "l3l4 Graph",
       "x-ves-proto-service": "ves.io.schema.graph.l3l4.CustomAPI",
@@ -556,7 +564,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-l3l4-customapi-byzone"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.ByZone"
+        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.ByZone",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "l3l4 Graph",
       "x-ves-proto-service": "ves.io.schema.graph.l3l4.CustomAPI",
@@ -695,7 +704,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-l3l4-customapi-eventcount"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.EventCount"
+        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.EventCount",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "l3l4 Graph",
       "x-ves-proto-service": "ves.io.schema.graph.l3l4.CustomAPI",
@@ -834,7 +844,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-l3l4-customapi-toptalkers"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.TopTalkers"
+        "x-ves-proto-rpc": "ves.io.schema.graph.l3l4.CustomAPI.TopTalkers",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "l3l4 Graph",
       "x-ves-proto-service": "ves.io.schema.graph.l3l4.CustomAPI",
@@ -1285,11 +1296,7 @@
         "type": "string",
         "description": "Used to define the routed traffic (Pre or Post scrub)\n\nUnknown or undefined routed traffic (use default)\nPreScrub traffic\nPostScrub traffic (default)",
         "title": "Routed traffic",
-        "enum": [
-          "RoutedTrafficUnknown",
-          "RoutedTrafficPreScrub",
-          "RoutedTrafficPostScrub"
-        ],
+        "enum": ["RoutedTrafficUnknown", "RoutedTrafficPreScrub", "RoutedTrafficPostScrub"],
         "default": "RoutedTrafficUnknown",
         "x-displayname": "Routed traffic",
         "x-ves-proto-enum": "ves.io.schema.graph.l3l4.RoutedTraffic"
@@ -1390,11 +1397,7 @@
         "type": "string",
         "description": "Used to define the type the results should be in.\n\nUnknown or undefined type.\nExternal traffic.\nInternal traffic.",
         "title": "Traffic type",
-        "enum": [
-          "TrafficTypeUnknown",
-          "TrafficTypeExternal",
-          "TrafficTypeInternal"
-        ],
+        "enum": ["TrafficTypeUnknown", "TrafficTypeExternal", "TrafficTypeInternal"],
         "default": "TrafficTypeUnknown",
         "x-displayname": "Traffic type",
         "x-ves-proto-enum": "ves.io.schema.graph.l3l4.TrafficType"
@@ -1403,15 +1406,41 @@
         "type": "string",
         "description": "Used to define the unit the results should be in.\n\nUnknown or undefined unit.\nBits per second traffic unit.\nPackets per second traffic unit.",
         "title": "Traffic unit",
-        "enum": [
-          "TrafficUnitUnknown",
-          "TrafficUnitBps",
-          "TrafficUnitPps"
-        ],
+        "enum": ["TrafficUnitUnknown", "TrafficUnitBps", "TrafficUnitPps"],
         "default": "TrafficUnitUnknown",
         "x-displayname": "Traffic unit",
         "x-ves-proto-enum": "ves.io.schema.graph.l3l4.TrafficUnit"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "infraprotect"
+    }
+  ]
 }

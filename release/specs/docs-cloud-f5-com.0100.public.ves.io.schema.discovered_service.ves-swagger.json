@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.discovered_service",
     "description": "Discovered Services represents the services (virtual-servers, k8s services, etc) which are discovered via the different discovery workflows.\n\npackage for Discovered Services",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/discovery/custom/namespaces/{namespace}/discovered_services": {
@@ -139,7 +144,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-listdiscoveredservices"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.ListDiscoveredServices"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.ListDiscoveredServices",
+        "tags": ["discovery"]
       },
       "x-displayname": "Discovered Services",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -296,7 +302,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.API.List",
+        "tags": ["discovery"]
       },
       "x-displayname": "Discovered Services",
       "x-ves-proto-service": "ves.io.schema.discovered_service.API",
@@ -442,7 +449,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.API.Get",
+        "tags": ["discovery"]
       },
       "x-displayname": "Discovered Services",
       "x-ves-proto-service": "ves.io.schema.discovered_service.API",
@@ -581,7 +589,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-createhttploadbalancer"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.CreateHTTPLoadBalancer"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.CreateHTTPLoadBalancer",
+        "tags": ["discovery"]
       },
       "x-displayname": "Discovered Services",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -720,7 +729,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-createtcploadbalancer"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.CreateTCPLoadBalancer"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.CreateTCPLoadBalancer",
+        "tags": ["discovery"]
       },
       "x-displayname": "Discovered Services",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -859,7 +869,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-disablevisibility"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.DisableVisibility"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.DisableVisibility",
+        "tags": ["discovery"]
       },
       "x-displayname": "Discovered Services",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -998,7 +1009,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-enablevisibility"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.EnableVisibility"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.EnableVisibility",
+        "tags": ["discovery"]
       },
       "x-displayname": "Discovered Services",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -1127,7 +1139,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customdataapi-discoveredservicehealthstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomDataAPI.DiscoveredServiceHealthStatus"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomDataAPI.DiscoveredServiceHealthStatus",
+        "tags": ["data"]
       },
       "x-displayname": "Discovered Services",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomDataAPI",
@@ -1256,7 +1269,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-suggestvalues"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.SuggestValues"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.SuggestValues",
+        "tags": ["discovery"]
       },
       "x-displayname": "Discovered Services",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -1532,18 +1546,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "discovered_serviceGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "discovered_serviceHTTPLBRequest": {
         "type": "object",
@@ -2131,18 +2133,6 @@
           }
         }
       },
-      "discovered_serviceTransmissionProtocol": {
-        "type": "string",
-        "description": "x-displayName: \"Transmission Protocol\"\nx-example: \"TCP\"\nProtocol on which the virtual-server will transmit data",
-        "title": "TransmissionProtocol",
-        "enum": [
-          "UNDEFINED",
-          "HTTP",
-          "HTTPS",
-          "TCP"
-        ],
-        "default": "UNDEFINED"
-      },
       "discovered_serviceVirtualServer": {
         "type": "object",
         "description": "Virtual Server discovered from BIG-IP.",
@@ -2244,11 +2234,7 @@
         "type": "string",
         "description": "Enabled state of the virtual server.\n\n - NONE: NONE\n\nInvalid state.\n - ENABLED: ENABLED\n\nVirtual Server is enabled.\n - DISABLED: DISABLED\n\nVirtual Server is administratively disabled.",
         "title": "Enabled state of the virtual server",
-        "enum": [
-          "NONE",
-          "ENABLED",
-          "DISABLED"
-        ],
+        "enum": ["NONE", "ENABLED", "DISABLED"],
         "default": "NONE",
         "x-displayname": "Virtual Server Enabled State",
         "x-ves-proto-enum": "ves.io.schema.discovered_service.VirtualServerEnabledState"
@@ -2300,14 +2286,7 @@
         "type": "string",
         "description": "Availability Status of the virtual server.\n\n - UNSPECIFIED: UNSPECIFIED\n\nInvalid status.\n - AVAILABLE: AVAILABLE\n\nVirtual Server is available and serving traffic.\n - OFFLINE: OFFLINE\n\nVirtual Server is not serving traffic.\n - UNKNOWN: UNKNOWN\n\nVirtual Server availability is unknown. It can indicate that no service checks are enabled on the virtual server.\n - UNAVAILABLE: UNAVAILABLE\n\nVirtual Server is temporarily unavailable maybe due to hitting connection limit.\n - DELETED: DELETED\n\nVirtual Server has been deleted on the BIG-IP but is in use on Distributed Cloud.",
         "title": "Availability Status of the virtual server",
-        "enum": [
-          "UNSPECIFIED",
-          "AVAILABLE",
-          "OFFLINE",
-          "UNKNOWN",
-          "UNAVAILABLE",
-          "DELETED"
-        ],
+        "enum": ["UNSPECIFIED", "AVAILABLE", "OFFLINE", "UNKNOWN", "UNAVAILABLE", "DELETED"],
         "default": "UNSPECIFIED",
         "x-displayname": "Virtual Server Availability Status",
         "x-ves-proto-enum": "ves.io.schema.discovered_service.VirtualServerStatus"
@@ -2737,10 +2716,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2869,11 +2845,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -3235,79 +3207,10 @@
         "type": "string",
         "description": "This defines network types to be used on virtual-site with specified VIP\n\nAll outside networks.\nAll inside networks.",
         "title": "SiteNetworkSpecifiedVIP",
-        "enum": [
-          "SITE_NETWORK_SPECIFIED_VIP_OUTSIDE",
-          "SITE_NETWORK_SPECIFIED_VIP_INSIDE"
-        ],
+        "enum": ["SITE_NETWORK_SPECIFIED_VIP_OUTSIDE", "SITE_NETWORK_SPECIFIED_VIP_INSIDE"],
         "default": "SITE_NETWORK_SPECIFIED_VIP_OUTSIDE",
         "x-displayname": "Site Network",
         "x-ves-proto-enum": "ves.io.schema.views.SiteNetworkSpecifiedVIP"
-      },
-      "viewsWhereCloudEdgeSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Segment on a Cloud Edge\"\nThis defines a reference to a Segment on a Cloud Edge and an optional ip address where a load balancer could be advertised",
-        "title": "WhereCloudEdgeSegment",
-        "properties": {
-          "cloud_edge": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "ip": {
-            "type": "string",
-            "description": "x-displayName: \"IP Address\"\nx-required\nx-example: \"8.8.8.8\"\nUse given IP address as VIP on the Cloud Edge",
-            "title": "IP address on the Cloud Edge"
-          },
-          "ipv6": {
-            "type": "string",
-            "description": "x-displayName: \"IPv6 Address\"\nx-example: \"2001::1\"\nUse given IPv6 address as VIP on the Cloud Edge",
-            "title": "IPv6 address on the Cloud Edge"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
-      "viewsWhereSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Virtual Network\"\nParameters to advertise on a given virtual network",
-        "title": "WhereVirtualNetwork",
-        "properties": {
-          "ipv4_vip": {
-            "type": "string",
-            "description": "x-displayName: \"IPV4 VIP\"\nx-required\nConfigure IPV4 VIP address",
-            "title": "IPv4 VIP"
-          },
-          "ipv6_vip": {
-            "type": "string",
-            "description": "x-displayName: \"IPV6 VIP\"\nConfigure IPV6 VIP address",
-            "title": "IPv6 VIP"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
-      "viewsWhereSiteSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Segment on Site\"\nThis defines a reference to a Segment on a Site and an optional ip address where a load balancer could be advertised",
-        "title": "WhereSiteSegment",
-        "properties": {
-          "ip": {
-            "type": "string",
-            "description": "x-displayName: \"IP Address\"\nx-required\nx-example: \"8.8.8.8\"\nUse given IP address as VIP on the site",
-            "title": "IP address on the site"
-          },
-          "ipv6": {
-            "type": "string",
-            "description": "x-displayName: \"IPv6 Address\"\nx-example: \"2001::1\"\nUse given IPv6 address as VIP on the site",
-            "title": "IPv6 address on the site"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "site": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
       },
       "viewsWhereType": {
         "type": "object",
@@ -3424,29 +3327,6 @@
           }
         }
       },
-      "viewsWhereVirtualSiteSegment": {
-        "type": "object",
-        "description": "x-displayName: \"Virtual Site\"\nThis defines a reference to a customer site virtual site along with network type where a load balancer could be advertised",
-        "title": "WhereVirtualSiteSegment",
-        "properties": {
-          "ip": {
-            "type": "string",
-            "description": "x-displayName: \"IP Address\"\nx-required\nx-example: \"8.8.8.8\"\nUse given IP address as VIP on the site",
-            "title": "IP address on the site"
-          },
-          "ipv6": {
-            "type": "string",
-            "description": "x-displayName: \"IPv6 Address\"\nx-example: \"2001::1\"\nUse given IPv6 address as VIP on the site",
-            "title": "IPv6 address on the site"
-          },
-          "segment": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "virtual_site": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
       "viewsWhereVirtualSiteSpecifiedVIP": {
         "type": "object",
         "description": "This defines a reference to a customer site virtual site along with network type and IP where a load balancer could be advertised",
@@ -3472,6 +3352,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "discovery"
+    },
+    {
+      "name": "data"
+    }
+  ]
 }

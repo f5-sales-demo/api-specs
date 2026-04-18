@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.graph.site",
     "description": "graph/site api is query used to get monitoring information for inter site traffic graph for a application.\nTraffic for application is selected when ves.io/app_type label is added to group of services or virtual_host.\nIt returns graph which is set of nodes and edges. \nEach node represents site and edge is traffic between sites for this application. Edges are directed from client to server. \nTwo edges can be present for a given pair of sites. Only method post is supported. Query parameters are present in the request body. \nIt is always scoped by namespace.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/data/namespaces/{namespace}/graph/site": {
@@ -129,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-site-customapi-query"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.site.CustomAPI.Query"
+        "x-ves-proto-rpc": "ves.io.schema.graph.site.CustomAPI.Query",
+        "tags": ["data"]
       },
       "x-displayname": "Site Graph",
       "x-ves-proto-service": "ves.io.schema.graph.site.CustomAPI",
@@ -254,7 +260,8 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.site.CustomAPI.EdgeQuery"
+        "x-ves-proto-rpc": "ves.io.schema.graph.site.CustomAPI.EdgeQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Site Graph",
       "x-ves-proto-service": "ves.io.schema.graph.site.CustomAPI",
@@ -379,7 +386,8 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.site.CustomAPI.NodeQuery"
+        "x-ves-proto-rpc": "ves.io.schema.graph.site.CustomAPI.NodeQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Site Graph",
       "x-ves-proto-service": "ves.io.schema.graph.site.CustomAPI",
@@ -669,11 +677,7 @@
         "type": "string",
         "description": "Match operators supported on a label\n\nIndicates that the field is not set\nSelect timeseries whose label value exactly matches the specified string\nSelect timeseries whose label value does not match the specified string",
         "title": "Label Operator",
-        "enum": [
-          "NOP",
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["NOP", "EQ", "NEQ"],
         "default": "NOP",
         "x-displayname": "Label Operator",
         "x-ves-proto-enum": "ves.io.schema.graph.QueryOp"
@@ -682,10 +686,7 @@
         "type": "string",
         "description": "Metrics used to construct the site graph are tagged with these labels and therefore\nthe metrics can be sliced and diced based on one or more labels listed below.\n\nIndicates the field not being set\nIdentifies a site (CE or RE)",
         "title": "Label",
-        "enum": [
-          "LABEL_NONE",
-          "LABEL_SITE"
-        ],
+        "enum": ["LABEL_NONE", "LABEL_SITE"],
         "default": "LABEL_NONE",
         "x-displayname": "Label",
         "x-ves-proto-enum": "ves.io.schema.graph.site.Label"
@@ -694,11 +695,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -1040,10 +1037,7 @@
         "type": "string",
         "description": "IdField is used to select one or more fields that uniquely identifies\na node or an edge in the site graph.\n\nIndicates the field not being set\nIdentifies a site (CE or RE)",
         "title": "Id Field",
-        "enum": [
-          "NONE",
-          "SITE"
-        ],
+        "enum": ["NONE", "SITE"],
         "default": "NONE",
         "x-displayname": "Id Field",
         "x-ves-proto-enum": "ves.io.schema.graph.site.IdField"
@@ -1302,17 +1296,41 @@
         "type": "string",
         "description": "Various Timeseries Features that can be enabled\n\nDo not enable any feature\nEnable calculating confidence interval, upper and lower bound time series where metric is expected to vary.\ndetect anomalies and generate alarm when metric goes out of confidence interval\ndetect trend of the metric\nIndicate a score between 0 to 100 which indicates if the metric is healthy",
         "title": "Timeseries",
-        "enum": [
-          "TIMESERIES_FEATURE_NONE",
-          "CONFIDENCE_INTERVAL",
-          "ANOMALY_DETECTION",
-          "TREND",
-          "HEALTHSCORE"
-        ],
+        "enum": ["TIMESERIES_FEATURE_NONE", "CONFIDENCE_INTERVAL", "ANOMALY_DETECTION", "TREND", "HEALTHSCORE"],
         "default": "TIMESERIES_FEATURE_NONE",
         "x-displayname": "Timeseries",
         "x-ves-proto-enum": "ves.io.schema.timeseries.TimeseriesFeature"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    }
+  ]
 }

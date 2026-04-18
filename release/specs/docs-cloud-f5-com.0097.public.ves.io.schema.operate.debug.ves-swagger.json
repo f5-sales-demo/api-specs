@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.operate.debug",
     "description": "Proto definitions for debugging site",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/operate/namespaces/system/sites/{site}/vpm/debug/global/check-debug-info-collection": {
@@ -119,7 +124,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-checkdebuginfocollection"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.CheckDebugInfoCollection"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.CheckDebugInfoCollection",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -248,7 +254,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-diagnosispublic"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.DiagnosisPublic"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.DiagnosisPublic",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -367,7 +374,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-downloaddebuginfocollection"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.DownloadDebugInfoCollection"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.DownloadDebugInfoCollection",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -496,7 +504,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-healthpublic"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.HealthPublic"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.HealthPublic",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -633,7 +642,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-changepasswordpublic"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.ChangePasswordPublic"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.ChangePasswordPublic",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -760,7 +770,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-startdebuginfocollection"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.StartDebugInfoCollection"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.StartDebugInfoCollection",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -889,7 +900,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-listvolterraservices"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.ListVolterraServices"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.ListVolterraServices",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -1039,7 +1051,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-status"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.Status"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.Status",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -1181,7 +1194,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-exec"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.Exec"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.Exec",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -1331,7 +1345,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-execlog"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.ExecLog"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.ExecLog",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -1473,7 +1488,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-execuser"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.ExecUser"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.ExecUser",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -1622,7 +1638,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-hostping"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.HostPing"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.HostPing",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -1771,7 +1788,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-reboot"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.Reboot"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.Reboot",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -1931,7 +1949,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-log"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.Log"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.Log",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -2090,7 +2109,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-debug-custompublicapi-softrestart"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.SoftRestart"
+        "x-ves-proto-rpc": "ves.io.schema.operate.debug.CustomPublicAPI.SoftRestart",
+        "tags": ["operate"]
       },
       "x-displayname": "Debug",
       "x-ves-proto-service": "ves.io.schema.operate.debug.CustomPublicAPI",
@@ -2213,93 +2233,6 @@
             "title": "Debug Bundle Validity",
             "x-displayname": "Debug Bundle Validity",
             "x-ves-example": "2024-06-18T2237"
-          }
-        }
-      },
-      "debugCurlResponseItem": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "object",
-            "description": "x-displayName: \"Status\"\nx-example: \"map<node-name, OK>\"\nThe map of curl status with key = node name, value = OK / Error",
-            "title": "Status"
-          }
-        }
-      },
-      "debugDiagnosisRespItem": {
-        "type": "object",
-        "properties": {
-          "arp_result": {
-            "type": "string",
-            "description": "x-displayName: \"ARP Result\"\nx-example: \"? (169.254.0.11) at 06:4d:57:fb:c4:07 [ether]...\"\nFull response of address resolution protocol \"arp -an\" on host",
-            "title": "ARP Result"
-          },
-          "dns_connectivity": {
-            "type": "array",
-            "description": "x-displayName: \"DNS Connectivity\"\nPing DNS (from /etc/resolv.conf) to check connectivity",
-            "title": "DNS Connectivity",
-            "items": {
-              "$ref": "#/components/schemas/debugHostPingResponse"
-            }
-          },
-          "dns_query_result": {
-            "type": "array",
-            "description": "x-displayName: \"DNS Query Result\"\nx-example: \"@192.168.0.2 https://downloads.volterra.io\\n; (1 server found)...\"\nDig DNS to resolve DNS for domains",
-            "title": "DNS Query Result",
-            "items": {
-              "type": "string"
-            }
-          },
-          "domain_curl_result": {
-            "type": "object",
-            "description": "x-displayName: \"Domain Curl Result\"\nx-example: \"map<domain-url, curl-status>\"\nThe curl status for all required domains from all nodes",
-            "title": "Domain Curl Result"
-          },
-          "errors": {
-            "type": "object",
-            "description": "x-displayName: \"Errors\"\nx-example: \"map<command, error-messages>\"\nThe map of errors with key = diagnosis command, value = all error messages for that command",
-            "title": "Errors"
-          },
-          "gateway_connectivity": {
-            "$ref": "#/components/schemas/debugHostPingResponse"
-          },
-          "ifconfig_result": {
-            "type": "string",
-            "description": "x-displayName: \"Interface Config\"\nx-example: \"argo-end: flags=4163\\u003cUP,BROADCAST,...\"\nFull response of interface configuration \"ifconfig -a\" on host",
-            "title": "Interface Config"
-          },
-          "node_name": {
-            "type": "string",
-            "description": "x-displayName: \"Node Name\"\nx-example: \"master-0\"\nName of the node",
-            "title": "Node Name"
-          },
-          "nodes_connectivity": {
-            "type": "array",
-            "description": "x-displayName: \"Nodes Connectivity\"\nPing nodes (if multiple) to check connectivity",
-            "title": "Nodes Connectivity",
-            "items": {
-              "$ref": "#/components/schemas/debugHostPingResponse"
-            }
-          },
-          "ntp_sync_status": {
-            "type": "string",
-            "description": "x-displayName: \"NTP Sync Status\"\nx-example: \"System clock synchronized: yes...\"\nFull response from \"timedatectl status\" on host",
-            "title": "NTP Sync Status"
-          },
-          "registration_status": {
-            "type": "string",
-            "description": "x-displayName: \"Registration Status\"\nx-example: \"OK\"\nIndicate whether registration is success or failed with some error",
-            "title": "Registration Status"
-          },
-          "resolv_conf": {
-            "type": "string",
-            "description": "x-displayName: \"Resolv Conf\"\nx-example: \"nameserver 192.168.0.2...\"\nFull response of /etc/resolv.conf information",
-            "title": "Resolv Conf"
-          },
-          "route_result": {
-            "type": "string",
-            "description": "x-displayName: \"Route Result\"\nx-example: \"Kernel IP routing table...\"\nFull response from \"route -n\" on host",
-            "title": "Route Result"
           }
         }
       },
@@ -2831,14 +2764,7 @@
         "type": "string",
         "description": "State of Site defines in which operational state site itself is.\n\nSite is waiting for input configuration.\nSite is waiting for approval.\nSite is in provisioning state.\nSite is in provisioned.\nSite is in failed state. It failed during any stage.\nSite is in factory resetting mode",
         "title": "VpmState",
-        "enum": [
-          "WAITING_FOR_CONFIG",
-          "WAITING_FOR_APPROVAL",
-          "PROVISIONING",
-          "PROVISIONED",
-          "FAILED",
-          "RESETTING"
-        ],
+        "enum": ["WAITING_FOR_CONFIG", "WAITING_FOR_APPROVAL", "PROVISIONING", "PROVISIONED", "FAILED", "RESETTING"],
         "default": "WAITING_FOR_CONFIG",
         "x-displayname": "Site State",
         "x-ves-proto-enum": "ves.io.schema.operate.debug.VpmState"
@@ -2929,10 +2855,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -2948,49 +2871,6 @@
           },
           "clear_secret_info": {
             "$ref": "#/components/schemas/schemaClearSecretInfoType"
-          }
-        }
-      },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
           }
         }
       },
@@ -3271,12 +3151,7 @@
         "type": "string",
         "description": "Link quality determined by VER using different probes\n\nUnknown quality\nLink quality is good\nLink quality is poor\nQuality disabled",
         "title": "Link quality",
-        "enum": [
-          "QUALITY_UNKNOWN",
-          "QUALITY_GOOD",
-          "QUALITY_POOR",
-          "QUALITY_DISABLED"
-        ],
+        "enum": ["QUALITY_UNKNOWN", "QUALITY_GOOD", "QUALITY_POOR", "QUALITY_DISABLED"],
         "default": "QUALITY_UNKNOWN",
         "x-displayname": "Link quality",
         "x-ves-proto-enum": "ves.io.schema.site.LinkQuality"
@@ -3744,16 +3619,41 @@
         "type": "string",
         "description": "Type of USB device\n\nUnknown USB device type\nInternal USB present in Certified HW\nUSB device present during node registration\nUSB device that can be matched by USB rules",
         "title": "UsbType",
-        "enum": [
-          "UNKNOWN_USB",
-          "INTERNAL",
-          "REGISTERED",
-          "CONFIGURABLE"
-        ],
+        "enum": ["UNKNOWN_USB", "INTERNAL", "REGISTERED", "CONFIGURABLE"],
         "default": "UNKNOWN_USB",
         "x-displayname": "USB Type",
         "x-ves-proto-enum": "ves.io.schema.site.UsbType"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "operate"
+    }
+  ]
 }

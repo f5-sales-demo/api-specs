@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.data_delivery",
     "description": "Custom handler in Data Delivery microservice will forward request(s) to backend API(s)",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/data-intelligence/namespaces/system/dataSets": {
@@ -107,7 +112,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-data_delivery-customapi-getdatasets"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.GetDataSets"
+        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.GetDataSets",
+        "tags": ["data-intelligence"]
       },
       "x-displayname": "Data Delivery APIs",
       "x-ves-proto-service": "ves.io.schema.shape.data_delivery.CustomAPI",
@@ -226,7 +232,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-data_delivery-customapi-getdatadictionary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.GetDataDictionary"
+        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.GetDataDictionary",
+        "tags": ["data-intelligence"]
       },
       "x-displayname": "Data Delivery APIs",
       "x-ves-proto-service": "ves.io.schema.shape.data_delivery.CustomAPI",
@@ -343,7 +350,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-data_delivery-customapi-init"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.Init"
+        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.Init",
+        "tags": ["data-intelligence"]
       },
       "x-displayname": "Data Delivery APIs",
       "x-ves-proto-service": "ves.io.schema.shape.data_delivery.CustomAPI",
@@ -462,7 +470,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-data_delivery-customapi-listdatasets"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.ListDataSets"
+        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.ListDataSets",
+        "tags": ["data-intelligence"]
       },
       "x-displayname": "Data Delivery APIs",
       "x-ves-proto-service": "ves.io.schema.shape.data_delivery.CustomAPI",
@@ -581,7 +590,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-data_delivery-customapi-listflowlabels"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.ListFlowLabels"
+        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.ListFlowLabels",
+        "tags": ["data-intelligence"]
       },
       "x-displayname": "Data Delivery APIs",
       "x-ves-proto-service": "ves.io.schema.shape.data_delivery.CustomAPI",
@@ -710,7 +720,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-data_delivery-customapi-loadexecutivesummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.LoadExecutiveSummary"
+        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.LoadExecutiveSummary",
+        "tags": ["data-intelligence"]
       },
       "x-displayname": "Data Delivery APIs",
       "x-ves-proto-service": "ves.io.schema.shape.data_delivery.CustomAPI",
@@ -849,7 +860,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-data_delivery-customapi-updatereceiverstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.UpdateReceiverStatus"
+        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.UpdateReceiverStatus",
+        "tags": ["data-intelligence"]
       },
       "x-displayname": "Data Delivery APIs",
       "x-ves-proto-service": "ves.io.schema.shape.data_delivery.CustomAPI",
@@ -988,7 +1000,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-data_delivery-customapi-testreceiver"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.TestReceiver"
+        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.TestReceiver",
+        "tags": ["data-intelligence"]
       },
       "x-displayname": "Data Delivery APIs",
       "x-ves-proto-service": "ves.io.schema.shape.data_delivery.CustomAPI",
@@ -1117,7 +1130,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-data_delivery-customapi-suggestvalues"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.SuggestValues"
+        "x-ves-proto-rpc": "ves.io.schema.shape.data_delivery.CustomAPI.SuggestValues",
+        "tags": ["data-intelligence"]
       },
       "x-displayname": "Data Delivery APIs",
       "x-ves-proto-service": "ves.io.schema.shape.data_delivery.CustomAPI",
@@ -1630,10 +1644,7 @@
         "type": "string",
         "description": "Test Receiver connection status\n\nThe receiver credentials & settings has been tested and the connection has been validated\nThere is error when trying to test the connection for destination sink with given credentials",
         "title": "TestReceiverStatusType",
-        "enum": [
-          "SUCCESS",
-          "FAILED"
-        ],
+        "enum": ["SUCCESS", "FAILED"],
         "default": "SUCCESS",
         "x-displayname": "Test Receiver Status Type",
         "x-ves-proto-enum": "ves.io.schema.shape.data_delivery.TestReceiverStatusType"
@@ -1865,14 +1876,41 @@
         "type": "string",
         "description": "Type of Status\n\n - DISABLE: DISABLE\n\nDisable Receiver\n - ENABLE: ENABLE\n\nEnable Receiver",
         "title": "StatusType",
-        "enum": [
-          "DISABLE",
-          "ENABLE"
-        ],
+        "enum": ["DISABLE", "ENABLE"],
         "default": "DISABLE",
         "x-displayname": "Status type",
         "x-ves-proto-enum": "ves.io.schema.shape.data_delivery.StatusType"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data-intelligence"
+    }
+  ]
 }

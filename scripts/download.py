@@ -98,7 +98,8 @@ def load_metadata(output_dir: Path) -> dict | None:
     metadata_path = output_dir / DEFAULT_METADATA_FILE
     if metadata_path.exists():
         with metadata_path.open() as f:
-            return json.load(f)
+            result: dict = json.load(f)
+            return result
     return None
 
 
@@ -143,12 +144,16 @@ def download_specs(
 
         # Not modified - use cached version
         if response.status_code == HTTP_NOT_MODIFIED:
-            console.print("[green]Specs unchanged (ETag match), using cached version[/green]")
+            console.print(
+                "[green]Specs unchanged (ETag match), using cached version[/green]"
+            )
             # Return existing files
-            existing_files = [
-                str(f.relative_to(output_dir)) for f in output_dir.glob("**/*") if f.is_file()
+            cached_files = [
+                str(f.relative_to(output_dir))
+                for f in output_dir.glob("**/*")
+                if f.is_file()
             ]
-            return False, existing_files
+            return False, cached_files
 
         response.raise_for_status()
 
@@ -184,13 +189,15 @@ def download_specs(
         # Save metadata for versioning (includes upstream Last-Modified date)
         save_metadata(output_dir, new_etag, last_modified, len(extracted_files))
 
-        console.print(f"[green]Extracted {len(extracted_files)} files to {output_dir}[/green]")
+        console.print(
+            f"[green]Extracted {len(extracted_files)} files to {output_dir}[/green]"
+        )
 
     except requests.exceptions.RequestException as e:
         console.print(f"[red]Download failed: {e}[/red]")
         raise
-    else:
-        return True, extracted_files
+
+    return True, extracted_files
 
 
 def extract_zip(content: io.BytesIO, output_dir: Path) -> list[str]:
@@ -230,7 +237,7 @@ def list_domain_files(output_dir: Path) -> dict[str, list[str]]:
 
             console.print(f"[cyan]{filepath.name}[/cyan]: {len(paths)} paths")
 
-        except Exception as e:
+        except (json.JSONDecodeError, KeyError, OSError) as e:
             console.print(f"[yellow]Failed to parse {filepath.name}: {e}[/yellow]")
 
     return domains
@@ -247,7 +254,9 @@ def compute_checksum(filepath: Path) -> str:
 
 def main() -> int:
     """Main entry point for download command."""
-    parser = argparse.ArgumentParser(description="Download F5 XC OpenAPI specifications")
+    parser = argparse.ArgumentParser(
+        description="Download F5 XC OpenAPI specifications"
+    )
     parser.add_argument(
         "--config",
         type=Path,
@@ -280,7 +289,9 @@ def main() -> int:
 
     # Determine paths
     url = download_config.get("url", DEFAULT_DOWNLOAD_URL)
-    output_dir = args.output_dir or Path(download_config.get("output_dir", DEFAULT_OUTPUT_DIR))
+    output_dir = args.output_dir or Path(
+        download_config.get("output_dir", DEFAULT_OUTPUT_DIR)
+    )
     etag_cache = Path(download_config.get("etag_cache", DEFAULT_ETAG_CACHE))
 
     # Download specs

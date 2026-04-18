@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.nfv_service",
     "description": "NFV Service manages the lifecycle  of the NFV appliance, which includes the functionalities like health checks, restarts, dynamic\naddition and deletion of NFV instances for auto scaling, defining the policies that steers the packets to NFV etc. The service is\ndefined as two different types Forwarding Service and Endpoint Service.\nForwarding Service receives the original packet as is using the help of Policies or Traffic Selectors and forwards the packets to\noriginal destination wihtout modifying its L3/L4 headers\nEndpoint Service packets are destined to NFV and the destination of the packets is modified to a new destination",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/system/nfv_service/{name}/force-delete": {
@@ -129,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-customapi-forcedeletenfvservice"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.CustomAPI.ForceDeleteNFVService"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.CustomAPI.ForceDeleteNFVService",
+        "tags": ["config"]
       },
       "x-displayname": "NFV Service",
       "x-ves-proto-service": "ves.io.schema.nfv_service.CustomAPI",
@@ -554,7 +560,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "NFV Service",
       "x-ves-proto-service": "ves.io.schema.nfv_service.API",
@@ -683,7 +690,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-customdataapi-metrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.CustomDataAPI.Metrics"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.CustomDataAPI.Metrics",
+        "tags": ["data"]
       },
       "x-displayname": "NFV Service",
       "x-ves-proto-service": "ves.io.schema.nfv_service.CustomDataAPI",
@@ -832,7 +840,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete NFV Service",
@@ -964,7 +973,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "NFV Service",
       "x-ves-proto-service": "ves.io.schema.nfv_service.API",
@@ -1212,21 +1222,6 @@
           }
         }
       },
-      "nfv_serviceF5BigIpAWSBYOLImageType": {
-        "type": "object",
-        "description": "x-displayName: \"BIG-IP AWS BYOL Image\"\nBIG-IP AWS VPC site specification",
-        "title": "BIG-IP AWS BYOL Image",
-        "properties": {
-          "image": {
-            "type": "string",
-            "description": "x-displayName: \"BIG-IP AWS Image\"\nx-required\nx-example: \"image1\"\nSelect the BIG-IP pay as you go image to be used for this service",
-            "title": "BIG-IP AWS Image"
-          },
-          "license": {
-            "$ref": "#/components/schemas/schemaSecretType"
-          }
-        }
-      },
       "nfv_serviceF5BigIpAWSMarketPlaceImageType": {
         "type": "object",
         "description": "BIG-IP AWS Pay as You Go Image Selection",
@@ -1359,16 +1354,6 @@
           }
         }
       },
-      "nfv_serviceF5BigIpAWSVPCSiteType": {
-        "type": "object",
-        "description": "x-displayName: \"BIG-IP AWS VPC Site\"\nBIG-IP AWS VPC site specification",
-        "title": "BIG-IP AWS VPC Site",
-        "properties": {
-          "aws_vpc_site": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
       "nfv_serviceForceDeleteNFVServiceRequest": {
         "type": "object",
         "description": "Force Delete NFV Service Request",
@@ -1458,21 +1443,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "nfv_serviceGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "nfv_serviceListResponse": {
         "type": "object",
@@ -1612,12 +1582,7 @@
         "type": "string",
         "description": "Labels in Nfv Service Metrics\n",
         "title": "Metric Label",
-        "enum": [
-          "SITE",
-          "SERVICE",
-          "SERVICE_INSTANCE",
-          "SERVICE_INSTANCE_HOSTNAME"
-        ],
+        "enum": ["SITE", "SERVICE", "SERVICE_INSTANCE", "SERVICE_INSTANCE_HOSTNAME"],
         "default": "SITE",
         "x-displayname": "Metric Label",
         "x-ves-proto-enum": "ves.io.schema.nfv_service.MetricLabel"
@@ -2327,28 +2292,6 @@
           }
         }
       },
-      "nfv_serviceSuggestedCommands": {
-        "type": "object",
-        "description": "x-displayName: \"Suggested Commands for External Service\"\nList of commands which users can execute on the local external service. This is valid only for PAN VmSeries Firewall",
-        "title": "Suggested Commands for External Service",
-        "properties": {
-          "command": {
-            "type": "string",
-            "description": "x-displayName: \"Example command\"\nExample command. Which user can run it locally on the external service",
-            "title": "Example command"
-          },
-          "description": {
-            "type": "string",
-            "description": "x-displayName: \"Description of the command\"\nDescription of the command, which explains in details on how it can be used based on the usecase.",
-            "title": "Description of the command"
-          },
-          "warning": {
-            "type": "string",
-            "description": "x-displayName: \"Warning (if any)\"\nExample warning: It is imperative to ensure that all interfaces and sub-interfaces are properly configured and operational.",
-            "title": "Warning"
-          }
-        }
-      },
       "protobufAny": {
         "type": "object",
         "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
@@ -2531,11 +2474,7 @@
         "type": "string",
         "description": "Specifies the Hash Algorithm to be used\n\nInvalid hash algorithm\nsha256 hash algorithm\nsha1 hash algorithm",
         "title": "HashAlgoritm",
-        "enum": [
-          "INVALID_HASH_ALGORITHM",
-          "SHA256",
-          "SHA1"
-        ],
+        "enum": ["INVALID_HASH_ALGORITHM", "SHA256", "SHA1"],
         "default": "INVALID_HASH_ALGORITHM",
         "x-displayname": "Hash Algorithm",
         "x-ves-proto-enum": "ves.io.schema.HashAlgorithm"
@@ -2853,10 +2792,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -2938,10 +2874,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -3115,13 +3048,7 @@
         "type": "string",
         "description": "TlsProtocol is enumeration of supported TLS versions\n\nF5 Distributed Cloud will choose the optimal TLS version.",
         "title": "TlsProtocol",
-        "enum": [
-          "TLS_AUTO",
-          "TLSv1_0",
-          "TLSv1_1",
-          "TLSv1_2",
-          "TLSv1_3"
-        ],
+        "enum": ["TLS_AUTO", "TLSv1_0", "TLSv1_1", "TLSv1_2", "TLSv1_3"],
         "default": "TLS_AUTO",
         "x-displayname": "TLS Protocol",
         "x-ves-proto-enum": "ves.io.schema.TlsProtocol"
@@ -3130,11 +3057,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -3209,37 +3132,6 @@
         "x-displayname": "Unit",
         "x-ves-proto-enum": "ves.io.schema.UnitType"
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -3277,30 +3169,11 @@
           }
         }
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemaXfccElement": {
         "type": "string",
         "description": "X-Forwarded-Client-Cert custom cookie elements\n\nThe entire client certificate in URL encoded PEM format.\nThe entire client certificate chain (including the leaf certificate) in URL encoded PEM format.\nThe Subject field of the current client certificate. The value is always double-quoted.\nThe URI type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple URI type Subject Alternative Names,\neach will be a separate key-value pair.\nThe DNS type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple DNS type Subject Alternative Names,\neach will be a separate key-value pair.",
         "title": "XfccElement",
-        "enum": [
-          "XFCC_NONE",
-          "XFCC_CERT",
-          "XFCC_CHAIN",
-          "XFCC_SUBJECT",
-          "XFCC_URI",
-          "XFCC_DNS"
-        ],
+        "enum": ["XFCC_NONE", "XFCC_CERT", "XFCC_CHAIN", "XFCC_SUBJECT", "XFCC_URI", "XFCC_DNS"],
         "default": "XFCC_NONE",
         "x-displayname": "XFCC Elements",
         "x-ves-proto-enum": "ves.io.schema.XfccElement"
@@ -3583,12 +3456,7 @@
       "terraform_parametersDestroyStageState": {
         "type": "string",
         "title": "- DESTROYED: x-displayName: \"Destroyed\"\n - DESTROY_ERRORED: x-displayName: \"Destroy errored\"\n - DESTROYING: x-displayName: \"Destroying\"\n - DESTROY_QUEUED: x-displayName: \"Destroy Queued\"",
-        "enum": [
-          "DESTROYED",
-          "DESTROY_ERRORED",
-          "DESTROYING",
-          "DESTROY_QUEUED"
-        ],
+        "enum": ["DESTROYED", "DESTROY_ERRORED", "DESTROYING", "DESTROY_QUEUED"],
         "default": "DESTROYED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.DestroyStageState"
@@ -3596,36 +3464,10 @@
       "terraform_parametersInfraState": {
         "type": "string",
         "title": "- PROVISIONED: x-displayName: \"Provisioned\"\n - TIMED_OUT: x-displayName: \"Timed out\"\n - ERRORED: x-displayName: \"Errored\"\n - PROVISIONING: x-displayName: \"Provisioning\"",
-        "enum": [
-          "PROVISIONED",
-          "TIMED_OUT",
-          "ERRORED",
-          "PROVISIONING"
-        ],
+        "enum": ["PROVISIONED", "TIMED_OUT", "ERRORED", "PROVISIONING"],
         "default": "PROVISIONED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.InfraState"
-      },
-      "terraform_parametersRollbackState": {
-        "type": "string",
-        "title": "- ROLLBACK_SUCCESSFUL: x-displayName: \"Rollback successful\"\n - ROLLBACK_ERRORED: x-displayName: \"Rollback errored\"\n - ROLLBACK_NOT_REQUIRED: x-displayName: \"Rollback not required\"",
-        "enum": [
-          "ROLLBACK_SUCCESSFUL",
-          "ROLLBACK_ERRORED",
-          "ROLLBACK_NOT_REQUIRED"
-        ],
-        "default": "ROLLBACK_SUCCESSFUL"
-      },
-      "terraform_parametersUpgradeState": {
-        "type": "string",
-        "description": "x-displayName: \"Upgrade State\"\nTerraform State after version Upgrade\n\n - UPGRADE_SUCCESSFUL: x-displayName: \"Upgrade successful\"\n - UPGRADE_ERRORED: x-displayName: \"Upgrade errored\"\n - UPGRADE_NOT_REQUIRED: x-displayName: \"Upgrade not required\"",
-        "title": "Upgrade State",
-        "enum": [
-          "UPGRADE_SUCCESSFUL",
-          "UPGRADE_ERRORED",
-          "UPGRADE_NOT_REQUIRED"
-        ],
-        "default": "UPGRADE_SUCCESSFUL"
       },
       "viewsAdvertisePublic": {
         "type": "object",
@@ -3864,6 +3706,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "data"
+    }
+  ]
 }

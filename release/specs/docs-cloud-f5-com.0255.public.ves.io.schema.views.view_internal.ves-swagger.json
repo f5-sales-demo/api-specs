@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.view_internal",
     "description": "View Internal object contains reference to child objects of a given view",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{namespace}/view_internal/{view_kind}/{view_name}": {
@@ -139,7 +144,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-view_internal-customapi-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.view_internal.CustomAPI.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.view_internal.CustomAPI.Get",
+        "tags": ["config"]
       },
       "x-displayname": "View Internal",
       "x-ves-proto-service": "ves.io.schema.views.view_internal.CustomAPI",
@@ -187,18 +193,6 @@
           }
         }
       },
-      "view_internalAllocatedNumbers": {
-        "type": "object",
-        "description": "x-displayName: \"Allocated Numbers\"\nAllocated Numbers",
-        "title": "AlloatedNumbers",
-        "properties": {
-          "allocatedNumbers": {
-            "type": "object",
-            "description": "x-displayName: \"Allocated Numbers\"\nAllocated Numbers",
-            "title": "AllocatedNumbers"
-          }
-        }
-      },
       "view_internalGetResponse": {
         "type": "object",
         "description": "Response for Get API",
@@ -238,6 +232,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

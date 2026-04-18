@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_security",
     "description": "API to create API endpoint protection rule suggestion from App Security Monitoring pages",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/data/namespaces/system/app_security/all_ns_events": {
@@ -110,7 +115,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityeventsqueryallnamespaces"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsQueryAllNamespaces"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsQueryAllNamespaces",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -220,7 +226,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityeventsaggregationqueryallnamespaces"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsAggregationQueryAllNamespaces"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsAggregationQueryAllNamespaces",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -330,7 +337,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-searchloadbalancersallnamespaces"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SearchLoadBalancersAllNamespaces"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SearchLoadBalancersAllNamespaces",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -452,7 +460,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityeventsquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -574,7 +583,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityeventsaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -703,12 +713,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityeventsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "Security Event Scroll Query",
         "description": "Scroll request is used to fetch large number of security events in multiple batches with each SecurityEventResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSecurityEventScrollRequest. Use the scroll_id returned in the SecurityEventResponse to fetch the next batch of security events\nand one can continue this process till the scroll_id returned is \"\" which indicates no more events to scroll.",
-        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -827,7 +838,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityeventsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -956,7 +968,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityincidentsquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -1085,7 +1098,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityincidentsaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -1214,12 +1228,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityincidentsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "Security Incidents Scroll Query",
         "description": "Scroll request is used to fetch large number of security incidents in multiple batches with each SecurityIncidentsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSecurityIncidentsScrollRequest. Use the scroll_id returned in the SecurityIncidentsResponse to fetch the next batch\nof security incidents and one can continue this process till the scroll_id returned is \"\" which indicates no more\nevents to scroll.",
-        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1338,7 +1353,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityincidentsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -1467,7 +1483,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityeventsmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -1589,7 +1606,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-searchloadbalancers"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SearchLoadBalancers"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SearchLoadBalancers",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -1718,7 +1736,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-suspicioususerlogsquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -1847,7 +1866,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-suspicioususerlogsaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -1976,12 +1996,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-suspicioususerlogsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "Suspicious User Logs Scroll Query",
         "description": "Scroll request is used to fetch large number of suspicious user logs in multiple batches with each SuspiciousUserLogsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSuspiciousUserLogsScrollRequest. Use the scroll_id returned in the SuspiciousUserLogsResponse to fetch the next batch of logs \nand one can continue this process till the scroll_id returned is \"\" which indicates no more logs to scroll.",
-        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2100,7 +2121,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-suspicioususerlogsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
@@ -2232,7 +2254,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecurityclientruleapi-getsuggestedblockclientruleforcdn"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedBlockClientRuleForCDN"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedBlockClientRuleForCDN",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityClientRuleAPI",
@@ -2364,7 +2387,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecurityclientruleapi-getsuggestedddosmitigationruleforcdn"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedDDoSMitigationRuleForCDN"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedDDoSMitigationRuleForCDN",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityClientRuleAPI",
@@ -2496,7 +2520,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecurityclientruleapi-getsuggestedtrustclientruleforcdn"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedTrustClientRuleForCDN"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedTrustClientRuleForCDN",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityClientRuleAPI",
@@ -2628,7 +2653,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritywafexclusionapi-getsuggestedwafexclusionruleforcdn"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityWafExclusionAPI.GetSuggestedWAFExclusionRuleForCDN"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityWafExclusionAPI.GetSuggestedWAFExclusionRuleForCDN",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityWafExclusionAPI",
@@ -2768,7 +2794,8 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-apiendpointprotectionrulesuggestionapi-getsuggestedapiendpointprotectionrule"
         },
         "x-ves-deprecated": "Use GetSuggestedAPIEndpointProtectionRule in RuleSuggestionAPI",
-        "x-ves-proto-rpc": "ves.io.schema.app_security.APIEndpointProtectionRuleSuggestionAPI.GetSuggestedAPIEndpointProtectionRule"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.APIEndpointProtectionRuleSuggestionAPI.GetSuggestedAPIEndpointProtectionRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.APIEndpointProtectionRuleSuggestionAPI",
@@ -2896,7 +2923,8 @@
         "requestBody": {
           "$ref": "#/components/requestBodies/app_securityGetSuggestedBlockClientRuleReq"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedBlockClientRule"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedBlockClientRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityClientRuleAPI",
@@ -3036,7 +3064,8 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-apisensitivedatarulesuggestionapi-getsuggestedsensitivedatarule"
         },
         "x-ves-deprecated": "Use GetSuggestedSensitiveDataRule in RuleSuggestionAPI",
-        "x-ves-proto-rpc": "ves.io.schema.app_security.APISensitiveDataRuleSuggestionAPI.GetSuggestedSensitiveDataRule"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.APISensitiveDataRuleSuggestionAPI.GetSuggestedSensitiveDataRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.APISensitiveDataRuleSuggestionAPI",
@@ -3168,7 +3197,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecurityclientruleapi-getsuggestedddosmitigationrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedDDoSMitigationRule"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedDDoSMitigationRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityClientRuleAPI",
@@ -3308,7 +3338,8 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-oasvalidationsuggestionapi-getsuggestedoasvalidationrule"
         },
         "x-ves-deprecated": "Use GetSuggestedOasValidationRule in RuleSuggestionAPI",
-        "x-ves-proto-rpc": "ves.io.schema.app_security.OasValidationSuggestionAPI.GetSuggestedOasValidationRule"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.OasValidationSuggestionAPI.GetSuggestedOasValidationRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.OasValidationSuggestionAPI",
@@ -3448,7 +3479,8 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-apiratelimitrulesuggestionapi-getsuggestedratelimitrule"
         },
         "x-ves-deprecated": "Use GetSuggestedRateLimitRule in RuleSuggestionAPI",
-        "x-ves-proto-rpc": "ves.io.schema.app_security.APIRateLimitRuleSuggestionAPI.GetSuggestedRateLimitRule"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.APIRateLimitRuleSuggestionAPI.GetSuggestedRateLimitRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.APIRateLimitRuleSuggestionAPI",
@@ -3576,7 +3608,8 @@
         "requestBody": {
           "$ref": "#/components/requestBodies/app_securityGetSuggestedTrustClientRuleReq"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedTrustClientRule"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedTrustClientRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityClientRuleAPI",
@@ -3708,7 +3741,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritywafexclusionapi-getsuggestedwafexclusionrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityWafExclusionAPI.GetSuggestedWAFExclusionRule"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityWafExclusionAPI.GetSuggestedWAFExclusionRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityWafExclusionAPI",
@@ -3827,7 +3861,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-threatcampaignapi-getthreatcampaignbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_security.ThreatCampaignAPI.GetThreatCampaignById"
+        "x-ves-proto-rpc": "ves.io.schema.app_security.ThreatCampaignAPI.GetThreatCampaignById",
+        "tags": ["waf"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.ThreatCampaignAPI",
@@ -4773,10 +4808,7 @@
         "type": "string",
         "description": "List of Virtual Hosts will be returned matching the following labels.\n",
         "title": "Search Label for VH list API",
-        "enum": [
-          "REQUEST_ID",
-          "SOURCE_IP"
-        ],
+        "enum": ["REQUEST_ID", "SOURCE_IP"],
         "default": "REQUEST_ID",
         "x-displayname": "Search Label for VH List API",
         "x-ves-proto-enum": "ves.io.schema.app_security.SearchLabel"
@@ -4785,10 +4817,7 @@
         "type": "string",
         "description": "Search Label Operator\n\nx-example: \"field: [\"foo\", \"bar\"]\"",
         "title": "Search Label Operator",
-        "enum": [
-          "IN",
-          "NOT_IN"
-        ],
+        "enum": ["IN", "NOT_IN"],
         "default": "IN",
         "x-displayname": "Search Label Operator",
         "x-ves-proto-enum": "ves.io.schema.app_security.SearchLabelOperator"
@@ -5723,28 +5752,6 @@
           }
         }
       },
-      "app_securityincidentsAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the log response",
-        "title": "Aggregation Request",
-        "properties": {
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsCardinalityAggregation"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsFieldAggregation"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsMetricsAggregation"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsMultiFieldAggregation"
-          }
-        }
-      },
       "app_securityincidentsCardinalityAggregation": {
         "type": "object",
         "description": "x-displayName: \"Cardinality Aggregation\"\nGet approximate count of distinct values for the field in the incident.",
@@ -5772,19 +5779,6 @@
           }
         }
       },
-      "app_securityincidentsDateSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\nAggregate security events based on one of the sub aggregation types",
-        "title": "Date SubAggregation",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsFieldAggregation"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsMultiFieldAggregation"
-          }
-        }
-      },
       "app_securityincidentsFieldAggregation": {
         "type": "object",
         "description": "x-displayName: \"Field Aggregation\"\nAggregate incidents based on the key fields in the security event.",
@@ -5806,16 +5800,6 @@
             "description": "x-displayName: \"TopK\"\nx-example: \"10\"\n\nNumber of top field values to be returned in the response.",
             "title": "topk",
             "format": "int64"
-          }
-        }
-      },
-      "app_securityincidentsFieldSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Field SubAggregation\"\nAggregate security events in each field bucket based on one of the sub aggregation types",
-        "title": "Field SubAggregation",
-        "properties": {
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsCardinalityAggregation"
           }
         }
       },
@@ -5842,9 +5826,7 @@
         "type": "string",
         "description": "x-displayName: \"Metric Field\"\nMetrics can be computed based on these fields.\n\n - EVENTS: x-displayName: \"Events\"",
         "title": "Metric Field",
-        "enum": [
-          "EVENTS"
-        ],
+        "enum": ["EVENTS"],
         "default": "EVENTS"
       },
       "app_securityincidentsMetricsAggregation": {
@@ -5881,23 +5863,11 @@
           }
         }
       },
-      "app_securityincidentsMultiFieldSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Multi Field SubAggregation\"\nAggregate security events in each MultiTerms bucket based on one of the sub aggregation types",
-        "title": "Multi Field SubAggregation",
-        "properties": {
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsCardinalityAggregation"
-          }
-        }
-      },
       "app_securityincidentsMultiKeyField": {
         "type": "string",
         "description": "x-displayName: \"Multi-Key Field\"\nSecurity events can be aggregated based on these multiple key fields\n\n - SRC_IP_TLS_FINGERPRINT: x-displayName: \"Source IP, JA3 TLS Fingerprint\"\nAggregated by (KeyField.SRC_IP, KeyField.TLS_FINGERPRINT)",
         "title": "Multi-Key Field",
-        "enum": [
-          "SRC_IP_TLS_FINGERPRINT"
-        ],
+        "enum": ["SRC_IP_TLS_FINGERPRINT"],
         "default": "SRC_IP_TLS_FINGERPRINT"
       },
       "app_securityincidentsPercentileAggregation": {
@@ -5913,34 +5883,6 @@
             "description": "x-displayName: \"Percent\"\nx-example: \"[99.0]\"\nx-required\n\nPercentile for which value is calculated.",
             "title": "percent",
             "format": "double"
-          }
-        }
-      },
-      "app_securitysuspicious_user_logAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the log response",
-        "title": "Aggregation Request",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/suspicious_user_logAvgAggregation"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/app_securitysuspicious_user_logCardinalityAggregation"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/app_securitysuspicious_user_logDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/app_securitysuspicious_user_logFieldAggregation"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/suspicious_user_logMaxAggregation"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/app_securitysuspicious_user_logMetricsAggregation"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/suspicious_user_logMinAggregation"
           }
         }
       },
@@ -5990,30 +5932,11 @@
           }
         }
       },
-      "app_securitysuspicious_user_logFieldSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Field SubAggregation\"\nAggregate security events in each field bucket based on one of the sub aggregation types",
-        "title": "Field SubAggregation",
-        "properties": {
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/app_securitysuspicious_user_logCardinalityAggregation"
-          }
-        }
-      },
       "app_securitysuspicious_user_logKeyField": {
         "type": "string",
         "description": "x-displayName: \"Key Field\"\nSecurity events can be aggregated based on these fields.\n\n - CITY: x-displayName: \"City\"\n - COUNTRY: x-displayName: \"Country\"\n - ASN: x-displayName: \"ASN\"\n - USER: x-displayName: \"User\"\n - THREAT_LEVEL: x-displayName: \"Threat Level\"\n - VH_NAME: x-displayName: \"Virtual Host Name\"\n - SRC_IP: x-displayName: \"Source IP\"\n - SUSPICION_LOG_TYPE: x-displayName: \"Suspicion Log Type\"",
         "title": "Key Field",
-        "enum": [
-          "CITY",
-          "COUNTRY",
-          "ASN",
-          "USER",
-          "THREAT_LEVEL",
-          "VH_NAME",
-          "SRC_IP",
-          "SUSPICION_LOG_TYPE"
-        ],
+        "enum": ["CITY", "COUNTRY", "ASN", "USER", "THREAT_LEVEL", "VH_NAME", "SRC_IP", "SUSPICION_LOG_TYPE"],
         "default": "CITY"
       },
       "app_securitysuspicious_user_logMetricsAggregation": {
@@ -6736,19 +6659,6 @@
           }
         }
       },
-      "common_wafValidationSettingForHeaders": {
-        "type": "object",
-        "description": "x-displayName: \"Validation Settings For Headers\"\nCustom settings for headers validation",
-        "title": "Validation Settings For Headers",
-        "properties": {
-          "allow_additional_headers": {
-            "$ref": "#/components/schemas/schemaEmpty"
-          },
-          "disallow_additional_headers": {
-            "$ref": "#/components/schemas/schemaEmpty"
-          }
-        }
-      },
       "common_wafValidationSettingForQueryParameters": {
         "type": "object",
         "description": "Custom settings for query parameters validation",
@@ -7006,19 +6916,6 @@
           }
         }
       },
-      "logDateSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\n\nDate subaggregation data",
-        "title": "DateSubAggregationData",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          }
-        }
-      },
       "logFieldAggregationBucket": {
         "type": "object",
         "description": "x-displayName: \"Field Aggregation Bucket\"\nField aggregation bucket containing field value and the number of logs.",
@@ -7084,39 +6981,6 @@
           }
         }
       },
-      "logFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field SubAggregation\"\nField subaggregation data",
-        "title": "FieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field values and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubAggregationBucket"
-            }
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
-          }
-        }
-      },
       "logFieldSubFieldAggregationBucket": {
         "type": "object",
         "description": "x-displayName: \"Field Sub Field Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
@@ -7135,21 +6999,6 @@
           }
         }
       },
-      "logFieldSubFieldAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field Sub Field Aggregation Data\"\nField Aggregation data as Field Sub-aggregation",
-        "title": "FieldSubFieldAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubFieldAggregationBucket"
-            }
-          }
-        }
-      },
       "logFilterAggregationData": {
         "type": "object",
         "description": "x-displayName: \"Filter Aggregation Data\"\nFilter Aggregation Data",
@@ -7165,21 +7014,6 @@
             "type": "object",
             "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
             "title": "sub aggregation"
-          }
-        }
-      },
-      "logFilterSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"FilterSubAggregation\"\nFilter subaggregation data",
-        "title": "FilterSubAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFilterSubFieldAggregationBucket"
-            }
           }
         }
       },
@@ -7203,43 +7037,6 @@
             "type": "object",
             "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
             "title": "sub aggregation"
-          }
-        }
-      },
-      "logLogAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Log Aggregation\"\nLog aggregation response data",
-        "title": "LogAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logDateAggregationData"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/logMetricsAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
           }
         }
       },
@@ -7317,28 +7114,6 @@
             "items": {
               "$ref": "#/components/schemas/logMultiFieldAggregationBucket"
             }
-          }
-        }
-      },
-      "logMultiFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Multi Field SubAggregation\"\nField subaggregation data",
-        "title": "MultiFieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "top_hits_aggregation": {
-            "$ref": "#/components/schemas/logTopHitsAggregationData"
           }
         }
       },
@@ -7473,13 +7248,7 @@
       "metricsSecurityMetricLabel": {
         "type": "string",
         "description": "Labels in the security events metrics.\n\nSecurity events metric can be sliced and diced based\non one or more labels listed below.\n",
-        "enum": [
-          "NAMESPACE",
-          "VH_NAME",
-          "SEC_EVENT_TYPE",
-          "SRC_SITE",
-          "SRC_INSTANCE"
-        ],
+        "enum": ["NAMESPACE", "VH_NAME", "SEC_EVENT_TYPE", "SRC_SITE", "SRC_INSTANCE"],
         "default": "NAMESPACE",
         "x-displayname": "Security Events Metric Labels",
         "x-ves-proto-enum": "ves.io.schema.app_security.metrics.SecurityMetricLabel"
@@ -7509,10 +7278,7 @@
         "type": "string",
         "description": "The operator to use when querying Security Events metrics with labels.\n",
         "title": "Security Events Metric Label Operator",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "Security Events Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.app_security.metrics.SecurityMetricLabelOp"
@@ -8630,7 +8396,6 @@
           "TRIM_RIGHT",
           "TRIM"
         ],
-        "default": "TRANSFORMER_NONE",
         "x-displayname": "Transformer",
         "x-ves-proto-enum": "ves.io.schema.policy.Transformer"
       },
@@ -8638,11 +8403,7 @@
         "type": "string",
         "description": "Unit for the period per which the rate limit is applied.\n\n - SECOND: Second\n\nRate limit period unit is seconds\n - MINUTE: Minute\n\nRate limit period unit is minutes\n - HOUR: Hour\n\nRate limit period unit is hours\n - DAY: Day\n\nRate limit period unit is days",
         "title": "RateLimitPeriodUnit",
-        "enum": [
-          "SECOND",
-          "MINUTE",
-          "HOUR"
-        ],
+        "enum": ["SECOND", "MINUTE", "HOUR"],
         "default": "SECOND",
         "x-displayname": "Rate Limit Period Unit",
         "x-ves-proto-enum": "ves.io.schema.rate_limiter.RateLimitPeriodUnit"
@@ -8658,19 +8419,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -8761,10 +8510,7 @@
         "type": "string",
         "description": "Sort algorithm\n\nSort in descending order\nSort in ascending order",
         "title": "SortOrder",
-        "enum": [
-          "DESCENDING",
-          "ASCENDING"
-        ],
+        "enum": ["DESCENDING", "ASCENDING"],
         "default": "DESCENDING",
         "x-displayname": "Sort Order",
         "x-ves-proto-enum": "ves.io.schema.SortOrder"
@@ -8773,11 +8519,7 @@
         "type": "string",
         "description": "x-displayName: \"Trend Sentiment\"\ntrend sentiment\n\n - TREND_SENTIMENT_NONE: x-displayName: \"None\"\n - TREND_SENTIMENT_POSITIVE: x-displayName: \"Positive\"\nIndicates trend sentiment is positive\n - TREND_SENTIMENT_NEGATIVE: x-displayName: \"Negative\"\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE"
       },
       "schemaTrendValue": {
@@ -8802,33 +8544,6 @@
             "type": "string",
             "description": "x-displayName: \"Value\"\nx-example: \"-15\"",
             "title": "Value"
-          }
-        }
-      },
-      "schemaapp_securityAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the security events",
-        "title": "Aggregation Request",
-        "properties": {
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityCardinalityAggregation"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityFieldAggregation"
-          },
-          "is_trend_request": {
-            "type": "boolean",
-            "description": "Trend value computation requested for the field present in aggregation.\n\nx-displayName: \"Trend calculation requested by the user\"\nx-example: \"true\"\nTrend value computation requested by the user\nOptional: default is false",
-            "format": "boolean"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityMetricsAggregation"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityMultiFieldAggregation"
           }
         }
       },
@@ -8859,19 +8574,6 @@
           }
         }
       },
-      "schemaapp_securityDateSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\nAggregate security events based on one of the sub aggregation types",
-        "title": "Date SubAggregation",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityFieldAggregation"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityMultiFieldAggregation"
-          }
-        }
-      },
       "schemaapp_securityFieldAggregation": {
         "type": "object",
         "description": "x-displayName: \"Field Aggregation\"\nAggregate security events based on the key fields in the security event.",
@@ -8896,19 +8598,9 @@
           }
         }
       },
-      "schemaapp_securityFieldSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Field SubAggregation\"\nAggregate security events in each field bucket based on one of the sub aggregation types",
-        "title": "Field SubAggregation",
-        "properties": {
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityCardinalityAggregation"
-          }
-        }
-      },
       "schemaapp_securityKeyField": {
         "type": "string",
-        "description": "x-displayName: \"Key Field\"\nSecurity events can be aggregated based on these fields.\n\n - CITY: x-displayName: \"City\"\n - COUNTRY: x-displayName: \"Country\"\n - SEC_EVENT_TYPE: x-displayName: \"Security Event Type\"\n - SRC_SITE: x-displayName: \"Source Site\"\n - VH_NAME: x-displayName: \"Virtual Host Name\"\n - VH_TYPE: x-displayName: \"Virtual Host Type\"\n - USER: x-displayName: \"User\"\n - SUSPICIOUS_USER_COUNTRY: x-displayName: \"Suspicious User Country\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more countries.\n - SUSPICIOUS_USER_REGION: x-displayName: \"Suspicious User Region\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more regions.\n - SUSPICIOUS_USER_ASN: x-displayName: \"Suspicious User ASN\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more ASNs.\n - SUSPICIOUS_USER_SRC_IP: x-displayName: \"Suspicious User Source IP\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more source IP address.\n - SUSPICIOUS_USER_SRC_SITE: x-displayName: \"Suspicious User Source Site\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more sites.\n - SUSPICIOUS_USER_TLS_FINGERPRINT: x-displayName: \"Suspicious User JA3 TLS Fingerprint\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating with one or more JA3 TLS fingerprints.\n - VIOLATION: x-displayName: \"Violation\"\nMapped to violations.name\n - ATTACK_TYPE: x-displayName: \"Attack Type\"\nMapped to attack_types.name\n - SIGNATURE: x-displayName: \"Signature\"\nMapped to signatures.id_name\n - THREAT_CAMPAIGN: x-displayName: \"Threat Campaign\"\nMapped to threat_campaigns.id_name\n - URI: x-displayName: \"URI\"\nMapped to req_path\n - BOT_CLASSIFICATION: x-displayName: \"BOT Classification\"\nMapped to bot_info.classification\n - AUTOMATION_TYPE: x-displayName: \"BOT Defense Automation type\"\nMapped to bot_defense.automation_type\n - DOMAIN: x-displayName: \"DOMAIN\"\n - BOT_TYPE: x-displayName: \"BOT_TYPE\"\nMapped to bot_info.type\n - BOT_NAME: x-displayName: \"BOT_NAME\"\nMapped to bot_info.name\n - SRC_IP: x-displayName: \"SRC_IP\"\n - TLS_FINGERPRINT: x-displayName: \"JA3 TLS Fingerprint\"\n - ASN: x-displayName: \"ASN\"\n - API_EP: x-displayName: \"API_EP\"\nMapped to api_endpoint\n - BROWSER_TYPE: x-displayName: \"BROWSER_TYPE\"\n - DEVICE_TYPE: x-displayName: \"DEVICE_TYPE\"\n - METHOD: x-displayName: \"METHOD\"\n - RESP_CODE: x-displayName: \"RESP_CODE\"\nMapped to rsp_code\n - RESP_CODE_DETAILS: x-displayName: \"RESP_CODE_DETAILS\"\nMapped to rsp_code_details\n - SEC_EVENT_NAME: x-displayName: \"SEC_EVENT_NAME\"\n - WAF_MODE: x-displayName: \"WAF_MODE\"\n - SIGNATURE_NAME: x-displayName: \"SIGNATURE_NAME\"\nMapped to signatures.name\n - SIGNATURE_ID: x-displayName: \"SIGNATURE_ID\"\nMapped to signatures.id\n - SIGNATURE_STATE: x-displayName: \"SIGNATURE_STATE\"\nMapped to signatures.state\n - SIGNATURE_ACCURACY: x-displayName: \"SIGNATURE_ACCURACY\"\nMapped to signatures.accuracy\n - VIOLATION_STATE: x-displayName: \"VIOLATION_STATE\"\nMapped to violations.state\n - THREAT_CAMPAIGN_NAME: x-displayName: \"THREAT_CAMPAIGN_NAME\"\nMapped to threat_campaigns.name\n - THREAT_CAMPAIGN_ID: x-displayName: \"THREAT_CAMPAIGN_ID\"\nMapped to threat_campaigns.id\n - THREAT_CAMPAIGN_STATE: x-displayName: \"THREAT_CAMPAIGN_STATE\"\nMapped to threat_campaigns.state\n - VIOLATION_RATING: x-displayName: \"VIOLATION_RATING\"\n - SERVICE_POLICY: x-displayName: \"Service Policy\"\nMapped to policy_hits.policy_hits.policy\n - TLS_CIPHER_SUITE: x-displayName: \"TLS Cipher Suite\"\n - TLS_VERSION: x-displayName: \"TLS version\"\n - BOT_DEFENSE_INSIGHT: x-displayName: \"Bot Defense Insight\"\nMapped to bot_defense.insight\n - BOT_DEFENSE_RECOMMENDATION: x-displayName: \"Bot Defense Recommendation\"\nMapped to bot_defense.recommendation\n - BOT_ANOMALY: x-displayName: \"Bot Anomaly\"\nMapped to bot_info.anomaly\n - SERVICE_POLICY_RESULT: x-displayName: \"Service Policy Result\"\nMapped to policy_hits.policy_hits.result\n - SIGNATURE_CONTEXT: x-displayName: \"Signature Context\"\nMapped to signatures.context\n - ACTION: x-displayName: \"Action\"\n - NAMESPACE: x-displayName: \"Namespace\"\n - REQ_RISK: x-displayName: \"Request Risk\"\n - REQ_RISK_REASON: x-displayName: \"Request Risk Reason\"\n - JA4_TLS_FINGERPRINT: x-displayName: \"JA4 TLS Fingerprint\"\n - SUSPICIOUS_USER_JA4_TLS_FINGERPRINT: x-displayName: \"Suspicious User JA4 TLS Fingerprint\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating with one or more JA4 TLS fingerprints.\n - MALWARE_NAME: x-displayName: \"Malware Name\"\nMapped to malware_info.name\n - MALWARE_TYPE: x-displayName: \"Malware Type\"\nMapped to malware_info.type\n - MALWARE_SCAN_RESULT: x-displayName: \"Malware Scan Result\"\nMapped to malware_info.scan_result\n - MALWARE_RECOMMENDED_ACTION: x-displayName: \"Malware Recommended Action\"\nMapped to malware_info.recommended_action",
+        "description": "x-displayName: \"Key Field\"\nSecurity events can be aggregated based on these fields.\n\n - CITY: x-displayName: \"City\"\n - COUNTRY: x-displayName: \"Country\"\n - SEC_EVENT_TYPE: x-displayName: \"Security Event Type\"\n - SRC_SITE: x-displayName: \"Source Site\"\n - VH_NAME: x-displayName: \"Virtual Host Name\"\n - VH_TYPE: x-displayName: \"Virtual Host Type\"\n - USER: x-displayName: \"User\"\n - SUSPICIOUS_USER_COUNTRY: x-displayName: \"Suspicious User Country\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more countries.\n - SUSPICIOUS_USER_REGION: x-displayName: \"Suspicious User Region\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more regions.\n - SUSPICIOUS_USER_ASN: x-displayName: \"Suspicious User ASN\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more ASNs.\n - SUSPICIOUS_USER_SRC_IP: x-displayName: \"Suspicious User Source IP\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more source IP address.\n - SUSPICIOUS_USER_SRC_SITE: x-displayName: \"Suspicious User Source Site\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more sites.\n - SUSPICIOUS_USER_TLS_FINGERPRINT: x-displayName: \"Suspicious User JA3 TLS Fingerprint\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating with one or more JA3 TLS fingerprints.\n - VIOLATION: x-displayName: \"Violation\"\nMapped to violations.name\n - ATTACK_TYPE: x-displayName: \"Attack Type\"\nMapped to attack_types.name\n - SIGNATURE: x-displayName: \"Signature\"\nMapped to signatures.id_name\n - THREAT_CAMPAIGN: x-displayName: \"Threat Campaign\"\nMapped to threat_campaigns.id_name\n - URI: x-displayName: \"URI\"\nMapped to req_path\n - BOT_CLASSIFICATION: x-displayName: \"BOT Classification\"\nMapped to bot_info.classification\n - AUTOMATION_TYPE: x-displayName: \"BOT Defense Automation type\"\nMapped to bot_defense.automation_type\n - DOMAIN: x-displayName: \"DOMAIN\"\n - BOT_TYPE: x-displayName: \"BOT_TYPE\"\nMapped to bot_info.type\n - BOT_NAME: x-displayName: \"BOT_NAME\"\nMapped to bot_info.name\n - SRC_IP: x-displayName: \"SRC_IP\"\n - TLS_FINGERPRINT: x-displayName: \"JA3 TLS Fingerprint\"\n - ASN: x-displayName: \"ASN\"\n - API_EP: x-displayName: \"API_EP\"\nMapped to api_endpoint\n - BROWSER_TYPE: x-displayName: \"BROWSER_TYPE\"\n - DEVICE_TYPE: x-displayName: \"DEVICE_TYPE\"\n - METHOD: x-displayName: \"METHOD\"\n - RESP_CODE: x-displayName: \"RESP_CODE\"\nMapped to rsp_code\n - RESP_CODE_DETAILS: x-displayName: \"RESP_CODE_DETAILS\"\nMapped to rsp_code_details\n - SEC_EVENT_NAME: x-displayName: \"SEC_EVENT_NAME\"\n - WAF_MODE: x-displayName: \"WAF_MODE\"\n - SIGNATURE_NAME: x-displayName: \"SIGNATURE_NAME\"\nMapped to signatures.name\n - SIGNATURE_ID: x-displayName: \"SIGNATURE_ID\"\nMapped to signatures.id\n - SIGNATURE_STATE: x-displayName: \"SIGNATURE_STATE\"\nMapped to signatures.state\n - SIGNATURE_ACCURACY: x-displayName: \"SIGNATURE_ACCURACY\"\nMapped to signatures.accuracy\n - VIOLATION_STATE: x-displayName: \"VIOLATION_STATE\"\nMapped to violations.state\n - THREAT_CAMPAIGN_NAME: x-displayName: \"THREAT_CAMPAIGN_NAME\"\nMapped to threat_campaigns.name\n - THREAT_CAMPAIGN_ID: x-displayName: \"THREAT_CAMPAIGN_ID\"\nMapped to threat_campaigns.id\n - THREAT_CAMPAIGN_STATE: x-displayName: \"THREAT_CAMPAIGN_STATE\"\nMapped to threat_campaigns.state\n - VIOLATION_RATING: x-displayName: \"VIOLATION_RATING\"\n - SERVICE_POLICY: x-displayName: \"Service Policy\"\nMapped to policy_hits.policy_hits.policy\n - TLS_CIPHER_SUITE: x-displayName: \"TLS Cipher Suite\"\n - TLS_VERSION: x-displayName: \"TLS version\"\n - BOT_DEFENSE_INSIGHT: x-displayName: \"Bot Defense Insight\"\nMapped to bot_defense.insight\n - BOT_DEFENSE_RECOMMENDATION: x-displayName: \"Bot Defense Recommendation\"\nMapped to bot_defense.recommendation\n - BOT_ANOMALY: x-displayName: \"Bot Anomaly\"\nMapped to bot_info.anomaly\n - SERVICE_POLICY_RESULT: x-displayName: \"Service Policy Result\"\nMapped to policy_hits.policy_hits.result\n - SIGNATURE_CONTEXT: x-displayName: \"Signature Context\"\nMapped to signatures.context\n - ACTION: x-displayName: \"Action\"\n - NAMESPACE: example-namespace\"Namespace\"\n - REQ_RISK: x-displayName: \"Request Risk\"\n - REQ_RISK_REASON: x-displayName: \"Request Risk Reason\"\n - JA4_TLS_FINGERPRINT: x-displayName: \"JA4 TLS Fingerprint\"\n - SUSPICIOUS_USER_JA4_TLS_FINGERPRINT: x-displayName: \"Suspicious User JA4 TLS Fingerprint\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating with one or more JA4 TLS fingerprints.\n - MALWARE_NAME: x-displayName: \"Malware Name\"\nMapped to malware_info.name\n - MALWARE_TYPE: x-displayName: \"Malware Type\"\nMapped to malware_info.type\n - MALWARE_SCAN_RESULT: x-displayName: \"Malware Scan Result\"\nMapped to malware_info.scan_result\n - MALWARE_RECOMMENDED_ACTION: x-displayName: \"Malware Recommended Action\"\nMapped to malware_info.recommended_action",
         "title": "Key Field",
         "enum": [
           "CITY",
@@ -8979,9 +8671,7 @@
         "type": "string",
         "description": "x-displayName: \"Metric Field\"\nMetrics can be computed based on these fields.\n\n - SUSPICION_SCORE: x-displayName: \"Suspicion Score\"",
         "title": "Metric Field",
-        "enum": [
-          "SUSPICION_SCORE"
-        ],
+        "enum": ["SUSPICION_SCORE"],
         "default": "SUSPICION_SCORE"
       },
       "schemaapp_securityMetricsAggregation": {
@@ -9015,16 +8705,6 @@
             "description": "x-displayName: \"TopK\"\nx-example: \"10\"\n\nNumber of top field values to be returned in the response.",
             "title": "topk",
             "format": "int64"
-          }
-        }
-      },
-      "schemaapp_securityMultiFieldSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Multi Field SubAggregation\"\nAggregate security events in each MultiTerms bucket based on one of the sub aggregation types",
-        "title": "Multi Field SubAggregation",
-        "properties": {
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityCardinalityAggregation"
           }
         }
       },
@@ -9271,6 +8951,42 @@
         ],
         "default": "SUSPICION_SCORE"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    },
+    {
+      "name": "config"
+    },
+    {
+      "name": "waf"
+    }
+  ]
 }

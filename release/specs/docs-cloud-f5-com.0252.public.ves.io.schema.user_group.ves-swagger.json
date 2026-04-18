@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.user_group",
     "description": "Represents group for a given tenant",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/custom/namespaces/system/user_groups": {
@@ -107,7 +112,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-customapi-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.List"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.List",
+        "tags": ["web"]
       },
       "post": {
         "summary": "Create User Group",
@@ -212,7 +218,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-customapi-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.Create"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.Create",
+        "tags": ["web"]
       },
       "x-displayname": "User Group",
       "x-ves-proto-service": "ves.io.schema.user_group.CustomAPI",
@@ -329,7 +336,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-customapi-analyzefordeletion"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.AnalyzeForDeletion"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.AnalyzeForDeletion",
+        "tags": ["web"]
       },
       "x-displayname": "User Group",
       "x-ves-proto-service": "ves.io.schema.user_group.CustomAPI",
@@ -448,7 +456,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-customapi-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.Get"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.Get",
+        "tags": ["web"]
       },
       "delete": {
         "summary": "Delete a group provided the group id",
@@ -573,7 +582,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-customapi-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.Delete",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Replace the User Group fields / accesses / associations",
@@ -690,7 +700,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-customapi-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.Replace",
+        "tags": ["web"]
       },
       "x-displayname": "User Group",
       "x-ves-proto-service": "ves.io.schema.user_group.CustomAPI",
@@ -812,7 +823,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-customapi-assignrole"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.AssignRole"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.AssignRole",
+        "tags": ["web"]
       },
       "x-displayname": "User Group",
       "x-ves-proto-service": "ves.io.schema.user_group.CustomAPI",
@@ -934,7 +946,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-customapi-removerole"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.RemoveRole"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.CustomAPI.RemoveRole",
+        "tags": ["web"]
       },
       "x-displayname": "User Group",
       "x-ves-proto-service": "ves.io.schema.user_group.CustomAPI",
@@ -1091,7 +1104,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.API.List",
+        "tags": ["web"]
       },
       "x-displayname": "User Group",
       "x-ves-proto-service": "ves.io.schema.user_group.API",
@@ -1237,7 +1251,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user_group-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user_group.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.user_group.API.Get",
+        "tags": ["web"]
       },
       "x-displayname": "User Group",
       "x-ves-proto-service": "ves.io.schema.user_group.API",
@@ -1626,10 +1641,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1669,10 +1681,7 @@
         "type": "string",
         "description": "Sync mode is to specify where the user details are being synced from.\n\n - SELF: Self\nSystem managed user.\n - SCIM: SCIM\nSCIM synced user. Full user life cycle is managed by the SCIM provider.",
         "title": "Sync Mode",
-        "enum": [
-          "SELF",
-          "SCIM"
-        ],
+        "enum": ["SELF", "SCIM"],
         "default": "SELF",
         "x-displayname": "Sync Mode",
         "x-ves-proto-enum": "ves.io.schema.SyncMode"
@@ -1923,19 +1932,6 @@
           }
         }
       },
-      "user_groupGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "user_groupGetSpecType": {
         "type": "object",
         "title": "GetSpecType",
@@ -2163,21 +2159,6 @@
           }
         }
       },
-      "user_groupReferencingItems": {
-        "type": "object",
-        "description": "x-displayName: \"ReferencingItems\"\nReferencingItems holds the details of the objects which are referencing a specific object",
-        "title": "Referencing Items",
-        "properties": {
-          "items": {
-            "type": "array",
-            "description": "x-displayName: \"Items\"\nItems holds the details of the objects which are referencing a specific object",
-            "title": "Items",
-            "items": {
-              "$ref": "#/components/schemas/user_groupReferencingItem"
-            }
-          }
-        }
-      },
       "user_groupStatusObject": {
         "type": "object",
         "description": "Most recently observed status of object",
@@ -2347,6 +2328,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

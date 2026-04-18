@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.operate.crl",
     "description": "Proto definitions for CRL refresh in VER",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/operate/namespaces/{namespace}/sites/{site}/ver/resync_crl": {
@@ -139,7 +144,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-crl-custompublicapi-resynccrl"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.crl.CustomPublicAPI.ResyncCRL"
+        "x-ves-proto-rpc": "ves.io.schema.operate.crl.CustomPublicAPI.ResyncCRL",
+        "tags": ["operate"]
       },
       "x-displayname": "CRL Resync",
       "x-ves-proto-service": "ves.io.schema.operate.crl.CustomPublicAPI",
@@ -202,6 +208,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "operate"
+    }
+  ]
 }

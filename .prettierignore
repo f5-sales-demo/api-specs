@@ -5,3 +5,9 @@
 **/*.gen.ts
 **/*.gen.js
 **/*.gen.d.ts
+
+# Build and release output
+dist/
+build/
+release/
+vendor/

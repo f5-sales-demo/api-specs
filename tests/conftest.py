@@ -36,7 +36,9 @@ def sample_openapi_spec() -> dict:
                             "description": "Success",
                             "content": {
                                 "application/json": {
-                                    "schema": {"$ref": "#/components/schemas/TestResponse"}
+                                    "schema": {
+                                        "$ref": "#/components/schemas/TestResponse"
+                                    }
                                 }
                             },
                         }
@@ -75,7 +77,10 @@ def sample_openapi_spec() -> dict:
                             "maxItems": 10,
                             "uniqueItems": True,
                         },
-                        "status": {"type": "string", "enum": ["active", "inactive", "pending"]},
+                        "status": {
+                            "type": "string",
+                            "enum": ["active", "inactive", "pending"],
+                        },
                     },
                 },
                 "TestResponse": {

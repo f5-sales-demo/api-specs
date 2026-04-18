@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.site",
     "description": "Site represent physical/cloud cluster of volterra processing elements. There are two types of sites currently.\n\n   Regional Edge (RE)\n\n    Regional Edge sites are network edge sites owned and operated by volterra edge cloud. RE can be used to\n    host VIPs, run API gateway or any application at network edge.\n\n   Customer Edge (CE)\n\n    Customer Edge sites are edge sites owned by customer and operated by volterra cloud. CE can be as application gateway\n    to connect applications in multiple clusters or clouds. CE can also run applications at customer premise.\n   \n   Nginx One\n     Nginx One sites are sites owned and operated by Nginx One SaaS Console. Nginx One site can be used to configure service\n     discovery which allows customer to bring their NGINX inventory visibility into the core XC workspaces.\n\nSite configuration contains the information like\n\n    Site locations\n    parameters to override fleet config\n    IP Addresses to be used by automatic vip assignments for default networks\n    etc\n\n Sites are automatically created by registration mechanism. They can be modified to add location or description and they can be deleted.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/system/revoke/global-kubeconfigs": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-uamkubeconfigapi-revokeglobalkubeconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.UamKubeConfigAPI.RevokeGlobalKubeConfig"
+        "x-ves-proto-rpc": "ves.io.schema.site.UamKubeConfigAPI.RevokeGlobalKubeConfig",
+        "tags": ["web"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.UamKubeConfigAPI",
@@ -246,7 +252,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customsitestatusapi-checksiteexist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomSiteStatusAPI.CheckSiteExist"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomSiteStatusAPI.CheckSiteExist",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomSiteStatusAPI",
@@ -375,7 +382,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-configmaplist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ConfigMapList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ConfigMapList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -504,7 +512,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-endpointslist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.EndpointsList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.EndpointsList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -623,7 +632,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-namespacelist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.NamespaceList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.NamespaceList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -633,7 +643,7 @@
       "get": {
         "summary": "ConfigMap List",
         "description": "API to get list of configmaps for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.ConfigMapList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.ConfigMapList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -752,7 +762,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-configmaplist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ConfigMapList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ConfigMapList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -762,7 +773,7 @@
       "get": {
         "summary": "Endpoints List",
         "description": "API to get list of endpoints for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.EndpointsList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.EndpointsList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -881,7 +892,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-endpointslist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.EndpointsList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.EndpointsList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -1010,7 +1022,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-persistentvolumeclaimlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PersistentVolumeClaimList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PersistentVolumeClaimList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -1139,7 +1152,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-podlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PodList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PodList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -1268,7 +1282,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-secretlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.SecretList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.SecretList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -1397,7 +1412,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-servicelist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ServiceList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ServiceList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -1516,7 +1532,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-nodelist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.NodeList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.NodeList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -1526,7 +1543,7 @@
       "get": {
         "summary": "PersistentVolumeClaim List",
         "description": "API to get list of PVCs for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.PersistentVolumeClaimList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.PersistentVolumeClaimList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1645,7 +1662,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-persistentvolumeclaimlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PersistentVolumeClaimList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PersistentVolumeClaimList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -1764,7 +1782,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-persistentvolumelist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PersistentVolumeList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PersistentVolumeList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -1774,7 +1793,7 @@
       "get": {
         "summary": "Pod List",
         "description": "API to get list of pods in a site for a given namespace.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.PodList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.PodList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1893,7 +1912,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-podlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PodList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PodList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -1903,7 +1923,7 @@
       "get": {
         "summary": "Secret List",
         "description": "API to get list of secrets for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.SecretList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.SecretList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2022,7 +2042,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-secretlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.SecretList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.SecretList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -2032,7 +2053,7 @@
       "get": {
         "summary": "Service List",
         "description": "API to get list of services for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.ServiceList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.ServiceList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2151,7 +2172,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-servicelist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ServiceList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ServiceList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -2280,7 +2302,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-daemonsetlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.DaemonSetList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.DaemonSetList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -2409,7 +2432,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-deploymentlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.DeploymentList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.DeploymentList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -2419,7 +2443,7 @@
       "get": {
         "summary": "DaemonSet List",
         "description": "API to get list of daemon sets for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.DaemonSetList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.DaemonSetList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2538,7 +2562,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-daemonsetlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.DaemonSetList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.DaemonSetList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -2548,7 +2573,7 @@
       "get": {
         "summary": "Deployment List",
         "description": "API to get list of deployments for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.DeploymentList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.DeploymentList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2667,7 +2692,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-deploymentlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.DeploymentList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.DeploymentList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -2796,7 +2822,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-replicasetlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ReplicaSetList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ReplicaSetList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -2925,7 +2952,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-statefulsetlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.StatefulSetList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.StatefulSetList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -2935,7 +2963,7 @@
       "get": {
         "summary": "ReplicaSet List",
         "description": "API to get list of replica sets for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.ReplicaSetList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.ReplicaSetList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -3054,7 +3082,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-replicasetlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ReplicaSetList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.ReplicaSetList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -3064,7 +3093,7 @@
       "get": {
         "summary": "StatefulSet List",
         "description": "API to get list of stateful sets for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.StatefulSetList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.StatefulSetList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -3183,7 +3212,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-statefulsetlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.StatefulSetList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.StatefulSetList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -3312,7 +3342,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-joblist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.JobList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.JobList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -3322,7 +3353,7 @@
       "get": {
         "summary": "Job List",
         "description": "API to get list of jobs for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.JobList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.JobList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -3441,7 +3472,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-joblist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.JobList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.JobList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -3570,7 +3602,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-cronjoblist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.CronJobList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.CronJobList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -3580,7 +3613,7 @@
       "get": {
         "summary": "CronJob List",
         "description": "API to get list of cronjobs for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.CronJobList",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.CronJobList_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -3699,7 +3732,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-cronjoblist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.CronJobList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.CronJobList",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -3831,7 +3865,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-podsmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PodsMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PodsMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -3963,7 +3998,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-virtualmachineinstancesmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.VirtualMachineInstancesMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.VirtualMachineInstancesMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -3973,7 +4009,7 @@
       "post": {
         "summary": "Pods Metrics",
         "description": "API to get pods metrics for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.PodsMetrics",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.PodsMetrics_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -4085,7 +4121,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-podsmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PodsMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.PodsMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -4095,7 +4132,7 @@
       "post": {
         "summary": "VirtualMachineInstances Metrics",
         "description": "API to get virtual machine instances metrics for a given namespace in a site.",
-        "operationId": "ves.io.schema.site.CustomDataK8SAPI.VirtualMachineInstancesMetrics",
+        "operationId": "ves.io.schema.site.CustomDataK8SAPI.VirtualMachineInstancesMetrics_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -4207,7 +4244,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customdatak8sapi-virtualmachineinstancesmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.VirtualMachineInstancesMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomDataK8SAPI.VirtualMachineInstancesMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomDataK8SAPI",
@@ -4326,7 +4364,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-uamkubeconfigapi-listglobalkubeconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.UamKubeConfigAPI.ListGlobalKubeConfig"
+        "x-ves-proto-rpc": "ves.io.schema.site.UamKubeConfigAPI.ListGlobalKubeConfig",
+        "tags": ["web"]
       },
       "post": {
         "summary": "Create Global Kube Config",
@@ -4450,7 +4489,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-uamkubeconfigapi-createglobalkubeconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.UamKubeConfigAPI.CreateGlobalKubeConfig"
+        "x-ves-proto-rpc": "ves.io.schema.site.UamKubeConfigAPI.CreateGlobalKubeConfig",
+        "tags": ["web"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.UamKubeConfigAPI",
@@ -4728,7 +4768,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customstateapi-setstate"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomStateAPI.SetState"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomStateAPI.SetState",
+        "tags": ["register"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomStateAPI",
@@ -4867,7 +4908,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customsitestatusapi-sitestatusmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomSiteStatusAPI.SiteStatusMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomSiteStatusAPI.SiteStatusMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomSiteStatusAPI",
@@ -5024,7 +5066,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.site.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.API",
@@ -5172,7 +5215,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.site.API.Get",
+        "tags": ["config"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.API",
@@ -5311,7 +5355,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-configkubeconfigapi-createlocalkubeconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.ConfigKubeConfigAPI.CreateLocalKubeConfig"
+        "x-ves-proto-rpc": "ves.io.schema.site.ConfigKubeConfigAPI.CreateLocalKubeConfig",
+        "tags": ["config"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.ConfigKubeConfigAPI",
@@ -5440,7 +5485,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-configkubeconfigapi-listlocalkubeconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.ConfigKubeConfigAPI.ListLocalKubeConfig"
+        "x-ves-proto-rpc": "ves.io.schema.site.ConfigKubeConfigAPI.ListLocalKubeConfig",
+        "tags": ["config"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.ConfigKubeConfigAPI",
@@ -5579,7 +5625,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-upgradeapi-upgradeos"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.UpgradeAPI.UpgradeOS"
+        "x-ves-proto-rpc": "ves.io.schema.site.UpgradeAPI.UpgradeOS",
+        "tags": ["config"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.UpgradeAPI",
@@ -5718,7 +5765,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-upgradeapi-upgradesw"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.UpgradeAPI.UpgradeSW"
+        "x-ves-proto-rpc": "ves.io.schema.site.UpgradeAPI.UpgradeSW",
+        "tags": ["config"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.UpgradeAPI",
@@ -5847,7 +5895,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customvirtualnetworklistapi-globalnetworklist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomVirtualNetworkListAPI.GlobalNetworkList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomVirtualNetworkListAPI.GlobalNetworkList",
+        "tags": ["config"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomVirtualNetworkListAPI",
@@ -5976,7 +6025,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-site-customvirtualnetworklistapi-segmentlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.site.CustomVirtualNetworkListAPI.SegmentList"
+        "x-ves-proto-rpc": "ves.io.schema.site.CustomVirtualNetworkListAPI.SegmentList",
+        "tags": ["config"]
       },
       "x-displayname": "Site",
       "x-ves-proto-service": "ves.io.schema.site.CustomVirtualNetworkListAPI",
@@ -6054,10 +6104,7 @@
         "type": "string",
         "description": "Indicates the state of BGP Peering session\n\nPeering session is Down (not in Established state)\nPeering session is Up (in Established state)",
         "title": "BGP Peer States",
-        "enum": [
-          "BGP_PEER_DOWN",
-          "BGP_PEER_UP"
-        ],
+        "enum": ["BGP_PEER_DOWN", "BGP_PEER_UP"],
         "default": "BGP_PEER_DOWN",
         "x-displayname": "BGP Peer States",
         "x-ves-proto-enum": "ves.io.schema.bgp.BgpPeerUpDownType"
@@ -6241,12 +6288,7 @@
         "type": "string",
         "description": "State of the CloudLink connections\n\n - UP: Up\n\nCloudLink and their corresponding Direct Connect connections are up and healthy\n - DOWN: Down\n\nCloudLink and their corresponding Direct Connect connections are down\n - DEGRADED: Degraded\n\nSome of Direct Connect connections with the CloudLink are down\n - NOT_APPLICABLE: NotApplicable\n\nCloudLinkState not applicable",
         "title": "CloudLink State",
-        "enum": [
-          "UP",
-          "DOWN",
-          "DEGRADED",
-          "NOT_APPLICABLE"
-        ],
+        "enum": ["UP", "DOWN", "DEGRADED", "NOT_APPLICABLE"],
         "default": "UP",
         "x-displayname": "CloudLink State",
         "x-ves-proto-enum": "ves.io.schema.CloudLinkState"
@@ -6643,10 +6685,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -6734,11 +6773,7 @@
         "type": "string",
         "description": "Tunnel encapsulation to be used between sites\n\nTunnel can operate in both IPsec and SSL, with IPsec being prefered over SSL.\nTunnel is of type IPsec\nTunnel is of type SSL",
         "title": "Site to site tunnel type",
-        "enum": [
-          "SITE_TO_SITE_TUNNEL_IPSEC_OR_SSL",
-          "SITE_TO_SITE_TUNNEL_IPSEC",
-          "SITE_TO_SITE_TUNNEL_SSL"
-        ],
+        "enum": ["SITE_TO_SITE_TUNNEL_IPSEC_OR_SSL", "SITE_TO_SITE_TUNNEL_IPSEC", "SITE_TO_SITE_TUNNEL_SSL"],
         "default": "SITE_TO_SITE_TUNNEL_IPSEC_OR_SSL",
         "x-displayname": "Tunnel type",
         "x-ves-proto-enum": "ves.io.schema.SiteToSiteTunnelType"
@@ -6806,10 +6841,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -6938,11 +6970,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -6984,12 +7012,7 @@
         "type": "string",
         "description": "Type of tunnel encapsulation\n\nIPSEC using public key infrastructure\nIPSEC using pre shared key\nSSL encapsulation\nGRE encapsulation",
         "title": "TunnelEncapsulationType",
-        "enum": [
-          "IPSEC_PKI",
-          "IPSEC_PSK",
-          "SSL",
-          "GRE"
-        ],
+        "enum": ["IPSEC_PKI", "IPSEC_PSK", "SSL", "GRE"],
         "default": "IPSEC_PKI",
         "x-displayname": "Tunnel Encapsulation Type",
         "x-ves-proto-enum": "ves.io.schema.TunnelEncapsulationType"
@@ -7030,37 +7053,6 @@
         "default": "UNIT_MILLISECONDS",
         "x-displayname": "Unit",
         "x-ves-proto-enum": "ves.io.schema.UnitType"
-      },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
       },
       "schemaViewRefType": {
         "type": "object",
@@ -7103,11 +7095,7 @@
         "type": "string",
         "description": "VRRP advertisement mode for VIP\n\nInvalid VRRP mode",
         "title": "VipVrrpType",
-        "enum": [
-          "VIP_VRRP_INVALID",
-          "VIP_VRRP_ENABLE",
-          "VIP_VRRP_DISABLE"
-        ],
+        "enum": ["VIP_VRRP_INVALID", "VIP_VRRP_ENABLE", "VIP_VRRP_DISABLE"],
         "default": "VIP_VRRP_INVALID",
         "x-displayname": "VRRP Virtual-IP",
         "x-ves-proto-enum": "ves.io.schema.VipVrrpType"
@@ -7134,18 +7122,6 @@
         "default": "VIRTUAL_NETWORK_SITE_LOCAL",
         "x-displayname": "Virtual Network Type",
         "x-ves-proto-enum": "ves.io.schema.VirtualNetworkType"
-      },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
       },
       "schemasiteGetSpecType": {
         "type": "object",
@@ -7567,11 +7543,7 @@
         "type": "string",
         "description": "Active/Backup state for the interface\n\nUnknown state\nInterface in active state\nInterface in backup state",
         "title": "Active State",
-        "enum": [
-          "STATE_UNKNOWN",
-          "STATE_ACTIVE",
-          "STATE_BACKUP"
-        ],
+        "enum": ["STATE_UNKNOWN", "STATE_ACTIVE", "STATE_BACKUP"],
         "default": "STATE_UNKNOWN",
         "x-displayname": "Active State",
         "x-ves-proto-enum": "ves.io.schema.site.ActiveState"
@@ -7580,10 +7552,7 @@
         "type": "string",
         "description": "AddressMode identifies the mode of address assignment on an interface\n\n - STATIC: Static\n\nInterface Address is assigned statically\n - DHCP: DHCP\n\nInterface Address is obtained via DHCP",
         "title": "Interface Address Mode",
-        "enum": [
-          "STATIC",
-          "DHCP"
-        ],
+        "enum": ["STATIC", "DHCP"],
         "default": "STATIC",
         "x-displayname": "AddressMode",
         "x-ves-proto-enum": "ves.io.schema.site.AddressMode"
@@ -8546,20 +8515,6 @@
           }
         }
       },
-      "siteGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "siteGlobalNetworkItem": {
         "type": "object",
         "description": "Contains reference to the virtual network, and its optional description",
@@ -8724,12 +8679,7 @@
         "type": "string",
         "description": "Link quality determined by VER using different probes\n\nUnknown quality\nLink quality is good\nLink quality is poor\nQuality disabled",
         "title": "Link quality",
-        "enum": [
-          "QUALITY_UNKNOWN",
-          "QUALITY_GOOD",
-          "QUALITY_POOR",
-          "QUALITY_DISABLED"
-        ],
+        "enum": ["QUALITY_UNKNOWN", "QUALITY_GOOD", "QUALITY_POOR", "QUALITY_DISABLED"],
         "default": "QUALITY_UNKNOWN",
         "x-displayname": "Link quality",
         "x-ves-proto-enum": "ves.io.schema.site.LinkQuality"
@@ -9249,13 +9199,7 @@
         "type": "string",
         "description": "Labels in Pods metrics\n",
         "title": "Pods MetricLabel",
-        "enum": [
-          "POD_NAMESPACE",
-          "POD_NAME",
-          "POD_IF_NAME",
-          "POD_IF_SUBNET",
-          "POD_IF_VLAN_ID"
-        ],
+        "enum": ["POD_NAMESPACE", "POD_NAME", "POD_IF_NAME", "POD_IF_SUBNET", "POD_IF_VLAN_ID"],
         "default": "POD_NAMESPACE",
         "x-displayname": "Pods MetricLabel",
         "x-ves-proto-enum": "ves.io.schema.site.PodsMetricLabel"
@@ -9630,12 +9574,7 @@
         "type": "string",
         "description": "State of Scaling phase in site\n\nInvalid scaling phase\nSite scaling is in progress\nSite scaling failed\nSite scaling is done. Site is in desired number of nodes",
         "title": "ScalingPhase",
-        "enum": [
-          "SCALING_INVALID",
-          "SCALING_IN_PROGRESS",
-          "SCALING_FAILED",
-          "SCALING_DONE"
-        ],
+        "enum": ["SCALING_INVALID", "SCALING_IN_PROGRESS", "SCALING_FAILED", "SCALING_DONE"],
         "default": "SCALING_INVALID",
         "x-displayname": "Scaling Phase",
         "x-ves-proto-enum": "ves.io.schema.site.ScalingPhase"
@@ -9787,11 +9726,7 @@
         "type": "string",
         "description": "Decide which software version takes effect in case of conflict between site and fleet\n\nSoftware version in site will take precedence.\nBetween site and fleet newer software version will take precedence.\nSoftware version in fleet will take precedence.",
         "title": "SiteSoftwareOverrideType",
-        "enum": [
-          "SITE_SOFTWARE_OVERRIDE_SITE",
-          "SITE_SOFTWARE_OVERRIDE_NEWER",
-          "SITE_SOFTWARE_OVERRIDE_FLEET"
-        ],
+        "enum": ["SITE_SOFTWARE_OVERRIDE_SITE", "SITE_SOFTWARE_OVERRIDE_NEWER", "SITE_SOFTWARE_OVERRIDE_FLEET"],
         "default": "SITE_SOFTWARE_OVERRIDE_SITE",
         "x-displayname": "Site Software Override Type",
         "x-ves-proto-enum": "ves.io.schema.site.SiteSoftwareOverrideType"
@@ -9828,10 +9763,7 @@
         "type": "string",
         "description": "Status of the given site\n\n - NOT_FOUND: NOT_FOUND\n\nSite does not exist\n - FOUND: FOUND\n\nSite exists",
         "title": "Site Status",
-        "enum": [
-          "NOT_FOUND",
-          "FOUND"
-        ],
+        "enum": ["NOT_FOUND", "FOUND"],
         "default": "NOT_FOUND",
         "x-displayname": "Site Status",
         "x-ves-proto-enum": "ves.io.schema.site.SiteStatus"
@@ -10019,47 +9951,16 @@
         "type": "string",
         "description": "Sit Subtype\n\nNo Subtype\nRegional Edge isn't ready yet. Configuration isn't propagated for this site.\nRegional Edge which is hidden from customer. Configuration will be propagated.\nCE running in Kubernetes",
         "title": "SiteSubtype",
-        "enum": [
-          "NO_SUBTYPE",
-          "VES_IO_USE_RE",
-          "VES_IO_CE_IN_K8S",
-          "VES_IO_HIDDEN_RE"
-        ],
+        "enum": ["NO_SUBTYPE", "VES_IO_USE_RE", "VES_IO_CE_IN_K8S", "VES_IO_HIDDEN_RE"],
         "default": "NO_SUBTYPE",
         "x-displayname": "Site Subtype",
         "x-ves-proto-enum": "ves.io.schema.site.SiteSubtype"
-      },
-      "siteSiteToSiteTunnelConnectivity": {
-        "type": "object",
-        "description": "x-displayName: \"Site To Site Tunnel Connectivity\"\nSiteToSiteTunnelConnectivity is for connecting to a site in site mesh group",
-        "title": "Site To Site Tunnel Connectivity",
-        "properties": {
-          "destination": {
-            "type": "array",
-            "description": "x-displayName: \"Destination\"\nx-example: \"192.168.0.156\"\nIP Address or FQDN of the destination. If NodePort service endpoints are tunnel destinations,\nthis field is going to be list of Node IPs. If destination is Loadbalancer service, this field\ncan be either IP or Fqdn",
-            "title": "Destination",
-            "items": {
-              "type": "string"
-            }
-          },
-          "port": {
-            "type": "integer",
-            "description": "x-displayName: \"Port\"\nx-example: 1000\nDestination port to connect to. If tunnel destination is NodePort service, this field is\nPort in the NodePort service. If it is not NodePort service, this can be left blank, in which\ncase default ports are assumed",
-            "title": "Port",
-            "format": "int64"
-          }
-        }
       },
       "siteSiteType": {
         "type": "string",
         "description": "Site Type which can either RE or CE\n\nInvalid type of site\nRegional Edge site\nCustomer Edge site",
         "title": "SiteType",
-        "enum": [
-          "INVALID",
-          "REGIONAL_EDGE",
-          "CUSTOMER_EDGE",
-          "NGINX_ONE"
-        ],
+        "enum": ["INVALID", "REGIONAL_EDGE", "CUSTOMER_EDGE", "NGINX_ONE"],
         "default": "INVALID",
         "x-displayname": "Site Type",
         "x-ves-proto-enum": "ves.io.schema.site.SiteType"
@@ -10068,13 +9969,7 @@
         "type": "string",
         "description": "State of F5XC Software or Operating System upgrade phase in site\n\nSite Upgrade was triggered, but has not started yet\nSite upgrade was fetched and it is in progress\nSite upgrade was completed\nSite upgrade failed",
         "title": "SoftwareUpgradePhase",
-        "enum": [
-          "UPGRADE_INVALID",
-          "UPGRADE_TRIGGERED",
-          "UPGRADE_IN_PROGRESS",
-          "UPGRADE_COMPLETED",
-          "UPGRADE_FAILED"
-        ],
+        "enum": ["UPGRADE_INVALID", "UPGRADE_TRIGGERED", "UPGRADE_IN_PROGRESS", "UPGRADE_COMPLETED", "UPGRADE_FAILED"],
         "default": "UPGRADE_INVALID",
         "x-displayname": "Software Upgrade Phase",
         "x-ves-proto-enum": "ves.io.schema.site.SoftwareUpgradePhase"
@@ -10349,11 +10244,7 @@
         "type": "string",
         "description": "Role of VER in a tunnel connection\n\nInvalid role\nClient initiating the connection\nServer responding to the connection",
         "title": "TunnelRole",
-        "enum": [
-          "UNKNOWN_TUNNEL_ROLE",
-          "TUNNEL_INITIATOR",
-          "TUNNEL_RESPONDER"
-        ],
+        "enum": ["UNKNOWN_TUNNEL_ROLE", "TUNNEL_INITIATOR", "TUNNEL_RESPONDER"],
         "default": "UNKNOWN_TUNNEL_ROLE",
         "x-displayname": "Tunnel Role",
         "x-ves-proto-enum": "ves.io.schema.site.TunnelRole"
@@ -10362,12 +10253,7 @@
         "type": "string",
         "description": "Tunnel state connecting the site to remote\n\nInvalid Tunnel state\nTunnel Connection is up\nTunnel Connection is down\nTunnel is disabled",
         "title": "Tunnel State",
-        "enum": [
-          "UNKNOWN_TUNNEL_STATE",
-          "TUNNEL_UP",
-          "TUNNEL_DOWN",
-          "TUNNEL_DISABLED"
-        ],
+        "enum": ["UNKNOWN_TUNNEL_STATE", "TUNNEL_UP", "TUNNEL_DOWN", "TUNNEL_DISABLED"],
         "default": "UNKNOWN_TUNNEL_STATE",
         "x-displayname": "Tunnel State",
         "x-ves-proto-enum": "ves.io.schema.site.TunnelState"
@@ -10638,39 +10524,16 @@
         "type": "string",
         "description": "Type of USB device\n\nUnknown USB device type\nInternal USB present in Certified HW\nUSB device present during node registration\nUSB device that can be matched by USB rules",
         "title": "UsbType",
-        "enum": [
-          "UNKNOWN_USB",
-          "INTERNAL",
-          "REGISTERED",
-          "CONFIGURABLE"
-        ],
+        "enum": ["UNKNOWN_USB", "INTERNAL", "REGISTERED", "CONFIGURABLE"],
         "default": "UNKNOWN_USB",
         "x-displayname": "USB Type",
         "x-ves-proto-enum": "ves.io.schema.site.UsbType"
-      },
-      "siteVIPSelection": {
-        "type": "string",
-        "description": "x-displayName: \"VIP Selection\"\nVIP type to choose from IPv4/IPv6/both if different VIPs are available\n\n - VIP_SELECTION_IPV4_IPV6: x-displayName: \"Select both IPv4 and IPv6 VIPs\"\n - VIP_SELECTION_IPV4: x-displayName: \"Select IPv4 VIP only\"\n - VIP_SELECTION_IPV6: x-displayName: \"Select IPv6 VIP only\"",
-        "title": "VIP Selection",
-        "enum": [
-          "VIP_SELECTION_IPV4_IPV6",
-          "VIP_SELECTION_IPV4",
-          "VIP_SELECTION_IPV6"
-        ],
-        "default": "VIP_SELECTION_IPV4_IPV6"
       },
       "siteVTRPState": {
         "type": "string",
         "description": "State of VTRP connection between (VER control plane)Vega & (F5XC Fabric control)Ares\n\nConnection is initialized\nVTRP connection is active\nConnecting to the server\nTCP connection is up\nVTRP session established\nConnection is deleted",
         "title": "VTRPState",
-        "enum": [
-          "INIT",
-          "ACTIVE",
-          "CONNECTING",
-          "CONNECTED",
-          "ESTABLISHED",
-          "DELETE"
-        ],
+        "enum": ["INIT", "ACTIVE", "CONNECTING", "CONNECTED", "ESTABLISHED", "DELETE"],
         "default": "INIT",
         "x-displayname": "VTRP State",
         "x-ves-proto-enum": "ves.io.schema.site.VTRPState"
@@ -11103,12 +10966,7 @@
       "terraform_parametersDestroyStageState": {
         "type": "string",
         "title": "- DESTROYED: x-displayName: \"Destroyed\"\n - DESTROY_ERRORED: x-displayName: \"Destroy errored\"\n - DESTROYING: x-displayName: \"Destroying\"\n - DESTROY_QUEUED: x-displayName: \"Destroy Queued\"",
-        "enum": [
-          "DESTROYED",
-          "DESTROY_ERRORED",
-          "DESTROYING",
-          "DESTROY_QUEUED"
-        ],
+        "enum": ["DESTROYED", "DESTROY_ERRORED", "DESTROYING", "DESTROY_QUEUED"],
         "default": "DESTROYED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.DestroyStageState"
@@ -11116,12 +10974,7 @@
       "terraform_parametersInfraState": {
         "type": "string",
         "title": "- PROVISIONED: x-displayName: \"Provisioned\"\n - TIMED_OUT: x-displayName: \"Timed out\"\n - ERRORED: x-displayName: \"Errored\"\n - PROVISIONING: x-displayName: \"Provisioning\"",
-        "enum": [
-          "PROVISIONED",
-          "TIMED_OUT",
-          "ERRORED",
-          "PROVISIONING"
-        ],
+        "enum": ["PROVISIONED", "TIMED_OUT", "ERRORED", "PROVISIONING"],
         "default": "PROVISIONED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.InfraState"
@@ -11183,27 +11036,6 @@
             "x-ves-example": "value"
           }
         }
-      },
-      "terraform_parametersRollbackState": {
-        "type": "string",
-        "title": "- ROLLBACK_SUCCESSFUL: x-displayName: \"Rollback successful\"\n - ROLLBACK_ERRORED: x-displayName: \"Rollback errored\"\n - ROLLBACK_NOT_REQUIRED: x-displayName: \"Rollback not required\"",
-        "enum": [
-          "ROLLBACK_SUCCESSFUL",
-          "ROLLBACK_ERRORED",
-          "ROLLBACK_NOT_REQUIRED"
-        ],
-        "default": "ROLLBACK_SUCCESSFUL"
-      },
-      "terraform_parametersUpgradeState": {
-        "type": "string",
-        "description": "x-displayName: \"Upgrade State\"\nTerraform State after version Upgrade\n\n - UPGRADE_SUCCESSFUL: x-displayName: \"Upgrade successful\"\n - UPGRADE_ERRORED: x-displayName: \"Upgrade errored\"\n - UPGRADE_NOT_REQUIRED: x-displayName: \"Upgrade not required\"",
-        "title": "Upgrade State",
-        "enum": [
-          "UPGRADE_SUCCESSFUL",
-          "UPGRADE_ERRORED",
-          "UPGRADE_NOT_REQUIRED"
-        ],
-        "default": "UPGRADE_SUCCESSFUL"
       },
       "v1AWSElasticBlockStoreVolumeSource": {
         "type": "object",
@@ -16494,19 +16326,6 @@
           }
         }
       },
-      "viewsProactiveMonitoringChoice": {
-        "type": "object",
-        "description": "x-displayName: \"Proactive Monitoring\"\nEnable proactive collection of debuglogs from this Customer Edge site to enable faster troubleshooting and issue resolution.\nWhen enabled, nodes of this Customer Edge site will be able to stream required service debug logs to F5 Distributed Cloud.\nWhen disabled, nodes of this Customer Edge site will not be able to send any debug logs and might cause delays in troubleshooting and issue resolution.\nIt is recommended to have this setting enabled.\nNote: Only the relevant F5 Distributed Cloud software service logs will be transmitted. No customer sensitive data will be transmitted.",
-        "title": "Proactive Monitoring",
-        "properties": {
-          "proactive_monitoring_disable": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "proactive_monitoring_enable": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
       "viewsRegionalEdgeSelection": {
         "type": "object",
         "description": "Selection criteria to connect the site with F5 Distributed Cloud Regional Edge(s).",
@@ -16563,6 +16382,45 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    },
+    {
+      "name": "data"
+    },
+    {
+      "name": "register"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.global_log_receiver",
     "description": "Global Log Receiver is used to specify a receiver (s3 bucket, etc.) for periodic streaming of access logs",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/global_log_receivers": {
@@ -397,7 +402,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-global_log_receiver-customdataapi-globallogreceiverstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.CustomDataAPI.GlobalLogReceiverStatus"
+        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.CustomDataAPI.GlobalLogReceiverStatus",
+        "tags": ["data"]
       },
       "x-displayname": "Global Log Receiver",
       "x-ves-proto-service": "ves.io.schema.global_log_receiver.CustomDataAPI",
@@ -554,7 +560,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-global_log_receiver-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Global Log Receiver",
       "x-ves-proto-service": "ves.io.schema.global_log_receiver.API",
@@ -703,7 +710,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-global_log_receiver-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Global Log Receiver",
@@ -835,7 +843,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-global_log_receiver-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Global Log Receiver",
       "x-ves-proto-service": "ves.io.schema.global_log_receiver.API",
@@ -974,7 +983,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-global_log_receiver-customapi-testgloballogreceiver"
         },
-        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.CustomAPI.TestGlobalLogReceiver"
+        "x-ves-proto-rpc": "ves.io.schema.global_log_receiver.CustomAPI.TestGlobalLogReceiver",
+        "tags": ["log_receiver"]
       },
       "x-displayname": "Global Log Receiver",
       "x-ves-proto-service": "ves.io.schema.global_log_receiver.CustomAPI",
@@ -1388,39 +1398,6 @@
           }
         }
       },
-      "global_log_receiverElasticConfig": {
-        "type": "object",
-        "description": "x-displayName: \"Splunk HEC Logs Configuration\"\nConfiguration for Elasticsearch",
-        "title": "Elasticsearch Config",
-        "properties": {
-          "auth_aws": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "auth_basic": {
-            "$ref": "#/components/schemas/global_log_receiverHttpAuthBasic"
-          },
-          "auth_none": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "batch": {
-            "$ref": "#/components/schemas/global_log_receiverBatchOptionType"
-          },
-          "compression": {
-            "$ref": "#/components/schemas/global_log_receiverCompressionType"
-          },
-          "endpoint": {
-            "type": "string",
-            "description": "x-displayName: \"Elasticsearch Endpoint\"\nx-required\nx-example: \"http://10.9.8.7:9000\"\nElasticsearch Endpoint URL, example `http://10.9.8.7:9000`",
-            "title": "Elasticsearch Endpoint"
-          },
-          "no_tls": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "use_tls": {
-            "$ref": "#/components/schemas/global_log_receiverTLSConfigType"
-          }
-        }
-      },
       "global_log_receiverFilenameOptionsType": {
         "type": "object",
         "description": "Filename Options allow customization of filename and folder paths used by a destination endpoint bucket or file",
@@ -1543,21 +1520,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "global_log_receiverGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "global_log_receiverGetSpecType": {
         "type": "object",
@@ -2267,12 +2229,7 @@
         "type": "string",
         "description": "Enumerates Status of GlobalLogReceiver\n\n - STATUS_UNKNOWN: Unknown\n\n - STATUS_UP: Up\n\n - STATUS_DOWN: Down\n\n - STATUS_DEGRADED: Degraded\n",
         "title": "Status",
-        "enum": [
-          "STATUS_UNKNOWN",
-          "STATUS_UP",
-          "STATUS_DOWN",
-          "STATUS_DEGRADED"
-        ],
+        "enum": ["STATUS_UNKNOWN", "STATUS_UP", "STATUS_DOWN", "STATUS_DEGRADED"],
         "default": "STATUS_UNKNOWN",
         "x-displayname": "Status",
         "x-ves-proto-enum": "ves.io.schema.global_log_receiver.Status"
@@ -2711,10 +2668,7 @@
         "type": "string",
         "description": "The operator to use when filtering metrics based on label values.\n",
         "title": "Metric Label Operator",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
@@ -2916,10 +2870,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -3001,10 +2952,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -3129,37 +3077,6 @@
           }
         }
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -3197,26 +3114,11 @@
           }
         }
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemaglobal_log_receiverLabel": {
         "type": "string",
         "description": "Metrics used to construct the glr data are tagged with these labels and therefore\nthe metrics can be sliced and diced based on one or more labels.\n\nIndicates the field not being set\nIdentifies a glr name",
         "title": "Label",
-        "enum": [
-          "LABEL_NONE",
-          "LABEL_GLR_NAME"
-        ],
+        "enum": ["LABEL_NONE", "LABEL_GLR_NAME"],
         "default": "LABEL_NONE",
         "x-displayname": "Label",
         "x-ves-proto-enum": "ves.io.schema.global_log_receiver.Label"
@@ -3267,6 +3169,42 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    },
+    {
+      "name": "config"
+    },
+    {
+      "name": "log_receiver"
+    }
+  ]
 }

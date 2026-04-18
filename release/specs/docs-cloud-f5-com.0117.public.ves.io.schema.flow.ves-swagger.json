@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.flow",
     "description": "APIs to get Flow records and data",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/system/flow-collection/addon/subscribe": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-flow-customflowconnectionapi-subscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.flow.CustomFlowConnectionAPI.Subscribe"
+        "x-ves-proto-rpc": "ves.io.schema.flow.CustomFlowConnectionAPI.Subscribe",
+        "tags": ["config"]
       },
       "x-displayname": "Flows",
       "x-ves-proto-service": "ves.io.schema.flow.CustomFlowConnectionAPI",
@@ -224,7 +230,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-flow-customflowconnectionapi-getsubscriptionstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.flow.CustomFlowConnectionAPI.GetSubscriptionStatus"
+        "x-ves-proto-rpc": "ves.io.schema.flow.CustomFlowConnectionAPI.GetSubscriptionStatus",
+        "tags": ["config"]
       },
       "x-displayname": "Flows",
       "x-ves-proto-service": "ves.io.schema.flow.CustomFlowConnectionAPI",
@@ -341,7 +348,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-flow-customflowconnectionapi-unsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.flow.CustomFlowConnectionAPI.Unsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.flow.CustomFlowConnectionAPI.Unsubscribe",
+        "tags": ["config"]
       },
       "x-displayname": "Flows",
       "x-ves-proto-service": "ves.io.schema.flow.CustomFlowConnectionAPI",
@@ -451,7 +459,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-flow-customapi-flowcollection"
         },
-        "x-ves-proto-rpc": "ves.io.schema.flow.CustomAPI.FlowCollection"
+        "x-ves-proto-rpc": "ves.io.schema.flow.CustomAPI.FlowCollection",
+        "tags": ["data"]
       },
       "x-displayname": "Flows",
       "x-ves-proto-service": "ves.io.schema.flow.CustomAPI",
@@ -568,7 +577,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-flow-customapi-topflowanomalies"
         },
-        "x-ves-proto-rpc": "ves.io.schema.flow.CustomAPI.TopFlowAnomalies"
+        "x-ves-proto-rpc": "ves.io.schema.flow.CustomAPI.TopFlowAnomalies",
+        "tags": ["data"]
       },
       "x-displayname": "Flows",
       "x-ves-proto-service": "ves.io.schema.flow.CustomAPI",
@@ -678,7 +688,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-flow-customapi-toptalkers"
         },
-        "x-ves-proto-rpc": "ves.io.schema.flow.CustomAPI.TopTalkers"
+        "x-ves-proto-rpc": "ves.io.schema.flow.CustomAPI.TopTalkers",
+        "tags": ["data"]
       },
       "x-displayname": "Flows",
       "x-ves-proto-service": "ves.io.schema.flow.CustomAPI",
@@ -768,11 +779,7 @@
       "flowAnomalyLevel": {
         "type": "string",
         "title": "- LOW_ANOMALY_LEVEL: x-displayName: \"Low\"\nLow anomaly level\n - MEDIUM_ANOMALY_LEVEL: x-displayName: \"Medium\"\nMedium anomaly level\n - HIGH_ANOMALY_LEVEL: x-displayName: \"High\"\nHigh anomaly level",
-        "enum": [
-          "LOW_ANOMALY_LEVEL",
-          "MEDIUM_ANOMALY_LEVEL",
-          "HIGH_ANOMALY_LEVEL"
-        ],
+        "enum": ["LOW_ANOMALY_LEVEL", "MEDIUM_ANOMALY_LEVEL", "HIGH_ANOMALY_LEVEL"],
         "default": "LOW_ANOMALY_LEVEL",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.flow.AnomalyLevel"
@@ -805,15 +812,7 @@
         "type": "string",
         "description": "Field selector for flow data\n\nx-unit: \"bytes\"\nx-unit: \"packets\"\nx-unit: \"packets\"\nx-unit: \"bytes\"\nx-unit: \"packets\"\nx-unit: \"packets\"\nx-unit: \"count\"",
         "title": "FieldSelector",
-        "enum": [
-          "BYTES",
-          "PACKETS",
-          "DROPPED_PACKETS",
-          "TX_BYTES",
-          "TX_PACKETS",
-          "TX_DROPPED_PACKETS",
-          "FLOW_COUNT"
-        ],
+        "enum": ["BYTES", "PACKETS", "DROPPED_PACKETS", "TX_BYTES", "TX_PACKETS", "TX_DROPPED_PACKETS", "FLOW_COUNT"],
         "default": "BYTES",
         "x-displayname": "Field selector",
         "x-ves-proto-enum": "ves.io.schema.flow.FieldSelector"
@@ -879,10 +878,7 @@
         "type": "string",
         "description": "Sort Direction for sorting data\n\nSort Direction Desc\nby default data is sorted in descending direction\nSort Direction Asc",
         "title": "Sort Direction",
-        "enum": [
-          "SORT_DIRECTION_DESC",
-          "SORT_DIRECTION_ASC"
-        ],
+        "enum": ["SORT_DIRECTION_DESC", "SORT_DIRECTION_ASC"],
         "default": "SORT_DIRECTION_DESC",
         "x-displayname": "Sort Direction",
         "x-ves-proto-enum": "ves.io.schema.flow.SortDirection"
@@ -1202,12 +1198,7 @@
         "type": "string",
         "description": "State of a service\n\ndefault state\ninitiated subscription request and is pending to activate (requested).\nsuccessfully subscribed\nservice subscription request ended up in error state.",
         "title": "AddonServiceState",
-        "enum": [
-          "AS_NONE",
-          "AS_PENDING",
-          "AS_SUBSCRIBED",
-          "AS_ERROR"
-        ],
+        "enum": ["AS_NONE", "AS_PENDING", "AS_SUBSCRIBED", "AS_ERROR"],
         "default": "AS_NONE",
         "x-displayname": "Addon Service State",
         "x-ves-proto-enum": "ves.io.schema.AddonServiceState"
@@ -1243,11 +1234,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -1356,15 +1343,44 @@
         "type": "string",
         "description": "Service type for subscribing/unsubscribing flow-collection/flow-anomaly-detection\n\nby default flow collection is subscribed/unsubscribed\nFlow Anomaly Detection\nSubscribe/unsubscribe to both flow collection and anomaly detection",
         "title": "Service Type",
-        "enum": [
-          "FLOW_COLLECTION",
-          "FLOW_ANOMALY_DETECTION",
-          "FLOW_COLLECTION_AND_ANOMALY_DETECTION"
-        ],
+        "enum": ["FLOW_COLLECTION", "FLOW_ANOMALY_DETECTION", "FLOW_COLLECTION_AND_ANOMALY_DETECTION"],
         "default": "FLOW_COLLECTION",
         "x-displayname": "Service Type",
         "x-ves-proto-enum": "ves.io.schema.flow.ServiceType"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "data"
+    }
+  ]
 }

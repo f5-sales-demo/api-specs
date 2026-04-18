@@ -97,15 +97,21 @@ class TestSpecLoader:
 
     def test_find_schema_by_ref(self, loader: SpecLoader, sample_openapi_spec: dict):
         """Test finding schema by $ref."""
-        schema = loader.find_schema_by_ref(sample_openapi_spec, "#/components/schemas/TestRequest")
+        schema = loader.find_schema_by_ref(
+            sample_openapi_spec, "#/components/schemas/TestRequest"
+        )
 
         assert schema is not None
         assert schema["type"] == "object"
         assert "properties" in schema
 
-    def test_find_schema_by_ref_not_found(self, loader: SpecLoader, sample_openapi_spec: dict):
+    def test_find_schema_by_ref_not_found(
+        self, loader: SpecLoader, sample_openapi_spec: dict
+    ):
         """Test finding non-existent schema by $ref."""
-        schema = loader.find_schema_by_ref(sample_openapi_spec, "#/components/schemas/NonExistent")
+        schema = loader.find_schema_by_ref(
+            sample_openapi_spec, "#/components/schemas/NonExistent"
+        )
 
         assert schema is None
 
@@ -176,5 +182,5 @@ class TestEndpointInfo:
         assert endpoint.method == "POST"
         assert endpoint.operation_id == "createTest"
         assert endpoint.request_schema is None
-        assert endpoint.response_schemas == {}
-        assert endpoint.parameters == []
+        assert not endpoint.response_schemas
+        assert not endpoint.parameters

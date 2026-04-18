@@ -1,3 +1,4 @@
+---
 name: Validate and Release
 
 on:
@@ -86,7 +87,7 @@ jobs:
           PREV_ETAG=""
           if [ -f .etag_cache ]; then
             PREV_ETAG=$(cat .etag_cache)
-            echo "Previous ETag: $PREV_ETAG"
+            echo "Previous ETag: ${PREV_ETAG}"
           fi
 
           # Download specs (will use ETag for conditional GET)
@@ -96,19 +97,19 @@ jobs:
           NEW_ETAG=""
           if [ -f .etag_cache ]; then
             NEW_ETAG=$(cat .etag_cache)
-            echo "Current ETag: $NEW_ETAG"
+            echo "Current ETag: ${NEW_ETAG}"
           fi
 
           # Compare ETags to detect change
-          if [ "$PREV_ETAG" != "$NEW_ETAG" ] || [ -z "$PREV_ETAG" ]; then
+          if [ "${PREV_ETAG}" != "${NEW_ETAG}" ] || [ -z "${PREV_ETAG}" ]; then
             echo "Upstream specs have changed"
-            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "changed=true" >> "${GITHUB_OUTPUT}"
           else
             echo "Upstream specs unchanged"
-            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "changed=false" >> "${GITHUB_OUTPUT}"
           fi
 
-          echo "etag=$NEW_ETAG" >> $GITHUB_OUTPUT
+          echo "etag=${NEW_ETAG}" >> "${GITHUB_OUTPUT}"
 
       - name: Validate specs (dry run)
         if: inputs.skip_live_tests == true
@@ -121,7 +122,7 @@ jobs:
           F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
           F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
         run: |
-          if [ -z "$F5XC_API_TOKEN" ]; then
+          if [ -z "${F5XC_API_TOKEN}" ]; then
             echo "::warning::F5XC_API_TOKEN not set, running in dry-run mode"
             python -m scripts.validate --dry-run
           else
@@ -151,8 +152,8 @@ jobs:
         run: |
           # Create deterministic hash of reconciled specs content
           HASH=$(find release/specs -type f -name "*.json" -exec sha256sum {} \; | sort | sha256sum | cut -d' ' -f1)
-          echo "Reconciled specs hash: $HASH"
-          echo "hash=$HASH" >> $GITHUB_OUTPUT
+          echo "Reconciled specs hash: ${HASH}"
+          echo "hash=${HASH}" >> "${GITHUB_OUTPUT}"
 
       - name: Upload validation reports
         uses: actions/upload-artifact@v4
@@ -201,14 +202,14 @@ jobs:
         run: |
           # Get the content hash from the most recent release tag
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          if [ -n "$LATEST_TAG" ]; then
+          if [ -n "${LATEST_TAG}" ]; then
             # Check if release notes contain the hash
-            PREV_HASH=$(gh release view "$LATEST_TAG" --json body -q '.body' | grep -oP 'Content Hash: \K[a-f0-9]+' || echo "")
-            echo "Previous release hash: $PREV_HASH"
-            echo "hash=$PREV_HASH" >> $GITHUB_OUTPUT
+            PREV_HASH=$(gh release view "${LATEST_TAG}" --json body -q '.body' | grep -oP 'Content Hash: \K[a-f0-9]+' || echo "")
+            echo "Previous release hash: ${PREV_HASH}"
+            echo "hash=${PREV_HASH}" >> "${GITHUB_OUTPUT}"
           else
             echo "No previous release found"
-            echo "hash=" >> $GITHUB_OUTPUT
+            echo "hash=" >> "${GITHUB_OUTPUT}"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -230,8 +231,8 @@ jobs:
           done
 
           VERSION="${SPEC_DATE}-${PATCH}"
-          echo "Version: $VERSION"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: ${VERSION}"
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
 
       - name: Check if release is needed
         id: check
@@ -241,26 +242,26 @@ jobs:
           PREV_HASH="${{ steps.prev_hash.outputs.hash }}"
           FORCE="${{ inputs.force_release }}"
 
-          echo "Specs changed: $SPECS_CHANGED"
-          echo "Current hash: $CURRENT_HASH"
-          echo "Previous hash: $PREV_HASH"
-          echo "Force release: $FORCE"
+          echo "Specs changed: ${SPECS_CHANGED}"
+          echo "Current hash: ${CURRENT_HASH}"
+          echo "Previous hash: ${PREV_HASH}"
+          echo "Force release: ${FORCE}"
 
-          if [ "$FORCE" = "true" ]; then
+          if [ "${FORCE}" = "true" ]; then
             echo "Force release requested"
-            echo "should_release=true" >> $GITHUB_OUTPUT
-          elif [ "$SPECS_CHANGED" = "true" ]; then
+            echo "should_release=true" >> "${GITHUB_OUTPUT}"
+          elif [ "${SPECS_CHANGED}" = "true" ]; then
             echo "Upstream specs changed - release needed"
-            echo "should_release=true" >> $GITHUB_OUTPUT
-          elif [ -z "$PREV_HASH" ]; then
+            echo "should_release=true" >> "${GITHUB_OUTPUT}"
+          elif [ -z "${PREV_HASH}" ]; then
             echo "No previous release found - release needed"
-            echo "should_release=true" >> $GITHUB_OUTPUT
-          elif [ "$CURRENT_HASH" != "$PREV_HASH" ]; then
+            echo "should_release=true" >> "${GITHUB_OUTPUT}"
+          elif [ "${CURRENT_HASH}" != "${PREV_HASH}" ]; then
             echo "Content hash changed (code changes affected output) - release needed"
-            echo "should_release=true" >> $GITHUB_OUTPUT
+            echo "should_release=true" >> "${GITHUB_OUTPUT}"
           else
             echo "No changes detected - skipping release"
-            echo "should_release=false" >> $GITHUB_OUTPUT
+            echo "should_release=false" >> "${GITHUB_OUTPUT}"
           fi
 
   release:
@@ -320,7 +321,7 @@ jobs:
           ### Changes
           EOF
 
-          if [ "$SPECS_CHANGED" = "true" ]; then
+          if [ "${SPECS_CHANGED}" = "true" ]; then
             echo "- Upstream F5 XC specs updated" >> release_notes.md
           else
             echo "- Code changes resulted in updated output" >> release_notes.md
@@ -351,24 +352,23 @@ jobs:
           cat release_notes.md
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ needs.check-release-needed.outputs.version }}
-          name: F5 XC API Specs v${{ needs.check-release-needed.outputs.version }}
-          body_path: release_notes.md
-          files: |
-            release/api-specs-v${{ needs.check-release-needed.outputs.version }}.zip
-          draft: false
-          prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create \
+            "v${{ needs.check-release-needed.outputs.version }}" \
+            "release/api-specs-v${{ needs.check-release-needed.outputs.version }}.zip" \
+            --title "F5 XC API Specs v${{ needs.check-release-needed.outputs.version }}" \
+            --notes-file release_notes.md
 
       - name: Summary
         run: |
-          echo "### Release Created 🎉" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Version**: v${{ needs.check-release-needed.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Content Hash**: ${{ needs.validate.outputs.content_hash }}" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "### Release Created 🎉"
+            echo ""
+            echo "**Version**: v${{ needs.check-release-needed.outputs.version }}"
+            echo "**Content Hash**: ${{ needs.validate.outputs.content_hash }}"
+          } >> "${GITHUB_STEP_SUMMARY}"
 
   skip-release:
     name: Skip Release (No Changes)
@@ -379,12 +379,14 @@ jobs:
     steps:
       - name: Summary
         run: |
-          echo "### No Release Needed ⏭️" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "No changes detected in upstream specs or generated output." >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Specs Changed**: ${{ needs.validate.outputs.specs_changed }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Content Hash**: ${{ needs.validate.outputs.content_hash }}" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "### No Release Needed ⏭️"
+            echo ""
+            echo "No changes detected in upstream specs or generated output."
+            echo ""
+            echo "**Specs Changed**: ${{ needs.validate.outputs.specs_changed }}"
+            echo "**Content Hash**: ${{ needs.validate.outputs.content_hash }}"
+          } >> "${GITHUB_STEP_SUMMARY}"
 
   notify:
     name: Notify on Failure
@@ -476,9 +478,9 @@ jobs:
             exit 0
           fi
           BRANCH="docs/update-validation-report-$(date +%s)"
-          git checkout -b "$BRANCH"
+          git checkout -b "${BRANCH}"
           git commit -m "docs: update validation report"
-          git push origin "$BRANCH"
+          git push origin "${BRANCH}"
           gh pr create --title "docs: update validation report" \
             --body "Auto-generated from validation pipeline run."
           gh pr merge --auto --squash

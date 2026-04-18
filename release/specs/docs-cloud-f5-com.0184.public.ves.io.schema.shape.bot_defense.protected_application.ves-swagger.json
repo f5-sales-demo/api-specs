@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.protected_application",
     "description": "Configures application protected by Bot Defense",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/bot/namespaces/system/apikey": {
@@ -107,7 +112,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-protected_application-customapi-apikey"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI.ApiKey"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI.ApiKey",
+        "tags": ["shape"]
       },
       "x-displayname": "Protected Application",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI",
@@ -214,7 +220,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-protected_application-customapi-regionslist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI.RegionsList"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI.RegionsList",
+        "tags": ["shape"]
       },
       "x-displayname": "Protected Application",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI",
@@ -639,7 +646,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-protected_application-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.API.List",
+        "tags": ["shape"]
       },
       "x-displayname": "Protected Application",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.protected_application.API",
@@ -788,7 +796,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-protected_application-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.API.Get",
+        "tags": ["shape"]
       },
       "delete": {
         "summary": "Delete Protected Application",
@@ -920,7 +929,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-protected_application-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.API.Delete",
+        "tags": ["shape"]
       },
       "x-displayname": "Protected Application",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.protected_application.API",
@@ -1049,7 +1059,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-protected_application-customapi-connectorconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI.ConnectorConfig"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI.ConnectorConfig",
+        "tags": ["shape"]
       },
       "x-displayname": "Protected Application",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI",
@@ -1178,7 +1189,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-protected_application-customapi-templateconnector"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI.TemplateConnector"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI.TemplateConnector",
+        "tags": ["shape"]
       },
       "x-displayname": "Protected Application",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.protected_application.CustomAPI",
@@ -1737,12 +1749,7 @@
         "type": "string",
         "description": "Defines a selection for Bot Defense region\n\n - US: US\n\nUnited States of America\n - EU: EU\n\nEuropean Union\n - ASIA: ASIA\n\nAsia\n - CA: CA\n\nCanada",
         "title": "BotDefenseRegion",
-        "enum": [
-          "US",
-          "EU",
-          "ASIA",
-          "CA"
-        ],
+        "enum": ["US", "EU", "ASIA", "CA"],
         "default": "US",
         "x-displayname": "Bot Defense Region",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.protected_application.BotDefenseRegion"
@@ -1887,21 +1894,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "protected_applicationGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "protected_applicationListResponse": {
         "type": "object",
@@ -2338,44 +2330,6 @@
           }
         }
       },
-      "protected_applicationcloudflareJavaScriptInsertAllType": {
-        "type": "object",
-        "description": "x-displayName: \"Insert Bot Defense JavaScript In All Pages\"\nInsert Bot Defense JavaScript in all pages",
-        "title": "JavaScriptInsertAllType",
-        "properties": {
-          "javascript_location": {
-            "$ref": "#/components/schemas/protected_applicationcloudflareJavaScriptLocation"
-          },
-          "js_download_path": {
-            "type": "string",
-            "description": "x-displayName: \"Web Client JavaScript Path\"\nx-example: \"/common.js\"\nWeb client will fetch F5 Client Java Script from this path.\nThis path must not conflict with any other website/application paths.\n\nIf not specified, default to \u2018/common.js\u2019.",
-            "title": "js_download_path"
-          }
-        }
-      },
-      "protected_applicationcloudflareJavaScriptInsertAllWithExceptionsType": {
-        "type": "object",
-        "description": "x-displayName: \"Insert JavaScript In All Pages With The Exceptions\"\nInsert Bot Defense JavaScript in all pages  with the exceptions",
-        "title": "JavaScriptInsertAllWithExceptionsType",
-        "properties": {
-          "exclude_list": {
-            "type": "array",
-            "description": "x-displayName: \"Exclude Pages\"\nOptional JavaScript insertions exclude list of domain and path matchers.",
-            "title": "exclude_list",
-            "items": {
-              "$ref": "#/components/schemas/protected_applicationcloudflareJavaScriptExclusionRule"
-            }
-          },
-          "javascript_location": {
-            "$ref": "#/components/schemas/protected_applicationcloudflareJavaScriptLocation"
-          },
-          "js_download_path": {
-            "type": "string",
-            "description": "x-displayName: \"Web Client JavaScript Path\"\nx-example: \"/common.js\"\nWeb client will fetch F5 Client Java Script from this path.\nThis path must not conflict with any other website/application paths.\n\nIf not specified, default to \u2018/common.js\u2019.",
-            "title": "js_download_path"
-          }
-        }
-      },
       "protected_applicationcloudflareJavaScriptInsertManualType": {
         "type": "object",
         "description": "Insert JavaScript manually",
@@ -2511,39 +2465,16 @@
         "type": "string",
         "description": "All inside networks.\n\n - JAVA_SCRIPT_LOCATION_UNDEFINED: JAVA_SCRIPT_LOCATION_UNDEFINED\n\nUndefined\nInsert JavaScript after <head> tag\nInsert JavaScript after </title> tag.\nInsert JavaScript before first <script> tag",
         "title": "JavaScriptLocation",
-        "enum": [
-          "JAVA_SCRIPT_LOCATION_UNDEFINED",
-          "AFTER_HEAD",
-          "AFTER_TITLE_END",
-          "BEFORE_SCRIPT"
-        ],
+        "enum": ["JAVA_SCRIPT_LOCATION_UNDEFINED", "AFTER_HEAD", "AFTER_TITLE_END", "BEFORE_SCRIPT"],
         "default": "JAVA_SCRIPT_LOCATION_UNDEFINED",
         "x-displayname": "JavaScript Location",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.protected_application.cloudflare.JavaScriptLocation"
-      },
-      "protected_applicationcloudflareJavaScriptMode": {
-        "type": "string",
-        "description": "x-displayName: \"Web Client JavaScript Mode\"\nWeb Client JavaScript Mode.\n\n - ASYNC_JS_NO_CACHING: x-displayName: \"Async JS with no Caching\"\nBot Defense JavaScript for telemetry collection is requested asynchronously, and it is non-cacheable\n - ASYNC_JS_CACHING: x-displayName: \"Async JS with Caching\"\nBot Defense JavaScript for telemetry collection is requested asynchronously, and it is cacheable\n - SYNC_JS_NO_CACHING: x-displayName: \"Sync JS with no Caching\"\nBot Defense JavaScript for telemetry collection is requested synchronously, and it is non-cacheable\n - SYNC_JS_CACHING: x-displayName: \"Sync JS with Caching\"\nBot Defense JavaScript for telemetry collection is requested synchronously, and it is cacheable",
-        "title": "JavaScript Mode",
-        "enum": [
-          "ASYNC_JS_NO_CACHING",
-          "ASYNC_JS_CACHING",
-          "SYNC_JS_NO_CACHING",
-          "SYNC_JS_CACHING"
-        ],
-        "default": "ASYNC_JS_NO_CACHING"
       },
       "protected_applicationcloudflareLogLevel": {
         "type": "string",
         "description": "Select the level of logging desired. Levels are cumulative\n(e.g. Debug includes Error, Warning, and Informational)\n\n - LOG_UNDEFINED: Undefined\n\n - LOG_ERROR: Error\n\nLog only errors\n - LOG_WARNING: Warning\n\nLog malicious requests\n - LOG_INFO: Info\n\nLog all requests\n - LOG_DEBUG: Debug\n\nLog debugging data",
         "title": "loglevel",
-        "enum": [
-          "LOG_UNDEFINED",
-          "LOG_ERROR",
-          "LOG_WARNING",
-          "LOG_INFO",
-          "LOG_DEBUG"
-        ],
+        "enum": ["LOG_UNDEFINED", "LOG_ERROR", "LOG_WARNING", "LOG_INFO", "LOG_DEBUG"],
         "default": "LOG_UNDEFINED",
         "x-displayname": "Log Level",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.protected_application.cloudflare.LogLevel"
@@ -2941,44 +2872,6 @@
           }
         }
       },
-      "protected_applicationcloudfrontJavaScriptInsertAllType": {
-        "type": "object",
-        "description": "x-displayName: \"Insert Bot Defense JavaScript In All Pages\"\nInsert Bot Defense JavaScript in all pages",
-        "title": "JavaScriptInsertAllType",
-        "properties": {
-          "javascript_location": {
-            "$ref": "#/components/schemas/protected_applicationcloudfrontJavaScriptLocation"
-          },
-          "js_download_path": {
-            "type": "string",
-            "description": "x-displayName: \"Web Client JavaScript Path\"\nx-example: \"/common.js\"\nWeb client will fetch F5 Client Java Script from this path.\nThis path must not conflict with any other website/application paths.\n\nIf not specified, default to \u2018/common.js\u2019.",
-            "title": "js_download_path"
-          }
-        }
-      },
-      "protected_applicationcloudfrontJavaScriptInsertAllWithExceptionsType": {
-        "type": "object",
-        "description": "x-displayName: \"Insert JavaScript In All Pages With The Exceptions\"\nInsert Bot Defense JavaScript in all pages  with the exceptions",
-        "title": "JavaScriptInsertAllWithExceptionsType",
-        "properties": {
-          "exclude_list": {
-            "type": "array",
-            "description": "x-displayName: \"Exclude Pages\"\nOptional JavaScript insertions exclude list of domain and path matchers.",
-            "title": "exclude_list",
-            "items": {
-              "$ref": "#/components/schemas/protected_applicationcloudfrontJavaScriptExclusionRule"
-            }
-          },
-          "javascript_location": {
-            "$ref": "#/components/schemas/protected_applicationcloudfrontJavaScriptLocation"
-          },
-          "js_download_path": {
-            "type": "string",
-            "description": "x-displayName: \"Web Client JavaScript Path\"\nx-example: \"/common.js\"\nWeb client will fetch F5 Client Java Script from this path.\nThis path must not conflict with any other website/application paths.\n\nIf not specified, default to \u2018/common.js\u2019.",
-            "title": "js_download_path"
-          }
-        }
-      },
       "protected_applicationcloudfrontJavaScriptInsertManualType": {
         "type": "object",
         "description": "Insert JavaScript manually",
@@ -3120,12 +3013,7 @@
         "type": "string",
         "description": "All inside networks.\n\n - JAVA_SCRIPT_LOCATION_UNDEFINED: JAVA_SCRIPT_LOCATION_UNDEFINED\n\nUndefined\nInsert JavaScript after <head> tag\nInsert JavaScript after </title> tag.\nInsert JavaScript before first <script> tag",
         "title": "JavaScriptLocation",
-        "enum": [
-          "JAVA_SCRIPT_LOCATION_UNDEFINED",
-          "AFTER_HEAD",
-          "AFTER_TITLE_END",
-          "BEFORE_SCRIPT"
-        ],
+        "enum": ["JAVA_SCRIPT_LOCATION_UNDEFINED", "AFTER_HEAD", "AFTER_TITLE_END", "BEFORE_SCRIPT"],
         "default": "JAVA_SCRIPT_LOCATION_UNDEFINED",
         "x-displayname": "JavaScript Location",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.protected_application.cloudfront.JavaScriptLocation"
@@ -3134,12 +3022,7 @@
         "type": "string",
         "description": "Web Client JavaScript Mode.\n\nBot Defense JavaScript for telemetry collection is requested asynchronously, and it is non-cacheable\nBot Defense JavaScript for telemetry collection is requested asynchronously, and it is cacheable\nBot Defense JavaScript for telemetry collection is requested synchronously, and it is non-cacheable\nBot Defense JavaScript for telemetry collection is requested synchronously, and it is cacheable",
         "title": "JavaScript Mode",
-        "enum": [
-          "ASYNC_JS_NO_CACHING",
-          "ASYNC_JS_CACHING",
-          "SYNC_JS_NO_CACHING",
-          "SYNC_JS_CACHING"
-        ],
+        "enum": ["ASYNC_JS_NO_CACHING", "ASYNC_JS_CACHING", "SYNC_JS_NO_CACHING", "SYNC_JS_CACHING"],
         "default": "ASYNC_JS_NO_CACHING",
         "x-displayname": "Web Client JavaScript Mode",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.protected_application.cloudfront.JavaScriptMode"
@@ -3148,13 +3031,7 @@
         "type": "string",
         "description": "Select the level of logging desired. Levels are cumulative\n(e.g. Debug includes Error, Warning, and Informational)\n\n - LOG_UNDEFINED: Undefined\n\n - LOG_ERROR: Error\n\nLog only errors\n - LOG_WARNING: Warning\n\nLog malicious requests\n - LOG_INFO: Info\n\nLog all requests\n - LOG_DEBUG: Debug\n\nLog debugging data",
         "title": "loglevel",
-        "enum": [
-          "LOG_UNDEFINED",
-          "LOG_ERROR",
-          "LOG_WARNING",
-          "LOG_INFO",
-          "LOG_DEBUG"
-        ],
+        "enum": ["LOG_UNDEFINED", "LOG_ERROR", "LOG_WARNING", "LOG_INFO", "LOG_DEBUG"],
         "default": "LOG_UNDEFINED",
         "x-displayname": "Log Level",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.protected_application.cloudfront.LogLevel"
@@ -4224,10 +4101,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -4435,6 +4309,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

@@ -1,3 +1,4 @@
+---
 # F5 XC API Spec Validation Configuration
 
 # API Configuration
@@ -111,7 +112,7 @@ release:
 # Spectral OAS3 Linting Configuration
 spectral:
   enabled: true
-  ruleset: ".spectral.yaml"
+  ruleset: "spectral-pipeline.yaml"
   auto_fix:
     oas3-api-servers: true
     info-contact: true
@@ -134,3 +135,8 @@ spectral:
         tenant:
           example-tenant"f5-amer-ent"
           description: "Your F5 XC tenant name"
+  security_scheme:
+    type: "apiKey"
+    in: "header"
+    name: "Authorization"
+    description: "F5 XC API Token (format: APIToken <token>)"

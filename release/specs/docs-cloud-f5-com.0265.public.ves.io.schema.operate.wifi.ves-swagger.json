@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.operate.wifi",
     "description": "Proto definitions for runtime WIFI info on sites.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/operate/namespaces/{namespace}/sites/{site}/vpm/wifi/{node}/config": {
@@ -139,7 +144,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-wifi-custompublicapi-getconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.GetConfig"
+        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.GetConfig",
+        "tags": ["operate"]
       },
       "post": {
         "summary": "Update WIFI configuration",
@@ -283,7 +289,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-wifi-custompublicapi-updateconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.UpdateConfig"
+        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.UpdateConfig",
+        "tags": ["operate"]
       },
       "x-displayname": "WIFI info",
       "x-ves-proto-service": "ves.io.schema.operate.wifi.CustomPublicAPI",
@@ -432,7 +439,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-wifi-custompublicapi-disconnect"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.Disconnect"
+        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.Disconnect",
+        "tags": ["operate"]
       },
       "x-displayname": "WIFI info",
       "x-ves-proto-service": "ves.io.schema.operate.wifi.CustomPublicAPI",
@@ -571,7 +579,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-wifi-custompublicapi-showinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.ShowInfo"
+        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.ShowInfo",
+        "tags": ["operate"]
       },
       "x-displayname": "WIFI info",
       "x-ves-proto-service": "ves.io.schema.operate.wifi.CustomPublicAPI",
@@ -710,7 +719,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-operate-wifi-custompublicapi-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.List"
+        "x-ves-proto-rpc": "ves.io.schema.operate.wifi.CustomPublicAPI.List",
+        "tags": ["operate"]
       },
       "x-displayname": "WIFI info",
       "x-ves-proto-service": "ves.io.schema.operate.wifi.CustomPublicAPI",
@@ -725,13 +735,7 @@
         "type": "string",
         "description": "Current Signal Strength\n\n - UNAVAILABLE: UNAVAILABLE\n\nSignal not received\n - EXCELLENT: EXCELLENT\n\ndBm greater then -50\n - GOOD: GOOD\n\ndBm between -50 and -60\n - FAIR: FAIR\n\ndBm between -60 and -70\n - POOR: POOR\n\ndBm lower then -70",
         "title": "SignalStrength",
-        "enum": [
-          "UNAVAILABLE",
-          "EXCELLENT",
-          "GOOD",
-          "FAIR",
-          "POOR"
-        ],
+        "enum": ["UNAVAILABLE", "EXCELLENT", "GOOD", "FAIR", "POOR"],
         "default": "UNAVAILABLE",
         "x-displayname": "Signal Strength",
         "x-ves-proto-enum": "ves.io.schema.operate.wifi.SignalStrength"
@@ -927,12 +931,7 @@
         "type": "string",
         "description": "WifiSecurity mechanism of authentication\n\n - UNKNOWN: UNKNOWN\n\nUnknown mechanims is not available to get\n - NONE: NONE\n\nNone represent no authentication used\n - WPA2_PERSONAL: WPA2_PERSONAL\n\nWPA2 Personal (PSK) passprase should be used for wifi setup\n - WPA2_ENTERPRISE: WPA2_ENTERPRISE\n\nWPA2 Enterprise (802.1X) EAP - TLS TTLS",
         "title": "WifiSecurity",
-        "enum": [
-          "UNKNOWN",
-          "NONE",
-          "WPA2_PERSONAL",
-          "WPA2_ENTERPRISE"
-        ],
+        "enum": ["UNKNOWN", "NONE", "WPA2_PERSONAL", "WPA2_ENTERPRISE"],
         "default": "UNKNOWN",
         "x-displayname": "Wifi Security Mechanism",
         "x-ves-proto-enum": "ves.io.schema.operate.wifi.WifiSecurity"
@@ -1000,6 +999,36 @@
         "x-displayname": "WIFI Update Config Response",
         "x-ves-proto-message": "ves.io.schema.operate.wifi.WifiUpdateConfigResponse"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "operate"
+    }
+  ]
 }

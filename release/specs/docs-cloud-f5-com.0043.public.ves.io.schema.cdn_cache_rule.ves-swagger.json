@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.cdn_cache_rule",
     "description": "CDN cache rule view defines a required parameters that can be used in CRUD, to create and manage CDN cache rule.\nIt can be used to create CDN cache rule.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/cdn_cache_rules": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cdn_cache_rule-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "CDN cache rule",
       "x-ves-proto-service": "ves.io.schema.cdn_cache_rule.API",
@@ -573,7 +579,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cdn_cache_rule-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete CDN cache rule",
@@ -705,7 +712,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cdn_cache_rule-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "CDN cache rule",
       "x-ves-proto-service": "ves.io.schema.cdn_cache_rule.API",
@@ -1170,30 +1178,11 @@
           }
         }
       },
-      "cdn_cache_ruleGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "cdn_cache_ruleHeaderOptions": {
         "type": "string",
         "description": "\n - PROXY_HOST: Proxy Host\n\nName of the proxied server\n - REFERER: Referer\n\nThis is the address of the previous web page from which a link to the currently requested page was followed\n - SCHEME: Scheme\n\nThe http scheme used: http or https\n - USER_AGENT: User Agent\n\nThe user agent string of the user agent",
         "title": "Header Options",
-        "enum": [
-          "PROXY_HOST",
-          "REFERER",
-          "SCHEME",
-          "USER_AGENT"
-        ],
+        "enum": ["PROXY_HOST", "REFERER", "SCHEME", "USER_AGENT"],
         "default": "PROXY_HOST",
         "x-displayname": "Header Options",
         "x-ves-proto-enum": "ves.io.schema.cdn_cache_rule.HeaderOptions"
@@ -1847,6 +1836,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

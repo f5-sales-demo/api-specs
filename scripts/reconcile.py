@@ -43,7 +43,9 @@ class ReconciliationResult:
 class ReconciliationConfig:
     """Configuration for spec reconciliation."""
 
-    priority: list[str] = field(default_factory=lambda: ["existing", "discovery", "inferred"])
+    priority: list[str] = field(
+        default_factory=lambda: ["existing", "discovery", "inferred"]
+    )
     fix_strategies: dict[str, str] = field(
         default_factory=lambda: {
             "tighter_spec": "relax",
@@ -138,7 +140,7 @@ class SpecReconciler:
                     original = yaml.safe_load(f)
                 else:
                     original = json.load(f)
-        except Exception as e:
+        except (json.JSONDecodeError, yaml.YAMLError, OSError) as e:
             console.print(f"[red]Failed to load {spec_path}: {e}[/red]")
             result.validation_errors.append(str(e))
             return result
@@ -147,7 +149,9 @@ class SpecReconciler:
         if not discrepancies:
             result.modified = False
             result.fixed_spec = original
-            console.print(f"[green]{spec_path.name}: No changes needed (pass-through)[/green]")
+            console.print(
+                f"[green]{spec_path.name}: No changes needed (pass-through)[/green]"
+            )
             return result
 
         # Apply fixes
@@ -159,6 +163,26 @@ class SpecReconciler:
                 result.changes.append(change)
                 result.modified = True
 
+        # Always ensure security metadata is present
+        if "security" not in fixed and self.spectral_config.get("security_scheme"):
+            security_discrepancy = Discrepancy(
+                path=spec_path.name,
+                property_name="",
+                constraint_type="spectral:checkov-security",
+                discrepancy_type=DiscrepancyType.SPECTRAL_MISSING,
+                spec_value=None,
+                api_behavior=None,
+            )
+            security_result = self._apply_spectral_fix(fixed, security_discrepancy)
+            if security_result is not None:
+                result.changes.append(
+                    {
+                        "action": "add_security_schemes",
+                        "constraint_type": "spectral:checkov-security",
+                    }
+                )
+                result.modified = True
+
         # Validate fixed spec
         if result.modified:
             try:
@@ -167,7 +191,7 @@ class SpecReconciler:
                 console.print(
                     f"[yellow]{spec_path.name}: {len(result.changes)} fixes applied[/yellow]"
                 )
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 result.validation_errors.append(str(e))
                 console.print(f"[red]{spec_path.name}: Fixed spec invalid: {e}[/red]")
                 # Fall back to original
@@ -205,8 +229,12 @@ class SpecReconciler:
             return "spectral"
 
         strategy_map = {
-            DiscrepancyType.SPEC_STRICTER: self.config.fix_strategies.get("tighter_spec", "relax"),
-            DiscrepancyType.SPEC_LOOSER: self.config.fix_strategies.get("looser_spec", "tighten"),
+            DiscrepancyType.SPEC_STRICTER: self.config.fix_strategies.get(
+                "tighter_spec", "relax"
+            ),
+            DiscrepancyType.SPEC_LOOSER: self.config.fix_strategies.get(
+                "looser_spec", "tighten"
+            ),
             DiscrepancyType.MISSING_CONSTRAINT: self.config.fix_strategies.get(
                 "missing_constraint", "add"
             ),
@@ -346,13 +374,14 @@ class SpecReconciler:
             "spectral:operation-operationId-unique": self._deduplicate_operation_id,
             "spectral:oas3-valid-schema-example": self._fix_schema_example,
             "spectral:no-script-tags-in-markdown": self._strip_script_tags,
+            "spectral:checkov-security": self._add_security_schemes,
         }
         fixer = spectral_fixers.get(discrepancy.constraint_type)
         if fixer:
             return fixer(spec, discrepancy)
         return None
 
-    def _add_servers(self, spec: dict, discrepancy: Discrepancy) -> dict | None:  # noqa: ARG002
+    def _add_servers(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
         """Add servers block from spectral config."""
         servers = self.spectral_config.get("servers")
         if servers is None:
@@ -360,12 +389,36 @@ class SpecReconciler:
         spec["servers"] = copy.deepcopy(servers)
         return spec
 
-    def _add_contact(self, spec: dict, discrepancy: Discrepancy) -> dict | None:  # noqa: ARG002
+    def _add_contact(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
         """Add contact info to spec.info."""
         contact = self.spectral_config.get("contact")
         if contact is None:
             return None
         spec.setdefault("info", {})["contact"] = copy.deepcopy(contact)
+        return spec
+
+    def _add_security_schemes(
+        self,
+        spec: dict,
+        discrepancy: Discrepancy,
+    ) -> dict | None:
+        """Add security scheme metadata for F5 XC API authentication."""
+        security_config = self.spectral_config.get("security_scheme")
+        if security_config is None:
+            return None
+
+        scheme_name = "apiKeyAuth"
+        spec.setdefault("components", {}).setdefault("securitySchemes", {})[
+            scheme_name
+        ] = {
+            "type": security_config.get("type", "apiKey"),
+            "in": security_config.get("in", "header"),
+            "name": security_config.get("name", "Authorization"),
+            "description": security_config.get(
+                "description", "F5 XC API Token (format: APIToken <token>)"
+            ),
+        }
+        spec.setdefault("security", [{"apiKeyAuth": []}])
         return spec
 
     def _add_tags(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
@@ -397,10 +450,16 @@ class SpecReconciler:
 
         return spec
 
-    def _remove_unused_component(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+    def _remove_unused_component(
+        self, spec: dict, discrepancy: Discrepancy
+    ) -> dict | None:
         """Remove an unused component schema."""
         parts = discrepancy.property_name.split(".")
-        if len(parts) < _MIN_PATH_PARTS or parts[0] != "components" or parts[1] != "schemas":
+        if (
+            len(parts) < _MIN_PATH_PARTS
+            or parts[0] != "components"
+            or parts[1] != "schemas"
+        ):
             return None
 
         schema_name = parts[2]
@@ -410,7 +469,9 @@ class SpecReconciler:
             return spec
         return None
 
-    def _deduplicate_operation_id(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+    def _deduplicate_operation_id(
+        self, spec: dict, discrepancy: Discrepancy
+    ) -> dict | None:
         """Append HTTP method suffix to duplicate operationIds."""
         parts = discrepancy.property_name.split(".")
         if len(parts) < _MIN_PATH_PARTS or parts[0] != "paths":
@@ -476,12 +537,13 @@ class SpecReconciler:
     ) -> dict | None:
         """Find schema definition for a property path."""
         # Try components/schemas first
-        components = spec.get("components", {})
-        schemas = components.get("schemas", {})
+        components: dict = spec.get("components", {})
+        schemas: dict = components.get("schemas", {})
 
         # Simple lookup by name
         if property_path in schemas:
-            return schemas[property_path]
+            schema_val: dict = schemas[property_path]
+            return schema_val
 
         # Try nested path
         parts = property_path.split("/")
@@ -516,7 +578,11 @@ class SpecReconciler:
             return min(old_value or 0, api_behavior)
         if constraint_type == "maximum" and isinstance(api_behavior, (int, float)):
             return max(old_value or 0, api_behavior)
-        if constraint_type == "enum" and isinstance(api_behavior, list) and isinstance(old_value, list):
+        if (
+            constraint_type == "enum"
+            and isinstance(api_behavior, list)
+            and isinstance(old_value, list)
+        ):
             # Add missing enum values
             return list(set(old_value) | set(api_behavior))
 
@@ -607,9 +673,13 @@ class SpecReconciler:
                 ]
             )
 
+            has_items = False
             for change in result.changes:
-                action = change.get("action", "unknown")
+                if not isinstance(change, dict):
+                    continue
+                action = change.get("action", "")
                 constraint = change.get("constraint", "")
+                constraint_type = change.get("constraint_type", "")
                 prop = change.get("property", "")
                 old_val = change.get("old_value", "")
                 new_val = change.get("new_value", "")
@@ -618,14 +688,28 @@ class SpecReconciler:
                     lines.append(
                         f"- **Relaxed** `{constraint}` on `{prop}`: `{old_val}` → `{new_val}`"
                     )
+                    has_items = True
                 elif action == "tighten":
                     lines.append(
                         f"- **Tightened** `{constraint}` on `{prop}`: `{old_val}` → `{new_val}`"
                     )
+                    has_items = True
                 elif action == "add":
                     lines.append(f"- **Added** `{constraint}` to `{prop}`: `{new_val}`")
+                    has_items = True
                 elif action == "remove":
-                    lines.append(f"- **Removed** `{constraint}` from `{prop}` (was `{old_val}`)")
+                    lines.append(
+                        f"- **Removed** `{constraint}` from `{prop}` (was `{old_val}`)"
+                    )
+                    has_items = True
+                elif constraint_type.startswith("spectral:"):
+                    lines.append(
+                        f"- **Spectral fix** `{constraint_type}`: {action or 'applied'}"
+                    )
+                    has_items = True
+
+            if not has_items:
+                lines.append(f"- *{len(result.changes)} Spectral fixes applied*")
 
             lines.append("")
 
@@ -645,7 +729,9 @@ def load_discrepancies(report_path: Path) -> list[Discrepancy]:
             path=d.get("path", ""),
             property_name=d.get("property_name", ""),
             constraint_type=d.get("constraint_type", ""),
-            discrepancy_type=DiscrepancyType(d.get("discrepancy_type", "constraint_mismatch")),
+            discrepancy_type=DiscrepancyType(
+                d.get("discrepancy_type", "constraint_mismatch")
+            ),
             spec_value=d.get("spec_value"),
             api_behavior=d.get("api_behavior"),
             test_values=d.get("test_values", []),
@@ -657,7 +743,9 @@ def load_discrepancies(report_path: Path) -> list[Discrepancy]:
 
 def main() -> int:
     """Main entry point for reconciliation command."""
-    parser = argparse.ArgumentParser(description="Reconcile F5 XC OpenAPI specs with API behavior")
+    parser = argparse.ArgumentParser(
+        description="Reconcile F5 XC OpenAPI specs with API behavior"
+    )
     parser.add_argument(
         "--config",
         type=Path,
@@ -697,7 +785,9 @@ def main() -> int:
     download_config = config.get("download", {})
     reconciliation_config = config.get("reconciliation", {})
 
-    original_dir = args.original_dir or Path(download_config.get("output_dir", "specs/original"))
+    original_dir = args.original_dir or Path(
+        download_config.get("output_dir", "specs/original")
+    )
     output_dir = args.output_dir or Path("release/specs")
 
     # Load discrepancies from report
@@ -705,11 +795,15 @@ def main() -> int:
     for report_path in args.report:
         loaded = load_discrepancies(report_path)
         discrepancies.extend(loaded)
-        console.print(f"[dim]Loaded {len(loaded)} discrepancies from {report_path}[/dim]")
+        console.print(
+            f"[dim]Loaded {len(loaded)} discrepancies from {report_path}[/dim]"
+        )
 
     # Create reconciler
     recon_config = ReconciliationConfig(
-        priority=reconciliation_config.get("priority", ["existing", "discovery", "inferred"]),
+        priority=reconciliation_config.get(
+            "priority", ["existing", "discovery", "inferred"]
+        ),
         fix_strategies=reconciliation_config.get("fix_strategies", {}),
     )
 

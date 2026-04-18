@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.bgp",
     "description": "BGP object represents configuration of bgp protocol on given network interface on customer edge site.\nIt is template configuration that can be applied on a set of sites represented by list of sites or virtual sites.\nBGP can be primarily used to advertise a common Virtual IP (VIP) for all nodes in a cluster for given site.\nIt can be used on outside interface or inside interface.\nBGP peer address for this object can be a template and values are provided per site object.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/bgps": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bgp-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bgp.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.bgp.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "BGP",
       "x-ves-proto-service": "ves.io.schema.bgp.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bgp-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bgp.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.bgp.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete BGP",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bgp-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bgp.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.bgp.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "BGP",
       "x-ves-proto-service": "ves.io.schema.bgp.API",
@@ -845,7 +853,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bgp-customapi-getbgpstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bgp.CustomAPI.GetBgpStatus"
+        "x-ves-proto-rpc": "ves.io.schema.bgp.CustomAPI.GetBgpStatus",
+        "tags": ["config"]
       },
       "x-displayname": "BGP",
       "x-ves-proto-service": "ves.io.schema.bgp.CustomAPI",
@@ -1047,10 +1056,7 @@
         "type": "string",
         "description": "Indicates the state of BGP Peering session\n\nPeering session is Down (not in Established state)\nPeering session is Up (in Established state)",
         "title": "BGP Peer States",
-        "enum": [
-          "BGP_PEER_DOWN",
-          "BGP_PEER_UP"
-        ],
+        "enum": ["BGP_PEER_DOWN", "BGP_PEER_UP"],
         "default": "BGP_PEER_DOWN",
         "x-displayname": "BGP Peer States",
         "x-ves-proto-enum": "ves.io.schema.bgp.BgpPeerUpDownType"
@@ -1117,18 +1123,6 @@
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
         }
-      },
-      "bgpBgpRouterIdType": {
-        "type": "string",
-        "description": "x-displayName: \"BGP Router ID\"\nDictates how BGP router id is derived\n\n - BGP_ROUTER_ID_FROM_INTERFACE: x-displayName: \"From Interface\"\nUse IP address of interface on which BGP is configured as BGP router ID\n - BGP_ROUTER_ID_FROM_IP_ADDRESS: x-displayName: \"From IP Address\"\nUse BGP Router ID from BGP Parameters as BGP router ID\n - BGP_ROUTER_ID_FROM_SITE_OBJECT: x-displayName: \"From Site\"\nUse BGP Router ID from corresponding site object as BGP router ID\n - BGP_ROUTER_ID_FROM_SITE_TEMPLATE_PARAMETERS: x-displayName: \"From Site Template\"\nUse BGP Router ID Key from corresponding site's Site Template Parameters as BGP router ID.\nThis is not currently supported.",
-        "title": "BGP Router ID",
-        "enum": [
-          "BGP_ROUTER_ID_FROM_INTERFACE",
-          "BGP_ROUTER_ID_FROM_IP_ADDRESS",
-          "BGP_ROUTER_ID_FROM_SITE_OBJECT",
-          "BGP_ROUTER_ID_FROM_SITE_TEMPLATE_PARAMETERS"
-        ],
-        "default": "BGP_ROUTER_ID_FROM_INTERFACE"
       },
       "bgpBgpStatusType": {
         "type": "object",
@@ -1280,19 +1274,6 @@
           }
         }
       },
-      "bgpFamilyInet6": {
-        "type": "object",
-        "description": "x-displayName: \"BGP Family Inet6\"\nParameters for inet6 family.",
-        "title": "FamilyInet6",
-        "properties": {
-          "disable": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "enable": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
       "bgpFamilyInet6vpn": {
         "type": "object",
         "description": "x-displayName: \"BGP Family Inet6vpn\"\nParameters for inet6vpn family.",
@@ -1417,21 +1398,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "bgpGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "bgpGetSpecType": {
         "type": "object",
@@ -1817,50 +1783,6 @@
               "ves.io.schema.rules.uint32.gte": "0",
               "ves.io.schema.rules.uint32.lte": "32"
             }
-          }
-        }
-      },
-      "bgpPeerInternal": {
-        "type": "object",
-        "description": "x-displayName: \"Internal BGP Peer\"\nInternal BGP Peer parameters.",
-        "title": "PeerInternal",
-        "properties": {
-          "address": {
-            "type": "string",
-            "description": "x-displayName: \"Peer Address\"\nSpecify peer address.",
-            "title": "address"
-          },
-          "disable_mtls": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "dns_name": {
-            "type": "string",
-            "description": "x-displayName: \"Use address for DNS name\"\nUse the addresse by resolving the given DNS name.",
-            "title": "dns_name"
-          },
-          "enable_mtls": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "family_inet6vpn": {
-            "$ref": "#/components/schemas/bgpFamilyInet6vpn"
-          },
-          "family_inetvpn": {
-            "$ref": "#/components/schemas/bgpFamilyInetvpn"
-          },
-          "family_rtarget": {
-            "$ref": "#/components/schemas/bgpFamilyRtarget"
-          },
-          "family_uuidvpn": {
-            "$ref": "#/components/schemas/bgpFamilyUuidvpn"
-          },
-          "from_site": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "port": {
-            "type": "integer",
-            "description": "x-displayName: \"Peer Port\"\nx-example: \"179\"\nLocal Peer TCP Port Number.",
-            "title": "port",
-            "format": "int64"
           }
         }
       },
@@ -2539,10 +2461,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2807,6 +2726,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

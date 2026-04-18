@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.bot_infrastructure",
     "description": "Configures Bot Infrastructure by bot infrastructure",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/bot/namespaces/{metadata.namespace}/bot_infrastructures": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_infrastructure-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.API.List",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Infrastructure",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_infrastructure.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_infrastructure-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.API.Get",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Infrastructure",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_infrastructure.API",
@@ -703,7 +710,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_infrastructure-customapi-deploymenthistory"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI.DeploymentHistory"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI.DeploymentHistory",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Infrastructure",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI",
@@ -832,7 +840,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_infrastructure-customapi-deploymentstatusoverview"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI.DeploymentStatusOverview"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI.DeploymentStatusOverview",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Infrastructure",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI",
@@ -971,7 +980,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_infrastructure-customapi-deploypoliciestobotinfra"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI.DeployPoliciesToBotInfra"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI.DeployPoliciesToBotInfra",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Infrastructure",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI",
@@ -1100,7 +1110,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_infrastructure-customapi-suggestvalues"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI.SuggestValues"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI.SuggestValues",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Infrastructure",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_infrastructure.CustomAPI",
@@ -1604,11 +1615,7 @@
         "type": "string",
         "description": "The type of bot infra\n\n - CLOUD_HOSTED: F5 Cloud Hosted\n\n - HOSTED: F5 Hosted\n\n - ON_PREM: F5 On Prem\n",
         "title": "DeploymentResponseType",
-        "enum": [
-          "CLOUD_HOSTED",
-          "HOSTED",
-          "ON_PREM"
-        ],
+        "enum": ["CLOUD_HOSTED", "HOSTED", "ON_PREM"],
         "default": "CLOUD_HOSTED",
         "x-displayname": "Deployment Response Type",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.DeploymentType"
@@ -1617,11 +1624,7 @@
         "type": "string",
         "description": "Deploy Status\n\n - IN_PROGRESS: In Progress\n\n - FINISHED: Finished\n\n - FAILED: Failed\n",
         "title": "DeployStatus",
-        "enum": [
-          "IN_PROGRESS",
-          "FINISHED",
-          "FAILED"
-        ],
+        "enum": ["IN_PROGRESS", "FINISHED", "FAILED"],
         "default": "IN_PROGRESS",
         "x-displayname": "Deploy Status",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.DepolyStatus"
@@ -1714,10 +1717,7 @@
         "type": "string",
         "description": "Identifies the environment as either Production or Testing. Production environments have two infrastructure regions in an Active-Active configuration where traffic is routed equally between the two regions. Test environments have a single infrastructure region.\n\nProduction Protect live production applications and services from automated attacks.\nTest Evaluate new features, settings, and system performance.",
         "title": "EnvironmentType",
-        "enum": [
-          "PRODUCTION",
-          "TESTING"
-        ],
+        "enum": ["PRODUCTION", "TESTING"],
         "default": "PRODUCTION",
         "x-displayname": "Environment Type",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.EnvironmentType"
@@ -1781,21 +1781,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "bot_infrastructureGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "bot_infrastructureIPInfo": {
         "type": "object",
@@ -1934,15 +1919,6 @@
             "x-displayname": "Infra Host Name"
           }
         }
-      },
-      "bot_infrastructureInfraType": {
-        "type": "string",
-        "description": "x-displayName: \"Infra Type\"\nInfra Type\n\n - F5_CLOUD_HOSTED: x-displayName: \"F5 Cloud Hosted\"\nYour application are on the internet using the F5 Cloud Hosted",
-        "title": "InfraType",
-        "enum": [
-          "F5_CLOUD_HOSTED"
-        ],
-        "default": "F5_CLOUD_HOSTED"
       },
       "bot_infrastructureIngress": {
         "type": "object",
@@ -2116,11 +2092,7 @@
         "type": "string",
         "description": "The type of policy\n\n - ENDPOINT_POLICY: Endpoint Policy\n\n - NETWORK_POLICY: Network Policy\n\n - ALLOWLIST_POLICY: Allowlist Policy\n",
         "title": "PolicyType",
-        "enum": [
-          "ENDPOINT_POLICY",
-          "NETWORK_POLICY",
-          "ALLOWLIST_POLICY"
-        ],
+        "enum": ["ENDPOINT_POLICY", "NETWORK_POLICY", "ALLOWLIST_POLICY"],
         "default": "ENDPOINT_POLICY",
         "x-displayname": "Policy Type",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.PolicyType"
@@ -2320,10 +2292,7 @@
         "type": "string",
         "description": "The type of traffic that is routed to and processed by this infrastructure (Web or Mobile).\n\nOnly web traffic, including browser-based traffic from mobile devices, is routed through this Bot Defense infrastructure.\nOnly mobile traffic from native mobile apps with the Bot Defense SDK are routed through this Bot Defense infrastructure.",
         "title": "TrafficType",
-        "enum": [
-          "WEB",
-          "MOBILE"
-        ],
+        "enum": ["WEB", "MOBILE"],
         "default": "WEB",
         "x-displayname": "Traffic Type",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.TrafficType"
@@ -2775,10 +2744,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2986,6 +2952,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

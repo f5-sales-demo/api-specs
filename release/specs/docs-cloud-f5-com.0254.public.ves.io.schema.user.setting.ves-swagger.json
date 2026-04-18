@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.user.setting",
     "description": "Custom API of user settings.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/system/user/admin_notifications": {
@@ -107,7 +112,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-getadminntfnpreferences"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetAdminNtfnPreferences"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetAdminNtfnPreferences",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Update admin ntfn preferences",
@@ -212,7 +218,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-updateadminntfnpreferences"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UpdateAdminNtfnPreferences"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UpdateAdminNtfnPreferences",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -322,7 +329,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-unsetadminntfnpreference"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UnsetAdminNtfnPreference"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UnsetAdminNtfnPreference",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -429,7 +437,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-getcombinedntfnpreferences"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetCombinedNtfnPreferences"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetCombinedNtfnPreferences",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Update combined ntfn preferences",
@@ -534,7 +543,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-updatecombinedntfnpreferences"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UpdateCombinedNtfnPreferences"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UpdateCombinedNtfnPreferences",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -641,7 +651,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-getntfnpreferences"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetNtfnPreferences"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetNtfnPreferences",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Update ntfn preferences",
@@ -746,7 +757,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-updatentfnpreferences"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UpdateNtfnPreferences"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UpdateNtfnPreferences",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -856,7 +868,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-unsetntfnpreference"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UnsetNtfnPreference"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UnsetNtfnPreference",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -966,7 +979,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-resetotpdevicebyadmin"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.ResetOtpDeviceByAdmin"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.ResetOtpDeviceByAdmin",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -1073,7 +1087,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-getusersessions"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetUserSessions"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetUserSessions",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -1180,7 +1195,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.Get"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.Get",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Update",
@@ -1292,7 +1308,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-update"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.Update"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.Update",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -1402,7 +1419,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-disableuserinidm"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.DisableUserInIDM"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.DisableUserInIDM",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -1512,7 +1530,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-enableuserinidm"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.EnableUserInIDM"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.EnableUserInIDM",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -1619,7 +1638,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-getuserimage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetUserImage"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetUserImage",
+        "tags": ["web"]
       },
       "delete": {
         "summary": "DeleteUserImage",
@@ -1721,7 +1741,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-deleteuserimage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.DeleteUserImage"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.DeleteUserImage",
+        "tags": ["web"]
       },
       "put": {
         "summary": "UpdateUserImage",
@@ -1833,7 +1854,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-updateuserimage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UpdateUserImage"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.UpdateUserImage",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -1950,7 +1972,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-requestinitialaccess"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.RequestInitialAccess"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.RequestInitialAccess",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -2057,7 +2080,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-getviewpreference"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetViewPreference"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.GetViewPreference",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Set view preference",
@@ -2169,7 +2193,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-setting-customapi-setviewpreference"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.SetViewPreference"
+        "x-ves-proto-rpc": "ves.io.schema.user.setting.CustomAPI.SetViewPreference",
+        "tags": ["web"]
       },
       "x-displayname": "User Settings Custom API",
       "x-ves-proto-service": "ves.io.schema.user.setting.CustomAPI",
@@ -2648,12 +2673,7 @@
         "type": "string",
         "description": "OtpStatus can be either enabled/disabled or processing.\nApplying new policy can take time, especially if tenant has many users so for this purpose processing state is introduced.\n\n - OTP_DISABLED: OTP_DISABLED\n\nOTP disabled\n - OTP_ENABLED: OTP_ENABLED\n\nOTP enabled\n - OTP_PROCESSING: OTP_PROCESSING\n\nOTP is being updated\n - OTP_PROCESS_DISABLING: OTP_PROCESSING\n\nOTP is being updated to be disabled",
         "title": "OtpStatus",
-        "enum": [
-          "OTP_DISABLED",
-          "OTP_ENABLED",
-          "OTP_PROCESSING",
-          "OTP_PROCESS_DISABLING"
-        ],
+        "enum": ["OTP_DISABLED", "OTP_ENABLED", "OTP_PROCESSING", "OTP_PROCESS_DISABLING"],
         "default": "OTP_DISABLED",
         "x-displayname": "OtpStatus",
         "x-ves-proto-enum": "ves.io.schema.tenant.OtpStatus"
@@ -2665,6 +2685,36 @@
         "x-displayname": "Empty",
         "x-ves-proto-message": "ves.io.schema.user.setting.Empty"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

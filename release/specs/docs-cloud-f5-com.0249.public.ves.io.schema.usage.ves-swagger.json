@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.usage",
     "description": "Resource usage and pricing custom APIs",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/{namespace}/current_usage": {
@@ -129,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-usage-customcalculatedusageapi-listcurrentusage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.usage.CustomCalculatedUsageAPI.ListCurrentUsage"
+        "x-ves-proto-rpc": "ves.io.schema.usage.CustomCalculatedUsageAPI.ListCurrentUsage",
+        "tags": ["web"]
       },
       "x-displayname": "Usage",
       "x-ves-proto-service": "ves.io.schema.usage.CustomCalculatedUsageAPI",
@@ -258,7 +264,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-usage-customaggregatedusageapi-listhourlyusagedetails"
         },
-        "x-ves-proto-rpc": "ves.io.schema.usage.CustomAggregatedUsageAPI.ListHourlyUsageDetails"
+        "x-ves-proto-rpc": "ves.io.schema.usage.CustomAggregatedUsageAPI.ListHourlyUsageDetails",
+        "tags": ["web"]
       },
       "x-displayname": "Usage",
       "x-ves-proto-service": "ves.io.schema.usage.CustomAggregatedUsageAPI",
@@ -387,7 +394,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-usage-customcalculatedusageapi-listmonthlyusage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.usage.CustomCalculatedUsageAPI.ListMonthlyUsage"
+        "x-ves-proto-rpc": "ves.io.schema.usage.CustomCalculatedUsageAPI.ListMonthlyUsage",
+        "tags": ["web"]
       },
       "x-displayname": "Usage",
       "x-ves-proto-service": "ves.io.schema.usage.CustomCalculatedUsageAPI",
@@ -516,7 +524,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-usage-customaggregatedusageapi-listusagedetails"
         },
-        "x-ves-proto-rpc": "ves.io.schema.usage.CustomAggregatedUsageAPI.ListUsageDetails"
+        "x-ves-proto-rpc": "ves.io.schema.usage.CustomAggregatedUsageAPI.ListUsageDetails",
+        "tags": ["web"]
       },
       "x-displayname": "Usage",
       "x-ves-proto-service": "ves.io.schema.usage.CustomAggregatedUsageAPI",
@@ -531,12 +540,7 @@
         "type": "string",
         "description": "All possible usage line statuses\n\n - STATUS_UNKNOWN: No value defined\n - STATUS_NO_DATA: No data\n - STATUS_NOT_MEASURED: No measured\n - STATUS_ACTIVE: Active",
         "title": "Status type",
-        "enum": [
-          "STATUS_UNKNOWN",
-          "STATUS_NO_DATA",
-          "STATUS_NOT_MEASURED",
-          "STATUS_ACTIVE"
-        ],
+        "enum": ["STATUS_UNKNOWN", "STATUS_NO_DATA", "STATUS_NOT_MEASURED", "STATUS_ACTIVE"],
         "default": "STATUS_UNKNOWN",
         "x-displayname": "Status type",
         "x-ves-proto-enum": "ves.io.schema.usage.StatusType"
@@ -671,11 +675,7 @@
         "type": "string",
         "description": "Indicates what type of discount is applied for a coupon: fixed price or percentage.\n\nunknown\nThe specified amount will be given as discount.\nThe specified percentage will be given as discount.",
         "title": "Discount type",
-        "enum": [
-          "DISCOUNT_TYPE_UNKNOWN",
-          "DISCOUNT_TYPE_FIXED_AMOUNT",
-          "DISCOUNT_TYPE_PERCENTAGE"
-        ],
+        "enum": ["DISCOUNT_TYPE_UNKNOWN", "DISCOUNT_TYPE_FIXED_AMOUNT", "DISCOUNT_TYPE_PERCENTAGE"],
         "default": "DISCOUNT_TYPE_UNKNOWN",
         "x-displayname": "Discount type",
         "x-ves-proto-enum": "ves.io.schema.usage.DiscountType"
@@ -1069,6 +1069,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

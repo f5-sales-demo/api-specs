@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.k8s_pod_security_policy",
     "description": "Pod Security Policies enable fine-grained authorization of pod creation and updates.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/k8s_pod_security_policys": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-k8s_pod_security_policy-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.k8s_pod_security_policy.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.k8s_pod_security_policy.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "K8s Pod Security Policy",
       "x-ves-proto-service": "ves.io.schema.k8s_pod_security_policy.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-k8s_pod_security_policy-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.k8s_pod_security_policy.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.k8s_pod_security_policy.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete K8s Pod Security Policy",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-k8s_pod_security_policy-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.k8s_pod_security_policy.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.k8s_pod_security_policy.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "K8s Pod Security Policy",
       "x-ves-proto-service": "ves.io.schema.k8s_pod_security_policy.API",
@@ -894,21 +902,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "k8s_pod_security_policyGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "k8s_pod_security_policyGetSpecType": {
         "type": "object",
@@ -1428,58 +1421,6 @@
           }
         }
       },
-      "k8s_pod_security_policyRuntimeClassStrategyOptions": {
-        "type": "object",
-        "description": "x-displayName: \"Runtime Class Strategy\"\nAllowed runtime classes",
-        "title": "Runtime Class Strategy",
-        "properties": {
-          "allowed_runtime_class_names": {
-            "type": "array",
-            "description": "x-displayName: \"Allowed Runtime Classes\"\nx-example: \"value\"\nx-required\nList of allowed runtime class names",
-            "title": "Allowed Runtime Classes",
-            "items": {
-              "type": "string"
-            }
-          },
-          "default_runtime_class_name": {
-            "type": "string",
-            "description": "x-displayName: \"Default Runtime Class\"\nx-example: \"value\"\ndescription",
-            "title": "Default Runtime Class"
-          }
-        }
-      },
-      "k8s_pod_security_policySELinuxStrategyOptions": {
-        "type": "object",
-        "description": "x-displayName: \"SE Linux Strategy\"",
-        "title": "SE Linux Strategy",
-        "properties": {
-          "Level": {
-            "type": "string",
-            "description": "x-displayName: \"SE Linux Level\"\nx-example: \"secret\"\nRun as SE linux level label",
-            "title": "SE Linux Level"
-          },
-          "role": {
-            "type": "string",
-            "description": "x-displayName: \"SE Linux Role\"\nx-example: \"admin_r\"\nRun as SE linux label",
-            "title": "SE Linux Role"
-          },
-          "rule": {
-            "type": "string",
-            "description": "x-displayName: \"Rule\"\nx-example: \"MustRunAs\"\nRule indicated how the FS group ID range is used",
-            "title": "Rule"
-          },
-          "type": {
-            "type": "string",
-            "description": "x-displayName: \"SE Linux Type\"\nx-example: \"admin_t\"\nRun as SE linux type label",
-            "title": "SE Linux Type"
-          },
-          "user": {
-            "type": "string",
-            "description": "x-displayName: \"SE Linux User\"\nx-example: \"system_u\"\nRun as SE linux user label",
-            "title": "SE Linux User"
-          }
-        }
-      },
       "k8s_pod_security_policyStatusObject": {
         "type": "object",
         "description": "Most recently observed status of object",
@@ -1957,10 +1898,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2122,6 +2060,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

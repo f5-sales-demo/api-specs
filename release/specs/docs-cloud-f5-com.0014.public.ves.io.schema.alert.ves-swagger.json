@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.alert",
     "description": "Alert may be generated based on the metrics or based on severity level in the logs. All alerts are scoped by \ntenant and namespace and tagged with the following default labels that can be used to fetch\nthe desired alerts.\n\n\"alertname\" - Name of the alert. This uniquely identifies the alert rule/configuration that generated the alert.\n\"type\" - Type of the alert. Type is used to associate alert to a configuration object or any user visible entity.\n         For example, virtual host, virtual network, app_type, etc.\n\"identifier\" - Identifier of the alert. For virtual-network, this would be the name of the virtual-network.\n\"severity\" - Indicates the severity of the alert. Valid values are minor, major, critical.\n\nAlert may have additional labels associated depending on the labels associated with the metric used to configure the alert rule.\nAlerts can be queried by specifying one or more of the above labels in the match filter.\nIf the match filter is not specified, then all the alerts for the tenant and corresponding namespace in the request will be returned in the response.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/data/namespaces/system/all_ns_alerts": {
@@ -106,7 +111,7 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "x-example: \"value\"\nnamespace to scope the listing of alerts.\nwhen namespace = \"system\", all alerts for the tenant will be returned.",
+            "description": "x-example: \"value\"\nnamespace to scope the listing of alerts.\nwhen namespace = \"example-namespace\", all alerts for the tenant will be returned.",
             "in": "query",
             "required": false,
             "x-displayname": "Namespace",
@@ -173,7 +178,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-alert-customapi-alertsallnamespaces"
         },
-        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsAllNamespaces"
+        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsAllNamespaces",
+        "tags": ["data"]
       },
       "x-displayname": "Alerts",
       "x-ves-proto-service": "ves.io.schema.alert.CustomAPI",
@@ -279,7 +285,7 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "namespace\n\nx-example: \"value\"\nnamespace to scope the listing of alerts.\nwhen namespace = \"system\", all alerts for the tenant will be returned.",
+            "description": "namespace\n\nx-example: \"value\"\nnamespace to scope the listing of alerts.\nwhen namespace = \"example-namespace\", all alerts for the tenant will be returned.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
@@ -346,7 +352,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-alert-customapi-alerts"
         },
-        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.Alerts"
+        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.Alerts",
+        "tags": ["data"]
       },
       "x-displayname": "Alerts",
       "x-ves-proto-service": "ves.io.schema.alert.CustomAPI",
@@ -495,7 +502,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-alert-customapi-alertshistory"
         },
-        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsHistory"
+        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsHistory",
+        "tags": ["data"]
       },
       "x-displayname": "Alerts",
       "x-ves-proto-service": "ves.io.schema.alert.CustomAPI",
@@ -624,7 +632,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-alert-customapi-alertshistoryaggregation"
         },
-        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsHistoryAggregation"
+        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsHistoryAggregation",
+        "tags": ["data"]
       },
       "x-displayname": "Alerts",
       "x-ves-proto-service": "ves.io.schema.alert.CustomAPI",
@@ -753,12 +762,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-alert-customapi-alertshistoryscroll"
         },
-        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll"
+        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll",
+        "tags": ["data"]
       },
       "post": {
         "summary": "Alerts History Scroll",
         "description": "Scroll request is used to fetch large number of alert messages in multiple batches with each AlertsHistoryResponse\ncontaining no more than 500 alerts. To scroll through more than 500 or all alert messages, one can use the\nAlertsHistoryScrollRequest. Use the scroll_id returned in the AlertsHistoryResponse to fetch the next batch of alert messages and\none can continue this process till the scroll_id returned in the AlertsHistoryResponse is \"\" which indicates no more\nalert messages to scroll.",
-        "operationId": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll",
+        "operationId": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -877,7 +887,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-alert-customapi-alertshistoryscroll"
         },
-        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll"
+        "x-ves-proto-rpc": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll",
+        "tags": ["data"]
       },
       "x-displayname": "Alerts",
       "x-ves-proto-service": "ves.io.schema.alert.CustomAPI",
@@ -888,25 +899,6 @@
   "x-ves-proto-package": "ves.io.schema.alert",
   "components": {
     "schemas": {
-      "alertAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the alert response",
-        "title": "Aggregation Request",
-        "properties": {
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/alertCardinalityAggregation"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/alertDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/alertFieldAggregation"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/alertMultiFieldAggregation"
-          }
-        }
-      },
       "alertAlertsHistoryAggregationRequest": {
         "type": "object",
         "description": "Request to get only aggregation data for alerts.",
@@ -1063,16 +1055,6 @@
           }
         }
       },
-      "alertDateSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\nAggregate alerts in each date bucket based on one of the sub aggregation types",
-        "title": "Date SubAggregation",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/alertFieldAggregation"
-          }
-        }
-      },
       "alertFieldAggregation": {
         "type": "object",
         "description": "x-displayName: \"Field Aggregation\"\nAggregate alerts based on the key fields in the alert.",
@@ -1093,15 +1075,7 @@
         "type": "string",
         "description": "x-displayName: \"Key Field\"\nAlerts can be aggregated based on these fields.\n\n - ALERTNAME: x-displayName: \"Alertname\"\n - IDENTIFIER: x-displayName: \"Identifier\"\n - GROUP: x-displayName: \"Group\"\n - SEVERITY: x-displayName: \"Severity\"\n - SITE: x-displayName: \"Site\"\n - STARTSAT: x-displayName: \"StartsAt\"\n - DESCRIPTION: x-displayName: \"Description\"",
         "title": "Key Field",
-        "enum": [
-          "ALERTNAME",
-          "IDENTIFIER",
-          "GROUP",
-          "SEVERITY",
-          "SITE",
-          "STARTSAT",
-          "DESCRIPTION"
-        ],
+        "enum": ["ALERTNAME", "IDENTIFIER", "GROUP", "SEVERITY", "SITE", "STARTSAT", "DESCRIPTION"],
         "default": "ALERTNAME"
       },
       "alertMultiFieldAggregation": {
@@ -1127,16 +1101,6 @@
             "description": "x-displayName: \"TopK\"\nx-example: \"5\"\n\nNumber of top field values to be returned in the response.\nOptional: If not specified, top 5 values will be returned in the response.",
             "title": "topk",
             "format": "int64"
-          }
-        }
-      },
-      "alertMultiFieldSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"MultiFieldSubAggregation\"\nAggregate events in each field bucket based on one of the sub aggregation types",
-        "title": "MultiFieldSubAggregation",
-        "properties": {
-          "top_hits_aggregation": {
-            "$ref": "#/components/schemas/alertTopHitsAggregation"
           }
         }
       },
@@ -1254,19 +1218,6 @@
           }
         }
       },
-      "logDateSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\n\nDate subaggregation data",
-        "title": "DateSubAggregationData",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          }
-        }
-      },
       "logFieldAggregationBucket": {
         "type": "object",
         "description": "x-displayName: \"Field Aggregation Bucket\"\nField aggregation bucket containing field value and the number of logs.",
@@ -1332,39 +1283,6 @@
           }
         }
       },
-      "logFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field SubAggregation\"\nField subaggregation data",
-        "title": "FieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field values and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubAggregationBucket"
-            }
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
-          }
-        }
-      },
       "logFieldSubFieldAggregationBucket": {
         "type": "object",
         "description": "x-displayName: \"Field Sub Field Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
@@ -1383,21 +1301,6 @@
           }
         }
       },
-      "logFieldSubFieldAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field Sub Field Aggregation Data\"\nField Aggregation data as Field Sub-aggregation",
-        "title": "FieldSubFieldAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubFieldAggregationBucket"
-            }
-          }
-        }
-      },
       "logFilterAggregationData": {
         "type": "object",
         "description": "x-displayName: \"Filter Aggregation Data\"\nFilter Aggregation Data",
@@ -1413,21 +1316,6 @@
             "type": "object",
             "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
             "title": "sub aggregation"
-          }
-        }
-      },
-      "logFilterSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"FilterSubAggregation\"\nFilter subaggregation data",
-        "title": "FilterSubAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFilterSubFieldAggregationBucket"
-            }
           }
         }
       },
@@ -1451,43 +1339,6 @@
             "type": "object",
             "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
             "title": "sub aggregation"
-          }
-        }
-      },
-      "logLogAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Log Aggregation\"\nLog aggregation response data",
-        "title": "LogAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logDateAggregationData"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/logMetricsAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
           }
         }
       },
@@ -1568,28 +1419,6 @@
           }
         }
       },
-      "logMultiFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Multi Field SubAggregation\"\nField subaggregation data",
-        "title": "MultiFieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "top_hits_aggregation": {
-            "$ref": "#/components/schemas/logTopHitsAggregationData"
-          }
-        }
-      },
       "logMultiFilterAggregationData": {
         "type": "object",
         "description": "x-displayName: \"Multi Filter Aggregation Data\"\nMulti Filter Aggregation data",
@@ -1657,11 +1486,7 @@
         "type": "string",
         "description": "x-displayName: \"Trend Sentiment\"\ntrend sentiment\n\n - TREND_SENTIMENT_NONE: x-displayName: \"None\"\n - TREND_SENTIMENT_POSITIVE: x-displayName: \"Positive\"\nIndicates trend sentiment is positive\n - TREND_SENTIMENT_NEGATIVE: x-displayName: \"Negative\"\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE"
       },
       "schemaTrendValue": {
@@ -1689,6 +1514,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    }
+  ]
 }

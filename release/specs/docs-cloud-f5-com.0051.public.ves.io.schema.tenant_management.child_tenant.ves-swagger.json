@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tenant_management.child_tenant",
     "description": "\nChild Tenant",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/system/partner-management/child_tenants": {
@@ -150,7 +155,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customapi-listchildtenants"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomAPI.ListChildTenants"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomAPI.ListChildTenants",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.CustomAPI",
@@ -267,7 +273,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customapi-migratechildtenants"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomAPI.MigrateChildTenants"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomAPI.MigrateChildTenants",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.CustomAPI",
@@ -374,7 +381,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customersupportcustomapi-listchildtenantsupporttickets"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.ListChildTenantSupportTickets"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.ListChildTenantSupportTickets",
+        "tags": ["web"]
       },
       "post": {
         "summary": "Create customer support ticket in child tenant",
@@ -486,7 +494,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customersupportcustomapi-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Create"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Create",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI",
@@ -605,7 +614,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customersupportcustomapi-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Get"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Get",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI",
@@ -727,7 +737,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customersupportcustomapi-close"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Close"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Close",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI",
@@ -856,7 +867,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customersupportcustomapi-comment"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Comment"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Comment",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI",
@@ -978,7 +990,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customersupportcustomapi-escalate"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Escalate"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Escalate",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI",
@@ -1107,7 +1120,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customersupportcustomapi-priority"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Priority"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Priority",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI",
@@ -1229,7 +1243,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-customersupportcustomapi-reopen"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Reopen"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI.Reopen",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.CustomerSupportCustomAPI",
@@ -1654,7 +1669,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.API.List",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.API",
@@ -1803,7 +1819,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.API.Get",
+        "tags": ["web"]
       },
       "delete": {
         "summary": "Delete Child Tenant",
@@ -1935,7 +1952,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant.API.Delete",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant.API",
@@ -2152,11 +2170,7 @@
         "type": "string",
         "description": "Determines the contact type\n\nIndicates snail mail address (used for correspondence)\nIndicates billing address (this address will appear on invoices)\nIndicates contact used for a payment method (this address is used when charging a payment method)",
         "title": "Contact Type",
-        "enum": [
-          "MAILING",
-          "BILLING",
-          "PAYMENT"
-        ],
+        "enum": ["MAILING", "BILLING", "PAYMENT"],
         "default": "MAILING",
         "x-displayname": "Contact Type",
         "x-ves-proto-enum": "ves.io.schema.contact.ContactType"
@@ -2365,12 +2379,7 @@
         "type": "string",
         "description": "Support ticket priority helps understand importance of the ticket and focus\nmore on more critical issues.\n\nUnknown/empty priority\nNormal priority issue\nHigh priority issue\nUrgent priority issue",
         "title": "SupportTicketPriority",
-        "enum": [
-          "PRIORITY_UNKNOWN",
-          "PRIORITY_NORMAL",
-          "PRIORITY_HIGH",
-          "PRIORITY_URGENT"
-        ],
+        "enum": ["PRIORITY_UNKNOWN", "PRIORITY_NORMAL", "PRIORITY_HIGH", "PRIORITY_URGENT"],
         "default": "PRIORITY_UNKNOWN",
         "x-displayname": "Priority",
         "x-ves-proto-enum": "ves.io.schema.customer_support.SupportTicketPriority"
@@ -2900,10 +2909,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -3258,14 +3264,7 @@
         "type": "string",
         "description": "ErrorCode is used to know the specific reason for customer support operation failures\n\n - EUNKNOWN: an unknown error occurred\n - EOK: Successful operation\n - E_NOT_CLOSED: Customer support ticket not closed\n - E_NOT_OPEN: Customer support ticket not open\n - E_NOT_ELIGIBLE: Customer is not eligible for this operation (i.e. when escalating a ticket then this indicates customer not being enterprise)\n - E_NOT_NOT_FOUND: Support ticket couldn't be found.",
         "title": "error code",
-        "enum": [
-          "EUNKNOWN",
-          "EOK",
-          "E_NOT_CLOSED",
-          "E_NOT_OPEN",
-          "E_NOT_ELIGIBLE",
-          "E_NOT_NOT_FOUND"
-        ],
+        "enum": ["EUNKNOWN", "EOK", "E_NOT_CLOSED", "E_NOT_OPEN", "E_NOT_ELIGIBLE", "E_NOT_NOT_FOUND"],
         "default": "EUNKNOWN",
         "x-displayname": "Error Code",
         "x-ves-proto-enum": "ves.io.schema.customer_support.ErrorCode"
@@ -4004,21 +4003,6 @@
           }
         }
       },
-      "tenant_managementchild_tenantGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "tenant_managementchild_tenantGetSpecType": {
         "type": "object",
         "description": "Get child_tenant reads a given object from storage backend for metadata.namespace.",
@@ -4270,6 +4254,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

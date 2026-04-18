@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.log_receiver",
     "description": "Log Receiver is used to specify a receiver (syslog, splunk, datadog etc.,) to send the log. Log receiver need to be reachable on site local network.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/log_receivers": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log_receiver-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log_receiver.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.log_receiver.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Log Receiver",
       "x-ves-proto-service": "ves.io.schema.log_receiver.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log_receiver-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log_receiver.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.log_receiver.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Log Receiver",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log_receiver-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log_receiver.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.log_receiver.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Log Receiver",
       "x-ves-proto-service": "ves.io.schema.log_receiver.API",
@@ -845,7 +853,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log_receiver-customapi-testlogreceiver"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log_receiver.CustomAPI.TestLogReceiver"
+        "x-ves-proto-rpc": "ves.io.schema.log_receiver.CustomAPI.TestLogReceiver",
+        "tags": ["config"]
       },
       "x-displayname": "Log Receiver",
       "x-ves-proto-service": "ves.io.schema.log_receiver.CustomAPI",
@@ -954,47 +963,6 @@
           }
         }
       },
-      "log_receiverDataDogReceiver": {
-        "type": "object",
-        "description": "x-displayName: \"Datadog Server Configuration\"\nConfiguration for Datadog server",
-        "title": "Datadog Server Configuration",
-        "properties": {
-          "compression_disabled": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "compression_enabled": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "datadog_api_key": {
-            "$ref": "#/components/schemas/schemaSecretType"
-          },
-          "datadog_default_server": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "default_port": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "port": {
-            "type": "integer",
-            "description": "x-displayName: \"Custom Port Number\"\nx-example: \"3000\"\nCustom port number used for communication",
-            "title": "Custom Port Number",
-            "format": "int64"
-          },
-          "server_name": {
-            "type": "string",
-            "description": "x-displayName: \"Custom Server Name\"\nx-example: \"myserver.datadoghq.com\"\nCustom fully qualified server name",
-            "title": "Custom Server Name"
-          },
-          "trusted_ca_url": {
-            "type": "string",
-            "description": "x-displayName: \"Server CA Certificates\"\nThe URL or value for trusted Server CA certificate or certificate chain\nCertificates in PEM format including the PEM headers.",
-            "title": "Server CA certificates"
-          },
-          "volterra_ca": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
       "log_receiverDeleteRequest": {
         "type": "object",
         "description": "This is the input message of the 'Delete' RPC.",
@@ -1084,21 +1052,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "log_receiverGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "log_receiverGetSpecType": {
         "type": "object",
@@ -1296,25 +1249,6 @@
           },
           "syslog": {
             "$ref": "#/components/schemas/log_receiverSyslogReceiver"
-          }
-        }
-      },
-      "log_receiverSplunkReceiver": {
-        "type": "object",
-        "description": "x-displayName: \"Splunk HEC Configuration\"\nConfiguration for Splunk server",
-        "title": "Splunk HEC Configuration",
-        "properties": {
-          "splunk_hec_token": {
-            "$ref": "#/components/schemas/schemaSecretType"
-          },
-          "splunk_server_ip": {
-            "$ref": "#/components/schemas/log_receiverIPServerConfigType"
-          },
-          "splunk_server_name": {
-            "$ref": "#/components/schemas/log_receiverHTTPServerConfigType"
-          },
-          "splunk_server_tls": {
-            "$ref": "#/components/schemas/log_receiverTLSConfigType"
           }
         }
       },
@@ -1571,24 +1505,6 @@
               "ves.io.schema.rules.message.required": "true",
               "ves.io.schema.rules.string.hostname_or_ip": "true",
               "ves.io.schema.rules.string.max_len": "256"
-            }
-          }
-        }
-      },
-      "log_receiverWhereSites": {
-        "type": "object",
-        "description": "x-displayName: \"Site\"\nThis defines a reference to CE sites along with network type",
-        "title": "WhereSite",
-        "properties": {
-          "network": {
-            "$ref": "#/components/schemas/viewsSiteNetwork"
-          },
-          "site": {
-            "type": "array",
-            "description": "x-displayName: \"Site Reference\"\nx-required\nReference to CE sites",
-            "title": "Site",
-            "items": {
-              "$ref": "#/components/schemas/schemaviewsObjectRefType"
             }
           }
         }
@@ -2004,10 +1920,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -2089,10 +2002,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2217,37 +2127,6 @@
           }
         }
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -2282,18 +2161,6 @@
             "title": "uid",
             "x-displayname": "UID",
             "x-ves-example": "f3744323-1adf-4aaa-a5dc-0707c1d1bd82"
-          }
-        }
-      },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
           }
         }
       },
@@ -2334,6 +2201,36 @@
         ],
         "default": "SITE_NETWORK_INSIDE_AND_OUTSIDE"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

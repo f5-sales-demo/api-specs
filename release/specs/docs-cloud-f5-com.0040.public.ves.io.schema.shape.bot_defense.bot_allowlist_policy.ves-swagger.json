@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.bot_allowlist_policy",
     "description": "Configures Bot allowlist Policy",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/bot/custom/namespaces/{namespace}/bot_allowlist_policies": {
@@ -119,7 +124,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_allowlist_policy-customapi-getallowlistpoliciesandversionslist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI.GetAllowlistPoliciesAndVersionsList"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI.GetAllowlistPoliciesAndVersionsList",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot allowlist Policy",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI",
@@ -257,7 +263,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_allowlist_policy-customapi-customreplace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI.CustomReplace"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI.CustomReplace",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot allowlist Policy",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI",
@@ -525,7 +532,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_allowlist_policy-customapi-getallowlistpolicyversions"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI.GetAllowlistPolicyVersions"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI.GetAllowlistPolicyVersions",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot allowlist Policy",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI",
@@ -682,7 +690,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_allowlist_policy-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.API.List",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot allowlist Policy",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.API",
@@ -830,7 +839,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_allowlist_policy-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.API.Get",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot allowlist Policy",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.API",
@@ -969,7 +979,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_allowlist_policy-customapi-getcontent"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI.GetContent"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI.GetContent",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot allowlist Policy",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_allowlist_policy.CustomAPI",
@@ -1092,20 +1103,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "bot_allowlist_policyGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "bot_allowlist_policyGetSpecType": {
         "type": "object",
@@ -1331,23 +1328,6 @@
               "$ref": "#/components/schemas/ioschemaObjectRefType"
             },
             "x-displayname": "Config Object"
-          }
-        }
-      },
-      "bot_defenseBotInfraWithVersion": {
-        "type": "object",
-        "description": "x-displayName: \"Bot Infrastructure with in-use policy version\"\nBot Infra Name with its in use version",
-        "title": "Bot Infrastructure with in-use version",
-        "properties": {
-          "bot_infra_name": {
-            "type": "string",
-            "description": "x-displayName: \"Bot Infra name\"\nx-example: \"cluster-1\"\nThe cluster id deployed this policy",
-            "title": "Bot Infra Name"
-          },
-          "in_use_version": {
-            "type": "string",
-            "description": "x-displayName: \"In Use Version\"\nx-example: \"1.0\"\nThe version of policy deployed to cluster\nThe version format should be X.0",
-            "title": "In Use Version"
           }
         }
       },
@@ -1922,10 +1902,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2087,6 +2064,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

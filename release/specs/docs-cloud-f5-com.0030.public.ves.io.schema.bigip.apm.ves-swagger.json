@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.bigip.apm",
     "description": "BIG-IP APM Service handles the life-cycle management of BIG-IP appliances.\nBIG-IP APM Service manages the lifecycle of the BIG-IP appliance, which includes the functionalities like health checks, restarts, dynamic\naddition and deletion of BIG-IP instances for auto scaling.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/apms": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "BIG-IP APM as a Service",
       "x-ves-proto-service": "ves.io.schema.bigip.apm.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete BIG-IP APM as a Service",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "BIG-IP APM as a Service",
       "x-ves-proto-service": "ves.io.schema.bigip.apm.API",
@@ -835,7 +843,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-customdataapi-metrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.CustomDataAPI.Metrics"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.CustomDataAPI.Metrics",
+        "tags": ["data"]
       },
       "x-displayname": "BIG-IP APM as a Service",
       "x-ves-proto-service": "ves.io.schema.bigip.apm.CustomDataAPI",
@@ -1128,21 +1137,6 @@
           }
         }
       },
-      "apmGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "apmListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -1281,11 +1275,7 @@
         "type": "string",
         "description": "Labels in BIG-IP APM Service Metrics\n",
         "title": "Metric Label",
-        "enum": [
-          "SITE",
-          "SERVICE",
-          "SERVICE_INSTANCE"
-        ],
+        "enum": ["SITE", "SERVICE", "SERVICE_INSTANCE"],
         "default": "SITE",
         "x-displayname": "Metric Label",
         "x-ves-proto-enum": "ves.io.schema.bigip.apm.MetricLabel"
@@ -1708,11 +1698,7 @@
         "type": "string",
         "description": "Enum to define amount of memory to be assigned to the node\n\n - BM_8_GB_MEMORY: 8 GB\n\n - BM_16_GB_MEMORY: 16 GB\n\n - BM_32_GB_MEMORY: 32 GB\n",
         "title": "Option to select amount of memory",
-        "enum": [
-          "BM_8_GB_MEMORY",
-          "BM_16_GB_MEMORY",
-          "BM_32_GB_MEMORY"
-        ],
+        "enum": ["BM_8_GB_MEMORY", "BM_16_GB_MEMORY", "BM_32_GB_MEMORY"],
         "default": "BM_8_GB_MEMORY",
         "x-displayname": "Bare Metal ServiceNode Memory Size",
         "x-ves-proto-enum": "ves.io.schema.nfv_service.BMNodeMemorySize"
@@ -1721,10 +1707,7 @@
         "type": "string",
         "description": "Enum to define number of virtual CPU's to be assigned to the node\n\n - BM_4_VCPU: 4 virtual CPUs\n\n - BM_8_VCPU: 8 virtual CPUs\n",
         "title": "Option to select number of virtual CPUs",
-        "enum": [
-          "BM_4_VCPU",
-          "BM_8_VCPU"
-        ],
+        "enum": ["BM_4_VCPU", "BM_8_VCPU"],
         "default": "BM_4_VCPU",
         "x-displayname": "Bare Metal ServiceNode Virtual CPU Count",
         "x-ves-proto-enum": "ves.io.schema.nfv_service.BMNodeVirtualCpuCount"
@@ -2254,11 +2237,7 @@
         "type": "string",
         "description": "Specifies the Hash Algorithm to be used\n\nInvalid hash algorithm\nsha256 hash algorithm\nsha1 hash algorithm",
         "title": "HashAlgoritm",
-        "enum": [
-          "INVALID_HASH_ALGORITHM",
-          "SHA256",
-          "SHA1"
-        ],
+        "enum": ["INVALID_HASH_ALGORITHM", "SHA256", "SHA1"],
         "default": "INVALID_HASH_ALGORITHM",
         "x-displayname": "Hash Algorithm",
         "x-ves-proto-enum": "ves.io.schema.HashAlgorithm"
@@ -2576,10 +2555,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -2661,10 +2637,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2838,13 +2811,7 @@
         "type": "string",
         "description": "TlsProtocol is enumeration of supported TLS versions\n\nF5 Distributed Cloud will choose the optimal TLS version.",
         "title": "TlsProtocol",
-        "enum": [
-          "TLS_AUTO",
-          "TLSv1_0",
-          "TLSv1_1",
-          "TLSv1_2",
-          "TLSv1_3"
-        ],
+        "enum": ["TLS_AUTO", "TLSv1_0", "TLSv1_1", "TLSv1_2", "TLSv1_3"],
         "default": "TLS_AUTO",
         "x-displayname": "TLS Protocol",
         "x-ves-proto-enum": "ves.io.schema.TlsProtocol"
@@ -2853,11 +2820,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -2932,37 +2895,6 @@
         "x-displayname": "Unit",
         "x-ves-proto-enum": "ves.io.schema.UnitType"
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -3000,30 +2932,11 @@
           }
         }
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemaXfccElement": {
         "type": "string",
         "description": "X-Forwarded-Client-Cert custom cookie elements\n\nThe entire client certificate in URL encoded PEM format.\nThe entire client certificate chain (including the leaf certificate) in URL encoded PEM format.\nThe Subject field of the current client certificate. The value is always double-quoted.\nThe URI type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple URI type Subject Alternative Names,\neach will be a separate key-value pair.\nThe DNS type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple DNS type Subject Alternative Names,\neach will be a separate key-value pair.",
         "title": "XfccElement",
-        "enum": [
-          "XFCC_NONE",
-          "XFCC_CERT",
-          "XFCC_CHAIN",
-          "XFCC_SUBJECT",
-          "XFCC_URI",
-          "XFCC_DNS"
-        ],
+        "enum": ["XFCC_NONE", "XFCC_CERT", "XFCC_CHAIN", "XFCC_SUBJECT", "XFCC_URI", "XFCC_DNS"],
         "default": "XFCC_NONE",
         "x-displayname": "XFCC Elements",
         "x-ves-proto-enum": "ves.io.schema.XfccElement"
@@ -3149,12 +3062,7 @@
       "terraform_parametersDestroyStageState": {
         "type": "string",
         "title": "- DESTROYED: x-displayName: \"Destroyed\"\n - DESTROY_ERRORED: x-displayName: \"Destroy errored\"\n - DESTROYING: x-displayName: \"Destroying\"\n - DESTROY_QUEUED: x-displayName: \"Destroy Queued\"",
-        "enum": [
-          "DESTROYED",
-          "DESTROY_ERRORED",
-          "DESTROYING",
-          "DESTROY_QUEUED"
-        ],
+        "enum": ["DESTROYED", "DESTROY_ERRORED", "DESTROYING", "DESTROY_QUEUED"],
         "default": "DESTROYED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.DestroyStageState"
@@ -3162,36 +3070,10 @@
       "terraform_parametersInfraState": {
         "type": "string",
         "title": "- PROVISIONED: x-displayName: \"Provisioned\"\n - TIMED_OUT: x-displayName: \"Timed out\"\n - ERRORED: x-displayName: \"Errored\"\n - PROVISIONING: x-displayName: \"Provisioning\"",
-        "enum": [
-          "PROVISIONED",
-          "TIMED_OUT",
-          "ERRORED",
-          "PROVISIONING"
-        ],
+        "enum": ["PROVISIONED", "TIMED_OUT", "ERRORED", "PROVISIONING"],
         "default": "PROVISIONED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.InfraState"
-      },
-      "terraform_parametersRollbackState": {
-        "type": "string",
-        "title": "- ROLLBACK_SUCCESSFUL: x-displayName: \"Rollback successful\"\n - ROLLBACK_ERRORED: x-displayName: \"Rollback errored\"\n - ROLLBACK_NOT_REQUIRED: x-displayName: \"Rollback not required\"",
-        "enum": [
-          "ROLLBACK_SUCCESSFUL",
-          "ROLLBACK_ERRORED",
-          "ROLLBACK_NOT_REQUIRED"
-        ],
-        "default": "ROLLBACK_SUCCESSFUL"
-      },
-      "terraform_parametersUpgradeState": {
-        "type": "string",
-        "description": "x-displayName: \"Upgrade State\"\nTerraform State after version Upgrade\n\n - UPGRADE_SUCCESSFUL: x-displayName: \"Upgrade successful\"\n - UPGRADE_ERRORED: x-displayName: \"Upgrade errored\"\n - UPGRADE_NOT_REQUIRED: x-displayName: \"Upgrade not required\"",
-        "title": "Upgrade State",
-        "enum": [
-          "UPGRADE_SUCCESSFUL",
-          "UPGRADE_ERRORED",
-          "UPGRADE_NOT_REQUIRED"
-        ],
-        "default": "UPGRADE_SUCCESSFUL"
       },
       "viewsAdvertisePublic": {
         "type": "object",
@@ -3415,6 +3297,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "data"
+    }
+  ]
 }

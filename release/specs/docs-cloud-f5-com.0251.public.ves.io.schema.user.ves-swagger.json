@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.user",
     "description": "This API can be used to manage various attributes of the user like\nrole, contact information etc.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/custom/idm/user/sync": {
@@ -110,7 +115,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-syncuser"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.SyncUser"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.SyncUser",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -220,7 +226,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-addusertogroup"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.AddUserToGroup"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.AddUserToGroup",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -330,7 +337,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-removeuserfromgroup"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.RemoveUserFromGroup"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.RemoveUserFromGroup",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -459,7 +467,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-accepttos"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.AcceptTOS"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.AcceptTOS",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -588,7 +597,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-assignrole"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.AssignRole"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.AssignRole",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -717,7 +727,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-sendpasswordemail"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.SendPasswordEmail"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.SendPasswordEmail",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -836,7 +847,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-gettos"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.GetTOS"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.GetTOS",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -955,7 +967,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.List"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.List",
+        "tags": ["web"]
       },
       "post": {
         "summary": "Create User with Role Assignment",
@@ -1072,7 +1085,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.Create"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.Create",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Update User and Role Assignments",
@@ -1189,7 +1203,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.Replace",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -1199,7 +1214,7 @@
       "post": {
         "summary": "Update User and Role Assignments",
         "description": "Replace updates user and namespace roles for this user",
-        "operationId": "ves.io.schema.user.CustomAPI.Replace",
+        "operationId": "ves.io.schema.user.CustomAPI.Replace_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1321,7 +1336,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.Replace",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -1450,7 +1466,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-cascadedelete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.CascadeDelete"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.CascadeDelete",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -1569,7 +1586,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.Get"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.Get",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -1686,7 +1704,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-resetpasswordbyadmin"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.ResetPasswordByAdmin"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.ResetPasswordByAdmin",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -1796,7 +1815,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-user-customapi-resetpassword"
         },
-        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.ResetPassword"
+        "x-ves-proto-rpc": "ves.io.schema.user.CustomAPI.ResetPassword",
+        "tags": ["web"]
       },
       "x-displayname": "User",
       "x-ves-proto-service": "ves.io.schema.user.CustomAPI",
@@ -1879,12 +1899,7 @@
         "type": "string",
         "description": "x-displayName: \"Addon Service State\"\nState of a service\n\n - AS_NONE: x-displayName: \"None\"\ndefault state\n - AS_PENDING: x-displayName: \"Pending Subscription\"\ninitiated subscription request and is pending to activate (requested).\n - AS_SUBSCRIBED: x-displayName: \"Subscribed\"\nsuccessfully subscribed\n - AS_ERROR: x-displayName: \"Error\"\nservice subscription request ended up in error state.",
         "title": "AddonServiceState",
-        "enum": [
-          "AS_NONE",
-          "AS_PENDING",
-          "AS_SUBSCRIBED",
-          "AS_ERROR"
-        ],
+        "enum": ["AS_NONE", "AS_PENDING", "AS_SUBSCRIBED", "AS_ERROR"],
         "default": "AS_NONE"
       },
       "schemaErrorCode": {
@@ -2141,42 +2156,16 @@
         "type": "string",
         "description": "PlanType is the type of billing plan for the customer\n",
         "title": "PlanType",
-        "enum": [
-          "FREE",
-          "INDIVIDUAL",
-          "TEAM",
-          "ORGANIZATION",
-          "PLAN_TYPE_UNSPECIFIED"
-        ],
+        "enum": ["FREE", "INDIVIDUAL", "TEAM", "ORGANIZATION", "PLAN_TYPE_UNSPECIFIED"],
         "default": "FREE",
         "x-displayname": "Plan Type",
         "x-ves-proto-enum": "ves.io.schema.PlanType"
-      },
-      "schemaRoleListType": {
-        "type": "object",
-        "description": "x-displayName: \"Role List\"\nRole list",
-        "title": "List of Roles",
-        "properties": {
-          "names": {
-            "type": "array",
-            "description": "x-displayName: \"Roles List\"\nx-example: [\"ves-io-monitor-role\", \"ves-io-uam-admin-role\"]\nx-required\nList of all the roles",
-            "title": "Roles List",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
       },
       "schemaSignupOrigin": {
         "type": "string",
         "description": "x-required\nSignupOrigin indicates, from which platform signup is originated, example f5xc, aws..etc\n\n - ORIGIN_UNKNOWN: ORIGIN_UNKNOWN\n\nIndicates, the origin of the signup is unknown\n - ORIGIN_F5XC: ORIGIN_F5XC\n\nORIGIN_F5XC as an origin indicates, signup is initiated from console or by internal scaling/testing/support teams using private API\n - ORIGIN_AWS: ORIGIN_AWS\n\nORIGIN_AWS as an origin indicates, signup is initiated from AWS marketplace & it comes to eywaprime via tsahik\n - ORIGIN_ASB: ORIGIN_ASB\n\nORIGIN_ASB as an origin indicates signup originated from Azure service bus provisioning messages & it comes to eywaprime via tsahik",
         "title": "SignupOrigin",
-        "enum": [
-          "ORIGIN_UNKNOWN",
-          "ORIGIN_F5XC",
-          "ORIGIN_AWS",
-          "ORIGIN_ASB"
-        ],
+        "enum": ["ORIGIN_UNKNOWN", "ORIGIN_F5XC", "ORIGIN_AWS", "ORIGIN_ASB"],
         "default": "ORIGIN_UNKNOWN",
         "x-displayname": "Signup Origin",
         "x-ves-proto-enum": "ves.io.schema.SignupOrigin"
@@ -2216,10 +2205,7 @@
         "type": "string",
         "description": "Sync mode is to specify where the user details are being synced from.\n\n - SELF: Self\nSystem managed user.\n - SCIM: SCIM\nSCIM synced user. Full user life cycle is managed by the SCIM provider.",
         "title": "Sync Mode",
-        "enum": [
-          "SELF",
-          "SCIM"
-        ],
+        "enum": ["SELF", "SCIM"],
         "default": "SELF",
         "x-displayname": "Sync Mode",
         "x-ves-proto-enum": "ves.io.schema.SyncMode"
@@ -2378,11 +2364,7 @@
         "type": "string",
         "description": "TenantType is the type of the customer\n\nUNKNOWN indicates the field not being set\nFREEMIUM are customer that don't have their domain\nENTERPRiISE customer have their domain",
         "title": "TenantType",
-        "enum": [
-          "UNKNOWN",
-          "FREEMIUM",
-          "ENTERPRISE"
-        ],
+        "enum": ["UNKNOWN", "FREEMIUM", "ENTERPRISE"],
         "default": "UNKNOWN",
         "x-displayname": "Tenant type",
         "x-ves-proto-enum": "ves.io.schema.TenantType"
@@ -2391,12 +2373,7 @@
         "type": "string",
         "description": "x-displayName: \"Tile Access State\"\nState of access to Primary navigation tile.\n\n - TILE_AC_NONE: x-displayName: \"None\"\ndefault state\n - TILE_AC_ALLOWED: x-displayName: \"Allowed\"\naccess is allowed\n - TILE_AC_UPGRADE_PLAN: x-displayName: \"Upgrade Plan\"\nRequire plan upgrade.\n - TILE_AC_NOT_SUBSCRIBED: x-displayName: \"Not Subscribed\"\nRequired Addon Service is not subscribed.",
         "title": "TileAccessState",
-        "enum": [
-          "TILE_AC_NONE",
-          "TILE_AC_ALLOWED",
-          "TILE_AC_UPGRADE_PLAN",
-          "TILE_AC_NOT_SUBSCRIBED"
-        ],
+        "enum": ["TILE_AC_NONE", "TILE_AC_ALLOWED", "TILE_AC_UPGRADE_PLAN", "TILE_AC_NOT_SUBSCRIBED"],
         "default": "TILE_AC_NONE"
       },
       "schemaViewRefType": {
@@ -2492,34 +2469,10 @@
         "type": "string",
         "description": "Used to identify the tenant access\n\n - UNKNOWN_ACCESS: UNKNOWN_ACCESS\n\nWhen unable to determine the tenant access\n - DIRECT_ACCESS: DIRECT_ACCESS\n\nAccessing tenant through direct login\n - MSP_ACCESS: MSP_ACCESS\n\nAccessing tenant from MSP tenant\n - DELEGATED_ACCESS: DELEGATED_ACCESS\n\nAccessing tenant from operating tenant through delegated access\n - SUPPORT_ACCESS: SUPPORT_ACCESS\n\nAccessing tenant from support tenant",
         "title": "AccessType",
-        "enum": [
-          "UNKNOWN_ACCESS",
-          "DIRECT_ACCESS",
-          "MSP_ACCESS",
-          "DELEGATED_ACCESS",
-          "SUPPORT_ACCESS"
-        ],
+        "enum": ["UNKNOWN_ACCESS", "DIRECT_ACCESS", "MSP_ACCESS", "DELEGATED_ACCESS", "SUPPORT_ACCESS"],
         "default": "UNKNOWN_ACCESS",
         "x-displayname": "Identify the tenant access",
         "x-ves-proto-enum": "ves.io.schema.user.AccessType"
-      },
-      "userAddonServiceStatus": {
-        "type": "object",
-        "description": "x-displayName: \"Addon Service Status\"\ndisplays current state and access of an addon service for the user of tenant.",
-        "title": "AddonServiceStatus",
-        "properties": {
-          "access": {
-            "$ref": "#/components/schemas/schemaAddonServiceAccess"
-          },
-          "display_name": {
-            "type": "string",
-            "description": "x-displayName: \"Display Name\"\nName to use for display purposes",
-            "title": "display_name"
-          },
-          "state": {
-            "$ref": "#/components/schemas/schemaAddonServiceState"
-          }
-        }
       },
       "userAssignRoleRequest": {
         "type": "object",
@@ -2608,11 +2561,7 @@
         "type": "string",
         "description": "Action to be executed when customer click on the UI warning\n\n - NO_ACTION: we don't expect customer to take any actoon\n - ADD_NEW_PAYMENT_METHOD: customer should provide a new payment method\n - CONTACT_US: customer should send us an email",
         "title": "Billing flag action",
-        "enum": [
-          "NO_ACTION",
-          "ADD_NEW_PAYMENT_METHOD",
-          "CONTACT_US"
-        ],
+        "enum": ["NO_ACTION", "ADD_NEW_PAYMENT_METHOD", "CONTACT_US"],
         "default": "NO_ACTION",
         "x-displayname": "Billing flag action",
         "x-ves-proto-enum": "ves.io.schema.user.BillingFlagAction"
@@ -2711,13 +2660,7 @@
         "type": "string",
         "description": "States describes possible states for user.\n\n - StateUndefined: StateUndefined\n\nUser state when it was created without any state.\n - StateCreating: StateCreating\n\nUser state during initial creation. It includes registering in IDM, creating user-settings object, etc...\n - StateCreateFailed: StateCreateFailed\n\nUser state when initial creation was failed by some reason and must be retried\nafter issue is solved.\n - StateActive: StateActive\n\nUser state of completely created and available to use user.\n - StateDisabled: StateDisabled\n\nUser is currently disabled, login is not possible for this user, but it may become active again in the future.",
         "title": "States",
-        "enum": [
-          "StateUndefined",
-          "StateCreating",
-          "StateCreateFailed",
-          "StateActive",
-          "StateDisabled"
-        ],
+        "enum": ["StateUndefined", "StateCreating", "StateCreateFailed", "StateActive", "StateDisabled"],
         "default": "StateUndefined",
         "x-displayname": "States",
         "x-ves-proto-enum": "ves.io.schema.user.FSMState"
@@ -3124,11 +3067,7 @@
         "type": "string",
         "description": "IdmType is to identify who is managing the user.\n\n - SSO: SSO User\nExternally managed Single Sign On based user imported into UAM.\n - VOLTERRA_MANAGED: F5XC Managed Local user\nF5XC managed local user. Full user life cycle is managed by volterra UAM and Identity.\n - UNDEFINED: Undefined\nUndefined IDM type",
         "title": "IDM Type",
-        "enum": [
-          "SSO",
-          "VOLTERRA_MANAGED",
-          "UNDEFINED"
-        ],
+        "enum": ["SSO", "VOLTERRA_MANAGED", "UNDEFINED"],
         "default": "SSO",
         "x-displayname": "Identity Management Type",
         "x-ves-proto-enum": "ves.io.schema.user.IdmType"
@@ -3307,11 +3246,7 @@
         "type": "string",
         "description": "Managed services node type. This is used to determine if the tenant is a parent or a child or not set at all.\n\n - MspNodeTypeUnknown: MspUnknown\n\nManaged services status is unknown or not set\n - MspNodeTypeChild: MspChild\n\nTenant acts as a child for another tenant. In other words, the tenant has a parent tenant that is managing it.\n - MspNodeTypeParent: MspParent\n\nTenant acts as a parent for another tenant(s). In other words, the tenant has child tenants that are managed by it.",
         "title": "Managed services node type",
-        "enum": [
-          "MspNodeTypeUnknown",
-          "MspNodeTypeChild",
-          "MspNodeTypeParent"
-        ],
+        "enum": ["MspNodeTypeUnknown", "MspNodeTypeChild", "MspNodeTypeParent"],
         "default": "MspNodeTypeUnknown",
         "x-displayname": "Managed services node type",
         "x-ves-proto-enum": "ves.io.schema.user.MSPNodeType"
@@ -3423,21 +3358,6 @@
         "properties": {
           "gc_spec": {
             "$ref": "#/components/schemas/userGlobalSpecType"
-          }
-        }
-      },
-      "userTileAccess": {
-        "type": "object",
-        "description": "x-displayName: \"Tile Access\"\nDefines access of primary navigation tile.",
-        "title": "TileAccess",
-        "properties": {
-          "display_name": {
-            "type": "string",
-            "description": "x-displayName: \"Display Name\"\nName to use for display purposes",
-            "title": "display_name"
-          },
-          "state": {
-            "$ref": "#/components/schemas/schemaTileAccessState"
           }
         }
       },
@@ -3569,15 +3489,41 @@
         "type": "string",
         "description": "UserType is to identify the type of user\n\n - USER: User\nRegular User\n - SERVICE: Service User\nUser for accessing only APIs/services\n - DEBUG: Debug\nUser which was created by tenant admin for volterra-support team.",
         "title": "UserType",
-        "enum": [
-          "USER",
-          "SERVICE",
-          "DEBUG"
-        ],
+        "enum": ["USER", "SERVICE", "DEBUG"],
         "default": "USER",
         "x-displayname": "User Type",
         "x-ves-proto-enum": "ves.io.schema.user.UserType"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

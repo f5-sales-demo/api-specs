@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.fast_acl",
     "description": "Fast ACL provides destination and specifies rules to protect the site from denial of service attacks.\n  - It is specified in terms of five tuple of the packet {destination ip, destination port, source ip, source port, protocol}.\n  - Fast ACL provides destination IP and port with protocol while Fast ACL rules in ACL provide source IP, port and action\n  - Destination is always provided as a combination of destination IP and port\n\nTypical Usecase(s) are:\n  - Rate-limiting traffic to destination\n  - Accepting traffic from certain source IPs to destination\n  - Ratelimiting or dropping traffic from source IPs to destination\n\nThese ACL rules are applied at very early stage in datapath ingress processing and form\nfirst line of defence against attack. These rules are evaluated for each packet coming in to the system (ingress),\nunlike session based ACL where action is calculated only on first packet in session.\n\nFast ACL picks source based on Longest prefix match for faster processing, which differs\nfrom traditional ACL where rules are evaluated in order. If none of the rule matches\nthen default action is to forward the packet\n\nFast ACL on a customer edge(CE) Site\n\nFast ACL is selected from Fast ACL set on CE Site based on Fleet Configuration. Fast ACL set matching following condition are applied on a CE site\n- Fast ACL set to which this Fast ACL belong is referred to by a Network Firewall\n- Network Firewall is referred to by a Fleet\n- CE site is member of the Fleet\n- Only tenant can configure the set\n- Network type supported are Site Local and Site Local Inside. Any other network type is not valid on CE\n\nSelection of Destination\n- Tenant can choose VIP(s) or interface IP(configured as VIP) via Fast ACL\n\n Fast ACL on RE\n\n- Fast ACL is picked from RE Fast ACL sets and can be defined by tenants for the public VIP(s)\n- Network type supported for RE is Public. Sets with Fast ACL with any other network type will be rejected\n\nSelection of public VIP destination\n- tenant ACL can pick VIP corresponding to tenant only\nSelection of shared VIP destination\n- tenant CANNOT use this option on RE.\nCustom prefixes destination\n- tenant CANNOT use this option on RE.\nShared VIP services\n- tenant CANNOT use this option, is only meant for volterra administrators\n\n Default Protocol Policer\n\n- Is valid on CE and RE and configurable by any tenant\n- Used for rate limiting\n- Applied when none of the source rules match\n- Protocols supported are ICMP, TCP, UDP, DNS",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/fast_acls": {
@@ -397,7 +402,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-fast_acl-customdataapi-fastaclhits"
         },
-        "x-ves-proto-rpc": "ves.io.schema.fast_acl.CustomDataAPI.FastACLHits"
+        "x-ves-proto-rpc": "ves.io.schema.fast_acl.CustomDataAPI.FastACLHits",
+        "tags": ["data"]
       },
       "x-displayname": "Fast ACL",
       "x-ves-proto-service": "ves.io.schema.fast_acl.CustomDataAPI",
@@ -554,7 +560,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-fast_acl-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.fast_acl.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.fast_acl.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Fast ACL",
       "x-ves-proto-service": "ves.io.schema.fast_acl.API",
@@ -703,7 +710,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-fast_acl-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.fast_acl.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.fast_acl.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Fast ACL",
@@ -835,7 +843,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-fast_acl-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.fast_acl.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.fast_acl.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Fast ACL",
       "x-ves-proto-service": "ves.io.schema.fast_acl.API",
@@ -1116,12 +1125,7 @@
         "type": "string",
         "description": "Fast ACL hits can be sliced and diced based on one or more labels listed below.\n",
         "title": "Fast ACL Metric Labels",
-        "enum": [
-          "NAMESPACE",
-          "FAST_ACL",
-          "FAST_ACL_RULE",
-          "SITE"
-        ],
+        "enum": ["NAMESPACE", "FAST_ACL", "FAST_ACL_RULE", "SITE"],
         "default": "NAMESPACE",
         "x-displayname": "Fast ACL Metric Labels",
         "x-ves-proto-enum": "ves.io.schema.fast_acl.FastACLMetricLabel"
@@ -1240,42 +1244,6 @@
           },
           "system_metadata": {
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
-          }
-        }
-      },
-      "fast_aclGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
-      "fast_aclLegacyACLType": {
-        "type": "object",
-        "description": "x-displayName: \"Fast ACL Legacy Mode\"\nFast ACL definition for Site",
-        "title": "Fast ACL Legacy mode",
-        "properties": {
-          "destination_type": {
-            "$ref": "#/components/schemas/fast_aclDestinationType"
-          },
-          "network_type": {
-            "$ref": "#/components/schemas/schemaVirtualNetworkSelectorType"
-          },
-          "source_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Source Rules\"\nList of Fast ACL rules to be applied to received packets on this site",
-            "title": "Source Rules",
-            "items": {
-              "$ref": "#/components/schemas/schemaviewsObjectRefType"
-            }
           }
         }
       },
@@ -1583,10 +1551,7 @@
         "type": "string",
         "description": "FastAclRuleSimpleAction specifies simple action like PASS or DENY\n\nDrop the traffic\nForward the traffic",
         "title": "FastAclRuleSimpleAction",
-        "enum": [
-          "DENY",
-          "ALLOW"
-        ],
+        "enum": ["DENY", "ALLOW"],
         "default": "DENY",
         "x-displayname": "Simple Action",
         "x-ves-proto-enum": "ves.io.schema.fast_acl_rule.FastAclRuleSimpleAction"
@@ -1886,10 +1851,7 @@
         "type": "string",
         "description": "The operator to use when filtering metrics based on label values.\n",
         "title": "Metric Label Operator",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
@@ -2272,10 +2234,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2404,11 +2363,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -2602,6 +2557,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

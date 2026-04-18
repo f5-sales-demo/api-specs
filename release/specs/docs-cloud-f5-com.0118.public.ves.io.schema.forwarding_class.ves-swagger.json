@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.forwarding_class",
     "description": "In Policy Based Routing(forwarding) (PBR) PBR policy can select Forwarding Class object as action\nWhen match condition is satisfied(true).\nForwarding class determines three things:\n\n  Ordered list of interface priorities. All matching interfaces of given priority are treated as ECMP.\n\n  Outgoing Queue on selected interface and value of TOS bits on the packet\n\n  Optional policer for all traffic matching this class",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/forwarding_classs": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-forwarding_class-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.forwarding_class.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.forwarding_class.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Forwarding Class",
       "x-ves-proto-service": "ves.io.schema.forwarding_class.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-forwarding_class-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.forwarding_class.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.forwarding_class.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Forwarding Class",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-forwarding_class-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.forwarding_class.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.forwarding_class.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Forwarding Class",
       "x-ves-proto-service": "ves.io.schema.forwarding_class.API",
@@ -794,13 +802,7 @@
         "type": "string",
         "description": "DSCP Assured forwarding drop precedence\n\nDSCP Low drop precedence\nDSCP Low drop precedence\nDSCP Low drop precedence\nDSCP drop precedence value is taken from output of policer",
         "title": "DSCP Drop Precedence",
-        "enum": [
-          "DSCP_AF_LOW",
-          "DSCP_AF_MEDIUM",
-          "DSCP_AF_HIGH",
-          "DSCP_AF_POLICER"
-        ],
-        "default": "DSCP_AF_FAKE",
+        "enum": ["DSCP_AF_LOW", "DSCP_AF_MEDIUM", "DSCP_AF_HIGH", "DSCP_AF_POLICER"],
         "x-displayname": "DSCP AF Drop Precedence",
         "x-ves-proto-enum": "ves.io.schema.forwarding_class.DSCPAFDropPrecedenceType"
       },
@@ -927,21 +929,6 @@
           }
         }
       },
-      "forwarding_classGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "forwarding_classGetSpecType": {
         "type": "object",
         "description": "Get Forwarding Class in system namespace",
@@ -989,12 +976,7 @@
         "type": "string",
         "description": "Interface group, group membership by adding group label to interface\n\nChoose any of the available interfaces\nChoose all interfaces with label group1\nChoose all interfaces with label group2\nChoose all interfaces with label group3",
         "title": "Interface group type",
-        "enum": [
-          "ANY_AVAILABLE_INTERFACE",
-          "INTERFACE_GROUP1",
-          "INTERFACE_GROUP2",
-          "INTERFACE_GROUP3"
-        ],
+        "enum": ["ANY_AVAILABLE_INTERFACE", "INTERFACE_GROUP1", "INTERFACE_GROUP2", "INTERFACE_GROUP3"],
         "default": "ANY_AVAILABLE_INTERFACE",
         "x-displayname": "Interface Group",
         "x-ves-proto-enum": "ves.io.schema.forwarding_class.InterfaceGroupType"
@@ -1655,10 +1637,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1866,6 +1845,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

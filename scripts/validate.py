@@ -17,7 +17,11 @@ from .utils.constraint_validator import (
     ValidationTestCase,
 )
 from .utils.report_generator import create_report_generator
-from .utils.schemathesis_runner import SchemathesisRunner, create_runner
+from .utils.schemathesis_runner import (
+    SchemathesisResult,
+    SchemathesisRunner,
+    create_runner,
+)
 from .utils.spec_loader import SpecLoader
 
 console = Console()
@@ -30,7 +34,8 @@ def load_config(config_path: Path) -> dict:
         sys.exit(1)
 
     with config_path.open() as f:
-        return yaml.safe_load(f)
+        result: dict = yaml.safe_load(f)
+        return result
 
 
 def load_endpoints_config(config_path: Path) -> dict:
@@ -40,7 +45,8 @@ def load_endpoints_config(config_path: Path) -> dict:
         sys.exit(1)
 
     with config_path.open() as f:
-        return yaml.safe_load(f)
+        result: dict = yaml.safe_load(f)
+        return result
 
 
 class ValidationOrchestrator:
@@ -79,7 +85,7 @@ class ValidationOrchestrator:
 
         # Results storage
         self.discrepancies: list[Discrepancy] = []
-        self.test_results: list[dict] = []
+        self.test_results: list[SchemathesisResult] = []
 
     def run(
         self,
@@ -90,7 +96,9 @@ class ValidationOrchestrator:
         console.print("[bold blue]F5 XC API Spec Validation[/bold blue]")
 
         if self.dry_run:
-            console.print("[yellow]Running in dry-run mode (no live API calls)[/yellow]")
+            console.print(
+                "[yellow]Running in dry-run mode (no live API calls)[/yellow]"
+            )
 
         # Step 1: Load and validate specs
         console.print("\n[bold]Step 1: Loading OpenAPI Specs[/bold]")
@@ -138,7 +146,7 @@ class ValidationOrchestrator:
         """Load all OpenAPI specs."""
         try:
             return self.spec_loader.load_all_domain_files()
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             console.print(f"[red]Failed to load specs: {e}[/red]")
             return {}
 
@@ -178,10 +186,14 @@ class ValidationOrchestrator:
                 f"{sum(len(s.constraints) for s in schemas.values())} constraints[/dim]"
             )
 
-        console.print(f"[green]Total: {len(all_constraints)} schemas with constraints[/green]")
+        console.print(
+            f"[green]Total: {len(all_constraints)} schemas with constraints[/green]"
+        )
         return all_constraints
 
-    def _generate_test_cases(self, constraints: dict) -> dict[str, list[ValidationTestCase]]:
+    def _generate_test_cases(
+        self, constraints: dict
+    ) -> dict[str, list[ValidationTestCase]]:
         """Generate test cases for all constraints."""
         all_test_cases = {}
         total_tests = 0
@@ -257,7 +269,7 @@ class ValidationOrchestrator:
                     for result in results:
                         self.discrepancies.extend(result.discrepancies)
 
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     console.print(f"  [red]Error testing {resource}: {e}[/red]")
 
     def _run_constraint_tests(
@@ -267,7 +279,9 @@ class ValidationOrchestrator:
     ) -> None:
         """Run constraint validation tests against live API."""
         if not self.auth:
-            console.print("[yellow]No auth configured, skipping constraint tests[/yellow]")
+            console.print(
+                "[yellow]No auth configured, skipping constraint tests[/yellow]"
+            )
             return
 
         endpoints_config = self.endpoints_config.get("endpoints", {})
@@ -302,8 +316,8 @@ class ValidationOrchestrator:
     def _test_endpoint_constraints(
         self,
         endpoint_name: str,
-        create_path: str,  # noqa: ARG002
-        test_cases: dict[str, list[ValidationTestCase]],  # noqa: ARG002
+        create_path: str,
+        test_cases: dict[str, list[ValidationTestCase]],
     ) -> None:
         """Test constraints for a specific endpoint."""
         # This would be implemented to actually test constraints
@@ -361,7 +375,9 @@ class ValidationOrchestrator:
 
 def main() -> int:
     """Main entry point for validation command."""
-    parser = argparse.ArgumentParser(description="Validate F5 XC OpenAPI specs against live API")
+    parser = argparse.ArgumentParser(
+        description="Validate F5 XC OpenAPI specs against live API"
+    )
     parser.add_argument(
         "--config",
         type=Path,

@@ -1,5 +1,7 @@
 """Tests for Spectral-specific reconciliation fixes."""
 
+# pylint: disable=protected-access
+
 from __future__ import annotations
 
 import pytest
@@ -259,3 +261,35 @@ class TestDeduplicateOperationId:
         post_id = result["paths"]["/api/resources"]["post"]["operationId"]
         get_id = result["paths"]["/api/resources"]["get"]["operationId"]
         assert post_id != get_id
+
+
+class TestAddSecuritySchemes:
+    def test_adds_security_metadata(self, reconciler):
+        spec = {
+            "openapi": "3.0.0",
+            "info": {"title": "Test", "version": "1.0.0"},
+            "paths": {},
+        }
+        # Override spectral_config for test
+        reconciler.spectral_config["security_scheme"] = {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "F5 XC API Token",
+        }
+        d = Discrepancy(
+            path="test.json",
+            property_name="",
+            constraint_type="spectral:checkov-security",
+            discrepancy_type=DiscrepancyType.SPECTRAL_MISSING,
+            spec_value=None,
+            api_behavior=None,
+        )
+        result = reconciler._add_security_schemes(spec, d)
+        assert result is not None
+        assert "security" in result
+        assert "securitySchemes" in result["components"]
+        assert "apiKeyAuth" in result["components"]["securitySchemes"]
+        scheme = result["components"]["securitySchemes"]["apiKeyAuth"]
+        assert scheme["type"] == "apiKey"
+        assert scheme["name"] == "Authorization"

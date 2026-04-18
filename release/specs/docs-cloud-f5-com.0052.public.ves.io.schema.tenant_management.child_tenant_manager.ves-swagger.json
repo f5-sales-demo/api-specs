@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tenant_management.child_tenant_manager",
     "description": "\nChild Tenant Manager uses Tenant Profile template to create child tenant and store its object reference. \nAny look up for child tenant should be done from child tenant manager since it stores object reference for all child tenants.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/system/partner-management/child_tenant_managers/{name}/child_tenants": {
@@ -119,7 +124,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant_manager-customapi-listchildtenants"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.CustomAPI.ListChildTenants"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.CustomAPI.ListChildTenants",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant Manager",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant_manager.CustomAPI",
@@ -248,7 +254,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant_manager-customapi-migratectmchildtenants"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.CustomAPI.MigrateCTMChildTenants"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.CustomAPI.MigrateCTMChildTenants",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant Manager",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant_manager.CustomAPI",
@@ -673,7 +680,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant_manager-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.API.List",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant Manager",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant_manager.API",
@@ -821,7 +829,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant_manager-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.API.Get",
+        "tags": ["web"]
       },
       "delete": {
         "summary": "Delete Child Tenant Manager",
@@ -953,7 +962,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-child_tenant_manager-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.child_tenant_manager.API.Delete",
+        "tags": ["web"]
       },
       "x-displayname": "Child Tenant Manager",
       "x-ves-proto-service": "ves.io.schema.tenant_management.child_tenant_manager.API",
@@ -1304,11 +1314,7 @@
         "type": "string",
         "description": "Determines the contact type\n\nIndicates snail mail address (used for correspondence)\nIndicates billing address (this address will appear on invoices)\nIndicates contact used for a payment method (this address is used when charging a payment method)",
         "title": "Contact Type",
-        "enum": [
-          "MAILING",
-          "BILLING",
-          "PAYMENT"
-        ],
+        "enum": ["MAILING", "BILLING", "PAYMENT"],
         "default": "MAILING",
         "x-displayname": "Contact Type",
         "x-ves-proto-enum": "ves.io.schema.contact.ContactType"
@@ -1798,10 +1804,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2332,20 +2335,6 @@
           }
         }
       },
-      "tenant_managementchild_tenant_managerGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "tenant_managementchild_tenant_managerGetSpecType": {
         "type": "object",
         "description": "Get child_tenant_manager reads a given object from storage backend for metadata.namespace.",
@@ -2507,6 +2496,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

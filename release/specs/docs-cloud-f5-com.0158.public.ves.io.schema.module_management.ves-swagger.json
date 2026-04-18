@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.module_management",
     "description": "Package for managing a module.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{namespace}/module_management/settings": {
@@ -119,7 +124,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-module_management-modulemanagementapi-getmodulemanagementsettings"
         },
-        "x-ves-proto-rpc": "ves.io.schema.module_management.ModuleManagementAPI.GetModuleManagementSettings"
+        "x-ves-proto-rpc": "ves.io.schema.module_management.ModuleManagementAPI.GetModuleManagementSettings",
+        "tags": ["config"]
       },
       "x-displayname": "Module Management",
       "x-ves-proto-service": "ves.io.schema.module_management.ModuleManagementAPI",
@@ -134,11 +140,7 @@
         "type": "string",
         "description": "Module is allowed or not\n\nDefault check value. Check response details for more info.\nConfiguration Allowed\nConfiguration not allowed",
         "title": "ModuleManagement",
-        "enum": [
-          "MM_NONE",
-          "ALLOWED",
-          "NOT_ALLOWED"
-        ],
+        "enum": ["MM_NONE", "ALLOWED", "NOT_ALLOWED"],
         "default": "MM_NONE",
         "x-displayname": "Module Management",
         "x-ves-proto-enum": "ves.io.schema.module_management.ModuleManagement"
@@ -155,6 +157,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

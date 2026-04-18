@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.namespace",
     "description": "namespace creates logical independent workspace within a tenant. Within a namespace contained objects should have unique names.\n\n    Object within a namespace can only refer to objects within the same namespace or shared namespace or ves-io/shared namespace\n\n    All monitoring is scoped by namespace\n\n    List within namespace lists objects within same namespace or shared namespace or ves-io/shared namespace\n\n    User roles can be scoped by namespace\n\n    The 'namespace' value of a namespace object itself is empty string",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces": {
@@ -157,7 +162,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.API.List",
+        "tags": ["web"]
       },
       "post": {
         "summary": "Create Namespace",
@@ -269,7 +275,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.API.Create",
+        "tags": ["web"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.API",
@@ -386,7 +393,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-allapplicationinventory"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.AllApplicationInventory"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.AllApplicationInventory",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -503,7 +511,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-allapplicationinventorywaf"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.AllApplicationInventoryWaf"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.AllApplicationInventoryWaf",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -620,7 +629,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacemlcustomapi-getapiendpointsstatsallnamespaces"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceMLCustomAPI.GetApiEndpointsStatsAllNamespaces"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceMLCustomAPI.GetApiEndpointsStatsAllNamespaces",
+        "tags": ["ml"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceMLCustomAPI",
@@ -737,7 +747,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-customapi-evaluateapiaccess"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.EvaluateAPIAccess"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.EvaluateAPIAccess",
+        "tags": ["web"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.CustomAPI",
@@ -854,7 +865,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-customapi-evaluatebatchapiaccess"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.EvaluateBatchAPIAccess"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.EvaluateBatchAPIAccess",
+        "tags": ["web"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.CustomAPI",
@@ -971,7 +983,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-customapi-lookupuserroles"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.LookupUserRoles"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.LookupUserRoles",
+        "tags": ["web"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.CustomAPI",
@@ -1088,7 +1101,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-networkinginventory"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.NetworkingInventory"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.NetworkingInventory",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -1198,7 +1212,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespaceclouddatacustomapi-suggestvalues"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCloudDataCustomAPI.SuggestValues"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCloudDataCustomAPI.SuggestValues",
+        "tags": ["cloud-data"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCloudDataCustomAPI",
@@ -1315,7 +1330,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-updateallowadvertiseonpublic"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.UpdateAllowAdvertiseOnPublic"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.UpdateAllowAdvertiseOnPublic",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -1432,7 +1448,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-validaterules"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.ValidateRules"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.ValidateRules",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -1680,7 +1697,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-getactivealertpolicies"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.GetActiveAlertPolicies"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.GetActiveAlertPolicies",
+        "tags": ["config"]
       },
       "post": {
         "summary": "Set Active Alert Policies",
@@ -1804,7 +1822,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-setactivealertpolicies"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.SetActiveAlertPolicies"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.SetActiveAlertPolicies",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -1923,7 +1942,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-getactivenetworkpolicies"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.GetActiveNetworkPolicies"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.GetActiveNetworkPolicies",
+        "tags": ["config"]
       },
       "post": {
         "summary": "Set Active Network Policies",
@@ -2047,7 +2067,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-setactivenetworkpolicies"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.SetActiveNetworkPolicies"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.SetActiveNetworkPolicies",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -2166,7 +2187,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-getactiveservicepolicies"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.GetActiveServicePolicies"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.GetActiveServicePolicies",
+        "tags": ["config"]
       },
       "post": {
         "summary": "Set Active Service Policies",
@@ -2290,7 +2312,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-setactiveservicepolicies"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.SetActiveServicePolicies"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.SetActiveServicePolicies",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -2419,7 +2442,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacemlcustomapi-getapiendpointsstats"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceMLCustomAPI.GetApiEndpointsStats"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceMLCustomAPI.GetApiEndpointsStats",
+        "tags": ["ml"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceMLCustomAPI",
@@ -2548,7 +2572,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-applicationinventory"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.ApplicationInventory"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.ApplicationInventory",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -2667,7 +2692,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-getfastaclsforinternetvips"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.GetFastACLsForInternetVIPs"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.GetFastACLsForInternetVIPs",
+        "tags": ["config"]
       },
       "post": {
         "summary": "Set FastACLs For Internet VIPs",
@@ -2791,7 +2817,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacecustomapi-setfastaclsforinternetvips"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.SetFastACLsForInternetVIPs"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.NamespaceCustomAPI.SetFastACLsForInternetVIPs",
+        "tags": ["config"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.NamespaceCustomAPI",
@@ -2913,7 +2940,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-customapi-suggestvalues"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.SuggestValues"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.SuggestValues",
+        "tags": ["web"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.CustomAPI",
@@ -3062,7 +3090,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.API.Get",
+        "tags": ["web"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.API",
@@ -3191,7 +3220,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-customapi-cascadedelete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.CascadeDelete"
+        "x-ves-proto-rpc": "ves.io.schema.namespace.CustomAPI.CascadeDelete",
+        "tags": ["web"]
       },
       "x-displayname": "Namespace",
       "x-ves-proto-service": "ves.io.schema.namespace.CustomAPI",
@@ -3467,11 +3497,7 @@
         "type": "string",
         "description": "Enum consists of different access control types.\n\n - RBAC: RBAC\n\nDefault access control, evaluates role based access control.\n - PBAC: PBAC\n\nEvaluates plan based access control\n - ALL: ALL\n\nEvaluates all access controls specified in this enum.",
         "title": "AccessControlType",
-        "enum": [
-          "RBAC",
-          "PBAC",
-          "ALL"
-        ],
+        "enum": ["RBAC", "PBAC", "ALL"],
         "default": "RBAC",
         "x-displayname": "Access Control Type",
         "x-ves-proto-enum": "ves.io.schema.namespace.AccessControlType"
@@ -4199,21 +4225,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "namespaceGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "namespaceHTTPLoadbalancerInventoryFilterType": {
         "type": "object",
@@ -5217,11 +5228,7 @@
         "type": "string",
         "description": "Enum for advertisement choise on public.\n\nInherit tenant's default.\nEnable enables advertisement on public.\nDisable disables advertisement on public.",
         "title": "PublicAdvertiseChoice",
-        "enum": [
-          "Default",
-          "Enable",
-          "Disable"
-        ],
+        "enum": ["Default", "Enable", "Disable"],
         "default": "Default",
         "x-displayname": "PublicAdvertiseChoice",
         "x-ves-proto-enum": "ves.io.schema.namespace.PublicAdvertiseChoice"
@@ -5394,12 +5401,7 @@
         "type": "string",
         "description": "List of all supported severities\n\nERROR\nINFO\nWARNING\nSUCCESS",
         "title": "Severity",
-        "enum": [
-          "ERROR",
-          "INFO",
-          "WARNING",
-          "SUCCESS"
-        ],
+        "enum": ["ERROR", "INFO", "WARNING", "SUCCESS"],
         "default": "ERROR",
         "x-displayname": "Severity of message",
         "x-ves-proto-enum": "ves.io.schema.namespace.Severity"
@@ -6236,10 +6238,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -6571,6 +6570,45 @@
         "x-displayname": "Virtual Host Type",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.VirtualHostType"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    },
+    {
+      "name": "config"
+    },
+    {
+      "name": "ml"
+    },
+    {
+      "name": "cloud-data"
+    }
+  ]
 }

@@ -61,7 +61,10 @@ class RateLimiter:
             now = time.time()
 
             # Clean old entries (older than 60 seconds)
-            while self._request_times and now - self._request_times[0] > RATE_LIMIT_WINDOW_SECONDS:
+            while (
+                self._request_times
+                and now - self._request_times[0] > RATE_LIMIT_WINDOW_SECONDS
+            ):
                 self._request_times.popleft()
 
             # Check requests per minute
@@ -69,7 +72,9 @@ class RateLimiter:
                 oldest = self._request_times[0]
                 wait_time = RATE_LIMIT_WINDOW_SECONDS - (now - oldest) + 0.1
                 if wait_time > 0:
-                    console.print(f"[yellow]Rate limit: waiting {wait_time:.1f}s[/yellow]")
+                    console.print(
+                        f"[yellow]Rate limit: waiting {wait_time:.1f}s[/yellow]"
+                    )
                     time.sleep(wait_time)
                     now = time.time()
 
@@ -99,7 +104,9 @@ class RateLimiter:
                 )
                 if new_rpm > self._current_rpm:
                     self._current_rpm = new_rpm
-                    console.print(f"[green]Rate limit increased to {self._current_rpm} RPM[/green]")
+                    console.print(
+                        f"[green]Rate limit increased to {self._current_rpm} RPM[/green]"
+                    )
                 self._success_streak = 0
 
     def record_rate_limit(self) -> float:
@@ -113,7 +120,9 @@ class RateLimiter:
                     MIN_RPM,
                     int(self._current_rpm * self.config.decrease_factor),
                 )
-                console.print(f"[red]Rate limit hit, reduced to {self._current_rpm} RPM[/red]")
+                console.print(
+                    f"[red]Rate limit hit, reduced to {self._current_rpm} RPM[/red]"
+                )
 
             # Calculate backoff
             backoff = self._current_backoff
@@ -145,7 +154,9 @@ class F5XCAuth:
         )
     )
     api_token: str = field(default_factory=lambda: os.getenv("F5XC_API_TOKEN", ""))
-    namespace: str = field(default_factory=lambda: os.getenv("F5XC_NAMESPACE", "r-mordasiewicz"))
+    namespace: str = field(
+        default_factory=lambda: os.getenv("F5XC_NAMESPACE", "r-mordasiewicz")
+    )
     tenant: str = field(default_factory=lambda: os.getenv("F5XC_TENANT", "f5-amer-ent"))
     timeout: int = 30
     retries: int = 3
@@ -192,7 +203,7 @@ class F5XCAuth:
         **kwargs: Any,
     ) -> httpx.Response:
         """Make an authenticated request with rate limiting and retries."""
-        last_exception = None
+        last_exception: httpx.RequestError | None = None
 
         for attempt in range(self.retries):
             try:
@@ -225,7 +236,9 @@ class F5XCAuth:
 
             except httpx.TimeoutException as e:
                 last_exception = e
-                console.print(f"[yellow]Timeout on attempt {attempt + 1}/{self.retries}[/yellow]")
+                console.print(
+                    f"[yellow]Timeout on attempt {attempt + 1}/{self.retries}[/yellow]"
+                )
                 time.sleep(self._rate_limiter.config.initial_backoff * (attempt + 1))
 
             except httpx.RequestError as e:
@@ -274,12 +287,12 @@ class F5XCAuth:
                         console.print(
                             f"[yellow]Available namespaces: {', '.join(namespaces[:5])}...[/yellow]"
                         )
-                except Exception:
+                except (ValueError, KeyError, TypeError):
                     console.print("[green]API connection successful[/green]")
                 return True
             console.print(f"[red]API connection failed: {response.status_code}[/red]")
             return False  # noqa: TRY300
-        except Exception as e:
+        except (httpx.RequestError, httpx.TimeoutException, RuntimeError) as e:
             console.print(f"[red]API connection error: {e}[/red]")
             return False
 

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.ike2",
     "description": "IKE Phase2 profile mainly includes the following\n1. Encryption protocols to be used for IKE SA\n2. Authentication Protocols to be used for IKE SA\n3. DH group (if PFS is enabled)\n4. Key lifetime etc",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/ike2s": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike2-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike2.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.ike2.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "IKE Phase 2  Profile",
       "x-ves-proto-service": "ves.io.schema.ike2.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike2-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete IKE Phase 2  Profile",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike2-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "IKE Phase 2  Profile",
       "x-ves-proto-service": "ves.io.schema.ike2.API",
@@ -853,21 +861,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "ike2GetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "ike2ListResponse": {
         "type": "object",
@@ -1134,19 +1127,6 @@
           }
         }
       },
-      "schemaAuthenticationAlgorithm": {
-        "type": "string",
-        "description": "x-displayName: \"AuthenticationAlgorithm\"\nDefinitions for Authentication Algorithms\n\n - AUTH_ALG_DEFAULT: Default Authentication\n\nx-displayName: \"Default Authentication\"\nUse Default Authentication (SHA256)\n - SHA256_HMAC: SHA256_HMAC\n\nx-displayName: \"SHA256_HMAC\"\nUse SHA256_HMAC Authentication\n - SHA384_HMAC: SHA384_HMAC\n\nx-displayName: \"SHA384_HMAC\"\nUse SHA384_HMAC Authentication\n - SHA512_HMAC: SHA512_HMAC\n\nx-displayName: \"SHA512_HMAC\"\nUse SHA512_HMAC Authentication\n - AUTH_ALG_NONE: No Authentication\n\nx-displayName: \"No Authentication\"\nSelect No Authentication if AEAD encryption is selected",
-        "title": "AuthenticationAlgorithm",
-        "enum": [
-          "AUTH_ALG_DEFAULT",
-          "SHA256_HMAC",
-          "SHA384_HMAC",
-          "SHA512_HMAC",
-          "AUTH_ALG_NONE"
-        ],
-        "default": "AUTH_ALG_DEFAULT"
-      },
       "schemaConditionType": {
         "type": "object",
         "description": "Conditions are used in the object status to describe the current state of the\nobject, e.g. Ready, Succeeded, etc.",
@@ -1221,22 +1201,6 @@
         "default": "DH_GROUP_DEFAULT",
         "x-displayname": "Diffie Hellman Group",
         "x-ves-proto-enum": "ves.io.schema.DHGroup"
-      },
-      "schemaEncryptionAlgorithm": {
-        "type": "string",
-        "description": "x-displayName: \"Encryption Algorithm\"\nDefinitions for Encryption Algorithms\n\n - ENC_ALG_DEFAULT: Default Encryption\n\nx-displayName: \"Default Encryption(AES256_GCM)\"\nSelect default Encryption Algorithm\n - AES128_CBC: AES128_CBC\n\nx-displayName: \"AES128_CBC\"\nSelect AES128_CBC encryption algorithm\n - AES192_CBC: AES192_CBC\n\nx-displayName: \"AES192_CBC\"\nSelect AES192_CBC encryption algorithm\n - AES256_CBC: AES256_CBC\n\nx-displayName: \"AES256_CBC\"\nSelect AES256_CBC encryption algorithm\n - TRIPLE_DES_CBC: TRIPLE_DES_CBC\n\nx-displayName: \"TRIPLE_DES_CBC\"\nSelect TRIPLE_DES_CBC encryption algorithm\n - AES128_GCM: AES128_GCM\n\nx-displayName: \"AES128_GCM\"\nSelect AES128_GCM AEAD algorithm\n - AES192_GCM: AES192_GCM\n\nx-displayName: \"AES192_GCM\"\nSelect AES192_GCM AEAD algorithm\n - AES256_GCM: AES256_GCM\n\nx-displayName: \"AES256_GCM\"\nSelect AES256_GCM AEAD algorithm",
-        "title": "EncryptionAlgorithm",
-        "enum": [
-          "ENC_ALG_DEFAULT",
-          "AES128_CBC",
-          "AES192_CBC",
-          "AES256_CBC",
-          "TRIPLE_DES_CBC",
-          "AES128_GCM",
-          "AES192_GCM",
-          "AES256_GCM"
-        ],
-        "default": "ENC_ALG_DEFAULT"
       },
       "schemaErrorCode": {
         "type": "string",
@@ -1571,10 +1535,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1814,6 +1775,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

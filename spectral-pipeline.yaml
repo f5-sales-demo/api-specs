@@ -1,0 +1,18 @@
+---
+extends:
+  - "./.spectral.yaml"
+
+functionsDir: "./spectral/functions"
+functions:
+  - f5-path-params
+
+rules:
+  # Re-enable path parameter validation with our custom function
+  # that correctly handles F5's dotted parameter names
+  f5-path-params:
+    description: "Path parameters must be declared and used (supports dotted names like metadata.namespace)"
+    message: "{{error}}"
+    severity: error
+    given: "$.paths[*]"
+    then:
+      function: f5-path-params

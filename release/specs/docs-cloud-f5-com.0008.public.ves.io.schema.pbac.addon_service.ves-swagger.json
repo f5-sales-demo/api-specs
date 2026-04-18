@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.pbac.addon_service",
     "description": "Basic unit of logical representation of a F5XC service.\nAn addon service can be self serviced, partially managed or fully managed depending upon the activation requirement.\nA configuration object belong to exactly one addon service and every addon service will be linked to one or more navigation tile.\nBy default, API Groups consisting of APIs for read, write, admin read/write and subscription management capabality will be auto created.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/custom/namespaces/shared/addon_services/{name}": {
@@ -119,7 +124,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-pbac-addon_service-customapi-getaddonservicedetails"
         },
-        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.CustomAPI.GetAddonServiceDetails"
+        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.CustomAPI.GetAddonServiceDetails",
+        "tags": ["web"]
       },
       "x-displayname": "Addon Service",
       "x-ves-proto-service": "ves.io.schema.pbac.addon_service.CustomAPI",
@@ -238,7 +244,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-pbac-addon_service-customapi-getactivationstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.CustomAPI.GetActivationStatus"
+        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.CustomAPI.GetActivationStatus",
+        "tags": ["web"]
       },
       "x-displayname": "Addon Service",
       "x-ves-proto-service": "ves.io.schema.pbac.addon_service.CustomAPI",
@@ -357,7 +364,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-pbac-addon_service-customapi-getallservicetiersactivationstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.CustomAPI.GetAllServiceTiersActivationStatus"
+        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.CustomAPI.GetAllServiceTiersActivationStatus",
+        "tags": ["web"]
       },
       "x-displayname": "Addon Service",
       "x-ves-proto-service": "ves.io.schema.pbac.addon_service.CustomAPI",
@@ -514,7 +522,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-pbac-addon_service-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.API.List",
+        "tags": ["web"]
       },
       "x-displayname": "Addon Service",
       "x-ves-proto-service": "ves.io.schema.pbac.addon_service.API",
@@ -661,7 +670,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-pbac-addon_service-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_service.API.Get",
+        "tags": ["web"]
       },
       "x-displayname": "Addon Service",
       "x-ves-proto-service": "ves.io.schema.pbac.addon_service.API",
@@ -672,32 +682,6 @@
   "x-ves-proto-package": "ves.io.schema.pbac.addon_service",
   "components": {
     "schemas": {
-      "addon_serviceAddonServiceActivationStatus": {
-        "type": "object",
-        "description": "x-displayName: \"Addon Service Activation Status\"\nContains single addon service activation status information",
-        "title": "AddonServiceActivationStatus",
-        "properties": {
-          "access_status": {
-            "$ref": "#/components/schemas/schemaAddonServiceAccess"
-          },
-          "addon_service_status": {
-            "$ref": "#/components/schemas/schemaAddonServiceState"
-          },
-          "display_name": {
-            "type": "string",
-            "description": "x-displayName: \"Display Name\"\nx-example: \"Addon Service 1\"\nDisplay name of the addon service",
-            "title": "display_name"
-          },
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-example: \"addon-service-1\"\nName of the addon_service",
-            "title": "name"
-          },
-          "tier": {
-            "$ref": "#/components/schemas/schemaAddonServiceTierType"
-          }
-        }
-      },
       "addon_serviceContent": {
         "type": "object",
         "description": "Content holds the subject and the description",
@@ -875,19 +859,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "addon_serviceGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "addon_serviceListResponse": {
         "type": "object",
@@ -1134,12 +1105,7 @@
         "type": "string",
         "description": "Support ticket priority helps understand importance of the ticket and focus\nmore on more critical issues.\n\nUnknown/empty priority\nNormal priority issue\nHigh priority issue\nUrgent priority issue",
         "title": "SupportTicketPriority",
-        "enum": [
-          "PRIORITY_UNKNOWN",
-          "PRIORITY_NORMAL",
-          "PRIORITY_HIGH",
-          "PRIORITY_URGENT"
-        ],
+        "enum": ["PRIORITY_UNKNOWN", "PRIORITY_NORMAL", "PRIORITY_HIGH", "PRIORITY_URGENT"],
         "default": "PRIORITY_UNKNOWN",
         "x-displayname": "Priority",
         "x-ves-proto-enum": "ves.io.schema.customer_support.SupportTicketPriority"
@@ -1288,12 +1254,7 @@
         "type": "string",
         "description": "State of a service\n\ndefault state\ninitiated subscription request and is pending to activate (requested).\nsuccessfully subscribed\nservice subscription request ended up in error state.",
         "title": "AddonServiceState",
-        "enum": [
-          "AS_NONE",
-          "AS_PENDING",
-          "AS_SUBSCRIBED",
-          "AS_ERROR"
-        ],
+        "enum": ["AS_NONE", "AS_PENDING", "AS_SUBSCRIBED", "AS_ERROR"],
         "default": "AS_NONE",
         "x-displayname": "Addon Service State",
         "x-ves-proto-enum": "ves.io.schema.AddonServiceState"
@@ -1302,13 +1263,7 @@
         "type": "string",
         "description": "AddonServiceTierType is for identifying the tier of an addon service\n\n - NO_TIER: none\n\nwhen tier is not applicable for a addon service\n - BASIC: basic\n\nbasic\n - STANDARD: standard\n\nstandard\n - ADVANCED: advanced\n\nadvanced\n - PREMIUM: premium\n\npremium",
         "title": "AddonServiceTierType",
-        "enum": [
-          "NO_TIER",
-          "BASIC",
-          "STANDARD",
-          "ADVANCED",
-          "PREMIUM"
-        ],
+        "enum": ["NO_TIER", "BASIC", "STANDARD", "ADVANCED", "PREMIUM"],
         "default": "NO_TIER",
         "x-displayname": "Addon Service Tier",
         "x-ves-proto-enum": "ves.io.schema.AddonServiceTierType"
@@ -1413,12 +1368,7 @@
         "type": "string",
         "description": "FeatureTag is for identifying the tag of feature of an offering (new, preview)\n\nUnknown (undefined) feature tag\nNew feature tag\nPreview feature tag\nPrivate preview feature tag",
         "title": "FeatureTag",
-        "enum": [
-          "NONE",
-          "NEW",
-          "PREVIEW",
-          "PRIVATE_PREVIEW"
-        ],
+        "enum": ["NONE", "NEW", "PREVIEW", "PRIVATE_PREVIEW"],
         "default": "NONE",
         "x-displayname": "Feature Tag",
         "x-ves-proto-enum": "ves.io.schema.FeatureTag"
@@ -1632,10 +1582,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1797,6 +1744,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

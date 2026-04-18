@@ -2,7 +2,12 @@
   "openapi": "3.0.0",
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.marketplace.xc_saas",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/no_auth/namespaces/system/f5xc-saas/signup": {
@@ -116,7 +121,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-marketplace-xc_saas-customapi-signupxcsaas"
         },
-        "x-ves-proto-rpc": "ves.io.schema.marketplace.xc_saas.CustomAPI.SignupXCSaaS"
+        "x-ves-proto-rpc": "ves.io.schema.marketplace.xc_saas.CustomAPI.SignupXCSaaS",
+        "tags": ["namespaces"]
       },
       "x-displayname": "XC SaaS Onboarding",
       "x-ves-proto-service": "ves.io.schema.marketplace.xc_saas.CustomAPI",
@@ -235,7 +241,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-marketplace-xc_saas-customapi-getregistrationdetails"
         },
-        "x-ves-proto-rpc": "ves.io.schema.marketplace.xc_saas.CustomAPI.GetRegistrationDetails"
+        "x-ves-proto-rpc": "ves.io.schema.marketplace.xc_saas.CustomAPI.GetRegistrationDetails",
+        "tags": ["namespaces"]
       },
       "x-displayname": "XC SaaS Onboarding",
       "x-ves-proto-service": "ves.io.schema.marketplace.xc_saas.CustomAPI",
@@ -352,7 +359,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-marketplace-xc_saas-customapi-sendsignupemail"
         },
-        "x-ves-proto-rpc": "ves.io.schema.marketplace.xc_saas.CustomAPI.SendSignupEmail"
+        "x-ves-proto-rpc": "ves.io.schema.marketplace.xc_saas.CustomAPI.SendSignupEmail",
+        "tags": ["namespaces"]
       },
       "x-displayname": "XC SaaS Onboarding",
       "x-ves-proto-service": "ves.io.schema.marketplace.xc_saas.CustomAPI",
@@ -470,6 +478,36 @@
         "x-displayname": "XC SaaS Signup Response",
         "x-ves-proto-message": "ves.io.schema.marketplace.xc_saas.XCSaaSSignupResponse"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "namespaces"
+    }
+  ]
 }

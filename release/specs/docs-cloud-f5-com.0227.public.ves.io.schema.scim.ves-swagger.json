@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.scim",
     "description": "This schema specification details Volterra's support for SCIM protocol.\nAdmin can use SCIM feature on top of SSO to enable automated provisioning of\nuser and user groups from external identity provider into the F5 saas platform.\nWith this feature, complete life cycle management of user and groups can be\nachieved from single source of truth which is managed by tenant's admin.\n\ncurrent protocol support is using schema version v2.0 https://datatracker.ietf.org/doc/html/rfc7643 \n\nSCIM feature can be enabled part of SSO configuration (using RPC `UpdateScimIntegration` under oidc_provider resource)\nBy default, F5XC will not sync groups and users. Admin is required to set object identifier of group \nin external identity provider to corresponding user_group resource in volterra. Users with corresponding\ngroup membership if exist in external identity provider will be synced.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/scim/namespaces/system/v2/Groups": {
@@ -155,7 +160,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-listgroups"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListGroups"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListGroups",
+        "tags": ["scim"]
       },
       "post": {
         "summary": "Create group with users",
@@ -267,7 +273,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-creategroup"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.CreateGroup"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.CreateGroup",
+        "tags": ["scim"]
       },
       "x-displayname": "System for Cross-domain Identity Management (SCIM)",
       "x-ves-proto-service": "ves.io.schema.scim.CustomPublicAPI",
@@ -400,7 +407,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-getgroupbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.GetGroupById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.GetGroupById",
+        "tags": ["scim"]
       },
       "delete": {
         "summary": "Delete group based on Id",
@@ -528,7 +536,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-deletegroupbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.DeleteGroupById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.DeleteGroupById",
+        "tags": ["scim"]
       },
       "put": {
         "summary": "Replace group based on Id",
@@ -652,7 +661,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-replacegroupbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ReplaceGroupById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ReplaceGroupById",
+        "tags": ["scim"]
       },
       "patch": {
         "summary": "Patch group based on Id",
@@ -776,7 +786,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-patchgroupbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.PatchGroupById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.PatchGroupById",
+        "tags": ["scim"]
       },
       "x-displayname": "System for Cross-domain Identity Management (SCIM)",
       "x-ves-proto-service": "ves.io.schema.scim.CustomPublicAPI",
@@ -882,7 +893,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-listresourcetypes"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListResourceTypes"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListResourceTypes",
+        "tags": ["scim"]
       },
       "x-displayname": "System for Cross-domain Identity Management (SCIM)",
       "x-ves-proto-service": "ves.io.schema.scim.CustomPublicAPI",
@@ -1014,7 +1026,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-getresourcetypesbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.GetResourceTypesById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.GetResourceTypesById",
+        "tags": ["scim"]
       },
       "x-displayname": "System for Cross-domain Identity Management (SCIM)",
       "x-ves-proto-service": "ves.io.schema.scim.CustomPublicAPI",
@@ -1120,7 +1133,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-listschemas"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListSchemas"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListSchemas",
+        "tags": ["scim"]
       },
       "x-displayname": "System for Cross-domain Identity Management (SCIM)",
       "x-ves-proto-service": "ves.io.schema.scim.CustomPublicAPI",
@@ -1252,7 +1266,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-getschemabyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.GetSchemaById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.GetSchemaById",
+        "tags": ["scim"]
       },
       "x-displayname": "System for Cross-domain Identity Management (SCIM)",
       "x-ves-proto-service": "ves.io.schema.scim.CustomPublicAPI",
@@ -1358,7 +1373,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-listserviceproviderconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListServiceProviderConfig"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListServiceProviderConfig",
+        "tags": ["scim"]
       },
       "x-displayname": "System for Cross-domain Identity Management (SCIM)",
       "x-ves-proto-service": "ves.io.schema.scim.CustomPublicAPI",
@@ -1513,7 +1529,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-listusers"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListUsers"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ListUsers",
+        "tags": ["scim"]
       },
       "post": {
         "summary": "Create User with Role Assignment",
@@ -1625,7 +1642,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-createuser"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.CreateUser"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.CreateUser",
+        "tags": ["scim"]
       },
       "x-displayname": "System for Cross-domain Identity Management (SCIM)",
       "x-ves-proto-service": "ves.io.schema.scim.CustomPublicAPI",
@@ -1758,7 +1776,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-getuserbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.GetUserById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.GetUserById",
+        "tags": ["scim"]
       },
       "delete": {
         "summary": "Delete user by Id",
@@ -1886,7 +1905,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-deleteuserbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.DeleteUserById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.DeleteUserById",
+        "tags": ["scim"]
       },
       "put": {
         "summary": "Update User and Role Assignments",
@@ -2010,7 +2030,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-replaceuserbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ReplaceUserById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.ReplaceUserById",
+        "tags": ["scim"]
       },
       "patch": {
         "summary": "Patch User",
@@ -2134,7 +2155,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-scim-custompublicapi-patchuserbyid"
         },
-        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.PatchUserById"
+        "x-ves-proto-rpc": "ves.io.schema.scim.CustomPublicAPI.PatchUserById",
+        "tags": ["scim"]
       },
       "x-displayname": "System for Cross-domain Identity Management (SCIM)",
       "x-ves-proto-service": "ves.io.schema.scim.CustomPublicAPI",
@@ -2181,14 +2203,6 @@
             "format": "byte"
           }
         }
-      },
-      "protobufNullValue": {
-        "type": "string",
-        "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value.",
-        "enum": [
-          "NULL_VALUE"
-        ],
-        "default": "NULL_VALUE"
       },
       "scimCreateGroupRequest": {
         "type": "object",
@@ -3241,15 +3255,41 @@
         "type": "string",
         "description": "UserType is to identify the type of user\n\n - USER: User\nRegular User\n - SERVICE: Service User\nUser for accessing only APIs/services\n - DEBUG: Debug\nUser which was created by tenant admin for volterra-support team.",
         "title": "UserType",
-        "enum": [
-          "USER",
-          "SERVICE",
-          "DEBUG"
-        ],
+        "enum": ["USER", "SERVICE", "DEBUG"],
         "default": "USER",
         "x-displayname": "User Type",
         "x-ves-proto-enum": "ves.io.schema.user.UserType"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "scim"
+    }
+  ]
 }

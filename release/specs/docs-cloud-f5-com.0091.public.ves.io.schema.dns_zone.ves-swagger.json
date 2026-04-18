@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_zone",
     "description": "DNS Zone object is used for configuring Primary and Secondary DNS zones.\n\nUser configures zone \"example.com\"\n\nStatus for this object will show following\n\n* List of nameservers\n\nUser can configure DNS records for a Primary zone and a Secondary zone will\ntransfer the DNS records from the primary DNS servers.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/dns/namespaces/system/dns_zone/clone_from_dns_domain": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-clonefromdnsdomain"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.CloneFromDNSDomain"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.CloneFromDNSDomain",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-importf5cszone"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ImportF5CSZone"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ImportF5CSZone",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
@@ -351,7 +358,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-importaxfr"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ImportAXFR"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ImportAXFR",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
@@ -468,7 +476,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-importbindcreate"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ImportBINDCreate"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ImportBINDCreate",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
@@ -585,7 +594,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-importbindvalidate"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ImportBINDValidate"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ImportBINDValidate",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
@@ -982,7 +992,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-getlocalzonefile"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.GetLocalZoneFile"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.GetLocalZoneFile",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
@@ -1111,7 +1122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-getremotezonefile"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.GetRemoteZoneFile"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.GetRemoteZoneFile",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
@@ -1240,7 +1252,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-exportzonefile"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ExportZoneFile"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.ExportZoneFile",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
@@ -1397,7 +1410,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.API",
@@ -1526,7 +1540,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customdataapi-dnszonemetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomDataAPI.DnsZoneMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomDataAPI.DnsZoneMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomDataAPI",
@@ -1655,7 +1670,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customdataapi-dnszonerequestlogs"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomDataAPI.DnsZoneRequestLogs"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomDataAPI.DnsZoneRequestLogs",
+        "tags": ["data"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.CustomDataAPI",
@@ -1804,7 +1820,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete DNS Zone",
@@ -1936,7 +1953,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_zone.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
       "x-ves-proto-service": "ves.io.schema.dns_zone.API",
@@ -1951,11 +1969,7 @@
         "type": "string",
         "description": "AFS Volume Location Server or DCE Authentication Server.\n\n - NONE: NONE\n\n - AFSVolumeLocationServer: AFS Volume Location Server\n\n - DCEAuthenticationServer: DCE Authentication Server\n",
         "title": "AFSDB Record Subtype",
-        "enum": [
-          "NONE",
-          "AFSVolumeLocationServer",
-          "DCEAuthenticationServer"
-        ],
+        "enum": ["NONE", "AFSVolumeLocationServer", "DCEAuthenticationServer"],
         "default": "NONE",
         "x-displayname": "AFSDB Record Subtype",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.AFSDBRecordSubtype"
@@ -2234,26 +2248,6 @@
           }
         }
       },
-      "dns_zoneDLVResourceRecord": {
-        "type": "object",
-        "description": "x-displayName: \"DNS DLV Record\"\nDNS DLV Record",
-        "title": "DLVResourceRecord",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Record Name (Excluding Domain name)\"\nx-example: \"www or mail or * or ww* or *ab\"\nDLV Record name, please provide only the specific subdomain or record name without the base domain.",
-            "title": "Record Name"
-          },
-          "values": {
-            "type": "array",
-            "description": "x-displayName: \"DLV Value\"\nx-example: \"values\"\nx-required\nIt uses the same format as the DS record.",
-            "title": "DLV Value",
-            "items": {
-              "$ref": "#/components/schemas/dns_zoneDSRecordValue"
-            }
-          }
-        }
-      },
       "dns_zoneDNSAAAAResourceRecord": {
         "type": "object",
         "description": "RecordSet for AAAA Records",
@@ -2528,12 +2522,7 @@
         "type": "string",
         "description": "Deployment Status of DNS Zone\n\nDNS Zone is successfully deployed and active\nDeployment of DNS Zone is pending\nDNS Zone has been disabled.\nDNS Zone deployment encountered an error.",
         "title": "DNS Zone Deployment Status",
-        "enum": [
-          "DNS_ZONE_ACTIVE",
-          "DNS_ZONE_PENDING",
-          "DNS_ZONE_DISABLED",
-          "DNS_ZONE_FAILED"
-        ],
+        "enum": ["DNS_ZONE_ACTIVE", "DNS_ZONE_PENDING", "DNS_ZONE_DISABLED", "DNS_ZONE_FAILED"],
         "default": "DNS_ZONE_ACTIVE",
         "x-displayname": "DNS Zone Deployment Status",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.DNSDeploymentStatus"
@@ -3512,21 +3501,6 @@
           }
         }
       },
-      "dns_zoneGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "dns_zoneGetSpecType": {
         "type": "object",
         "description": "Get DNS Zone details.",
@@ -3885,10 +3859,7 @@
         "type": "string",
         "description": "Latitude hemisphere can only be N or S\n\n - N: North Hemisphere\n\n - S: South Hemisphere\n",
         "title": "Latitude Hemisphere",
-        "enum": [
-          "N",
-          "S"
-        ],
+        "enum": ["N", "S"],
         "default": "N",
         "x-displayname": "Latitude hemisphere",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.LatitudeHemisphere"
@@ -4007,10 +3978,7 @@
         "type": "string",
         "description": "Longitude hemisphere can only be E or W\n\n - E: East Hemisphere\n\n - W: West Hemisphere\n",
         "title": "Longitude Hemisphere",
-        "enum": [
-          "E",
-          "W"
-        ],
+        "enum": ["E", "W"],
         "default": "E",
         "x-displayname": "Longitude hemisphere",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.LongitudeHemisphere"
@@ -4637,28 +4605,10 @@
         "type": "string",
         "description": "SSHFP algorithm value must be compatible with the specified algorithm.\n\n - UNSPECIFIEDALGORITHM: UNSPECIFIEDALGORITHM\n\n - RSA: RSA\n\n - DSA: DSA\n\n - ECDSA: ECDSA\n\n - Ed25519: Ed25519\n\n - Ed448: Ed448\n",
         "title": "SSHFP Algorithm",
-        "enum": [
-          "UNSPECIFIEDALGORITHM",
-          "RSA",
-          "DSA",
-          "ECDSA",
-          "Ed25519",
-          "Ed448"
-        ],
+        "enum": ["UNSPECIFIEDALGORITHM", "RSA", "DSA", "ECDSA", "Ed25519", "Ed448"],
         "default": "UNSPECIFIEDALGORITHM",
         "x-displayname": "SSHFP Algorithm",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.SSHFPAlgorithm"
-      },
-      "dns_zoneSSHFPFingerprintType": {
-        "type": "string",
-        "description": "x-displayName: \"SSHFP Fingerprint Type\"\nSSHFP Fingerprint Type must be compatible with the specified values.\n\n - INVALIDFINGERPRINTTYPE: INVALIDFINGERPRINTTYPE\n\nx-displayName: \"Invalid Fingerprint Type\"\n - SHA1ALGORITHM: SHA1ALGORITHM\n\nx-displayName: \"SHA1\"\n - SHA256ALGORITHM: SHA256ALGORITHM\n\nx-displayName: \"SHA256\"",
-        "title": "SSHFP Fingerprint Type",
-        "enum": [
-          "INVALIDFINGERPRINTTYPE",
-          "SHA1ALGORITHM",
-          "SHA256ALGORITHM"
-        ],
-        "default": "INVALIDFINGERPRINTTYPE"
       },
       "dns_zoneSSHFPRecordValue": {
         "type": "object",
@@ -4840,10 +4790,7 @@
         "type": "string",
         "description": "\n - FullCertificate: Full Certificate\n\n - UseSubjectPublicKey: Use Subject Public Key\n",
         "title": "TLSA Record Selector",
-        "enum": [
-          "FullCertificate",
-          "UseSubjectPublicKey"
-        ],
+        "enum": ["FullCertificate", "UseSubjectPublicKey"],
         "default": "FullCertificate",
         "x-displayname": "TLSA Record Selector",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.TLSARecordCSelector"
@@ -4866,11 +4813,7 @@
         "type": "string",
         "description": "\n - NoHash: No Hash\n\n - SHA256: SHA-256\n\n - SHA512: SHA-512\n",
         "title": "TLSA Record Matching Type",
-        "enum": [
-          "NoHash",
-          "SHA256",
-          "SHA512"
-        ],
+        "enum": ["NoHash", "SHA256", "SHA512"],
         "default": "NoHash",
         "x-displayname": "TLSA Record Matching Type",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.TLSARecordMatchingType"
@@ -4975,15 +4918,7 @@
         "type": "string",
         "description": "TSIG key value must be compatible with the specified algorithm\n\n - UNDEFINED: UNDEFINED\n\n - HMAC_MD5: HMAC_MD5\n\n - HMAC_SHA1: HMAC_SHA1\n\n - HMAC_SHA224: HMAC_SHA224\n\n - HMAC_SHA256: HMAC_SHA256\n\n - HMAC_SHA384: HMAC_SHA384\n\n - HMAC_SHA512: HMAC_SHA512\n",
         "title": "TSIG Key Algorithm",
-        "enum": [
-          "HMAC_MD5",
-          "UNDEFINED",
-          "HMAC_SHA1",
-          "HMAC_SHA224",
-          "HMAC_SHA256",
-          "HMAC_SHA384",
-          "HMAC_SHA512"
-        ],
+        "enum": ["HMAC_MD5", "UNDEFINED", "HMAC_SHA1", "HMAC_SHA224", "HMAC_SHA256", "HMAC_SHA384", "HMAC_SHA512"],
         "default": "UNDEFINED",
         "x-displayname": "TSIG Key Algorithm",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.TSIGKeyAlgorithm"
@@ -5072,14 +5007,6 @@
             "format": "byte"
           }
         }
-      },
-      "protobufNullValue": {
-        "type": "string",
-        "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value.",
-        "enum": [
-          "NULL_VALUE"
-        ],
-        "default": "NULL_VALUE"
       },
       "schemaBlindfoldSecretInfoType": {
         "type": "object",
@@ -5538,10 +5465,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -5564,10 +5488,7 @@
         "type": "string",
         "description": "Sort algorithm\n\nSort in descending order\nSort in ascending order",
         "title": "SortOrder",
-        "enum": [
-          "DESCENDING",
-          "ASCENDING"
-        ],
+        "enum": ["DESCENDING", "ASCENDING"],
         "default": "DESCENDING",
         "x-displayname": "Sort Order",
         "x-ves-proto-enum": "ves.io.schema.SortOrder"
@@ -5635,10 +5556,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -5767,11 +5685,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -5806,37 +5720,6 @@
             "title": "Value",
             "x-displayname": "Value",
             "x-ves-example": "-15"
-          }
-        }
-      },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
           }
         }
       },
@@ -5877,30 +5760,11 @@
           }
         }
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemadns_zoneLabel": {
         "type": "string",
         "description": "Labels is used to select one or more fields for the data\n\nIdentifies the country code .\nIdentifies the domain.\nIdentifies the query type.\nIdentifies the response code.\nIdentifies the dns zone name.\nIdentifies the client subnet.",
         "title": "Labels",
-        "enum": [
-          "COUNTRY_CODE",
-          "DOMAIN",
-          "QUERY_TYPE",
-          "RESPONSE_CODE",
-          "DNS_ZONE_NAME",
-          "CLIENT_SUBNET"
-        ],
+        "enum": ["COUNTRY_CODE", "DOMAIN", "QUERY_TYPE", "RESPONSE_CODE", "DNS_ZONE_NAME", "CLIENT_SUBNET"],
         "default": "COUNTRY_CODE",
         "x-displayname": "Labels",
         "x-ves-proto-enum": "ves.io.schema.dns_zone.Label"
@@ -5951,6 +5815,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "data"
+    }
+  ]
 }

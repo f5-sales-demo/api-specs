@@ -12,7 +12,10 @@ SAMPLE_VIOLATION_SERVERS = {
     "path": [],
     "message": 'OpenAPI "servers" must be present and non-empty array.',
     "severity": 1,
-    "range": {"start": {"line": 0, "character": 0}, "end": {"line": 100, "character": 0}},
+    "range": {
+        "start": {"line": 0, "character": 0},
+        "end": {"line": 100, "character": 0},
+    },
     "source": "/workspace/api-specs/release/specs/test-spec.json",
 }
 
@@ -21,7 +24,10 @@ SAMPLE_VIOLATION_TAGS = {
     "path": ["paths", "/api/config/namespaces/{namespace}/resources", "post"],
     "message": 'Operation must have non-empty "tags" array.',
     "severity": 1,
-    "range": {"start": {"line": 10, "character": 0}, "end": {"line": 50, "character": 0}},
+    "range": {
+        "start": {"line": 10, "character": 0},
+        "end": {"line": 50, "character": 0},
+    },
     "source": "/workspace/api-specs/release/specs/test-spec.json",
 }
 
@@ -30,7 +36,10 @@ SAMPLE_VIOLATION_UNUSED = {
     "path": ["components", "schemas", "UnusedSchema"],
     "message": "Potentially unused component has been detected.",
     "severity": 1,
-    "range": {"start": {"line": 200, "character": 0}, "end": {"line": 220, "character": 0}},
+    "range": {
+        "start": {"line": 200, "character": 0},
+        "end": {"line": 220, "character": 0},
+    },
     "source": "/workspace/api-specs/release/specs/test-spec.json",
 }
 
@@ -39,7 +48,10 @@ SAMPLE_VIOLATION_EXAMPLE = {
     "path": ["components", "schemas", "MyEnum", "default"],
     "message": '"default" property must be equal to one of the allowed values.',
     "severity": 0,
-    "range": {"start": {"line": 300, "character": 0}, "end": {"line": 300, "character": 20}},
+    "range": {
+        "start": {"line": 300, "character": 0},
+        "end": {"line": 300, "character": 20},
+    },
     "source": "/workspace/api-specs/release/specs/test-spec.json",
 }
 
@@ -48,7 +60,10 @@ SAMPLE_VIOLATION_SCRIPT = {
     "path": ["components", "schemas", "MySchema", "description"],
     "message": 'Markdown descriptions must not have "<script>" tags.',
     "severity": 1,
-    "range": {"start": {"line": 400, "character": 0}, "end": {"line": 400, "character": 100}},
+    "range": {
+        "start": {"line": 400, "character": 0},
+        "end": {"line": 400, "character": 100},
+    },
     "source": "/workspace/api-specs/release/specs/test-spec.json",
 }
 
@@ -64,7 +79,9 @@ class TestMapViolationToDiscrepancy:
         d = map_violation_to_discrepancy(SAMPLE_VIOLATION_TAGS)
         assert d.constraint_type == "spectral:operation-tags"
         assert d.discrepancy_type == DiscrepancyType.SPECTRAL_MISSING
-        assert d.property_name == "paths./api/config/namespaces/{namespace}/resources.post"
+        assert (
+            d.property_name == "paths./api/config/namespaces/{namespace}/resources.post"
+        )
 
     def test_unused_component_maps_to_spectral_unused(self):
         d = map_violation_to_discrepancy(SAMPLE_VIOLATION_UNUSED)
@@ -93,4 +110,6 @@ class TestSpectralAdapterWriteReport:
         report = json.loads(report_path.read_text())
         assert "discrepancies" in report
         assert len(report["discrepancies"]) == 2
-        assert report["discrepancies"][0]["constraint_type"] == "spectral:oas3-api-servers"
+        assert (
+            report["discrepancies"][0]["constraint_type"] == "spectral:oas3-api-servers"
+        )

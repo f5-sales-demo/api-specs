@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.cloud_connect",
     "description": "Cloud Connect Represents connection endpoint for cloud.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/sync-cloud-data/namespaces/system/cloud_connect_reapply_vpc_attachment": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-clouddatacustomapi-reapplyvpcattachment"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CloudDataCustomAPI.ReApplyVPCAttachment"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CloudDataCustomAPI.ReApplyVPCAttachment",
+        "tags": ["sync-cloud-data"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.CloudDataCustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-customapi-listmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CustomAPI.ListMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CustomAPI.ListMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.CustomAPI",
@@ -351,7 +358,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-customapi-listsegmentmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CustomAPI.ListSegmentMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CustomAPI.ListSegmentMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.CustomAPI",
@@ -480,7 +488,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-customapi-getmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CustomAPI.GetMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CustomAPI.GetMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.CustomAPI",
@@ -597,7 +606,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-clouddatacustomapi-discovervpc"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CloudDataCustomAPI.DiscoverVPC"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CloudDataCustomAPI.DiscoverVPC",
+        "tags": ["sync-cloud-data"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.CloudDataCustomAPI",
@@ -714,7 +724,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-configcustomapi-edgecredentials"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.ConfigCustomAPI.EdgeCredentials"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.ConfigCustomAPI.EdgeCredentials",
+        "tags": ["config"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.ConfigCustomAPI",
@@ -821,7 +832,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-configcustomapi-edgelist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.ConfigCustomAPI.EdgeList"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.ConfigCustomAPI.EdgeList",
+        "tags": ["config"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.ConfigCustomAPI",
@@ -938,7 +950,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-customapi-topcloudconnect"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CustomAPI.TopCloudConnect"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.CustomAPI.TopCloudConnect",
+        "tags": ["data"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.CustomAPI",
@@ -1363,7 +1376,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.API",
@@ -1512,7 +1526,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Cloud Connect",
@@ -1644,7 +1659,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_connect-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.cloud_connect.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Cloud Connect",
       "x-ves-proto-service": "ves.io.schema.cloud_connect.API",
@@ -1792,30 +1808,6 @@
             "description": " VPC Owner Account",
             "title": "VPC Owner Account",
             "x-displayname": "VPC Owner Account"
-          }
-        }
-      },
-      "cloud_connectAWSCloudTransitGatewayType": {
-        "type": "object",
-        "description": "x-displayName: \"Cloud Transit Gateway Type\"\nCloud Transit Gateway Type",
-        "title": "Cloud Transit Gateway Type",
-        "properties": {
-          "cloud_transit_gateway": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "cred": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "peers": {
-            "type": "array",
-            "description": "x-displayName: \"Peers\"\nPeers",
-            "title": "Peers",
-            "items": {
-              "$ref": "#/components/schemas/cloud_connectPeerType"
-            }
-          },
-          "vpc_attachments": {
-            "$ref": "#/components/schemas/cloud_connectAWSVPCAttachmentListType"
           }
         }
       },
@@ -1974,38 +1966,6 @@
               "ves.io.schema.rules.string.max_len": "64",
               "ves.io.schema.rules.string.pattern": "^(rtb-)([a-z0-9]{8}|[a-z0-9]{17})$"
             }
-          }
-        }
-      },
-      "cloud_connectAWSREType": {
-        "type": "object",
-        "description": "x-displayName: \"AWS\"",
-        "title": "Cloud Connect AWS Type",
-        "properties": {
-          "cloud_links": {
-            "$ref": "#/components/schemas/cloud_connectCloudLinkListType"
-          },
-          "cred": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "peers": {
-            "type": "array",
-            "description": "x-displayName: \"Peers\"\nPeers",
-            "title": "Peers",
-            "items": {
-              "$ref": "#/components/schemas/cloud_connectPeerType"
-            }
-          },
-          "region": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "tgw": {
-            "type": "string",
-            "description": "x-displayName: \"TGW Name\"",
-            "title": "TGW Name"
-          },
-          "vpc_attachments": {
-            "$ref": "#/components/schemas/cloud_connectAWSVPCAttachmentListType"
           }
         }
       },
@@ -2644,11 +2604,7 @@
         "type": "string",
         "description": "Cloud Connect Provider Type\n\n - AWS: AWS\n\nCloud connects backed by AWS cloud\n - AZURE: AZURE\n\nCloud connects backed by Azure cloud\n - GCP: GCP\n\nCloud connects backed by GCP cloud",
         "title": "Cloud Connect Provider",
-        "enum": [
-          "AWS",
-          "AZURE",
-          "GCP"
-        ],
+        "enum": ["AWS", "AZURE", "GCP"],
         "default": "AWS",
         "x-displayname": "Cloud Connect Provider",
         "x-ves-proto-enum": "ves.io.schema.cloud_connect.CloudConnectProviderType"
@@ -2657,11 +2613,7 @@
         "type": "string",
         "description": "State of the CloudConnect connections\n\n - DOWN: Down\n\nCloudConnect and their corresponding vpc attachments are down\n - DEGRADED: Degraded\n\nSome of vpc attachments with the CloudConnect are down\n - UP: Up\n\nCloudConnect and their corresponding vpc attachments are available and healthy",
         "title": "CloudConnect State",
-        "enum": [
-          "DOWN",
-          "DEGRADED",
-          "UP"
-        ],
+        "enum": ["DOWN", "DEGRADED", "UP"],
         "default": "DOWN",
         "x-displayname": "CloudConnect State",
         "x-ves-proto-enum": "ves.io.schema.cloud_connect.CloudConnectState"
@@ -2686,14 +2638,7 @@
         "type": "string",
         "description": "Cloud Connect VPC State Type\n\n - AVAILABLE: Available\n\nCloud Connect vpc attachment is in available state.\n - PENDING: Pending\n\nCloud Connect vpc attachment is in flight.\n - FAILED: Failed\n\nCloud Connect vpc attachment has failed.\n - DELETED: Deleted\n\nCloud Connect vpc attachment has been deleted.\n - DELETING: Deleting\n\nCloud Connect vpc attachment is being deleted.\n - INITIATED: Initiated\n\nCloud Connect vpc attachment process has been initiated.",
         "title": "Cloud Connect VPC State",
-        "enum": [
-          "AVAILABLE",
-          "PENDING",
-          "FAILED",
-          "DELETED",
-          "DELETING",
-          "INITIATED"
-        ],
+        "enum": ["AVAILABLE", "PENDING", "FAILED", "DELETED", "DELETING", "INITIATED"],
         "default": "AVAILABLE",
         "x-displayname": "Cloud Connect VPC State",
         "x-ves-proto-enum": "ves.io.schema.cloud_connect.CloudConnectVPCStateType"
@@ -2710,22 +2655,6 @@
             "items": {
               "$ref": "#/components/schemas/schemaviewsObjectRefType"
             }
-          }
-        }
-      },
-      "cloud_connectCreateAWSCloudTransitGatewayType": {
-        "type": "object",
-        "description": "x-displayName: \"AWS Cloud Transit Gateway Type\"\nAWS Cloud Transit Gateway Type",
-        "title": "Create AWS Cloud Transit Gateway Type",
-        "properties": {
-          "cloud_transit_gateway": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "cred": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "vpc_attachments": {
-            "$ref": "#/components/schemas/cloud_connectAWSVPCAttachmentListType"
           }
         }
       },
@@ -3038,12 +2967,7 @@
         "type": "string",
         "description": "FieldSelector specifies the metrics that can be queried for cloud connect.\n\nIndicates field not being set\nx-unit: \"bytes per second (bps)\"\nThroughput of incoming traffic\nx-unit: \"bytes per second (bps)\"\nThroughput of outgoing traffic\nx-unit: \"bytes per second (bps)\"\nThroughput of outgoing traffic",
         "title": "Cloud Connect Metric Type",
-        "enum": [
-          "METRIC_TYPE_NONE",
-          "METRIC_TYPE_IN_BYTES",
-          "METRIC_TYPE_OUT_BYTES",
-          "METRIC_TYPE_TOTAL_BYTES"
-        ],
+        "enum": ["METRIC_TYPE_NONE", "METRIC_TYPE_IN_BYTES", "METRIC_TYPE_OUT_BYTES", "METRIC_TYPE_TOTAL_BYTES"],
         "default": "METRIC_TYPE_NONE",
         "x-displayname": "Cloud Connect Metric Type",
         "x-ves-proto-enum": "ves.io.schema.cloud_connect.FieldSelector"
@@ -3205,21 +3129,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "cloud_connectGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "cloud_connectLabelFilter": {
         "type": "object",
@@ -3623,26 +3532,6 @@
         "x-displayname": "ReApplyVPCAttachmentResponse",
         "x-ves-proto-message": "ves.io.schema.cloud_connect.ReApplyVPCAttachmentResponse"
       },
-      "cloud_connectReplaceAWSCloudTransitGatewayType": {
-        "type": "object",
-        "description": "x-displayName: \" Cloud Transit Gateway Type\"\nCloud Transit Gateway Type",
-        "title": "Replace Cloud Transit Gateway Type",
-        "properties": {
-          "vpc_attachments": {
-            "$ref": "#/components/schemas/cloud_connectAWSVPCAttachmentListType"
-          }
-        }
-      },
-      "cloud_connectReplaceAWSREType": {
-        "type": "object",
-        "description": "x-displayName: \"AWS RE Type\"\nCloud Connect AWS RE Type",
-        "title": "Cloud Connect ReplaceAWSREType Type",
-        "properties": {
-          "vpc_attachments": {
-            "$ref": "#/components/schemas/cloud_connectAWSVPCAttachmentListType"
-          }
-        }
-      },
       "cloud_connectReplaceAWSTGWSiteType": {
         "type": "object",
         "description": "Cloud Connect AWS TGW Site Type",
@@ -3711,12 +3600,7 @@
         "type": "string",
         "description": "Enumerates Status of CloudConnect\n\n - STATUS_UNKNOWN: Unknown\n\n - STATUS_DOWN: Down\n\n - STATUS_DEGRADED: Degraded\n\n - STATUS_UP: Up\n",
         "title": "Status",
-        "enum": [
-          "STATUS_UNKNOWN",
-          "STATUS_DOWN",
-          "STATUS_DEGRADED",
-          "STATUS_UP"
-        ],
+        "enum": ["STATUS_UNKNOWN", "STATUS_DOWN", "STATUS_DEGRADED", "STATUS_UP"],
         "default": "STATUS_UNKNOWN",
         "x-displayname": "Status",
         "x-ves-proto-enum": "ves.io.schema.cloud_connect.Status"
@@ -4201,10 +4085,7 @@
         "type": "string",
         "description": "The operator to use when filtering metrics based on label values.\n",
         "title": "Metric Label Operator",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
@@ -4492,10 +4373,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -4624,11 +4502,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -4785,11 +4659,7 @@
         "type": "string",
         "description": "Metrics used to construct the cloud connect dara are tagged with these labels and therefore\nthe metrics can be sliced and diced based on one or more labels.\n\nIndicates the field not being set\nIdentifies a customer edge\nIdentifies a cloud connect",
         "title": "Label",
-        "enum": [
-          "LABEL_NONE",
-          "LABEL_CUSTOMER_EDGE",
-          "LABEL_CLOUD_CONNECT"
-        ],
+        "enum": ["LABEL_NONE", "LABEL_CUSTOMER_EDGE", "LABEL_CLOUD_CONNECT"],
         "default": "LABEL_NONE",
         "x-displayname": "Label",
         "x-ves-proto-enum": "ves.io.schema.cloud_connect.Label"
@@ -4807,21 +4677,6 @@
           },
           "azure_vnet_site": {
             "$ref": "#/components/schemas/cloud_connectReplaceAzureVNETSiteType"
-          }
-        }
-      },
-      "schemacloud_connectVerStatusType": {
-        "type": "object",
-        "description": "x-displayName: \"VER Status\"\nCloud Connect status reported by each VER instance on a node",
-        "title": "Ver Status",
-        "properties": {
-          "cidr_status": {
-            "type": "array",
-            "description": "x-displayName: \"CIDR Status\"\noverlapping cidr from the same network segment configured in different cloud connect objects across sites",
-            "title": "cidr_status",
-            "items": {
-              "$ref": "#/components/schemas/cloud_connectCIDRConflictStatusType"
-            }
           }
         }
       },
@@ -4890,6 +4745,42 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "sync-cloud-data"
+    },
+    {
+      "name": "data"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

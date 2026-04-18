@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.ticket_management.ticket_tracking_system",
     "description": "Public Custom APIs for Ticket Tracking System related operations",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/shared/ticket_tracking_systems/jira_projects_issue_types": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ticket_management-ticket_tracking_system-customapi-jiraprojectsissuetypes"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.CustomAPI.JiraProjectsIssueTypes"
+        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.CustomAPI.JiraProjectsIssueTypes",
+        "tags": ["web"]
       },
       "x-displayname": "Ticket Tracking System",
       "x-ves-proto-service": "ves.io.schema.ticket_management.ticket_tracking_system.CustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ticket_management-ticket_tracking_system-customapi-validatetickettrackingsystem"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.CustomAPI.ValidateTicketTrackingSystem"
+        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.CustomAPI.ValidateTicketTrackingSystem",
+        "tags": ["web"]
       },
       "x-displayname": "Ticket Tracking System",
       "x-ves-proto-service": "ves.io.schema.ticket_management.ticket_tracking_system.CustomAPI",
@@ -659,7 +666,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ticket_management-ticket_tracking_system-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.API.List",
+        "tags": ["web"]
       },
       "x-displayname": "Ticket Tracking System",
       "x-ves-proto-service": "ves.io.schema.ticket_management.ticket_tracking_system.API",
@@ -807,7 +815,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ticket_management-ticket_tracking_system-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.API.Get",
+        "tags": ["web"]
       },
       "delete": {
         "summary": "Delete Ticket Tracking System",
@@ -939,7 +948,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ticket_management-ticket_tracking_system-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.ticket_management.ticket_tracking_system.API.Delete",
+        "tags": ["web"]
       },
       "x-displayname": "Ticket Tracking System",
       "x-ves-proto-service": "ves.io.schema.ticket_management.ticket_tracking_system.API",
@@ -1322,36 +1332,8 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
-      },
-      "schemaSecretType": {
-        "type": "object",
-        "description": "x-displayName: \"Secret\"\nSecretType is used in an object to indicate a sensitive/confidential field",
-        "title": "SecretType",
-        "properties": {
-          "blindfold_secret_info": {
-            "$ref": "#/components/schemas/schemaBlindfoldSecretInfoType"
-          },
-          "blindfold_secret_info_internal": {
-            "$ref": "#/components/schemas/schemaBlindfoldSecretInfoType"
-          },
-          "clear_secret_info": {
-            "$ref": "#/components/schemas/schemaClearSecretInfoType"
-          },
-          "secret_encoding_type": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "vault_secret_info": {
-            "$ref": "#/components/schemas/schemaVaultSecretInfoType"
-          },
-          "wingman_secret_info": {
-            "$ref": "#/components/schemas/schemaWingmanSecretInfoType"
-          }
-        }
       },
       "schemaStatusType": {
         "type": "object",
@@ -1753,20 +1735,6 @@
           }
         }
       },
-      "ticket_tracking_systemGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "ticket_tracking_systemGetSpecType": {
         "type": "object",
         "description": "Get attributes of a Ticket Tracking System",
@@ -2042,6 +2010,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

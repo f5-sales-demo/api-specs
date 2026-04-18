@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.client_side_defense.subscription",
     "description": "Use this API to subscribe to Client-Side Defense",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/csd/namespaces/system/subscribe": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-client_side_defense-subscription-customapi-subscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.client_side_defense.subscription.CustomAPI.Subscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.client_side_defense.subscription.CustomAPI.Subscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Client-Side Defense Subscription API",
       "x-ves-proto-service": "ves.io.schema.shape.client_side_defense.subscription.CustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-client_side_defense-subscription-customapi-unsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.client_side_defense.subscription.CustomAPI.Unsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.client_side_defense.subscription.CustomAPI.Unsubscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Client-Side Defense Subscription API",
       "x-ves-proto-service": "ves.io.schema.shape.client_side_defense.subscription.CustomAPI",
@@ -273,6 +280,36 @@
         "x-displayname": "Unsubscribe Response",
         "x-ves-proto-message": "ves.io.schema.shape.client_side_defense.subscription.UnsubscribeResponse"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

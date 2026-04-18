@@ -2,7 +2,12 @@
   "openapi": "3.0.0",
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.gia",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/gia/gia/allocateip": {
@@ -116,7 +121,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-gia-customapi-allocateip"
         },
-        "x-ves-proto-rpc": "ves.io.schema.gia.CustomAPI.AllocateIP"
+        "x-ves-proto-rpc": "ves.io.schema.gia.CustomAPI.AllocateIP",
+        "tags": ["gia"]
       },
       "x-displayname": "Global IP Allocator",
       "x-ves-proto-service": "ves.io.schema.gia.CustomAPI",
@@ -233,7 +239,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-gia-customapi-deallocateip"
         },
-        "x-ves-proto-rpc": "ves.io.schema.gia.CustomAPI.DeallocateIP"
+        "x-ves-proto-rpc": "ves.io.schema.gia.CustomAPI.DeallocateIP",
+        "tags": ["gia"]
       },
       "x-displayname": "Global IP Allocator",
       "x-ves-proto-service": "ves.io.schema.gia.CustomAPI",
@@ -332,6 +339,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "gia"
+    }
+  ]
 }

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.log",
     "description": "Two types of logs are supported, viz, access logs and audit logs.\n  * Access logs are sampled records of API calls made to a virtual host. It contains\n    both the request and the response data with more context like application type,\n    user, request path, method, request body, response code, source,\n    destination, etc.,\n  * Audit logs provides audit of all configuration changes made in the system using\n    public APIs provided by Volterra. It contains both the request and response body\n    with additional context necessary for post-mortem analysis such as user, request path,\n    method, request body, response code, source, destination service, etc.,\nBoth the access logs and audit logs are used to find \"who did what and when and what was the result?\"\nwho - answered by user/user-agent in the log.\nwhat - answered by request url/method/body in the log.\nwhen - answered by timestamp in the log.\nresult - answered by response code in the log.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/data/namespaces/{namespace}/access_logs": {
@@ -129,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-accesslogqueryv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AccessLogQueryV2"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AccessLogQueryV2",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -258,7 +264,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-accesslogaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AccessLogAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AccessLogAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -387,12 +394,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-accesslogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AccessLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AccessLogScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "Access Log Scroll Query",
         "description": "The response for access log query contain no more than 500 records.\nScroll request is used scroll through more than 500 records or all records that matched the criteria in the\naccess log query in multiple batches. EOF is indicated by empty scroll_id in the response.",
-        "operationId": "ves.io.schema.log.CustomAPI.AccessLogScrollQuery",
+        "operationId": "ves.io.schema.log.CustomAPI.AccessLogScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -504,7 +512,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-accesslogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AccessLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AccessLogScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -633,7 +642,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-auditlogqueryv2"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AuditLogQueryV2"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AuditLogQueryV2",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -762,7 +772,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-auditlogaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AuditLogAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AuditLogAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -891,12 +902,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-auditlogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AuditLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AuditLogScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "Audit Log Scroll Query",
         "description": "The response for audit log query contain no more than 500 messages.\nOne can use scroll request to scroll through more than 500 messages or all messages\nin multiple batches. empty scroll_id in the response indicates no more messages to fetch (EOF).",
-        "operationId": "ves.io.schema.log.CustomAPI.AuditLogScrollQuery",
+        "operationId": "ves.io.schema.log.CustomAPI.AuditLogScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1008,7 +1020,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-auditlogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AuditLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.AuditLogScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -1137,7 +1150,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-firewalllogquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.FirewallLogQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.FirewallLogQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -1266,7 +1280,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-firewalllogaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.FirewallLogAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.FirewallLogAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -1395,12 +1410,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-firewalllogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.FirewallLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.FirewallLogScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "Firewall Logs Scroll Query",
         "description": "The response for firewall log query contain no more than 500 records.\nScroll request is used scroll through more than 500 records or all records that matched the criteria in the\nfirewall log query in multiple batches. EOF is indicated by empty scroll_id in the response.",
-        "operationId": "ves.io.schema.log.CustomAPI.FirewallLogScrollQuery",
+        "operationId": "ves.io.schema.log.CustomAPI.FirewallLogScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1512,7 +1528,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-firewalllogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.FirewallLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.FirewallLogScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -1641,12 +1658,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-k8sauditlogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SAuditLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SAuditLogScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "K8s Audit Log Scroll Query",
         "description": "The response for K8s audit log query contain no more than 500 messages.\nOne can use scroll request to scroll through more than 500 messages or all messages\nin multiple batches. empty scroll_id in the response indicates no more messages to fetch (EOF).",
-        "operationId": "ves.io.schema.log.CustomAPI.K8SAuditLogScrollQuery",
+        "operationId": "ves.io.schema.log.CustomAPI.K8SAuditLogScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1758,7 +1776,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-k8sauditlogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SAuditLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SAuditLogScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -1887,12 +1906,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-k8seventsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SEventsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SEventsScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "K8s Events Scroll Query",
         "description": "The response for K8s events query contain no more than 500 events.\nOne can use scroll request to scroll through more than 500 events or all events\nin multiple batches. Empty scroll_id in the response indicates no more messages to fetch (EOF).",
-        "operationId": "ves.io.schema.log.CustomAPI.K8SEventsScrollQuery",
+        "operationId": "ves.io.schema.log.CustomAPI.K8SEventsScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2004,7 +2024,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-k8seventsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SEventsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SEventsScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -2133,7 +2154,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-platformeventquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.PlatformEventQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.PlatformEventQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -2262,7 +2284,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-platformeventaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.PlatformEventAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.PlatformEventAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -2391,12 +2414,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-platformeventscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.PlatformEventScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.PlatformEventScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "Platform event Scroll Query",
         "description": "The response for platform event query contain no more than 500 messages.\nOne can use scroll request to scroll through more than 500 messages or all messages\nin multiple batches. empty scroll_id in the response indicates no more messages to fetch (EOF).",
-        "operationId": "ves.io.schema.log.CustomAPI.PlatformEventScrollQuery",
+        "operationId": "ves.io.schema.log.CustomAPI.PlatformEventScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2508,7 +2532,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-platformeventscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.PlatformEventScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.PlatformEventScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -2657,7 +2682,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-externalconnectorlogquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.ExternalConnectorLogQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.ExternalConnectorLogQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -2796,7 +2822,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-k8sauditlogquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SAuditLogQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SAuditLogQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -2935,7 +2962,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-k8sauditlogaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SAuditLogAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SAuditLogAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -3074,7 +3102,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-k8seventsquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SEventsQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SEventsQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -3213,7 +3242,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-k8seventsaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SEventsAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.K8SEventsAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -3342,7 +3372,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-vk8sauditlogquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SAuditLogQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SAuditLogQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -3471,7 +3502,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-vk8sauditlogaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SAuditLogAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SAuditLogAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -3600,12 +3632,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-vk8sauditlogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SAuditLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SAuditLogScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "vK8s Audit Log Scroll Query",
         "description": "The response for vK8s audit log query contain no more than 500 messages.\nOne can use scroll request to scroll through more than 500 messages or all messages\nin multiple batches. empty scroll_id in the response indicates no more messages to fetch (EOF).",
-        "operationId": "ves.io.schema.log.CustomAPI.VK8SAuditLogScrollQuery",
+        "operationId": "ves.io.schema.log.CustomAPI.VK8SAuditLogScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -3717,7 +3750,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-vk8sauditlogscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SAuditLogScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SAuditLogScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -3846,7 +3880,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-vk8seventsquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SEventsQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SEventsQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -3975,7 +4010,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-vk8seventsaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SEventsAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SEventsAggregationQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -4104,12 +4140,13 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-vk8seventsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SEventsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SEventsScrollQuery",
+        "tags": ["data"]
       },
       "post": {
         "summary": "vK8s Events Scroll Query",
         "description": "The response for vK8s events query contain no more than 500 events.\nOne can use scroll request to scroll through more than 500 events or all events\nin multiple batches. Empty scroll_id in the response indicates no more messages to fetch (EOF).",
-        "operationId": "ves.io.schema.log.CustomAPI.VK8SEventsScrollQuery",
+        "operationId": "ves.io.schema.log.CustomAPI.VK8SEventsScrollQuery_post_post_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -4221,7 +4258,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-log-customapi-vk8seventsscrollquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SEventsScrollQuery"
+        "x-ves-proto-rpc": "ves.io.schema.log.CustomAPI.VK8SEventsScrollQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Logs",
       "x-ves-proto-service": "ves.io.schema.log.CustomAPI",
@@ -4251,22 +4289,6 @@
         "properties": {
           "field": {
             "$ref": "#/components/schemas/access_logNumKeyField"
-          }
-        }
-      },
-      "access_logFieldSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Field SubAggregation\"\nAggregate access logs in each aggregation field bucket based on one of the sub aggregation types",
-        "title": "Field SubAggregation",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/access_logAvgAggregation"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/access_logMaxAggregation"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/access_logMinAggregation"
           }
         }
       },
@@ -4315,21 +4337,14 @@
         "type": "string",
         "description": "x-displayName: \"Multi-Key Field\"\nSecurity events can be aggregated based on these multiple key fields\n\n - VH_NAME_NAMESPACE: x-displayName: \"VH Name, Namespace\"\nAggregated by (KeyField.VH_NAME, KeyField.NAMESPACE)\n - API_ENDPOINT_METHOD: x-displayName: \"api_endpoint, method\"\nAggregated by (KeyField.API_ENDPOINT, KeyField.METHOD)\n - API_ENDPOINT_METHOD_RSP_CODE_CLASS: x-displayName: \"api_endpoint, method, rsp_code_class\"\nAggregated by (KeyField.API_ENDPOINT, KeyField.METHOD, KeyField.rsp_code_class)",
         "title": "Multi-Key Field",
-        "enum": [
-          "VH_NAME_NAMESPACE",
-          "API_ENDPOINT_METHOD",
-          "API_ENDPOINT_METHOD_RSP_CODE_CLASS"
-        ],
+        "enum": ["VH_NAME_NAMESPACE", "API_ENDPOINT_METHOD", "API_ENDPOINT_METHOD_RSP_CODE_CLASS"],
         "default": "VH_NAME_NAMESPACE"
       },
       "access_logNumKeyField": {
         "type": "string",
         "description": "x-displayName: \"Num-Key Field\"\nAccess log can be aggregated based on these numeric fields.\n\n - DURATION_WITH_DATA_TX_DELAY: x-displayName: \"DURATION WITH DATA TX DELAY\"\n - TIMESTAMP: x-displayName: \"TIMESTAMP\"",
         "title": "Numeric-Key Field",
-        "enum": [
-          "DURATION_WITH_DATA_TX_DELAY",
-          "TIMESTAMP"
-        ],
+        "enum": ["DURATION_WITH_DATA_TX_DELAY", "TIMESTAMP"],
         "default": "DURATION_WITH_DATA_TX_DELAY"
       },
       "logAccessLogAggregationRequest": {
@@ -4642,19 +4657,6 @@
           }
         }
       },
-      "logDateSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\n\nDate subaggregation data",
-        "title": "DateSubAggregationData",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          }
-        }
-      },
       "logExternalConnectorRequest": {
         "type": "object",
         "description": "Request to get logs for a external connector",
@@ -4797,39 +4799,6 @@
           }
         }
       },
-      "logFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field SubAggregation\"\nField subaggregation data",
-        "title": "FieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field values and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubAggregationBucket"
-            }
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
-          }
-        }
-      },
       "logFieldSubFieldAggregationBucket": {
         "type": "object",
         "description": "x-displayName: \"Field Sub Field Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
@@ -4848,21 +4817,6 @@
           }
         }
       },
-      "logFieldSubFieldAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field Sub Field Aggregation Data\"\nField Aggregation data as Field Sub-aggregation",
-        "title": "FieldSubFieldAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubFieldAggregationBucket"
-            }
-          }
-        }
-      },
       "logFilterAggregationData": {
         "type": "object",
         "description": "x-displayName: \"Filter Aggregation Data\"\nFilter Aggregation Data",
@@ -4878,21 +4832,6 @@
             "type": "object",
             "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
             "title": "sub aggregation"
-          }
-        }
-      },
-      "logFilterSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"FilterSubAggregation\"\nFilter subaggregation data",
-        "title": "FilterSubAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFilterSubFieldAggregationBucket"
-            }
           }
         }
       },
@@ -5326,43 +5265,6 @@
           }
         }
       },
-      "logLogAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Log Aggregation\"\nLog aggregation response data",
-        "title": "LogAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logDateAggregationData"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/logMetricsAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
-          }
-        }
-      },
       "logLogAggregationResponse": {
         "type": "object",
         "description": "Response message for AuditLogAggregationRequest/AccessLogAggregationRequest",
@@ -5523,28 +5425,6 @@
             "items": {
               "$ref": "#/components/schemas/logMultiFieldAggregationBucket"
             }
-          }
-        }
-      },
-      "logMultiFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Multi Field SubAggregation\"\nField subaggregation data",
-        "title": "MultiFieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "top_hits_aggregation": {
-            "$ref": "#/components/schemas/logTopHitsAggregationData"
           }
         }
       },
@@ -5969,34 +5849,6 @@
           }
         }
       },
-      "logaccess_logAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the log response",
-        "title": "Aggregation Request",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/access_logAvgAggregation"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logaccess_logCardinalityAggregation"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logaccess_logDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logaccess_logFieldAggregation"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/access_logMaxAggregation"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/access_logMinAggregation"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/access_logMultiFieldAggregation"
-          }
-        }
-      },
       "logaccess_logCardinalityAggregation": {
         "type": "object",
         "description": "x-displayName: \"Cardinality Aggregation\"\nGet approximate count of distinct values for the field in the access log.",
@@ -6021,19 +5873,6 @@
             "type": "object",
             "description": "x-displayName: \"Sub Aggregation\"\nThis option provides sub-aggregation for each date bucket",
             "title": "sub aggregation"
-          }
-        }
-      },
-      "logaccess_logDateSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\nAggregate access logs in each date bucket based on one of the sub aggregation types",
-        "title": "Date SubAggregation",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logaccess_logFieldAggregation"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/access_logMultiFieldAggregation"
           }
         }
       },
@@ -6096,19 +5935,6 @@
         ],
         "default": "API_ENDPOINT"
       },
-      "logaudit_logAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the log response",
-        "title": "Aggregation Request",
-        "properties": {
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logaudit_logDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logaudit_logFieldAggregation"
-          }
-        }
-      },
       "logaudit_logDateAggregation": {
         "type": "object",
         "description": "x-displayName: \"Date Aggregation\"\nAggregate access logs based on timestamp in the log",
@@ -6158,22 +5984,6 @@
         ],
         "default": "AUTHORITY"
       },
-      "logfirewall_logAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the log response",
-        "title": "Aggregation Request",
-        "properties": {
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logfirewall_logCardinalityAggregation"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logfirewall_logDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logfirewall_logFieldAggregation"
-          }
-        }
-      },
       "logfirewall_logCardinalityAggregation": {
         "type": "object",
         "description": "x-displayName: \"Cardinality Aggregation\"\nGet approximate count of distinct values for the field in the firewall log.",
@@ -6201,16 +6011,6 @@
           }
         }
       },
-      "logfirewall_logDateSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\nAggregate firewall logs in each date bucket based on one of the sub aggregation types",
-        "title": "Date SubAggregation",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logfirewall_logFieldAggregation"
-          }
-        }
-      },
       "logfirewall_logFieldAggregation": {
         "type": "object",
         "description": "x-displayName: \"Field Aggregation\"\nAggregate firewall logs based on the key fields in the log.",
@@ -6231,25 +6031,8 @@
         "type": "string",
         "description": "x-displayName: \"Key Field\"\nFirewall log can be aggregated based on these fields.\n\n - SITE: x-displayName: \"Site\"\n - SRC_IP: x-displayName: \"Source IP Address\"\n - DST_IP: x-displayName: \"Destination IP Address\"\n - POLICY: x-displayName: \"Policy\"\n - POLICY_RULE: x-displayName: \"Policy Rule\"\n - POLICY_HITS_RESULT: x-displayName: \"Policy Hit Result\"",
         "title": "Key Field",
-        "enum": [
-          "SITE",
-          "SRC_IP",
-          "DST_IP",
-          "POLICY",
-          "POLICY_RULE",
-          "POLICY_HITS_RESULT"
-        ],
+        "enum": ["SITE", "SRC_IP", "DST_IP", "POLICY", "POLICY_RULE", "POLICY_HITS_RESULT"],
         "default": "SITE"
-      },
-      "logk8s_audit_logAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the log response",
-        "title": "Aggregation Request",
-        "properties": {
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logk8s_audit_logDateAggregation"
-          }
-        }
       },
       "logk8s_audit_logDateAggregation": {
         "type": "object",
@@ -6260,19 +6043,6 @@
             "type": "string",
             "description": "x-displayName: \"Step\"\nx-required\nx-example: \"5m\"\n\nstep is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\nThe timestamps in the response will be t1=start_time, t2=t1+step, ... tn=tn-1+step, where tn <= end_time.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
             "title": "step"
-          }
-        }
-      },
-      "logk8s_eventsAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the K8s events",
-        "title": "Aggregation Request",
-        "properties": {
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logk8s_eventsDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logk8s_eventsFieldAggregation"
           }
         }
       },
@@ -6308,27 +6078,8 @@
         "type": "string",
         "description": "x-displayName: \"Key Field\"\nK8s events can be aggregated based on these fields.\n\n - INVOLVED_OBJECT_KIND: x-displayName: \"Involved Object Kind\"\n - INVOLVED_OBJECT_NAME: x-displayName: \"Involved Object Name\"\n - TYPE: x-displayName: \"Type\"\n - REASON: x-displayName: \"Reason\"\n - SOURCE_COMPONENT: x-displayName: \"Source Component\"",
         "title": "Key Field",
-        "enum": [
-          "INVOLVED_OBJECT_KIND",
-          "INVOLVED_OBJECT_NAME",
-          "TYPE",
-          "REASON",
-          "SOURCE_COMPONENT"
-        ],
+        "enum": ["INVOLVED_OBJECT_KIND", "INVOLVED_OBJECT_NAME", "TYPE", "REASON", "SOURCE_COMPONENT"],
         "default": "INVOLVED_OBJECT_KIND"
-      },
-      "logplatform_eventAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the platform events",
-        "title": "Aggregation Request",
-        "properties": {
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logplatform_eventDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logplatform_eventFieldAggregation"
-          }
-        }
       },
       "logplatform_eventDateAggregation": {
         "type": "object",
@@ -6362,20 +6113,8 @@
         "type": "string",
         "description": "x-displayName: \"Key Field\"\nplatform events can be aggregated based on these fields.\n\n - EVENT_TYPE: x-displayName: \"Event type\"",
         "title": "Key Field",
-        "enum": [
-          "EVENT_TYPE"
-        ],
+        "enum": ["EVENT_TYPE"],
         "default": "EVENT_TYPE"
-      },
-      "logvk8s_audit_logAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the log response",
-        "title": "Aggregation Request",
-        "properties": {
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logvk8s_audit_logDateAggregation"
-          }
-        }
       },
       "logvk8s_audit_logDateAggregation": {
         "type": "object",
@@ -6386,19 +6125,6 @@
             "type": "string",
             "description": "x-displayName: \"Step\"\nx-required\nx-example: \"5m\"\n\nstep is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\nThe timestamps in the response will be t1=start_time, t2=t1+step, ... tn=tn-1+step, where tn <= end_time.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
             "title": "step"
-          }
-        }
-      },
-      "logvk8s_eventsAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"Aggregation Request\"\nAggregation request to provide analytics data over the vK8s events",
-        "title": "Aggregation Request",
-        "properties": {
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logvk8s_eventsDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logvk8s_eventsFieldAggregation"
           }
         }
       },
@@ -6434,24 +6160,14 @@
         "type": "string",
         "description": "x-displayName: \"Key Field\"\nvK8s events can be aggregated based on these fields.\n\n - INVOLVED_OBJECT_KIND: x-displayName: \"Involved Object Kind\"\n - INVOLVED_OBJECT_NAME: x-displayName: \"Involved Object Name\"\n - TYPE: x-displayName: \"Type\"\n - REASON: x-displayName: \"Reason\"\n - SOURCE_COMPONENT: x-displayName: \"Source Component\"\n - SITE: x-displayName: \"Site\"",
         "title": "Key Field",
-        "enum": [
-          "INVOLVED_OBJECT_KIND",
-          "INVOLVED_OBJECT_NAME",
-          "TYPE",
-          "REASON",
-          "SOURCE_COMPONENT",
-          "SITE"
-        ],
+        "enum": ["INVOLVED_OBJECT_KIND", "INVOLVED_OBJECT_NAME", "TYPE", "REASON", "SOURCE_COMPONENT", "SITE"],
         "default": "INVOLVED_OBJECT_KIND"
       },
       "schemaMetricLabelOp": {
         "type": "string",
         "description": "The operator to use when filtering metrics based on label values.\n",
         "title": "Metric Label Operator",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
@@ -6460,10 +6176,7 @@
         "type": "string",
         "description": "Sort algorithm\n\nSort in descending order\nSort in ascending order",
         "title": "SortOrder",
-        "enum": [
-          "DESCENDING",
-          "ASCENDING"
-        ],
+        "enum": ["DESCENDING", "ASCENDING"],
         "default": "DESCENDING",
         "x-displayname": "Sort Order",
         "x-ves-proto-enum": "ves.io.schema.SortOrder"
@@ -6472,11 +6185,7 @@
         "type": "string",
         "description": "x-displayName: \"Trend Sentiment\"\ntrend sentiment\n\n - TREND_SENTIMENT_NONE: x-displayName: \"None\"\n - TREND_SENTIMENT_POSITIVE: x-displayName: \"Positive\"\nIndicates trend sentiment is positive\n - TREND_SENTIMENT_NEGATIVE: x-displayName: \"Negative\"\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE"
       },
       "schemaTrendValue": {
@@ -6508,15 +6217,41 @@
         "type": "string",
         "description": "Metrics used to construct the query for external connector request\n\nIndicates the field not being set\nExternal connector IP\nExternal connector node",
         "title": "Label",
-        "enum": [
-          "LABEL_NONE",
-          "LABEL_EXTERNAL_CONNECTOR_IP",
-          "LABEL_EXTERNAL_CONNECTOR_NODE"
-        ],
+        "enum": ["LABEL_NONE", "LABEL_EXTERNAL_CONNECTOR_IP", "LABEL_EXTERNAL_CONNECTOR_NODE"],
         "default": "LABEL_NONE",
         "x-displayname": "Label",
         "x-ves-proto-enum": "ves.io.schema.log.Label"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    }
+  ]
 }

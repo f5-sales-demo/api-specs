@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.api_sec.rule_suggestion",
     "description": "APIs to get rule suggestions from App Security Monitoring pages",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{namespace}/api_sec/rule_suggestion/api_endpoint_protection": {
@@ -129,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-rule_suggestion-rulesuggestionapi-getsuggestedapiendpointprotectionrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedAPIEndpointProtectionRule"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedAPIEndpointProtectionRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI",
@@ -258,7 +264,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-rule_suggestion-rulesuggestionapi-getsuggestedsensitivedatarule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedSensitiveDataRule"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedSensitiveDataRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI",
@@ -387,7 +394,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-rule_suggestion-rulesuggestionapi-getsuggestedoasvalidationrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedOasValidationRule"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedOasValidationRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI",
@@ -516,7 +524,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-rule_suggestion-rulesuggestionapi-getsuggestedratelimitrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedRateLimitRule"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedRateLimitRule",
+        "tags": ["config"]
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI",
@@ -1011,19 +1020,6 @@
         "properties": {
           "queryParameters": {
             "$ref": "#/components/schemas/common_wafValidationSettingForQueryParameters"
-          }
-        }
-      },
-      "common_wafValidationSettingForHeaders": {
-        "type": "object",
-        "description": "x-displayName: \"Validation Settings For Headers\"\nCustom settings for headers validation",
-        "title": "Validation Settings For Headers",
-        "properties": {
-          "allow_additional_headers": {
-            "$ref": "#/components/schemas/schemaEmpty"
-          },
-          "disallow_additional_headers": {
-            "$ref": "#/components/schemas/schemaEmpty"
           }
         }
       },
@@ -1648,7 +1644,6 @@
           "TRIM_RIGHT",
           "TRIM"
         ],
-        "default": "TRANSFORMER_NONE",
         "x-displayname": "Transformer",
         "x-ves-proto-enum": "ves.io.schema.policy.Transformer"
       },
@@ -1656,11 +1651,7 @@
         "type": "string",
         "description": "Unit for the period per which the rate limit is applied.\n\n - SECOND: Second\n\nRate limit period unit is seconds\n - MINUTE: Minute\n\nRate limit period unit is minutes\n - HOUR: Hour\n\nRate limit period unit is hours\n - DAY: Day\n\nRate limit period unit is days",
         "title": "RateLimitPeriodUnit",
-        "enum": [
-          "SECOND",
-          "MINUTE",
-          "HOUR"
-        ],
+        "enum": ["SECOND", "MINUTE", "HOUR"],
         "default": "SECOND",
         "x-displayname": "Rate Limit Period Unit",
         "x-ves-proto-enum": "ves.io.schema.rate_limiter.RateLimitPeriodUnit"
@@ -1953,19 +1944,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -2222,6 +2201,36 @@
         "x-displayname": "Virtual Host Type",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.VirtualHostType"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.workload",
     "description": "Workload is used to configure and deploy a workload in Virtual Kubernetes. A workload can be\neither a service or stateful service or a batch job. Services and jobs can be deployed on\nregional edges or customer sites. Services can be exposed in-cluster or by L7 or L4\nload balancer on Internet or on sites using an advertise policy.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/workloads": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-workload-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.workload.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.workload.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Workload",
       "x-ves-proto-service": "ves.io.schema.views.workload.API",
@@ -554,7 +560,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-workload-customdataapi-usage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.workload.CustomDataAPI.Usage"
+        "x-ves-proto-rpc": "ves.io.schema.views.workload.CustomDataAPI.Usage",
+        "tags": ["data"]
       },
       "x-displayname": "Workload",
       "x-ves-proto-service": "ves.io.schema.views.workload.CustomDataAPI",
@@ -703,7 +710,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-workload-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.workload.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.workload.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Workload",
@@ -835,7 +843,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-workload-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.workload.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.workload.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Workload",
       "x-ves-proto-service": "ves.io.schema.views.workload.API",
@@ -1491,21 +1500,6 @@
           }
         }
       },
-      "routeRouteQueryParams": {
-        "type": "object",
-        "description": "x-displayName: \"Query Parameters\"\nQuery params keys to strip while manipulating the HTTP request",
-        "title": "RouteQueryParams",
-        "properties": {
-          "query_params": {
-            "type": "array",
-            "description": "x-displayName: \"Query Parameters\"\nx-example: \"userid\"\nQuery params keys to strip while manipulating the HTTP request",
-            "title": "query_params",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "routeRouteRedirect": {
         "type": "object",
         "description": "route redirect parameters when match action is redirect.",
@@ -1755,11 +1749,7 @@
         "type": "string",
         "description": "Specifies the Hash Algorithm to be used\n\nInvalid hash algorithm\nsha256 hash algorithm\nsha1 hash algorithm",
         "title": "HashAlgoritm",
-        "enum": [
-          "INVALID_HASH_ALGORITHM",
-          "SHA256",
-          "SHA1"
-        ],
+        "enum": ["INVALID_HASH_ALGORITHM", "SHA256", "SHA1"],
         "default": "INVALID_HASH_ALGORITHM",
         "x-displayname": "Hash Algorithm",
         "x-ves-proto-enum": "ves.io.schema.HashAlgorithm"
@@ -1818,19 +1808,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -2125,10 +2103,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -2210,10 +2185,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2403,13 +2375,7 @@
         "type": "string",
         "description": "TlsProtocol is enumeration of supported TLS versions\n\nF5 Distributed Cloud will choose the optimal TLS version.",
         "title": "TlsProtocol",
-        "enum": [
-          "TLS_AUTO",
-          "TLSv1_0",
-          "TLSv1_1",
-          "TLSv1_2",
-          "TLSv1_3"
-        ],
+        "enum": ["TLS_AUTO", "TLSv1_0", "TLSv1_1", "TLSv1_2", "TLSv1_3"],
         "default": "TLS_AUTO",
         "x-displayname": "TLS Protocol",
         "x-ves-proto-enum": "ves.io.schema.TlsProtocol"
@@ -2418,11 +2384,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -2497,37 +2459,6 @@
         "x-displayname": "Unit",
         "x-ves-proto-enum": "ves.io.schema.UnitType"
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -2565,30 +2496,11 @@
           }
         }
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemaXfccElement": {
         "type": "string",
         "description": "X-Forwarded-Client-Cert custom cookie elements\n\nThe entire client certificate in URL encoded PEM format.\nThe entire client certificate chain (including the leaf certificate) in URL encoded PEM format.\nThe Subject field of the current client certificate. The value is always double-quoted.\nThe URI type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple URI type Subject Alternative Names,\neach will be a separate key-value pair.\nThe DNS type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple DNS type Subject Alternative Names,\neach will be a separate key-value pair.",
         "title": "XfccElement",
-        "enum": [
-          "XFCC_NONE",
-          "XFCC_CERT",
-          "XFCC_CHAIN",
-          "XFCC_SUBJECT",
-          "XFCC_URI",
-          "XFCC_DNS"
-        ],
+        "enum": ["XFCC_NONE", "XFCC_CERT", "XFCC_CHAIN", "XFCC_SUBJECT", "XFCC_URI", "XFCC_DNS"],
         "default": "XFCC_NONE",
         "x-displayname": "XFCC Elements",
         "x-ves-proto-enum": "ves.io.schema.XfccElement"
@@ -2972,13 +2884,7 @@
         "type": "string",
         "description": "Type of protocol\n\n - PROTOCOL_TCP: TCP\n\nTCP\n - PROTOCOL_HTTP: HTTP\n\nHTTP\n - PROTOCOL_HTTP2: HTTP2\n\nHTTP2\n - PROTOCOL_TLS_WITH_SNI: TLS with SNI\n\nTLS with SNI\n - PROTOCOL_UDP: UDP\n\nUDP",
         "title": "Protocol Type",
-        "enum": [
-          "PROTOCOL_TCP",
-          "PROTOCOL_HTTP",
-          "PROTOCOL_HTTP2",
-          "PROTOCOL_TLS_WITH_SNI",
-          "PROTOCOL_UDP"
-        ],
+        "enum": ["PROTOCOL_TCP", "PROTOCOL_HTTP", "PROTOCOL_HTTP2", "PROTOCOL_TLS_WITH_SNI", "PROTOCOL_UDP"],
         "default": "PROTOCOL_TCP",
         "x-displayname": "Protocol Type",
         "x-ves-proto-enum": "ves.io.schema.views.workload.ProtocolType"
@@ -3426,11 +3332,7 @@
         "type": "string",
         "description": "Container Flavor type\n\n - CONTAINER_FLAVOR_TYPE_TINY: Tiny\n\nTiny containers have limit of 0.1 vCPU and 256 MiB (mebibyte) memory\n - CONTAINER_FLAVOR_TYPE_MEDIUM: Medium\n\nMedium containers have limit of 0.25 vCPU and 512 MiB (mebibyte) memory\n - CONTAINER_FLAVOR_TYPE_LARGE: Large\n\nLarge containers have limit of 1 vCPU and 2048 MiB (mebibyte) memory",
         "title": "ContainerFlavorType",
-        "enum": [
-          "CONTAINER_FLAVOR_TYPE_TINY",
-          "CONTAINER_FLAVOR_TYPE_MEDIUM",
-          "CONTAINER_FLAVOR_TYPE_LARGE"
-        ],
+        "enum": ["CONTAINER_FLAVOR_TYPE_TINY", "CONTAINER_FLAVOR_TYPE_MEDIUM", "CONTAINER_FLAVOR_TYPE_LARGE"],
         "default": "CONTAINER_FLAVOR_TYPE_TINY",
         "x-displayname": "Container Flavor Type",
         "x-ves-proto-enum": "ves.io.schema.views.workload.ContainerFlavorType"
@@ -3879,21 +3781,6 @@
           }
         }
       },
-      "workloadGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "workloadHTTPHealthCheckType": {
         "type": "object",
         "description": "HTTPHealthCheckType describes a health check based on HTTP GET requests.",
@@ -4105,25 +3992,6 @@
               "ves.io.schema.rules.string.max_len": "256",
               "ves.io.schema.rules.string.pattern": "[^\\\\0]+"
             }
-          }
-        }
-      },
-      "workloadIPFamilyType": {
-        "type": "object",
-        "description": "x-displayName: \"IP Family Type\"",
-        "title": "IPFamilyType",
-        "properties": {
-          "dual_v4_preferred": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "dual_v6_preferred": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "v4": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "v6": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
           }
         }
       },
@@ -4391,11 +4259,7 @@
         "type": "string",
         "description": "Persistence storage access mode is used to configure access mode for persistent storage\n\n - ACCESS_MODE_READ_WRITE_ONCE: Read Write Once\n\nRead Write Once is used to mount persistent storage in read/write mode to exactly 1 host\n - ACCESS_MODE_READ_WRITE_MANY: Read Write Many\n\nRead Write Many is used to mount persistent storage in read/write mode to many hosts\n - ACCESS_MODE_READ_ONLY_MANY: Read Only Many\n\nRead Only Many is used to mount persistent storage in read-only mode to many hosts",
         "title": "PersistentStorageAccessModeType",
-        "enum": [
-          "ACCESS_MODE_READ_WRITE_ONCE",
-          "ACCESS_MODE_READ_WRITE_MANY",
-          "ACCESS_MODE_READ_ONLY_MANY"
-        ],
+        "enum": ["ACCESS_MODE_READ_WRITE_ONCE", "ACCESS_MODE_READ_WRITE_MANY", "ACCESS_MODE_READ_ONLY_MANY"],
         "default": "ACCESS_MODE_READ_WRITE_ONCE",
         "x-displayname": "Persistent Storage Access Mode",
         "x-ves-proto-enum": "ves.io.schema.views.workload.PersistentStorageAccessModeType"
@@ -4884,13 +4748,7 @@
         "type": "string",
         "description": "Labels in usage metric\n",
         "title": "Usage Label",
-        "enum": [
-          "NAMESPACE",
-          "CONTAINER",
-          "POD",
-          "SITE",
-          "WORKLOAD"
-        ],
+        "enum": ["NAMESPACE", "CONTAINER", "POD", "SITE", "WORKLOAD"],
         "default": "NAMESPACE",
         "x-displayname": "Usage Label",
         "x-ves-proto-enum": "ves.io.schema.views.workload.UsageLabel"
@@ -5024,12 +4882,7 @@
         "type": "string",
         "description": "List of usage types that can be queried\n\nx-unit: \"Number of cores\"\nx-unit: \"Bytes\"\nx-unit: \"Bytes per second\"\nx-unit: \"Bytes per second\"",
         "title": "Usage Type",
-        "enum": [
-          "CPU_USAGE",
-          "MEMORY_USAGE",
-          "DISK_READS",
-          "DISK_WRITES"
-        ],
+        "enum": ["CPU_USAGE", "MEMORY_USAGE", "DISK_READS", "DISK_WRITES"],
         "default": "CPU_USAGE",
         "x-displayname": "Usage Type",
         "x-ves-proto-enum": "ves.io.schema.views.workload.UsageType"
@@ -5062,10 +4915,7 @@
         "type": "string",
         "description": "Mode in which the volume should be mounted to the workload\n\n - VOLUME_MOUNT_READ_ONLY: ReadOnly\n\nMount the volume in read-only mode\n - VOLUME_MOUNT_READ_WRITE: Read Write\n\nMount the volume in read-write mode",
         "title": "VolumeMountModeType",
-        "enum": [
-          "VOLUME_MOUNT_READ_ONLY",
-          "VOLUME_MOUNT_READ_WRITE"
-        ],
+        "enum": ["VOLUME_MOUNT_READ_ONLY", "VOLUME_MOUNT_READ_WRITE"],
         "default": "VOLUME_MOUNT_READ_ONLY",
         "x-displayname": "Mode",
         "x-ves-proto-enum": "ves.io.schema.views.workload.VolumeMountModeType"
@@ -5107,6 +4957,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "data"
+    }
+  ]
 }

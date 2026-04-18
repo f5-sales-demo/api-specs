@@ -96,7 +96,8 @@ class SpectralAdapter:
         result = subprocess.run(cmd, capture_output=True, text=True, check=False)  # noqa: S603
 
         if result.stdout.strip():
-            return json.loads(result.stdout)
+            violations: list[dict[str, Any]] = json.loads(result.stdout)
+            return violations
         return []
 
     def write_report(
@@ -142,10 +143,14 @@ class SpectralAdapter:
         error_count = sum(1 for v in violations if v.get("severity") == 0)
         warn_count = sum(1 for v in violations if v.get("severity") == 1)
 
-        console.print(f"[dim]Gate check: {error_count} errors, {warn_count} warnings[/dim]")
+        console.print(
+            f"[dim]Gate check: {error_count} errors, {warn_count} warnings[/dim]"
+        )
 
         if max_errors is not None and error_count > max_errors:
-            console.print(f"[red]Gate FAILED: {error_count} errors exceeds max {max_errors}[/red]")
+            console.print(
+                f"[red]Gate FAILED: {error_count} errors exceeds max {max_errors}[/red]"
+            )
             return False
         if max_warnings is not None and warn_count > max_warnings:
             console.print(
@@ -209,7 +214,9 @@ def main() -> int:
         violations = adapter.run_lint(spec_dir)
         adapter.write_report(violations, output)
 
-        console.print(f"[bold]Spectral discover: {len(violations)} violations found[/bold]")
+        console.print(
+            f"[bold]Spectral discover: {len(violations)} violations found[/bold]"
+        )
         return 0
 
     # gate mode

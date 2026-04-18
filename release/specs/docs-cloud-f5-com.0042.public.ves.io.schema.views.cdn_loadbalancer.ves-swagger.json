@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.cdn_loadbalancer",
     "description": "CDN Loadbalancer view defines a required parameters that can be used in CRUD, to create and manage CDN loadbalancer.\nIt can be used to create CDN loadbalancer and HTTPS loadbalancer.\n\nView will create following child objects.\n\n* Virtual-host\n* routes\n* endpoints\n* advertise policy",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/cdn/namespaces/system/lilac-cdn/addon/subscribe": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-subscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.Subscribe"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.Subscribe",
+        "tags": ["cdn"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-unsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.Unsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.Unsubscribe",
+        "tags": ["cdn"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -631,7 +638,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-cdnaccesslogs"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNAccessLogs"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNAccessLogs",
+        "tags": ["cdn"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -760,7 +768,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-cdnaccesslogaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNAccessLogAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNAccessLogAggregationQuery",
+        "tags": ["cdn"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -889,7 +898,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-getserviceoperation"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.GetServiceOperation"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.GetServiceOperation",
+        "tags": ["cdn"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -1018,7 +1028,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-listserviceoperations"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.ListServiceOperations"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.ListServiceOperations",
+        "tags": ["cdn"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -1147,7 +1158,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-cdnmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNMetrics",
+        "tags": ["cdn"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -1286,7 +1298,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-cdncachepurge"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNCachePurge"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNCachePurge",
+        "tags": ["cdn"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -1443,7 +1456,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.API",
@@ -1572,7 +1586,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customcdnwaapapi-getcdnsecurityconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.GetCDNSecurityConfig"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.GetCDNSecurityConfig",
+        "tags": ["config"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI",
@@ -1721,7 +1736,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete CDN Loadbalancer",
@@ -1853,7 +1869,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.API",
@@ -1982,7 +1999,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customcdnwaapapi-getcdndosautomitigationrules"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.GetCDNDoSAutoMitigationRules"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.GetCDNDoSAutoMitigationRules",
+        "tags": ["config"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI",
@@ -2121,7 +2139,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customcdnwaapapi-deletecdndosautomitigationrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.DeleteCDNDoSAutoMitigationRule"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.DeleteCDNDoSAutoMitigationRule",
+        "tags": ["config"]
       },
       "x-displayname": "CDN Loadbalancer",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI",
@@ -2428,29 +2447,6 @@
           }
         }
       },
-      "app_typeSensitiveDataDetectionRules": {
-        "type": "object",
-        "description": "x-displayName: \"Sensitive Data Detection Rules\"\nRules to manage/configure sensitive data detection in requests and/or response sections.",
-        "title": "Sensitive Data Detection Rules",
-        "properties": {
-          "custom_sensitive_data_detection_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Defined Custom Sensitive Data Types\"\nRules to detect custom sensitive data in requests and/or responses sections.",
-            "title": "custom sensitive data rules",
-            "items": {
-              "$ref": "#/components/schemas/app_typeCustomSensitiveDataDetectionRule"
-            }
-          },
-          "disabled_built_in_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Disabled Built-In Sensitive Data Types\"\nx-example: \"[EMAIL, CC]\"\nList of disabled built-in sensitive data detection rules.",
-            "title": "disabled_built_in_rules",
-            "items": {
-              "$ref": "#/components/schemas/app_typeBuiltInSensitiveDataType"
-            }
-          }
-        }
-      },
       "app_typeValuePattern": {
         "type": "object",
         "description": "x-displayName: \"Value Pattern\"\nPattern to detect. Could be exact match or regex match.",
@@ -2609,10 +2605,7 @@
         "type": "string",
         "description": "Operators possible in filtering\n",
         "title": "Metrics Operator Types",
-        "enum": [
-          "CDN_ACCESS_LOG_OPERATOR_TYPE_IN",
-          "CDN_ACCESS_LOG_OPERATOR_TYPE_NOT_IN"
-        ],
+        "enum": ["CDN_ACCESS_LOG_OPERATOR_TYPE_IN", "CDN_ACCESS_LOG_OPERATOR_TYPE_NOT_IN"],
         "default": "CDN_ACCESS_LOG_OPERATOR_TYPE_IN",
         "x-displayname": "Metrics Operator Types",
         "x-ves-proto-enum": "ves.io.schema.views.cdn_loadbalancer.CDNAccessLogOperatorType"
@@ -2686,19 +2679,6 @@
           }
         }
       },
-      "cdn_loadbalancerCDNAggregationRequest": {
-        "type": "object",
-        "description": "x-displayName: \"CDN Lodbalancer Aggregation Request\"\nAggregation request for CDN Loadbalancer, to provide analytics data over the log response",
-        "title": "CDN Aggregation Request",
-        "properties": {
-          "date_aggregation": {
-            "$ref": "#/components/schemas/cdn_loadbalancerCDNDateAggregation"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/cdn_loadbalancerCDNFieldAggregation"
-          }
-        }
-      },
       "cdn_loadbalancerCDNCustomAuthentication": {
         "type": "object",
         "description": "x-displayName: \"Custom Authentication\"\nCustom  Authentication",
@@ -2728,34 +2708,6 @@
           }
         }
       },
-      "cdn_loadbalancerCDNDateSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\nAggregate access logs in each date bucket based on one of the sub aggregation types",
-        "title": "CDN Date SubAggregation",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/cdn_loadbalancerCDNFieldAggregation"
-          }
-        }
-      },
-      "cdn_loadbalancerCDNDownstreamTlsParamsType": {
-        "type": "object",
-        "description": "x-displayName: \"TLS Parameters\"\nTLS parameters for CDN distribution",
-        "title": "CDNDownstreamTlsParamsType",
-        "properties": {
-          "tls_certificates": {
-            "type": "array",
-            "description": "x-displayName: \"TLS Certificates\"\nx-required\nUsers can add one or more certificates that share the same set of domains.\nfor example, domain.com and *.domain.com - but use different signature algorithms",
-            "title": "tls_certificates",
-            "items": {
-              "$ref": "#/components/schemas/schemaTlsCertificateType"
-            }
-          },
-          "tls_config": {
-            "$ref": "#/components/schemas/cdn_loadbalancerCDNTLSConfig"
-          }
-        }
-      },
       "cdn_loadbalancerCDNFieldAggregation": {
         "type": "object",
         "description": "x-displayName: \"Field Aggregation\"\nAggregate access logs based on the key fields in the log.",
@@ -2774,16 +2726,6 @@
             "description": "x-displayName: \"TopK\"\nx-example: \"5\"\nNumber of top field values to be returned in the response.\nOptional: If not specified, top 5 values will be returned in the response.",
             "title": "topk",
             "format": "int64"
-          }
-        }
-      },
-      "cdn_loadbalancerCDNFieldSubAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"CDN Field SubAggregation\"\nAggregate access logs in each field bucket based on one of the sub aggregation types",
-        "title": "CDN Fiels SubAggregation",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/viewscdn_loadbalancerFieldAggregation"
           }
         }
       },
@@ -2841,26 +2783,6 @@
           }
         }
       },
-      "cdn_loadbalancerCDNLbStatusType": {
-        "type": "object",
-        "description": "x-displayName: \"CDN LB Status\"\nThis CDN LB status is per site and it indicates the status of the LB on the site",
-        "title": "CDN LB status details",
-        "properties": {
-          "error": {
-            "type": "string",
-            "description": "x-displayName: \"Error\"\nError message (if any)",
-            "title": "Error"
-          },
-          "site": {
-            "type": "string",
-            "description": "x-displayName: \"Site\"\nName of the site that reported this status",
-            "title": "Site Name"
-          },
-          "status": {
-            "$ref": "#/components/schemas/viewscdn_loadbalancerCDNSiteDeploymentStatus"
-          }
-        }
-      },
       "cdn_loadbalancerCDNLoadBalancerList": {
         "type": "object",
         "title": "List of cdn load balancers",
@@ -2888,33 +2810,6 @@
               "ves.io.schema.rules.repeated.max_items": "5",
               "ves.io.schema.rules.repeated.min_items": "1"
             }
-          }
-        }
-      },
-      "cdn_loadbalancerCDNLoadbalancerStatus": {
-        "type": "object",
-        "description": "x-displayName: \"CDN LoadBalancer Status\"\nCDN LoadBalancer Status",
-        "title": "CDNLoadBalancer status",
-        "properties": {
-          "cfg_version": {
-            "type": "integer",
-            "description": "x-displayName: \"Cfg Version\"\nCfg version",
-            "title": "Cfg Version",
-            "format": "int64"
-          },
-          "cp_version": {
-            "type": "integer",
-            "description": "x-displayName: \"CP Version\"\nCP version",
-            "title": "CP Version",
-            "format": "int64"
-          },
-          "deployment_status": {
-            "$ref": "#/components/schemas/viewscdn_loadbalancerCDNLoadbalancerDeploymentStatus"
-          },
-          "error_msg": {
-            "type": "string",
-            "description": "x-displayName: \"Error Message\"\nError message",
-            "title": "Error Message"
           }
         }
       },
@@ -3277,21 +3172,6 @@
           }
         }
       },
-      "cdn_loadbalancerGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "cdn_loadbalancerIpFilteringOptions": {
         "type": "object",
         "description": "x-displayName: \"IP Filtering Options\"\nOptions to filter based on IP prefix",
@@ -3542,11 +3422,7 @@
         "type": "string",
         "description": "Metric Unit\n",
         "title": "Metric Unit",
-        "enum": [
-          "COUNT",
-          "BYTES",
-          "MILLISECONDS"
-        ],
+        "enum": ["COUNT", "BYTES", "MILLISECONDS"],
         "default": "COUNT",
         "x-displayname": "Metric Unit",
         "x-ves-proto-enum": "ves.io.schema.views.cdn_loadbalancer.LilacCDNMetricUnit"
@@ -3604,10 +3480,7 @@
         "type": "string",
         "description": "Operators possible in filtering\n",
         "title": "Metrics Operator Types",
-        "enum": [
-          "OPERATOR_TYPE_IN",
-          "OPERATOR_TYPE_NOT_IN"
-        ],
+        "enum": ["OPERATOR_TYPE_IN", "OPERATOR_TYPE_NOT_IN"],
         "default": "OPERATOR_TYPE_IN",
         "x-displayname": "Metrics Operator Types",
         "x-ves-proto-enum": "ves.io.schema.views.cdn_loadbalancer.LilacCDNMetricsOperatorType"
@@ -4129,18 +4002,6 @@
               "$ref": "#/components/schemas/schemaviewsObjectRefType"
             },
             "x-displayname": "CDN Cache Rule"
-          }
-        }
-      },
-      "common_cache_ruleDefaultCacheTTLProps": {
-        "type": "object",
-        "description": "x-displayName: \"Default Cache TTL Props\"\nDefault Cache TTL Enable Values",
-        "title": "Default Cache TTL Props",
-        "properties": {
-          "cache_ttl": {
-            "type": "string",
-            "description": "x-displayName: \"Cache TTL\"\nx-required\nx-example: \"5m, 60s, 120s, 3h, 1d, 15d\"\nCache TTL value is used to cache the resource/content for the specified amount of time\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
-            "title": "Cache TTL Key"
           }
         }
       },
@@ -4674,37 +4535,6 @@
           }
         }
       },
-      "common_securityBotDefenseAdvancedType": {
-        "type": "object",
-        "description": "x-displayName: \"Bot Defense Advanced\"\nBot Defense Advanced",
-        "title": "BotDefenseAdvancedType",
-        "properties": {
-          "disable_js_insert": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "disable_mobile_sdk": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "js_insert_all_pages": {
-            "$ref": "#/components/schemas/common_securityShapeJavaScriptInsertAllType"
-          },
-          "js_insert_all_pages_except": {
-            "$ref": "#/components/schemas/common_securityShapeJavaScriptInsertAllWithExceptionsType"
-          },
-          "js_insertion_rules": {
-            "$ref": "#/components/schemas/common_securityShapeJavaScriptInsertType"
-          },
-          "mobile": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "mobile_sdk_config": {
-            "$ref": "#/components/schemas/common_securityBotAdvancedMobileSDKConfigType"
-          },
-          "web": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
       "common_securityCSDJavaScriptInsertAllWithExceptionsType": {
         "type": "object",
         "description": "Insert Client-Side Defense JavaScript in all pages  with the exceptions",
@@ -4988,9 +4818,7 @@
         "type": "string",
         "description": "Mobile identifier type\n\n - HEADERS: Headers\n\nHeaders",
         "title": "MobileIdentifier",
-        "enum": [
-          "HEADERS"
-        ],
+        "enum": ["HEADERS"],
         "default": "HEADERS",
         "x-displayname": "Mobile Identifier",
         "x-ves-proto-enum": "ves.io.schema.views.common_security.MobileIdentifier"
@@ -5106,12 +4934,7 @@
         "type": "string",
         "description": "Defines a selection for Bot Defense region\n\n - AUTO: AUTO\n\nAutomatic selection based on client IP address\n - US: US\n\nUS region\n - EU: EU\n\nEuropean Union region\n - ASIA: ASIA\n\nAsia region",
         "title": "ShapeBotDefenseRegion",
-        "enum": [
-          "AUTO",
-          "US",
-          "EU",
-          "ASIA"
-        ],
+        "enum": ["AUTO", "US", "EU", "ASIA"],
         "default": "AUTO",
         "x-displayname": "Bot Defense Region",
         "x-ves-proto-enum": "ves.io.schema.views.common_security.ShapeBotDefenseRegion"
@@ -5280,11 +5103,7 @@
         "type": "string",
         "description": "SchemeType is used to indicate URL scheme.\n\n - BOTH: BOTH\n\nURL scheme for https:// or http://.\n - HTTP: HTTP\n\nURL scheme http:// only.\n - HTTPS: HTTPS\n\nURL scheme https:// only.",
         "title": "URLSchemeType",
-        "enum": [
-          "BOTH",
-          "HTTP",
-          "HTTPS"
-        ],
+        "enum": ["BOTH", "HTTP", "HTTPS"],
         "default": "BOTH",
         "x-displayname": "URL Scheme",
         "x-ves-proto-enum": "ves.io.schema.views.common_security.URLScheme"
@@ -6730,19 +6549,6 @@
           }
         }
       },
-      "common_wafValidationSettingForHeaders": {
-        "type": "object",
-        "description": "x-displayName: \"Validation Settings For Headers\"\nCustom settings for headers validation",
-        "title": "Validation Settings For Headers",
-        "properties": {
-          "allow_additional_headers": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "disallow_additional_headers": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
       "common_wafValidationSettingForQueryParameters": {
         "type": "object",
         "description": "Custom settings for query parameters validation",
@@ -7139,19 +6945,6 @@
           }
         }
       },
-      "logDateSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Date SubAggregation\"\n\nDate subaggregation data",
-        "title": "DateSubAggregationData",
-        "properties": {
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          }
-        }
-      },
       "logFieldAggregationBucket": {
         "type": "object",
         "description": "x-displayName: \"Field Aggregation Bucket\"\nField aggregation bucket containing field value and the number of logs.",
@@ -7217,39 +7010,6 @@
           }
         }
       },
-      "logFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field SubAggregation\"\nField subaggregation data",
-        "title": "FieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field values and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubAggregationBucket"
-            }
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
-          }
-        }
-      },
       "logFieldSubFieldAggregationBucket": {
         "type": "object",
         "description": "x-displayName: \"Field Sub Field Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
@@ -7268,21 +7028,6 @@
           }
         }
       },
-      "logFieldSubFieldAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field Sub Field Aggregation Data\"\nField Aggregation data as Field Sub-aggregation",
-        "title": "FieldSubFieldAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldSubFieldAggregationBucket"
-            }
-          }
-        }
-      },
       "logFilterAggregationData": {
         "type": "object",
         "description": "x-displayName: \"Filter Aggregation Data\"\nFilter Aggregation Data",
@@ -7298,21 +7043,6 @@
             "type": "object",
             "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
             "title": "sub aggregation"
-          }
-        }
-      },
-      "logFilterSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"FilterSubAggregation\"\nFilter subaggregation data",
-        "title": "FilterSubAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFilterSubFieldAggregationBucket"
-            }
           }
         }
       },
@@ -7336,43 +7066,6 @@
             "type": "object",
             "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
             "title": "sub aggregation"
-          }
-        }
-      },
-      "logLogAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Log Aggregation\"\nLog aggregation response data",
-        "title": "LogAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "date_aggregation": {
-            "$ref": "#/components/schemas/logDateAggregationData"
-          },
-          "field_aggregation": {
-            "$ref": "#/components/schemas/logFieldAggregationData"
-          },
-          "filter_aggregation": {
-            "$ref": "#/components/schemas/logFilterAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/logMetricsAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "multi_field_aggregation": {
-            "$ref": "#/components/schemas/logMultiFieldAggregationData"
-          },
-          "multi_filter_aggregation": {
-            "$ref": "#/components/schemas/logMultiFilterAggregationData"
           }
         }
       },
@@ -7450,28 +7143,6 @@
             "items": {
               "$ref": "#/components/schemas/logMultiFieldAggregationBucket"
             }
-          }
-        }
-      },
-      "logMultiFieldSubAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Multi Field SubAggregation\"\nField subaggregation data",
-        "title": "MultiFieldSubAggregationData",
-        "properties": {
-          "avg_aggregation": {
-            "$ref": "#/components/schemas/logAvgAggregationData"
-          },
-          "cardinality_aggregation": {
-            "$ref": "#/components/schemas/logCardinalityAggregationData"
-          },
-          "max_aggregation": {
-            "$ref": "#/components/schemas/logMaxAggregationData"
-          },
-          "min_aggregation": {
-            "$ref": "#/components/schemas/logMinAggregationData"
-          },
-          "top_hits_aggregation": {
-            "$ref": "#/components/schemas/logTopHitsAggregationData"
           }
         }
       },
@@ -9309,7 +8980,6 @@
           "TRIM_RIGHT",
           "TRIM"
         ],
-        "default": "TRANSFORMER_NONE",
         "x-displayname": "Transformer",
         "x-ves-proto-enum": "ves.io.schema.policy.Transformer"
       },
@@ -9418,11 +9088,7 @@
         "type": "string",
         "description": "Unit for the period per which the rate limit is applied.\n\n - SECOND: Second\n\nRate limit period unit is seconds\n - MINUTE: Minute\n\nRate limit period unit is minutes\n - HOUR: Hour\n\nRate limit period unit is hours\n - DAY: Day\n\nRate limit period unit is days",
         "title": "RateLimitPeriodUnit",
-        "enum": [
-          "SECOND",
-          "MINUTE",
-          "HOUR"
-        ],
+        "enum": ["SECOND", "MINUTE", "HOUR"],
         "default": "SECOND",
         "x-displayname": "Rate Limit Period Unit",
         "x-ves-proto-enum": "ves.io.schema.rate_limiter.RateLimitPeriodUnit"
@@ -10280,11 +9946,7 @@
         "type": "string",
         "description": "Specifies the Hash Algorithm to be used\n\nInvalid hash algorithm\nsha256 hash algorithm\nsha1 hash algorithm",
         "title": "HashAlgoritm",
-        "enum": [
-          "INVALID_HASH_ALGORITHM",
-          "SHA256",
-          "SHA1"
-        ],
+        "enum": ["INVALID_HASH_ALGORITHM", "SHA256", "SHA1"],
         "default": "INVALID_HASH_ALGORITHM",
         "x-displayname": "Hash Algorithm",
         "x-ves-proto-enum": "ves.io.schema.HashAlgorithm"
@@ -10363,19 +10025,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -10501,12 +10151,7 @@
         "type": "string",
         "description": "Web Client JavaScript Mode.\n\nBot Defense JavaScript for telemetry collection is requested asynchronously, and it is non-cacheable\nBot Defense JavaScript for telemetry collection is requested asynchronously, and it is cacheable\nBot Defense JavaScript for telemetry collection is requested synchronously, and it is non-cacheable\nBot Defense JavaScript for telemetry collection is requested synchronously, and it is cacheable",
         "title": "JavaScript Mode",
-        "enum": [
-          "ASYNC_JS_NO_CACHING",
-          "ASYNC_JS_CACHING",
-          "SYNC_JS_NO_CACHING",
-          "SYNC_JS_CACHING"
-        ],
+        "enum": ["ASYNC_JS_NO_CACHING", "ASYNC_JS_CACHING", "SYNC_JS_NO_CACHING", "SYNC_JS_CACHING"],
         "default": "ASYNC_JS_NO_CACHING",
         "x-displayname": "Web Client JavaScript Mode",
         "x-ves-proto-enum": "ves.io.schema.JavaScriptMode"
@@ -10790,10 +10435,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -10816,10 +10458,7 @@
         "type": "string",
         "description": "Sort algorithm\n\nSort in descending order\nSort in ascending order",
         "title": "SortOrder",
-        "enum": [
-          "DESCENDING",
-          "ASCENDING"
-        ],
+        "enum": ["DESCENDING", "ASCENDING"],
         "default": "DESCENDING",
         "x-displayname": "Sort Order",
         "x-ves-proto-enum": "ves.io.schema.SortOrder"
@@ -10887,10 +10526,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -11064,13 +10700,7 @@
         "type": "string",
         "description": "TlsProtocol is enumeration of supported TLS versions\n\nF5 Distributed Cloud will choose the optimal TLS version.",
         "title": "TlsProtocol",
-        "enum": [
-          "TLS_AUTO",
-          "TLSv1_0",
-          "TLSv1_1",
-          "TLSv1_2",
-          "TLSv1_3"
-        ],
+        "enum": ["TLS_AUTO", "TLSv1_0", "TLSv1_1", "TLSv1_2", "TLSv1_3"],
         "default": "TLS_AUTO",
         "x-displayname": "TLS Protocol",
         "x-ves-proto-enum": "ves.io.schema.TlsProtocol"
@@ -11079,11 +10709,7 @@
         "type": "string",
         "description": "x-displayName: \"Trend Sentiment\"\ntrend sentiment\n\n - TREND_SENTIMENT_NONE: x-displayName: \"None\"\n - TREND_SENTIMENT_POSITIVE: x-displayName: \"Positive\"\nIndicates trend sentiment is positive\n - TREND_SENTIMENT_NEGATIVE: x-displayName: \"Negative\"\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE"
       },
       "schemaTrendValue": {
@@ -11108,37 +10734,6 @@
             "type": "string",
             "description": "x-displayName: \"Value\"\nx-example: \"-15\"",
             "title": "Value"
-          }
-        }
-      },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
           }
         }
       },
@@ -11179,30 +10774,11 @@
           }
         }
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemaXfccElement": {
         "type": "string",
         "description": "X-Forwarded-Client-Cert custom cookie elements\n\nThe entire client certificate in URL encoded PEM format.\nThe entire client certificate chain (including the leaf certificate) in URL encoded PEM format.\nThe Subject field of the current client certificate. The value is always double-quoted.\nThe URI type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple URI type Subject Alternative Names,\neach will be a separate key-value pair.\nThe DNS type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple DNS type Subject Alternative Names,\neach will be a separate key-value pair.",
         "title": "XfccElement",
-        "enum": [
-          "XFCC_NONE",
-          "XFCC_CERT",
-          "XFCC_CHAIN",
-          "XFCC_SUBJECT",
-          "XFCC_URI",
-          "XFCC_DNS"
-        ],
+        "enum": ["XFCC_NONE", "XFCC_CERT", "XFCC_CHAIN", "XFCC_SUBJECT", "XFCC_URI", "XFCC_DNS"],
         "default": "XFCC_NONE",
         "x-displayname": "XFCC Elements",
         "x-ves-proto-enum": "ves.io.schema.XfccElement"
@@ -11324,10 +10900,7 @@
         "type": "string",
         "description": "DoS Mitigation can either be manually added by a user (SRE), or can be automatically generated based on\n\nMITIGATION_MANUAL\nMITIGATION_AUTOMATIC",
         "title": "Type",
-        "enum": [
-          "MITIGATION_MANUAL",
-          "MITIGATION_AUTOMATIC"
-        ],
+        "enum": ["MITIGATION_MANUAL", "MITIGATION_AUTOMATIC"],
         "default": "MITIGATION_MANUAL",
         "x-displayname": "DoS Mitigation Type",
         "x-ves-proto-enum": "ves.io.schema.dos_mitigation.Type"
@@ -11919,28 +11492,6 @@
               "ves.io.schema.rules.repeated.items.enum.defined_only": "true",
               "ves.io.schema.rules.repeated.items.enum.not_in": "[0]"
             }
-          }
-        }
-      },
-      "viewscdn_loadbalancerAdvancedOptionsType": {
-        "type": "object",
-        "description": "x-displayName: \"Advanced Options\"\nThis defines various options to define a route",
-        "title": "Advanced options",
-        "properties": {
-          "cache_options": {
-            "$ref": "#/components/schemas/cdn_loadbalancerCacheOptions"
-          },
-          "cache_ttl_options": {
-            "$ref": "#/components/schemas/cdn_loadbalancerCacheTTLOptionsType"
-          },
-          "header_options": {
-            "$ref": "#/components/schemas/viewscdn_loadbalancerHeaderControlType"
-          },
-          "logging_options": {
-            "$ref": "#/components/schemas/viewscdn_loadbalancerLoggingOptionsType"
-          },
-          "security_options": {
-            "$ref": "#/components/schemas/cdn_loadbalancerSecurityOptionsType"
           }
         }
       },
@@ -12937,12 +12488,7 @@
         "type": "string",
         "description": "x-displayName: \"Header Options\"\n\n - proxy_host: Proxy Host\n\nx-displayName: \"Proxy Host\"\nName of the proxied server\n - referer: Referer\n\nx-displayName: \"Referer\"\nThis is the address of the previous web page from which a link to the currently requested page was followed\n - scheme: Scheme\n\nx-displayName: \"Scheme\"\nThe http scheme used: http or https\n - user_agent: User Agent\n\nx-displayName: \"User Agent\"\nThe user agent string of the user agent",
         "title": "Header Options",
-        "enum": [
-          "proxy_host",
-          "referer",
-          "scheme",
-          "user_agent"
-        ],
+        "enum": ["proxy_host", "referer", "scheme", "user_agent"],
         "default": "proxy_host"
       },
       "viewscdn_loadbalancerLogHeaderOptions": {
@@ -13359,11 +12905,7 @@
         "type": "string",
         "description": "All inside networks.\n\nInsert JavaScript after <head> tag\nInsert JavaScript after </title> tag.\nInsert JavaScript before first <script> tag",
         "title": "JavaScriptLocation",
-        "enum": [
-          "AFTER_HEAD",
-          "AFTER_TITLE_END",
-          "BEFORE_SCRIPT"
-        ],
+        "enum": ["AFTER_HEAD", "AFTER_TITLE_END", "BEFORE_SCRIPT"],
         "default": "AFTER_HEAD",
         "x-displayname": "JavaScript Location",
         "x-ves-proto-enum": "ves.io.schema.views.common_security.JavaScriptLocation"
@@ -13792,6 +13334,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "cdn"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

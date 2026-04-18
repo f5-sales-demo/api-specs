@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.virtual_host",
     "description": "Virtual host is main anchor configuration for a proxy. Primary application for virtual host configuration is\nreverse proxy.  Virtual host object is used to create a Loadbalancer, virtual service Or API gateway.\nIt can also be viewed as base object to define application routing.\n\nTypes of proxies supported\n\n* HTTP Proxy\n* TCP Proxy\n* TCP Proxy with SNI\n* HTTPS Proxy\n* UDP Proxy\n* Secret Management Access Proxy\n\nTerminology\n\nDownstream: A downstream host connects to virtual host, sends requests, and receives responses.\nUpstream: An upstream host receives connections and requests from virtual host and returns responses.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/virtual_hosts": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Virtual Host",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.API",
@@ -845,7 +853,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-customapi-assignapidefinition"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.CustomAPI.AssignAPIDefinition"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.CustomAPI.AssignAPIDefinition",
+        "tags": ["config"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.CustomAPI",
@@ -984,7 +993,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpoint"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpoint"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpoint",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -1153,10 +1163,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "API_ENDPOINT_INFO_NONE",
-                  "API_ENDPOINT_INFO_PDF_SPARKLINES"
-                ]
+                "enum": ["API_ENDPOINT_INFO_NONE", "API_ENDPOINT_INFO_PDF_SPARKLINES"]
               }
             }
           }
@@ -1165,7 +1172,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpointlearntschema"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpointLearntSchema"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpointLearntSchema",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -1314,7 +1322,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpointpdf"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpointPDF"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpointPDF",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -1459,12 +1468,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "MERGED",
-                  "TRAFFIC",
-                  "CRAWLER",
-                  "CODE_SCAN"
-                ]
+                "enum": ["MERGED", "TRAFFIC", "CRAWLER", "CODE_SCAN"]
               }
             }
           }
@@ -1473,7 +1477,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiepsourceopenapischema"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEPSourceOpenApiSchema"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEPSourceOpenApiSchema",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -1610,7 +1615,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-unmergeapiepsourceopenapischema"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.UnmergeAPIEPSourceOpenApiSchema"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.UnmergeAPIEPSourceOpenApiSchema",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -1745,10 +1751,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "API_ENDPOINT_INFO_NONE",
-                  "API_ENDPOINT_INFO_PDF_SPARKLINES"
-                ]
+                "enum": ["API_ENDPOINT_INFO_NONE", "API_ENDPOINT_INFO_PDF_SPARKLINES"]
               }
             }
           },
@@ -1809,7 +1812,8 @@
             }
           }
         ],
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpoints"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpoints",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -1938,7 +1942,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpointsstats"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetApiEndpointsStats"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetApiEndpointsStats",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -2077,7 +2082,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapicallsummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPICallSummary"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPICallSummary",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -2216,7 +2222,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-gettopapiendpoints"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetTopAPIEndpoints"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetTopAPIEndpoints",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -2355,7 +2362,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-gettopsensitivedata"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetTopSensitiveData"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetTopSensitiveData",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -2498,7 +2506,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getswaggerspec"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetSwaggerSpec"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetSwaggerSpec",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -2637,7 +2646,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpointsschemaupdates"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpointsSchemaUpdates"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetAPIEndpointsSchemaUpdates",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -2776,7 +2786,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-updateapiendpointsschemas"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.UpdateAPIEndpointsSchemas"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.UpdateAPIEndpointsSchemas",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -2915,7 +2926,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-createticket"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.CreateTicket"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.CreateTicket",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -3044,7 +3056,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-customapi-getdnsinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.CustomAPI.GetDnsInfo"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.CustomAPI.GetDnsInfo",
+        "tags": ["config"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.CustomAPI",
@@ -3183,7 +3196,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-unlinktickets"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.UnlinkTickets"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.UnlinkTickets",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -3322,7 +3336,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getvulnerabilities"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetVulnerabilities"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.GetVulnerabilities",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -3461,7 +3476,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-updatevulnerabilitiesstate"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.UpdateVulnerabilitiesState"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_host.ApiepCustomAPI.UpdateVulnerabilitiesState",
+        "tags": ["ml"]
       },
       "x-displayname": "Virtual Host",
       "x-ves-proto-service": "ves.io.schema.virtual_host.ApiepCustomAPI",
@@ -3872,10 +3888,7 @@
         "type": "string",
         "description": "API Endpoint's PII Level.\n\nNo PII data detected for the given API Endpoint.\nDetected PII data for a given API Endpoint.",
         "title": "APIEP PII Level",
-        "enum": [
-          "APIEP_PII_NOT_DETECTED",
-          "APIEP_PII_DETECTED"
-        ],
+        "enum": ["APIEP_PII_NOT_DETECTED", "APIEP_PII_DETECTED"],
         "default": "APIEP_PII_NOT_DETECTED",
         "x-displayname": "API EP PII Level",
         "x-ves-proto-enum": "ves.io.schema.app_type.APIEPPIILevel"
@@ -3899,12 +3912,7 @@
         "type": "string",
         "description": "List of possible types of api that can be discovered for an APIEP.\n\nThe API Type detected as unknown.\nThe API Type detected as GraphQL.\nThe API Type detected as REST.\nThe API Type detected as gRPC.",
         "title": "APIType",
-        "enum": [
-          "API_TYPE_UNKNOWN",
-          "API_TYPE_GRAPHQL",
-          "API_TYPE_REST",
-          "API_TYPE_GRPC"
-        ],
+        "enum": ["API_TYPE_UNKNOWN", "API_TYPE_GRAPHQL", "API_TYPE_REST", "API_TYPE_GRPC"],
         "default": "API_TYPE_UNKNOWN",
         "x-displayname": "API Type",
         "x-ves-proto-enum": "ves.io.schema.app_type.APIType"
@@ -3913,33 +3921,10 @@
         "type": "string",
         "description": "This is the various forms that can be requested to be sent in the ApiEndpointInfoRequest\n\nAPI ENDPOINT INFO NONE option is used to disable any additional info request per api endpoint response\nAPI ENDPOINT INFO PDF SPARKLINES option is used to enable pdf sparkline info along with the api endpoint response",
         "title": "ApiEndpointInfoRequest",
-        "enum": [
-          "API_ENDPOINT_INFO_NONE",
-          "API_ENDPOINT_INFO_PDF_SPARKLINES"
-        ],
+        "enum": ["API_ENDPOINT_INFO_NONE", "API_ENDPOINT_INFO_PDF_SPARKLINES"],
         "default": "API_ENDPOINT_INFO_NONE",
         "x-displayname": "API Endpoint Info Request",
         "x-ves-proto-enum": "ves.io.schema.app_type.ApiEndpointInfoRequest"
-      },
-      "app_typeAuthData": {
-        "type": "object",
-        "description": "x-displayName: \"Authentication Data\"\nAuthentication data for a given Authentication definition type.",
-        "title": "AuthData",
-        "properties": {
-          "insights": {
-            "type": "string",
-            "description": "x-displayName: \"Insights\"\nx-example: \"{\\\"roles\\\": [\\\"admin\\\",\\\"user\\\"]}\"\nInsights of a given authentication type.",
-            "title": "Insights"
-          },
-          "schema": {
-            "$ref": "#/components/schemas/app_typeSchemaStruct"
-          },
-          "summary": {
-            "type": "string",
-            "description": "x-displayName: \"Summary\"\nx-example: \"{\\\"ApiKeyAuth\\\": {\\\"type\\\": \\\"apiKey\\\",\\\"in\\\": \\\"header\\\",\\\"name\\\": \\\"X-API-Key\\\"}}\"\nGeneral Authentication Information for a given authentication definition.",
-            "title": "Summary"
-          }
-        }
       },
       "app_typeAuthentication": {
         "type": "object",
@@ -3960,12 +3945,7 @@
         "type": "string",
         "description": "API Endpoint's Authentication Location.\n\nThe API Endpoint authentication location is header.\nThe API Endpoint authentication location is query parameter.\nThe API Endpoint authentication location is request body.\nThe API Endpoint authentication location is cookie.",
         "title": "APIEP Authentication Location",
-        "enum": [
-          "AUTH_LOCATION_HEADER",
-          "AUTH_LOCATION_QUERY",
-          "AUTH_LOCATION_BODY",
-          "AUTH_LOCATION_COOKIE"
-        ],
+        "enum": ["AUTH_LOCATION_HEADER", "AUTH_LOCATION_QUERY", "AUTH_LOCATION_BODY", "AUTH_LOCATION_COOKIE"],
         "default": "AUTH_LOCATION_HEADER",
         "x-displayname": "API EP Authentication Location",
         "x-ves-proto-enum": "ves.io.schema.app_type.AuthenticationLocation"
@@ -3974,11 +3954,7 @@
         "type": "string",
         "description": "API Endpoint's Authentication State.\n\nThe API Endpoint authentication state is unknown.\nThe API Endpoint is authenticated\nThe API Endpoint is unauthenticated",
         "title": "APIEP Authentication State",
-        "enum": [
-          "AUTH_STATE_UNKNOWN",
-          "AUTH_STATE_AUTHENTICATED",
-          "AUTH_STATE_UNAUTHENTICATED"
-        ],
+        "enum": ["AUTH_STATE_UNKNOWN", "AUTH_STATE_AUTHENTICATED", "AUTH_STATE_UNAUTHENTICATED"],
         "default": "AUTH_STATE_UNKNOWN",
         "x-displayname": "API EP Authentication State",
         "x-ves-proto-enum": "ves.io.schema.app_type.AuthenticationState"
@@ -4124,21 +4100,6 @@
           }
         }
       },
-      "app_typeResponseSchema": {
-        "type": "object",
-        "description": "x-displayName: \"Response Schema\"\nResponse schema for a given API endpoint.",
-        "title": "Response Schema",
-        "properties": {
-          "body_per_content_type": {
-            "type": "object",
-            "description": "x-displayName: \"Body Schema Per Content Type\"\nBody schema per content type for request API endpoint.",
-            "title": "Body schema per content type"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/app_typeSchemaStruct"
-          }
-        }
-      },
       "app_typeRiskScore": {
         "type": "object",
         "description": "Risk score of the vulnerabilities found for this API Endpoint.",
@@ -4237,10 +4198,7 @@
         "type": "string",
         "description": "Sensitive Data Detection Rule Type\n\n - RULE_TYPE_BUILT_IN: built_in\n\nBuilt in rule type\n - RULE_TYPE_CUSTOM: custom\n\nCustom rule type",
         "title": "sensitive_data_detection_rule_type",
-        "enum": [
-          "RULE_TYPE_BUILT_IN",
-          "RULE_TYPE_CUSTOM"
-        ],
+        "enum": ["RULE_TYPE_BUILT_IN", "RULE_TYPE_CUSTOM"],
         "default": "RULE_TYPE_BUILT_IN",
         "x-displayname": "Sensitive Data Detection Rule Type",
         "x-ves-proto-enum": "ves.io.schema.app_type.SensitiveDataDetectionRuleType"
@@ -4458,14 +4416,6 @@
             "format": "byte"
           }
         }
-      },
-      "protobufNullValue": {
-        "type": "string",
-        "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value.",
-        "enum": [
-          "NULL_VALUE"
-        ],
-        "default": "NULL_VALUE"
       },
       "schemaAppFirewallRefType": {
         "type": "object",
@@ -4712,57 +4662,6 @@
           }
         }
       },
-      "schemaCookieManipulationOptionType": {
-        "type": "object",
-        "description": "x-displayName: \"Cookie Protection\"\nSet Cookie protection attributes.",
-        "title": "CookieManipulationOptionType",
-        "properties": {
-          "add_httponly": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "add_secure": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "disable_tampering_protection": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "enable_tampering_protection": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "ignore_httponly": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "ignore_max_age": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "ignore_samesite": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "ignore_secure": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "max_age_value": {
-            "type": "integer",
-            "description": "x-displayName: \"Add Max Age\"\nAdd max age attribute",
-            "title": "add_max_age",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Cookie Name\"\nx-example: \"value\"\nx-required\nName of the Cookie",
-            "title": "name"
-          },
-          "samesite_lax": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "samesite_none": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "samesite_strict": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
       "schemaCookieValueOption": {
         "type": "object",
         "description": "Cookie name and value for cookie header",
@@ -5003,11 +4902,7 @@
         "type": "string",
         "description": "Specifies the Hash Algorithm to be used\n\nInvalid hash algorithm\nsha256 hash algorithm\nsha1 hash algorithm",
         "title": "HashAlgoritm",
-        "enum": [
-          "INVALID_HASH_ALGORITHM",
-          "SHA256",
-          "SHA1"
-        ],
+        "enum": ["INVALID_HASH_ALGORITHM", "SHA256", "SHA1"],
         "default": "INVALID_HASH_ALGORITHM",
         "x-displayname": "Hash Algorithm",
         "x-ves-proto-enum": "ves.io.schema.HashAlgorithm"
@@ -5109,19 +5004,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -5475,10 +5358,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -5701,10 +5581,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -5936,13 +5813,7 @@
         "type": "string",
         "description": "TlsProtocol is enumeration of supported TLS versions\n\nF5 Distributed Cloud will choose the optimal TLS version.",
         "title": "TlsProtocol",
-        "enum": [
-          "TLS_AUTO",
-          "TLSv1_0",
-          "TLSv1_1",
-          "TLSv1_2",
-          "TLSv1_3"
-        ],
+        "enum": ["TLS_AUTO", "TLSv1_0", "TLSv1_1", "TLSv1_2", "TLSv1_3"],
         "default": "TLS_AUTO",
         "x-displayname": "TLS Protocol",
         "x-ves-proto-enum": "ves.io.schema.TlsProtocol"
@@ -6007,37 +5878,6 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.max_items": "1"
             }
-          }
-        }
-      },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
           }
         }
       },
@@ -6120,30 +5960,11 @@
           }
         }
       },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
-      },
       "schemaXfccElement": {
         "type": "string",
         "description": "X-Forwarded-Client-Cert custom cookie elements\n\nThe entire client certificate in URL encoded PEM format.\nThe entire client certificate chain (including the leaf certificate) in URL encoded PEM format.\nThe Subject field of the current client certificate. The value is always double-quoted.\nThe URI type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple URI type Subject Alternative Names,\neach will be a separate key-value pair.\nThe DNS type Subject Alternative Name field of the current client certificate.\nA client certificate may contain multiple DNS type Subject Alternative Names,\neach will be a separate key-value pair.",
         "title": "XfccElement",
-        "enum": [
-          "XFCC_NONE",
-          "XFCC_CERT",
-          "XFCC_CHAIN",
-          "XFCC_SUBJECT",
-          "XFCC_URI",
-          "XFCC_DNS"
-        ],
+        "enum": ["XFCC_NONE", "XFCC_CERT", "XFCC_CHAIN", "XFCC_SUBJECT", "XFCC_URI", "XFCC_DNS"],
         "default": "XFCC_NONE",
         "x-displayname": "XFCC Elements",
         "x-ves-proto-enum": "ves.io.schema.XfccElement"
@@ -7562,10 +7383,7 @@
         "type": "string",
         "description": "The type of ticket tracking system - JIRA, ServiceNow, etc.\n\nDefault enum value for type\nJira ticket type",
         "title": "TicketTrackingSystemType",
-        "enum": [
-          "TYPE_UNKNOWN",
-          "TYPE_JIRA"
-        ],
+        "enum": ["TYPE_UNKNOWN", "TYPE_JIRA"],
         "default": "TYPE_UNKNOWN",
         "x-displayname": "Ticket Tracking System Type",
         "x-ves-proto-enum": "ves.io.schema.ticket_management.TicketTrackingSystemType"
@@ -7627,10 +7445,7 @@
         "type": "string",
         "description": "Activity metric calculation type per API Endpoint\n\nIf specified, API returns top attacked APIEPs summary by sec_event percentage for given virtual host.\nThe percentage is calculated as sec_events_percentage(apiep) = #sec-events(apiep)/#requests(apiep) * 100\nIf specified, API returns top active APIEPs summary by request ratio for given virtual host.\nThe percentage is calculated as request_percentage(apiep) = #requests(apiep)/#requests(all apiep) * 100",
         "title": "APIEPActivityMetricType",
-        "enum": [
-          "ACTIVITY_METRIC_TYPE_SEC_EVENTS_PERCENTAGE",
-          "ACTIVITY_METRIC_TYPE_REQ_PERCENTAGE"
-        ],
+        "enum": ["ACTIVITY_METRIC_TYPE_SEC_EVENTS_PERCENTAGE", "ACTIVITY_METRIC_TYPE_REQ_PERCENTAGE"],
         "default": "ACTIVITY_METRIC_TYPE_SEC_EVENTS_PERCENTAGE",
         "x-displayname": "API Activity Metric Type",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.APIEPActivityMetricType"
@@ -7672,12 +7487,7 @@
         "type": "string",
         "description": "API Endpoint Discovery Source\n\nMerging all source types to one spec\nDiscovery spec from traffic data\nDiscovery spec from crawler engine\nDiscovery spec from code scan",
         "title": "APIEPDiscoverySource",
-        "enum": [
-          "MERGED",
-          "TRAFFIC",
-          "CRAWLER",
-          "CODE_SCAN"
-        ],
+        "enum": ["MERGED", "TRAFFIC", "CRAWLER", "CODE_SCAN"],
         "default": "MERGED",
         "x-displayname": "API Endpoint Discovery Source",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.APIEPDiscoverySource"
@@ -7964,30 +7774,10 @@
         "type": "string",
         "description": "API Inventory Schema Query Type\n\n - API_INVENTORY_SCHEMA_FULL_RESPONSE: Full Response\n\n - API_INVENTORY_SCHEMA_CURRENT: Current Schema\n\n - API_INVENTORY_SCHEMA_UPDATED: Updated Schema\n",
         "title": "API Inventory Schema Query Type",
-        "enum": [
-          "API_INVENTORY_SCHEMA_FULL_RESPONSE",
-          "API_INVENTORY_SCHEMA_CURRENT",
-          "API_INVENTORY_SCHEMA_UPDATED"
-        ],
+        "enum": ["API_INVENTORY_SCHEMA_FULL_RESPONSE", "API_INVENTORY_SCHEMA_CURRENT", "API_INVENTORY_SCHEMA_UPDATED"],
         "default": "API_INVENTORY_SCHEMA_FULL_RESPONSE",
         "x-displayname": "API Inventory Schema Query Type",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.ApiInventorySchemaQueryType"
-      },
-      "virtual_hostApiSpec": {
-        "type": "object",
-        "description": "x-displayName: \"OpenAPI Specification\"\nOpenAPI specification settings",
-        "title": "OpenAPI Specification",
-        "properties": {
-          "api_definition": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          },
-          "disable_open_api_validation": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "enable_open_api_validation": {
-            "$ref": "#/components/schemas/virtual_hostOpenApiValidationSettings"
-          }
-        }
       },
       "virtual_hostAssignAPIDefinitionReq": {
         "type": "object",
@@ -8200,44 +7990,6 @@
               "ves.io.schema.rules.string.max_len": "65536",
               "ves.io.schema.rules.string.uri_ref": "true"
             }
-          }
-        }
-      },
-      "virtual_hostCdnOriginPoolType": {
-        "type": "object",
-        "description": "x-displayName: \"CDN Origin Pool\"\nOrigin Pool for the CDN distribution",
-        "title": "CdnOriginPoolType",
-        "properties": {
-          "follow_origin_redirect": {
-            "type": "boolean",
-            "description": "x-displayName: \"Follow Origin Redirect\"\nx-example: \"true\"\nx-example: true\nInstructs the CDN to follow redirects from the origin server(s)",
-            "title": "Follow Origin Redirect",
-            "format": "boolean"
-          },
-          "more_origin_options": {
-            "$ref": "#/components/schemas/virtual_hostOriginAdvancedConfiguration"
-          },
-          "no_tls": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "origin_request_timeout": {
-            "type": "string",
-            "description": "x-displayName: \"Origin Request Timeout Duration\"\nx-example: \"100s\"\nConfigures the time after which a request to the origin will time out waiting for a response",
-            "title": "Origin Request Timeout"
-          },
-          "origin_servers": {
-            "type": "array",
-            "description": "x-displayName: \"List Of Origin Servers\"\nx-required\nList of original servers",
-            "title": "List of Origin Servers",
-            "items": {
-              "$ref": "#/components/schemas/virtual_hostCDNOriginServerType"
-            }
-          },
-          "public_name": {
-            "$ref": "#/components/schemas/virtual_hostCDNOriginServerPublicName"
-          },
-          "use_tls": {
-            "$ref": "#/components/schemas/virtual_hostCDNUpstreamTlsParameters"
           }
         }
       },
@@ -8528,30 +8280,6 @@
           }
         }
       },
-      "virtual_hostDNSProxyConfiguration": {
-        "type": "object",
-        "description": "x-displayName: \"DNS Proxy Configuration\"\nAdvanced DNS Proxy Configurations like DDoS, Cache are mapped to DNSProxyConfiguration for internal use",
-        "title": "DNS Proxy Configuration",
-        "properties": {
-          "cache_profile": {
-            "$ref": "#/components/schemas/virtual_hostDNSCacheProfile"
-          },
-          "ddos_profile": {
-            "$ref": "#/components/schemas/virtual_hostDNSDDoSProfile"
-          },
-          "irules": {
-            "type": "array",
-            "description": "x-displayName: \"iRules Ref\"\nOptions for attaching iRules to dns proxy",
-            "title": "iRules",
-            "items": {
-              "$ref": "#/components/schemas/schemaviewsObjectRefType"
-            }
-          },
-          "protocol_inspection": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
-          }
-        }
-      },
       "virtual_hostDNSRecord": {
         "type": "object",
         "description": "Defines a DNS record",
@@ -8577,26 +8305,6 @@
             "description": " DNS record Value",
             "title": "Value",
             "x-displayname": "Value"
-          }
-        }
-      },
-      "virtual_hostDefaultCacheAction": {
-        "type": "object",
-        "description": "x-displayName: \"Default Cache Action\"\nThis defines a Default Cache Action",
-        "title": "Default Cache Action",
-        "properties": {
-          "cache_disabled": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "cache_ttl_default": {
-            "type": "string",
-            "description": "x-displayName: \"Default Cache TTL\"\nCache TTL value to use when the origin does not provide one",
-            "title": "Default Cache TTL"
-          },
-          "cache_ttl_override": {
-            "type": "string",
-            "description": "x-displayName: \"Override Cache TTL\"\nOverride the Cache TTL directive in the response from the origin",
-            "title": "Override Cache TTL"
           }
         }
       },
@@ -8627,29 +8335,6 @@
             "title": "namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "ns1"
-          }
-        }
-      },
-      "virtual_hostDomainCertificates": {
-        "type": "object",
-        "description": "x-displayName: \"Domain Certificates\"\nThe certificates for a given domain per public key algorithm. A certificate is required for at least one of the algorithm types.",
-        "title": "Domain-Certificates map",
-        "properties": {
-          "ecdsa_certificates": {
-            "type": "array",
-            "description": "x-displayName: \"ECDSA Certificate\"\nthe ECDSA certificate for the domain, if any",
-            "title": "ECDSA Certificate",
-            "items": {
-              "$ref": "#/components/schemas/ioschemaObjectRefType"
-            }
-          },
-          "rsa_certificates": {
-            "type": "array",
-            "description": "x-displayName: \"RSA Certificate\"\nthe RSA certificate for the domain, if any",
-            "title": "RSA Certificate",
-            "items": {
-              "$ref": "#/components/schemas/ioschemaObjectRefType"
-            }
           }
         }
       },
@@ -8880,21 +8565,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "virtual_hostGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "virtual_hostGetTopAPIEndpointsReq": {
         "type": "object",
@@ -9350,19 +9020,6 @@
           }
         }
       },
-      "virtual_hostMaskingConfiguration": {
-        "type": "object",
-        "description": "x-displayName: \"Masking Configuration\"\nMasking configuration settings",
-        "title": "Masking Configuration",
-        "properties": {
-          "disable_masking": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "enable_masking": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
       "virtual_hostOpenApiValidationSettings": {
         "type": "object",
         "description": "x-displayName: \"OpenAPI Validation Settings\"\nx-required\nSettings in VH of enabled OpenAPI validation",
@@ -9419,36 +9076,10 @@
           }
         }
       },
-      "virtual_hostOtherSettings": {
-        "type": "object",
-        "description": "x-displayName: \"Other Settings\"\nOther Settings",
-        "title": "Other Settings",
-        "properties": {
-          "add_location": {
-            "type": "boolean",
-            "description": "x-displayName: \"Add Location\"\nx-example: \"true\"\nx-example: true\nAppends header x-volterra-location = <re-site-name> in responses.",
-            "title": "Add Site information",
-            "format": "boolean"
-          },
-          "header_options": {
-            "$ref": "#/components/schemas/virtual_hostHeaderControlType"
-          },
-          "logging_options": {
-            "$ref": "#/components/schemas/virtual_hostLoggingOptionsType"
-          }
-        }
-      },
       "virtual_hostProxyType": {
         "type": "string",
         "description": "ProxyType tells the type of proxy to install for the virtual host.\n\nOnly the following combination of VirtualHosts within same AdvertisePolicy is permitted\n(None of them should have \"*\" in domains when used with other VirtualHosts in same AdvertisePolicy)\n1. Multiple TCP_PROXY_WITH_SNI and multiple HTTPS_PROXY\n2. Multiple HTTP_PROXY\n3. Multiple HTTPS_PROXY\n4. Multiple TCP_PROXY_WITH_SNI\n\nHTTPS_PROXY without TLS parameters is not permitted\nHTTP_PROXY/HTTPS_PROXY/TCP_PROXY_WITH_SNI/SMA_PROXY with empty domains is not permitted\nTCP_PROXY_WITH_SNI/SMA_PROXY should not have \"*\" in domains\n\n - HTTP_PROXY: HTTP_PROXY\n\nInstall HTTP proxy. HTTP Proxy is the default proxy installed.\n - TCP_PROXY: TCP_PROXY\n\nInstall TCP proxy\n - TCP_PROXY_WITH_SNI: TCP_PROXY_WITH_SNI\n\nInstall TCP proxy with SNI Routing\n - TLS_TCP_PROXY: TCP_PROXY\n\nInstall TCP proxy\n - TLS_TCP_PROXY_WITH_SNI: TCP_PROXY_WITH_SNI\n\nInstall TCP proxy with SNI Routing\n - HTTPS_PROXY: HTTPS_PROXY\n\nInstall HTTPS proxy\n - UDP_PROXY: UDP_PROXY\n\nInstall UDP proxy\n - SMA_PROXY: SMA_PROXY\n\nInstall Secret Management Access proxy\n - DNS_PROXY: DNS_PROXY\n\nInstall DNS proxy\n - ZTNA_PROXY: ZTNA_PROXY\n\nInstall ZTNA proxy.This is going to be deprecated with UZTNA_PROXY.\n - UZTNA_PROXY: UZTNA_PROXY\n\nInstall UZTNA proxy",
-        "enum": [
-          "UDP_PROXY",
-          "SMA_PROXY",
-          "DNS_PROXY",
-          "ZTNA_PROXY",
-          "UZTNA_PROXY"
-        ],
-        "default": "HTTP_PROXY",
+        "enum": ["UDP_PROXY", "SMA_PROXY", "DNS_PROXY", "ZTNA_PROXY", "UZTNA_PROXY"],
         "x-displayname": "Type of Proxy",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.ProxyType"
       },
@@ -9514,37 +9145,6 @@
             "x-displayname": "Type Of Sensitive Data"
           }
         }
-      },
-      "virtual_hostServiceDomain": {
-        "type": "object",
-        "properties": {
-          "domain": {
-            "type": "string",
-            "description": "x-displayName: \"Domain Name\"\nx-example: \"cdn.acmecorp.com\"\nDomain Name",
-            "title": "Domain Name"
-          },
-          "internal_service_domain": {
-            "type": "string",
-            "description": "x-displayName: \"Internal Service Domain\"\nx-example: \"cdn.f898e588-1995-4a41-838f-ec4025a0c87e.crt-f5.lilaccdn.net\"\nInternal Service Domain determined by Lilac",
-            "title": "Internal Service Domain"
-          },
-          "service_domain": {
-            "type": "string",
-            "description": "x-displayName: \"Service Domain\"\nx-example: \"ves-io-cdn-cdn-acmecorp-com.demo1.ac.vh.volterra.us\"\nService Domain",
-            "title": "Service Domain"
-          }
-        }
-      },
-      "virtual_hostServicePolicyOption": {
-        "type": "string",
-        "description": "x-displayName: \"Service Policy Option\"\nDefinitions for Service Policy Option\n\n - NO_SERVICE_POLICIES: NO SERVICE POLICIES\n\nx-displayName: \"NO_SERVICE_POLICIES\"\nThis option indicates that no service policy has been selected for the view object.\n - SERVICE_POLICIES_FROM_NAMESPACE: SERVICE POLICIES FROM NAMESPACE\n\nx-displayName: \"SERVICE_POLICIES_FROM_NAMESPACE\"\nThis indicates that all service policies within the namespace, having names prefixed with \"active,\" have been selected.\n - ACTIVE_SERVICE_POLICIES: ACTIVE SERVICE POLICIES\n\nx-displayName: \"ACTIVE_SERVICE_POLICIES\"\nThis indicates that a custom service policy has been selected for the view object.",
-        "title": "ServicePolicyOption",
-        "enum": [
-          "NO_SERVICE_POLICIES",
-          "SERVICE_POLICIES_FROM_NAMESPACE",
-          "ACTIVE_SERVICE_POLICIES"
-        ],
-        "default": "NO_SERVICE_POLICIES"
       },
       "virtual_hostSlowDDoSMitigation": {
         "type": "object",
@@ -9618,18 +9218,6 @@
               "$ref": "#/components/schemas/virtual_hostVerStatusType"
             },
             "x-displayname": "VER Status"
-          }
-        }
-      },
-      "virtual_hostTemporaryUserBlockingType": {
-        "type": "object",
-        "description": "x-displayName: \"Temporary User Blocking\"\n\nSpecifies configuration for temporary user blocking resulting from user behavior analysis.\n\nWhen Malicious User Mitigation is enabled from service policy rules, users' accessing the application will be analyzed for\nmalicious activity and the configured mitigation actions will be taken on identified malicious users.\nThese mitigation actions include setting up temporary blocking on that user.\nThis configuration specifies settings on how that blocking should be done by the loadbalancer.",
-        "title": "TemporaryUserBlockingType",
-        "properties": {
-          "custom_page": {
-            "type": "string",
-            "description": "x-displayName: \"Custom Message for Temporary Blocking\"\nx-example: \"string:///PHA+IFBsZWFzZSBXYWl0IDwvcD4=\"\nCustom message is of type `uri_ref`. Currently supported URL schemes is `string:///`.\nFor `string:///` scheme, message needs to be encoded in Base64 format.\nYou can specify this message as base64 encoded plain text message e.g. \"Blocked..\"\nor it can be HTML paragraph or a body string encoded as base64 string\nE.g. \"<p> Blocked </p>\". Base64 encoded string for this html is \"PHA+IFBsZWFzZSBXYWl0IDwvcD4=\"",
-            "title": "custom_page"
           }
         }
       },
@@ -9910,23 +9498,6 @@
           }
         }
       },
-      "virtual_hostVirtualHostID": {
-        "type": "object",
-        "description": "x-displayName: \"Virtual Host Identifier\"\nVirtualHost Identification via its namespace and name",
-        "title": "Virtual Host Identifier",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-example: \"frontend\"\nName of the VirtualHost",
-            "title": "Name"
-          },
-          "namespace": {
-            "type": "string",
-            "description": "x-displayName: \"Namespace\"\nx-example: \"ns1\"\nNamespace in which the VirtualHost is configured",
-            "title": "Namespace"
-          }
-        }
-      },
       "virtual_hostVirtualHostState": {
         "type": "string",
         "description": "State of the virtual host\n\n - VIRTUAL_HOST_READY: VIRTUAL_HOST_READY\n\nVirtual host is ready to install\n - VIRTUAL_HOST_PENDING_VERIFICATION: VIRTUAL_HOST_PENDING_VERIFICATION\n\nVirtual host is verfication pending for some or all of its domains\n - VIRTUAL_HOST_VERIFICATION_FAILED: VIRTUAL_HOST_VERIFICATION_FAILED\n\nVirtual host has one or more domains for which verification failed\n - VIRTUAL_HOST_PENDING_DNS_DELEGATION: VIRTUAL_HOST_PENDING_DNS_DELEGATION\n\nVirtual host is pending DNS delegation\n - VIRTUAL_HOST_PENDING_A_RECORD: VIRTUAL_HOST_PENDING_A_RECORD\n\nVirtual host is waiting for one or more A records to be created\n - VIRTUAL_HOST_DNS_A_RECORD_ADDED: VIRTUAL_HOST_DNS_A_RECORD_ADDED\n\nDNS A record has been added for this Virtual host\n - VIRTUAL_HOST_INTERNET_NLB_PENDING_CREATION: VIRTUAL_HOST_INTERNET_NLB_PENDING_CREATION\n\nInternet facing NLB, is being created on the site/sites belonging to the virtual site\n - VIRTUAL_HOST_INTERNET_NLB_CREATION_FAILED: VIRTUAL_HOST_INTERNET_NLB_CREATION_FAILED\n\nInternet NLB creation failed on the site/sites. InternetNLBVIPStatus will have more information.",
@@ -9967,11 +9538,7 @@
         "type": "string",
         "description": "Context of where vulnerability found\n\nVulnerability has been identified at API Endpoint level.\nVulnerability has been identified at API BasePath level.\nVulnerability has been identified at Domain level.",
         "title": "Context",
-        "enum": [
-          "CONTEXT_API_ENDPOINT",
-          "CONTEXT_API_BASEPATH",
-          "CONTEXT_API_DOMAIN"
-        ],
+        "enum": ["CONTEXT_API_ENDPOINT", "CONTEXT_API_BASEPATH", "CONTEXT_API_DOMAIN"],
         "default": "CONTEXT_API_ENDPOINT",
         "x-displayname": "Context",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.VulnContext"
@@ -10039,11 +9606,7 @@
         "type": "string",
         "description": "Evidence Type where vulnerability found\n\nVulnerability has been identified in requests.\nVulnerability has been identified in sec-events.\nVulnerability has been identified in sec-incidents.",
         "title": "EvidenceType",
-        "enum": [
-          "EVIDENCE_TYPE_REQUESTS",
-          "EVIDENCE_TYPE_SEC_EVENTS",
-          "EVIDENCE_TYPE_SEC_INCIDENTS"
-        ],
+        "enum": ["EVIDENCE_TYPE_REQUESTS", "EVIDENCE_TYPE_SEC_EVENTS", "EVIDENCE_TYPE_SEC_INCIDENTS"],
         "default": "EVIDENCE_TYPE_REQUESTS",
         "x-displayname": "Evidence Type",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.VulnEvidenceType"
@@ -10071,13 +9634,7 @@
         "type": "string",
         "description": "Risk level of the vulnerability found\n\nRisk level is not detected (for example, when no traffic).\nVulnerability has low security risk.\nVulnerability has medium security risk.\nVulnerability has high security risk.\nVulnerability has critical security risk.",
         "title": "Risk Level",
-        "enum": [
-          "RISK_LEVEL_NONE",
-          "RISK_LEVEL_LOW",
-          "RISK_LEVEL_MED",
-          "RISK_LEVEL_HIGH",
-          "RISK_LEVEL_CRITICAL"
-        ],
+        "enum": ["RISK_LEVEL_NONE", "RISK_LEVEL_LOW", "RISK_LEVEL_MED", "RISK_LEVEL_HIGH", "RISK_LEVEL_CRITICAL"],
         "default": "RISK_LEVEL_NONE",
         "x-displayname": "Risk Level",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.VulnRiskLevel"
@@ -10086,13 +9643,7 @@
         "type": "string",
         "description": "Status of vulnerability found\n\nVulnerability has no status\nVulnerability has open status and it will be under Active tab\nVulnerability has ignore status\nThe vulnerability Ignored manually and it will be under Archived tab\nThe next Discovery process should ignore the vulnerability.\nVulnerability has resolution status\nThe vulnerability resolved manually and it will be under Archived tab\nThe next Discovery process should validate the resolution and reopen (Move to Active and mark as Open) if not resolved.\nVulnerability has under review status and it will be under Active tab\nThe vulnerability under security or development team responsibility",
         "title": "Status",
-        "enum": [
-          "STATUS_NONE",
-          "STATUS_OPEN",
-          "STATUS_IGNORE",
-          "STATUS_RESOLUTION_CONFIRMED",
-          "STATUS_UNDER_REVIEW"
-        ],
+        "enum": ["STATUS_NONE", "STATUS_OPEN", "STATUS_IGNORE", "STATUS_RESOLUTION_CONFIRMED", "STATUS_UNDER_REVIEW"],
         "default": "STATUS_NONE",
         "x-displayname": "Status",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.VulnStatus"
@@ -10198,29 +9749,6 @@
         "x-displayname": "Vulnerability Source",
         "x-ves-proto-enum": "ves.io.schema.virtual_host.VulnerabilitySource"
       },
-      "virtual_hostZtnaProxyConfiguration": {
-        "type": "object",
-        "description": "x-displayName: \"Ztna Proxy Configuration\"\nZtna Proxy Configuration contains Policy and Application Configuration",
-        "title": "Ztna Proxy Configuration",
-        "properties": {
-          "ztna_application_config": {
-            "type": "array",
-            "description": "x-displayName: \"Ztna Application Configuration\"\nAdvance configuration of Ztna Application Configuration(Connectivity/Session/Message)",
-            "title": "Ztna Application Configuration",
-            "items": {
-              "$ref": "#/components/schemas/ioschemaObjectRefType"
-            }
-          },
-          "ztna_policy_config": {
-            "type": "array",
-            "description": "x-displayName: \"Ztna Policy Configuration\"\nAdvance configuration of Ztna Policy Configuration(Connectivity/Session/Message)",
-            "title": "Ztna Policy Configuration",
-            "items": {
-              "$ref": "#/components/schemas/ioschemaObjectRefType"
-            }
-          }
-        }
-      },
       "virtual_host_dns_infoDnsInfo": {
         "type": "object",
         "description": "A message that contains DNS information for a given IP address",
@@ -10239,6 +9767,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "ml"
+    }
+  ]
 }

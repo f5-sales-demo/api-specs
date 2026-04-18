@@ -60,17 +60,25 @@ class ReportGenerator:
     ) -> dict[str, Path]:
         """Generate reports in all configured formats."""
         # Create summary
-        summary = self._create_summary(results, discrepancies, modified_files, unmodified_files)
+        summary = self._create_summary(
+            results, discrepancies, modified_files, unmodified_files
+        )
 
         output_files = {}
 
         for fmt in self.config.formats:
             if fmt == "json":
-                output_files["json"] = self._generate_json(summary, results, discrepancies)
+                output_files["json"] = self._generate_json(
+                    summary, results, discrepancies
+                )
             elif fmt == "html":
-                output_files["html"] = self._generate_html(summary, results, discrepancies)
+                output_files["html"] = self._generate_html(
+                    summary, results, discrepancies
+                )
             elif fmt == "markdown":
-                output_files["markdown"] = self._generate_markdown(summary, results, discrepancies)
+                output_files["markdown"] = self._generate_markdown(
+                    summary, results, discrepancies
+                )
 
         return output_files
 
@@ -131,7 +139,9 @@ class ReportGenerator:
         """Generate HTML report."""
         output_path = self.config.output_dir / "validation_report.html"
 
-        template = Environment(loader=BaseLoader(), autoescape=True).from_string(HTML_TEMPLATE)
+        template = Environment(loader=BaseLoader(), autoescape=True).from_string(
+            HTML_TEMPLATE
+        )
 
         html = template.render(
             summary=summary,
@@ -174,7 +184,10 @@ class ReportGenerator:
             "",
         ]
 
-        lines.extend(f"- {dtype}: {count}" for dtype, count in summary.discrepancies_by_type.items())
+        lines.extend(
+            f"- {dtype}: {count}"
+            for dtype, count in summary.discrepancies_by_type.items()
+        )
 
         lines.extend(
             [
@@ -265,7 +278,9 @@ class ReportGenerator:
             "examples_tested": result.examples_tested,
             "failures": result.failures,
             "errors": result.errors,
-            "discrepancies": [self._discrepancy_to_dict(d) for d in result.discrepancies],
+            "discrepancies": [
+                self._discrepancy_to_dict(d) for d in result.discrepancies
+            ],
         }
 
     def _discrepancy_to_dict(self, discrepancy: Discrepancy) -> dict:
@@ -277,7 +292,9 @@ class ReportGenerator:
             "discrepancy_type": discrepancy.discrepancy_type.value,
             "spec_value": discrepancy.spec_value,
             "api_behavior": discrepancy.api_behavior,
-            "test_values": discrepancy.test_values[: self.config.max_examples_per_issue],
+            "test_values": discrepancy.test_values[
+                : self.config.max_examples_per_issue
+            ],
             "recommendation": discrepancy.recommendation,
         }
 

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.securemesh_site",
     "description": "Secure Mesh site defines a required parameters that can be used in CRUD, to create and manage an Secure Mesh site.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/securemesh_sites": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-securemesh_site-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Configure Secure Mesh Site",
       "x-ves-proto-service": "ves.io.schema.views.securemesh_site.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-securemesh_site-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Configure Secure Mesh Site",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-securemesh_site-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.securemesh_site.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Configure Secure Mesh Site",
       "x-ves-proto-service": "ves.io.schema.views.securemesh_site.API",
@@ -1248,10 +1256,7 @@
         "type": "string",
         "description": "Identifies the how to pick the network for Interface.\n\nAddress ranges in DHCP pool list are used for IP Address allocation\nAddress ranges in DHCP pool list are excluded from IP Address allocation",
         "title": "DHCP POOL SETTING",
-        "enum": [
-          "INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS",
-          "EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS"
-        ],
+        "enum": ["INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS", "EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS"],
         "default": "INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS",
         "x-displayname": "Interface Network Type",
         "x-ves-proto-enum": "ves.io.schema.network_interface.DHCPPoolSettingType"
@@ -1700,56 +1705,6 @@
         "x-displayname": "Link Quality Monitoring Configuration",
         "x-ves-proto-message": "ves.io.schema.network_interface.LinkQualityMonitorConfig"
       },
-      "network_interfaceLoopbackInterfaceType": {
-        "type": "object",
-        "description": "x-displayName: \"Loopback Device\"\nLoopback Device Configuration",
-        "title": "Loopback Device",
-        "properties": {
-          "cluster": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "device": {
-            "type": "string",
-            "description": "x-displayName: \"Loopback Ethernet Device\"\nx-example: \"eth0\"\nx-required\nInterface configuration for the Loopback Ethernet device",
-            "title": "Device"
-          },
-          "dhcp_client": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "dhcp_server": {
-            "$ref": "#/components/schemas/network_interfaceDHCPServerParametersType"
-          },
-          "ip_fabric_network": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "mtu": {
-            "type": "integer",
-            "description": "x-displayName: \"Maximum Packet Size (MTU)\"\nx-example: \"1450\"\nMaximum packet size (Maximum Transfer Unit) of the interface\nWhen configured, mtu must be between 512 and 16384",
-            "title": "Maximum Packet Size (MTU)",
-            "format": "int64"
-          },
-          "no_ipv6_address": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "node": {
-            "type": "string",
-            "description": "x-displayName: \"Specific Node\"\nConfiguration will apply to a device on the given node.",
-            "title": "Node"
-          },
-          "site_local_inside_network": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "site_local_network": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "static_ip": {
-            "$ref": "#/components/schemas/network_interfaceStaticIPParametersType"
-          },
-          "static_ipv6_address": {
-            "$ref": "#/components/schemas/network_interfaceStaticIPParametersType"
-          }
-        }
-      },
       "network_interfaceStaticIPParametersType": {
         "type": "object",
         "description": "Configure Static IP parameters",
@@ -1783,26 +1738,6 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.max_pairs": "128"
             }
-          }
-        }
-      },
-      "network_interfaceStaticIpParametersFleetType": {
-        "type": "object",
-        "description": "x-displayName: \"Fleet: Static IP Parameters\"\nConfigure Static IP parameters",
-        "title": "Static IP Parameters",
-        "properties": {
-          "default_gw": {
-            "type": "string",
-            "description": "x-displayName: \"Default Gateway\"\nx-example: \"192.168.20.1\"\nIP address offset of the default gateway, prefix len is used to calculate offset",
-            "title": "Default Gateway"
-          },
-          "dns_server": {
-            "type": "string",
-            "description": "x-displayName: \"DNS Server\"\nx-example: \"192.168.20.1\"\nIP address offset of the DNS server, prefix len is used to calculate offset",
-            "title": "DNS Server"
-          },
-          "network_prefix_allocator": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
           }
         }
       },
@@ -2009,57 +1944,11 @@
           }
         }
       },
-      "schemaForwardProxyConfigType": {
-        "type": "object",
-        "description": "x-displayName: \"Forward Proxy Configuration\"\nFine tune forward proxy behavior\n\nFew configurations allowed are\n\n  White listed ports and ip prefixes:\n    Forward proxy does application protocol detection and server name(SNI) detection by peeking into\n    the traffic on the incoming downstream connection. Few protocols doesn't have client sending\n    the first data. In such cases, protocol and SNI detection fails. This configuration allows,\n    skipping protocol and SNI detection for whitelisted ip-prefix-list and ports\n  connection_timeout:\n    The timeout for new network connections to upstream server.\n  max_connect_attempts:\n    Maximum number of attempts made to make new network connection to upstream server.",
-        "title": "ForwardProxyConfigType",
-        "properties": {
-          "connection_timeout": {
-            "type": "integer",
-            "description": "x-displayName: \"Connection Timeout\"\nx-example: \"4000\"\nThe timeout for new network connections to upstream server.\nThis is specified in milliseconds. The default value is 2000 (2 seconds)",
-            "title": "connection_timeout",
-            "format": "int64"
-          },
-          "max_connect_attempts": {
-            "type": "integer",
-            "description": "x-displayName: \"Number of connect attempts\"\nx-example: \"3\"\nSpecifies the allowed number of retries on connect failure to upstream server. Defaults to 1.",
-            "title": "max_connect_attempts",
-            "format": "int64"
-          },
-          "no_interception": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "tls_intercept": {
-            "$ref": "#/components/schemas/schemaTlsInterceptionType"
-          },
-          "white_listed_ports": {
-            "type": "array",
-            "description": "x-displayName: \"TCP Ports to Skip Protocol Parsing\"\nx-example: \"[22, 9400]\"\nTraffic to these destination TCP ports is not subjected to protocol parsing\nExample \"tmate\" server port",
-            "title": "Port list",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          "white_listed_prefixes": {
-            "type": "array",
-            "description": "x-displayName: \"IP Prefixes to Skip Protocol Parsing\"\nx-example: \"['10.2.1.0/24', '192.168.8.0/29', '10.7.64.160/27']\"\nTraffic to these destination ip prefixes is not subjected to protocol parsing\nExample \"tmate\" server ip",
-            "title": "IP prefix list",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "schemaHashAlgorithm": {
         "type": "string",
         "description": "x-displayName: \"Hash Algorithm\"\nSpecifies the Hash Algorithm to be used\n\n - INVALID_HASH_ALGORITHM: x-displayName: \"INVALID\"\nInvalid hash algorithm\n - SHA256: x-displayName: \"SHA256\"\nsha256 hash algorithm\n - SHA1: x-displayName: \"SHA1\"\nsha1 hash algorithm",
         "title": "HashAlgoritm",
-        "enum": [
-          "INVALID_HASH_ALGORITHM",
-          "SHA256",
-          "SHA1"
-        ],
+        "enum": ["INVALID_HASH_ALGORITHM", "SHA256", "SHA1"],
         "default": "INVALID_HASH_ALGORITHM"
       },
       "schemaHashAlgorithms": {
@@ -2376,10 +2265,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -2470,10 +2356,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2757,11 +2640,7 @@
         "type": "string",
         "description": "VRRP advertisement mode for VIP\n\nInvalid VRRP mode",
         "title": "VipVrrpType",
-        "enum": [
-          "VIP_VRRP_INVALID",
-          "VIP_VRRP_ENABLE",
-          "VIP_VRRP_DISABLE"
-        ],
+        "enum": ["VIP_VRRP_INVALID", "VIP_VRRP_ENABLE", "VIP_VRRP_DISABLE"],
         "default": "VIP_VRRP_INVALID",
         "x-displayname": "VRRP Virtual-IP",
         "x-ves-proto-enum": "ves.io.schema.VipVrrpType"
@@ -2966,21 +2845,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "securemesh_siteGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "securemesh_siteInterface": {
         "type": "object",
@@ -4177,6 +4041,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

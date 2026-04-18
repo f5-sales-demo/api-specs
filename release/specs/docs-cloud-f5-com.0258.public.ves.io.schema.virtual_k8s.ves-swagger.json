@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.virtual_k8s",
     "description": "Virtual K8s object exposes a Kubernetes API endpoint in the namespace that operates on all the physical Kubernetes clusters in each of\nthe sites that are selected by the virtual-site referred to in the object.\n\nVirtual K8s supports only a subset of Kubernetes APIs related to application management.\n\nRead and write operations are currently supported on the following Kubernetes API resources:\n1. Deployment v1 apps\n2. StatefulSet v1 apps\n3. DaemonSet v1 apps\n4. Job v1 batch\n5. CronJob v1beta1 batch\n6. Service v1 core with type ClusterIP\n7. Secret v1 core\n8. ConfigMap v1 core\n9. ServiceAccount v1 core\n10. PersistentVolumeClaim v1 core\n\nOnly delete is supported on Pod v1 core.\n\nRead only operations are currently supported on the following Kubernetes API resources:\n1. Pod v1 core\n2. ReplicaSet v1 apps\n3. Endpoints v1 core\n4. Node v1 core\n5. Namespace v1 core\n6. PersistentVolume v1 core\n7. Event v1 core\n\nThe semantics of using Kubernetes APIs on a Virtual K8s object are different compared to those on a single Kubernetes cluster since the\nKubernetes resource objects created using the Virtual K8s API will be instantiated in all the physical Kubernetes clusters in each\nof the sites selected by the virtual-site referred to in the object. In a single Kubernetes cluster, when a Deployment resource is created\nwith Replicas set to 3, the expectation is that 3 Pods will be created on the Kubernetes cluster. On the Virtual K8S API, when a Deployment\nresource is created with Replicas set to 3, the total number of Pods created is equal to the number of Replicas times the number of physical\nclusters in each of the sites selected by the referred to virtual-site. For example, if the virtual-site associated with Virtual K8s object\nselects 3 sites each having 1 physical Kubernetes cluster, then the total number of Pods created will be 9.\n\nKubernetes API resource objects can also be created with the annotation ves.io/virtual-sites=<virtual-site-namespace>/<virtual-site-name>\nand those objects will be instantiated in all physical Kubernetes clusters in each of the sites selected by the virtual-site specified in the\nannotation only and not using the virtual-site specified in the Virtual K8s object. This provides an override mechanism to select different\nvirtual-sites for the Kubernetes API resource to be instantiated on. The virtual-site referred to in the Virtual K8s can hence be thought\nof as the default virtual-site for all the Kubernetes API resource objects created on the Virtual K8s API without the above annotation.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/virtual_k8ss": {
@@ -397,7 +402,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_k8s-customdataapi-pvcmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_k8s.CustomDataAPI.PVCMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_k8s.CustomDataAPI.PVCMetrics",
+        "tags": ["data"]
       },
       "x-displayname": "Virtual Kubernetes",
       "x-ves-proto-service": "ves.io.schema.virtual_k8s.CustomDataAPI",
@@ -554,7 +560,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_k8s-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_k8s.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_k8s.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Virtual Kubernetes",
       "x-ves-proto-service": "ves.io.schema.virtual_k8s.API",
@@ -703,7 +710,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_k8s-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_k8s.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_k8s.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Virtual Kubernetes",
@@ -835,7 +843,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_k8s-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_k8s.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_k8s.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Virtual Kubernetes",
       "x-ves-proto-service": "ves.io.schema.virtual_k8s.API",
@@ -1327,10 +1336,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1459,11 +1465,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -1772,21 +1774,6 @@
           }
         }
       },
-      "virtual_k8sGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "virtual_k8sGetSpecType": {
         "type": "object",
         "description": "Get virtual_k8s will get the object from the storage backend for namesapce metadata.namespace",
@@ -1956,11 +1943,7 @@
         "type": "string",
         "description": "Labels in PVC metrics\n",
         "title": "PVC Metric Label",
-        "enum": [
-          "NAMESPACE",
-          "PVC",
-          "SITE"
-        ],
+        "enum": ["NAMESPACE", "PVC", "SITE"],
         "default": "NAMESPACE",
         "x-displayname": "PVC Metric Label",
         "x-ves-proto-enum": "ves.io.schema.virtual_k8s.PVCMetricLabel"
@@ -1969,10 +1952,7 @@
         "type": "string",
         "description": "List of PVC metric types\n\nx-unit: \"bytes\"\nx-unit: \"bytes\"",
         "title": "PVC Metric Type",
-        "enum": [
-          "PVC_USAGE",
-          "PVC_CAPACITY"
-        ],
+        "enum": ["PVC_USAGE", "PVC_CAPACITY"],
         "default": "PVC_USAGE",
         "x-displayname": "PVC Metric Type",
         "x-ves-proto-enum": "ves.io.schema.virtual_k8s.PVCMetricType"
@@ -2199,6 +2179,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

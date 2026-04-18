@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.fleet",
     "description": "\nFleet is used to configure infrastructure components (like nodes) in one or\nmore F5XC customer edge sites homogeneously. Fleet configuration has\nfollowing information,\n  * Software image release to be deployed on the fleet\n  * List of devices to be configured on every node\n  * Connections between the virtual networks in the site\n  * Security policies applied in the site\n\nFleet object must be created in the \"system\" namespace for the tenant\n\nAssociating Fleet with Site\n\nFleet has a field called \"fleet_label\". When a fleet object is created, system automatically creates a known_label\n\"ves.io/fleet=<fleet_label>\". The known_label is created in the \"shared\" namespace for the tenant.\nA site is made \"member of fleet\" when this known_label is added to the site. A site can have at most one known_label\nof type \"ves.io/fleet\" and hence belongs to exactly one fleet at any given time.\n\nWhen a site becomes member of fleet, all nodes in site also become \"member of fleet\". The fleet configuration\nis applied on all nodes that are member of the fleet.\n\nFleet and Virtual Site\n\nBoth Fleet and Virtual Sites select a list of sites based on the labels. But, there is a major difference between\nvirtual_site and Fleet. Virtual_sites are intersecting sub sets of available sites. Fleet is non intersecting subset\nof available sites compared to other Fleets. As a result, at most one Fleet configuration if applied on a Site.\n\nHowever to enable other features like monitoring, deploying application or jobs on sites represented by fleet,\nsystem will automatically create a virtual_site in shared namespace representing all sites in a fleet.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/fleets": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-fleet-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.fleet.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.fleet.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Fleet",
       "x-ves-proto-service": "ves.io.schema.fleet.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-fleet-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.fleet.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.fleet.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Fleet",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-fleet-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.fleet.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.fleet.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Fleet",
       "x-ves-proto-service": "ves.io.schema.fleet.API",
@@ -888,12 +896,7 @@
         "type": "string",
         "description": "Defines ownership for a device.\n\nDevice owner is invalid\nDevice is owned by VER pod. usually it will be network interface device or accelerator like crypto engine.\nDevice is available to be owned by vK8s workload on the site, like camera GPU etc.\nDevice is not available to be owned by vK8s or VER. Can be exposed via some other service. Like TPM.",
         "title": "Device Owner Type",
-        "enum": [
-          "DEVICE_OWNER_INVALID",
-          "DEVICE_OWNER_VER",
-          "DEVICE_OWNER_VK8S_WORK_LOAD",
-          "DEVICE_OWNER_HOST"
-        ],
+        "enum": ["DEVICE_OWNER_INVALID", "DEVICE_OWNER_VER", "DEVICE_OWNER_VK8S_WORK_LOAD", "DEVICE_OWNER_HOST"],
         "default": "DEVICE_OWNER_INVALID",
         "x-displayname": "Device Owner Type",
         "x-ves-proto-enum": "ves.io.schema.fleet.DeviceOwnerType"
@@ -1617,21 +1620,6 @@
           }
         }
       },
-      "fleetGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "fleetListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -1773,11 +1761,7 @@
         "type": "string",
         "description": "Defines how the device is used\n\nIf networking device is owned by VER, it is available for users to configure as required\nIf networking device is owned by VER, it is included in bootstrap config and member of outside network.\nIf networking device is owned by VER, it is included in bootstrap config and member of inside network.",
         "title": "Network Device Use",
-        "enum": [
-          "NETWORK_INTERFACE_USE_REGULAR",
-          "NETWORK_INTERFACE_USE_OUTSIDE",
-          "NETWORK_INTERFACE_USE_INSIDE"
-        ],
+        "enum": ["NETWORK_INTERFACE_USE_REGULAR", "NETWORK_INTERFACE_USE_OUTSIDE", "NETWORK_INTERFACE_USE_INSIDE"],
         "default": "NETWORK_INTERFACE_USE_REGULAR",
         "x-displayname": "Network Device Use",
         "x-ves-proto-enum": "ves.io.schema.fleet.NetworkingDeviceInstanceUseType"
@@ -2904,12 +2888,7 @@
         "type": "string",
         "description": "Set feature to be enabled\n\nOperate with a degraded vGPU performance\nEnable NVIDIA vGPU\nEnable NVIDIA RTX Virtual Workstation\nEnable NVIDIA Virtual Compute Server",
         "title": "vGPU Feature Type",
-        "enum": [
-          "UNLICENSED",
-          "VGPU",
-          "VWS",
-          "VCS"
-        ],
+        "enum": ["UNLICENSED", "VGPU", "VWS", "VCS"],
         "default": "UNLICENSED",
         "x-displayname": "Feature Type",
         "x-ves-proto-enum": "ves.io.schema.fleet.VGPUFeatureType"
@@ -3350,11 +3329,7 @@
         "type": "string",
         "description": "Defines types of next-hop\n\nUse default gateway on the local interface as gateway for route.\nAssumes there is only one local interface on the virtual network.\nUse the specified address as nexthop\nUse the network interface as nexthop\nDiscard nexthop, used when attr type is Advertise\nUsed in VoltADN private virtual network.",
         "title": "Nexthop Types",
-        "enum": [
-          "NEXT_HOP_DEFAULT_GATEWAY",
-          "NEXT_HOP_USE_CONFIGURED",
-          "NEXT_HOP_NETWORK_INTERFACE"
-        ],
+        "enum": ["NEXT_HOP_DEFAULT_GATEWAY", "NEXT_HOP_USE_CONFIGURED", "NEXT_HOP_NETWORK_INTERFACE"],
         "default": "NEXT_HOP_DEFAULT_GATEWAY",
         "x-displayname": "Nexthop Types",
         "x-ves-proto-enum": "ves.io.schema.NextHopTypes"
@@ -3571,10 +3546,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -3704,10 +3676,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -3832,37 +3801,6 @@
           }
         }
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -3922,18 +3860,6 @@
         "default": "VIRTUAL_NETWORK_SITE_LOCAL",
         "x-displayname": "Virtual Network Type",
         "x-ves-proto-enum": "ves.io.schema.VirtualNetworkType"
-      },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
       },
       "schemafleetCreateSpecType": {
         "type": "object",
@@ -4712,6 +4638,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

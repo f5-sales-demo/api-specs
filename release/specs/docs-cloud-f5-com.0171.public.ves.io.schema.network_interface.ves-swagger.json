@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.network_interface",
     "description": "Network Interface object represents the configuration of a network device in a fleet of\nF5XC Customer Edge sites. The following properties can be configured in this object:\n\n   IP address allocation scheme of the network interface (dhcp or static). Virtual Network of this network interface, Whether to run a DHCP server on this interface\n\n      Subnet to use for allocation\n\n      Default gateway\n\n      DNS server\n\n Interfaces belonging to site local inside and site local outside networks have to be configured as part of\n bootstrap configuration. This configuration can be done in two ways:\n\n     during site registration and is bundled as part of certified hardware image.\n\n     configured locally on the CE via Sia application\n\n Interfaces corresponding to these local interfaces can be configured in the global configuration. Label\n assignments for the local interfaces can be done in the global network interface configuration. Also, DHCP\n can be still be configured on site local inside network interface configuration, so that dynamic address is\n obtained and used.\n\n When DHCP address assignment (server) is enabled in the Network interface, external clients can get their addresses\n assigned from the configured subnet. The local interface can also get a dynamic address from the same pool if DHCP\n client is enabled in the network interface. Gateway and DNS servers for such clients can be external addresses or\n addresses internally allocated from the same subnet or may be disabled.\n\n Note that DHCP client and server configuration are independent. A Network interface may have DHCP client configured\n and DHCP server disabled, if an external DHCP server is used.\n\n Currently, DHCP client should always be enabled, setting static address on a network interface is not supported.\n\n If this Network interface is for primary network device (site local), then it has to be configured only as\n DHCP assigned address. This interface will be used to reach volterra cloud for registration. Virtual network\n of this interface has to be site local network. If there are multiple interfaces and multiple virtual\n networks, then site local interface has to be in the outside network.\n\n If network has Network interface with DHCP address assignment configured, then default gateway and DNS server\n for this network will be taken from DHCP response. Having multiple interfaces in a network giving default route\n can cause bad routing decisions. In case of site local network, DNS and default gateway response from primary\n interface will be used.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/network_interfaces": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-network_interface-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.network_interface.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.network_interface.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Network Interface",
       "x-ves-proto-service": "ves.io.schema.network_interface.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-network_interface-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.network_interface.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.network_interface.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Network Interface",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-network_interface-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.network_interface.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.network_interface.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Network Interface",
       "x-ves-proto-service": "ves.io.schema.network_interface.API",
@@ -1056,10 +1064,7 @@
         "type": "string",
         "description": "Identifies the how to pick the network for Interface.\n\nAddress ranges in DHCP pool list are used for IP Address allocation\nAddress ranges in DHCP pool list are excluded from IP Address allocation",
         "title": "DHCP POOL SETTING",
-        "enum": [
-          "INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS",
-          "EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS"
-        ],
+        "enum": ["INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS", "EXCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS"],
         "default": "INCLUDE_IP_ADDRESSES_FROM_DHCP_POOLS",
         "x-displayname": "Interface Network Type",
         "x-ves-proto-enum": "ves.io.schema.network_interface.DHCPPoolSettingType"
@@ -1481,21 +1486,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "network_interfaceGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "network_interfaceGetSpecType": {
         "type": "object",
@@ -2132,10 +2122,7 @@
         "type": "string",
         "description": "Controls whether or not DHCP client is enabled on the interface\n\nDHCP client is disabled\nDHCP client is enabled",
         "title": "Network Interface DHCP Client",
-        "enum": [
-          "NETWORK_INTERFACE_DHCP_DISABLE",
-          "NETWORK_INTERFACE_DHCP_ENABLE"
-        ],
+        "enum": ["NETWORK_INTERFACE_DHCP_DISABLE", "NETWORK_INTERFACE_DHCP_ENABLE"],
         "default": "NETWORK_INTERFACE_DHCP_DISABLE",
         "x-displayname": "DHCP Client",
         "x-ves-proto-enum": "ves.io.schema.network_interface.NetworkInterfaceDHCP"
@@ -2267,10 +2254,7 @@
         "type": "string",
         "description": "Controls whether or not VLAN tagging is enabled on the interface\n\nVlan tagging is disabled\nVlan tagging is enabled",
         "title": "Network Interface VLAN Tagging",
-        "enum": [
-          "NETWORK_INTERFACE_VLAN_TAGGING_DISABLE",
-          "NETWORK_INTERFACE_VLAN_TAGGING_ENABLE"
-        ],
+        "enum": ["NETWORK_INTERFACE_VLAN_TAGGING_DISABLE", "NETWORK_INTERFACE_VLAN_TAGGING_ENABLE"],
         "default": "NETWORK_INTERFACE_VLAN_TAGGING_DISABLE",
         "x-displayname": "Vlan Tagging",
         "x-ves-proto-enum": "ves.io.schema.network_interface.NetworkInterfaceVLANTagging"
@@ -2355,26 +2339,6 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.max_pairs": "128"
             }
-          }
-        }
-      },
-      "network_interfaceStaticIpParametersFleetType": {
-        "type": "object",
-        "description": "x-displayName: \"Fleet: Static IP Parameters\"\nConfigure Static IP parameters",
-        "title": "Static IP Parameters",
-        "properties": {
-          "default_gw": {
-            "type": "string",
-            "description": "x-displayName: \"Default Gateway\"\nx-example: \"192.168.20.1\"\nIP address offset of the default gateway, prefix len is used to calculate offset",
-            "title": "Default Gateway"
-          },
-          "dns_server": {
-            "type": "string",
-            "description": "x-displayName: \"DNS Server\"\nx-example: \"192.168.20.1\"\nIP address offset of the DNS server, prefix len is used to calculate offset",
-            "title": "DNS Server"
-          },
-          "network_prefix_allocator": {
-            "$ref": "#/components/schemas/schemaviewsObjectRefType"
           }
         }
       },
@@ -2952,10 +2916,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -3163,6 +3124,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

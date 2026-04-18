@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.signup",
     "description": "Use this API to signup for F5XC service.\none can signup to use volterra service as an individual/free account or\nas a team account more suited for enterprise customers. \nfor more details on what each type of account features, visit - https://console.ves.volterra.io/signup/usage_plan\nsince signup flow includes more complex selections and passing in secure payment processing,\nwe recommend using web UI for this process https://console.ves.volterra.io/signup/start",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/no_auth/countries/{country_code}/states/{prefix}": {
@@ -129,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-liststates"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListStates"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListStates",
+        "tags": ["countries"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -268,7 +274,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-listcities"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListCities"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListCities",
+        "tags": ["countries"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -387,7 +394,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-listcountries"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListCountries"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListCountries",
+        "tags": ["countries"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -504,7 +512,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-validateregistration"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ValidateRegistration"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ValidateRegistration",
+        "tags": ["login"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -621,7 +630,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-sendpasswordemail"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.SendPasswordEmail"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.SendPasswordEmail",
+        "tags": ["send_password_email"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -740,7 +750,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.Get"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.Get",
+        "tags": ["signup"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -857,7 +868,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-validatecontact"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ValidateContact"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ValidateContact",
+        "tags": ["validate_contact"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -867,7 +879,7 @@
       "get": {
         "summary": "List states",
         "description": "Returns a list of known states of a country. List will be empty if country has no states.",
-        "operationId": "ves.io.schema.signup.CustomAPI.ListStates",
+        "operationId": "ves.io.schema.signup.CustomAPI.ListStates_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -986,7 +998,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-liststates"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListStates"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListStates",
+        "tags": ["web"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -996,7 +1009,7 @@
       "get": {
         "summary": "List cities",
         "description": "Returns a list of known cities of a country/state.",
-        "operationId": "ves.io.schema.signup.CustomAPI.ListCities",
+        "operationId": "ves.io.schema.signup.CustomAPI.ListCities_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1125,7 +1138,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-listcities"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListCities"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListCities",
+        "tags": ["web"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -1135,7 +1149,7 @@
       "get": {
         "summary": "List countries",
         "description": "Returns a list of supported countries along with with additional information such as address validation rules",
-        "operationId": "ves.io.schema.signup.CustomAPI.ListCountries",
+        "operationId": "ves.io.schema.signup.CustomAPI.ListCountries_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1244,7 +1258,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-signup-customapi-listcountries"
         },
-        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListCountries"
+        "x-ves-proto-rpc": "ves.io.schema.signup.CustomAPI.ListCountries",
+        "tags": ["web"]
       },
       "x-displayname": "Signup",
       "x-ves-proto-service": "ves.io.schema.signup.CustomAPI",
@@ -1259,11 +1274,7 @@
         "type": "string",
         "description": "Determines the contact type\n\nIndicates snail mail address (used for correspondence)\nIndicates billing address (this address will appear on invoices)\nIndicates contact used for a payment method (this address is used when charging a payment method)",
         "title": "Contact Type",
-        "enum": [
-          "MAILING",
-          "BILLING",
-          "PAYMENT"
-        ],
+        "enum": ["MAILING", "BILLING", "PAYMENT"],
         "default": "MAILING",
         "x-displayname": "Contact Type",
         "x-ves-proto-enum": "ves.io.schema.contact.ContactType"
@@ -1580,10 +1591,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -1665,10 +1673,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1708,10 +1713,7 @@
         "type": "string",
         "description": "Sync mode is to specify where the user details are being synced from.\n\n - SELF: Self\nSystem managed user.\n - SCIM: SCIM\nSCIM synced user. Full user life cycle is managed by the SCIM provider.",
         "title": "Sync Mode",
-        "enum": [
-          "SELF",
-          "SCIM"
-        ],
+        "enum": ["SELF", "SCIM"],
         "default": "SELF",
         "x-displayname": "Sync Mode",
         "x-ves-proto-enum": "ves.io.schema.SyncMode"
@@ -1886,45 +1888,10 @@
         "type": "string",
         "description": "TenantType is the type of the customer\n\nUNKNOWN indicates the field not being set\nFREEMIUM are customer that don't have their domain\nENTERPRiISE customer have their domain",
         "title": "TenantType",
-        "enum": [
-          "UNKNOWN",
-          "FREEMIUM",
-          "ENTERPRISE"
-        ],
+        "enum": ["UNKNOWN", "FREEMIUM", "ENTERPRISE"],
         "default": "UNKNOWN",
         "x-displayname": "Tenant type",
         "x-ves-proto-enum": "ves.io.schema.TenantType"
-      },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
       },
       "schemaViewRefType": {
         "type": "object",
@@ -1960,18 +1927,6 @@
             "title": "uid",
             "x-displayname": "UID",
             "x-ves-example": "f3744323-1adf-4aaa-a5dc-0707c1d1bd82"
-          }
-        }
-      },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
           }
         }
       },
@@ -2835,13 +2790,7 @@
         "type": "string",
         "description": "States describes possible states for user.\n\n - StateUndefined: StateUndefined\n\nUser state when it was created without any state.\n - StateCreating: StateCreating\n\nUser state during initial creation. It includes registering in IDM, creating user-settings object, etc...\n - StateCreateFailed: StateCreateFailed\n\nUser state when initial creation was failed by some reason and must be retried\nafter issue is solved.\n - StateActive: StateActive\n\nUser state of completely created and available to use user.\n - StateDisabled: StateDisabled\n\nUser is currently disabled, login is not possible for this user, but it may become active again in the future.",
         "title": "States",
-        "enum": [
-          "StateUndefined",
-          "StateCreating",
-          "StateCreateFailed",
-          "StateActive",
-          "StateDisabled"
-        ],
+        "enum": ["StateUndefined", "StateCreating", "StateCreateFailed", "StateActive", "StateDisabled"],
         "default": "StateUndefined",
         "x-displayname": "States",
         "x-ves-proto-enum": "ves.io.schema.user.FSMState"
@@ -2850,11 +2799,7 @@
         "type": "string",
         "description": "IdmType is to identify who is managing the user.\n\n - SSO: SSO User\nExternally managed Single Sign On based user imported into UAM.\n - VOLTERRA_MANAGED: F5XC Managed Local user\nF5XC managed local user. Full user life cycle is managed by volterra UAM and Identity.\n - UNDEFINED: Undefined\nUndefined IDM type",
         "title": "IDM Type",
-        "enum": [
-          "SSO",
-          "VOLTERRA_MANAGED",
-          "UNDEFINED"
-        ],
+        "enum": ["SSO", "VOLTERRA_MANAGED", "UNDEFINED"],
         "default": "SSO",
         "x-displayname": "Identity Management Type",
         "x-ves-proto-enum": "ves.io.schema.user.IdmType"
@@ -2863,15 +2808,56 @@
         "type": "string",
         "description": "UserType is to identify the type of user\n\n - USER: User\nRegular User\n - SERVICE: Service User\nUser for accessing only APIs/services\n - DEBUG: Debug\nUser which was created by tenant admin for volterra-support team.",
         "title": "UserType",
-        "enum": [
-          "USER",
-          "SERVICE",
-          "DEBUG"
-        ],
+        "enum": ["USER", "SERVICE", "DEBUG"],
         "default": "USER",
         "x-displayname": "User Type",
         "x-ves-proto-enum": "ves.io.schema.user.UserType"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "countries"
+    },
+    {
+      "name": "login"
+    },
+    {
+      "name": "send_password_email"
+    },
+    {
+      "name": "signup"
+    },
+    {
+      "name": "validate_contact"
+    },
+    {
+      "name": "web"
+    }
+  ]
 }

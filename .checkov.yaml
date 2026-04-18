@@ -1,4 +1,9 @@
 ---
+skip-path:
+  - dist
+  - build
+  - release
+  - vendor
 skip-check:
   - CKV_GHA_7
   - CKV2_GHA_1

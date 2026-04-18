@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_update",
     "description": "Public Custom API definition for Bot Detection Update",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/bot/namespaces/{namespace}/bot_detection_updates": {
@@ -118,7 +123,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_update-customapi-getbotdetectionupdates"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_update.CustomAPI.GetBotDetectionUpdates"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_update.CustomAPI.GetBotDetectionUpdates",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Update",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_update.CustomAPI",
@@ -246,7 +252,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-bot_detection_update-customapi-downloadbotdetectionupdatesreleasenotes"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_update.CustomAPI.DownloadBotDetectionUpdatesReleaseNotes"
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_update.CustomAPI.DownloadBotDetectionUpdatesReleaseNotes",
+        "tags": ["shape"]
       },
       "x-displayname": "Bot Detection Update",
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_update.CustomAPI",
@@ -386,10 +393,7 @@
         "type": "string",
         "description": "Identifies the environment as either Production or Testing. Production environments have two infrastructure regions in an Active-Active configuration where traffic is routed equally between the two regions. Test environments have a single infrastructure region.\n\nProduction Protect live production applications and services from automated attacks.\nTest Evaluate new features, settings, and system performance.",
         "title": "EnvironmentType",
-        "enum": [
-          "PRODUCTION",
-          "TESTING"
-        ],
+        "enum": ["PRODUCTION", "TESTING"],
         "default": "PRODUCTION",
         "x-displayname": "Environment Type",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.EnvironmentType"
@@ -398,10 +402,7 @@
         "type": "string",
         "description": "The type of traffic that is routed to and processed by this infrastructure (Web or Mobile).\n\nOnly web traffic, including browser-based traffic from mobile devices, is routed through this Bot Defense infrastructure.\nOnly mobile traffic from native mobile apps with the Bot Defense SDK are routed through this Bot Defense infrastructure.",
         "title": "TrafficType",
-        "enum": [
-          "WEB",
-          "MOBILE"
-        ],
+        "enum": ["WEB", "MOBILE"],
         "default": "WEB",
         "x-displayname": "Traffic Type",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.TrafficType"
@@ -424,6 +425,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

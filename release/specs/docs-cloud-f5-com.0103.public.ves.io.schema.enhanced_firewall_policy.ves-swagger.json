@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.enhanced_firewall_policy",
     "description": "Enhanced Firewall Policy defined firewall rules applied in the site\nEnhanced Firewall Policy defines rules in the form or 5 tuple,\n<source, source-port, destination, destination-port, protocol>\n\nWhere,\nsource : source can be specified in the form of\n  - ip-address or ip-subnet to be matched with source-ip in packet\n  - labels associated with the source of packet\n  - tags associated with the source vpc, from where the packet originates\n  - vpc-id for the source address\nsource attributes are matched before any NAT processing of the packet\n\nsource-port: matches the source-port in the packet\n\ndestination: destination can be specified in the form of\n  - ip-address or ip-subnet to be matched with destination-ip in packet\n  - labels associated with the destination of packet\n  - tags associated with the destination vpc, to where the packet is sent\n  - vpc for the source address\n\ndestination-port: matches the destination-port in the packet\n\nprotocol: protocol of the IP packet\n\nThe Enhanced Firewall Policies are applied as part of route processing\nThe policies are always applied before any NAT processing so that source\nmatching always happens on the original packet",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/enhanced_firewall_policys": {
@@ -397,7 +402,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-enhanced_firewall_policy-customdataapi-enhancedfirewallpolicyhits"
         },
-        "x-ves-proto-rpc": "ves.io.schema.enhanced_firewall_policy.CustomDataAPI.EnhancedFirewallPolicyHits"
+        "x-ves-proto-rpc": "ves.io.schema.enhanced_firewall_policy.CustomDataAPI.EnhancedFirewallPolicyHits",
+        "tags": ["data"]
       },
       "x-displayname": "Enhanced Firewall Policy",
       "x-ves-proto-service": "ves.io.schema.enhanced_firewall_policy.CustomDataAPI",
@@ -554,7 +560,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-enhanced_firewall_policy-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.enhanced_firewall_policy.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.enhanced_firewall_policy.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Enhanced Firewall Policy",
       "x-ves-proto-service": "ves.io.schema.enhanced_firewall_policy.API",
@@ -703,7 +710,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-enhanced_firewall_policy-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.enhanced_firewall_policy.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.enhanced_firewall_policy.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Enhanced Firewall Policy",
@@ -835,7 +843,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-enhanced_firewall_policy-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.enhanced_firewall_policy.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.enhanced_firewall_policy.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Enhanced Firewall Policy",
       "x-ves-proto-service": "ves.io.schema.enhanced_firewall_policy.API",
@@ -1067,13 +1076,7 @@
         "type": "string",
         "description": "Enhanced Firewall Policy hits can be sliced and diced based on one or more labels listed below.\n",
         "title": "Enhanced Firewall Policy Metric Labels",
-        "enum": [
-          "NAMESPACE",
-          "POLICY",
-          "POLICY_RULE",
-          "ACTION",
-          "SITE"
-        ],
+        "enum": ["NAMESPACE", "POLICY", "POLICY_RULE", "ACTION", "SITE"],
         "default": "NAMESPACE",
         "x-displayname": "Enhanced Firewall Policy Metric Labels",
         "x-ves-proto-enum": "ves.io.schema.enhanced_firewall_policy.EnhancedFirewallPolicyMetricLabel"
@@ -1278,21 +1281,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "enhanced_firewall_policyGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "enhanced_firewall_policyListResponse": {
         "type": "object",
@@ -1520,12 +1508,7 @@
         "type": "string",
         "description": "Application protocols like HTTP, SNMP\n",
         "title": "Applications",
-        "enum": [
-          "APPLICATION_HTTP",
-          "APPLICATION_HTTPS",
-          "APPLICATION_SNMP",
-          "APPLICATION_DNS"
-        ],
+        "enum": ["APPLICATION_HTTP", "APPLICATION_HTTPS", "APPLICATION_SNMP", "APPLICATION_DNS"],
         "default": "APPLICATION_HTTP",
         "x-displayname": "Applications",
         "x-ves-proto-enum": "ves.io.schema.network_policy.ApplicationEnumType"
@@ -1588,10 +1571,7 @@
         "type": "string",
         "description": "Choice to choose logging or no logging\nThis works together with option selected via NetworkPolicyRuleAction or any other action specified\nx-example: (No Selection in NetworkPolicyRuleAction + AdvancedAction as LOG) = LOG Only, (ALLOW/DENY in NetworkPolicyRuleAction + AdvancedAction as LOG) = Log and Allow/Deny, (ALLOW/DENY in NetworkPolicyRuleAction + NOLOG in AdvancedAction) = Allow/Deny with no log\n\nDon't sample the traffic hitting the rule\nSample the traffic hitting the rule",
         "title": "Log Action",
-        "enum": [
-          "NOLOG",
-          "LOG"
-        ],
+        "enum": ["NOLOG", "LOG"],
         "default": "NOLOG",
         "x-displayname": "Log Action",
         "x-ves-proto-enum": "ves.io.schema.network_policy_rule.LogAction"
@@ -1608,28 +1588,6 @@
           }
         }
       },
-      "policySegmentPolicyType": {
-        "type": "object",
-        "description": "x-displayName: \"Configure Segments\"\nConfigure source and destination segment for policy",
-        "title": "Segment Choice",
-        "properties": {
-          "dst_any": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "dst_segments": {
-            "$ref": "#/components/schemas/viewsSegmentRefList"
-          },
-          "intra_segment": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "src_any": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "src_segments": {
-            "$ref": "#/components/schemas/viewsSegmentRefList"
-          }
-        }
-      },
       "protobufAny": {
         "type": "object",
         "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
@@ -1642,21 +1600,6 @@
             "type": "string",
             "description": "Must be a valid serialized protocol buffer of the above specified type.",
             "format": "byte"
-          }
-        }
-      },
-      "schemaAwsSubnetList": {
-        "type": "object",
-        "description": "x-displayName: \"AWS Subnet List\"\nList of Subnet Identifiers in AWS",
-        "title": "AWS Subnet List",
-        "properties": {
-          "subnet_id": {
-            "type": "array",
-            "description": "x-displayName: \"AWS Subnet List\"\nx-required\nx-example: \"[subnet-0dcfbdc8dada15441, subnet-049595621864596da]\"\nList of Subnet Identifiers in AWS",
-            "title": "AWS Subnet List",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -1939,10 +1882,7 @@
         "type": "string",
         "description": "The operator to use when filtering metrics based on label values.\n",
         "title": "Metric Label Operator",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
@@ -2254,10 +2194,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2386,11 +2323,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -2644,6 +2577,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

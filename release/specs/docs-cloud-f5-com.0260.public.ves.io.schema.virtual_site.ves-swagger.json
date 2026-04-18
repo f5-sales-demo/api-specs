@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.virtual_site",
     "description": "Virtual site object is mechanism to create arbitrary set of sites\nIt selects all the sites for which label selector expression return true.\nSelector is goes thru all customer edge sites for a given tenant and all regional sites from volterra",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/virtual_sites": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_site-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_site.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_site.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Virtual Site",
       "x-ves-proto-service": "ves.io.schema.virtual_site.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_site-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_site.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_site.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Virtual Site",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_site-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_site.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_site.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Virtual Site",
       "x-ves-proto-service": "ves.io.schema.virtual_site.API",
@@ -835,7 +843,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_site-customapi-getselectees"
         },
-        "x-ves-proto-rpc": "ves.io.schema.virtual_site.CustomAPI.GetSelectees"
+        "x-ves-proto-rpc": "ves.io.schema.virtual_site.CustomAPI.GetSelectees",
+        "tags": ["config"]
       },
       "x-displayname": "Virtual Site",
       "x-ves-proto-service": "ves.io.schema.virtual_site.CustomAPI",
@@ -1323,10 +1332,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1531,12 +1537,7 @@
         "type": "string",
         "description": "Site Type which can either RE or CE\n\nInvalid type of site\nRegional Edge site\nCustomer Edge site",
         "title": "SiteType",
-        "enum": [
-          "INVALID",
-          "REGIONAL_EDGE",
-          "CUSTOMER_EDGE",
-          "NGINX_ONE"
-        ],
+        "enum": ["INVALID", "REGIONAL_EDGE", "CUSTOMER_EDGE", "NGINX_ONE"],
         "default": "INVALID",
         "x-displayname": "Site Type",
         "x-ves-proto-enum": "ves.io.schema.site.SiteType"
@@ -1660,21 +1661,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "virtual_siteGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "virtual_siteListResponse": {
         "type": "object",
@@ -1893,6 +1879,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

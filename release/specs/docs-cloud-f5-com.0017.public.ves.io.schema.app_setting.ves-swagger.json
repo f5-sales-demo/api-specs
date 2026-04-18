@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_setting",
     "description": "\"App Setting\" controls advanced monitoring of applications defined by \"App type\". This configuration is per namespace.\nThere is only one App Setting per namespace. It has list of references to \"App type\" objects for which various\nanomaly detection algorithms can be enabled.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/app_settings": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_setting-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "App Setting",
       "x-ves-proto-service": "ves.io.schema.app_setting.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_setting-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete App Setting",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_setting-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "App Setting",
       "x-ves-proto-service": "ves.io.schema.app_setting.API",
@@ -872,7 +880,8 @@
             }
           }
         ],
-        "x-ves-proto-rpc": "ves.io.schema.app_setting.CustomAPI.SuspiciousUserStatus"
+        "x-ves-proto-rpc": "ves.io.schema.app_setting.CustomAPI.SuspiciousUserStatus",
+        "tags": ["ml"]
       },
       "x-displayname": "App Setting",
       "x-ves-proto-service": "ves.io.schema.app_setting.CustomAPI",
@@ -883,18 +892,6 @@
   "x-ves-proto-package": "ves.io.schema.app_setting",
   "components": {
     "schemas": {
-      "app_settingAnomalyType": {
-        "type": "string",
-        "description": "x-displayName: \"Anomaly Type\"\nDifferent types of anomaly detection supported\nThis is deprecated.\n\n - ANOMALY_NONE: x-displayName: \"Disable Anomaly\"\nDisable anomaly detection\n - ANOMALY_SITE: x-displayName: \"Anomaly Per Site\"\nAnomaly detection is enabled only per site\n - ANOMALY_SERVICE: x-displayName: \"Anomaly Per Service\"\nAnomaly detection is enabled only per service\n - ANOMALY_SERVICE_PER_SITE: x-displayName: \"Anomaly Per Service, Site\"\nAnamoly detection is enabled only per service per site",
-        "title": "Anomaly type",
-        "enum": [
-          "ANOMALY_NONE",
-          "ANOMALY_SITE",
-          "ANOMALY_SERVICE",
-          "ANOMALY_SERVICE_PER_SITE"
-        ],
-        "default": "ANOMALY_NONE"
-      },
       "app_settingAppTypeSettings": {
         "type": "object",
         "description": "Namespace is considered an app instance which can be of one or more types also known as AppTypes.\nAppType setting defines the analyses setting to be applied to this namespace for a given AppType.",
@@ -925,31 +922,6 @@
           },
           "user_behavior_analysis_setting": {
             "$ref": "#/components/schemas/app_settingUserBehaviorAnalysisSetting"
-          }
-        }
-      },
-      "app_settingBolaDetectionManualSettings": {
-        "type": "object",
-        "description": "x-displayName: \"Enumeration Attack Detection Manual Settings\"",
-        "title": "Enumeration Attack Detection Settings for Manual Threshold",
-        "properties": {
-          "threshold_level_1": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "threshold_level_2": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "threshold_level_3": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "threshold_level_4": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "threshold_level_5": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "threshold_level_6": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
           }
         }
       },
@@ -1132,21 +1104,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "app_settingGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "app_settingListResponse": {
         "type": "object",
@@ -1343,13 +1300,7 @@
         "type": "string",
         "description": "Supported metrics that can be selected for timeseries analyses\n",
         "title": "Metric",
-        "enum": [
-          "NO_METRICS",
-          "REQUEST_RATE",
-          "ERROR_RATE",
-          "LATENCY",
-          "THROUGHPUT"
-        ],
+        "enum": ["NO_METRICS", "REQUEST_RATE", "ERROR_RATE", "LATENCY", "THROUGHPUT"],
         "default": "NO_METRICS",
         "x-displayname": "Metric",
         "x-ves-proto-enum": "ves.io.schema.app_setting.Metric"
@@ -1382,12 +1333,7 @@
         "type": "string",
         "description": "Supported sources from which Metrics can be analyzed\n\nAll edges in the service mesh graph. Metrics are analyzed separately between all source and destination service combinations",
         "title": "Metrics Source",
-        "enum": [
-          "NONE",
-          "NODES",
-          "EDGES",
-          "VIRTUAL_HOSTS"
-        ],
+        "enum": ["NONE", "NODES", "EDGES", "VIRTUAL_HOSTS"],
         "default": "NONE",
         "x-displayname": "Metrics Source",
         "x-ves-proto-enum": "ves.io.schema.app_setting.MetricsSource"
@@ -2031,10 +1977,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2271,6 +2214,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "ml"
+    }
+  ]
 }

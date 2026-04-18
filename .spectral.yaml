@@ -1,20 +1,13 @@
+---
 extends:
   - "spectral:oas"
 
-functionsDir: "./spectral/functions"
-functions:
-  - f5-path-params
-
 rules:
-  # Disable broken built-in path-params, replace with custom
-  path-params: off
-  f5-path-params:
-    description: "Path parameters must be declared and used (supports dotted names like metadata.namespace)"
-    message: "{{error}}"
-    severity: error
-    given: "$.paths[*]"
-    then:
-      function: f5-path-params
+  # F5 XC APIs use dotted parameter names (metadata.namespace, metadata.name)
+  # which Spectral's built-in path-params rule incorrectly flags.
+  # Disable it here; our pipeline uses spectral-pipeline.yaml with a custom
+  # f5-path-params function for accurate validation.
+  path-params: "off"
 
   # Auto-fixable rules - keep enabled at warn for discovery
   operation-tags: warn

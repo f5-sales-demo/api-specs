@@ -10,6 +10,7 @@ import sys
 import zipfile
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 import yaml
 from rich.console import Console
@@ -31,7 +32,8 @@ def load_spec_metadata(specs_dir: Path) -> dict | None:
     metadata_path = specs_dir / ".spec_metadata.json"
     if metadata_path.exists():
         with metadata_path.open() as f:
-            return json.load(f)
+            result: dict = json.load(f)
+            return result
     return None
 
 
@@ -77,7 +79,9 @@ def get_version_from_metadata(specs_dir: Path, patch: int | None = None) -> str:
             console.print(f"[dim]Using upstream spec date: {base_date}[/dim]")
         else:
             base_date = datetime.now(UTC).strftime("%Y.%m.%d")
-            console.print("[yellow]No spec date in metadata, using current date[/yellow]")
+            console.print(
+                "[yellow]No spec date in metadata, using current date[/yellow]"
+            )
     else:
         # Fallback to current date if no metadata
         base_date = datetime.now(UTC).strftime("%Y.%m.%d")
@@ -107,10 +111,10 @@ def get_version_from_git() -> str:
     except subprocess.CalledProcessError:
         # Generate version from date
         return datetime.now(UTC).strftime("%Y.%m.%d")
-    else:
-        if tag.startswith("v"):
-            return tag[1:]
-        return tag
+
+    if tag.startswith("v"):
+        return tag[1:]
+    return tag
 
 
 def get_git_sha() -> str:
@@ -214,7 +218,7 @@ class ReleaseBuilder:
 
     def _create_merged_spec(self, domains_dir: Path, staging_dir: Path) -> None:
         """Create a merged OpenAPI spec from all domain files."""
-        merged = {
+        merged: dict[str, Any] = {
             "openapi": "3.0.0",
             "info": {
                 "title": "F5 Distributed Cloud API (Fixed)",
@@ -247,7 +251,7 @@ class ReleaseBuilder:
                 # Merge schemas
                 components = spec.get("components", {})
                 merged["components"]["schemas"].update(components.get("schemas", {}))
-            except Exception as e:
+            except (json.JSONDecodeError, KeyError, OSError) as e:
                 console.print(f"[yellow]Could not merge {spec_file.name}: {e}[/yellow]")
 
         # Save merged specs
@@ -257,7 +261,9 @@ class ReleaseBuilder:
         with (staging_dir / "openapi.yaml").open("w") as f:
             yaml.safe_dump(merged, f, default_flow_style=False, sort_keys=False)
 
-        console.print(f"  [dim]Created: openapi.json ({len(merged['paths'])} paths)[/dim]")
+        console.print(
+            f"  [dim]Created: openapi.json ({len(merged['paths'])} paths)[/dim]"
+        )
         console.print("  [dim]Created: openapi.yaml[/dim]")
 
     def _copy_changelog(self, staging_dir: Path) -> None:
@@ -316,7 +322,7 @@ See full validation details in the repository.
 
     def _generate_manifest(self, staging_dir: Path) -> None:
         """Generate manifest file with release metadata."""
-        manifest = {
+        manifest: dict[str, Any] = {
             "version": self.version,
             "generated_at": datetime.now(UTC).isoformat(),
             "git_sha": get_git_sha(),
@@ -394,7 +400,9 @@ See full validation details in the repository.
 
 def main() -> int:
     """Main entry point for release command."""
-    parser = argparse.ArgumentParser(description="Build release package for F5 XC fixed specs")
+    parser = argparse.ArgumentParser(
+        description="Build release package for F5 XC fixed specs"
+    )
     parser.add_argument(
         "--config",
         type=Path,

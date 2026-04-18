@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.safeap",
     "description": "Use this API to interact with SAFE Account Protection endpoints.\nAll calls which not include user interaction allow a blob as the payload and return a CubeJS Structure as the return parameter.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/shape/safeap/namespaces/system/safeap/addon/subscribe": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-subscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.Subscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.Subscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-unsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.Unsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.Unsubscribe",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -351,7 +358,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-getcurrentfrauddata"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetCurrentFraudData"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetCurrentFraudData",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -468,7 +476,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-gettopriskyaccounts"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTopRiskyAccounts"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTopRiskyAccounts",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -585,7 +594,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-gettopriskydevices"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTopRiskyDevices"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTopRiskyDevices",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -702,7 +712,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-gettopriskyipaddresses"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTopRiskyIpAddresses"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTopRiskyIpAddresses",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -819,7 +830,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-gettopriskyreasons"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTopRiskyReasons"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTopRiskyReasons",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -936,7 +948,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-gettransactiondata"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTransactionData"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetTransactionData",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -1043,7 +1056,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-health"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.Health"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.Health",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -1160,7 +1174,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-safeap-customapi-getsafecubejsdata"
         },
-        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetSafeCubeJSData"
+        "x-ves-proto-rpc": "ves.io.schema.shape.safeap.CustomAPI.GetSafeCubeJSData",
+        "tags": ["shape"]
       },
       "x-displayname": "Shape SAFE Account Protection",
       "x-ves-proto-service": "ves.io.schema.shape.safeap.CustomAPI",
@@ -1503,6 +1518,36 @@
         "x-displayname": "Unsubscribe Response",
         "x-ves-proto-message": "ves.io.schema.shape.safeap.UnsubscribeResponse"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
 }

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.infraprotect",
     "description": "APIs to get monitoring data for infraprotect.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/infraprotect/namespaces/system/infraprotect/access": {
@@ -107,7 +112,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customgeneralapi-customeraccess"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomGeneralAPI.CustomerAccess"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomGeneralAPI.CustomerAccess",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomGeneralAPI",
@@ -236,7 +242,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customalertapi-getalert"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomAlertAPI.GetAlert"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomAlertAPI.GetAlert",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomAlertAPI",
@@ -375,7 +382,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customalertapi-addalerttoevent"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomAlertAPI.AddAlertToEvent"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomAlertAPI.AddAlertToEvent",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomAlertAPI",
@@ -504,7 +512,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customalertapi-listalerts"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomAlertAPI.ListAlerts"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomAlertAPI.ListAlerts",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomAlertAPI",
@@ -633,7 +642,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customdataapi-bgppeerstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomDataAPI.BGPPeerStatus"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomDataAPI.BGPPeerStatus",
+        "tags": ["data"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomDataAPI",
@@ -762,7 +772,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventapi-getevent"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.GetEvent"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.GetEvent",
+        "tags": ["infraprotect"]
       },
       "put": {
         "summary": "Edit event",
@@ -896,7 +907,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventapi-editevent"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.EditEvent"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.EditEvent",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomEventAPI",
@@ -1025,7 +1037,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventapi-listeventalerts"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEventAlerts"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEventAlerts",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomEventAPI",
@@ -1154,7 +1167,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventapi-listeventattachments"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEventAttachments"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEventAttachments",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomEventAPI",
@@ -1293,7 +1307,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventdetailsapi-deleteeventdetail"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventDetailsAPI.DeleteEventDetail"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventDetailsAPI.DeleteEventDetail",
+        "tags": ["infraprotect"]
       },
       "put": {
         "summary": "Edit event detail",
@@ -1437,7 +1452,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventdetailsapi-editeventdetail"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventDetailsAPI.EditEventDetail"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventDetailsAPI.EditEventDetail",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomEventDetailsAPI",
@@ -1566,7 +1582,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventdetailsapi-listeventdetails"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventDetailsAPI.ListEventDetails"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventDetailsAPI.ListEventDetails",
+        "tags": ["infraprotect"]
       },
       "post": {
         "summary": "Add Event Detail",
@@ -1700,7 +1717,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventdetailsapi-addeventdetail"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventDetailsAPI.AddEventDetail"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventDetailsAPI.AddEventDetail",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomEventDetailsAPI",
@@ -1829,7 +1847,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventapi-listeventmitigations"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEventMitigations"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEventMitigations",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomEventAPI",
@@ -1958,7 +1977,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventapi-listevents"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEvents"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEvents",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomEventAPI",
@@ -2087,7 +2107,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customeventapi-listeventssummary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEventsSummary"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomEventAPI.ListEventsSummary",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomEventAPI",
@@ -2216,7 +2237,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-custommitigationapi-getmitigation"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomMitigationAPI.GetMitigation"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomMitigationAPI.GetMitigation",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomMitigationAPI",
@@ -2345,7 +2367,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-custommitigationapi-listmitigationannotations"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomMitigationAPI.ListMitigationAnnotations"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomMitigationAPI.ListMitigationAnnotations",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomMitigationAPI",
@@ -2474,7 +2497,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-custommitigationapi-listmitigationips"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomMitigationAPI.ListMitigationIPs"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomMitigationAPI.ListMitigationIPs",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomMitigationAPI",
@@ -2603,7 +2627,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-custommitigationapi-listmitigations"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomMitigationAPI.ListMitigations"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomMitigationAPI.ListMitigations",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomMitigationAPI",
@@ -2722,7 +2747,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customnetworkapi-listnetworks"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomNetworkAPI.ListNetworks"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomNetworkAPI.ListNetworks",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomNetworkAPI",
@@ -2851,7 +2877,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customreportapi-getreport"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomReportAPI.GetReport"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomReportAPI.GetReport",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomReportAPI",
@@ -2980,7 +3007,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customreportapi-listreports"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomReportAPI.ListReports"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomReportAPI.ListReports",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomReportAPI",
@@ -3109,7 +3137,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customdataapi-transitusage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomDataAPI.TransitUsage"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomDataAPI.TransitUsage",
+        "tags": ["data"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomDataAPI",
@@ -3238,7 +3267,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-infraprotect-customgeneralapi-suggestvalues"
         },
-        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomGeneralAPI.SuggestValues"
+        "x-ves-proto-rpc": "ves.io.schema.infraprotect.CustomGeneralAPI.SuggestValues",
+        "tags": ["infraprotect"]
       },
       "x-displayname": "Infraprotect",
       "x-ves-proto-service": "ves.io.schema.infraprotect.CustomGeneralAPI",
@@ -3565,11 +3595,7 @@
         "type": "string",
         "description": "Alert source type - helps the UI distinguish alerts coming from different sources\n\n - ALERT_SOURCE_TYPE_UNKNOWN: Unspecified source type\n - ALERT_SOURCE_TYPE_MITIGATED: Alert is sourced from a mitigated-type system\n - ALERT_SOURCE_TYPE_AUTOMITIGATED: Alert is sourced from an automitigated-type system",
         "title": "Alert source type",
-        "enum": [
-          "ALERT_SOURCE_TYPE_UNKNOWN",
-          "ALERT_SOURCE_TYPE_MITIGATED",
-          "ALERT_SOURCE_TYPE_AUTOMITIGATED"
-        ],
+        "enum": ["ALERT_SOURCE_TYPE_UNKNOWN", "ALERT_SOURCE_TYPE_MITIGATED", "ALERT_SOURCE_TYPE_AUTOMITIGATED"],
         "default": "ALERT_SOURCE_TYPE_UNKNOWN",
         "x-displayname": "Alert source type",
         "x-ves-proto-enum": "ves.io.schema.infraprotect.AlertSourceType"
@@ -3732,14 +3758,7 @@
         "type": "string",
         "description": "Status of BGP connection to this Peer\n\nConnection state is Idle\nConnection state is Connecting\nConnection state is Active\nConnection state is Open Sent\nConnection state is Open Confirm\nConnection state is Established",
         "title": "BGP Peer Session State",
-        "enum": [
-          "Idle",
-          "Connect",
-          "Active",
-          "OpenSent",
-          "OpenConfirm",
-          "Established"
-        ],
+        "enum": ["Idle", "Connect", "Active", "OpenSent", "OpenConfirm", "Established"],
         "default": "Idle",
         "x-displayname": "BGP Peer Status",
         "x-ves-proto-enum": "ves.io.schema.infraprotect.BgpPeerSessionState"
@@ -4878,12 +4897,7 @@
         "type": "string",
         "description": "Labels in transit usage metrics\n",
         "title": "Transit Usage Label",
-        "enum": [
-          "POP",
-          "DEVICE",
-          "INTERFACE",
-          "CIRCUIT_ID"
-        ],
+        "enum": ["POP", "DEVICE", "INTERFACE", "CIRCUIT_ID"],
         "default": "POP",
         "x-displayname": "Transit Usage Label",
         "x-ves-proto-enum": "ves.io.schema.infraprotect.TransitUsageLabel"
@@ -5010,12 +5024,7 @@
         "type": "string",
         "description": "List of Transit Usage metric types\n\nx-unit: \"Bps\"\nx-unit: \"pps\"\nx-unit: \"Bps\"\nx-unit: \"pps\"",
         "title": "Transit Usage Type",
-        "enum": [
-          "IN_THROUGHPUT_BYTES",
-          "IN_THROUGHPUT_PACKETS",
-          "OUT_THROUGHPUT_BYTES",
-          "OUT_THROUGHPUT_PACKETS"
-        ],
+        "enum": ["IN_THROUGHPUT_BYTES", "IN_THROUGHPUT_PACKETS", "OUT_THROUGHPUT_BYTES", "OUT_THROUGHPUT_PACKETS"],
         "default": "IN_THROUGHPUT_BYTES",
         "x-displayname": "Transit Usage Type",
         "x-ves-proto-enum": "ves.io.schema.infraprotect.TransitUsageType"
@@ -5176,11 +5185,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -5350,6 +5355,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "infraprotect"
+    },
+    {
+      "name": "data"
+    }
+  ]
 }

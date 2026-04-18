@@ -29,6 +29,13 @@
     "zizmor.yaml",
     ".shellcheckrc",
     ".codespellrc",
+    ".prettierignore",
+    ".trivyignore",
+    "ruff.toml",
+    ".ruff.toml",
+    ".isort.cfg",
+    ".python-lint",
+    ".mypy.ini",
     ".claude/settings.json",
     ".claude/governance.json",
     ".claude/hooks/protect-managed-files.sh"

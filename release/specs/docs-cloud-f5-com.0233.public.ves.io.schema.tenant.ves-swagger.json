@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tenant",
     "description": "Package for working with Tenant representation.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/no_auth/cname/lookup": {
@@ -129,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-lookupcname"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.LookupCname"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.LookupCname",
+        "tags": ["cname"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -248,7 +254,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getpasswordpolicy"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetPasswordPolicy"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetPasswordPolicy",
+        "tags": ["tenant"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -365,7 +372,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-assigndomainowner"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.AssignDomainOwner"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.AssignDomainOwner",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -482,7 +490,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-unassigndomainowner"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.UnassignDomainOwner"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.UnassignDomainOwner",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -589,7 +598,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getlastloginmap"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetLastLoginMap"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetLastLoginMap",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -720,7 +730,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getloginevents"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetLoginEvents"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetLoginEvents",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -837,7 +848,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getlogineventsintimeframe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetLoginEventsInTimeFrame"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetLoginEventsInTimeFrame",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -944,7 +956,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getidmsettings"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetIDMSettings"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetIDMSettings",
+        "tags": ["web"]
       },
       "put": {
         "summary": "UpdateIDMSettings",
@@ -1056,7 +1069,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-updateidmsettings"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.UpdateIDMSettings"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.UpdateIDMSettings",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -1163,7 +1177,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-listinactiveusers"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.ListInactiveUsers"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.ListInactiveUsers",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -1173,7 +1188,7 @@
       "get": {
         "summary": "Lookup cname",
         "description": "Checks if a cname is available.",
-        "operationId": "ves.io.schema.tenant.CustomAPI.LookupCname",
+        "operationId": "ves.io.schema.tenant.CustomAPI.LookupCname_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1292,7 +1307,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-lookupcname"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.LookupCname"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.LookupCname",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -1409,7 +1425,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-deletetenant"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.DeleteTenant"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.DeleteTenant",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -1516,7 +1533,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-gettenantsettings"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetTenantSettings"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetTenantSettings",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Tenant Settings",
@@ -1628,7 +1646,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-updatetenantsettings"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.UpdateTenantSettings"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.UpdateTenantSettings",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -1738,7 +1757,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-disabletenantlevelotp"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.DisableTenantLevelOTP"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.DisableTenantLevelOTP",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -1848,7 +1868,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-enabletenantlevelotp"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.EnableTenantLevelOTP"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.EnableTenantLevelOTP",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -1955,7 +1976,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getfavicon"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetFavIcon"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetFavIcon",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -2062,7 +2084,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getimage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetImage"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetImage",
+        "tags": ["web"]
       },
       "delete": {
         "summary": "Delete tenant profile image",
@@ -2164,7 +2187,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-deleteimage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.DeleteImage"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.DeleteImage",
+        "tags": ["web"]
       },
       "put": {
         "summary": "Update tenant profile image",
@@ -2276,7 +2300,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-updateimage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.UpdateImage"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.UpdateImage",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -2383,7 +2408,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getlogo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetLogo"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetLogo",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -2490,7 +2516,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getsupportinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetSupportInfo"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetSupportInfo",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -2597,7 +2624,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-gettenantescalationdoc"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetTenantEscalationDoc"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetTenantEscalationDoc",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -2714,7 +2742,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapieywaprime-deactivatetenant"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPIEywaprime.DeactivateTenant"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPIEywaprime.DeactivateTenant",
+        "tags": ["saas"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPIEywaprime",
@@ -2724,7 +2753,7 @@
       "get": {
         "summary": "Tenant favicon",
         "description": "Receive current tenant favicon.",
-        "operationId": "ves.io.schema.tenant.CustomAPI.GetFavIcon",
+        "operationId": "ves.io.schema.tenant.CustomAPI.GetFavIcon_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2821,7 +2850,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getfavicon"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetFavIcon"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetFavIcon",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -2831,7 +2861,7 @@
       "get": {
         "summary": "Tenant profile image",
         "description": "Receive current tenant profile image.",
-        "operationId": "ves.io.schema.tenant.CustomAPI.GetImage",
+        "operationId": "ves.io.schema.tenant.CustomAPI.GetImage_get_get_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2928,7 +2958,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-customapi-getimage"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetImage"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.CustomAPI.GetImage",
+        "tags": ["web"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.CustomAPI",
@@ -3047,7 +3078,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant-tenantsummarycustomapi-summary"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant.TenantSummaryCustomAPI.Summary"
+        "x-ves-proto-rpc": "ves.io.schema.tenant.TenantSummaryCustomAPI.Summary",
+        "tags": ["config"]
       },
       "x-displayname": "Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant.TenantSummaryCustomAPI",
@@ -3357,21 +3389,6 @@
           }
         }
       },
-      "tenantLoginEvents": {
-        "type": "object",
-        "description": "x-displayName: \"LoginEvents\"\nContains list of login events.",
-        "title": "LoginEvents",
-        "properties": {
-          "login_events": {
-            "type": "array",
-            "description": "x-displayName: \"Login events\"\nCollection of login events based on input filter",
-            "title": "Login events",
-            "items": {
-              "$ref": "#/components/schemas/tenantLoginEvent"
-            }
-          }
-        }
-      },
       "tenantLoginEventsMap": {
         "type": "object",
         "description": "LoginEventsMap is a map from username to list of login events. In can be useful have login events grouped by usernames.",
@@ -3391,12 +3408,7 @@
         "type": "string",
         "description": "OtpStatus can be either enabled/disabled or processing.\nApplying new policy can take time, especially if tenant has many users so for this purpose processing state is introduced.\n\n - OTP_DISABLED: OTP_DISABLED\n\nOTP disabled\n - OTP_ENABLED: OTP_ENABLED\n\nOTP enabled\n - OTP_PROCESSING: OTP_PROCESSING\n\nOTP is being updated\n - OTP_PROCESS_DISABLING: OTP_PROCESSING\n\nOTP is being updated to be disabled",
         "title": "OtpStatus",
-        "enum": [
-          "OTP_DISABLED",
-          "OTP_ENABLED",
-          "OTP_PROCESSING",
-          "OTP_PROCESS_DISABLING"
-        ],
+        "enum": ["OTP_DISABLED", "OTP_ENABLED", "OTP_PROCESSING", "OTP_PROCESS_DISABLING"],
         "default": "OTP_DISABLED",
         "x-displayname": "OtpStatus",
         "x-ves-proto-enum": "ves.io.schema.tenant.OtpStatus"
@@ -3866,31 +3878,6 @@
           }
         }
       },
-      "tenant_configurationSessionManagement": {
-        "type": "object",
-        "description": "x-displayName: \"SessionManagement\"",
-        "title": "SessionManagement",
-        "properties": {
-          "cookie_expiry": {
-            "type": "integer",
-            "description": "x-displayName: \"Session Cookie Expiry\"\nx-required\nx-example: \"900\"\nSession cookie expiry in seconds.\nThe user will be logged-out after these many seconds, if inactive on the console.",
-            "title": "Session Cookie Expiry",
-            "format": "int64"
-          },
-          "cookie_refresh_interval": {
-            "type": "integer",
-            "description": "x-displayName: \"Session Cookie Refresh Interval\"\nx-example: \"840\"\nSession cookie refresh interval in seconds.\nThe session cookie will be renewed when (expiry - current_timestamp < cookie_refresh_interval) and (max_session_expiry - expiry > cookie_refresh_interval ), otherwise, the existing cookie will be re-used",
-            "title": "Session Cookie Refresh Interval",
-            "format": "int64"
-          },
-          "session_expiry": {
-            "type": "integer",
-            "description": "x-displayName: \"Maximum Session Expiry\"\nx-required\nx-example: \"86400\"\nMaximum session expiry in seconds.\nThe user will be prompted for a re-login after this interval in spite of being active on the console",
-            "title": "Maximum Session Expiry",
-            "format": "int64"
-          }
-        }
-      },
       "viewstenant_configurationGlobalSpecType": {
         "type": "object",
         "description": "Shape of the tenant configuration specification",
@@ -3909,6 +3896,48 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "cname"
+    },
+    {
+      "name": "tenant"
+    },
+    {
+      "name": "web"
+    },
+    {
+      "name": "saas"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

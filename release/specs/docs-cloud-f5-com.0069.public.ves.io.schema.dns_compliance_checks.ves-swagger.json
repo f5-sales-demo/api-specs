@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_compliance_checks",
     "description": "DNS Compliance Checks view defines the required parameters that can be used in CRUD, to create and manage DNS Compliance Checks.\nIt can be used to create DNS Compliance Checks.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/dns_compliance_checkss": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_compliance_checks-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_compliance_checks.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.dns_compliance_checks.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Configure DNS Compliance Checks",
       "x-ves-proto-service": "ves.io.schema.dns_compliance_checks.API",
@@ -574,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_compliance_checks-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_compliance_checks.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.dns_compliance_checks.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Configure DNS Compliance Checks",
@@ -706,7 +713,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_compliance_checks-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.dns_compliance_checks.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.dns_compliance_checks.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Configure DNS Compliance Checks",
       "x-ves-proto-service": "ves.io.schema.dns_compliance_checks.API",
@@ -859,13 +867,7 @@
         "type": "string",
         "description": "Disallowed Query Type\n\n - QUERY: QUERY\n\n - IQUERY: IQUERY\n\n - STATUS: STATUS\n\n - NOTIFY: NOTIFY\n\n - UPDATE: UPDATE\n",
         "title": "Disallowed Query Type",
-        "enum": [
-          "QUERY",
-          "IQUERY",
-          "STATUS",
-          "NOTIFY",
-          "UPDATE"
-        ],
+        "enum": ["QUERY", "IQUERY", "STATUS", "NOTIFY", "UPDATE"],
         "default": "QUERY",
         "x-displayname": "Disallowed Query Type",
         "x-ves-proto-enum": "ves.io.schema.dns_compliance_checks.DisallowedQueryType"
@@ -1022,21 +1024,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "dns_compliance_checksGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "dns_compliance_checksGetSpecType": {
         "type": "object",
@@ -1759,10 +1746,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -1970,6 +1954,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

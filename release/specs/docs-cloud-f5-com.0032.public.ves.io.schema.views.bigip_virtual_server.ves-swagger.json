@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.bigip_virtual_server",
     "description": "BIG-IP virtual server view repesents the internal virtual host corresponding to the virtual-servers discovered from BIG-IPs\nIt exposes parameters to enable API discovery and other WAAP security features on the virtual server.\n\nView will create following child objects.\n\n* Virtual-host\n* API-inventory\n* App-type\n* App-setting",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/bigip_virtual_servers/{metadata.name}": {
@@ -296,7 +301,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-bigip_virtual_server-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "BIG-IP virtual server",
       "x-ves-proto-service": "ves.io.schema.views.bigip_virtual_server.API",
@@ -425,7 +431,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-bigip_virtual_server-customapi-getsecurityconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.CustomAPI.GetSecurityConfig"
+        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.CustomAPI.GetSecurityConfig",
+        "tags": ["config"]
       },
       "x-displayname": "BIG-IP virtual server",
       "x-ves-proto-service": "ves.io.schema.views.bigip_virtual_server.CustomAPI",
@@ -573,7 +580,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-bigip_virtual_server-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.Get",
+        "tags": ["config"]
       },
       "x-displayname": "BIG-IP virtual server",
       "x-ves-proto-service": "ves.io.schema.views.bigip_virtual_server.API",
@@ -762,29 +770,6 @@
           }
         }
       },
-      "app_typeSensitiveDataDetectionRules": {
-        "type": "object",
-        "description": "x-displayName: \"Sensitive Data Detection Rules\"\nRules to manage/configure sensitive data detection in requests and/or response sections.",
-        "title": "Sensitive Data Detection Rules",
-        "properties": {
-          "custom_sensitive_data_detection_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Defined Custom Sensitive Data Types\"\nRules to detect custom sensitive data in requests and/or responses sections.",
-            "title": "custom sensitive data rules",
-            "items": {
-              "$ref": "#/components/schemas/app_typeCustomSensitiveDataDetectionRule"
-            }
-          },
-          "disabled_built_in_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Disabled Built-In Sensitive Data Types\"\nx-example: \"[EMAIL, CC]\"\nList of disabled built-in sensitive data detection rules.",
-            "title": "disabled_built_in_rules",
-            "items": {
-              "$ref": "#/components/schemas/app_typeBuiltInSensitiveDataType"
-            }
-          }
-        }
-      },
       "app_typeValuePattern": {
         "type": "object",
         "description": "x-displayName: \"Value Pattern\"\nPattern to detect. Could be exact match or regex match.",
@@ -832,23 +817,10 @@
           }
         }
       },
-      "bigip_virtual_serverBigIpVirtualServerAWAFEnforcementMode": {
-        "type": "string",
-        "description": "BigIpVirtualServerAWAFEnforcementMode could be of type NONE, ALARM or BLOCKING.\n\nx-displayName: \"BigIP AWAF Enforcement Mode\"\nSpecifies the Virtual Server AWAF enforcement mode\n\n - NONE: x-displayName: \"None\"\nNo AWAF Policy attached\n - MONITORING: x-displayName: \"Monitoring\"\nAWAF Enforcement Transparent mode\n - BLOCKING: x-displayName: \"Blocking\"\nAWAF  Enforcement Blocking mode",
-        "enum": [
-          "NONE",
-          "MONITORING",
-          "BLOCKING"
-        ],
-        "default": "NONE"
-      },
       "bigip_virtual_serverBigIpVirtualServerType": {
         "type": "string",
         "description": "VirtualServerType could be of type classic BIG-IP or BIG-IP-NEXT. BIG-IP-NEXT will be added later.\n\nSpecifies the virtual server type\n\nInvalid Virtual Server Type\nClassic BIG-IP Virtual Server",
-        "enum": [
-          "INVALID_VIRTUAL_SERVER",
-          "BIGIP_VIRTUAL_SERVER"
-        ],
+        "enum": ["INVALID_VIRTUAL_SERVER", "BIGIP_VIRTUAL_SERVER"],
         "default": "INVALID_VIRTUAL_SERVER",
         "x-displayname": "Virtual Server Type",
         "x-ves-proto-enum": "ves.io.schema.views.bigip_virtual_server.BigIpVirtualServerType"
@@ -909,20 +881,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "bigip_virtual_serverGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "bigip_virtual_serverGetSecurityConfigReq": {
         "type": "object",
@@ -1761,19 +1719,6 @@
           }
         }
       },
-      "common_wafValidationSettingForHeaders": {
-        "type": "object",
-        "description": "x-displayName: \"Validation Settings For Headers\"\nCustom settings for headers validation",
-        "title": "Validation Settings For Headers",
-        "properties": {
-          "allow_additional_headers": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "disallow_additional_headers": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          }
-        }
-      },
       "common_wafValidationSettingForQueryParameters": {
         "type": "object",
         "description": "Custom settings for query parameters validation",
@@ -2023,19 +1968,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -2276,10 +2209,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -2361,10 +2291,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2489,37 +2416,6 @@
           }
         }
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -2554,18 +2450,6 @@
             "title": "uid",
             "x-displayname": "UID",
             "x-ves-example": "f3744323-1adf-4aaa-a5dc-0707c1d1bd82"
-          }
-        }
-      },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
           }
         }
       },
@@ -2711,6 +2595,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

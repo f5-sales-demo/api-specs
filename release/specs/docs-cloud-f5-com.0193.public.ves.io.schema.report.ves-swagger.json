@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.report",
     "description": "Report configuration contains the information like\n\n    Time at which the report was last sent to object store.\n    Report ID.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/report/namespaces/{namespace}/reports/{name}": {
@@ -146,7 +151,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-report-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.report.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.report.API.Get",
+        "tags": ["report"]
       },
       "x-displayname": "Report",
       "x-ves-proto-service": "ves.io.schema.report.API",
@@ -275,7 +281,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-report-customapi-downloadreport"
         },
-        "x-ves-proto-rpc": "ves.io.schema.report.CustomAPI.DownloadReport"
+        "x-ves-proto-rpc": "ves.io.schema.report.CustomAPI.DownloadReport",
+        "tags": ["report"]
       },
       "x-displayname": "Report",
       "x-ves-proto-service": "ves.io.schema.report.CustomAPI",
@@ -489,11 +496,7 @@
         "type": "string",
         "description": "attack sources key\n\nIndicates field not being set",
         "title": "AttackSourcesKey",
-        "enum": [
-          "ATTACK_SOURCES_KEY_NONE",
-          "ATTACK_SOURCES_KEY_TOP_3_ASNS",
-          "ATTACK_SOURCES_KEY_TOP_3_COUNTRIES"
-        ],
+        "enum": ["ATTACK_SOURCES_KEY_NONE", "ATTACK_SOURCES_KEY_TOP_3_ASNS", "ATTACK_SOURCES_KEY_TOP_3_COUNTRIES"],
         "default": "ATTACK_SOURCES_KEY_NONE",
         "x-displayname": "Attack Sources Key",
         "x-ves-proto-enum": "ves.io.schema.report.AttackSourcesKey"
@@ -540,13 +543,7 @@
         "type": "string",
         "description": "field value type\n\nIndicates field not being set",
         "title": "field value type",
-        "enum": [
-          "TYPE_NONE",
-          "TYPE_RATE",
-          "TYPE_PERCENT",
-          "TYPE_THROUGHPUT",
-          "TYPE_NUMBER"
-        ],
+        "enum": ["TYPE_NONE", "TYPE_RATE", "TYPE_PERCENT", "TYPE_THROUGHPUT", "TYPE_NUMBER"],
         "default": "TYPE_NONE",
         "x-displayname": "Widget Field Value Type",
         "x-ves-proto-enum": "ves.io.schema.report.FieldValueType"
@@ -595,18 +592,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "reportGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "reportGetSpecType": {
         "type": "object",
@@ -699,11 +684,7 @@
         "type": "string",
         "description": "report creator method\n\nIndicates field not being set",
         "title": "Report Creator Method",
-        "enum": [
-          "REPORT_CREATE_METHOD_NONE",
-          "REPORT_CREATE_METHOD_PERIODIC",
-          "REPORT_CREATE_METHOD_USER_TRIGGERED"
-        ],
+        "enum": ["REPORT_CREATE_METHOD_NONE", "REPORT_CREATE_METHOD_PERIODIC", "REPORT_CREATE_METHOD_USER_TRIGGERED"],
         "default": "REPORT_CREATE_METHOD_NONE",
         "x-displayname": "Report Creator Method",
         "x-ves-proto-enum": "ves.io.schema.report.ReportCreatorMethod"
@@ -936,14 +917,7 @@
         "type": "string",
         "description": "report status\n\nIndicates field not being set\nUnable to send report to all the users specified in the user groups of report config object.",
         "title": "Report Status",
-        "enum": [
-          "NONE",
-          "SUCCESS",
-          "ERROR",
-          "PENDING",
-          "PAUSED",
-          "PARTIAL"
-        ],
+        "enum": ["NONE", "SUCCESS", "ERROR", "PENDING", "PAUSED", "PARTIAL"],
         "default": "NONE",
         "x-displayname": "Report Status",
         "x-ves-proto-enum": "ves.io.schema.report.ReportStatus"
@@ -1398,11 +1372,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -1523,6 +1493,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "report"
+    }
+  ]
 }

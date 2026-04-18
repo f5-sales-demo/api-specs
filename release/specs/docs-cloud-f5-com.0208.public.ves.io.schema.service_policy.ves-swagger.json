@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.service_policy",
     "description": "A service_policy object consists of an unordered list of predicates and a list of service policy rules. The predicates are evaluated against a set of input\nfields that are extracted from or derived from an L7 request API. Any predicates that are not specified in a policy are implicitly considered to be true. The\nrules in the policy are also evaluated against the input fields. They are treated as an ordered or unordered list depending on the value of the rule combining\nalgorithm. A request API is considered to match a policy if all predicates in the policy evaluate to true and the request API matches one of the rules in the\npolicy.\n\nIf the configured rule combining algorithm is FIRST_MATCH, the rules in the policy are evaluated sequentially till a matching rule is identified. If the rule\ncombining algorithm is ALLOW_OVERRIDES all rules with an ALLOW action are evaluated prior to rules with a DENY action. If it is DENY_OVERRIDES, all rules with\na DENY action are evaluated prior to rules with a ALLOW action.\n\nA service policy is part of an ordered list of policies in one or more service policy sets. If a request API matches a policy, the resulting action for the\npolicy is the action configured in the matching rule. If a request API does not match a given policy, the next policy in the service policy set is evaluated.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/service_policys": {
@@ -390,7 +395,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy-customdataapi-servicepolicyhits"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy.CustomDataAPI.ServicePolicyHits"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy.CustomDataAPI.ServicePolicyHits",
+        "tags": ["data"]
       },
       "x-displayname": "Service Policy",
       "x-ves-proto-service": "ves.io.schema.service_policy.CustomDataAPI",
@@ -512,7 +518,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy-customdataapi-servicepolicyhitslatency"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy.CustomDataAPI.ServicePolicyHitsLatency"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy.CustomDataAPI.ServicePolicyHitsLatency",
+        "tags": ["data"]
       },
       "x-displayname": "Service Policy",
       "x-ves-proto-service": "ves.io.schema.service_policy.CustomDataAPI",
@@ -669,7 +676,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Service Policy",
       "x-ves-proto-service": "ves.io.schema.service_policy.API",
@@ -818,7 +826,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Service Policy",
@@ -950,7 +959,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-service_policy-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.service_policy.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.service_policy.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Service Policy",
       "x-ves-proto-service": "ves.io.schema.service_policy.API",
@@ -1269,10 +1279,7 @@
         "type": "string",
         "description": "x-displayName: \"App Traffic type\"\nApplication traffic type\n\n - WEB: WebTrafficType\n\nx-displayName: \"Web Traffic\"\nWeb application traffic type.\n - MOBILE: MobileTrafficType\n\nx-displayName: \"Mobile Traffic\"\nMobile application traffic type.",
         "title": "AppTrafficType",
-        "enum": [
-          "WEB",
-          "MOBILE"
-        ],
+        "enum": ["WEB", "MOBILE"],
         "default": "WEB"
       },
       "policyArgMatcherType": {
@@ -1543,12 +1550,7 @@
         "type": "string",
         "description": "x-displayName: \"Comparison Operator\"\nSelect from one of the Comparison Operator.\n\n - COMPARISON_EXACT: exact value\n\nx-displayName: \"Exact\"\n - COMPARISON_CONTAIN: contain value\n\nx-displayName: \"Contain\"\n - COMPARISON_START_WITH: start with value \n\nx-displayName: \"Start With\"\n - COMPARISON_END_WITH: end with value \n\nx-displayName: \"End With\"",
         "title": "Comparison Operator",
-        "enum": [
-          "COMPARISON_EXACT",
-          "COMPARISON_CONTAIN",
-          "COMPARISON_START_WITH",
-          "COMPARISON_END_WITH"
-        ],
+        "enum": ["COMPARISON_EXACT", "COMPARISON_CONTAIN", "COMPARISON_START_WITH", "COMPARISON_END_WITH"],
         "default": "COMPARISON_EXACT"
       },
       "policyContentRewriteAction": {
@@ -1880,18 +1882,6 @@
         "x-displayname": "Country Code",
         "x-ves-proto-enum": "ves.io.schema.policy.CountryCode"
       },
-      "policyDataGuardControl": {
-        "type": "object",
-        "description": "x-displayName: \"Data Guard Control\"\nData Guard changes to be applied for this request",
-        "title": "Data Guard Control",
-        "properties": {
-          "policy_name": {
-            "type": "string",
-            "description": "x-displayName: \"Policy Name\"\nx-example: \"value\"\nSets the BD Policy to use",
-            "title": "Set BD Policy name"
-          }
-        }
-      },
       "policyDetectionContext": {
         "type": "string",
         "description": "The available contexts for Exclusion rules.\n\n - CONTEXT_ANY: CONTEXT_ANY\n\nDetection will be excluded for all contexts.\n - CONTEXT_BODY: CONTEXT_BODY\n\nDetection will be excluded for the request body.\n - CONTEXT_REQUEST: CONTEXT_REQUEST\n\nDetection will be excluded for the request.\n - CONTEXT_RESPONSE: CONTEXT_RESPONSE\n\n - CONTEXT_PARAMETER: CONTEXT_PARAMETER\n\nDetection will be excluded for the parameters. The parameter name is required in the Context name field. If the field is left empty, the detection will be excluded for all parameters.\n - CONTEXT_HEADER: CONTEXT_HEADER\n\nDetection will be excluded for the headers. The header name is required in the Context name field. If the field is left empty, the detection will be excluded for all headers.\n - CONTEXT_COOKIE: CONTEXT_COOKIE\n\nDetection will be excluded for the cookies. The cookie name is required in the Context name field. If the field is left empty, the detection will be excluded for all cookies.\n - CONTEXT_URL: CONTEXT_URL\n\nDetection will be excluded for the request URL.\n - CONTEXT_URI: CONTEXT_URI\n",
@@ -1957,12 +1947,7 @@
         "type": "string",
         "description": "x-displayName: \"HTML Position\"\nPosition of the HTML tag to insert in HTML document\n\n - BEGINNING: x-displayName: \"Beginning of HTML tag\"\nBeginning of HTML tag.\n - END: x-displayName: \"End of HTML tag\"\nEnd of HTML tag.\n - BEFORE: x-displayName: \"Before HTML tag\"\nBefore HTML tag.\n - AFTER: x-displayName: \"After HTML tag\"\nAfter HTML tag.",
         "title": "HTMLPosition",
-        "enum": [
-          "BEGINNING",
-          "END",
-          "BEFORE",
-          "AFTER"
-        ],
+        "enum": ["BEGINNING", "END", "BEFORE", "AFTER"],
         "default": "BEGINNING"
       },
       "policyHttpMethodMatcherType": {
@@ -2320,13 +2305,7 @@
         "type": "string",
         "description": "x-displayName: \"OpenAPI Validation Action\"\nOpenAPI Validation Action Type\n\n - OAS_NONE: OAS_NONE\n\nx-displayName: \"No Operation\"\nAllow the request/response (don't validate OpenAPI specification)\n - OAS_REPORT_VIOLATION: OAS_REPORT_VIOLATION\n\nx-displayName: \"Report Violation\"\nIf OpenAPI violation occurs, allow the request/response and report it (API security event)\n - OAS_BLOCK_VIOLATION: OAS_BLOCK_VIOLATION\n\nx-displayName: \"Block Violation\"\nIf OpenAPI violation occurs, block the request/response and report it (API security event)\n - OAS_BLOCK: OAS_BLOCK\n\nx-displayName: \"Block\"\nblock the request/response and report it (API security event)\n - OAS_REPORT: OAS_REPORT\n\nx-displayName: \"Report\"\nallow the request/response and report it (API security event)",
         "title": "OpenAPI Validation Action",
-        "enum": [
-          "OAS_NONE",
-          "OAS_REPORT_VIOLATION",
-          "OAS_BLOCK_VIOLATION",
-          "OAS_BLOCK",
-          "OAS_REPORT"
-        ],
+        "enum": ["OAS_NONE", "OAS_REPORT_VIOLATION", "OAS_BLOCK_VIOLATION", "OAS_BLOCK", "OAS_REPORT"],
         "default": "OAS_NONE"
       },
       "policyOpenApiValidationAction": {
@@ -2623,25 +2602,10 @@
         "type": "string",
         "description": "The rule action determines the disposition of the input request API. If a policy matches a rule with an ALLOW action, the processing of the request proceeds\nforward. If it matches a rule with a DENY action, the processing of the request is terminated and an appropriate message/code returned to the originator. If\nit matches a rule with a NEXT_POLICY_SET action, evaluation of the current policy set terminates and evaluation of the next policy set in the chain begins.\n\n - DENY: DENY\n\nDeny the request.\n - ALLOW: ALLOW\n\nAllow the request to proceed.\n - NEXT_POLICY_SET: NEXT_POLICY_SET\n\nTerminate evaluation of the current policy set and begin evaluating the next policy set in the chain. Note that the evaluation of any remaining policies\nin the current policy set is skipped.\n - NEXT_POLICY: NEXT_POLICY\n\nTerminate evaluation of the current policy and begin evaluating the next policy in the policy set. Note that the evaluation of any remaining rules in the\ncurrent policy is skipped.\n - LAST_POLICY: LAST_POLICY\n\nTerminate evaluation of the current policy and begin evaluating the last policy in the policy set. Note that the evaluation of any remaining rules in the\ncurrent policy is skipped.\n - GOTO_POLICY: GOTO_POLICY\n\nTerminate evaluation of the current policy and begin evaluating a specific policy in the policy set. The policy is specified using the goto_policy field in\nthe rule and must be after the current policy in the policy set.",
         "title": "Rule Action",
-        "enum": [
-          "DENY",
-          "ALLOW",
-          "NEXT_POLICY"
-        ],
+        "enum": ["DENY", "ALLOW", "NEXT_POLICY"],
         "default": "DENY",
         "x-displayname": "Rule Action",
         "x-ves-proto-enum": "ves.io.schema.policy.RuleAction"
-      },
-      "policyRuleCombiningAlgorithm": {
-        "type": "string",
-        "description": "x-displayName: \"Rule Combining Algorithm\"\nThe rule combining algorithm for a policy determines how the list of rules in the policy is evaluated.\nIf any of the rules is configured with a App Firewall action, the rule combining algorithm must be configured to be FIRST_MATCH.\n\n- FIRST_MATCH Rules are evaluated sequentially till a matching rule is identified\n- ALLOW_OVERRIDES Rules with an ALLOW action are evaluated prior to rules with a DENY action\n- DENY_OVERRIDES Rules with a DENY action are evaluated prior to rules with an ALLOW action\n\n - FIRST_MATCH: First Match\n\nx-displayName: \"First Rule Match\"\nRules are evaluated sequentially till a matching rule is identified\n - DENY_OVERRIDES: Deny Overrides\n\nx-displayName: \"Deny Rule Overrides\"\nRules with a DENY action are evaluated prior to rules with an ALLOW action\n - ALLOW_OVERRIDES: Allow Overrides\n\nx-displayName: \"Allow Rule Overrides\"\nRules with an ALLOW action are evaluated prior to rules with a DENY action",
-        "title": "RuleCombiningAlgorithm",
-        "enum": [
-          "FIRST_MATCH",
-          "DENY_OVERRIDES",
-          "ALLOW_OVERRIDES"
-        ],
-        "default": "FIRST_MATCH"
       },
       "policySegmentPolicyType": {
         "type": "object",
@@ -2888,7 +2852,6 @@
           "TRIM_RIGHT",
           "TRIM"
         ],
-        "default": "TRANSFORMER_NONE",
         "x-displayname": "Transformer",
         "x-ves-proto-enum": "ves.io.schema.policy.Transformer"
       },
@@ -3043,12 +3006,7 @@
         "type": "string",
         "description": "x-displayName: \"Rate Limit Period Unit\"\nUnit for the period per which the rate limit is applied.\n\n - SECOND: Second\n\nx-displayName: \"Seconds\"\nRate limit period unit is seconds\n - MINUTE: Minute\n\nx-displayName: \"Minutes\"\nRate limit period unit is minutes\n - HOUR: Hour\n\nx-displayName: \"Hours\"\nRate limit period unit is hours\n - DAY: Day\n\nx-displayName: \"Days\"\nRate limit period unit is days",
         "title": "RateLimitPeriodUnit",
-        "enum": [
-          "SECOND",
-          "MINUTE",
-          "HOUR",
-          "DAY"
-        ],
+        "enum": ["SECOND", "MINUTE", "HOUR", "DAY"],
         "default": "SECOND"
       },
       "rate_limiterRateLimitValue": {
@@ -3095,10 +3053,7 @@
         "type": "string",
         "description": "x-displayName: \"Rate Limiter Mode\"\n\n - RATE_LIMITER_MODE_NOT_SHARED: Not Shared\n\nx-displayName: \"Not Shared\"\nAllot unique pool of request limits for each reference to a rate_limiter object.\n - RATE_LIMITER_MODE_SHARED: Shared\n\nx-displayName: \"Shared\"\nUse a common pool of request limits for all references to a rate_limiter object.",
         "title": "RateLimiterMode",
-        "enum": [
-          "RATE_LIMITER_MODE_NOT_SHARED",
-          "RATE_LIMITER_MODE_SHARED"
-        ],
+        "enum": ["RATE_LIMITER_MODE_NOT_SHARED", "RATE_LIMITER_MODE_SHARED"],
         "default": "RATE_LIMITER_MODE_NOT_SHARED"
       },
       "rate_limiterTokenBucketRateLimiter": {
@@ -3265,19 +3220,7 @@
         "type": "string",
         "description": "Specifies the HTTP method used to access a resource.\n\nAny HTTP Method",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY",
         "x-displayname": "HTTP Method",
         "x-ves-proto-enum": "ves.io.schema.HttpMethod"
@@ -3479,10 +3422,7 @@
         "type": "string",
         "description": "The operator to use when filtering metrics based on label values.\n",
         "title": "Metric Label Operator",
-        "enum": [
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["EQ", "NEQ"],
         "default": "EQ",
         "x-displayname": "Metric Label Operator",
         "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
@@ -3786,10 +3726,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -3918,11 +3855,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -4768,21 +4701,6 @@
           }
         }
       },
-      "service_policyGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "service_policyLegacyRuleList": {
         "type": "object",
         "description": "A list of references to service_policy_rule objects.\nThe order of evaluation of the rules depends on the rule combining algorithm.",
@@ -5147,15 +5065,7 @@
         "type": "string",
         "description": "Service policy hits can be sliced and diced based on one or more labels listed below.\n",
         "title": "Service Policy Metric Labels",
-        "enum": [
-          "NAMESPACE",
-          "POLICY",
-          "POLICY_RULE",
-          "ACTION",
-          "SITE",
-          "VIRTUAL_HOST",
-          "POLICY_SET"
-        ],
+        "enum": ["NAMESPACE", "POLICY", "POLICY_RULE", "ACTION", "SITE", "VIRTUAL_HOST", "POLICY_SET"],
         "default": "NAMESPACE",
         "x-displayname": "Service Policy Metric Labels",
         "x-ves-proto-enum": "ves.io.schema.service_policy.ServicePolicyMetricLabel"
@@ -5179,247 +5089,6 @@
             "title": "Value",
             "x-displayname": "Value",
             "x-ves-example": "policy1"
-          }
-        }
-      },
-      "service_policySimpleRule": {
-        "type": "object",
-        "description": "x-displayName: \"Simple Rule\"\nA SimpleRule consists of an unordered list of predicates and an action. The predicates are evaluated against a set of input fields that are extracted from\nor derived from an L7 request API. A request API is considered to match the simple rule if all predicates in the rule evaluate to true for that request. Any\npredicates that are not specified in a rule are implicitly considered to be true. If a request API matches a simple rule, the action for the simple rule is\nenforced.\n\nA SimpleRule does not currently support any predicates that contain references to objects.",
-        "title": "simple rule",
-        "properties": {
-          "action": {
-            "$ref": "#/components/schemas/policyRuleAction"
-          },
-          "additional_api_group_matchers": {
-            "type": "array",
-            "description": "x-displayName: \"Additional API Group Matchers\"\nAdditional API Group Match predicates.\nNote that all specified API Group Match predicates must evaluate to true.",
-            "title": "additional api group matchers",
-            "items": {
-              "$ref": "#/components/schemas/policyStringMatcherType"
-            }
-          },
-          "api_group_matcher": {
-            "$ref": "#/components/schemas/policyStringMatcherType"
-          },
-          "arg_matchers": {
-            "type": "array",
-            "description": "x-displayName: \"Argument Matchers\"\nA list of predicates for all POST args that need to be matched. The criteria for matching each arg are described in individual instances\nof ArgMatcherType. The actual arg values are extracted from the request API as a list of strings for each arg selector name.\nNote that all specified arg matcher predicates must evaluate to true.",
-            "title": "arg matchers",
-            "items": {
-              "$ref": "#/components/schemas/policyArgMatcherType"
-            }
-          },
-          "asn_list": {
-            "$ref": "#/components/schemas/policyAsnMatchList"
-          },
-          "asn_matcher": {
-            "$ref": "#/components/schemas/policyAsnMatcherType"
-          },
-          "body_matcher": {
-            "$ref": "#/components/schemas/policyMatcherType"
-          },
-          "bot_action": {
-            "$ref": "#/components/schemas/schemapolicyBotAction"
-          },
-          "bot_advanced_endpoint_matcher": {
-            "$ref": "#/components/schemas/policyBotAdvancedEndpointMatcherType"
-          },
-          "challenge_action": {
-            "$ref": "#/components/schemas/policyChallengeAction"
-          },
-          "client_name": {
-            "type": "string",
-            "description": "x-displayName: \"Client Name\"\nx-example: \"backend.production.customer.volterra.us\"\nThe expected name of the client invoking the request API.\nThe predicate evaluates to true if any of the actual names is the same as the expected client name.",
-            "title": "client name"
-          },
-          "client_name_matcher": {
-            "$ref": "#/components/schemas/policyMatcherType"
-          },
-          "client_role": {
-            "$ref": "#/components/schemas/policyRoleMatcherType"
-          },
-          "client_selector": {
-            "$ref": "#/components/schemas/schemaLabelSelectorType"
-          },
-          "content_rewrite_action": {
-            "$ref": "#/components/schemas/policyContentRewriteAction"
-          },
-          "cookie_matchers": {
-            "type": "array",
-            "description": "x-displayName: \"Cookie Matchers\"\nA list of predicates for all cookies that need to be matched. The criteria for matching each cookie is described in individual instances\nof CookieMatcherType. The actual cookie values are extracted from the request API as a list of strings for each cookie name.\nNote that all specified cookie matcher predicates must evaluate to true.",
-            "title": "cookie matchers",
-            "items": {
-              "$ref": "#/components/schemas/policyCookieMatcherType"
-            }
-          },
-          "description": {
-            "type": "string",
-            "description": "x-displayName: \"Description\"\nx-example: \"Deny access to Facebook\"\nDescription for the rule.",
-            "title": "description"
-          },
-          "domain_matcher": {
-            "$ref": "#/components/schemas/policyMatcherType"
-          },
-          "dst_asn_list": {
-            "$ref": "#/components/schemas/policyAsnMatchList"
-          },
-          "dst_asn_matcher": {
-            "$ref": "#/components/schemas/policyAsnMatcherType"
-          },
-          "dst_ip_matcher": {
-            "$ref": "#/components/schemas/policyIpMatcherType"
-          },
-          "dst_ip_prefix_list": {
-            "$ref": "#/components/schemas/policyPrefixMatchList"
-          },
-          "expiration_timestamp": {
-            "type": "string",
-            "description": "x-displayName: \"Expiration Timestamp\"\nx-example: \"2019-12-31:44:34.171543432Z\"\nThe expiration_timestamp is the RFC 3339 format timestamp at which the containing rule is considered to be logically expired. The rule continues to exist in\nthe configuration but is not applied anymore.",
-            "title": "expiration timestamp",
-            "format": "date-time"
-          },
-          "goto_policy": {
-            "type": "array",
-            "description": "x-displayName: \"Goto Policy\"\nA reference to a service_policy object.\nTarget of the GOTO_POLICY action.\nThe target policy must be part of the current policy set and must be after the current policy in the policy set.",
-            "title": "goto_policy",
-            "items": {
-              "$ref": "#/components/schemas/ioschemaObjectRefType"
-            }
-          },
-          "graphql_settings": {
-            "$ref": "#/components/schemas/policyGraphQLSettingsType"
-          },
-          "headers": {
-            "type": "array",
-            "description": "x-displayName: \"HTTP Headers\"\nA list of predicates for various HTTP headers that need to match. The criteria for matching each HTTP header are described in individual HeaderMatcherType\ninstances. The actual HTTP header values are extracted from the request API as a list of strings for each HTTP header type.\nNote that all specified header predicates must evaluate to true.",
-            "title": "headers",
-            "items": {
-              "$ref": "#/components/schemas/schemapolicyHeaderMatcherType"
-            }
-          },
-          "http_method": {
-            "$ref": "#/components/schemas/policyHttpMethodMatcherType"
-          },
-          "ip_matcher": {
-            "$ref": "#/components/schemas/policyIpMatcherType"
-          },
-          "ip_prefix_list": {
-            "$ref": "#/components/schemas/policyPrefixMatchList"
-          },
-          "ip_reputation_action": {
-            "$ref": "#/components/schemas/policyModifyAction"
-          },
-          "ja4_tls_fingerprint": {
-            "$ref": "#/components/schemas/policyJA4TlsFingerprintMatcherType"
-          },
-          "jwt_claims": {
-            "type": "array",
-            "description": "x-displayName: \"JWT Claims\"\nA list of predicates for various JWT claims that need to match. The criteria for matching each JWT claim are described in individual JWTClaimMatcherType\ninstances. The actual JWT claims values are extracted from the JWT payload as a list of strings.\nNote that all specified JWT claim predicates must evaluate to true.",
-            "title": "JWT claims",
-            "items": {
-              "$ref": "#/components/schemas/policyJWTClaimMatcherType"
-            }
-          },
-          "label_matcher": {
-            "$ref": "#/components/schemas/schemaLabelMatcherType"
-          },
-          "malware_protection_action": {
-            "$ref": "#/components/schemas/policyModifyAction"
-          },
-          "malware_protection_settings": {
-            "$ref": "#/components/schemas/policyMalwareProtectionSettings"
-          },
-          "metric_name_label": {
-            "type": "string",
-            "description": "x-displayName: \"Metric Name Label\"\nName label to use in service policy rule metrics generated for this simple rule.",
-            "title": "metric_name_label"
-          },
-          "mobile_identifier_matcher_action": {
-            "$ref": "#/components/schemas/policyMobileIdentifierMatcherAction"
-          },
-          "mum_action": {
-            "$ref": "#/components/schemas/policyModifyAction"
-          },
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nName of the rule.",
-            "title": "name"
-          },
-          "openapi_validation_action": {
-            "$ref": "#/components/schemas/policyOpenApiValidationAction"
-          },
-          "origin_server_subsets_action": {
-            "type": "object",
-            "description": "x-displayName: \"Origin Server Subsets Action\"\nx-example: \"value\"\nAdd Labels for this origin server, these labels can be used to form subset.",
-            "title": "Origin Server Subsets Action"
-          },
-          "path": {
-            "$ref": "#/components/schemas/schemapolicyPathMatcherType"
-          },
-          "port_matcher": {
-            "$ref": "#/components/schemas/schemapolicyPortMatcherType"
-          },
-          "query_params": {
-            "type": "array",
-            "description": "x-displayName: \"HTTP Query Parameters\"\nA list of predicates for all query parameters that need to be matched. The criteria for matching each query parameter are described in individual instances\nof QueryParameterMatcherType. The actual query parameter values are extracted from the request API as a list of strings for each query parameter name.\nNote that all specified query parameter predicates must evaluate to true.",
-            "title": "query params",
-            "items": {
-              "$ref": "#/components/schemas/schemapolicyQueryParameterMatcherType"
-            }
-          },
-          "rate_limiter_specs": {
-            "type": "array",
-            "description": "x-displayName: \"Rate Limiter Specs\"\nSpecs for rate_limiter objects.\nApply the specified rate_limiters.\nMutually exclusive with rate_limiters.",
-            "title": "rate limiter specs",
-            "items": {
-              "$ref": "#/components/schemas/schemarate_limiterGlobalSpecType"
-            }
-          },
-          "rate_limiters": {
-            "type": "array",
-            "description": "x-displayName: \"Rate Limiters\"\nReferences to rate_limiter objects.\nApply the specified rate_limiters.\nMutually exclusive with rate_limiter_specs.",
-            "title": "rate limiters",
-            "items": {
-              "$ref": "#/components/schemas/ioschemaObjectRefType"
-            }
-          },
-          "request_constraints": {
-            "$ref": "#/components/schemas/policyRequestConstraintType"
-          },
-          "response_masking_config": {
-            "$ref": "#/components/schemas/policyMaskingConfig"
-          },
-          "scheme": {
-            "type": "array",
-            "description": "x-displayName: \"Scheme\"\nx-example: \"HTTPS\"\nThe scheme in the request.",
-            "title": "scheme",
-            "items": {
-              "type": "string"
-            }
-          },
-          "server_selector": {
-            "$ref": "#/components/schemas/schemaLabelSelectorType"
-          },
-          "shape_protected_endpoint_action": {
-            "$ref": "#/components/schemas/policyShapeProtectedEndpointAction"
-          },
-          "threat_mesh_action": {
-            "$ref": "#/components/schemas/policyModifyAction"
-          },
-          "tls_fingerprint_matcher": {
-            "$ref": "#/components/schemas/policyTlsFingerprintMatcherType"
-          },
-          "url_matcher": {
-            "$ref": "#/components/schemas/policyURLMatcherType"
-          },
-          "user_identity_matcher": {
-            "$ref": "#/components/schemas/policyMatcherTypeBasic"
-          },
-          "virtual_host_matcher": {
-            "$ref": "#/components/schemas/policyMatcherType"
-          },
-          "waf_action": {
-            "$ref": "#/components/schemas/policyWafAction"
           }
         }
       },
@@ -5600,6 +5269,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    },
+    {
+      "name": "config"
+    }
+  ]
 }

@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.graph.service",
     "description": "graph/service api is query used to get monitoring information for service mesh of given application type. Service mesh is defined when ves.io/app_type label\nis added to group of services or virtual_host. It returns graph which is set of nodes and edges. Each node represents service and\nedge is access between services. Edges are directed from client to server. Two edges can be present for a given pair of service.\nOnly method post is supported. Query parameters are present in the request body. It is always scoped by namespace.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/data/namespaces/system/graph/all_ns_service": {
@@ -110,7 +115,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-service-customapi-queryallnamespaces"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.QueryAllNamespaces"
+        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.QueryAllNamespaces",
+        "tags": ["data"]
       },
       "x-displayname": "Service Graph",
       "x-ves-proto-service": "ves.io.schema.graph.service.CustomAPI",
@@ -239,7 +245,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-service-customapi-lbcachecontent"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.LBCacheContent"
+        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.LBCacheContent",
+        "tags": ["data"]
       },
       "x-displayname": "Service Graph",
       "x-ves-proto-service": "ves.io.schema.graph.service.CustomAPI",
@@ -361,7 +368,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-service-customapi-query"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.Query"
+        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.Query",
+        "tags": ["data"]
       },
       "x-displayname": "Service Graph",
       "x-ves-proto-service": "ves.io.schema.graph.service.CustomAPI",
@@ -500,7 +508,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-service-customapi-apptypelist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.AppTypeList"
+        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.AppTypeList",
+        "tags": ["data"]
       },
       "x-displayname": "Service Graph",
       "x-ves-proto-service": "ves.io.schema.graph.service.CustomAPI",
@@ -625,7 +634,8 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.EdgeQuery"
+        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.EdgeQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Service Graph",
       "x-ves-proto-service": "ves.io.schema.graph.service.CustomAPI",
@@ -750,7 +760,8 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.NodeQuery"
+        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.NodeQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Service Graph",
       "x-ves-proto-service": "ves.io.schema.graph.service.CustomAPI",
@@ -875,7 +886,8 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.InstanceQuery"
+        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.InstanceQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Service Graph",
       "x-ves-proto-service": "ves.io.schema.graph.service.CustomAPI",
@@ -1004,7 +1016,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-service-customapi-instancesquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.InstancesQuery"
+        "x-ves-proto-rpc": "ves.io.schema.graph.service.CustomAPI.InstancesQuery",
+        "tags": ["data"]
       },
       "x-displayname": "Service Graph",
       "x-ves-proto-service": "ves.io.schema.graph.service.CustomAPI",
@@ -1405,10 +1418,7 @@
         "type": "string",
         "description": "API Endpoint's PII Level.\n\nNo PII data detected for the given API Endpoint.\nDetected PII data for a given API Endpoint.",
         "title": "APIEP PII Level",
-        "enum": [
-          "APIEP_PII_NOT_DETECTED",
-          "APIEP_PII_DETECTED"
-        ],
+        "enum": ["APIEP_PII_NOT_DETECTED", "APIEP_PII_DETECTED"],
         "default": "APIEP_PII_NOT_DETECTED",
         "x-displayname": "API EP PII Level",
         "x-ves-proto-enum": "ves.io.schema.app_type.APIEPPIILevel"
@@ -1432,12 +1442,7 @@
         "type": "string",
         "description": "List of possible types of api that can be discovered for an APIEP.\n\nThe API Type detected as unknown.\nThe API Type detected as GraphQL.\nThe API Type detected as REST.\nThe API Type detected as gRPC.",
         "title": "APIType",
-        "enum": [
-          "API_TYPE_UNKNOWN",
-          "API_TYPE_GRAPHQL",
-          "API_TYPE_REST",
-          "API_TYPE_GRPC"
-        ],
+        "enum": ["API_TYPE_UNKNOWN", "API_TYPE_GRAPHQL", "API_TYPE_REST", "API_TYPE_GRPC"],
         "default": "API_TYPE_UNKNOWN",
         "x-displayname": "API Type",
         "x-ves-proto-enum": "ves.io.schema.app_type.APIType"
@@ -1446,12 +1451,7 @@
         "type": "string",
         "description": "API Endpoint's Authentication Location.\n\nThe API Endpoint authentication location is header.\nThe API Endpoint authentication location is query parameter.\nThe API Endpoint authentication location is request body.\nThe API Endpoint authentication location is cookie.",
         "title": "APIEP Authentication Location",
-        "enum": [
-          "AUTH_LOCATION_HEADER",
-          "AUTH_LOCATION_QUERY",
-          "AUTH_LOCATION_BODY",
-          "AUTH_LOCATION_COOKIE"
-        ],
+        "enum": ["AUTH_LOCATION_HEADER", "AUTH_LOCATION_QUERY", "AUTH_LOCATION_BODY", "AUTH_LOCATION_COOKIE"],
         "default": "AUTH_LOCATION_HEADER",
         "x-displayname": "API EP Authentication Location",
         "x-ves-proto-enum": "ves.io.schema.app_type.AuthenticationLocation"
@@ -1460,11 +1460,7 @@
         "type": "string",
         "description": "API Endpoint's Authentication State.\n\nThe API Endpoint authentication state is unknown.\nThe API Endpoint is authenticated\nThe API Endpoint is unauthenticated",
         "title": "APIEP Authentication State",
-        "enum": [
-          "AUTH_STATE_UNKNOWN",
-          "AUTH_STATE_AUTHENTICATED",
-          "AUTH_STATE_UNAUTHENTICATED"
-        ],
+        "enum": ["AUTH_STATE_UNKNOWN", "AUTH_STATE_AUTHENTICATED", "AUTH_STATE_UNAUTHENTICATED"],
         "default": "AUTH_STATE_UNKNOWN",
         "x-displayname": "API EP Authentication State",
         "x-ves-proto-enum": "ves.io.schema.app_type.AuthenticationState"
@@ -1877,11 +1873,7 @@
         "type": "string",
         "description": "Match operators supported on a label\n\nIndicates that the field is not set\nSelect timeseries whose label value exactly matches the specified string\nSelect timeseries whose label value does not match the specified string",
         "title": "Label Operator",
-        "enum": [
-          "NOP",
-          "EQ",
-          "NEQ"
-        ],
+        "enum": ["NOP", "EQ", "NEQ"],
         "default": "NOP",
         "x-displayname": "Label Operator",
         "x-ves-proto-enum": "ves.io.schema.graph.QueryOp"
@@ -1959,15 +1951,7 @@
         "type": "string",
         "description": "InstanceId Field is used to select one or more fields that uniquely identifies\nan instance or a set of instances.\n\nIndicates the field not being set\nIdentifies the workspace where the service is deployed\nIdentifies the source or destination site\nIdentifies the application type associated with the virtual host\nIdentifies the source or destination service.\nFor north-south traffic, source service is a network name (indicated by prefix \"N:\") and\nvirtual-service (indicated by prefix \"S:\") for east-west traffic; destination service is\nalways virtual-service.\nIdentifier for the instance.\nIdentifies the virtual host.",
         "title": "InstanceId Field",
-        "enum": [
-          "NONE",
-          "NAMESPACE",
-          "SITE",
-          "APP_TYPE",
-          "SERVICE",
-          "INSTANCE",
-          "VIRTUAL_HOST"
-        ],
+        "enum": ["NONE", "NAMESPACE", "SITE", "APP_TYPE", "SERVICE", "INSTANCE", "VIRTUAL_HOST"],
         "default": "NONE",
         "x-displayname": "InstanceId Field",
         "x-ves-proto-enum": "ves.io.schema.graph.service.instance.InstanceIdField"
@@ -2036,11 +2020,7 @@
         "type": "string",
         "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
         "title": "Trend Sentiment",
-        "enum": [
-          "TREND_SENTIMENT_NONE",
-          "TREND_SENTIMENT_POSITIVE",
-          "TREND_SENTIMENT_NEGATIVE"
-        ],
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
         "default": "TREND_SENTIMENT_NONE",
         "x-displayname": "Trend Sentiment",
         "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
@@ -3216,17 +3196,41 @@
         "type": "string",
         "description": "Various Timeseries Features that can be enabled\n\nDo not enable any feature\nEnable calculating confidence interval, upper and lower bound time series where metric is expected to vary.\ndetect anomalies and generate alarm when metric goes out of confidence interval\ndetect trend of the metric\nIndicate a score between 0 to 100 which indicates if the metric is healthy",
         "title": "Timeseries",
-        "enum": [
-          "TIMESERIES_FEATURE_NONE",
-          "CONFIDENCE_INTERVAL",
-          "ANOMALY_DETECTION",
-          "TREND",
-          "HEALTHSCORE"
-        ],
+        "enum": ["TIMESERIES_FEATURE_NONE", "CONFIDENCE_INTERVAL", "ANOMALY_DETECTION", "TREND", "HEALTHSCORE"],
         "default": "TIMESERIES_FEATURE_NONE",
         "x-displayname": "Timeseries",
         "x-ves-proto-enum": "ves.io.schema.timeseries.TimeseriesFeature"
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    }
+  ]
 }

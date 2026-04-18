@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.upgrade_status",
     "description": "Upgrade status custom APIs",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/maurice/namespaces/{namespace}/sites/{name}/pre_upgrade_check": {
@@ -139,7 +144,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-upgrade_status-upgradestatuscustomapi-preupgradecheck"
         },
-        "x-ves-proto-rpc": "ves.io.schema.upgrade_status.UpgradeStatusCustomApi.PreUpgradeCheck"
+        "x-ves-proto-rpc": "ves.io.schema.upgrade_status.UpgradeStatusCustomApi.PreUpgradeCheck",
+        "tags": ["maurice"]
       },
       "x-displayname": "Upgrade Status",
       "x-ves-proto-service": "ves.io.schema.upgrade_status.UpgradeStatusCustomApi",
@@ -268,7 +274,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-upgrade_status-upgradestatuscustomapi-getupgradestatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.upgrade_status.UpgradeStatusCustomApi.GetUpgradeStatus"
+        "x-ves-proto-rpc": "ves.io.schema.upgrade_status.UpgradeStatusCustomApi.GetUpgradeStatus",
+        "tags": ["maurice"]
       },
       "x-displayname": "Upgrade Status",
       "x-ves-proto-service": "ves.io.schema.upgrade_status.UpgradeStatusCustomApi",
@@ -397,7 +404,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-upgrade_status-upgradestatuscustomapi-getupgradableswversions"
         },
-        "x-ves-proto-rpc": "ves.io.schema.upgrade_status.UpgradeStatusCustomApi.GetUpgradableSWVersions"
+        "x-ves-proto-rpc": "ves.io.schema.upgrade_status.UpgradeStatusCustomApi.GetUpgradableSWVersions",
+        "tags": ["maurice"]
       },
       "x-displayname": "Upgrade Status",
       "x-ves-proto-service": "ves.io.schema.upgrade_status.UpgradeStatusCustomApi",
@@ -477,12 +485,7 @@
       "upgrade_statusChecklistStatus": {
         "type": "string",
         "description": "Upgrade check is unknown, likely backend issue where it cannot be determined.\nUpgrade check has passed.\nUpgrade check has failed.\nUpgrade check reports warning, but permissible.",
-        "enum": [
-          "CHECKLIST_UNKNOWN",
-          "CHECKLIST_PASSED",
-          "CHECKLIST_FAILED",
-          "CHECKLIST_WARNING"
-        ],
+        "enum": ["CHECKLIST_UNKNOWN", "CHECKLIST_PASSED", "CHECKLIST_FAILED", "CHECKLIST_WARNING"],
         "default": "CHECKLIST_UNKNOWN",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.upgrade_status.ChecklistStatus"
@@ -820,14 +823,7 @@
         "type": "string",
         "description": "Displays upgrade status for each section of the upgrade.\n\nUpgrade is scheduled but not started\nUpgrade is scheduled but not started\nUpgrade is in progress\nUpgrade has completed\nUpgrade has failed.\nUpgrade for this stage is skipped.",
         "title": "Upgrade status types",
-        "enum": [
-          "UNKNOWN",
-          "SCHEDULED",
-          "IN_PROGRESS",
-          "COMPLETED",
-          "FAILED",
-          "SKIPPED"
-        ],
+        "enum": ["UNKNOWN", "SCHEDULED", "IN_PROGRESS", "COMPLETED", "FAILED", "SKIPPED"],
         "default": "UNKNOWN",
         "x-displayname": "Upgrade Status",
         "x-ves-proto-enum": "ves.io.schema.upgrade_status.Status"
@@ -875,6 +871,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "maurice"
+    }
+  ]
 }

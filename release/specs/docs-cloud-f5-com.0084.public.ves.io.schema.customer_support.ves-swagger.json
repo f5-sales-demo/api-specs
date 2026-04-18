@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.customer_support",
     "description": "Handles creation and listing of support issues (by tenant and user).\nCurrently supported operations are:\n* create - to create a support request\n* list - to query for all issues created by a customer\nall other operations are taken care of off-the-system (via email or phone calls)",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/web/namespaces/system/child_tenant/support_tickets": {
@@ -117,7 +122,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-listctsupporttickets"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.ListCTSupportTickets"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.ListCTSupportTickets",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
@@ -234,7 +240,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-raisetaxexemptverificationsupportticket"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.RaiseTaxExemptVerificationSupportTicket"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.RaiseTaxExemptVerificationSupportTicket",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
@@ -520,7 +527,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-adminlist"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.AdminList"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.AdminList",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
@@ -659,7 +667,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-close"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Close"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Close",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
@@ -798,7 +807,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-comment"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Comment"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Comment",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
@@ -937,7 +947,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-escalate"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Escalate"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Escalate",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
@@ -1076,7 +1087,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-priority"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Priority"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Priority",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
@@ -1215,7 +1227,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-reopen"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Reopen"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.Reopen",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
@@ -1372,7 +1385,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.API.List",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.API",
@@ -1520,7 +1534,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.API.Get",
+        "tags": ["web"]
       },
       "x-displayname": "Customer Support",
       "x-ves-proto-service": "ves.io.schema.customer_support.API",
@@ -1840,20 +1855,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "customer_supportGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "customer_supportListResponse": {
         "type": "object",
@@ -2224,12 +2225,7 @@
         "type": "string",
         "description": "Support ticket priority helps understand importance of the ticket and focus\nmore on more critical issues.\n\nUnknown/empty priority\nNormal priority issue\nHigh priority issue\nUrgent priority issue",
         "title": "SupportTicketPriority",
-        "enum": [
-          "PRIORITY_UNKNOWN",
-          "PRIORITY_NORMAL",
-          "PRIORITY_HIGH",
-          "PRIORITY_URGENT"
-        ],
+        "enum": ["PRIORITY_UNKNOWN", "PRIORITY_NORMAL", "PRIORITY_HIGH", "PRIORITY_URGENT"],
         "default": "PRIORITY_UNKNOWN",
         "x-displayname": "Priority",
         "x-ves-proto-enum": "ves.io.schema.customer_support.SupportTicketPriority"
@@ -2688,10 +2684,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -2941,14 +2934,7 @@
         "type": "string",
         "description": "ErrorCode is used to know the specific reason for customer support operation failures\n\n - EUNKNOWN: an unknown error occurred\n - EOK: Successful operation\n - E_NOT_CLOSED: Customer support ticket not closed\n - E_NOT_OPEN: Customer support ticket not open\n - E_NOT_ELIGIBLE: Customer is not eligible for this operation (i.e. when escalating a ticket then this indicates customer not being enterprise)\n - E_NOT_NOT_FOUND: Support ticket couldn't be found.",
         "title": "error code",
-        "enum": [
-          "EUNKNOWN",
-          "EOK",
-          "E_NOT_CLOSED",
-          "E_NOT_OPEN",
-          "E_NOT_ELIGIBLE",
-          "E_NOT_NOT_FOUND"
-        ],
+        "enum": ["EUNKNOWN", "EOK", "E_NOT_CLOSED", "E_NOT_OPEN", "E_NOT_ELIGIBLE", "E_NOT_NOT_FOUND"],
         "default": "EUNKNOWN",
         "x-displayname": "Error Code",
         "x-ves-proto-enum": "ves.io.schema.customer_support.ErrorCode"
@@ -3104,6 +3090,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
 }

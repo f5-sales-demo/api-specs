@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.aws_vpc_site",
     "description": "AWS VPC site view defines a required parameters that can be used in CRUD, to create and manage a volterra site in AWS VPC.\nIt can be used to automatically site creation in the AWS VPC.\n\nView will create following child objects.\n\n* Site",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/aws_vpc_sites": {
@@ -407,7 +412,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-aws_vpc_site-customapi-setcloudsiteinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.CustomAPI.SetCloudSiteInfo"
+        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.CustomAPI.SetCloudSiteInfo",
+        "tags": ["config"]
       },
       "x-displayname": "Configure AWS VPC Site",
       "x-ves-proto-service": "ves.io.schema.views.aws_vpc_site.CustomAPI",
@@ -546,7 +552,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-aws_vpc_site-customapi-setvipinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.CustomAPI.SetVIPInfo"
+        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.CustomAPI.SetVIPInfo",
+        "tags": ["config"]
       },
       "x-displayname": "Configure AWS VPC Site",
       "x-ves-proto-service": "ves.io.schema.views.aws_vpc_site.CustomAPI",
@@ -685,7 +692,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-aws_vpc_site-customapi-setvpck8shostnames"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.CustomAPI.SetVPCK8SHostnames"
+        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.CustomAPI.SetVPCK8SHostnames",
+        "tags": ["config"]
       },
       "x-displayname": "Configure AWS VPC Site",
       "x-ves-proto-service": "ves.io.schema.views.aws_vpc_site.CustomAPI",
@@ -824,7 +832,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-aws_vpc_site-customapi-validateconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.CustomAPI.ValidateConfig"
+        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.CustomAPI.ValidateConfig",
+        "tags": ["config"]
       },
       "x-displayname": "Configure AWS VPC Site",
       "x-ves-proto-service": "ves.io.schema.views.aws_vpc_site.CustomAPI",
@@ -981,7 +990,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-aws_vpc_site-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "Configure AWS VPC Site",
       "x-ves-proto-service": "ves.io.schema.views.aws_vpc_site.API",
@@ -1130,7 +1140,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-aws_vpc_site-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete Configure AWS VPC Site",
@@ -1262,7 +1273,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-aws_vpc_site-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.aws_vpc_site.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "Configure AWS VPC Site",
       "x-ves-proto-service": "ves.io.schema.views.aws_vpc_site.API",
@@ -1915,21 +1927,6 @@
           }
         }
       },
-      "aws_vpc_siteGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
-      },
       "aws_vpc_siteListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -2529,57 +2526,11 @@
           }
         }
       },
-      "schemaForwardProxyConfigType": {
-        "type": "object",
-        "description": "x-displayName: \"Forward Proxy Configuration\"\nFine tune forward proxy behavior\n\nFew configurations allowed are\n\n  White listed ports and ip prefixes:\n    Forward proxy does application protocol detection and server name(SNI) detection by peeking into\n    the traffic on the incoming downstream connection. Few protocols doesn't have client sending\n    the first data. In such cases, protocol and SNI detection fails. This configuration allows,\n    skipping protocol and SNI detection for whitelisted ip-prefix-list and ports\n  connection_timeout:\n    The timeout for new network connections to upstream server.\n  max_connect_attempts:\n    Maximum number of attempts made to make new network connection to upstream server.",
-        "title": "ForwardProxyConfigType",
-        "properties": {
-          "connection_timeout": {
-            "type": "integer",
-            "description": "x-displayName: \"Connection Timeout\"\nx-example: \"4000\"\nThe timeout for new network connections to upstream server.\nThis is specified in milliseconds. The default value is 2000 (2 seconds)",
-            "title": "connection_timeout",
-            "format": "int64"
-          },
-          "max_connect_attempts": {
-            "type": "integer",
-            "description": "x-displayName: \"Number of connect attempts\"\nx-example: \"3\"\nSpecifies the allowed number of retries on connect failure to upstream server. Defaults to 1.",
-            "title": "max_connect_attempts",
-            "format": "int64"
-          },
-          "no_interception": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "tls_intercept": {
-            "$ref": "#/components/schemas/schemaTlsInterceptionType"
-          },
-          "white_listed_ports": {
-            "type": "array",
-            "description": "x-displayName: \"TCP Ports to Skip Protocol Parsing\"\nx-example: \"[22, 9400]\"\nTraffic to these destination TCP ports is not subjected to protocol parsing\nExample \"tmate\" server port",
-            "title": "Port list",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          "white_listed_prefixes": {
-            "type": "array",
-            "description": "x-displayName: \"IP Prefixes to Skip Protocol Parsing\"\nx-example: \"['10.2.1.0/24', '192.168.8.0/29', '10.7.64.160/27']\"\nTraffic to these destination ip prefixes is not subjected to protocol parsing\nExample \"tmate\" server ip",
-            "title": "IP prefix list",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "schemaHashAlgorithm": {
         "type": "string",
         "description": "x-displayName: \"Hash Algorithm\"\nSpecifies the Hash Algorithm to be used\n\n - INVALID_HASH_ALGORITHM: x-displayName: \"INVALID\"\nInvalid hash algorithm\n - SHA256: x-displayName: \"SHA256\"\nsha256 hash algorithm\n - SHA1: x-displayName: \"SHA1\"\nsha1 hash algorithm",
         "title": "HashAlgoritm",
-        "enum": [
-          "INVALID_HASH_ALGORITHM",
-          "SHA256",
-          "SHA1"
-        ],
+        "enum": ["INVALID_HASH_ALGORITHM", "SHA256", "SHA1"],
         "default": "INVALID_HASH_ALGORITHM"
       },
       "schemaHashAlgorithms": {
@@ -2797,11 +2748,7 @@
         "type": "string",
         "description": "Defines types of next-hop\n\nUse default gateway on the local interface as gateway for route.\nAssumes there is only one local interface on the virtual network.\nUse the specified address as nexthop\nUse the network interface as nexthop\nDiscard nexthop, used when attr type is Advertise\nUsed in VoltADN private virtual network.",
         "title": "Nexthop Types",
-        "enum": [
-          "NEXT_HOP_DEFAULT_GATEWAY",
-          "NEXT_HOP_USE_CONFIGURED",
-          "NEXT_HOP_NETWORK_INTERFACE"
-        ],
+        "enum": ["NEXT_HOP_DEFAULT_GATEWAY", "NEXT_HOP_USE_CONFIGURED", "NEXT_HOP_NETWORK_INTERFACE"],
         "default": "NEXT_HOP_DEFAULT_GATEWAY",
         "x-displayname": "Nexthop Types",
         "x-ves-proto-enum": "ves.io.schema.NextHopTypes"
@@ -3018,10 +2965,7 @@
         "type": "string",
         "description": "x-displayName: \"Secret Encoding\"\nSecretEncodingType defines the encoding type of the secret before handled by the Secret Management Service.\n\n - EncodingNone: x-displayName: \"None\"\nNo Encoding\n - EncodingBase64: Base64\n\nx-displayName: \"Base64\"\nBase64 encoding",
         "title": "SecretEncodingType",
-        "enum": [
-          "EncodingNone",
-          "EncodingBase64"
-        ],
+        "enum": ["EncodingNone", "EncodingBase64"],
         "default": "EncodingNone"
       },
       "schemaSecretType": {
@@ -3151,10 +3095,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -3366,37 +3307,6 @@
           }
         }
       },
-      "schemaVaultSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Vault Secret\"\nVaultSecretInfoType specifies information about the Secret managed by Hashicorp Vault.",
-        "title": "VaultSecretInfoType",
-        "properties": {
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"key_pem\"\nKey of the individual secret. Vault Secrets are stored as key-value pair.\nIf user is only interested in one value from the map, this field should be set to the corresponding key.\nIf not provided entire secret will be returned.",
-            "title": "Key"
-          },
-          "location": {
-            "type": "string",
-            "description": "x-displayName: \"Location\"\nx-required\nx-example: \"v1/data/vhost_key\"\nPath to secret in Vault.",
-            "title": "Location"
-          },
-          "provider": {
-            "type": "string",
-            "description": "x-displayName: \"Provider\"\nx-required\nx-example: \"vault-vh-provider\"\nName of the Secret Management Access object that contains information about the backend Vault.",
-            "title": "Provider"
-          },
-          "secret_encoding": {
-            "$ref": "#/components/schemas/schemaSecretEncodingType"
-          },
-          "version": {
-            "type": "integer",
-            "description": "x-displayName: \"Version\"\nx-example: \"1\"\nVersion of the secret to be fetched. As vault secrets are versioned, user can specify this field to fetch specific version.\nIf not provided latest version will be returned.",
-            "title": "Version",
-            "format": "int64"
-          }
-        }
-      },
       "schemaViewRefType": {
         "type": "object",
         "description": "ViewRefType represents a reference to a view",
@@ -3456,18 +3366,6 @@
         "default": "VIRTUAL_NETWORK_SITE_LOCAL",
         "x-displayname": "Virtual Network Type",
         "x-ves-proto-enum": "ves.io.schema.VirtualNetworkType"
-      },
-      "schemaWingmanSecretInfoType": {
-        "type": "object",
-        "description": "x-displayName: \"Wingman Secret\"\nWingmanSecretInfoType specifies the handle to the wingman secret",
-        "title": "WingmanSecretInfoType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-required\nx-example: \"ChargeBack-API-Key\"\nName of the secret.",
-            "title": "Name"
-          }
-        }
       },
       "schemanetwork_firewallActiveEnhancedFirewallPoliciesType": {
         "type": "object",
@@ -3775,12 +3673,7 @@
       "terraform_parametersDestroyStageState": {
         "type": "string",
         "title": "- DESTROYED: x-displayName: \"Destroyed\"\n - DESTROY_ERRORED: x-displayName: \"Destroy errored\"\n - DESTROYING: x-displayName: \"Destroying\"\n - DESTROY_QUEUED: x-displayName: \"Destroy Queued\"",
-        "enum": [
-          "DESTROYED",
-          "DESTROY_ERRORED",
-          "DESTROYING",
-          "DESTROY_QUEUED"
-        ],
+        "enum": ["DESTROYED", "DESTROY_ERRORED", "DESTROYING", "DESTROY_QUEUED"],
         "default": "DESTROYED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.DestroyStageState"
@@ -3788,12 +3681,7 @@
       "terraform_parametersInfraState": {
         "type": "string",
         "title": "- PROVISIONED: x-displayName: \"Provisioned\"\n - TIMED_OUT: x-displayName: \"Timed out\"\n - ERRORED: x-displayName: \"Errored\"\n - PROVISIONING: x-displayName: \"Provisioning\"",
-        "enum": [
-          "PROVISIONED",
-          "TIMED_OUT",
-          "ERRORED",
-          "PROVISIONING"
-        ],
+        "enum": ["PROVISIONED", "TIMED_OUT", "ERRORED", "PROVISIONING"],
         "default": "PROVISIONED",
         "x-displayname": "",
         "x-ves-proto-enum": "ves.io.schema.views.terraform_parameters.InfraState"
@@ -3855,27 +3743,6 @@
             "x-ves-example": "value"
           }
         }
-      },
-      "terraform_parametersRollbackState": {
-        "type": "string",
-        "title": "- ROLLBACK_SUCCESSFUL: x-displayName: \"Rollback successful\"\n - ROLLBACK_ERRORED: x-displayName: \"Rollback errored\"\n - ROLLBACK_NOT_REQUIRED: x-displayName: \"Rollback not required\"",
-        "enum": [
-          "ROLLBACK_SUCCESSFUL",
-          "ROLLBACK_ERRORED",
-          "ROLLBACK_NOT_REQUIRED"
-        ],
-        "default": "ROLLBACK_SUCCESSFUL"
-      },
-      "terraform_parametersUpgradeState": {
-        "type": "string",
-        "description": "x-displayName: \"Upgrade State\"\nTerraform State after version Upgrade\n\n - UPGRADE_SUCCESSFUL: x-displayName: \"Upgrade successful\"\n - UPGRADE_ERRORED: x-displayName: \"Upgrade errored\"\n - UPGRADE_NOT_REQUIRED: x-displayName: \"Upgrade not required\"",
-        "title": "Upgrade State",
-        "enum": [
-          "UPGRADE_SUCCESSFUL",
-          "UPGRADE_ERRORED",
-          "UPGRADE_NOT_REQUIRED"
-        ],
-        "default": "UPGRADE_SUCCESSFUL"
       },
       "viewsAWSNATGatewaychoiceType": {
         "type": "object",
@@ -4231,12 +4098,7 @@
         "type": "string",
         "description": "The state of Site Config Validation\n\n - VALIDATION_STATE_NONE: None\n\nConfig validation state is none\n - VALIDATION_IN_PROGRESS: In Progress\n\nConfig validation state is In Progress\n - VALIDATION_FAILED: Failed\n\nConfig validation state is Failed\n - VALIDATION_SUCCEEDED: Succeeded\n\nConfig validation state is Succeeded",
         "title": "Config Validation State",
-        "enum": [
-          "VALIDATION_STATE_NONE",
-          "VALIDATION_IN_PROGRESS",
-          "VALIDATION_FAILED",
-          "VALIDATION_SUCCEEDED"
-        ],
+        "enum": ["VALIDATION_STATE_NONE", "VALIDATION_IN_PROGRESS", "VALIDATION_FAILED", "VALIDATION_SUCCEEDED"],
         "default": "VALIDATION_STATE_NONE",
         "x-displayname": "Site Config Validation State",
         "x-ves-proto-enum": "ves.io.schema.views.ConfigValidationState"
@@ -5447,6 +5309,36 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
 }

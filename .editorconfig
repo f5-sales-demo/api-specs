@@ -15,5 +15,8 @@ indent_size = unset
 [*.mdx]
 indent_size = unset
 
+[*.py]
+indent_size = 4
+
 [Makefile]
 indent_style = tab

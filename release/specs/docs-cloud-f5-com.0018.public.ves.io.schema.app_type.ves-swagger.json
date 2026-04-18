@@ -3,7 +3,12 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_type",
     "description": "App Type object defines a application profile type from an advanced monitoring/security point of view.\nAn App type is a set of (micro) services that interact with one another and function as an application.\nServices can be made members of a particular AppType set by adding label ves.io/app_type=app_type.metadata.name to services.\nApp type object is the profile for one such application label. One can define various AI/ML features that can\nbe enabled for a given application in this object. All services in a given namespace that are labeled with\nsame ves.io/app_type label are assumed to be a single application. In a different namespace as two different\ninstances of same application.\napp_type object is recommended per tenant and present only in shared namespace.\nThis way AI/ML modeled developed for a given application can be shared across namespaces or deployments.\napp_setting object can be used to enable a app_type monitoring profile in a given namespace.",
-    "version": ""
+    "version": "",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
   },
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/app_types": {
@@ -425,7 +430,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.API.List",
+        "tags": ["config"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.API",
@@ -564,7 +570,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-customapi-getapiendpointlearntschema"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.GetAPIEndpointLearntSchema"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.GetAPIEndpointLearntSchema",
+        "tags": ["ml"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.CustomAPI",
@@ -713,7 +720,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-customapi-apiendpointpdf"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.APIEndpointPDF"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.APIEndpointPDF",
+        "tags": ["ml"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.CustomAPI",
@@ -848,15 +856,13 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "API_ENDPOINT_INFO_NONE",
-                  "API_ENDPOINT_INFO_PDF_SPARKLINES"
-                ]
+                "enum": ["API_ENDPOINT_INFO_NONE", "API_ENDPOINT_INFO_PDF_SPARKLINES"]
               }
             }
           }
         ],
-        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.APIEndpoints"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.APIEndpoints",
+        "tags": ["ml"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.CustomAPI",
@@ -985,7 +991,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-customapi-getswaggerspec"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.GetSwaggerSpec"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.GetSwaggerSpec",
+        "tags": ["ml"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.CustomAPI",
@@ -1124,7 +1131,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-customapi-overridepop"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.OverridePop"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.OverridePop",
+        "tags": ["ml"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.CustomAPI",
@@ -1263,7 +1271,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-customapi-overridepush"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.OverridePush"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.OverridePush",
+        "tags": ["ml"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.CustomAPI",
@@ -1392,7 +1401,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-customapi-overrides"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.Overrides"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.Overrides",
+        "tags": ["ml"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.CustomAPI",
@@ -1541,7 +1551,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-customapi-getserviceapiendpointpdf"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.GetServiceAPIEndpointPDF"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.GetServiceAPIEndpointPDF",
+        "tags": ["ml"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.CustomAPI",
@@ -1690,7 +1701,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-customapi-getserviceapiendpoints"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.GetServiceAPIEndpoints"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.CustomAPI.GetServiceAPIEndpoints",
+        "tags": ["ml"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.CustomAPI",
@@ -1839,7 +1851,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.API.Get",
+        "tags": ["config"]
       },
       "delete": {
         "summary": "Delete App Type",
@@ -1971,7 +1984,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.API.Delete",
+        "tags": ["config"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.API",
@@ -2382,10 +2396,7 @@
         "type": "string",
         "description": "API Endpoint's PII Level.\n\nNo PII data detected for the given API Endpoint.\nDetected PII data for a given API Endpoint.",
         "title": "APIEP PII Level",
-        "enum": [
-          "APIEP_PII_NOT_DETECTED",
-          "APIEP_PII_DETECTED"
-        ],
+        "enum": ["APIEP_PII_NOT_DETECTED", "APIEP_PII_DETECTED"],
         "default": "APIEP_PII_NOT_DETECTED",
         "x-displayname": "API EP PII Level",
         "x-ves-proto-enum": "ves.io.schema.app_type.APIEPPIILevel"
@@ -2545,12 +2556,7 @@
         "type": "string",
         "description": "List of possible types of api that can be discovered for an APIEP.\n\nThe API Type detected as unknown.\nThe API Type detected as GraphQL.\nThe API Type detected as REST.\nThe API Type detected as gRPC.",
         "title": "APIType",
-        "enum": [
-          "API_TYPE_UNKNOWN",
-          "API_TYPE_GRAPHQL",
-          "API_TYPE_REST",
-          "API_TYPE_GRPC"
-        ],
+        "enum": ["API_TYPE_UNKNOWN", "API_TYPE_GRAPHQL", "API_TYPE_REST", "API_TYPE_GRPC"],
         "default": "API_TYPE_UNKNOWN",
         "x-displayname": "API Type",
         "x-ves-proto-enum": "ves.io.schema.app_type.APIType"
@@ -2559,10 +2565,7 @@
         "type": "string",
         "description": "This is the various forms that can be requested to be sent in the ApiEndpointInfoRequest\n\nAPI ENDPOINT INFO NONE option is used to disable any additional info request per api endpoint response\nAPI ENDPOINT INFO PDF SPARKLINES option is used to enable pdf sparkline info along with the api endpoint response",
         "title": "ApiEndpointInfoRequest",
-        "enum": [
-          "API_ENDPOINT_INFO_NONE",
-          "API_ENDPOINT_INFO_PDF_SPARKLINES"
-        ],
+        "enum": ["API_ENDPOINT_INFO_NONE", "API_ENDPOINT_INFO_PDF_SPARKLINES"],
         "default": "API_ENDPOINT_INFO_NONE",
         "x-displayname": "API Endpoint Info Request",
         "x-ves-proto-enum": "ves.io.schema.app_type.ApiEndpointInfoRequest"
@@ -2571,12 +2574,7 @@
         "type": "string",
         "description": "API Endpoint's Authentication Location.\n\nThe API Endpoint authentication location is header.\nThe API Endpoint authentication location is query parameter.\nThe API Endpoint authentication location is request body.\nThe API Endpoint authentication location is cookie.",
         "title": "APIEP Authentication Location",
-        "enum": [
-          "AUTH_LOCATION_HEADER",
-          "AUTH_LOCATION_QUERY",
-          "AUTH_LOCATION_BODY",
-          "AUTH_LOCATION_COOKIE"
-        ],
+        "enum": ["AUTH_LOCATION_HEADER", "AUTH_LOCATION_QUERY", "AUTH_LOCATION_BODY", "AUTH_LOCATION_COOKIE"],
         "default": "AUTH_LOCATION_HEADER",
         "x-displayname": "API EP Authentication Location",
         "x-ves-proto-enum": "ves.io.schema.app_type.AuthenticationLocation"
@@ -2585,11 +2583,7 @@
         "type": "string",
         "description": "API Endpoint's Authentication State.\n\nThe API Endpoint authentication state is unknown.\nThe API Endpoint is authenticated\nThe API Endpoint is unauthenticated",
         "title": "APIEP Authentication State",
-        "enum": [
-          "AUTH_STATE_UNKNOWN",
-          "AUTH_STATE_AUTHENTICATED",
-          "AUTH_STATE_UNAUTHENTICATED"
-        ],
+        "enum": ["AUTH_STATE_UNKNOWN", "AUTH_STATE_AUTHENTICATED", "AUTH_STATE_UNAUTHENTICATED"],
         "default": "AUTH_STATE_UNKNOWN",
         "x-displayname": "API EP Authentication State",
         "x-ves-proto-enum": "ves.io.schema.app_type.AuthenticationState"
@@ -2978,21 +2972,6 @@
             "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
           }
         }
-      },
-      "app_typeGetResponseFormatCode": {
-        "type": "string",
-        "description": "x-displayName: \"Get Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object",
-        "title": "GetResponseFormatCode",
-        "enum": [
-          "GET_RSP_FORMAT_DEFAULT",
-          "GET_RSP_FORMAT_FOR_CREATE",
-          "GET_RSP_FORMAT_FOR_REPLACE",
-          "GET_RSP_FORMAT_STATUS",
-          "GET_RSP_FORMAT_READ",
-          "GET_RSP_FORMAT_REFERRING_OBJECTS",
-          "GET_RSP_FORMAT_BROKEN_REFERENCES"
-        ],
-        "default": "GET_RSP_FORMAT_DEFAULT"
       },
       "app_typeGetSpecType": {
         "type": "object",
@@ -3411,21 +3390,6 @@
           }
         }
       },
-      "app_typeResponseSchema": {
-        "type": "object",
-        "description": "x-displayName: \"Response Schema\"\nResponse schema for a given API endpoint.",
-        "title": "Response Schema",
-        "properties": {
-          "body_per_content_type": {
-            "type": "object",
-            "description": "x-displayName: \"Body Schema Per Content Type\"\nBody schema per content type for request API endpoint.",
-            "title": "Body schema per content type"
-          },
-          "headers": {
-            "$ref": "#/components/schemas/app_typeSchemaStruct"
-          }
-        }
-      },
       "app_typeRiskScore": {
         "type": "object",
         "description": "Risk score of the vulnerabilities found for this API Endpoint.",
@@ -3524,36 +3488,10 @@
         "type": "string",
         "description": "Sensitive Data Detection Rule Type\n\n - RULE_TYPE_BUILT_IN: built_in\n\nBuilt in rule type\n - RULE_TYPE_CUSTOM: custom\n\nCustom rule type",
         "title": "sensitive_data_detection_rule_type",
-        "enum": [
-          "RULE_TYPE_BUILT_IN",
-          "RULE_TYPE_CUSTOM"
-        ],
+        "enum": ["RULE_TYPE_BUILT_IN", "RULE_TYPE_CUSTOM"],
         "default": "RULE_TYPE_BUILT_IN",
         "x-displayname": "Sensitive Data Detection Rule Type",
         "x-ves-proto-enum": "ves.io.schema.app_type.SensitiveDataDetectionRuleType"
-      },
-      "app_typeSensitiveDataDetectionRules": {
-        "type": "object",
-        "description": "x-displayName: \"Sensitive Data Detection Rules\"\nRules to manage/configure sensitive data detection in requests and/or response sections.",
-        "title": "Sensitive Data Detection Rules",
-        "properties": {
-          "custom_sensitive_data_detection_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Defined Custom Sensitive Data Types\"\nRules to detect custom sensitive data in requests and/or responses sections.",
-            "title": "custom sensitive data rules",
-            "items": {
-              "$ref": "#/components/schemas/app_typeCustomSensitiveDataDetectionRule"
-            }
-          },
-          "disabled_built_in_rules": {
-            "type": "array",
-            "description": "x-displayName: \"Disabled Built-In Sensitive Data Types\"\nx-example: \"[EMAIL, CC]\"\nList of disabled built-in sensitive data detection rules.",
-            "title": "disabled_built_in_rules",
-            "items": {
-              "$ref": "#/components/schemas/app_typeBuiltInSensitiveDataType"
-            }
-          }
-        }
       },
       "app_typeSensitiveDataType": {
         "type": "string",
@@ -3829,19 +3767,7 @@
         "type": "string",
         "description": "x-displayName: \"HTTP Method\"\nSpecifies the HTTP method used to access a resource.\n\n - ANY: x-displayName: \"ANY\"\nAny HTTP Method\n - GET: x-displayName: \"GET\"\n - HEAD: x-displayName: \"HEAD\"\n - POST: x-displayName: \"POST\"\n - PUT: x-displayName: \"PUT\"\n - DELETE: x-displayName: \"DELETE\"\n - CONNECT: x-displayName: \"CONNECT\"\n - OPTIONS: x-displayName: \"OPTIONS\"\n - TRACE: x-displayName: \"TRACE\"\n - PATCH: x-displayName: \"PATCH\"\n - COPY: x-displayName: \"COPY\"",
         "title": "HttpMethod",
-        "enum": [
-          "ANY",
-          "GET",
-          "HEAD",
-          "POST",
-          "PUT",
-          "DELETE",
-          "CONNECT",
-          "OPTIONS",
-          "TRACE",
-          "PATCH",
-          "COPY"
-        ],
+        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
         "default": "ANY"
       },
       "schemaHttpSections": {
@@ -4217,10 +4143,7 @@
         "type": "string",
         "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
         "title": "StatusPublishType",
-        "enum": [
-          "STATUS_DO_NOT_PUBLISH",
-          "STATUS_PUBLISH"
-        ],
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
         "default": "STATUS_DO_NOT_PUBLISH",
         "x-displayname": "Status Publish Type",
         "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
@@ -4382,6 +4305,39 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "f5-amer-ent",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    },
+    {
+      "name": "ml"
+    }
+  ]
 }

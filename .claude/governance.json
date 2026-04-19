@@ -1,5 +1,8 @@
 {
   "source_repo": "f5xc-salesdemos/docs-control",
+  "skip_files": {
+    "xcsh": ["biome.json", "LICENSE", "CONTRIBUTING.md", "ruff.toml", ".ruff.toml", ".python-lint", ".mypy.ini"]
+  },
   "protected_files": [
     ".github/workflows/github-pages-deploy.yml",
     ".github/workflows/enforce-repo-settings.yml",
@@ -38,6 +41,7 @@
     ".mypy.ini",
     ".claude/settings.json",
     ".claude/governance.json",
-    ".claude/hooks/protect-managed-files.sh"
+    ".claude/hooks/protect-managed-files.sh",
+    ".claude/hooks/enforce-git-delegation.sh"
   ]
 }

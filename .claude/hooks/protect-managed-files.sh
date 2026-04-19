@@ -41,6 +41,21 @@ if [ ! -f "$GOVERNANCE_FILE" ]; then
   exit 0
 fi
 
+# ── Honor per-repo skip_files opt-out ───────────────────────────────
+# The current repo name is parsed from the origin remote (same source used
+# for self-exclusion above). If this repo has an entry in governance.json's
+# skip_files map and the edited file is listed, allow the edit — the file
+# is not ecosystem-managed for this repo.
+REPO_NAME=$(basename -s .git "$REMOTE_URL" 2>/dev/null || echo "")
+if [ -n "$REPO_NAME" ]; then
+  SKIPPED=$(jq -r --arg fp "$FILE_PATH" --arg repo "$REPO_NAME" \
+    '.skip_files[$repo][]? | select(. == $fp)' \
+    "$GOVERNANCE_FILE" 2>/dev/null || echo "")
+  if [ -n "$SKIPPED" ]; then
+    exit 0
+  fi
+fi
+
 # ── Check if file is protected ──────────────────────────────────────
 PROTECTED=$(jq -r --arg fp "$FILE_PATH" \
   '.protected_files[] | select(. == $fp)' \

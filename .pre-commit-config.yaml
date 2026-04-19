@@ -145,7 +145,6 @@ repos:
         name: EditorConfig check
         entry: editorconfig-checker
         language: system
-        pass_filenames: false
 
   # ===========================================================================
   # GitHub Actions security scan — config: zizmor.yaml

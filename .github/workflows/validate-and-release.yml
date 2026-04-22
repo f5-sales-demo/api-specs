@@ -34,6 +34,9 @@ jobs:
   validate:
     name: Validate Specs
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     outputs:
       specs_changed: ${{ steps.check_specs.outputs.changed }}
       specs_etag: ${{ steps.check_specs.outputs.etag }}
@@ -140,6 +143,45 @@ jobs:
           echo "Reconciling specs based on validation and Spectral results..."
           python -m scripts.reconcile --report reports/validation_report.json reports/spectral_report.json
           echo "Fix report saved to reports/fixes_applied.json"
+
+      - name: Sync discrepancies to GitHub issues
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
+          F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python -m scripts.issue_sync \
+            --report reports/validation_report.json \
+            --mapping-out reports/issue_mapping.json \
+            --config config/issue_sync.yaml \
+            --run-url "$RUN_URL"
+
+      - name: Sync discrepancies (dry-run on PR)
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
+          F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python -m scripts.issue_sync \
+            --report reports/validation_report.json \
+            --mapping-out reports/issue_mapping.json \
+            --config config/issue_sync.yaml \
+            --dry-run \
+            --run-url "$RUN_URL"
+
+      - name: Upload issue mapping artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue-mapping
+          path: reports/issue_mapping.json
+          retention-days: 30
 
       - name: Spectral quality gate
         run: |

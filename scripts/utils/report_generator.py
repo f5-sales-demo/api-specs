@@ -57,8 +57,22 @@ class ReportGenerator:
         discrepancies: list[Discrepancy],
         modified_files: list[str],
         unmodified_files: list[str],
+        discrepancy_domains: list[str] | None = None,
+        discrepancy_methods: list[str] | None = None,
     ) -> dict[str, Path]:
-        """Generate reports in all configured formats."""
+        """Generate reports in all configured formats.
+
+        ``discrepancy_domains`` and ``discrepancy_methods`` are optional
+        parallel lists aligned by index with ``discrepancies``. When
+        provided, each entry in the JSON report gains ``domain`` and
+        ``method`` fields — consumed by :mod:`scripts.issue_sync`. Missing
+        or short lists are padded with ``"unknown"`` so older callers
+        continue to work.
+        """
+        # Align parallel lists; pad with "unknown" if callers didn't supply.
+        domains = self._align_parallel_list(discrepancy_domains, len(discrepancies))
+        methods = self._align_parallel_list(discrepancy_methods, len(discrepancies))
+
         # Create summary
         summary = self._create_summary(
             results, discrepancies, modified_files, unmodified_files
@@ -69,7 +83,7 @@ class ReportGenerator:
         for fmt in self.config.formats:
             if fmt == "json":
                 output_files["json"] = self._generate_json(
-                    summary, results, discrepancies
+                    summary, results, discrepancies, domains, methods
                 )
             elif fmt == "html":
                 output_files["html"] = self._generate_html(
@@ -81,6 +95,18 @@ class ReportGenerator:
                 )
 
         return output_files
+
+    @staticmethod
+    def _align_parallel_list(
+        values: list[str] | None,
+        length: int,
+    ) -> list[str]:
+        """Return ``values`` padded/truncated to ``length`` with ``"unknown"``."""
+        if not values:
+            return ["unknown"] * length
+        if len(values) >= length:
+            return list(values[:length])
+        return list(values) + ["unknown"] * (length - len(values))
 
     def _create_summary(
         self,
@@ -114,14 +140,22 @@ class ReportGenerator:
         summary: ValidationSummary,
         results: list[SchemathesisResult],
         discrepancies: list[Discrepancy],
+        discrepancy_domains: list[str] | None = None,
+        discrepancy_methods: list[str] | None = None,
     ) -> Path:
         """Generate JSON report."""
         output_path = self.config.output_dir / "validation_report.json"
 
+        domains = self._align_parallel_list(discrepancy_domains, len(discrepancies))
+        methods = self._align_parallel_list(discrepancy_methods, len(discrepancies))
+
         report = {
             "summary": asdict(summary),
             "results": [self._result_to_dict(r) for r in results],
-            "discrepancies": [self._discrepancy_to_dict(d) for d in discrepancies],
+            "discrepancies": [
+                self._discrepancy_to_dict(d, domain=dom, method=mth)
+                for d, dom, mth in zip(discrepancies, domains, methods, strict=True)
+            ],
         }
 
         with output_path.open("w") as f:
@@ -278,12 +312,20 @@ class ReportGenerator:
             "examples_tested": result.examples_tested,
             "failures": result.failures,
             "errors": result.errors,
+            # Nested discrepancies inherit the result's method; domain is
+            # not carried on SchemathesisResult, so default to "unknown".
             "discrepancies": [
-                self._discrepancy_to_dict(d) for d in result.discrepancies
+                self._discrepancy_to_dict(d, domain="unknown", method=result.method)
+                for d in result.discrepancies
             ],
         }
 
-    def _discrepancy_to_dict(self, discrepancy: Discrepancy) -> dict:
+    def _discrepancy_to_dict(
+        self,
+        discrepancy: Discrepancy,
+        domain: str = "unknown",
+        method: str = "unknown",
+    ) -> dict:
         """Convert Discrepancy to dictionary."""
         return {
             "path": discrepancy.path,
@@ -296,6 +338,8 @@ class ReportGenerator:
                 : self.config.max_examples_per_issue
             ],
             "recommendation": discrepancy.recommendation,
+            "domain": domain,
+            "method": method,
         }
 
     def print_summary(self, summary: ValidationSummary) -> None:

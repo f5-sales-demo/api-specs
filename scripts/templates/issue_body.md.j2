@@ -1,0 +1,49 @@
+{# Issue body for tracked spec-vs-live-API discrepancy. #}
+<!-- discrepancy-id: {{ fingerprint }} -->
+
+## Discrepancy
+
+- **Type:** `{{ discrepancy.discrepancy_type.value }}`
+- **Domain:** `{{ domain }}`
+- **Method:** `{{ method }}`
+- **Path:** `{{ discrepancy.path }}`
+- **Property:** `{{ discrepancy.property_name }}`
+- **Constraint:** `{{ discrepancy.constraint_type }}`
+
+## Upstream spec says
+
+```
+{{ discrepancy.spec_value }}
+```
+
+## Live API actually
+
+```
+{{ discrepancy.api_behavior }}
+```
+
+## Fresh live re-probe
+
+- endpoint_url: {{ evidence.endpoint_url }}
+- method: {{ evidence.method }}
+- test_value: `{{ evidence.test_value }}`
+- status_code: {{ evidence.status_code }}
+- timestamp: {{ evidence.timestamp_utc }}
+- body (truncated):
+  ```
+  {{ evidence.body_snippet }}
+  ```
+
+## Reproduction
+
+```bash
+curl -X {{ method }} \
+  -H "Authorization: Bearer $F5XC_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"{{ discrepancy.property_name }}": {{ evidence.test_value | tojson }}}' \
+  "$F5XC_API_URL{{ discrepancy.path }}"
+```
+
+## Detecting run
+
+{{ run_url }}

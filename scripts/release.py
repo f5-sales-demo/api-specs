@@ -15,7 +15,105 @@ from typing import Any
 import yaml
 from rich.console import Console
 
+from scripts.utils.constraint_validator import Discrepancy, DiscrepancyType
+from scripts.utils.discrepancy_fingerprint import fingerprint
+
 console = Console()
+
+
+def build_validation_report_md(
+    validation_report_json: Path,
+    issue_mapping_json: Path | None = None,
+) -> str:
+    """Assemble VALIDATION_REPORT.md, including a Tracked as issues column.
+
+    Reads the JSON validation report produced by
+    :class:`scripts.utils.report_generator.ReportGenerator` and, when
+    ``issue_mapping_json`` points to an existing file, annotates each
+    discrepancy row with the GitHub issue it has been tracked as. Rows
+    without a matching mapping entry render an em-dash.
+
+    Returns the markdown document as a string; the caller is responsible
+    for writing it to disk.
+    """
+    data = json.loads(Path(validation_report_json).read_text())
+
+    mapping: dict[str, dict[str, Any]] = {}
+    if issue_mapping_json is not None:
+        mapping_path = Path(issue_mapping_json)
+        if mapping_path.exists():
+            mapping = json.loads(mapping_path.read_text())
+
+    summary = data.get("summary", {}) or {}
+    discrepancies = data.get("discrepancies", []) or []
+
+    lines: list[str] = [
+        "# F5 XC API Validation Report",
+        "",
+    ]
+
+    timestamp = summary.get("timestamp")
+    if timestamp:
+        lines.extend([f"**Generated:** {timestamp}", ""])
+
+    if summary:
+        lines.extend(
+            [
+                "## Summary",
+                "",
+                f"- **Total Endpoints:** {summary.get('total_endpoints', 0)}",
+                f"- **Total Tests:** {summary.get('total_tests', 0)}",
+                f"- **Passed:** {summary.get('passed', 0)}",
+                f"- **Failed:** {summary.get('failed', 0)}",
+                f"- **Errors:** {summary.get('errors', 0)}",
+                f"- **Discrepancies Found:** {summary.get('total_discrepancies', len(discrepancies))}",
+                "",
+            ]
+        )
+
+    lines.extend(
+        [
+            "## Discrepancies",
+            "",
+            "| Path | Property | Constraint | Type | Tracked as issues |",
+            "|------|----------|------------|------|-------------------|",
+        ]
+    )
+
+    for d in discrepancies:
+        try:
+            disc = Discrepancy(
+                path=d["path"],
+                property_name=d["property_name"],
+                constraint_type=d["constraint_type"],
+                discrepancy_type=DiscrepancyType(d["discrepancy_type"]),
+                spec_value=d.get("spec_value"),
+                api_behavior=d.get("api_behavior"),
+                test_values=d.get("test_values", []) or [],
+            )
+        except (KeyError, ValueError):
+            # Malformed entry — skip rather than abort the report.
+            continue
+
+        fp = fingerprint(
+            disc,
+            d.get("domain", "unknown"),
+            d.get("method", "unknown"),
+        )
+        entry = mapping.get(fp)
+        if entry and entry.get("issue_number") and entry.get("issue_url"):
+            issue_cell = f"[#{entry['issue_number']}]({entry['issue_url']})"
+        else:
+            issue_cell = "—"
+
+        lines.append(
+            f"| `{disc.path}` | `{disc.property_name}` | "
+            f"{disc.constraint_type} | {disc.discrepancy_type.value} | "
+            f"{issue_cell} |"
+        )
+
+    lines.append("")
+    return "\n".join(lines)
 
 
 def load_config(config_path: Path) -> dict:
@@ -294,17 +392,37 @@ Release date: {datetime.now(UTC).strftime("%Y-%m-%d")}
         console.print("  [dim]Generated: CHANGELOG.md[/dim]")
 
     def _copy_report(self, staging_dir: Path) -> None:
-        """Copy validation report to staging directory."""
-        report_sources = [
-            Path("reports/validation_report.md"),
-            Path("reports/validation_report.json"),
-        ]
+        """Copy validation report to staging directory.
 
-        for source in report_sources:
-            if source.exists() and source.suffix == ".md":
-                shutil.copy2(source, staging_dir / "VALIDATION_REPORT.md")
-                console.print("  [dim]Added: VALIDATION_REPORT.md[/dim]")
-                return
+        Preference order:
+
+        1. If ``reports/validation_report.json`` exists, rebuild the
+           markdown via :func:`build_validation_report_md` so it includes
+           the "Tracked as issues" column (populated from
+           ``reports/issue_mapping.json`` when present).
+        2. Fall back to copying a pre-generated
+           ``reports/validation_report.md`` as-is.
+        3. Otherwise emit a minimal placeholder.
+        """
+        validation_json = Path("reports/validation_report.json")
+        issue_mapping = Path("reports/issue_mapping.json")
+        validation_md = Path("reports/validation_report.md")
+
+        if validation_json.exists():
+            report_content = build_validation_report_md(
+                validation_json,
+                issue_mapping if issue_mapping.exists() else None,
+            )
+            (staging_dir / "VALIDATION_REPORT.md").write_text(report_content)
+            console.print(
+                "  [dim]Generated: VALIDATION_REPORT.md (with issue tracking)[/dim]"
+            )
+            return
+
+        if validation_md.exists():
+            shutil.copy2(validation_md, staging_dir / "VALIDATION_REPORT.md")
+            console.print("  [dim]Added: VALIDATION_REPORT.md[/dim]")
+            return
 
         # Generate placeholder report
         report_content = f"""# Validation Report

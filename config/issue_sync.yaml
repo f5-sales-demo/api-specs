@@ -1,0 +1,11 @@
+# config/issue_sync.yaml
+# Runtime caps and feature flags for scripts/issue_sync.py.
+enabled: true
+verify_before_close: true      # Re-probe live API before closing an issue.
+max_creates_per_run: 50
+max_updates_per_run: 50
+max_closes_per_run: 50
+labels:
+  category: "upstream-discrepancy"
+  do_not_auto_close: "do-not-auto-close"
+  notified_upstream: "notified-upstream"

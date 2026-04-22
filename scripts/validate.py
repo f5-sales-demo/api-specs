@@ -27,6 +27,38 @@ from .utils.spec_loader import SpecLoader
 console = Console()
 
 
+# Filename prefix/suffix patterns for F5 XC spec files:
+# ``docs-cloud-f5-com.NNNN.public.ves.io.schema.<domain>.ves-swagger.json``
+# The domain slug is the segment between ``schema.`` and ``.ves-swagger``
+# (or the final stem if the pattern doesn't match).
+_DOMAIN_FILENAME_PREFIX = "public.ves.io.schema."
+_DOMAIN_FILENAME_SUFFIX = ".ves-swagger"
+
+
+def _domain_from_filename(filename: str) -> str:
+    """Derive the F5 XC domain slug from a spec filename.
+
+    Example:
+        >>> _domain_from_filename(
+        ...     "docs-cloud-f5-com.0041.public.ves.io.schema.origin_pool."
+        ...     "ves-swagger.json"
+        ... )
+        'origin_pool'
+
+    Returns ``"unknown"`` if the filename doesn't match the expected
+    pattern.
+    """
+    if not filename:
+        return "unknown"
+    stem = Path(filename).stem  # drop .json / .yaml
+    # Strip nested ".ves-swagger" suffix if present.
+    stem = stem.removesuffix(_DOMAIN_FILENAME_SUFFIX)
+    idx = stem.find(_DOMAIN_FILENAME_PREFIX)
+    if idx != -1:
+        return stem[idx + len(_DOMAIN_FILENAME_PREFIX) :] or "unknown"
+    return stem or "unknown"
+
+
 def load_config(config_path: Path) -> dict:
     """Load configuration from YAML file."""
     if not config_path.exists():
@@ -49,8 +81,14 @@ def load_endpoints_config(config_path: Path) -> dict:
         return result
 
 
-class ValidationOrchestrator:
-    """Orchestrate validation of F5 XC API specs."""
+class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
+    """Orchestrate validation of F5 XC API specs.
+
+    The attribute count is intentional — this class aggregates the
+    reconcile-side state machine (config, endpoints, auth, results,
+    discrepancies, and their domain/method sidecars introduced in
+    Task A7) and splitting it would just shuffle the same data around.
+    """
 
     def __init__(
         self,
@@ -86,6 +124,11 @@ class ValidationOrchestrator:
         # Results storage
         self.discrepancies: list[Discrepancy] = []
         self.test_results: list[SchemathesisResult] = []
+        # Parallel lists aligned with ``self.discrepancies`` so the JSON
+        # report can emit ``domain`` and ``method`` per entry (consumed by
+        # scripts/issue_sync.py).
+        self.discrepancy_domains: list[str] = []
+        self.discrepancy_methods: list[str] = []
 
     def run(
         self,
@@ -249,6 +292,7 @@ class ValidationOrchestrator:
 
             spec = specs[domain_file]
             schema = self.schemathesis_runner.load_schema(spec)
+            domain_slug = _domain_from_filename(domain_file)
 
             for endpoint_config in endpoints:
                 resource = endpoint_config.get("resource")
@@ -265,9 +309,16 @@ class ValidationOrchestrator:
                     )
                     self.test_results.extend(results)
 
-                    # Collect discrepancies
+                    # Collect discrepancies (and parallel domain/method lists
+                    # so the JSON report can surface them per entry).
                     for result in results:
                         self.discrepancies.extend(result.discrepancies)
+                        self.discrepancy_domains.extend(
+                            [domain_slug] * len(result.discrepancies)
+                        )
+                        self.discrepancy_methods.extend(
+                            [result.method] * len(result.discrepancies)
+                        )
 
                 except Exception as e:  # pylint: disable=broad-exception-caught
                     console.print(f"  [red]Error testing {resource}: {e}[/red]")
@@ -338,12 +389,16 @@ class ValidationOrchestrator:
             else:
                 unmodified_files.append(filename)
 
-        # Generate reports
+        # Generate reports — thread the parallel domain/method lists so
+        # every entry in validation_report.json carries the fields that
+        # scripts/issue_sync.py needs.
         self.report_generator.generate_all(
             results=self.test_results,
             discrepancies=self.discrepancies,
             modified_files=modified_files,
             unmodified_files=unmodified_files,
+            discrepancy_domains=self.discrepancy_domains,
+            discrepancy_methods=self.discrepancy_methods,
         )
 
     def _print_summary(self) -> None:

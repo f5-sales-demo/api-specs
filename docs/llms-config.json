@@ -1,0 +1,11 @@
+{
+  "customSets": [
+    {
+      "label": "Pipeline",
+      "description": "OpenAPI spec validation pipeline, repair rules, and configuration",
+      "paths": ["02-pipeline*", "03-fixes-applied*", "04-spectral-rules*", "05-configuration*"]
+    }
+  ],
+  "promote": ["index*", "01-validation-report*"],
+  "demote": ["06-contributing*"]
+}

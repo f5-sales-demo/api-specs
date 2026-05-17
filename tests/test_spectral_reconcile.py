@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scripts.reconcile import ReconciliationConfig, SpecReconciler
@@ -300,12 +302,10 @@ class TestSchemaRename:
 
     @staticmethod
     def _make_reconciler(renames):
-        from pathlib import Path
-
         config = ReconciliationConfig(schema_renames=renames)
         return SpecReconciler(
-            original_dir=Path("."),
-            output_dir=Path("."),
+            original_dir=Path(),
+            output_dir=Path(),
             config=config,
         )
 

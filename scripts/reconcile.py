@@ -27,6 +27,21 @@ _MIN_PATH_PARTS = 3
 _TAG_SEGMENT_INDEX = 1
 
 
+def _rewrite_refs(obj: Any, old_ref: str, new_ref: str) -> int:
+    """Recursively rewrite all ``$ref`` values matching *old_ref*. Returns count."""
+    count = 0
+    if isinstance(obj, dict):
+        if obj.get("$ref") == old_ref:
+            obj["$ref"] = new_ref
+            count += 1
+        for value in obj.values():
+            count += _rewrite_refs(value, old_ref, new_ref)
+    elif isinstance(obj, list):
+        for item in obj:
+            count += _rewrite_refs(item, old_ref, new_ref)
+    return count
+
+
 @dataclass
 class ReconciliationResult:
     """Result of reconciling a single spec file."""
@@ -54,6 +69,7 @@ class ReconciliationConfig:
             "extra_constraint": "remove",
         }
     )
+    schema_renames: list[dict[str, str]] = field(default_factory=list)
 
 
 class SpecReconciler:
@@ -145,17 +161,22 @@ class SpecReconciler:
             result.validation_errors.append(str(e))
             return result
 
-        # If no discrepancies, pass through original
-        if not discrepancies:
+        # Apply fixes
+        fixed = copy.deepcopy(original)
+
+        # Apply schema renames (proactive, config-driven — runs regardless of discrepancies)
+        rename_changes = self._apply_schema_renames(fixed, spec_path.name)
+        if rename_changes:
+            result.changes.extend(rename_changes)
+            result.modified = True
+
+        if not discrepancies and not rename_changes:
             result.modified = False
             result.fixed_spec = original
             console.print(
                 f"[green]{spec_path.name}: No changes needed (pass-through)[/green]"
             )
             return result
-
-        # Apply fixes
-        fixed = copy.deepcopy(original)
 
         for discrepancy in discrepancies:
             change = self._apply_fix(fixed, discrepancy)
@@ -201,6 +222,50 @@ class SpecReconciler:
             result.fixed_spec = original
 
         return result
+
+    def _apply_schema_renames(
+        self,
+        spec: dict,
+        filename: str,
+    ) -> list[dict]:
+        """Apply config-driven schema renames and rewrite all ``$ref`` references."""
+        renames = self.config.schema_renames
+        if not renames:
+            return []
+
+        schemas = spec.get("components", {}).get("schemas", {})
+        changes: list[dict] = []
+
+        for rule in renames:
+            old_name = rule["old_name"]
+            new_name = rule["new_name"]
+            pattern = rule.get("file_pattern", "")
+
+            if pattern and pattern not in filename:
+                continue
+            if old_name not in schemas:
+                continue
+
+            schemas[new_name] = schemas.pop(old_name)
+            old_ref = f"#/components/schemas/{old_name}"
+            new_ref = f"#/components/schemas/{new_name}"
+            ref_count = _rewrite_refs(spec, old_ref, new_ref)
+
+            changes.append(
+                {
+                    "action": "rename_schema",
+                    "constraint_type": "schema-rename",
+                    "old_name": old_name,
+                    "new_name": new_name,
+                    "references_updated": ref_count,
+                    "reason": rule.get("reason", ""),
+                }
+            )
+            console.print(
+                f"  [cyan]Renamed schema {old_name} → {new_name} ({ref_count} refs)[/cyan]"
+            )
+
+        return changes
 
     def _apply_fix(
         self,
@@ -805,6 +870,7 @@ def main() -> int:
             "priority", ["existing", "discovery", "inferred"]
         ),
         fix_strategies=reconciliation_config.get("fix_strategies", {}),
+        schema_renames=reconciliation_config.get("schema_renames", []),
     )
 
     reconciler = SpecReconciler(

@@ -91,6 +91,11 @@ reconciliation:
     looser_spec: "tighten"     # Spec looser than API → tighten constraint
     missing_constraint: "add"   # Spec missing constraint → add it
     extra_constraint: "remove"  # Spec has constraint API ignores → remove it
+  schema_renames:
+    - old_name: routeRouteType
+      new_name: operateRouteRouteType
+      file_pattern: "operate.route"
+      reason: "ves.io.schema.operate.route.RouteType collides with ves.io.schema.route.RouteType"
 
 # Report Generation
 reports:

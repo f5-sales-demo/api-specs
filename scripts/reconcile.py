@@ -70,6 +70,7 @@ class ReconciliationConfig:
         }
     )
     schema_renames: list[dict[str, str]] = field(default_factory=list)
+    deprecated_path_removals: list[dict[str, str]] = field(default_factory=list)
 
 
 class SpecReconciler:
@@ -164,13 +165,15 @@ class SpecReconciler:
         # Apply fixes
         fixed = copy.deepcopy(original)
 
-        # Apply schema renames (proactive, config-driven — runs regardless of discrepancies)
+        # Proactive transforms (config-driven, run regardless of discrepancies)
         rename_changes = self._apply_schema_renames(fixed, spec_path.name)
-        if rename_changes:
-            result.changes.extend(rename_changes)
+        deprecated_changes = self._enforce_deprecated_markers(fixed)
+        proactive_changes = rename_changes + deprecated_changes
+        if proactive_changes:
+            result.changes.extend(proactive_changes)
             result.modified = True
 
-        if not discrepancies and not rename_changes:
+        if not discrepancies and not proactive_changes:
             result.modified = False
             result.fixed_spec = original
             console.print(
@@ -264,6 +267,60 @@ class SpecReconciler:
             console.print(
                 f"  [cyan]Renamed schema {old_name} → {new_name} ({ref_count} refs)[/cyan]"
             )
+
+        return changes
+
+    def _enforce_deprecated_markers(self, spec: dict) -> list[dict]:
+        """Mark operations with 'DEPRECATED' in description as ``deprecated: true``.
+
+        Also removes paths listed in ``config.deprecated_path_removals`` that
+        have known replacements.
+        """
+        changes: list[dict] = []
+        http_methods = {
+            "get",
+            "post",
+            "put",
+            "delete",
+            "patch",
+            "options",
+            "head",
+            "trace",
+        }
+
+        for path, path_item in list(spec.get("paths", {}).items()):
+            if not isinstance(path_item, dict):
+                continue
+            for method in http_methods:
+                op = path_item.get(method)
+                if not isinstance(op, dict):
+                    continue
+                desc = op.get("description", "")
+                if "DEPRECATED" in desc.upper() and not op.get("deprecated"):
+                    op["deprecated"] = True
+                    changes.append(
+                        {
+                            "action": "mark_deprecated",
+                            "constraint_type": "oas3-deprecated-marker",
+                            "path": path,
+                            "method": method,
+                        }
+                    )
+
+        for rule in self.config.deprecated_path_removals:
+            target = rule["path"]
+            if target in spec.get("paths", {}):
+                del spec["paths"][target]
+                changes.append(
+                    {
+                        "action": "remove_deprecated_path",
+                        "constraint_type": "deprecated-path-removal",
+                        "path": target,
+                        "replacement": rule.get("replacement", ""),
+                        "reason": rule.get("reason", ""),
+                    }
+                )
+                console.print(f"  [cyan]Removed deprecated path {target}[/cyan]")
 
         return changes
 
@@ -871,6 +928,9 @@ def main() -> int:
         ),
         fix_strategies=reconciliation_config.get("fix_strategies", {}),
         schema_renames=reconciliation_config.get("schema_renames", []),
+        deprecated_path_removals=reconciliation_config.get(
+            "deprecated_path_removals", []
+        ),
     )
 
     reconciler = SpecReconciler(

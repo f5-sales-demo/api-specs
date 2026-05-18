@@ -96,6 +96,10 @@ reconciliation:
       new_name: operateRouteRouteType
       file_pattern: "operate.route"
       reason: "ves.io.schema.operate.route.RouteType collides with ves.io.schema.route.RouteType"
+  deprecated_path_removals:
+    - path: "/api/config/namespaces/{namespace}/api_definitions/{name}/http_loadbalancers"
+      replacement: "/api/config/namespaces/{namespace}/api_definitions/{name}/loadbalancers"
+      reason: "DEPRECATED in source description — use GetReferencingLoadBalancers"
 
 # Report Generation
 reports:

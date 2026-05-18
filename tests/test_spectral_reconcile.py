@@ -383,3 +383,84 @@ class TestSchemaRename:
         }
         changes = reconciler._apply_schema_renames(spec, "anything.json")
         assert len(changes) == 0
+
+
+class TestDeprecatedMarkers:
+    """Tests for OAS3 deprecated marker enforcement and path removal."""
+
+    def test_marks_deprecated_from_description(self):
+        config = ReconciliationConfig()
+        reconciler = SpecReconciler(
+            original_dir=Path(),
+            output_dir=Path(),
+            config=config,
+        )
+        spec: dict = {
+            "paths": {
+                "/api/old": {
+                    "get": {
+                        "description": "DEPRECATED. Use /api/new instead.",
+                        "responses": {"200": {"description": "OK"}},
+                    },
+                },
+                "/api/current": {
+                    "get": {
+                        "description": "Active endpoint.",
+                        "responses": {"200": {"description": "OK"}},
+                    },
+                },
+            },
+        }
+        changes = reconciler._enforce_deprecated_markers(spec)
+        assert len(changes) == 1
+        assert spec["paths"]["/api/old"]["get"]["deprecated"] is True
+        assert "deprecated" not in spec["paths"]["/api/current"]["get"]
+
+    def test_removes_deprecated_path_from_config(self):
+        config = ReconciliationConfig(
+            deprecated_path_removals=[
+                {
+                    "path": "/api/old",
+                    "replacement": "/api/new",
+                    "reason": "Superseded",
+                },
+            ],
+        )
+        reconciler = SpecReconciler(
+            original_dir=Path(),
+            output_dir=Path(),
+            config=config,
+        )
+        spec: dict = {
+            "paths": {
+                "/api/old": {"get": {"description": "Old"}},
+                "/api/new": {"get": {"description": "New"}},
+            },
+        }
+        changes = reconciler._enforce_deprecated_markers(spec)
+        removal_changes = [
+            c for c in changes if c["action"] == "remove_deprecated_path"
+        ]
+        assert len(removal_changes) == 1
+        assert "/api/old" not in spec["paths"]
+        assert "/api/new" in spec["paths"]
+
+    def test_skips_already_deprecated(self):
+        config = ReconciliationConfig()
+        reconciler = SpecReconciler(
+            original_dir=Path(),
+            output_dir=Path(),
+            config=config,
+        )
+        spec: dict = {
+            "paths": {
+                "/api/old": {
+                    "get": {
+                        "description": "DEPRECATED.",
+                        "deprecated": True,
+                    },
+                },
+            },
+        }
+        changes = reconciler._enforce_deprecated_markers(spec)
+        assert len(changes) == 0

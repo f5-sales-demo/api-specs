@@ -114,6 +114,12 @@ jobs:
 
           echo "etag=${NEW_ETAG}" >> "${GITHUB_OUTPUT}"
 
+      - name: Transform specs to compliant OAS3
+        run: |
+          echo "Running OAS3 transform pipeline..."
+          python -m scripts.transform
+          echo "Transformed specs written to specs/transformed/"
+
       - name: Validate specs (dry run)
         if: inputs.skip_live_tests == true
         run: |

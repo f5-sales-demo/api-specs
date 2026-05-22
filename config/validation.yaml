@@ -131,7 +131,7 @@ spectral:
     oas3-valid-schema-example: true
     no-script-tags-in-markdown: true
   gate:
-    max_errors: null  # Phase 1: warn-only (set to 0 for Phase 2)
+    max_errors: 2  # 2 upstream oas3-valid-media-example errors in app_type spec (structural, needs custom fixer)
     max_warnings: null
   contact:
     name: "F5 Distributed Cloud"
@@ -149,3 +149,22 @@ spectral:
     in: "header"
     name: "Authorization"
     description: "F5 XC API Token (format: APIToken <token>)"
+
+# OAS3 Transform Pipeline Configuration
+transform:
+  output_dir: "specs/transformed"
+  enabled: true
+  transforms:
+    inject_info_version: true
+    inject_contact: true
+    inject_servers: true
+    inject_security_schemes: true
+    inject_operation_tags: true
+    deduplicate_operation_ids: true
+    strip_script_tags: true
+    fix_invalid_examples: true
+    rename_colliding_schemas: true
+    remove_deprecated_paths: true
+    mark_deprecated_operations: true
+    remove_unused_schemas: true
+    inject_operation_descriptions: true

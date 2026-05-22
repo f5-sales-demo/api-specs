@@ -207,7 +207,7 @@ def main() -> int:
 
     if args.mode == "discover":
         spec_dir = args.spec_dir or Path(
-            config.get("download", {}).get("output_dir", "specs/original")
+            config.get("transform", {}).get("output_dir", "specs/transformed")
         )
         output = args.output or Path("reports/spectral_report.json")
 

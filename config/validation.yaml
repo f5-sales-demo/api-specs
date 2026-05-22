@@ -131,7 +131,7 @@ spectral:
     oas3-valid-schema-example: true
     no-script-tags-in-markdown: true
   gate:
-    max_errors: 3  # upstream oas3-valid-media-example errors in app_type spec (structural, needs custom fixer)
+    max_errors: 0
     max_warnings: null
   contact:
     name: "F5 Distributed Cloud"

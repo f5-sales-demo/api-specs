@@ -9,6 +9,9 @@ rules:
   # f5-path-params function for accurate validation.
   path-params: "off"
 
+  # Downgraded: false positive on schema properties named "examples" with array items
+  oas3-valid-media-example: warn
+
   # Auto-fixable rules - keep enabled at warn for discovery
   operation-tags: warn
   oas3-api-servers: warn

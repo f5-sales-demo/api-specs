@@ -1,4 +1,4 @@
-.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update spectral-lint spectral-gate
+.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update spectral-lint spectral-gate transform
 
 PYTHON := python3
 VENV := .venv
@@ -71,6 +71,9 @@ spectral-lint:
 spectral-gate:
 	$(BIN)/python -m scripts.spectral_lint --mode gate
 
+transform:
+	$(BIN)/python -m scripts.transform
+
 release:
 	$(BIN)/python -m scripts.release
 
@@ -100,13 +103,13 @@ clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete 2>/dev/null || true
 
-all: download validate spectral-lint reconcile spectral-gate release
+all: download transform spectral-lint validate reconcile spectral-gate release
 	@echo "Full pipeline completed"
 
 # CI/CD targets
 ci-test: dev-install test lint typecheck
 
-ci-validate: install download validate spectral-lint reconcile spectral-gate release
+ci-validate: install download transform spectral-lint validate reconcile spectral-gate release
 
 # Documentation targets
 docs-generate:

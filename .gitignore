@@ -128,8 +128,10 @@ tsconfig.tsbuildinfo
 .direnv/
 /result
 
-# Workspace
+# Workspace (includes git worktree dirs for AI agents and bare-repo workflows)
 .worktrees/
+worktrees/
+.wt/
 .codex/
 playground/
 
@@ -143,6 +145,20 @@ docs/api-reference/
 .version
 .etag
 .github_release
+
+# Autoresearch session artifacts
+autoresearch.sh
+autoresearch.md
+autoresearch.program.md
+autoresearch.checks.sh
+autoresearch-loop.sh
+autoresearch.ideas.md
+autoresearch-queries.txt
+autoresearch.jsonl
+.autoresearch/
+
+# Session-resume files
+handoff.md
 
 # Union from xcsh fork (promoted 2026-04-19)
 .npm/
@@ -172,4 +188,5 @@ out.jsonl
 out.html
 pi-*.html
 packages/coding-agent/src/internal-urls/docs-index.generated.ts
+packages/coding-agent/src/internal-urls/build-info.generated.ts
 packages/typescript-edit-benchmark/runs/

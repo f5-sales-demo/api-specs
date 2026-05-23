@@ -1,7 +1,18 @@
 {
   "source_repo": "f5xc-salesdemos/docs-control",
   "skip_files": {
-    "xcsh": ["biome.json", "LICENSE", "CONTRIBUTING.md", "ruff.toml", ".ruff.toml", ".python-lint", ".mypy.ini"]
+    "xcsh": [
+      "biome.json",
+      "LICENSE",
+      "CONTRIBUTING.md",
+      "ruff.toml",
+      ".ruff.toml",
+      ".python-lint",
+      ".mypy.ini",
+      ".github/workflows/super-linter.yml"
+    ],
+    "api-specs": ["ruff.toml", ".ruff.toml", ".python-lint", ".mypy.ini"],
+    "api-specs-enriched": ["ruff.toml", ".ruff.toml", ".python-lint", ".mypy.ini"]
   },
   "protected_files": [
     ".github/workflows/github-pages-deploy.yml",

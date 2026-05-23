@@ -13,8 +13,13 @@ Never run `git commit`, `git push`, `gh pr create` directly.
 ```
 Agent(
   subagent_type="f5xc-github-ops:github-ops",
+  mode="bypassPermissions",
   prompt="<type>: <desc>\n\nFiles:\n- <list>\n\nWhy: <reason>"
 )
 ```
+
+`mode="bypassPermissions"` is required — without it, plan mode can
+re-engage mid-workflow and strip the agent's Bash access, leaving
+it stuck after the first step.
 
 See `CONTRIBUTING.md` for project rules.

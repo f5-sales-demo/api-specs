@@ -1,11 +1,8 @@
 ---
 rules:
-  # pull_request_target required for
-  # dependabot-auto-merge and require-linked-issue
-  pull-request-target:
-    disable: true
-  # We use version tags (@v6, @v8) for
-  # first-party GitHub actions, not SHAs
+  # SHA-pinning is enforced by convention and by ref-version-mismatch.
+  # This rule's heuristic flags some valid SHA pins; redundant with
+  # the stricter rule we already rely on.
   unpinned-uses:
     disable: true
   # Low-confidence finding;

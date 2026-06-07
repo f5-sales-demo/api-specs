@@ -1,0 +1,267 @@
+---
+title: เอกสารอ้างอิงการกำหนดค่า
+description: เอกสารอ้างอิงสำหรับไฟล์การกำหนดค่า validation.yaml และ endpoints.yaml
+i18n:
+  sourceHash: ca5e781b7000
+  translator: machine
+---
+
+พฤติกรรมทั้งหมดของ pipeline ถูกควบคุมโดยไฟล์ YAML สองไฟล์ใน `config/`
+
+## `config/validation.yaml`
+
+### การตั้งค่า API
+
+```yaml
+api:
+  base_url: "https://example-tenant.console.ves.volterra.io"
+  tenant: "example-tenant"
+  namespace: "example-namespace"
+  timeout: 30
+  retries: 3
+  retry_delay: 2
+```
+
+| ฟิลด์ | คำอธิบาย |
+|-------|-------------|
+| `base_url` | URL ฐานของ API คอนโซล F5 XC สามารถแทนที่ได้ด้วยตัวแปรสภาพแวดล้อม `F5XC_API_URL` |
+| `tenant` | ชื่อ tenant ที่ใช้ในเส้นทาง API |
+| `namespace` | namespace เริ่มต้นสำหรับการดำเนินการ CRUD |
+| `timeout` | ระยะหมดเวลาของคำขอ HTTP เป็นวินาที |
+| `retries` | จำนวนครั้งที่พยายามใหม่เมื่อเกิดข้อผิดพลาด |
+| `retry_delay` | จำนวนวินาทีระหว่างการพยายามใหม่แต่ละครั้ง |
+
+:::caution
+ค่า `base_url`, `tenant` และ `namespace` ใน `validation.yaml` เป็นค่าตัวยึดตำแหน่งทั่วไป คุณ**จำเป็นต้อง**กำหนดค่าเหล่านี้สำหรับสภาพแวดล้อมของคุณผ่านตัวแปรสภาพแวดล้อมก่อนรัน pipeline:
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_TENANT="example-tenant"
+export F5XC_NAMESPACE="example-namespace"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+ตัวแปรสภาพแวดล้อมจะมีความสำคัญเหนือกว่าค่าเริ่มต้นใน YAML ณ เวลาที่รัน
+:::
+
+### การตั้งค่าการดาวน์โหลด
+
+```yaml
+download:
+  url: "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
+  output_dir: "specs/original"
+  etag_cache: ".etag_cache"
+```
+
+| ฟิลด์ | คำอธิบาย |
+|-------|-------------|
+| `url` | URL ของชุด OpenAPI spec อย่างเป็นทางการของ F5 XC (ZIP) |
+| `output_dir` | ตำแหน่งที่เก็บ spec ที่แตกไฟล์แล้ว |
+| `etag_cache` | ไฟล์ที่เก็บ HTTP ETag สำหรับการดาวน์โหลดแบบมีเงื่อนไข |
+
+### หมวดหมู่การตรวจสอบความถูกต้อง
+
+สิบหมวดหมู่ที่สอดคล้องกับประเภทข้อจำกัดของ OpenAPI schema แต่ละหมวดหมู่สามารถเปิด/ปิดใช้งานได้อย่างอิสระ
+
+```yaml
+validation_categories:
+  string_length:
+    enabled: true
+    keywords: ["minLength", "maxLength"]
+    description: "Validate string length boundaries"
+```
+
+| หมวดหมู่ | คีย์เวิร์ด |
+|----------|----------|
+| `string_length` | `minLength`, `maxLength` |
+| `pattern` | `pattern` |
+| `numeric_bounds` | `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum` |
+| `required_fields` | `required` |
+| `enum_values` | `enum` |
+| `array_bounds` | `minItems`, `maxItems`, `uniqueItems` |
+| `object_structure` | `additionalProperties`, `properties`, `propertyNames` |
+| `composition` | `oneOf`, `anyOf`, `allOf` |
+| `dependencies` | `dependentRequired`, `dependentSchemas` |
+| `data_types` | `type`, `format` |
+
+### การตั้งค่า Schemathesis
+
+```yaml
+schemathesis:
+  enabled: true
+  max_examples: 100
+  hypothesis_phases:
+    - generate
+    - target
+  stateful_testing: true
+  base_url_override: null
+  auth_header: "Authorization"
+  auth_prefix: "APIToken"
+```
+
+| ฟิลด์ | คำอธิบาย |
+|-------|-------------|
+| `enabled` | สลับเปิด/ปิดการทดสอบ Schemathesis |
+| `max_examples` | จำนวนสูงสุดของกรณีทดสอบที่สร้างขึ้นต่อ operation หนึ่งรายการ |
+| `hypothesis_phases` | เฟสของ Hypothesis ที่จะรัน (`generate`, `target`) |
+| `stateful_testing` | เปิดใช้งานการทดสอบแบบ stateful ที่อิงตาม link ข้าม operation |
+| `base_url_override` | แทนที่ URL ฐานของ API สำหรับการทดสอบ `null` จะใช้ `api.base_url` |
+| `auth_header` | ชื่อ HTTP header สำหรับการยืนยันตัวตน |
+| `auth_prefix` | รูปแบบ prefix ของ token (คำขอจะถูกส่งในรูปแบบ `APIToken <token>`) |
+
+### การตั้งค่าการปรับปรุงแก้ไข (Reconciliation)
+
+```yaml
+reconciliation:
+  priority:
+    - existing
+    - discovery
+    - inferred
+  fix_strategies:
+    tighter_spec: "relax"
+    looser_spec: "tighten"
+    missing_constraint: "add"
+    extra_constraint: "remove"
+```
+
+| ฟิลด์ | คำอธิบาย |
+|-------|-------------|
+| `priority` | ลำดับความสำคัญเมื่อแหล่งข้อมูลหลายแหล่งไม่ตรงกัน |
+| `fix_strategies` | แมปประเภทความไม่สอดคล้องแต่ละแบบไปยังการดำเนินการแก้ไข ดู [การแก้ไขที่ดำเนินการ](/03-fixes-applied/) |
+
+### การตั้งค่า Spectral
+
+```yaml
+spectral:
+  enabled: true
+  ruleset: "spectral-pipeline.yaml"
+  auto_fix:
+    oas3-api-servers: true
+    info-contact: true
+    operation-tags: true
+    oas3-unused-component: true
+    operation-operationId-unique: true
+    oas3-valid-schema-example: true
+    no-script-tags-in-markdown: true
+  gate:
+    max_errors: null
+    max_warnings: null
+  contact:
+    name: "F5 Distributed Cloud"
+    url: "https://docs.cloud.f5.com"
+    email: "dana@example.com"
+  servers:
+    - url: "https://{tenant}.console.ves.volterra.io"
+      description: "F5 Distributed Cloud API"
+      variables:
+        tenant:
+          example-tenant"example-tenant"
+          description: "Your F5 XC tenant name"
+  security_scheme:
+    type: "apiKey"
+    in: "header"
+    name: "Authorization"
+    description: "F5 XC API Token (format: APIToken <token>)"
+```
+
+| ฟิลด์ | คำอธิบาย |
+|-------|-------------|
+| `enabled` | สลับเปิด/ปิดการตรวจสอบด้วย Spectral ทั้งหมด |
+| `ruleset` | ไฟล์การกำหนดค่า Spectral ที่จะใช้ (pipeline ใช้ `spectral-pipeline.yaml`) |
+| `auto_fix` | แมปชื่อกฎไปยังค่า boolean `true` หมายความว่า reconciler จะแก้ไขการละเมิด |
+| `gate.max_errors` | จำนวนข้อผิดพลาดสูงสุดที่อนุญาตในเกตหลังการปรับปรุงแก้ไข `null` จะปิดการตรวจสอบนี้ |
+| `gate.max_warnings` | จำนวนคำเตือนสูงสุดที่อนุญาต `null` จะปิดการตรวจสอบนี้ |
+| `contact` | ข้อมูลผู้ติดต่อที่จะแทรกลงใน `info.contact` โดยตัวแก้ไข `info-contact` |
+| `servers` | อาร์เรย์ servers ที่แทรกโดยตัวแก้ไข `oas3-api-servers` |
+| `security_scheme` | คำจำกัดความ security scheme ที่แทรกลงในทุก spec |
+
+### การตั้งค่ารายงาน
+
+```yaml
+reports:
+  output_dir: "reports"
+  formats:
+    - json
+    - html
+    - markdown
+  include_examples: true
+  max_examples_per_issue: 5
+```
+
+### การตั้งค่าการปล่อยเวอร์ชัน (Release)
+
+```yaml
+release:
+  output_dir: "release"
+  include_changelog: true
+  include_validation_report: true
+  version_from: "git"
+```
+
+| ฟิลด์ | คำอธิบาย |
+|-------|-------------|
+| `output_dir` | ไดเรกทอรีสำหรับ artifact ของการปล่อยเวอร์ชัน |
+| `include_changelog` | รวม `CHANGELOG.md` ในแพ็กเกจการปล่อยเวอร์ชัน |
+| `include_validation_report` | รวมรายงานการตรวจสอบความถูกต้องในแพ็กเกจการปล่อยเวอร์ชัน |
+| `version_from` | แหล่งที่มาของเวอร์ชัน `git` จะอนุมานเวอร์ชันจากวันที่ของ spec metadata + หมายเลข patch |
+
+## `config/endpoints.yaml`
+
+กำหนด endpoint พื้นฐานที่ใช้สำหรับการตรวจสอบความถูกต้องของ API แบบสด (live) แต่ละรายการจะแมปชื่อทรัพยากรเชิงตรรกะไปยังไฟล์ spec, กลุ่ม API และเส้นทาง CRUD ของมัน
+
+### โครงสร้าง Endpoint
+
+```yaml
+endpoints:
+  healthcheck:
+    resource: healthchecks
+    domain_file: docs-cloud-f5-com.0124.public.ves.io.schema.healthcheck.ves-swagger.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/healthchecks
+      read: GET /api/config/namespaces/{namespace}/healthchecks/{name}
+      list: GET /api/config/namespaces/{namespace}/healthchecks
+      update: PUT /api/config/namespaces/{namespace}/healthchecks/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/healthchecks/{name}
+    test_priority: high
+    description: "Health check configurations for origin monitoring"
+```
+
+| ฟิลด์ | คำอธิบาย |
+|-------|-------------|
+| `resource` | ชื่อทรัพยากร API (ใช้ในเส้นทาง URL) |
+| `domain_file` | ชื่อไฟล์ของ OpenAPI spec ใน `specs/original/` |
+| `api_group` | prefix กลุ่ม API (`config`, `web` เป็นต้น) |
+| `crud_operations` | HTTP method และเส้นทางสำหรับแต่ละ operation ของ CRUD |
+| `test_priority` | `high`, `medium` หรือ `low` -- ควบคุมลำดับการรันการทดสอบ |
+| `description` | คำอธิบายทรัพยากรที่อ่านเข้าใจได้ง่าย |
+
+### Endpoint พื้นฐานปัจจุบัน
+
+10 endpoint ครอบคลุม 3 โดเมน:
+
+| Endpoint | โดเมน | ลำดับความสำคัญ |
+|----------|--------|----------|
+| `healthcheck` | Virtual | high |
+| `origin_pool` | Virtual | high |
+| `app_firewall` | Virtual | high |
+| `service_policy` | Virtual | medium |
+| `api_definition` | API Security | high |
+| `api_discovery` | API Security | medium |
+| `api_groups` | API Security | medium |
+| `code_base_integration` | API Security | low |
+| `data_type` | Data Privacy | medium |
+| `sensitive_data_policy` | Data Privacy | medium |
+
+### การเพิ่ม Endpoint ใหม่
+
+หากต้องการเพิ่ม endpoint ใหม่สำหรับการตรวจสอบความถูกต้อง:
+
+1. ค้นหาชื่อไฟล์ spec ใน `specs/original/` (รูปแบบ: `docs-cloud-f5-com.NNNN.*.ves-swagger.json`)
+2. เพิ่มรายการภายใต้ `endpoints:` ตามโครงสร้างด้านบน
+3. เพิ่มการแมปไฟล์โดเมนภายใต้ `domain_files:` พร้อมหมายเลขลำดับความสำคัญ
+4. เพิ่มชื่อ endpoint ลงใน `test_order:` ในตำแหน่งที่ต้องการ
+
+:::tip
+เฟรมเวิร์กจะตรวจสอบความถูกต้องของ spec ทั้ง 268 ไฟล์ระหว่างการปรับปรุงแก้ไข โดยไม่คำนึงถึงสิ่งที่ระบุไว้ใน `endpoints.yaml` การกำหนดค่า endpoint จะควบคุมว่าทรัพยากรใดจะได้รับการทดสอบ API แบบสดด้วย Schemathesis
+:::

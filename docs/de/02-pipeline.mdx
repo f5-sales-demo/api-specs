@@ -1,0 +1,85 @@
+---
+title: Pipeline-Übersicht
+description: >-
+  Sechsstufige automatisierte Pipeline, die F5 XC OpenAPI-Spezifikationen
+  herunterlädt, validiert, lintet, abgleicht, prüft und veröffentlicht
+i18n:
+  sourceHash: 8b956cf69c75
+  translator: machine
+---
+
+Die Pipeline wird täglich um 6:00 Uhr UTC über GitHub Actions (`validate-and-release.yml`) sowie bei jedem Push auf `main` ausgeführt, der `scripts/`, `config/` oder `pyproject.toml` betrifft. Sie kann auch manuell ausgelöst werden, mit Optionen zum Erzwingen einer Veröffentlichung oder zum Überspringen von Live-API-Tests.
+
+## Pipeline-Stufen
+
+```
+ Download         Validate          Spectral Lint
+ ┌──────┐        ┌──────────┐      ┌─────────────┐
+ │ Fetch │───────▶│Schemathesis│────▶│  Discover   │
+ │ specs │        │Constraints│     │  violations │
+ └──────┘        └──────────┘      └─────────────┘
+                                          │
+                 Spectral Gate       Reconcile
+                ┌─────────────┐    ┌──────────┐
+                │  Enforce    │◀───│Apply fixes│
+                │  thresholds │    │to specs   │
+                └─────────────┘    └──────────┘
+                       │
+                    Release
+                 ┌──────────┐
+                 │  Package  │
+                 │  & tag    │
+                 └──────────┘
+```
+
+### 1. Download
+
+`scripts/download.py` lädt das offizielle F5 XC OpenAPI-Spezifikations-ZIP von `docs.cloud.f5.com` herunter. Es verwendet HTTP-ETag-Header für bedingte GET-Anfragen -- wenn sich das Upstream-Bundle nicht geändert hat, wird der Download übersprungen. Extrahierte JSON-Spezifikationen landen in `specs/original/`.
+
+### 2. Validierung
+
+`scripts/validate.py` orchestriert zwei Arten von Tests gegen die Live-F5-XC-API:
+
+- **Schemathesis** -- eigenschaftsbasiertes Testen, das zufällige gültige/ungültige Payloads gemäß der Spezifikation generiert und prüft, ob die API mit den Einschränkungen der Spezifikation übereinstimmt.
+- **Constraint-Validierung** -- gezielte Tests für alle 10 OpenAPI-Einschränkungskategorien (String-Länge, Muster, numerische Grenzen, Pflichtfelder, Enums, Array-Grenzen, Objektstruktur, Komposition, Abhängigkeiten, Datentypen).
+
+Diskrepanzen werden in `reports/validation_report.json` geschrieben.
+
+### 3. Spectral Lint (Discover)
+
+`scripts/spectral_lint.py --mode discover` führt die Spectral CLI gegen die Original-Spezifikationen unter Verwendung von `spectral-pipeline.yaml` aus. Dies findet OAS3-Qualitätsprobleme -- fehlende Server-Blöcke, fehlende Kontaktinformationen, nicht getaggte Operationen, ungenutzte Komponenten-Schemas, doppelte operationIds, ungültige Beispiele und Script-Tags in Beschreibungen.
+
+Verstöße werden in `Discrepancy`-Objekte konvertiert und in `reports/spectral_report.json` geschrieben. Siehe [Spectral-Regeln](/04-spectral-rules/) für den vollständigen Regelsatz.
+
+### 4. Abgleich
+
+`scripts/reconcile.py` konsumiert beide Report-Dateien und wendet Korrekturen auf jede Spezifikation an:
+
+- **Constraint-Korrekturen** passen Schema-Einschränkungen (lockern, verschärfen, hinzufügen, entfernen) basierend auf dem beobachteten API-Verhalten an. Siehe [Angewandte Korrekturen](/03-fixes-applied/).
+- **Spectral-Korrekturen** reichern Spezifikationen mit Servern, Kontaktinformationen, Tags, Sicherheitsmetadaten an und entfernen tote Komponenten.
+- **Sicherheitsmetadaten** werden immer injiziert, wenn die `security_scheme`-Konfiguration vorhanden ist, auch wenn Spectral dies nicht beanstandet hat.
+
+Korrigierte Spezifikationen werden in `release/specs/` geschrieben und vor dem Speichern mit `openapi-spec-validator` validiert. Wenn eine korrigierte Spezifikation die Validierung nicht besteht, wird das Original als Fallback verwendet.
+
+### 5. Spectral Gate
+
+`scripts/spectral_lint.py --mode gate` führt Spectral erneut gegen die abgeglichenen Spezifikationen in `release/specs/` aus. Das Gate prüft Fehler- und Warnungszähler gegen konfigurierbare Schwellenwerte (`spectral.gate.max_errors` und `spectral.gate.max_warnings` in `validation.yaml`).
+
+:::note
+Phase 1 (aktuell): Schwellenwerte sind `null` (nur Warnung). Setzen Sie `max_errors: 0`, um ein Null-Fehler-Gate durchzusetzen.
+:::
+
+### 6. Veröffentlichung
+
+`scripts/release.py` paketiert die abgeglichenen Spezifikationen in ein versioniertes ZIP-Archiv. Versionen verwenden das Format `YYYY.MM.DD-<patch>`, abgeleitet vom Metadaten-Datum der Upstream-Spezifikation. Die Veröffentlichung umfasst:
+
+- Einzelne Domain-Spezifikationsdateien (268 JSON-Dateien)
+- Eine zusammengeführte `openapi.json`, die alle Domains kombiniert
+- Ein `CHANGELOG.md` mit Auflistung jeder angewandten Korrektur
+- Eine `VALIDATION_REPORT.md`-Zusammenfassung
+
+Der CI-Job erstellt ein GitHub Release mit dem angehängten ZIP, getaggt als `v<version>`. Ein Content-Hash verhindert doppelte Veröffentlichungen, wenn sich nichts geändert hat.
+
+## Dokumentationsaktualisierung
+
+Ein paralleler CI-Job generiert `docs/01-validation-report.mdx` aus den Validierungsberichten mittels `scripts/generate_docs.py` und öffnet dann einen PR, wenn sich der Inhalt geändert hat.

@@ -1,0 +1,39 @@
+---
+title: Rapporto di Validazione
+description: Rapporto di validazione e correzione delle specifiche API F5 XC
+i18n:
+  sourceHash: a04f9047bb54
+  translator: machine
+---
+
+# Correzioni Applicate alle Specifiche API F5 XC
+
+Specifiche OpenAPI di F5 Distributed Cloud validate e riconciliate.
+
+Questo progetto valida le specifiche OpenAPI di F5 XC rispetto all'API live, identifica le discrepanze e applica automaticamente le correzioni per produrre file di specifiche corretti.
+
+*Ultimo aggiornamento: 2026-06-07 08:58 UTC*
+
+## Riepilogo
+
+- **File Modificati**: 0
+- **File Non Modificati**: 0
+- **Discrepanze Totali**: 0
+
+:::tip[Nessuna Modifica Necessaria]
+Tutte le specifiche corrispondono al comportamento dell'API live. Non è stata applicata alcuna modifica.
+:::
+
+## Strategie di Correzione
+
+| Strategia | Descrizione |
+|----------|-------------|
+| **Rilassata** | Il vincolo era troppo restrittivo - l'API accetta valori che la specifica rifiutava |
+| **Rafforzata** | Il vincolo era troppo permissivo - l'API rifiuta valori che la specifica accettava |
+| **Aggiunta** | Vincolo mancante scoperto tramite test dell'API |
+| **Rimossa** | Vincolo extra che l'API ignora |
+| **Aggiornata** | Schema aggiornato per corrispondere alla struttura di risposta dell'API |
+
+---
+
+*Questa pagina è generata automaticamente dalla [pipeline di validazione](https://github.com/f5xc-salesdemos/api-specs/actions).*

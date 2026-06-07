@@ -1,0 +1,194 @@
+---
+title: คู่มือการพัฒนา
+description: วิธีการตั้งค่า รัน ทดสอบ และมีส่วนร่วมในโปรเจกต์ F5 XC API Specs
+i18n:
+  sourceHash: 1dc0c369e7a0
+  translator: machine
+---
+
+## การตั้งค่า
+
+```bash
+# Clone และติดตั้ง dev dependencies
+git clone https://github.com/f5xc-salesdemos/api-specs.git
+cd api-specs
+make dev-install
+
+# ติดตั้ง Spectral CLI (จำเป็นสำหรับขั้นตอนการ linting)
+npm install -g @stoplight/spectral-cli
+```
+
+`make dev-install` จะสร้าง virtualenv ใน `.venv/` และติดตั้งโปรเจกต์พร้อม dev extras (pytest, ruff, mypy)
+
+### ตัวแปรสภาพแวดล้อม
+
+การตรวจสอบ API แบบสดต้องใช้:
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+หากไม่มีค่าเหล่านี้ `make validate` จะถอยกลับไปใช้โหมด dry-run
+
+## การรัน Pipeline
+
+### Pipeline แบบเต็ม
+
+```bash
+make all
+# รัน: download → validate → spectral-lint → reconcile → spectral-gate → release
+```
+
+### แต่ละขั้นตอน
+
+```bash
+make download        # ดึง specs จากต้นทาง
+make validate        # รันการทดสอบ API แบบสด (ต้องมี API token)
+make validate-dry    # Dry run (ไม่มีการเรียก API)
+make spectral-lint   # Spectral โหมด discover บน specs ต้นฉบับ
+make reconcile       # ใช้การแก้ไขจากรายงานทั้งสอง
+make spectral-gate   # Spectral quality gate บน specs ที่ปรับปรุงแล้ว
+make release         # สร้างแพ็กเกจ release
+```
+
+### เอกสาร
+
+```bash
+make docs-generate   # สร้าง docs/01-validation-report.mdx ใหม่จากรายงาน
+make docs            # สร้างเว็บไซต์เอกสารแบบเต็ม
+make docs-serve      # เซิร์ฟเวอร์พัฒนาแบบ local พร้อม hot reload
+```
+
+## การรันการทดสอบ
+
+```bash
+make test           # pytest พร้อม coverage
+make lint           # ruff check + format check
+make typecheck      # mypy type checking
+make ci-test        # ทั้งสามอย่าง (ใช้ใน CI)
+```
+
+Pre-commit hooks จะรันอัตโนมัติเมื่อ commit หากมีการติดตั้ง:
+
+```bash
+make pre-commit-install   # ติดตั้ง git hooks
+make pre-commit           # รัน hooks ทั้งหมดด้วยตนเอง
+```
+
+## โครงสร้างโปรเจกต์
+
+```
+scripts/
+  download.py           # ขั้นที่ 1: ดึง specs จาก F5
+  validate.py           # ขั้นที่ 2: การทดสอบ API แบบสด
+  spectral_lint.py      # ขั้นที่ 3/5: Spectral linting adapter
+  reconcile.py          # ขั้นที่ 4: ใช้การแก้ไขกับ specs
+  release.py            # ขั้นที่ 6: แพ็กเกจ release
+  generate_docs.py      # สร้าง MDX จากรายงาน
+  utils/
+    auth.py             # การยืนยันตัวตน F5 XC API
+    constraint_validator.py  # การทดสอบ constraint + ประเภท Discrepancy
+    report_generator.py      # การจัดรูปแบบรายงาน
+    schemathesis_runner.py   # การจัดการทดสอบ Schemathesis
+    spec_loader.py           # Spec I/O + การจัดรูปแบบ JSON
+
+config/
+  validation.yaml       # การกำหนดค่า Pipeline
+  endpoints.yaml        # Baseline endpoints สำหรับการทดสอบแบบสด
+
+spectral/
+  functions/
+    f5-path-params.js   # ฟังก์ชัน Spectral แบบกำหนดเอง
+
+docs/                   # เอกสาร Starlight MDX
+tests/                  # ชุดทดสอบ pytest
+release/specs/          # เอาต์พุต: ไฟล์ specs ที่ปรับปรุงแล้ว
+reports/                # เอาต์พุต: รายงานการตรวจสอบและ Spectral
+```
+
+## การเพิ่ม Fix Method ใหม่
+
+การเพิ่ม Spectral auto-fix ใหม่ให้กับ reconciler:
+
+1. **เพิ่ม rule** ใน `.spectral.yaml` พร้อมระดับความรุนแรงที่ต้องการ
+
+2. **เปิดใช้งาน auto-fix** ใน `config/validation.yaml` ภายใต้ `spectral.auto_fix`:
+   ```yaml
+   spectral:
+     auto_fix:
+       your-new-rule: true
+   ```
+
+3. **เพิ่ม fixer method** ใน `SpecReconciler` ในไฟล์ `scripts/reconcile.py`:
+   ```python
+   def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+       """Fix description."""
+       # Modify spec in place
+       # Return spec if changed, None if no change needed
+       return spec
+   ```
+
+4. **ลงทะเบียน** ใน `_apply_spectral_fix` dispatcher:
+   ```python
+   spectral_fixers = {
+       # ... existing fixers ...
+       "spectral:your-new-rule": self._fix_your_rule,
+   }
+   ```
+
+5. **เพิ่มการทดสอบ** ที่ครอบคลุม fix method ใหม่
+
+## การเพิ่ม Spectral Rule ใหม่
+
+การเพิ่ม Spectral rule แบบกำหนดเองพร้อมฟังก์ชัน JavaScript:
+
+1. สร้างฟังก์ชันในไฟล์ `spectral/functions/your-rule.js` โดย export ฟังก์ชัน default ที่รับ `(targetVal, options, context)` และคืนค่าอาร์เรย์ของอ็อบเจกต์ `{message, path}`
+
+2. ลงทะเบียนใน `spectral-pipeline.yaml`:
+   ```yaml
+   functions:
+     - f5-path-params
+     - your-rule
+
+   rules:
+     your-rule:
+       description: "What it checks"
+       message: "{{error}}"
+       severity: error
+       given: "$.paths[*]"
+       then:
+         function: your-rule
+   ```
+
+:::caution
+ฟังก์ชันแบบกำหนดเองใช้งานได้เฉพาะใน `spectral-pipeline.yaml` เท่านั้น อย่าเพิ่ม `functionsDir` หรือ `functions` ใน `.spectral.yaml` -- การกำหนดค่านั้นต้องเข้ากันได้กับ Super-Linter และเครื่องมือภายนอกอื่นๆ
+:::
+
+## CI Pipeline
+
+GitHub Actions workflow (`validate-and-release.yml`) ทำงานเมื่อ:
+
+- **กำหนดเวลา**: ทุกวันเวลา 6 AM UTC
+- **Push ไปยัง main**: เมื่อ `scripts/`, `config/`, หรือ `pyproject.toml` มีการเปลี่ยนแปลง
+- **การเรียกใช้ด้วยตนเอง**: พร้อมตัวเลือกสำหรับ forced release หรือ dry-run
+
+Workflow มีสี่งาน:
+
+1. **validate** -- ดาวน์โหลด specs, รันการตรวจสอบ, Spectral lint, reconcile, Spectral gate
+2. **check-release-needed** -- เปรียบเทียบ content hashes เพื่อตัดสินใจว่าจำเป็นต้อง release หรือไม่
+3. **release** -- แพ็กเกจและสร้าง GitHub Release (เฉพาะเมื่อเนื้อหามีการเปลี่ยนแปลง)
+4. **update-docs** -- สร้าง `01-validation-report.mdx` ใหม่และเปิด PR หากมีการเปลี่ยนแปลง
+
+งาน **notify** จะสร้าง GitHub issue หากงานใดล้มเหลว
+
+## ขั้นตอนการทำงาน Branch และ PR
+
+การเปลี่ยนแปลงทั้งหมดเป็นไปตาม: **Issue -> Branch -> PR -> CI ผ่าน -> Merge**
+
+- ชื่อ branch: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`
+- PR ต้องเชื่อมโยงกับ issue (`Closes #N` ในคำอธิบาย)
+- การตรวจสอบ CI ที่จำเป็น: `Check linked issues` และ `Lint Code Base`
+- แนะนำให้ใช้ squash merge; branch จะถูกลบอัตโนมัติหลัง merge
+
+ดู `CONTRIBUTING.md` สำหรับกฎขั้นตอนการทำงานฉบับสมบูรณ์

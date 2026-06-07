@@ -1,0 +1,161 @@
+---
+title: アップストリーム仕様に適用される修正
+description: リコンシリエーションエンジンがF5 XC OpenAPI仕様に適用するすべての修正の完全なリファレンス
+i18n:
+  sourceHash: d33e60c0fb4a
+  translator: machine
+---
+
+リコンサイラー（`scripts/reconcile.py`）は、アップストリーム仕様に4つのカテゴリの修正を適用します。制約の修正は、観測された動作に合わせてAPIコントラクトを変更します。その他のすべての修正はメタデータのみであり、APIコントラクトを変更しません。
+
+## 制約の修正
+
+これらの修正は、仕様がライブAPIが実際に適用している内容と一致するように、OpenAPIスキーマの制約を調整します。各修正は、[バリデーション](/02-pipeline/#2-validate)中に生成された`Discrepancy`オブジェクトによって駆動されます。
+
+| 戦略 | トリガー | 動作内容 | コントラクト変更 |
+|----------|---------|--------------|-----------------|
+| **Relax** | `SPEC_STRICTER` | 仕様がAPIが受け入れる値を拒否する。`minLength`/`minimum`を下げ、`maxLength`/`maximum`を上げ、不足しているenum値を追加する。 | あり -- 受け入れる値を拡大 |
+| **Tighten** | `SPEC_LOOSER` | 仕様がAPIが拒否する値を受け入れる。`minLength`/`minimum`を上げ、`maxLength`/`maximum`を下げ、enumを観測された値に制限する。 | あり -- 受け入れる値を縮小 |
+| **Add** | `MISSING_CONSTRAINT` | APIが仕様に文書化されていない制約を適用している。スキーマに制約を追加する。 | あり -- 新しい制約を追加 |
+| **Remove** | `EXTRA_CONSTRAINT` | 仕様がAPIが無視する制約を宣言している。スキーマから制約を削除する。 | あり -- 制約を削除 |
+
+:::caution
+制約の修正はAPIコントラクトを変更します。これらはライブAPIに対するSchemathesisまたは制約バリデーションテストからのエビデンスに裏付けられた場合にのみ適用されます。
+:::
+
+### サポートされる制約タイプ
+
+テストおよび修正される10のOpenAPI制約カテゴリ：
+
+- **文字列長** -- `minLength`、`maxLength`
+- **パターン** -- `pattern`（正規表現）
+- **数値範囲** -- `minimum`、`maximum`、`exclusiveMinimum`、`exclusiveMaximum`
+- **必須フィールド** -- `required`
+- **列挙値** -- `enum`
+- **配列範囲** -- `minItems`、`maxItems`、`uniqueItems`
+- **オブジェクト構造** -- `additionalProperties`、`properties`、`propertyNames`
+- **コンポジション** -- `oneOf`、`anyOf`、`allOf`
+- **依存関係** -- `dependentRequired`、`dependentSchemas`
+- **データ型** -- `type`、`format`
+
+## Spectralエンリッチメント
+
+これらの修正は、[Spectralリンティング](/04-spectral-rules/)で検出されたOAS3品質の問題に対処します。API動作を変更せずにメタデータを追加または修正します。
+
+### サーバーブロックの注入
+
+**ルール**: `oas3-api-servers` | **コントラクト変更**: なし
+
+`servers`ブロックが欠落している仕様にF5 XCテナントURLテンプレートを追加します：
+
+```json
+"servers": [{
+  "url": "https://{tenant}.console.ves.volterra.io",
+  "description": "F5 Distributed Cloud API",
+  "variables": {
+    "tenant": {
+      "default": "example-tenant",
+      "description": "Your F5 XC tenant name"
+    }
+  }
+}]
+```
+
+サーバーURLと変数の値は、[validation.yaml](/05-configuration/)の`spectral.servers`から取得されます。
+
+### コンタクト情報の注入
+
+**ルール**: `info-contact` | **コントラクト変更**: なし
+
+コンタクト情報が欠落している仕様の`info.contact`にコンタクト情報を追加します：
+
+```json
+"contact": {
+  "name": "F5 Distributed Cloud",
+  "url": "https://docs.cloud.f5.com",
+  "email": "dana@example.com"
+}
+```
+
+値は[validation.yaml](/05-configuration/)の`spectral.contact`から取得されます。
+
+### オペレーションタグの導出
+
+**ルール**: `operation-tags` | **コントラクト変更**: なし
+
+タグが付けられていないオペレーションに対して、URLパスプレフィックスからタグを導出します。`/api/config/namespaces/{namespace}/healthchecks`のようなパスの場合、タグは`config`（2番目の非パラメータセグメント）になります。タグはオペレーションの`tags`配列と仕様レベルの`tags`リストの両方に追加されます。
+
+### 未使用コンポーネントの削除
+
+**ルール**: `oas3-unused-component` | **コントラクト変更**: なし
+
+仕様内のどこからも参照されていない`components.schemas`のコンポーネントスキーマを削除します。オペレーションに影響を与えずに仕様のサイズを削減します。
+
+### OperationIdの重複排除
+
+**ルール**: `operation-operationId-unique` | **コントラクト変更**: なし
+
+複数のオペレーションが同じ`operationId`を共有している場合、HTTPメソッドをサフィックスとして追加します（例：`ListItems_get`）。これにより、コードジェネレータ向けに各operationIdが一意になります。
+
+### 無効なExample/Defaultの削除
+
+**ルール**: `oas3-valid-schema-example` | **コントラクト変更**: なし
+
+値がスキーマ自体の制約に適合しない場合（型の不一致、範囲外など）、スキーマから`example`または`default`の値を削除します。コードジェネレータが無効なサンプルペイロードを生成することを防ぎます。
+
+### Scriptタグの除去
+
+**ルール**: `no-script-tags-in-markdown` | **コントラクト変更**: なし
+
+正規表現置換を使用して`description`フィールドから`<script>`タグを除去します。一部のアップストリーム仕様には、ドキュメントレンダラーを破壊する注入されたscriptタグが含まれています。
+
+## セキュリティメタデータ
+
+**コントラクト変更**: なし（ドキュメントのみ）
+
+すべての仕様は、まだ存在しない場合に`apiKeyAuth`セキュリティスキームを受け取ります。これはSpectralがフラグを立てたかどうかに関係なく、常に注入されます。
+
+```json
+"components": {
+  "securitySchemes": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "F5 XC API Token (format: APIToken <token>)"
+    }
+  }
+},
+"security": [{ "apiKeyAuth": [] }]
+```
+
+スキーム定義は[validation.yaml](/05-configuration/)の`spectral.security_scheme`から取得されます。これはAPIコンシューマに認証方法を伝えますが、ランタイムの動作は変更しません。
+
+## JSONフォーマッティング
+
+**コントラクト変更**: なし
+
+すべての出力JSONの仕様は、Biome互換の配列コンパクター（`scripts/utils/spec_loader.py`の`_compact_short_arrays`）を通過します。120文字以内に収まる短い配列は1行に折りたたまれます：
+
+```json
+// Before
+"enum": [
+  "ACTIVE",
+  "INACTIVE"
+]
+
+// After
+"enum": ["ACTIVE", "INACTIVE"]
+```
+
+行長のしきい値を超える配列は複数行のままになります。
+
+## 修正の優先順位
+
+複数の修正戦略が適用可能な場合、リコンサイラーは`reconciliation.priority`で設定された優先順位を使用します：
+
+1. **existing** -- 既存の仕様の制約が有効な場合はそれを使用
+2. **discovery** -- 発見されたライブAPIの動作を使用
+3. **inferred** -- 類似のエンドポイント間のパターンから推論
+
+すべての修正が適用された後、修正済みの仕様は`openapi-spec-validator`でバリデーションされます。バリデーションが失敗した場合、元の仕様がフォールバックとして使用され、修正はエラーとしてログに記録されます。

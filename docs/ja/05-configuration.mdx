@@ -1,0 +1,267 @@
+---
+title: 設定リファレンス
+description: validation.yaml および endpoints.yaml 設定ファイルのリファレンス
+i18n:
+  sourceHash: ca5e781b7000
+  translator: machine
+---
+
+すべてのパイプラインの動作は、`config/` 内の2つのYAMLファイルによって制御されます。
+
+## `config/validation.yaml`
+
+### API設定
+
+```yaml
+api:
+  base_url: "https://example-tenant.console.ves.volterra.io"
+  tenant: "example-tenant"
+  namespace: "example-namespace"
+  timeout: 30
+  retries: 3
+  retry_delay: 2
+```
+
+| フィールド | 説明 |
+|-------|-------------|
+| `base_url` | F5 XCコンソールAPIのベースURL。`F5XC_API_URL` 環境変数で上書き可能。 |
+| `tenant` | APIパスで使用されるテナント名。 |
+| `namespace` | CRUD操作のデフォルトネームスペース。 |
+| `timeout` | HTTPリクエストのタイムアウト（秒）。 |
+| `retries` | 失敗時のリトライ回数。 |
+| `retry_delay` | リトライ間の秒数。 |
+
+:::caution
+`validation.yaml` の `base_url`、`tenant`、`namespace` の値は汎用的なプレースホルダーです。パイプラインを実行する前に、環境変数を使用してお使いの環境に合わせて**必ず**設定してください：
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_TENANT="example-tenant"
+export F5XC_NAMESPACE="example-namespace"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+環境変数は実行時にYAMLのデフォルト値よりも優先されます。
+:::
+
+### ダウンロード設定
+
+```yaml
+download:
+  url: "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
+  output_dir: "specs/original"
+  etag_cache: ".etag_cache"
+```
+
+| フィールド | 説明 |
+|-------|-------------|
+| `url` | 公式F5 XC OpenAPIスペックバンドル（ZIP）のURL。 |
+| `output_dir` | 展開されたスペックの保存先。 |
+| `etag_cache` | 条件付きダウンロード用のHTTP ETagを保存するファイル。 |
+
+### バリデーションカテゴリ
+
+OpenAPIスキーマの制約タイプに対応する10のカテゴリ。それぞれ個別に有効/無効を切り替えることができます。
+
+```yaml
+validation_categories:
+  string_length:
+    enabled: true
+    keywords: ["minLength", "maxLength"]
+    description: "Validate string length boundaries"
+```
+
+| カテゴリ | キーワード |
+|----------|----------|
+| `string_length` | `minLength`, `maxLength` |
+| `pattern` | `pattern` |
+| `numeric_bounds` | `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum` |
+| `required_fields` | `required` |
+| `enum_values` | `enum` |
+| `array_bounds` | `minItems`, `maxItems`, `uniqueItems` |
+| `object_structure` | `additionalProperties`, `properties`, `propertyNames` |
+| `composition` | `oneOf`, `anyOf`, `allOf` |
+| `dependencies` | `dependentRequired`, `dependentSchemas` |
+| `data_types` | `type`, `format` |
+
+### Schemathesis設定
+
+```yaml
+schemathesis:
+  enabled: true
+  max_examples: 100
+  hypothesis_phases:
+    - generate
+    - target
+  stateful_testing: true
+  base_url_override: null
+  auth_header: "Authorization"
+  auth_prefix: "APIToken"
+```
+
+| フィールド | 説明 |
+|-------|-------------|
+| `enabled` | Schemathesisテストの有効/無効を切り替え。 |
+| `max_examples` | オペレーションごとに生成されるテストケースの最大数。 |
+| `hypothesis_phases` | 実行するHypothesisフェーズ（`generate`、`target`）。 |
+| `stateful_testing` | オペレーション間のリンクベースのステートフルテストを有効化。 |
+| `base_url_override` | テスト用のAPIベースURLを上書き。`null` の場合は `api.base_url` を使用。 |
+| `auth_header` | 認証用のHTTPヘッダー名。 |
+| `auth_prefix` | トークンプレフィックスの形式（リクエストは `APIToken <token>` として送信）。 |
+
+### リコンシリエーション設定
+
+```yaml
+reconciliation:
+  priority:
+    - existing
+    - discovery
+    - inferred
+  fix_strategies:
+    tighter_spec: "relax"
+    looser_spec: "tighten"
+    missing_constraint: "add"
+    extra_constraint: "remove"
+```
+
+| フィールド | 説明 |
+|-------|-------------|
+| `priority` | 複数のデータソースが一致しない場合の優先順位。 |
+| `fix_strategies` | 各不一致タイプを修正アクションにマッピング。[適用される修正](/03-fixes-applied/)を参照。 |
+
+### Spectral設定
+
+```yaml
+spectral:
+  enabled: true
+  ruleset: "spectral-pipeline.yaml"
+  auto_fix:
+    oas3-api-servers: true
+    info-contact: true
+    operation-tags: true
+    oas3-unused-component: true
+    operation-operationId-unique: true
+    oas3-valid-schema-example: true
+    no-script-tags-in-markdown: true
+  gate:
+    max_errors: null
+    max_warnings: null
+  contact:
+    name: "F5 Distributed Cloud"
+    url: "https://docs.cloud.f5.com"
+    email: "dana@example.com"
+  servers:
+    - url: "https://{tenant}.console.ves.volterra.io"
+      description: "F5 Distributed Cloud API"
+      variables:
+        tenant:
+          example-tenant"example-tenant"
+          description: "Your F5 XC tenant name"
+  security_scheme:
+    type: "apiKey"
+    in: "header"
+    name: "Authorization"
+    description: "F5 XC API Token (format: APIToken <token>)"
+```
+
+| フィールド | 説明 |
+|-------|-------------|
+| `enabled` | Spectralリンティング全体の有効/無効を切り替え。 |
+| `ruleset` | 使用するSpectral設定ファイル（パイプラインは `spectral-pipeline.yaml` を使用）。 |
+| `auto_fix` | ルール名からブール値へのマップ。`true` の場合、リコンサイラーが違反を修正。 |
+| `gate.max_errors` | リコンシリエーション後のゲートで許容される最大エラー数。`null` でチェックを無効化。 |
+| `gate.max_warnings` | 許容される最大警告数。`null` でチェックを無効化。 |
+| `contact` | `info-contact` フィクサーによって `info.contact` に挿入される連絡先情報。 |
+| `servers` | `oas3-api-servers` フィクサーによって挿入されるサーバー配列。 |
+| `security_scheme` | すべてのスペックに挿入されるセキュリティスキーム定義。 |
+
+### レポート設定
+
+```yaml
+reports:
+  output_dir: "reports"
+  formats:
+    - json
+    - html
+    - markdown
+  include_examples: true
+  max_examples_per_issue: 5
+```
+
+### リリース設定
+
+```yaml
+release:
+  output_dir: "release"
+  include_changelog: true
+  include_validation_report: true
+  version_from: "git"
+```
+
+| フィールド | 説明 |
+|-------|-------------|
+| `output_dir` | リリースアーティファクトのディレクトリ。 |
+| `include_changelog` | リリースパッケージに `CHANGELOG.md` を含める。 |
+| `include_validation_report` | リリースパッケージにバリデーションレポートを含める。 |
+| `version_from` | バージョンのソース。`git` はスペックのメタデータ日付 + パッチ番号からバージョンを導出。 |
+
+## `config/endpoints.yaml`
+
+ライブAPIバリデーションに使用されるベースラインエンドポイントを定義します。各エントリは論理リソース名をスペックファイル、APIグループ、およびCRUDパスにマッピングします。
+
+### エンドポイントの構造
+
+```yaml
+endpoints:
+  healthcheck:
+    resource: healthchecks
+    domain_file: docs-cloud-f5-com.0124.public.ves.io.schema.healthcheck.ves-swagger.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/healthchecks
+      read: GET /api/config/namespaces/{namespace}/healthchecks/{name}
+      list: GET /api/config/namespaces/{namespace}/healthchecks
+      update: PUT /api/config/namespaces/{namespace}/healthchecks/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/healthchecks/{name}
+    test_priority: high
+    description: "Health check configurations for origin monitoring"
+```
+
+| フィールド | 説明 |
+|-------|-------------|
+| `resource` | APIリソース名（URLパスで使用）。 |
+| `domain_file` | `specs/original/` 内のOpenAPIスペックのファイル名。 |
+| `api_group` | APIグループのプレフィックス（`config`、`web` など）。 |
+| `crud_operations` | 各CRUD操作のHTTPメソッドとパス。 |
+| `test_priority` | `high`、`medium`、または `low` -- テスト実行の優先順位を制御。 |
+| `description` | リソースの人間が読める説明。 |
+
+### 現在のベースラインエンドポイント
+
+3つのドメインにわたる10のエンドポイント：
+
+| エンドポイント | ドメイン | 優先度 |
+|----------|--------|----------|
+| `healthcheck` | Virtual | high |
+| `origin_pool` | Virtual | high |
+| `app_firewall` | Virtual | high |
+| `service_policy` | Virtual | medium |
+| `api_definition` | API Security | high |
+| `api_discovery` | API Security | medium |
+| `api_groups` | API Security | medium |
+| `code_base_integration` | API Security | low |
+| `data_type` | Data Privacy | medium |
+| `sensitive_data_policy` | Data Privacy | medium |
+
+### 新しいエンドポイントの追加
+
+バリデーション用の新しいエンドポイントを追加するには：
+
+1. `specs/original/` でスペックのファイル名を見つけます（形式：`docs-cloud-f5-com.NNNN.*.ves-swagger.json`）
+2. 上記の構造に従って `endpoints:` の下にエントリを追加します
+3. `domain_files:` の下に優先度番号付きでドメインファイルのマッピングを追加します
+4. 希望する位置の `test_order:` にエンドポイント名を追加します
+
+:::tip
+フレームワークは `endpoints.yaml` に記載されている内容に関係なく、リコンシリエーション中に全268スペックをバリデーションします。エンドポイント設定は、SchemathesisによるライブAPIテストの対象となるリソースを制御します。
+:::

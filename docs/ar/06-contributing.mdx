@@ -1,0 +1,194 @@
+---
+title: دليل التطوير
+description: كيفية إعداد مشروع F5 XC API Specs وتشغيله واختباره والمساهمة فيه
+i18n:
+  sourceHash: 1dc0c369e7a0
+  translator: machine
+---
+
+## الإعداد
+
+```bash
+# Clone and install dev dependencies
+git clone https://github.com/f5xc-salesdemos/api-specs.git
+cd api-specs
+make dev-install
+
+# Install Spectral CLI (required for linting stages)
+npm install -g @stoplight/spectral-cli
+```
+
+يقوم `make dev-install` بإنشاء بيئة افتراضية في `.venv/` ويثبّت المشروع مع الحزم الإضافية للتطوير (pytest، ruff، mypy).
+
+### متغيرات البيئة
+
+يتطلب التحقق المباشر من واجهة برمجة التطبيقات:
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+بدون هذه المتغيرات، يعود `make validate` إلى وضع التشغيل الجاف.
+
+## تشغيل خط الأنابيب
+
+### خط الأنابيب الكامل
+
+```bash
+make all
+# Runs: download → validate → spectral-lint → reconcile → spectral-gate → release
+```
+
+### المراحل الفردية
+
+```bash
+make download        # Fetch upstream specs
+make validate        # Run live API tests (requires API token)
+make validate-dry    # Dry run (no API calls)
+make spectral-lint   # Spectral discover mode on original specs
+make reconcile       # Apply fixes from both reports
+make spectral-gate   # Spectral quality gate on reconciled specs
+make release         # Build release package
+```
+
+### التوثيق
+
+```bash
+make docs-generate   # Regenerate docs/01-validation-report.mdx from reports
+make docs            # Build full documentation site
+make docs-serve      # Local dev server with hot reload
+```
+
+## تشغيل الاختبارات
+
+```bash
+make test           # pytest with coverage
+make lint           # ruff check + format check
+make typecheck      # mypy type checking
+make ci-test        # All three (used in CI)
+```
+
+تعمل خطافات ما قبل الإيداع (pre-commit hooks) تلقائياً عند الإيداع إذا كانت مثبّتة:
+
+```bash
+make pre-commit-install   # Install git hooks
+make pre-commit           # Run all hooks manually
+```
+
+## هيكل المشروع
+
+```
+scripts/
+  download.py           # Stage 1: Fetch specs from F5
+  validate.py           # Stage 2: Live API testing
+  spectral_lint.py      # Stage 3/5: Spectral linting adapter
+  reconcile.py          # Stage 4: Apply fixes to specs
+  release.py            # Stage 6: Package release
+  generate_docs.py      # Generate MDX from reports
+  utils/
+    auth.py             # F5 XC API authentication
+    constraint_validator.py  # Constraint testing + Discrepancy types
+    report_generator.py      # Report formatting
+    schemathesis_runner.py   # Schemathesis test orchestration
+    spec_loader.py           # Spec I/O + JSON formatting
+
+config/
+  validation.yaml       # Pipeline configuration
+  endpoints.yaml        # Baseline endpoints for live testing
+
+spectral/
+  functions/
+    f5-path-params.js   # Custom Spectral function
+
+docs/                   # Starlight MDX documentation
+tests/                  # pytest test suite
+release/specs/          # Output: reconciled spec files
+reports/                # Output: validation and Spectral reports
+```
+
+## إضافة طريقة إصلاح جديدة
+
+لإضافة إصلاح تلقائي جديد لـ Spectral إلى المُوفِّق (reconciler):
+
+1. **أضف القاعدة** إلى `.spectral.yaml` مع مستوى الخطورة المطلوب.
+
+2. **فعّل الإصلاح التلقائي** في `config/validation.yaml` تحت `spectral.auto_fix`:
+   ```yaml
+   spectral:
+     auto_fix:
+       your-new-rule: true
+   ```
+
+3. **أضف طريقة الإصلاح** إلى `SpecReconciler` في `scripts/reconcile.py`:
+   ```python
+   def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+       """Fix description."""
+       # Modify spec in place
+       # Return spec if changed, None if no change needed
+       return spec
+   ```
+
+4. **سجّلها** في موزّع `_apply_spectral_fix`:
+   ```python
+   spectral_fixers = {
+       # ... existing fixers ...
+       "spectral:your-new-rule": self._fix_your_rule,
+   }
+   ```
+
+5. **أضف اختبارات** تغطي طريقة الإصلاح الجديدة.
+
+## إضافة قاعدة Spectral جديدة
+
+لإضافة قاعدة Spectral مخصصة مع دالة JavaScript:
+
+1. أنشئ الدالة في `spectral/functions/your-rule.js`. قم بتصدير دالة افتراضية تستقبل `(targetVal, options, context)` وتُرجع مصفوفة من كائنات `{message, path}`.
+
+2. سجّلها في `spectral-pipeline.yaml`:
+   ```yaml
+   functions:
+     - f5-path-params
+     - your-rule
+
+   rules:
+     your-rule:
+       description: "What it checks"
+       message: "{{error}}"
+       severity: error
+       given: "$.paths[*]"
+       then:
+         function: your-rule
+   ```
+
+:::caution
+تعمل الدوال المخصصة فقط في `spectral-pipeline.yaml`. لا تُضف `functionsDir` أو `functions` إلى `.spectral.yaml` -- يجب أن يبقى هذا التكوين متوافقاً مع Super-Linter والأدوات الخارجية الأخرى.
+:::
+
+## خط أنابيب التكامل المستمر (CI)
+
+يعمل سير عمل GitHub Actions (`validate-and-release.yml`) عند:
+
+- **الجدولة**: يومياً في الساعة 6 صباحاً بالتوقيت العالمي (UTC)
+- **الدفع إلى main**: عند تغيير `scripts/` أو `config/` أو `pyproject.toml`
+- **التشغيل اليدوي**: مع خيارات لفرض الإصدار أو التشغيل الجاف
+
+يتضمن سير العمل أربع مهام:
+
+1. **validate** -- تنزيل المواصفات، تشغيل التحقق، فحص Spectral، المُوفَقة، بوابة جودة Spectral
+2. **check-release-needed** -- مقارنة تجزئات المحتوى لتحديد ما إذا كان الإصدار مبرراً
+3. **release** -- تجميع وإنشاء إصدار GitHub (فقط إذا تغيّر المحتوى)
+4. **update-docs** -- إعادة إنشاء `01-validation-report.mdx` وفتح طلب سحب (PR) إذا تغيّر
+
+تقوم مهمة **notify** بإنشاء مشكلة (issue) على GitHub إذا فشلت أي مهمة.
+
+## سير عمل الفروع وطلبات السحب
+
+تتبع جميع التغييرات المسار: **مشكلة -> فرع -> طلب سحب -> نجاح التكامل المستمر -> دمج**.
+
+- أسماء الفروع: `feature/<issue>-desc`، `fix/<issue>-desc`، `docs/<issue>-desc`
+- يجب أن تربط طلبات السحب بمشكلة (`Closes #N` في الوصف)
+- فحوصات التكامل المستمر المطلوبة: `Check linked issues` و `Lint Code Base`
+- يُفضّل الدمج بالضغط (squash merge)؛ تُحذف الفروع تلقائياً بعد الدمج
+
+راجع `CONTRIBUTING.md` للاطلاع على قواعد سير العمل الكاملة.

@@ -1,0 +1,194 @@
+---
+title: 开发指南
+description: 如何设置、运行、测试以及为 F5 XC API Specs 项目做贡献
+i18n:
+  sourceHash: 1dc0c369e7a0
+  translator: machine
+---
+
+## 环境搭建
+
+```bash
+# 克隆仓库并安装开发依赖
+git clone https://github.com/f5xc-salesdemos/api-specs.git
+cd api-specs
+make dev-install
+
+# 安装 Spectral CLI（lint 阶段必需）
+npm install -g @stoplight/spectral-cli
+```
+
+`make dev-install` 会在 `.venv/` 中创建虚拟环境，并安装包含开发扩展（pytest、ruff、mypy）的项目。
+
+### 环境变量
+
+实时 API 验证需要以下环境变量：
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+如果未设置这些变量，`make validate` 将回退到干运行模式。
+
+## 运行流水线
+
+### 完整流水线
+
+```bash
+make all
+# 运行：download → validate → spectral-lint → reconcile → spectral-gate → release
+```
+
+### 单独阶段
+
+```bash
+make download        # 获取上游规范
+make validate        # 运行实时 API 测试（需要 API 令牌）
+make validate-dry    # 干运行（不进行 API 调用）
+make spectral-lint   # 在原始规范上运行 Spectral 发现模式
+make reconcile       # 应用两份报告中的修复
+make spectral-gate   # 在修复后的规范上运行 Spectral 质量门禁
+make release         # 构建发布包
+```
+
+### 文档
+
+```bash
+make docs-generate   # 从报告重新生成 docs/01-validation-report.mdx
+make docs            # 构建完整文档站点
+make docs-serve      # 支持热重载的本地开发服务器
+```
+
+## 运行测试
+
+```bash
+make test           # 带覆盖率的 pytest
+make lint           # ruff 检查 + 格式检查
+make typecheck      # mypy 类型检查
+make ci-test        # 以上三项全部运行（用于 CI）
+```
+
+如果已安装，pre-commit 钩子会在提交时自动运行：
+
+```bash
+make pre-commit-install   # 安装 git 钩子
+make pre-commit           # 手动运行所有钩子
+```
+
+## 项目结构
+
+```
+scripts/
+  download.py           # 阶段 1：从 F5 获取规范
+  validate.py           # 阶段 2：实时 API 测试
+  spectral_lint.py      # 阶段 3/5：Spectral lint 适配器
+  reconcile.py          # 阶段 4：将修复应用到规范
+  release.py            # 阶段 6：打包发布
+  generate_docs.py      # 从报告生成 MDX
+  utils/
+    auth.py             # F5 XC API 认证
+    constraint_validator.py  # 约束测试 + 差异类型
+    report_generator.py      # 报告格式化
+    schemathesis_runner.py   # Schemathesis 测试编排
+    spec_loader.py           # 规范 I/O + JSON 格式化
+
+config/
+  validation.yaml       # 流水线配置
+  endpoints.yaml        # 实时测试的基线端点
+
+spectral/
+  functions/
+    f5-path-params.js   # 自定义 Spectral 函数
+
+docs/                   # Starlight MDX 文档
+tests/                  # pytest 测试套件
+release/specs/          # 输出：修复后的规范文件
+reports/                # 输出：验证和 Spectral 报告
+```
+
+## 添加新的修复方法
+
+要向协调器添加新的 Spectral 自动修复：
+
+1. **添加规则**到 `.spectral.yaml`，并设置所需的严重级别。
+
+2. **启用自动修复**，在 `config/validation.yaml` 的 `spectral.auto_fix` 下配置：
+   ```yaml
+   spectral:
+     auto_fix:
+       your-new-rule: true
+   ```
+
+3. **添加修复方法**到 `scripts/reconcile.py` 中的 `SpecReconciler`：
+   ```python
+   def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+       """Fix description."""
+       # Modify spec in place
+       # Return spec if changed, None if no change needed
+       return spec
+   ```
+
+4. **注册方法**到 `_apply_spectral_fix` 分发器中：
+   ```python
+   spectral_fixers = {
+       # ... existing fixers ...
+       "spectral:your-new-rule": self._fix_your_rule,
+   }
+   ```
+
+5. **添加测试**以覆盖新的修复方法。
+
+## 添加新的 Spectral 规则
+
+要添加带有 JavaScript 函数的自定义 Spectral 规则：
+
+1. 在 `spectral/functions/your-rule.js` 中创建函数。导出一个接收 `(targetVal, options, context)` 的默认函数，并返回一个包含 `{message, path}` 对象的数组。
+
+2. 在 `spectral-pipeline.yaml` 中注册：
+   ```yaml
+   functions:
+     - f5-path-params
+     - your-rule
+
+   rules:
+     your-rule:
+       description: "What it checks"
+       message: "{{error}}"
+       severity: error
+       given: "$.paths[*]"
+       then:
+         function: your-rule
+   ```
+
+:::caution
+自定义函数仅在 `spectral-pipeline.yaml` 中有效。请勿将 `functionsDir` 或 `functions` 添加到 `.spectral.yaml` 中——该配置必须保持与 Super-Linter 及其他外部工具的兼容性。
+:::
+
+## CI 流水线
+
+GitHub Actions 工作流（`validate-and-release.yml`）在以下条件下运行：
+
+- **定时任务**：每天 UTC 时间早上 6 点
+- **推送到 main**：当 `scripts/`、`config/` 或 `pyproject.toml` 发生变更时
+- **手动触发**：可选择强制发布或干运行
+
+该工作流包含四个任务：
+
+1. **validate** -- 下载规范，运行验证、Spectral lint、协调、Spectral 门禁
+2. **check-release-needed** -- 比较内容哈希以决定是否需要发布
+3. **release** -- 打包并创建 GitHub Release（仅在内容发生变更时）
+4. **update-docs** -- 重新生成 `01-validation-report.mdx`，如有变更则开启 PR
+
+如果任何任务失败，**notify** 任务会创建一个 GitHub issue。
+
+## 分支和 PR 工作流
+
+所有变更遵循以下流程：**Issue -> 分支 -> PR -> CI 通过 -> 合并**。
+
+- 分支命名：`feature/<issue>-desc`、`fix/<issue>-desc`、`docs/<issue>-desc`
+- PR 必须关联 issue（在描述中使用 `Closes #N`）
+- 必需的 CI 检查：`Check linked issues` 和 `Lint Code Base`
+- 推荐使用 squash 合并；合并后分支自动删除
+
+完整的工作流规则请参阅 `CONTRIBUTING.md`。

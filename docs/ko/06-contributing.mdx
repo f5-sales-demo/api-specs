@@ -1,0 +1,194 @@
+---
+title: 개발 가이드
+description: 'F5 XC API Specs 프로젝트의 설정, 실행, 테스트 및 기여 방법'
+i18n:
+  sourceHash: 1dc0c369e7a0
+  translator: machine
+---
+
+## 설정
+
+```bash
+# 클론 및 개발 의존성 설치
+git clone https://github.com/f5xc-salesdemos/api-specs.git
+cd api-specs
+make dev-install
+
+# Spectral CLI 설치 (린팅 단계에 필요)
+npm install -g @stoplight/spectral-cli
+```
+
+`make dev-install`은 `.venv/`에 가상 환경을 생성하고 개발 extras(pytest, ruff, mypy)와 함께 프로젝트를 설치합니다.
+
+### 환경 변수
+
+실시간 API 검증에 필요한 환경 변수:
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+이 변수들이 설정되어 있지 않으면 `make validate`는 드라이런 모드로 대체됩니다.
+
+## 파이프라인 실행
+
+### 전체 파이프라인
+
+```bash
+make all
+# 실행 순서: download → validate → spectral-lint → reconcile → spectral-gate → release
+```
+
+### 개별 단계
+
+```bash
+make download        # 업스트림 스펙 가져오기
+make validate        # 실시간 API 테스트 실행 (API 토큰 필요)
+make validate-dry    # 드라이런 (API 호출 없음)
+make spectral-lint   # 원본 스펙에 대한 Spectral 발견 모드
+make reconcile       # 두 보고서의 수정 사항 적용
+make spectral-gate   # 조정된 스펙에 대한 Spectral 품질 게이트
+make release         # 릴리스 패키지 빌드
+```
+
+### 문서
+
+```bash
+make docs-generate   # 보고서에서 docs/01-validation-report.mdx 재생성
+make docs            # 전체 문서 사이트 빌드
+make docs-serve      # 핫 리로드가 포함된 로컬 개발 서버
+```
+
+## 테스트 실행
+
+```bash
+make test           # 커버리지 포함 pytest
+make lint           # ruff check + format check
+make typecheck      # mypy 타입 검사
+make ci-test        # 위 세 가지 모두 (CI에서 사용)
+```
+
+프리커밋 훅이 설치되어 있으면 커밋 시 자동으로 실행됩니다:
+
+```bash
+make pre-commit-install   # git 훅 설치
+make pre-commit           # 모든 훅 수동 실행
+```
+
+## 프로젝트 구조
+
+```
+scripts/
+  download.py           # 1단계: F5에서 스펙 가져오기
+  validate.py           # 2단계: 실시간 API 테스트
+  spectral_lint.py      # 3/5단계: Spectral 린팅 어댑터
+  reconcile.py          # 4단계: 스펙에 수정 사항 적용
+  release.py            # 6단계: 릴리스 패키징
+  generate_docs.py      # 보고서에서 MDX 생성
+  utils/
+    auth.py             # F5 XC API 인증
+    constraint_validator.py  # 제약 조건 테스트 + 불일치 유형
+    report_generator.py      # 보고서 포맷팅
+    schemathesis_runner.py   # Schemathesis 테스트 오케스트레이션
+    spec_loader.py           # 스펙 I/O + JSON 포맷팅
+
+config/
+  validation.yaml       # 파이프라인 설정
+  endpoints.yaml        # 실시간 테스트를 위한 기준 엔드포인트
+
+spectral/
+  functions/
+    f5-path-params.js   # 커스텀 Spectral 함수
+
+docs/                   # Starlight MDX 문서
+tests/                  # pytest 테스트 스위트
+release/specs/          # 출력: 조정된 스펙 파일
+reports/                # 출력: 검증 및 Spectral 보고서
+```
+
+## 새 수정 메서드 추가
+
+조정기에 새로운 Spectral 자동 수정을 추가하려면:
+
+1. `.spectral.yaml`에 원하는 심각도로 **규칙을 추가**합니다.
+
+2. `config/validation.yaml`의 `spectral.auto_fix` 아래에서 **자동 수정을 활성화**합니다:
+   ```yaml
+   spectral:
+     auto_fix:
+       your-new-rule: true
+   ```
+
+3. `scripts/reconcile.py`의 `SpecReconciler`에 **수정 메서드를 추가**합니다:
+   ```python
+   def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+       """Fix description."""
+       # 스펙을 제자리에서 수정
+       # 변경되면 spec 반환, 변경이 필요 없으면 None 반환
+       return spec
+   ```
+
+4. `_apply_spectral_fix` 디스패처에 **등록**합니다:
+   ```python
+   spectral_fixers = {
+       # ... 기존 수정자 ...
+       "spectral:your-new-rule": self._fix_your_rule,
+   }
+   ```
+
+5. 새 수정 메서드를 다루는 **테스트를 추가**합니다.
+
+## 새 Spectral 규칙 추가
+
+JavaScript 함수가 포함된 커스텀 Spectral 규칙을 추가하려면:
+
+1. `spectral/functions/your-rule.js`에 함수를 생성합니다. `(targetVal, options, context)`를 받아 `{message, path}` 객체 배열을 반환하는 기본 함수를 내보냅니다.
+
+2. `spectral-pipeline.yaml`에 등록합니다:
+   ```yaml
+   functions:
+     - f5-path-params
+     - your-rule
+
+   rules:
+     your-rule:
+       description: "What it checks"
+       message: "{{error}}"
+       severity: error
+       given: "$.paths[*]"
+       then:
+         function: your-rule
+   ```
+
+:::caution
+커스텀 함수는 `spectral-pipeline.yaml`에서만 작동합니다. `.spectral.yaml`에 `functionsDir`나 `functions`를 추가하지 마세요 -- 해당 설정은 Super-Linter 및 기타 외부 도구와 호환되어야 합니다.
+:::
+
+## CI 파이프라인
+
+GitHub Actions 워크플로(`validate-and-release.yml`)는 다음 조건에서 실행됩니다:
+
+- **스케줄**: 매일 UTC 오전 6시
+- **main 푸시**: `scripts/`, `config/`, 또는 `pyproject.toml` 변경 시
+- **수동 디스패치**: 강제 릴리스 또는 드라이런 옵션 포함
+
+워크플로에는 네 가지 작업이 있습니다:
+
+1. **validate** -- 스펙 다운로드, 검증 실행, Spectral 린트, 조정, Spectral 게이트
+2. **check-release-needed** -- 콘텐츠 해시를 비교하여 릴리스 필요 여부 판단
+3. **release** -- 패키지를 만들고 GitHub 릴리스 생성 (콘텐츠가 변경된 경우에만)
+4. **update-docs** -- `01-validation-report.mdx`를 재생성하고 변경 사항이 있으면 PR을 엽니다
+
+**notify** 작업은 어떤 작업이 실패하면 GitHub 이슈를 생성합니다.
+
+## 브랜치 및 PR 워크플로
+
+모든 변경 사항은 다음 흐름을 따릅니다: **이슈 -> 브랜치 -> PR -> CI 통과 -> 머지**.
+
+- 브랜치 이름: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`
+- PR은 이슈를 연결해야 합니다 (설명에 `Closes #N`)
+- 필수 CI 검사: `Check linked issues` 및 `Lint Code Base`
+- 스쿼시 머지 권장; 머지 후 브랜치 자동 삭제
+
+전체 워크플로 규칙은 `CONTRIBUTING.md`를 참조하세요.

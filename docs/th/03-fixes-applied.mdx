@@ -1,0 +1,163 @@
+---
+title: การแก้ไขที่ใช้กับสเปกต้นทาง
+description: >-
+  เอกสารอ้างอิงฉบับสมบูรณ์ของการแก้ไขทุกรายการที่เอนจินการปรับปรุงสเปกใช้กับ
+  OpenAPI specifications ของ F5 XC
+i18n:
+  sourceHash: d33e60c0fb4a
+  translator: machine
+---
+
+ตัวปรับปรุงสเปก (`scripts/reconcile.py`) ใช้การแก้ไข 4 ประเภทกับสเปกต้นทาง การแก้ไขข้อจำกัด (Constraint fixes) จะเปลี่ยนแปลงสัญญา API ให้ตรงกับพฤติกรรมที่สังเกตได้จริง การแก้ไขประเภทอื่นทั้งหมดเป็นเพียงการเปลี่ยนแปลงข้อมูลเมตาเท่านั้น และไม่กระทบต่อสัญญา API
+
+## การแก้ไขข้อจำกัด
+
+การแก้ไขเหล่านี้ปรับข้อจำกัดของ OpenAPI schema เพื่อให้สเปกตรงกับสิ่งที่ live API บังคับใช้จริง การแก้ไขแต่ละรายการถูกขับเคลื่อนโดยอ็อบเจ็กต์ `Discrepancy` ที่สร้างขึ้นระหว่าง[การตรวจสอบ](/02-pipeline/#2-validate)
+
+| กลยุทธ์ | ตัวกระตุ้น | สิ่งที่ทำ | การเปลี่ยนแปลงสัญญา |
+|----------|---------|--------------|-----------------|
+| **Relax** | `SPEC_STRICTER` | สเปกปฏิเสธค่าที่ API ยอมรับ ลดค่า `minLength`/`minimum` เพิ่มค่า `maxLength`/`maximum` เพิ่มค่า enum ที่ขาดหายไป | ใช่ -- ขยายค่าที่ยอมรับ |
+| **Tighten** | `SPEC_LOOSER` | สเปกยอมรับค่าที่ API ปฏิเสธ เพิ่มค่า `minLength`/`minimum` ลดค่า `maxLength`/`maximum` จำกัด enum ให้เฉพาะค่าที่สังเกตได้ | ใช่ -- จำกัดค่าที่ยอมรับให้แคบลง |
+| **Add** | `MISSING_CONSTRAINT` | API บังคับใช้ข้อจำกัดที่ไม่ได้ระบุไว้ในสเปก เพิ่มข้อจำกัดลงใน schema | ใช่ -- เพิ่มข้อจำกัดใหม่ |
+| **Remove** | `EXTRA_CONSTRAINT` | สเปกประกาศข้อจำกัดที่ API ไม่สนใจ ลบข้อจำกัดนั้นออกจาก schema | ใช่ -- ลบข้อจำกัด |
+
+:::caution
+การแก้ไขข้อจำกัดจะเปลี่ยนแปลงสัญญา API ซึ่งจะถูกนำไปใช้เมื่อมีหลักฐานสนับสนุนจาก Schemathesis หรือการทดสอบตรวจสอบข้อจำกัดกับ live API เท่านั้น
+:::
+
+### ประเภทข้อจำกัดที่รองรับ
+
+10 หมวดหมู่ข้อจำกัด OpenAPI ที่ทดสอบและแก้ไข:
+
+- **ความยาวสตริง** -- `minLength`, `maxLength`
+- **แพทเทิร์น** -- `pattern` (regex)
+- **ขอบเขตตัวเลข** -- `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum`
+- **ฟิลด์ที่จำเป็น** -- `required`
+- **ค่า Enum** -- `enum`
+- **ขอบเขตอาร์เรย์** -- `minItems`, `maxItems`, `uniqueItems`
+- **โครงสร้างอ็อบเจ็กต์** -- `additionalProperties`, `properties`, `propertyNames`
+- **การประกอบ** -- `oneOf`, `anyOf`, `allOf`
+- **การขึ้นต่อกัน** -- `dependentRequired`, `dependentSchemas`
+- **ประเภทข้อมูล** -- `type`, `format`
+
+## การเสริมข้อมูลจาก Spectral
+
+การแก้ไขเหล่านี้แก้ไขปัญหาคุณภาพ OAS3 ที่พบจาก [Spectral linting](/04-spectral-rules/) โดยเพิ่มหรือแก้ไขข้อมูลเมตาโดยไม่เปลี่ยนแปลงพฤติกรรมของ API
+
+### การเพิ่มบล็อก Servers
+
+**กฎ**: `oas3-api-servers` | **การเปลี่ยนแปลงสัญญา**: ไม่
+
+เพิ่มเทมเพลต URL ของ F5 XC tenant ลงในสเปกที่ไม่มีบล็อก `servers`:
+
+```json
+"servers": [{
+  "url": "https://{tenant}.console.ves.volterra.io",
+  "description": "F5 Distributed Cloud API",
+  "variables": {
+    "tenant": {
+      "default": "example-tenant",
+      "description": "Your F5 XC tenant name"
+    }
+  }
+}]
+```
+
+URL ของเซิร์ฟเวอร์และค่าตัวแปรมาจาก `spectral.servers` ใน [validation.yaml](/05-configuration/)
+
+### การเพิ่มข้อมูลการติดต่อ
+
+**กฎ**: `info-contact` | **การเปลี่ยนแปลงสัญญา**: ไม่
+
+เพิ่มข้อมูลการติดต่อลงใน `info.contact` สำหรับสเปกที่ไม่มี:
+
+```json
+"contact": {
+  "name": "F5 Distributed Cloud",
+  "url": "https://docs.cloud.f5.com",
+  "email": "dana@example.com"
+}
+```
+
+ค่าต่างๆ มาจาก `spectral.contact` ใน [validation.yaml](/05-configuration/)
+
+### การอนุมานแท็กของ Operation
+
+**กฎ**: `operation-tags` | **การเปลี่ยนแปลงสัญญา**: ไม่
+
+อนุมานแท็กจากคำนำหน้าของ URL path สำหรับ operation ที่ไม่มีแท็ก สำหรับ path เช่น `/api/config/namespaces/{namespace}/healthchecks` แท็กจะเป็น `config` (ส่วนที่ไม่ใช่พารามิเตอร์ลำดับที่สอง) แท็กจะถูกเพิ่มทั้งในอาร์เรย์ `tags` ของ operation และรายการ `tags` ระดับสเปก
+
+### การลบ Component ที่ไม่ได้ใช้
+
+**กฎ**: `oas3-unused-component` | **การเปลี่ยนแปลงสัญญา**: ไม่
+
+ลบ component schemas ออกจาก `components.schemas` ที่ไม่ได้ถูกอ้างอิงจากที่ใดในสเปก ลดขนาดสเปกโดยไม่กระทบ operation ใดๆ
+
+### การกำจัด OperationId ที่ซ้ำกัน
+
+**กฎ**: `operation-operationId-unique` | **การเปลี่ยนแปลงสัญญา**: ไม่
+
+เพิ่ม HTTP method เป็นส่วนต่อท้าย (เช่น `ListItems_get`) เมื่อหลาย operation ใช้ `operationId` เดียวกัน ทำให้แต่ละ operationId ไม่ซ้ำกันสำหรับตัวสร้างโค้ด
+
+### การลบ Example/Default ที่ไม่ถูกต้อง
+
+**กฎ**: `oas3-valid-schema-example` | **การเปลี่ยนแปลงสัญญา**: ไม่
+
+ลบค่า `example` หรือ `default` ออกจาก schema เมื่อค่าไม่สอดคล้องกับข้อจำกัดของ schema เอง (ประเภทผิด นอกช่วง ฯลฯ) ป้องกันไม่ให้ตัวสร้างโค้ดผลิตตัวอย่าง payload ที่ไม่ถูกต้อง
+
+### การลบแท็ก Script
+
+**กฎ**: `no-script-tags-in-markdown` | **การเปลี่ยนแปลงสัญญา**: ไม่
+
+ลบแท็ก `<script>` ออกจากฟิลด์ `description` โดยใช้การแทนที่ด้วย regex สเปกต้นทางบางตัวมีแท็ก script ที่ถูกแทรกเข้ามาซึ่งทำให้ตัวแสดงผลเอกสารเสียหาย
+
+## ข้อมูลเมตาด้านความปลอดภัย
+
+**การเปลี่ยนแปลงสัญญา**: ไม่ (เอกสารเท่านั้น)
+
+ทุกสเปกจะได้รับ security scheme แบบ `apiKeyAuth` หากยังไม่มีอยู่ สิ่งนี้จะถูกเพิ่มเข้าไปเสมอโดยไม่คำนึงว่า Spectral ตั้งค่าสถานะหรือไม่
+
+```json
+"components": {
+  "securitySchemes": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "F5 XC API Token (format: APIToken <token>)"
+    }
+  }
+},
+"security": [{ "apiKeyAuth": [] }]
+```
+
+คำจำกัดความของ scheme มาจาก `spectral.security_scheme` ใน [validation.yaml](/05-configuration/) สิ่งนี้บอกผู้ใช้ API ว่าจะยืนยันตัวตนอย่างไร แต่ไม่เปลี่ยนแปลงพฤติกรรมขณะรันไทม์
+
+## การจัดรูปแบบ JSON
+
+**การเปลี่ยนแปลงสัญญา**: ไม่
+
+ไฟล์ JSON output ทั้งหมดจะผ่านตัวบีบอัดอาร์เรย์ที่เข้ากันได้กับ Biome (`_compact_short_arrays` ใน `scripts/utils/spec_loader.py`) อาร์เรย์สั้นที่อยู่ภายใน 120 ตัวอักษรจะถูกยุบให้อยู่ในบรรทัดเดียว:
+
+```json
+// Before
+"enum": [
+  "ACTIVE",
+  "INACTIVE"
+]
+
+// After
+"enum": ["ACTIVE", "INACTIVE"]
+```
+
+อาร์เรย์ที่เกินเกณฑ์ความยาวบรรทัดจะยังคงอยู่ในรูปแบบหลายบรรทัด
+
+## ลำดับความสำคัญของการแก้ไข
+
+เมื่อกลยุทธ์การแก้ไขหลายรายการสามารถใช้ได้ ตัวปรับปรุงสเปกจะใช้ลำดับความสำคัญที่กำหนดค่าไว้ใน `reconciliation.priority`:
+
+1. **existing** -- ใช้ข้อจำกัดของสเปกที่มีอยู่หากถูกต้อง
+2. **discovery** -- ใช้พฤติกรรมที่ค้นพบจาก live API
+3. **inferred** -- อนุมานจากแพทเทิร์นข้ามเอนด์พอยท์ที่คล้ายกัน
+
+ทุกสเปกที่แก้ไขแล้วจะถูกตรวจสอบด้วย `openapi-spec-validator` หลังจากใช้การแก้ไขทั้งหมด หากการตรวจสอบล้มเหลว สเปกต้นฉบับจะถูกใช้เป็นทางเลือกสำรองและการแก้ไขจะถูกบันทึกเป็นข้อผิดพลาด

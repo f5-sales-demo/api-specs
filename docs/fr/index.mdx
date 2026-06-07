@@ -1,0 +1,54 @@
+---
+title: F5 XC API Specs
+description: >-
+  Spécifications OpenAPI validées, enrichies et conformes à OAS3 pour F5
+  Distributed Cloud
+template: splash
+sidebar:
+  hidden: true
+hero:
+  tagline: >-
+    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
+    the live API, auto-repaired, and enriched with security metadata, server
+    definitions, and operation tags.
+  actions:
+    - text: Pipeline Overview
+      link: 02-pipeline/
+      icon: right-arrow
+      variant: primary
+    - text: View Latest Report
+      link: 01-validation-report/
+      variant: secondary
+i18n:
+  sourceHash: 9d3db123fe9b
+  translator: machine
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="Aperçu du pipeline" icon="rocket">
+    Pipeline automatisé en six étapes : téléchargement, validation, linting, réconciliation, contrôle, publication.
+    [En savoir plus](/02-pipeline/)
+  </Card>
+  <Card title="Corrections appliquées" icon="pencil">
+    Réparations de contraintes, enrichissements Spectral, métadonnées de sécurité et formatage JSON.
+    [En savoir plus](/03-fixes-applied/)
+  </Card>
+  <Card title="Règles Spectral" icon="warning">
+    Architecture de linting à deux configurations avec une fonction personnalisée `f5-path-params`.
+    [En savoir plus](/04-spectral-rules/)
+  </Card>
+  <Card title="Configuration" icon="setting">
+    Référence pour `validation.yaml` et `endpoints.yaml`.
+    [En savoir plus](/05-configuration/)
+  </Card>
+  <Card title="Rapport de validation" icon="document">
+    Rapport auto-généré de toutes les corrections appliquées lors de la dernière exécution du pipeline.
+    [En savoir plus](/01-validation-report/)
+  </Card>
+  <Card title="Contribuer" icon="github">
+    Configuration de l'environnement de développement, pipeline local, tests et workflow de PR.
+    [En savoir plus](/06-contributing/)
+  </Card>
+</CardGrid>

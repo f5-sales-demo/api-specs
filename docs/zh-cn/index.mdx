@@ -1,0 +1,52 @@
+---
+title: F5 XC API 规范
+description: 经过验证、增强且符合 OAS3 标准的 F5 Distributed Cloud OpenAPI 规范
+template: splash
+sidebar:
+  hidden: true
+hero:
+  tagline: >-
+    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
+    the live API, auto-repaired, and enriched with security metadata, server
+    definitions, and operation tags.
+  actions:
+    - text: Pipeline Overview
+      link: 02-pipeline/
+      icon: right-arrow
+      variant: primary
+    - text: View Latest Report
+      link: 01-validation-report/
+      variant: secondary
+i18n:
+  sourceHash: 9d3db123fe9b
+  translator: machine
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="流水线概览" icon="rocket">
+    六阶段自动化流水线：下载、验证、检查、协调、门控、发布。
+    [了解更多](/02-pipeline/)
+  </Card>
+  <Card title="已应用的修复" icon="pencil">
+    约束修复、Spectral 增强、安全元数据和 JSON 格式化。
+    [了解更多](/03-fixes-applied/)
+  </Card>
+  <Card title="Spectral 规则" icon="warning">
+    双配置检查架构，包含自定义 `f5-path-params` 函数。
+    [了解更多](/04-spectral-rules/)
+  </Card>
+  <Card title="配置" icon="setting">
+    `validation.yaml` 和 `endpoints.yaml` 的参考文档。
+    [了解更多](/05-configuration/)
+  </Card>
+  <Card title="验证报告" icon="document">
+    自动生成的报告，包含最新流水线运行中所有已应用的修复。
+    [了解更多](/01-validation-report/)
+  </Card>
+  <Card title="贡献指南" icon="github">
+    开发环境设置、本地流水线、测试和 PR 工作流。
+    [了解更多](/06-contributing/)
+  </Card>
+</CardGrid>

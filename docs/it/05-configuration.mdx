@@ -1,0 +1,267 @@
+---
+title: Riferimento alla Configurazione
+description: Riferimento per i file di configurazione validation.yaml e endpoints.yaml
+i18n:
+  sourceHash: ca5e781b7000
+  translator: machine
+---
+
+Tutto il comportamento della pipeline è controllato da due file YAML in `config/`.
+
+## `config/validation.yaml`
+
+### Impostazioni API
+
+```yaml
+api:
+  base_url: "https://example-tenant.console.ves.volterra.io"
+  tenant: "example-tenant"
+  namespace: "example-namespace"
+  timeout: 30
+  retries: 3
+  retry_delay: 2
+```
+
+| Campo | Descrizione |
+|-------|-------------|
+| `base_url` | URL base dell'API della console F5 XC. Sovrascrivibile con la variabile d'ambiente `F5XC_API_URL`. |
+| `tenant` | Nome del tenant utilizzato nei percorsi API. |
+| `namespace` | Namespace predefinito per le operazioni CRUD. |
+| `timeout` | Timeout delle richieste HTTP in secondi. |
+| `retries` | Numero di tentativi di ripetizione in caso di errore. |
+| `retry_delay` | Secondi tra un tentativo e l'altro. |
+
+:::caution
+I valori `base_url`, `tenant` e `namespace` in `validation.yaml` sono segnaposto generici. **È necessario** configurarli per il proprio ambiente tramite variabili d'ambiente prima di eseguire la pipeline:
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_TENANT="example-tenant"
+export F5XC_NAMESPACE="example-namespace"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+Le variabili d'ambiente hanno la precedenza sui valori predefiniti del file YAML al momento dell'esecuzione.
+:::
+
+### Impostazioni di Download
+
+```yaml
+download:
+  url: "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
+  output_dir: "specs/original"
+  etag_cache: ".etag_cache"
+```
+
+| Campo | Descrizione |
+|-------|-------------|
+| `url` | URL del bundle ufficiale delle specifiche OpenAPI di F5 XC (ZIP). |
+| `output_dir` | Directory in cui vengono salvate le specifiche estratte. |
+| `etag_cache` | File che memorizza l'ETag HTTP per i download condizionali. |
+
+### Categorie di Validazione
+
+Dieci categorie corrispondenti ai tipi di vincolo dello schema OpenAPI. Ciascuna può essere abilitata/disabilitata indipendentemente.
+
+```yaml
+validation_categories:
+  string_length:
+    enabled: true
+    keywords: ["minLength", "maxLength"]
+    description: "Validate string length boundaries"
+```
+
+| Categoria | Parole chiave |
+|-----------|---------------|
+| `string_length` | `minLength`, `maxLength` |
+| `pattern` | `pattern` |
+| `numeric_bounds` | `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum` |
+| `required_fields` | `required` |
+| `enum_values` | `enum` |
+| `array_bounds` | `minItems`, `maxItems`, `uniqueItems` |
+| `object_structure` | `additionalProperties`, `properties`, `propertyNames` |
+| `composition` | `oneOf`, `anyOf`, `allOf` |
+| `dependencies` | `dependentRequired`, `dependentSchemas` |
+| `data_types` | `type`, `format` |
+
+### Impostazioni Schemathesis
+
+```yaml
+schemathesis:
+  enabled: true
+  max_examples: 100
+  hypothesis_phases:
+    - generate
+    - target
+  stateful_testing: true
+  base_url_override: null
+  auth_header: "Authorization"
+  auth_prefix: "APIToken"
+```
+
+| Campo | Descrizione |
+|-------|-------------|
+| `enabled` | Attiva/disattiva i test Schemathesis. |
+| `max_examples` | Numero massimo di casi di test generati per operazione. |
+| `hypothesis_phases` | Fasi di Hypothesis da eseguire (`generate`, `target`). |
+| `stateful_testing` | Abilita i test stateful basati su link tra le operazioni. |
+| `base_url_override` | Sovrascrive l'URL base dell'API per i test. `null` utilizza `api.base_url`. |
+| `auth_header` | Nome dell'header HTTP per l'autenticazione. |
+| `auth_prefix` | Formato del prefisso del token (le richieste vengono inviate come `APIToken <token>`). |
+
+### Impostazioni di Riconciliazione
+
+```yaml
+reconciliation:
+  priority:
+    - existing
+    - discovery
+    - inferred
+  fix_strategies:
+    tighter_spec: "relax"
+    looser_spec: "tighten"
+    missing_constraint: "add"
+    extra_constraint: "remove"
+```
+
+| Campo | Descrizione |
+|-------|-------------|
+| `priority` | Ordine di preferenza quando più fonti di dati sono in disaccordo. |
+| `fix_strategies` | Mappa ogni tipo di discrepanza alla relativa azione correttiva. Vedere [Correzioni Applicate](/03-fixes-applied/). |
+
+### Impostazioni Spectral
+
+```yaml
+spectral:
+  enabled: true
+  ruleset: "spectral-pipeline.yaml"
+  auto_fix:
+    oas3-api-servers: true
+    info-contact: true
+    operation-tags: true
+    oas3-unused-component: true
+    operation-operationId-unique: true
+    oas3-valid-schema-example: true
+    no-script-tags-in-markdown: true
+  gate:
+    max_errors: null
+    max_warnings: null
+  contact:
+    name: "F5 Distributed Cloud"
+    url: "https://docs.cloud.f5.com"
+    email: "dana@example.com"
+  servers:
+    - url: "https://{tenant}.console.ves.volterra.io"
+      description: "F5 Distributed Cloud API"
+      variables:
+        tenant:
+          example-tenant"example-tenant"
+          description: "Your F5 XC tenant name"
+  security_scheme:
+    type: "apiKey"
+    in: "header"
+    name: "Authorization"
+    description: "F5 XC API Token (format: APIToken <token>)"
+```
+
+| Campo | Descrizione |
+|-------|-------------|
+| `enabled` | Attiva/disattiva completamente il linting Spectral. |
+| `ruleset` | File di configurazione Spectral da utilizzare (la pipeline usa `spectral-pipeline.yaml`). |
+| `auto_fix` | Mappa dal nome della regola a un valore booleano. `true` significa che il riconciliatore correggerà le violazioni. |
+| `gate.max_errors` | Numero massimo di errori consentiti nel gate post-riconciliazione. `null` disabilita il controllo. |
+| `gate.max_warnings` | Numero massimo di avvisi consentiti. `null` disabilita il controllo. |
+| `contact` | Informazioni di contatto iniettate in `info.contact` dal correttore `info-contact`. |
+| `servers` | Array dei server iniettato dal correttore `oas3-api-servers`. |
+| `security_scheme` | Definizione dello schema di sicurezza iniettata in ogni specifica. |
+
+### Impostazioni dei Report
+
+```yaml
+reports:
+  output_dir: "reports"
+  formats:
+    - json
+    - html
+    - markdown
+  include_examples: true
+  max_examples_per_issue: 5
+```
+
+### Impostazioni di Rilascio
+
+```yaml
+release:
+  output_dir: "release"
+  include_changelog: true
+  include_validation_report: true
+  version_from: "git"
+```
+
+| Campo | Descrizione |
+|-------|-------------|
+| `output_dir` | Directory per gli artefatti di rilascio. |
+| `include_changelog` | Include `CHANGELOG.md` nel pacchetto di rilascio. |
+| `include_validation_report` | Include il report di validazione nel pacchetto di rilascio. |
+| `version_from` | Origine della versione. `git` deriva la versione dalla data dei metadati della specifica + numero di patch. |
+
+## `config/endpoints.yaml`
+
+Definisce gli endpoint di riferimento utilizzati per la validazione live dell'API. Ogni voce mappa un nome logico di risorsa al relativo file di specifica, gruppo API e percorsi CRUD.
+
+### Struttura degli Endpoint
+
+```yaml
+endpoints:
+  healthcheck:
+    resource: healthchecks
+    domain_file: docs-cloud-f5-com.0124.public.ves.io.schema.healthcheck.ves-swagger.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/healthchecks
+      read: GET /api/config/namespaces/{namespace}/healthchecks/{name}
+      list: GET /api/config/namespaces/{namespace}/healthchecks
+      update: PUT /api/config/namespaces/{namespace}/healthchecks/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/healthchecks/{name}
+    test_priority: high
+    description: "Health check configurations for origin monitoring"
+```
+
+| Campo | Descrizione |
+|-------|-------------|
+| `resource` | Nome della risorsa API (utilizzato nei percorsi URL). |
+| `domain_file` | Nome del file della specifica OpenAPI in `specs/original/`. |
+| `api_group` | Prefisso del gruppo API (`config`, `web`, ecc.). |
+| `crud_operations` | Metodo HTTP e percorso per ogni operazione CRUD. |
+| `test_priority` | `high`, `medium` o `low` -- controlla l'ordine di esecuzione dei test. |
+| `description` | Descrizione leggibile della risorsa. |
+
+### Endpoint di Riferimento Attuali
+
+10 endpoint distribuiti su tre domini:
+
+| Endpoint | Dominio | Priorità |
+|----------|---------|----------|
+| `healthcheck` | Virtual | high |
+| `origin_pool` | Virtual | high |
+| `app_firewall` | Virtual | high |
+| `service_policy` | Virtual | medium |
+| `api_definition` | API Security | high |
+| `api_discovery` | API Security | medium |
+| `api_groups` | API Security | medium |
+| `code_base_integration` | API Security | low |
+| `data_type` | Data Privacy | medium |
+| `sensitive_data_policy` | Data Privacy | medium |
+
+### Aggiungere Nuovi Endpoint
+
+Per aggiungere un nuovo endpoint per la validazione:
+
+1. Trovare il nome del file della specifica in `specs/original/` (formato: `docs-cloud-f5-com.NNNN.*.ves-swagger.json`)
+2. Aggiungere una voce sotto `endpoints:` seguendo la struttura sopra indicata
+3. Aggiungere la mappatura del file di dominio sotto `domain_files:` con un numero di priorità
+4. Aggiungere il nome dell'endpoint a `test_order:` nella posizione desiderata
+
+:::tip
+Il framework valida tutte le 268 specifiche durante la riconciliazione indipendentemente da ciò che è elencato in `endpoints.yaml`. La configurazione degli endpoint controlla quali risorse vengono sottoposte a test live dell'API con Schemathesis.
+:::

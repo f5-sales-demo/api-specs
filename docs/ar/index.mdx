@@ -1,0 +1,54 @@
+---
+title: مواصفات F5 XC API
+description: >-
+  مواصفات OpenAPI مُتحقق منها ومُحسّنة ومتوافقة مع OAS3 لخدمة F5 Distributed
+  Cloud
+template: splash
+sidebar:
+  hidden: true
+hero:
+  tagline: >-
+    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
+    the live API, auto-repaired, and enriched with security metadata, server
+    definitions, and operation tags.
+  actions:
+    - text: Pipeline Overview
+      link: 02-pipeline/
+      icon: right-arrow
+      variant: primary
+    - text: View Latest Report
+      link: 01-validation-report/
+      variant: secondary
+i18n:
+  sourceHash: 9d3db123fe9b
+  translator: machine
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="نظرة عامة على خط المعالجة" icon="rocket">
+    خط معالجة آلي من ست مراحل: التنزيل، التحقق، الفحص، المطابقة، البوابة، الإصدار.
+    [اقرأ المزيد](/02-pipeline/)
+  </Card>
+  <Card title="الإصلاحات المُطبَّقة" icon="pencil">
+    إصلاحات القيود، تحسينات Spectral، بيانات الأمان الوصفية، وتنسيق JSON.
+    [اقرأ المزيد](/03-fixes-applied/)
+  </Card>
+  <Card title="قواعد Spectral" icon="warning">
+    بنية فحص ذات تكوينين مع دالة `f5-path-params` مخصصة.
+    [اقرأ المزيد](/04-spectral-rules/)
+  </Card>
+  <Card title="التكوين" icon="setting">
+    مرجع لملفات `validation.yaml` و `endpoints.yaml`.
+    [اقرأ المزيد](/05-configuration/)
+  </Card>
+  <Card title="تقرير التحقق" icon="document">
+    تقرير مُولَّد تلقائياً لجميع الإصلاحات المُطبَّقة في آخر تشغيل لخط المعالجة.
+    [اقرأ المزيد](/01-validation-report/)
+  </Card>
+  <Card title="المساهمة" icon="github">
+    إعداد بيئة التطوير، خط المعالجة المحلي، الاختبارات، وسير عمل طلبات السحب.
+    [اقرأ المزيد](/06-contributing/)
+  </Card>
+</CardGrid>

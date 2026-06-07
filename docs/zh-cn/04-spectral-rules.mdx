@@ -1,0 +1,125 @@
+---
+title: Spectral 检查规则
+description: 采用基础 OAS 规则和自定义 f5-path-params 函数的双配置 Spectral 架构
+i18n:
+  sourceHash: 0e32e7569d97
+  translator: machine
+---
+
+本项目使用 [Spectral](https://stoplight.io/open-source/spectral) 进行 OAS3 检查，采用双配置架构将 CI/外部工具与流水线的自定义逻辑分离。
+
+## 双配置架构
+
+### `.spectral.yaml` -- 基础配置
+
+供 GitHub Super-Linter 和其他外部 CI 工具使用。继承 `spectral:oas`（内置 OAS 规则集）。不包含自定义函数——这使其与那些无法访问 `spectral/functions/` 目录运行 Spectral 的工具保持兼容。
+
+```yaml
+extends:
+  - "spectral:oas"
+
+rules:
+  path-params: "off"
+  operation-tags: warn
+  oas3-api-servers: warn
+  info-contact: warn
+  oas3-unused-component: warn
+  operation-operationId-unique: error
+  oas3-valid-schema-example: error
+  no-script-tags-in-markdown: warn
+  operation-description: info
+  info-description: info
+```
+
+### `spectral-pipeline.yaml` -- 流水线配置
+
+供 `scripts/spectral_lint.py`（discover 和 gate 两种模式）使用。继承基础配置并添加自定义 `f5-path-params` 函数：
+
+```yaml
+extends:
+  - "./.spectral.yaml"
+
+functionsDir: "./spectral/functions"
+functions:
+  - f5-path-params
+
+rules:
+  f5-path-params:
+    description: "Path parameters must be declared and used"
+    message: "{{error}}"
+    severity: error
+    given: "$.paths[*]"
+    then:
+      function: f5-path-params
+```
+
+## 为什么禁用 `path-params`
+
+Spectral 内置的 `path-params` 规则会错误地标记使用点分参数名（如 `{metadata.namespace}` 和 `{metadata.name}`）的 F5 XC API。内置规则无法解析参数名中的点号，因此会将其报告为未声明的参数。
+
+自定义 `f5-path-params` 函数（`spectral/functions/f5-path-params.js`）通过将完整的 `{placeholder}` 内容与已声明的参数名进行匹配，正确处理了点分名称。它会同时检查路径级别和操作级别的参数，并在两个方向上报告错误：
+
+- URL 路径中的占位符没有匹配的参数声明
+- 已声明的路径参数未出现在 URL 路径中
+
+## 规则参考
+
+### 可自动修复的规则
+
+当检测到违规时，协调器会自动修复这些规则。有关每项修复的详细信息，请参阅[已应用的修复](/03-fixes-applied/)。
+
+| 规则 | 严重级别 | 修复方法 | 描述 |
+|------|----------|------------|-------------|
+| `oas3-api-servers` | warn | `_add_servers` | 规范必须包含 `servers` 块 |
+| `info-contact` | warn | `_add_contact` | `info` 必须包含 `contact` |
+| `operation-tags` | warn | `_add_tags` | 每个操作必须至少包含一个标签 |
+| `oas3-unused-component` | warn | `_remove_unused_component` | 不允许存在未引用的组件 schema |
+| `operation-operationId-unique` | error | `_deduplicate_operation_id` | 所有 operationId 必须唯一 |
+| `oas3-valid-schema-example` | error | `_fix_schema_example` | 示例/默认值必须匹配其 schema |
+| `no-script-tags-in-markdown` | warn | `_strip_script_tags` | 描述中不允许包含 `<script>` 标签 |
+| `f5-path-params` | error | -- | 路径参数必须被声明和使用 |
+
+:::note
+`f5-path-params` 是 error 严重级别的规则，但不会被自动修复。违规表示规范存在真正的缺陷，需要人工审查。
+:::
+
+### 不可修复的规则
+
+这些规则被降级为 `info` 严重级别，因为无法进行有意义的自动修复：
+
+| 规则 | 严重级别 | 描述 |
+|------|----------|-------------|
+| `operation-description` | info | 操作应包含描述 |
+| `info-description` | info | API info 应包含描述 |
+
+## 流水线集成
+
+Spectral 适配器（`scripts/spectral_lint.py`）以两种模式运行：
+
+### Discover 模式（协调前）
+
+```bash
+make spectral-lint
+# Equivalent to: python -m scripts.spectral_lint --mode discover
+```
+
+扫描 `specs/original/` 并写入 `reports/spectral_report.json`。协调器会将此报告与验证报告一起使用。
+
+### Gate 模式（协调后）
+
+```bash
+make spectral-gate
+# Equivalent to: python -m scripts.spectral_lint --mode gate
+```
+
+扫描 `release/specs/` 并写入 `reports/spectral_gate_report.json`。如果违规数量超过配置的阈值，则返回退出码 1。
+
+### 违规映射
+
+Spectral 违规会被转换为具有三种子类型的 `Discrepancy` 对象：
+
+| Spectral 规则类别 | DiscrepancyType | 示例规则 |
+|------------------------|-----------------|---------------|
+| 缺少必需元素 | `SPECTRAL_MISSING` | `oas3-api-servers`、`info-contact`、`operation-tags` |
+| 现有元素无效 | `SPECTRAL_INVALID` | `oas3-valid-schema-example`、`no-script-tags-in-markdown` |
+| 死代码 | `SPECTRAL_UNUSED` | `oas3-unused-component` |

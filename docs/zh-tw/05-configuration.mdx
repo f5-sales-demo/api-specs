@@ -1,0 +1,267 @@
+---
+title: 設定參考
+description: validation.yaml 和 endpoints.yaml 設定檔案的參考文件
+i18n:
+  sourceHash: ca5e781b7000
+  translator: machine
+---
+
+所有管線行為由 `config/` 中的兩個 YAML 檔案控制。
+
+## `config/validation.yaml`
+
+### API 設定
+
+```yaml
+api:
+  base_url: "https://example-tenant.console.ves.volterra.io"
+  tenant: "example-tenant"
+  namespace: "example-namespace"
+  timeout: 30
+  retries: 3
+  retry_delay: 2
+```
+
+| 欄位 | 說明 |
+|-------|-------------|
+| `base_url` | F5 XC 主控台 API 基底 URL。可透過 `F5XC_API_URL` 環境變數覆寫。 |
+| `tenant` | 用於 API 路徑的租戶名稱。 |
+| `namespace` | CRUD 操作的預設命名空間。 |
+| `timeout` | HTTP 請求逾時時間（秒）。 |
+| `retries` | 失敗時的重試次數。 |
+| `retry_delay` | 重試之間的間隔秒數。 |
+
+:::caution
+`validation.yaml` 中的 `base_url`、`tenant` 和 `namespace` 值為通用佔位符。您**必須**在執行管線之前透過環境變數為您的環境進行設定：
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_TENANT="example-tenant"
+export F5XC_NAMESPACE="example-namespace"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+環境變數在執行時優先於 YAML 預設值。
+:::
+
+### 下載設定
+
+```yaml
+download:
+  url: "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
+  output_dir: "specs/original"
+  etag_cache: ".etag_cache"
+```
+
+| 欄位 | 說明 |
+|-------|-------------|
+| `url` | 官方 F5 XC OpenAPI 規格套件（ZIP）的 URL。 |
+| `output_dir` | 解壓縮後規格檔案的儲存位置。 |
+| `etag_cache` | 儲存 HTTP ETag 以進行條件式下載的檔案。 |
+
+### 驗證類別
+
+十個類別對應 OpenAPI 結構描述約束類型。每個類別可獨立啟用/停用。
+
+```yaml
+validation_categories:
+  string_length:
+    enabled: true
+    keywords: ["minLength", "maxLength"]
+    description: "Validate string length boundaries"
+```
+
+| 類別 | 關鍵字 |
+|----------|----------|
+| `string_length` | `minLength`、`maxLength` |
+| `pattern` | `pattern` |
+| `numeric_bounds` | `minimum`、`maximum`、`exclusiveMinimum`、`exclusiveMaximum` |
+| `required_fields` | `required` |
+| `enum_values` | `enum` |
+| `array_bounds` | `minItems`、`maxItems`、`uniqueItems` |
+| `object_structure` | `additionalProperties`、`properties`、`propertyNames` |
+| `composition` | `oneOf`、`anyOf`、`allOf` |
+| `dependencies` | `dependentRequired`、`dependentSchemas` |
+| `data_types` | `type`、`format` |
+
+### Schemathesis 設定
+
+```yaml
+schemathesis:
+  enabled: true
+  max_examples: 100
+  hypothesis_phases:
+    - generate
+    - target
+  stateful_testing: true
+  base_url_override: null
+  auth_header: "Authorization"
+  auth_prefix: "APIToken"
+```
+
+| 欄位 | 說明 |
+|-------|-------------|
+| `enabled` | 切換 Schemathesis 測試的啟用/停用。 |
+| `max_examples` | 每個操作生成的最大測試案例數量。 |
+| `hypothesis_phases` | 要執行的 Hypothesis 階段（`generate`、`target`）。 |
+| `stateful_testing` | 啟用跨操作的有狀態連結式測試。 |
+| `base_url_override` | 覆寫測試用的 API 基底 URL。`null` 使用 `api.base_url`。 |
+| `auth_header` | 用於身份驗證的 HTTP 標頭名稱。 |
+| `auth_prefix` | 權杖前綴格式（請求以 `APIToken <token>` 格式發送）。 |
+
+### 調和設定
+
+```yaml
+reconciliation:
+  priority:
+    - existing
+    - discovery
+    - inferred
+  fix_strategies:
+    tighter_spec: "relax"
+    looser_spec: "tighten"
+    missing_constraint: "add"
+    extra_constraint: "remove"
+```
+
+| 欄位 | 說明 |
+|-------|-------------|
+| `priority` | 當多個資料來源不一致時的優先順序。 |
+| `fix_strategies` | 將每種差異類型對應到其修復動作。請參閱[已套用的修復](/03-fixes-applied/)。 |
+
+### Spectral 設定
+
+```yaml
+spectral:
+  enabled: true
+  ruleset: "spectral-pipeline.yaml"
+  auto_fix:
+    oas3-api-servers: true
+    info-contact: true
+    operation-tags: true
+    oas3-unused-component: true
+    operation-operationId-unique: true
+    oas3-valid-schema-example: true
+    no-script-tags-in-markdown: true
+  gate:
+    max_errors: null
+    max_warnings: null
+  contact:
+    name: "F5 Distributed Cloud"
+    url: "https://docs.cloud.f5.com"
+    email: "dana@example.com"
+  servers:
+    - url: "https://{tenant}.console.ves.volterra.io"
+      description: "F5 Distributed Cloud API"
+      variables:
+        tenant:
+          example-tenant"example-tenant"
+          description: "Your F5 XC tenant name"
+  security_scheme:
+    type: "apiKey"
+    in: "header"
+    name: "Authorization"
+    description: "F5 XC API Token (format: APIToken <token>)"
+```
+
+| 欄位 | 說明 |
+|-------|-------------|
+| `enabled` | 完全切換 Spectral 檢查的啟用/停用。 |
+| `ruleset` | 使用的 Spectral 設定檔（管線使用 `spectral-pipeline.yaml`）。 |
+| `auto_fix` | 規則名稱對布林值的對應。`true` 表示調和器將修復違規項目。 |
+| `gate.max_errors` | 調和後閘門允許的最大錯誤數。`null` 停用此檢查。 |
+| `gate.max_warnings` | 允許的最大警告數。`null` 停用此檢查。 |
+| `contact` | 由 `info-contact` 修復器注入到 `info.contact` 的聯絡資訊。 |
+| `servers` | 由 `oas3-api-servers` 修復器注入的伺服器陣列。 |
+| `security_scheme` | 注入到每個規格中的安全方案定義。 |
+
+### 報告設定
+
+```yaml
+reports:
+  output_dir: "reports"
+  formats:
+    - json
+    - html
+    - markdown
+  include_examples: true
+  max_examples_per_issue: 5
+```
+
+### 發佈設定
+
+```yaml
+release:
+  output_dir: "release"
+  include_changelog: true
+  include_validation_report: true
+  version_from: "git"
+```
+
+| 欄位 | 說明 |
+|-------|-------------|
+| `output_dir` | 發佈產出物的目錄。 |
+| `include_changelog` | 在發佈套件中包含 `CHANGELOG.md`。 |
+| `include_validation_report` | 在發佈套件中包含驗證報告。 |
+| `version_from` | 版本來源。`git` 從規格中繼資料日期加上修補號碼推導版本。 |
+
+## `config/endpoints.yaml`
+
+定義用於即時 API 驗證的基準端點。每個條目將邏輯資源名稱對應到其規格檔案、API 群組和 CRUD 路徑。
+
+### 端點結構
+
+```yaml
+endpoints:
+  healthcheck:
+    resource: healthchecks
+    domain_file: docs-cloud-f5-com.0124.public.ves.io.schema.healthcheck.ves-swagger.json
+    api_group: config
+    crud_operations:
+      create: POST /api/config/namespaces/{namespace}/healthchecks
+      read: GET /api/config/namespaces/{namespace}/healthchecks/{name}
+      list: GET /api/config/namespaces/{namespace}/healthchecks
+      update: PUT /api/config/namespaces/{namespace}/healthchecks/{name}
+      delete: DELETE /api/config/namespaces/{namespace}/healthchecks/{name}
+    test_priority: high
+    description: "Health check configurations for origin monitoring"
+```
+
+| 欄位 | 說明 |
+|-------|-------------|
+| `resource` | API 資源名稱（用於 URL 路徑）。 |
+| `domain_file` | `specs/original/` 中 OpenAPI 規格的檔案名稱。 |
+| `api_group` | API 群組前綴（`config`、`web` 等）。 |
+| `crud_operations` | 每個 CRUD 操作的 HTTP 方法和路徑。 |
+| `test_priority` | `high`、`medium` 或 `low` —— 控制測試執行順序。 |
+| `description` | 資源的人類可讀說明。 |
+
+### 目前的基準端點
+
+橫跨三個領域的 10 個端點：
+
+| 端點 | 領域 | 優先順序 |
+|----------|--------|----------|
+| `healthcheck` | Virtual | high |
+| `origin_pool` | Virtual | high |
+| `app_firewall` | Virtual | high |
+| `service_policy` | Virtual | medium |
+| `api_definition` | API Security | high |
+| `api_discovery` | API Security | medium |
+| `api_groups` | API Security | medium |
+| `code_base_integration` | API Security | low |
+| `data_type` | Data Privacy | medium |
+| `sensitive_data_policy` | Data Privacy | medium |
+
+### 新增端點
+
+若要新增用於驗證的端點：
+
+1. 在 `specs/original/` 中找到規格檔案名稱（格式：`docs-cloud-f5-com.NNNN.*.ves-swagger.json`）
+2. 在 `endpoints:` 下按照上述結構新增條目
+3. 在 `domain_files:` 下新增領域檔案對應及優先順序編號
+4. 將端點名稱新增到 `test_order:` 中所需的位置
+
+:::tip
+無論 `endpoints.yaml` 中列出了什麼，框架在調和過程中都會驗證所有 268 個規格。端點設定控制的是哪些資源會使用 Schemathesis 進行即時 API 測試。
+:::

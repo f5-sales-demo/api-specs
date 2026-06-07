@@ -1,0 +1,83 @@
+---
+title: 파이프라인 개요
+description: 'F5 XC OpenAPI 사양을 다운로드, 검증, 린트, 조정, 게이팅, 릴리스하는 6단계 자동화 파이프라인'
+i18n:
+  sourceHash: 8b956cf69c75
+  translator: machine
+---
+
+이 파이프라인은 GitHub Actions(`validate-and-release.yml`)를 통해 매일 UTC 오전 6시에 실행되며, `scripts/`, `config/`, 또는 `pyproject.toml`에 변경이 있는 `main` 브랜치 푸시 시에도 실행됩니다. 릴리스를 강제하거나 라이브 API 테스트를 건너뛰는 옵션과 함께 수동으로도 트리거할 수 있습니다.
+
+## 파이프라인 단계
+
+```
+ Download         Validate          Spectral Lint
+ ┌──────┐        ┌──────────┐      ┌─────────────┐
+ │ Fetch │───────▶│Schemathesis│────▶│  Discover   │
+ │ specs │        │Constraints│     │  violations │
+ └──────┘        └──────────┘      └─────────────┘
+                                          │
+                 Spectral Gate       Reconcile
+                ┌─────────────┐    ┌──────────┐
+                │  Enforce    │◀───│Apply fixes│
+                │  thresholds │    │to specs   │
+                └─────────────┘    └──────────┘
+                       │
+                    Release
+                 ┌──────────┐
+                 │  Package  │
+                 │  & tag    │
+                 └──────────┘
+```
+
+### 1. 다운로드
+
+`scripts/download.py`는 `docs.cloud.f5.com`에서 공식 F5 XC OpenAPI 사양 ZIP 파일을 가져옵니다. HTTP ETag 헤더를 사용하여 조건부 GET 요청을 수행하며, 업스트림 번들이 변경되지 않았으면 다운로드를 건너뜁니다. 추출된 JSON 사양은 `specs/original/`에 저장됩니다.
+
+### 2. 검증
+
+`scripts/validate.py`는 라이브 F5 XC API에 대해 두 가지 종류의 테스트를 수행합니다:
+
+- **Schemathesis** -- 사양에 따라 무작위 유효/무효 페이로드를 생성하고 API가 사양의 제약 조건과 일치하는지 확인하는 속성 기반 테스트입니다.
+- **제약 조건 검증** -- 10가지 OpenAPI 제약 조건 범주(문자열 길이, 패턴, 숫자 범위, 필수 필드, 열거형, 배열 범위, 객체 구조, 조합, 의존성, 데이터 타입) 전체에 대한 타겟 테스트입니다.
+
+불일치 사항은 `reports/validation_report.json`에 기록됩니다.
+
+### 3. Spectral 린트 (발견)
+
+`scripts/spectral_lint.py --mode discover`는 `spectral-pipeline.yaml`을 사용하여 원본 사양에 대해 Spectral CLI를 실행합니다. 이를 통해 누락된 servers 블록, 누락된 contact 정보, 태그가 없는 오퍼레이션, 사용되지 않는 컴포넌트 스키마, 중복된 operationId, 유효하지 않은 예제, 설명의 스크립트 태그 등 OAS3 품질 이슈를 찾습니다.
+
+위반 사항은 `Discrepancy` 객체로 변환되어 `reports/spectral_report.json`에 기록됩니다. 전체 규칙 세트는 [Spectral 규칙](/04-spectral-rules/)을 참조하세요.
+
+### 4. 조정
+
+`scripts/reconcile.py`는 두 보고서 파일을 모두 사용하여 모든 사양에 수정 사항을 적용합니다:
+
+- **제약 조건 수정**은 관찰된 API 동작을 기반으로 스키마 제약 조건을 조정(완화, 강화, 추가, 제거)합니다. [적용된 수정 사항](/03-fixes-applied/)을 참조하세요.
+- **Spectral 수정**은 servers, contact 정보, 태그, 보안 메타데이터로 사양을 보강하고 사용되지 않는 컴포넌트를 제거합니다.
+- **보안 메타데이터**는 `security_scheme` 설정이 있으면 Spectral이 플래그를 지정하지 않았더라도 항상 주입됩니다.
+
+수정된 사양은 `release/specs/`에 기록되며 저장 전에 `openapi-spec-validator`로 검증됩니다. 수정된 사양이 검증에 실패하면 원본이 폴백으로 사용됩니다.
+
+### 5. Spectral 게이트
+
+`scripts/spectral_lint.py --mode gate`는 `release/specs/`의 조정된 사양에 대해 Spectral을 다시 실행합니다. 게이트는 오류 및 경고 수를 설정 가능한 임계값(`validation.yaml`의 `spectral.gate.max_errors` 및 `spectral.gate.max_warnings`)과 비교하여 확인합니다.
+
+:::note
+1단계 (현재): 임계값은 `null`(경고만)입니다. 오류 제로 게이트를 적용하려면 `max_errors: 0`으로 설정하세요.
+:::
+
+### 6. 릴리스
+
+`scripts/release.py`는 조정된 사양을 버전이 지정된 ZIP 아카이브로 패키징합니다. 버전은 업스트림 사양 메타데이터 날짜에서 파생된 `YYYY.MM.DD-<patch>` 형식을 사용합니다. 릴리스에는 다음이 포함됩니다:
+
+- 개별 도메인 사양 파일 (268개의 JSON 파일)
+- 모든 도메인을 결합한 병합된 `openapi.json`
+- 적용된 모든 수정 사항을 나열하는 `CHANGELOG.md`
+- `VALIDATION_REPORT.md` 요약
+
+CI 작업은 ZIP이 첨부된 GitHub Release를 `v<version>` 태그와 함께 생성합니다. 콘텐츠 해시를 통해 변경 사항이 없을 때 중복 릴리스를 방지합니다.
+
+## 문서 업데이트
+
+병렬 CI 작업은 `scripts/generate_docs.py`를 사용하여 검증 보고서에서 `docs/01-validation-report.mdx`를 생성한 후, 내용이 변경된 경우 PR을 생성합니다.

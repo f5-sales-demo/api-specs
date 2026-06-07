@@ -1,0 +1,127 @@
+---
+title: Spectral Linting Rules
+description: >-
+  बेस OAS नियमों और एक कस्टम f5-path-params फ़ंक्शन के साथ दो-कॉन्फ़िग Spectral
+  आर्किटेक्चर
+i18n:
+  sourceHash: 0e32e7569d97
+  translator: machine
+---
+
+यह प्रोजेक्ट OAS3 लिंटिंग के लिए [Spectral](https://stoplight.io/open-source/spectral) का उपयोग करता है, जिसमें दो-कॉन्फ़िग आर्किटेक्चर है जो CI/बाह्य टूलिंग को पाइपलाइन की कस्टम लॉजिक से अलग करता है।
+
+## दो-कॉन्फ़िग आर्किटेक्चर
+
+### `.spectral.yaml` -- बेस कॉन्फ़िग
+
+GitHub Super-Linter और किसी भी बाह्य CI टूल द्वारा उपयोग किया जाता है। `spectral:oas` (बिल्ट-इन OAS रूलसेट) को एक्सटेंड करता है। इसमें कोई कस्टम फ़ंक्शन नहीं है -- यह इसे उन टूल्स के साथ संगत रखता है जो `spectral/functions/` डायरेक्टरी तक पहुँच के बिना Spectral चलाते हैं।
+
+```yaml
+extends:
+  - "spectral:oas"
+
+rules:
+  path-params: "off"
+  operation-tags: warn
+  oas3-api-servers: warn
+  info-contact: warn
+  oas3-unused-component: warn
+  operation-operationId-unique: error
+  oas3-valid-schema-example: error
+  no-script-tags-in-markdown: warn
+  operation-description: info
+  info-description: info
+```
+
+### `spectral-pipeline.yaml` -- पाइपलाइन कॉन्फ़िग
+
+`scripts/spectral_lint.py` (discover और gate दोनों मोड) द्वारा उपयोग किया जाता है। बेस कॉन्फ़िग को एक्सटेंड करता है और कस्टम `f5-path-params` फ़ंक्शन जोड़ता है:
+
+```yaml
+extends:
+  - "./.spectral.yaml"
+
+functionsDir: "./spectral/functions"
+functions:
+  - f5-path-params
+
+rules:
+  f5-path-params:
+    description: "Path parameters must be declared and used"
+    message: "{{error}}"
+    severity: error
+    given: "$.paths[*]"
+    then:
+      function: f5-path-params
+```
+
+## `path-params` क्यों अक्षम है
+
+Spectral का बिल्ट-इन `path-params` नियम F5 XC APIs को गलत तरीके से फ़्लैग करता है जो `{metadata.namespace}` और `{metadata.name}` जैसे डॉटेड पैरामीटर नामों का उपयोग करते हैं। बिल्ट-इन नियम पैरामीटर नामों में डॉट्स को पार्स नहीं करता, इसलिए यह उन्हें अघोषित के रूप में रिपोर्ट करता है।
+
+कस्टम `f5-path-params` फ़ंक्शन (`spectral/functions/f5-path-params.js`) डॉटेड नामों को सही ढंग से हैंडल करता है, पूर्ण `{placeholder}` सामग्री को घोषित पैरामीटर नामों से मिलान करके। यह पाथ-स्तरीय और ऑपरेशन-स्तरीय दोनों पैरामीटर की जाँच करता है, और दोनों दिशाओं में त्रुटियाँ रिपोर्ट करता है:
+
+- URL पाथ में एक प्लेसहोल्डर जिसके लिए कोई मेल खाता पैरामीटर घोषणा नहीं है
+- एक घोषित पाथ पैरामीटर जो URL पाथ में दिखाई नहीं देता
+
+## नियम संदर्भ
+
+### स्वतः-सुधार योग्य नियम
+
+जब उल्लंघन पाए जाते हैं तो ये नियम रिकंसाइलर द्वारा स्वतः सुधारे जाते हैं। प्रत्येक सुधार के विवरण के लिए [लागू किए गए सुधार](/03-fixes-applied/) देखें।
+
+| नियम | गंभीरता | सुधार विधि | विवरण |
+|------|----------|------------|-------------|
+| `oas3-api-servers` | warn | `_add_servers` | स्पेक में `servers` ब्लॉक होना चाहिए |
+| `info-contact` | warn | `_add_contact` | `info` में `contact` शामिल होना चाहिए |
+| `operation-tags` | warn | `_add_tags` | प्रत्येक ऑपरेशन में कम से कम एक टैग होना चाहिए |
+| `oas3-unused-component` | warn | `_remove_unused_component` | कोई अनसंदर्भित कंपोनेंट स्कीमा नहीं |
+| `operation-operationId-unique` | error | `_deduplicate_operation_id` | सभी operationIds अद्वितीय होने चाहिए |
+| `oas3-valid-schema-example` | error | `_fix_schema_example` | उदाहरण/डिफ़ॉल्ट अपने स्कीमा से मेल खाने चाहिए |
+| `no-script-tags-in-markdown` | warn | `_strip_script_tags` | विवरणों में कोई `<script>` टैग नहीं |
+| `f5-path-params` | error | -- | पाथ पैरामीटर घोषित और उपयोग किए जाने चाहिए |
+
+:::note
+`f5-path-params` एक error-गंभीरता वाला नियम है लेकिन यह स्वतः-सुधार योग्य नहीं है। उल्लंघन एक वास्तविक स्पेक दोष का संकेत देते हैं जिसके लिए मैन्युअल समीक्षा आवश्यक है।
+:::
+
+### गैर-सुधार योग्य नियम
+
+ये नियम `info` गंभीरता तक डाउनग्रेड किए गए हैं क्योंकि इन्हें सार्थक रूप से स्वतः सुधारा नहीं जा सकता:
+
+| नियम | गंभीरता | विवरण |
+|------|----------|-------------|
+| `operation-description` | info | ऑपरेशनों में विवरण होना चाहिए |
+| `info-description` | info | API info में विवरण होना चाहिए |
+
+## पाइपलाइन एकीकरण
+
+Spectral एडाप्टर (`scripts/spectral_lint.py`) दो मोड में चलता है:
+
+### डिस्कवर मोड (रिकंसाइल-पूर्व)
+
+```bash
+make spectral-lint
+# Equivalent to: python -m scripts.spectral_lint --mode discover
+```
+
+`specs/original/` को स्कैन करता है और `reports/spectral_report.json` लिखता है। रिकंसाइलर वैलिडेशन रिपोर्ट के साथ इस रिपोर्ट का उपभोग करता है।
+
+### गेट मोड (रिकंसाइल-पश्चात)
+
+```bash
+make spectral-gate
+# Equivalent to: python -m scripts.spectral_lint --mode gate
+```
+
+`release/specs/` को स्कैन करता है और `reports/spectral_gate_report.json` लिखता है। यदि उल्लंघन कॉन्फ़िगर की गई सीमाओं से अधिक हों तो एग्जिट कोड 1 लौटाता है।
+
+### उल्लंघन मैपिंग
+
+Spectral उल्लंघन तीन उपप्रकारों के साथ `Discrepancy` ऑब्जेक्ट में परिवर्तित किए जाते हैं:
+
+| Spectral नियम श्रेणी | DiscrepancyType | उदाहरण नियम |
+|------------------------|-----------------|---------------|
+| आवश्यक तत्व गायब | `SPECTRAL_MISSING` | `oas3-api-servers`, `info-contact`, `operation-tags` |
+| अमान्य मौजूदा तत्व | `SPECTRAL_INVALID` | `oas3-valid-schema-example`, `no-script-tags-in-markdown` |
+| डेड कोड | `SPECTRAL_UNUSED` | `oas3-unused-component` |

@@ -1,0 +1,194 @@
+---
+title: Guida allo Sviluppo
+description: 'Come configurare, eseguire, testare e contribuire al progetto F5 XC API Specs'
+i18n:
+  sourceHash: 1dc0c369e7a0
+  translator: machine
+---
+
+## Configurazione
+
+```bash
+# Clona e installa le dipendenze di sviluppo
+git clone https://github.com/f5xc-salesdemos/api-specs.git
+cd api-specs
+make dev-install
+
+# Installa Spectral CLI (necessario per le fasi di linting)
+npm install -g @stoplight/spectral-cli
+```
+
+`make dev-install` crea un virtualenv in `.venv/` e installa il progetto con gli extra di sviluppo (pytest, ruff, mypy).
+
+### Variabili d'Ambiente
+
+La validazione API live richiede:
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+Senza queste variabili, `make validate` passa alla modalità dry-run.
+
+## Esecuzione della Pipeline
+
+### Pipeline Completa
+
+```bash
+make all
+# Esegue: download → validate → spectral-lint → reconcile → spectral-gate → release
+```
+
+### Fasi Individuali
+
+```bash
+make download        # Scarica le specifiche upstream
+make validate        # Esegue test API live (richiede token API)
+make validate-dry    # Esecuzione dry run (nessuna chiamata API)
+make spectral-lint   # Modalità discover di Spectral sulle specifiche originali
+make reconcile       # Applica le correzioni da entrambi i report
+make spectral-gate   # Quality gate di Spectral sulle specifiche riconciliate
+make release         # Genera il pacchetto di rilascio
+```
+
+### Documentazione
+
+```bash
+make docs-generate   # Rigenera docs/01-validation-report.mdx dai report
+make docs            # Genera il sito di documentazione completo
+make docs-serve      # Server di sviluppo locale con hot reload
+```
+
+## Esecuzione dei Test
+
+```bash
+make test           # pytest con copertura
+make lint           # ruff check + controllo formattazione
+make typecheck      # Controllo dei tipi con mypy
+make ci-test        # Tutti e tre (usato nella CI)
+```
+
+Gli hook pre-commit vengono eseguiti automaticamente al commit se installati:
+
+```bash
+make pre-commit-install   # Installa gli hook git
+make pre-commit           # Esegui tutti gli hook manualmente
+```
+
+## Struttura del Progetto
+
+```
+scripts/
+  download.py           # Fase 1: Scarica le specifiche da F5
+  validate.py           # Fase 2: Test API live
+  spectral_lint.py      # Fase 3/5: Adattatore per il linting Spectral
+  reconcile.py          # Fase 4: Applica correzioni alle specifiche
+  release.py            # Fase 6: Genera pacchetto di rilascio
+  generate_docs.py      # Genera MDX dai report
+  utils/
+    auth.py             # Autenticazione API F5 XC
+    constraint_validator.py  # Test dei vincoli + Tipi di discrepanza
+    report_generator.py      # Formattazione dei report
+    schemathesis_runner.py   # Orchestrazione test Schemathesis
+    spec_loader.py           # I/O delle specifiche + formattazione JSON
+
+config/
+  validation.yaml       # Configurazione della pipeline
+  endpoints.yaml        # Endpoint di base per i test live
+
+spectral/
+  functions/
+    f5-path-params.js   # Funzione Spectral personalizzata
+
+docs/                   # Documentazione MDX Starlight
+tests/                  # Suite di test pytest
+release/specs/          # Output: file delle specifiche riconciliate
+reports/                # Output: report di validazione e Spectral
+```
+
+## Aggiungere un Nuovo Metodo di Correzione
+
+Per aggiungere una nuova correzione automatica Spectral al riconciliatore:
+
+1. **Aggiungi la regola** a `.spectral.yaml` con la severità desiderata.
+
+2. **Abilita la correzione automatica** in `config/validation.yaml` sotto `spectral.auto_fix`:
+   ```yaml
+   spectral:
+     auto_fix:
+       your-new-rule: true
+   ```
+
+3. **Aggiungi il metodo di correzione** a `SpecReconciler` in `scripts/reconcile.py`:
+   ```python
+   def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+       """Fix description."""
+       # Modify spec in place
+       # Return spec if changed, None if no change needed
+       return spec
+   ```
+
+4. **Registralo** nel dispatcher `_apply_spectral_fix`:
+   ```python
+   spectral_fixers = {
+       # ... existing fixers ...
+       "spectral:your-new-rule": self._fix_your_rule,
+   }
+   ```
+
+5. **Aggiungi i test** che coprano il nuovo metodo di correzione.
+
+## Aggiungere una Nuova Regola Spectral
+
+Per aggiungere una regola Spectral personalizzata con una funzione JavaScript:
+
+1. Crea la funzione in `spectral/functions/your-rule.js`. Esporta una funzione predefinita che riceve `(targetVal, options, context)` e restituisce un array di oggetti `{message, path}`.
+
+2. Registrala in `spectral-pipeline.yaml`:
+   ```yaml
+   functions:
+     - f5-path-params
+     - your-rule
+
+   rules:
+     your-rule:
+       description: "What it checks"
+       message: "{{error}}"
+       severity: error
+       given: "$.paths[*]"
+       then:
+         function: your-rule
+   ```
+
+:::caution
+Le funzioni personalizzate funzionano solo in `spectral-pipeline.yaml`. Non aggiungere `functionsDir` o `functions` a `.spectral.yaml` -- quella configurazione deve rimanere compatibile con Super-Linter e altri strumenti esterni.
+:::
+
+## Pipeline CI
+
+Il workflow GitHub Actions (`validate-and-release.yml`) viene eseguito su:
+
+- **Pianificazione**: Giornalmente alle 6:00 UTC
+- **Push su main**: Quando cambiano `scripts/`, `config/` o `pyproject.toml`
+- **Dispatch manuale**: Con opzioni per rilascio forzato o dry-run
+
+Il workflow ha quattro job:
+
+1. **validate** -- Scarica le specifiche, esegue validazione, lint Spectral, riconciliazione, gate Spectral
+2. **check-release-needed** -- Confronta gli hash dei contenuti per decidere se un rilascio è necessario
+3. **release** -- Crea il pacchetto e una GitHub Release (solo se il contenuto è cambiato)
+4. **update-docs** -- Rigenera `01-validation-report.mdx` e apre una PR se ci sono modifiche
+
+Un job **notify** crea una issue GitHub se un qualsiasi job fallisce.
+
+## Workflow di Branch e PR
+
+Tutte le modifiche seguono: **Issue -> Branch -> PR -> CI superata -> Merge**.
+
+- Nomi dei branch: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`
+- Le PR devono collegare una issue (`Closes #N` nella descrizione)
+- Controlli CI obbligatori: `Check linked issues` e `Lint Code Base`
+- Squash merge preferito; i branch vengono eliminati automaticamente dopo il merge
+
+Consulta `CONTRIBUTING.md` per le regole complete del workflow.

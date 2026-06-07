@@ -1,0 +1,83 @@
+---
+title: パイプライン概要
+description: F5 XC OpenAPI仕様のダウンロード、検証、リント、調整、ゲート、リリースを行う6段階の自動パイプライン
+i18n:
+  sourceHash: 8b956cf69c75
+  translator: machine
+---
+
+このパイプラインは、GitHub Actions（`validate-and-release.yml`）により毎日UTC午前6時に実行されるほか、`scripts/`、`config/`、または`pyproject.toml`に変更を加える`main`へのプッシュのたびに実行されます。また、リリースの強制実行やライブAPIテストのスキップなどのオプションを指定して手動でトリガーすることもできます。
+
+## パイプラインのステージ
+
+```
+ Download         Validate          Spectral Lint
+ ┌──────┐        ┌──────────┐      ┌─────────────┐
+ │ Fetch │───────▶│Schemathesis│────▶│  Discover   │
+ │ specs │        │Constraints│     │  violations │
+ └──────┘        └──────────┘      └─────────────┘
+                                          │
+                 Spectral Gate       Reconcile
+                ┌─────────────┐    ┌──────────┐
+                │  Enforce    │◀───│Apply fixes│
+                │  thresholds │    │to specs   │
+                └─────────────┘    └──────────┘
+                       │
+                    Release
+                 ┌──────────┐
+                 │  Package  │
+                 │  & tag    │
+                 └──────────┘
+```
+
+### 1. ダウンロード
+
+`scripts/download.py`は、`docs.cloud.f5.com`から公式F5 XC OpenAPI仕様のZIPファイルを取得します。HTTP ETagヘッダーを使用した条件付きGETリクエストにより、上流のバンドルに変更がない場合はダウンロードがスキップされます。展開されたJSON仕様は`specs/original/`に配置されます。
+
+### 2. 検証
+
+`scripts/validate.py`は、ライブF5 XC APIに対して2種類のテストを実行します：
+
+- **Schemathesis** -- 仕様に基づいてランダムな有効/無効ペイロードを生成し、APIが仕様の制約と一致するかを確認するプロパティベーステスト。
+- **制約検証** -- 10種類すべてのOpenAPI制約カテゴリ（文字列長、パターン、数値範囲、必須フィールド、列挙型、配列範囲、オブジェクト構造、合成、依存関係、データ型）に対する対象を絞ったテスト。
+
+差異は`reports/validation_report.json`に書き込まれます。
+
+### 3. Spectralリント（検出）
+
+`scripts/spectral_lint.py --mode discover`は、`spectral-pipeline.yaml`を使用して元の仕様に対してSpectral CLIを実行します。これにより、OAS3の品質問題（serversブロックの欠落、連絡先情報の欠落、タグ未設定のオペレーション、未使用のコンポーネントスキーマ、重複するoperationId、無効なexamples、descriptionに含まれるscriptタグなど）が検出されます。
+
+違反は`Discrepancy`オブジェクトに変換され、`reports/spectral_report.json`に書き込まれます。完全なルールセットについては[Spectralルール](/04-spectral-rules/)を参照してください。
+
+### 4. 調整
+
+`scripts/reconcile.py`は両方のレポートファイルを読み取り、すべての仕様に修正を適用します：
+
+- **制約修正**は、観測されたAPIの動作に基づいてスキーマ制約を調整（緩和、厳格化、追加、削除）します。[適用される修正](/03-fixes-applied/)を参照してください。
+- **Spectral修正**は、servers、連絡先情報、タグ、セキュリティメタデータを仕様に追加し、未使用のコンポーネントを削除します。
+- **セキュリティメタデータ**は、Spectralがフラグを立てなかった場合でも、`security_scheme`設定が存在すれば常に注入されます。
+
+修正された仕様は`release/specs/`に書き込まれ、保存前に`openapi-spec-validator`で検証されます。修正された仕様の検証が失敗した場合は、元の仕様がフォールバックとして使用されます。
+
+### 5. Spectralゲート
+
+`scripts/spectral_lint.py --mode gate`は、`release/specs/`内の調整済み仕様に対してSpectralを再実行します。ゲートは、設定可能なしきい値（`validation.yaml`の`spectral.gate.max_errors`および`spectral.gate.max_warnings`）に対してエラー数と警告数をチェックします。
+
+:::note
+フェーズ1（現在）：しきい値は`null`（警告のみ）です。ゼロエラーゲートを適用するには`max_errors: 0`を設定してください。
+:::
+
+### 6. リリース
+
+`scripts/release.py`は、調整済み仕様をバージョン付きZIPアーカイブにパッケージングします。バージョンは、上流の仕様メタデータの日付から導出された`YYYY.MM.DD-<patch>`形式を使用します。リリースには以下が含まれます：
+
+- 個別のドメイン仕様ファイル（268個のJSONファイル）
+- すべてのドメインを統合したマージ済み`openapi.json`
+- 適用されたすべての修正を記載した`CHANGELOG.md`
+- `VALIDATION_REPORT.md`のサマリー
+
+CIジョブは、ZIPを添付したGitHub Releaseを`v<version>`タグ付きで作成します。コンテンツハッシュにより、変更がない場合の重複リリースが防止されます。
+
+## ドキュメント更新
+
+並列CIジョブが`scripts/generate_docs.py`を使用して検証レポートから`docs/01-validation-report.mdx`を生成し、コンテンツに変更があった場合はPRを作成します。

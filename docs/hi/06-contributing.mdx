@@ -1,0 +1,194 @@
+---
+title: विकास मार्गदर्शिका
+description: 'F5 XC API Specs परियोजना को सेटअप, चलाने, परीक्षण और योगदान करने का तरीका'
+i18n:
+  sourceHash: 1dc0c369e7a0
+  translator: machine
+---
+
+## सेटअप
+
+```bash
+# Clone और dev dependencies इंस्टॉल करें
+git clone https://github.com/f5xc-salesdemos/api-specs.git
+cd api-specs
+make dev-install
+
+# Spectral CLI इंस्टॉल करें (linting चरणों के लिए आवश्यक)
+npm install -g @stoplight/spectral-cli
+```
+
+`make dev-install` `.venv/` में एक virtualenv बनाता है और dev extras (pytest, ruff, mypy) के साथ प्रोजेक्ट इंस्टॉल करता है।
+
+### पर्यावरण चर
+
+लाइव API सत्यापन के लिए आवश्यक:
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+इनके बिना, `make validate` ड्राई-रन मोड पर वापस आ जाता है।
+
+## पाइपलाइन चलाना
+
+### पूर्ण पाइपलाइन
+
+```bash
+make all
+# चलाता है: download → validate → spectral-lint → reconcile → spectral-gate → release
+```
+
+### व्यक्तिगत चरण
+
+```bash
+make download        # अपस्ट्रीम specs लाएं
+make validate        # लाइव API परीक्षण चलाएं (API टोकन आवश्यक)
+make validate-dry    # ड्राई रन (कोई API कॉल नहीं)
+make spectral-lint   # मूल specs पर Spectral डिस्कवर मोड
+make reconcile       # दोनों रिपोर्ट से सुधार लागू करें
+make spectral-gate   # समाधित specs पर Spectral गुणवत्ता गेट
+make release         # रिलीज़ पैकेज बनाएं
+```
+
+### दस्तावेज़ीकरण
+
+```bash
+make docs-generate   # रिपोर्ट से docs/01-validation-report.mdx पुनः उत्पन्न करें
+make docs            # पूर्ण दस्तावेज़ीकरण साइट बनाएं
+make docs-serve      # हॉट रीलोड के साथ स्थानीय dev सर्वर
+```
+
+## परीक्षण चलाना
+
+```bash
+make test           # कवरेज के साथ pytest
+make lint           # ruff check + format check
+make typecheck      # mypy टाइप चेकिंग
+make ci-test        # तीनों (CI में उपयोग किया जाता है)
+```
+
+यदि इंस्टॉल हैं तो Pre-commit hooks कमिट पर स्वचालित रूप से चलते हैं:
+
+```bash
+make pre-commit-install   # git hooks इंस्टॉल करें
+make pre-commit           # सभी hooks मैन्युअल रूप से चलाएं
+```
+
+## परियोजना संरचना
+
+```
+scripts/
+  download.py           # चरण 1: F5 से specs लाएं
+  validate.py           # चरण 2: लाइव API परीक्षण
+  spectral_lint.py      # चरण 3/5: Spectral linting एडाप्टर
+  reconcile.py          # चरण 4: specs में सुधार लागू करें
+  release.py            # चरण 6: रिलीज़ पैकेज
+  generate_docs.py      # रिपोर्ट से MDX उत्पन्न करें
+  utils/
+    auth.py             # F5 XC API प्रमाणीकरण
+    constraint_validator.py  # बाधा परीक्षण + विसंगति प्रकार
+    report_generator.py      # रिपोर्ट फ़ॉर्मेटिंग
+    schemathesis_runner.py   # Schemathesis परीक्षण ऑर्केस्ट्रेशन
+    spec_loader.py           # Spec I/O + JSON फ़ॉर्मेटिंग
+
+config/
+  validation.yaml       # पाइपलाइन कॉन्फ़िगरेशन
+  endpoints.yaml        # लाइव परीक्षण के लिए बेसलाइन एंडपॉइंट
+
+spectral/
+  functions/
+    f5-path-params.js   # कस्टम Spectral फ़ंक्शन
+
+docs/                   # Starlight MDX दस्तावेज़ीकरण
+tests/                  # pytest परीक्षण सुइट
+release/specs/          # आउटपुट: समाधित spec फ़ाइलें
+reports/                # आउटपुट: सत्यापन और Spectral रिपोर्ट
+```
+
+## नई फिक्स विधि जोड़ना
+
+रिकॉन्सिलर में नया Spectral ऑटो-फिक्स जोड़ने के लिए:
+
+1. **नियम जोड़ें** `.spectral.yaml` में वांछित गंभीरता के साथ।
+
+2. **ऑटो-फिक्स सक्षम करें** `config/validation.yaml` में `spectral.auto_fix` के अंतर्गत:
+   ```yaml
+   spectral:
+     auto_fix:
+       your-new-rule: true
+   ```
+
+3. **फिक्सर विधि जोड़ें** `scripts/reconcile.py` में `SpecReconciler` में:
+   ```python
+   def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+       """Fix description."""
+       # Modify spec in place
+       # Return spec if changed, None if no change needed
+       return spec
+   ```
+
+4. **इसे पंजीकृत करें** `_apply_spectral_fix` डिस्पैचर में:
+   ```python
+   spectral_fixers = {
+       # ... existing fixers ...
+       "spectral:your-new-rule": self._fix_your_rule,
+   }
+   ```
+
+5. **परीक्षण जोड़ें** जो नई फिक्स विधि को कवर करें।
+
+## नया Spectral नियम जोड़ना
+
+JavaScript फ़ंक्शन के साथ कस्टम Spectral नियम जोड़ने के लिए:
+
+1. `spectral/functions/your-rule.js` में फ़ंक्शन बनाएं। एक डिफ़ॉल्ट फ़ंक्शन एक्सपोर्ट करें जो `(targetVal, options, context)` प्राप्त करे और `{message, path}` ऑब्जेक्ट्स की एक सरणी लौटाए।
+
+2. इसे `spectral-pipeline.yaml` में पंजीकृत करें:
+   ```yaml
+   functions:
+     - f5-path-params
+     - your-rule
+
+   rules:
+     your-rule:
+       description: "What it checks"
+       message: "{{error}}"
+       severity: error
+       given: "$.paths[*]"
+       then:
+         function: your-rule
+   ```
+
+:::caution
+कस्टम फ़ंक्शन केवल `spectral-pipeline.yaml` में काम करते हैं। `.spectral.yaml` में `functionsDir` या `functions` न जोड़ें -- वह कॉन्फ़िग Super-Linter और अन्य बाहरी उपकरणों के साथ संगत रहना चाहिए।
+:::
+
+## CI पाइपलाइन
+
+GitHub Actions वर्कफ़्लो (`validate-and-release.yml`) इन पर चलता है:
+
+- **शेड्यूल**: प्रतिदिन सुबह 6 बजे UTC पर
+- **main पर पुश**: जब `scripts/`, `config/`, या `pyproject.toml` में परिवर्तन हो
+- **मैन्युअल डिस्पैच**: फ़ोर्स्ड रिलीज़ या ड्राई-रन के विकल्पों के साथ
+
+वर्कफ़्लो में चार जॉब हैं:
+
+1. **validate** -- Specs डाउनलोड करता है, सत्यापन, Spectral lint, reconcile, Spectral gate चलाता है
+2. **check-release-needed** -- यह तय करने के लिए कि रिलीज़ आवश्यक है या नहीं, कंटेंट हैश की तुलना करता है
+3. **release** -- पैकेज करता है और GitHub Release बनाता है (केवल तभी जब कंटेंट बदला हो)
+4. **update-docs** -- `01-validation-report.mdx` पुनः उत्पन्न करता है और बदलाव होने पर PR खोलता है
+
+एक **notify** जॉब किसी भी जॉब के विफल होने पर GitHub issue बनाता है।
+
+## ब्रांच और PR वर्कफ़्लो
+
+सभी परिवर्तन इस क्रम का पालन करते हैं: **Issue -> Branch -> PR -> CI पास -> Merge**।
+
+- ब्रांच नाम: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`
+- PRs को एक issue से लिंक होना चाहिए (विवरण में `Closes #N`)
+- आवश्यक CI जाँचें: `Check linked issues` और `Lint Code Base`
+- स्क्वैश मर्ज प्राथमिक; मर्ज के बाद ब्रांचें स्वतः हटती हैं
+
+पूर्ण वर्कफ़्लो नियमों के लिए `CONTRIBUTING.md` देखें।

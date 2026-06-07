@@ -1,0 +1,194 @@
+---
+title: Guía de Desarrollo
+description: 'Cómo configurar, ejecutar, probar y contribuir al proyecto F5 XC API Specs'
+i18n:
+  sourceHash: 1dc0c369e7a0
+  translator: machine
+---
+
+## Configuración
+
+```bash
+# Clonar e instalar dependencias de desarrollo
+git clone https://github.com/f5xc-salesdemos/api-specs.git
+cd api-specs
+make dev-install
+
+# Instalar Spectral CLI (requerido para las etapas de linting)
+npm install -g @stoplight/spectral-cli
+```
+
+`make dev-install` crea un virtualenv en `.venv/` e instala el proyecto con extras de desarrollo (pytest, ruff, mypy).
+
+### Variables de Entorno
+
+La validación en vivo de la API requiere:
+
+```bash
+export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
+export F5XC_API_TOKEN="your-api-token"
+```
+
+Sin estas variables, `make validate` recurre al modo dry-run.
+
+## Ejecución del Pipeline
+
+### Pipeline Completo
+
+```bash
+make all
+# Ejecuta: download → validate → spectral-lint → reconcile → spectral-gate → release
+```
+
+### Etapas Individuales
+
+```bash
+make download        # Obtener specs del upstream
+make validate        # Ejecutar pruebas en vivo de la API (requiere token de API)
+make validate-dry    # Ejecución en seco (sin llamadas a la API)
+make spectral-lint   # Modo descubrimiento de Spectral sobre las specs originales
+make reconcile       # Aplicar correcciones de ambos informes
+make spectral-gate   # Puerta de calidad de Spectral sobre las specs reconciliadas
+make release         # Construir paquete de release
+```
+
+### Documentación
+
+```bash
+make docs-generate   # Regenerar docs/01-validation-report.mdx desde los informes
+make docs            # Construir el sitio de documentación completo
+make docs-serve      # Servidor de desarrollo local con recarga en caliente
+```
+
+## Ejecución de Pruebas
+
+```bash
+make test           # pytest con cobertura
+make lint           # ruff check + verificación de formato
+make typecheck      # Verificación de tipos con mypy
+make ci-test        # Los tres anteriores (usado en CI)
+```
+
+Los hooks de pre-commit se ejecutan automáticamente en cada commit si están instalados:
+
+```bash
+make pre-commit-install   # Instalar hooks de git
+make pre-commit           # Ejecutar todos los hooks manualmente
+```
+
+## Estructura del Proyecto
+
+```
+scripts/
+  download.py           # Etapa 1: Obtener specs de F5
+  validate.py           # Etapa 2: Pruebas en vivo de la API
+  spectral_lint.py      # Etapa 3/5: Adaptador de linting Spectral
+  reconcile.py          # Etapa 4: Aplicar correcciones a las specs
+  release.py            # Etapa 6: Empaquetar release
+  generate_docs.py      # Generar MDX desde los informes
+  utils/
+    auth.py             # Autenticación de la API F5 XC
+    constraint_validator.py  # Pruebas de restricciones + tipos de Discrepancia
+    report_generator.py      # Formato de informes
+    schemathesis_runner.py   # Orquestación de pruebas Schemathesis
+    spec_loader.py           # E/S de specs + formato JSON
+
+config/
+  validation.yaml       # Configuración del pipeline
+  endpoints.yaml        # Endpoints base para pruebas en vivo
+
+spectral/
+  functions/
+    f5-path-params.js   # Función personalizada de Spectral
+
+docs/                   # Documentación MDX de Starlight
+tests/                  # Suite de pruebas pytest
+release/specs/          # Salida: archivos de specs reconciliados
+reports/                # Salida: informes de validación y Spectral
+```
+
+## Agregar un Nuevo Método de Corrección
+
+Para agregar una nueva corrección automática de Spectral al reconciliador:
+
+1. **Agregar la regla** a `.spectral.yaml` con la severidad deseada.
+
+2. **Habilitar la corrección automática** en `config/validation.yaml` bajo `spectral.auto_fix`:
+   ```yaml
+   spectral:
+     auto_fix:
+       your-new-rule: true
+   ```
+
+3. **Agregar el método de corrección** a `SpecReconciler` en `scripts/reconcile.py`:
+   ```python
+   def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
+       """Fix description."""
+       # Modify spec in place
+       # Return spec if changed, None if no change needed
+       return spec
+   ```
+
+4. **Registrarlo** en el dispatcher `_apply_spectral_fix`:
+   ```python
+   spectral_fixers = {
+       # ... existing fixers ...
+       "spectral:your-new-rule": self._fix_your_rule,
+   }
+   ```
+
+5. **Agregar pruebas** que cubran el nuevo método de corrección.
+
+## Agregar una Nueva Regla de Spectral
+
+Para agregar una regla personalizada de Spectral con una función JavaScript:
+
+1. Crear la función en `spectral/functions/your-rule.js`. Exportar una función por defecto que reciba `(targetVal, options, context)` y devuelva un array de objetos `{message, path}`.
+
+2. Registrarla en `spectral-pipeline.yaml`:
+   ```yaml
+   functions:
+     - f5-path-params
+     - your-rule
+
+   rules:
+     your-rule:
+       description: "What it checks"
+       message: "{{error}}"
+       severity: error
+       given: "$.paths[*]"
+       then:
+         function: your-rule
+   ```
+
+:::caution
+Las funciones personalizadas solo funcionan en `spectral-pipeline.yaml`. No agregue `functionsDir` ni `functions` a `.spectral.yaml` -- esa configuración debe permanecer compatible con Super-Linter y otras herramientas externas.
+:::
+
+## Pipeline de CI
+
+El flujo de trabajo de GitHub Actions (`validate-and-release.yml`) se ejecuta en:
+
+- **Programación**: Diariamente a las 6 AM UTC
+- **Push a main**: Cuando cambian `scripts/`, `config/` o `pyproject.toml`
+- **Despacho manual**: Con opciones para release forzado o dry-run
+
+El flujo de trabajo tiene cuatro jobs:
+
+1. **validate** -- Descarga specs, ejecuta validación, lint de Spectral, reconciliación, puerta de calidad de Spectral
+2. **check-release-needed** -- Compara hashes de contenido para decidir si un release es necesario
+3. **release** -- Empaqueta y crea un GitHub Release (solo si el contenido cambió)
+4. **update-docs** -- Regenera `01-validation-report.mdx` y abre un PR si hubo cambios
+
+Un job **notify** crea un issue en GitHub si algún job falla.
+
+## Flujo de Trabajo de Ramas y PR
+
+Todos los cambios siguen: **Issue -> Rama -> PR -> CI pasa -> Merge**.
+
+- Nombres de ramas: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`
+- Los PRs deben vincular un issue (`Closes #N` en la descripción)
+- Verificaciones de CI requeridas: `Check linked issues` y `Lint Code Base`
+- Se prefiere squash merge; las ramas se eliminan automáticamente después del merge
+
+Consulte `CONTRIBUTING.md` para las reglas completas del flujo de trabajo.

@@ -1,0 +1,83 @@
+---
+title: 流水线概述
+description: 六阶段自动化流水线，用于下载、验证、检查、修正、门控和发布 F5 XC OpenAPI 规范
+i18n:
+  sourceHash: 8b956cf69c75
+  translator: machine
+---
+
+该流水线每天 UTC 时间早上 6 点通过 GitHub Actions (`validate-and-release.yml`) 运行，并在每次推送到 `main` 分支且涉及 `scripts/`、`config/` 或 `pyproject.toml` 的变更时触发。也可以手动触发，并提供强制发布或跳过在线 API 测试的选项。
+
+## 流水线阶段
+
+```
+ Download         Validate          Spectral Lint
+ ┌──────┐        ┌──────────┐      ┌─────────────┐
+ │ Fetch │───────▶│Schemathesis│────▶│  Discover   │
+ │ specs │        │Constraints│     │  violations │
+ └──────┘        └──────────┘      └─────────────┘
+                                          │
+                 Spectral Gate       Reconcile
+                ┌─────────────┐    ┌──────────┐
+                │  Enforce    │◀───│Apply fixes│
+                │  thresholds │    │to specs   │
+                └─────────────┘    └──────────┘
+                       │
+                    Release
+                 ┌──────────┐
+                 │  Package  │
+                 │  & tag    │
+                 └──────────┘
+```
+
+### 1. 下载
+
+`scripts/download.py` 从 `docs.cloud.f5.com` 获取官方 F5 XC OpenAPI 规范 ZIP 文件。它使用 HTTP ETag 头进行条件 GET 请求——如果上游包未发生变化，则跳过下载。解压后的 JSON 规范文件存放在 `specs/original/` 目录中。
+
+### 2. 验证
+
+`scripts/validate.py` 针对在线 F5 XC API 执行两类测试：
+
+- **Schemathesis** —— 基于属性的测试，根据规范生成随机的有效/无效负载，并检查 API 是否符合规范中的约束条件。
+- **约束验证** —— 针对所有 10 个 OpenAPI 约束类别的定向测试（字符串长度、模式匹配、数值范围、必填字段、枚举、数组边界、对象结构、组合、依赖关系、数据类型）。
+
+差异结果写入 `reports/validation_report.json`。
+
+### 3. Spectral 检查（发现）
+
+`scripts/spectral_lint.py --mode discover` 使用 `spectral-pipeline.yaml` 对原始规范运行 Spectral CLI。此过程发现 OAS3 质量问题——缺少 servers 块、缺少联系信息、未标记的操作、未使用的组件 schema、重复的 operationId、无效的示例以及描述中的 script 标签。
+
+违规项被转换为 `Discrepancy` 对象并写入 `reports/spectral_report.json`。完整规则集请参阅 [Spectral 规则](/04-spectral-rules/)。
+
+### 4. 修正
+
+`scripts/reconcile.py` 读取两份报告文件并对每个规范应用修复：
+
+- **约束修复**根据观察到的 API 行为调整 schema 约束（放宽、收紧、添加、移除）。请参阅[已应用的修复](/03-fixes-applied/)。
+- **Spectral 修复**为规范补充 servers、联系信息、标签、安全元数据，并移除无用的组件。
+- **安全元数据**在 `security_scheme` 配置存在时始终注入，即使 Spectral 未标记相关问题。
+
+修复后的规范写入 `release/specs/` 目录，并在保存前使用 `openapi-spec-validator` 进行验证。如果修复后的规范验证失败，则回退使用原始规范。
+
+### 5. Spectral 门控
+
+`scripts/spectral_lint.py --mode gate` 对 `release/specs/` 中已修正的规范重新运行 Spectral。门控检查错误和警告数量是否超过可配置的阈值（`validation.yaml` 中的 `spectral.gate.max_errors` 和 `spectral.gate.max_warnings`）。
+
+:::note
+第 1 阶段（当前）：阈值设为 `null`（仅警告）。将 `max_errors: 0` 设置为零错误门控以强制执行。
+:::
+
+### 6. 发布
+
+`scripts/release.py` 将修正后的规范打包为版本化的 ZIP 归档文件。版本号使用 `YYYY.MM.DD-<patch>` 格式，基于上游规范元数据日期生成。发布内容包括：
+
+- 各域独立的规范文件（268 个 JSON 文件）
+- 一个合并了所有域的 `openapi.json` 文件
+- 一个列出所有已应用修复的 `CHANGELOG.md`
+- 一个 `VALIDATION_REPORT.md` 摘要
+
+CI 任务创建带有 ZIP 附件的 GitHub Release，标签为 `v<version>`。内容哈希可防止在无变更时创建重复发布。
+
+## 文档更新
+
+一个并行 CI 任务使用 `scripts/generate_docs.py` 从验证报告生成 `docs/01-validation-report.mdx`，如果内容发生变化则自动创建 PR。

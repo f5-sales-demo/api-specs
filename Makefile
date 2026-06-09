@@ -1,4 +1,4 @@
-.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update spectral-lint spectral-gate transform spell-check-specs
+.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update spectral-lint spectral-gate transform spell-check-specs verify-property-names
 
 PYTHON := python3
 VENV := .venv
@@ -20,7 +20,8 @@ help:
 	@echo "  make test          Run unit tests"
 	@echo "  make lint          Run linter"
 	@echo "  make typecheck     Run type checker"
-	@echo "  make spell-check-specs  Check spelling in spec text fields"
+	@echo "  make spell-check-specs  Check spelling in spec text fields and property names"
+	@echo "  make verify-property-names  Verify property names against live API"
 	@echo "  make clean         Clean generated files"
 	@echo "  make all           Full pipeline: download → validate → reconcile → release"
 	@echo "  make spectral-lint Run Spectral OAS3 linting (pre-reconcile)"
@@ -77,6 +78,9 @@ transform:
 
 spell-check-specs:
 	$(BIN)/python -m scripts.spell_check_specs
+
+verify-property-names:
+	$(BIN)/python -m scripts.verify_property_names
 
 release:
 	$(BIN)/python -m scripts.release

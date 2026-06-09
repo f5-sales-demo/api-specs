@@ -457,6 +457,45 @@ def remove_unused_schemas(
     return spec
 
 
+@register_transform("fix_property_names")
+def fix_property_names(
+    spec: dict,
+    config: TransformConfig,
+    _filename: str,
+) -> dict:
+    """Rename misspelled JSON property keys in component schemas.
+
+    Only applies corrections marked ``verified: true`` in the config.
+    """
+    corrections = config.metadata.get("property_name_corrections", [])
+    if not corrections:
+        return spec
+
+    schemas = spec.get("components", {}).get("schemas", {})
+    for rule in corrections:
+        if not rule.get("verified", False):
+            continue
+        schema_name = rule["schema"]
+        old_key = rule["old_key"]
+        new_key = rule["new_key"]
+
+        schema_def = schemas.get(schema_name)
+        if schema_def is None:
+            continue
+
+        props = schema_def.get("properties", {})
+        if old_key not in props:
+            continue
+
+        props[new_key] = props.pop(old_key)
+
+        required = schema_def.get("required", [])
+        if old_key in required:
+            required[required.index(old_key)] = new_key
+
+    return spec
+
+
 @register_transform("fix_spelling")
 def fix_spelling(
     spec: dict,
@@ -601,6 +640,12 @@ def load_config(config_path: str | Path) -> TransformConfig:
         with spelling_path.open() as fh:
             spelling_cfg = yaml.safe_load(fh) or {}
         metadata["spelling_corrections"] = spelling_cfg.get("corrections", {})
+
+    property_path = config_path.parent / "property_name_corrections.yaml"
+    if property_path.exists():
+        with property_path.open() as fh:
+            property_cfg = yaml.safe_load(fh) or {}
+        metadata["property_name_corrections"] = property_cfg.get("corrections", [])
 
     return TransformConfig(
         input_dir=str(input_dir),

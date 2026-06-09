@@ -1,0 +1,80 @@
+# Property name corrections for misspelled JSON keys in OpenAPI spec schemas.
+#
+# Unlike text-field spelling corrections, property names are STRUCTURAL —
+# changing them alters the API contract. Each correction must be verified
+# against the live F5 XC API before applying.
+#
+# Workflow:
+#   1. Add suspected typos with verified: false
+#   2. Run `make verify-property-names` to probe the live API
+#   3. The script marks verified: true for corrections where the API
+#      uses the corrected name (not the misspelled one)
+#   4. `make transform` applies only verified corrections
+#
+# If the live API actually returns the misspelled key, the spec is correct
+# and the fix must happen at the platform/protobuf level instead.
+
+corrections:
+  - schema: fleetFlashBladeEndpoint
+    old_key: lables
+    new_key: labels
+    verified: false
+    probe_endpoint: /api/config/namespaces/system/fleets
+    probe_method: GET
+    notes: "Property in FlashBlade endpoint config — 2 spec files (fleet, voltstack_site)"
+
+  - schema: fleetBlockedServicesListType
+    old_key: blocked_sevice
+    new_key: blocked_service
+    verified: false
+    probe_endpoint: /api/config/namespaces/system/aws_tgw_sites
+    probe_method: GET
+    notes: "Property in blocked services list — 7 spec files (site configs)"
+
+  - schema: recognizeRescueItem
+    old_key: OBSOLOTE_upperBound
+    new_key: OBSOLETE_upperBound
+    verified: false
+    probe_endpoint: /api/shape/recognize/namespaces/system/recognize/addon/dashboard/rescue
+    probe_method: POST
+    notes: "Property in Shape rescue item — 1 spec file"
+
+  - schema: namespaceHTTPLoadbalancerInventoryFilterType
+    old_key: public_advertisment
+    new_key: public_advertisement
+    verified: false
+    probe_endpoint: /api/config/namespaces/system/http_loadbalancers
+    probe_method: GET
+    notes: "Also affects TCP/UDP LB inventory/result types — 9 occurrences in namespace spec"
+
+  - schema: schemasiteGetSpecType
+    old_key: volterra_software_overide
+    new_key: volterra_software_override
+    verified: false
+    probe_endpoint: /api/config/namespaces/system/sites
+    probe_method: GET
+    notes: "Also in ReplaceSpecType — 2 occurrences in site spec"
+
+  - schema: clusterGetSpecType
+    old_key: disable_lb_source_ip_persistance
+    new_key: disable_lb_source_ip_persistence
+    verified: false
+    probe_endpoint: /api/config/namespaces/system/clusters
+    probe_method: GET
+    notes: "enable_ variant also misspelled — 6 occurrences across cluster and origin_pool specs"
+
+  - schema: clusterGetSpecType
+    old_key: enable_lb_source_ip_persistance
+    new_key: enable_lb_source_ip_persistence
+    verified: false
+    probe_endpoint: /api/config/namespaces/system/clusters
+    probe_method: GET
+    notes: "Paired with disable_ variant above"
+
+  - schema: reportingAutomationTypeData
+    old_key: previous_reqeust_count
+    new_key: previous_request_count
+    verified: false
+    probe_endpoint: /api/shape/bot_defense/namespaces/system/reporting
+    probe_method: GET
+    notes: "Also in TrafficOverviewData — 2 occurrences in shape.bot_defense spec"

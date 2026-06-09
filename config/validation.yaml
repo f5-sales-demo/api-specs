@@ -166,6 +166,7 @@ transform:
     rename_colliding_schemas: true
     remove_deprecated_paths: true
     mark_deprecated_operations: true
+    fix_property_names: true
     fix_spelling: true
     remove_unused_schemas: true
     inject_operation_descriptions: true

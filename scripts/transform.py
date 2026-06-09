@@ -122,7 +122,7 @@ def _build_spelling_patterns(
     """Pre-compile word-boundary regex patterns for each correction.
 
     Longer typos are matched first to prevent shorter substrings from
-    clobbering partial matches (e.g. ``Addresss`` before ``addres``).
+    clobbering partial matches.
     """
     patterns = []
     for typo in sorted(corrections, key=len, reverse=True):

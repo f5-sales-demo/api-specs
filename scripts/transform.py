@@ -116,6 +116,40 @@ def _fix_examples_recursive(obj: Any) -> None:
             _fix_examples_recursive(item)
 
 
+def _build_spelling_patterns(
+    corrections: dict[str, str],
+) -> list[tuple[re.Pattern[str], str]]:
+    """Pre-compile word-boundary regex patterns for each correction.
+
+    Longer typos are matched first to prevent shorter substrings from
+    clobbering partial matches.
+    """
+    patterns = []
+    for typo in sorted(corrections, key=len, reverse=True):
+        fix = corrections[typo]
+        pattern = re.compile(r"(?<!\w)" + re.escape(typo) + r"(?!\w)")
+        patterns.append((pattern, fix))
+    return patterns
+
+
+def _fix_spelling_recursive(
+    obj: Any, patterns: list[tuple[re.Pattern[str], str]]
+) -> None:
+    """Walk *obj* in-place and fix known spelling errors in text fields."""
+    if isinstance(obj, dict):
+        for key in ("description", "summary", "title"):
+            if key in obj and isinstance(obj[key], str):
+                text = obj[key]
+                for pattern, fix in patterns:
+                    text = pattern.sub(fix, text)
+                obj[key] = text
+        for value in obj.values():
+            _fix_spelling_recursive(value, patterns)
+    elif isinstance(obj, list):
+        for item in obj:
+            _fix_spelling_recursive(item, patterns)
+
+
 def _rewrite_refs(obj: Any, old_ref: str, new_ref: str) -> int:
     """Recursively rewrite ``$ref`` values matching *old_ref*.  Returns count."""
     count = 0
@@ -423,6 +457,60 @@ def remove_unused_schemas(
     return spec
 
 
+@register_transform("fix_property_names")
+def fix_property_names(
+    spec: dict,
+    config: TransformConfig,
+    _filename: str,
+) -> dict:
+    """Rename misspelled JSON property keys in component schemas.
+
+    Only applies corrections marked ``verified: true`` in the config.
+    """
+    corrections = config.metadata.get("property_name_corrections", [])
+    if not corrections:
+        return spec
+
+    schemas = spec.get("components", {}).get("schemas", {})
+    for rule in corrections:
+        if not rule.get("verified", False):
+            continue
+        schema_name = rule["schema"]
+        old_key = rule["old_key"]
+        new_key = rule["new_key"]
+
+        schema_def = schemas.get(schema_name)
+        if schema_def is None:
+            continue
+
+        props = schema_def.get("properties", {})
+        if old_key not in props:
+            continue
+
+        props[new_key] = props.pop(old_key)
+
+        required = schema_def.get("required", [])
+        if old_key in required:
+            required[required.index(old_key)] = new_key
+
+    return spec
+
+
+@register_transform("fix_spelling")
+def fix_spelling(
+    spec: dict,
+    config: TransformConfig,
+    _filename: str,
+) -> dict:
+    """Fix known spelling errors in description, summary, and title fields."""
+    corrections = config.metadata.get("spelling_corrections", {})
+    if not corrections:
+        return spec
+    patterns = _build_spelling_patterns(corrections)
+    _fix_spelling_recursive(spec, patterns)
+    return spec
+
+
 @register_transform("inject_operation_descriptions")
 def inject_operation_descriptions(
     spec: dict,
@@ -546,6 +634,18 @@ def load_config(config_path: str | Path) -> TransformConfig:
     if metadata_path.exists():
         with metadata_path.open() as fh:
             metadata = json.load(fh)
+
+    spelling_path = config_path.parent / "spelling_corrections.yaml"
+    if spelling_path.exists():
+        with spelling_path.open() as fh:
+            spelling_cfg = yaml.safe_load(fh) or {}
+        metadata["spelling_corrections"] = spelling_cfg.get("corrections", {})
+
+    property_path = config_path.parent / "property_name_corrections.yaml"
+    if property_path.exists():
+        with property_path.open() as fh:
+            property_cfg = yaml.safe_load(fh) or {}
+        metadata["property_name_corrections"] = property_cfg.get("corrections", [])
 
     return TransformConfig(
         input_dir=str(input_dir),

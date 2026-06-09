@@ -13,68 +13,84 @@
 #
 # If the live API actually returns the misspelled key, the spec is correct
 # and the fix must happen at the platform/protobuf level instead.
+#
+# Last verified: 2026-06-09 against nferreira.staging.volterra.us
 
 corrections:
+  # --- Verified: safe to fix ---
+
   - schema: fleetFlashBladeEndpoint
     old_key: lables
     new_key: labels
-    verified: false
+    verified: true
+    api_status: fix_spec
     probe_endpoint: /api/config/namespaces/system/fleets
     probe_method: GET
-    notes: "Property in FlashBlade endpoint config — 2 spec files (fleet, voltstack_site)"
+    notes: "API returns 'labels' — spec should be corrected. 2 spec files."
 
-  - schema: fleetBlockedServicesListType
-    old_key: blocked_sevice
-    new_key: blocked_service
-    verified: false
-    probe_endpoint: /api/config/namespaces/system/aws_tgw_sites
-    probe_method: GET
-    notes: "Property in blocked services list — 7 spec files (site configs)"
-
-  - schema: recognizeRescueItem
-    old_key: OBSOLOTE_upperBound
-    new_key: OBSOLETE_upperBound
-    verified: false
-    probe_endpoint: /api/shape/recognize/namespaces/system/recognize/addon/dashboard/rescue
-    probe_method: POST
-    notes: "Property in Shape rescue item — 1 spec file"
-
-  - schema: namespaceHTTPLoadbalancerInventoryFilterType
-    old_key: public_advertisment
-    new_key: public_advertisement
-    verified: false
-    probe_endpoint: /api/config/namespaces/system/http_loadbalancers
-    probe_method: GET
-    notes: "Also affects TCP/UDP LB inventory/result types — 9 occurrences in namespace spec"
+  # --- Verified: upstream platform typos (spec is correct as-is) ---
 
   - schema: schemasiteGetSpecType
     old_key: volterra_software_overide
     new_key: volterra_software_override
     verified: false
+    api_status: upstream_typo
     probe_endpoint: /api/config/namespaces/system/sites
     probe_method: GET
-    notes: "Also in ReplaceSpecType — 2 occurrences in site spec"
+    notes: "API returns 'volterra_software_overide' — typo is in the platform. 2 occurrences."
 
   - schema: clusterGetSpecType
     old_key: disable_lb_source_ip_persistance
     new_key: disable_lb_source_ip_persistence
     verified: false
+    api_status: upstream_typo
     probe_endpoint: /api/config/namespaces/system/clusters
     probe_method: GET
-    notes: "enable_ variant also misspelled — 6 occurrences across cluster and origin_pool specs"
+    notes: "API returns 'disable_lb_source_ip_persistance' — typo is in the platform. 6 occurrences."
 
   - schema: clusterGetSpecType
     old_key: enable_lb_source_ip_persistance
     new_key: enable_lb_source_ip_persistence
     verified: false
+    api_status: upstream_typo
     probe_endpoint: /api/config/namespaces/system/clusters
     probe_method: GET
-    notes: "Paired with disable_ variant above"
+    notes: "Paired with disable_ variant — same upstream typo pattern."
+
+  # --- Unverifiable: no resources or restricted endpoints ---
+
+  - schema: fleetBlockedServicesListType
+    old_key: blocked_sevice
+    new_key: blocked_service
+    verified: false
+    api_status: unverifiable
+    probe_endpoint: /api/config/namespaces/system/aws_tgw_sites
+    probe_method: GET
+    notes: "No aws_tgw/vpc/azure/gcp/securemesh site resources exist on staging tenant. Key not found in voltstack_site detail either. Needs production tenant with cloud sites."
+
+  - schema: recognizeRescueItem
+    old_key: OBSOLOTE_upperBound
+    new_key: OBSOLETE_upperBound
+    verified: false
+    api_status: unverifiable
+    probe_endpoint: /api/shape/recognize/namespaces/system/recognize/addon/dashboard/rescue
+    probe_method: POST
+    notes: "Shape endpoint returned HTTP 403 — restricted API. Needs Shape/Bot Defense entitlement."
+
+  - schema: namespaceHTTPLoadbalancerInventoryFilterType
+    old_key: public_advertisment
+    new_key: public_advertisement
+    verified: false
+    api_status: unverifiable
+    probe_endpoint: /api/config/namespaces/system/http_loadbalancers
+    probe_method: GET
+    notes: "No HTTP LBs exist on staging tenant. Key only appears in namespace inventory views."
 
   - schema: reportingAutomationTypeData
     old_key: previous_reqeust_count
     new_key: previous_request_count
     verified: false
+    api_status: unverifiable
     probe_endpoint: /api/shape/bot_defense/namespaces/system/reporting
     probe_method: GET
-    notes: "Also in TrafficOverviewData — 2 occurrences in shape.bot_defense spec"
+    notes: "Reporting endpoint returned HTTP 404. Needs Shape/Bot Defense entitlement."

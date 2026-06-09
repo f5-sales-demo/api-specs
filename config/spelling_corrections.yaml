@@ -1,0 +1,137 @@
+# Spelling corrections for F5 XC OpenAPI spec description/summary/title fields.
+# Applied by the fix_spelling transform during `make transform`.
+#
+# Source: codespell audit of 268 released specs (2026-06-09).
+# Each entry maps a misspelled word to its correction.
+# Corrections are case-sensitive and applied as whole-word replacements
+# within JSON string values only.
+
+corrections:
+  # --- High frequency (>= 10 occurrences) ---
+  referrred: referred
+  Validtion: Validation
+  succeded: succeeded
+  Neworks: Networks
+  conects: connects
+  expresssions: expressions
+  nework: network
+
+  # --- Medium frequency (2-9 occurrences) ---
+  Addresss: Address
+  addres: address
+  addresse: addresses
+  addressses: addresses
+  Assciations: Associations
+  assocaited: associated
+  assosciation: association
+  Avarage: Average
+  bellow: below
+  Cahce: Cache
+  cahce: cache
+  Certficate: Certificate
+  configuation: configuration
+  configurred: configured
+  contol: control
+  detination: destination
+  domian: domain
+  emtpy: empty
+  formating: formatting
+  Maximun: Maximum
+  namesapce: namespace
+  positve: positive
+  prefered: preferred
+  Refernce: Reference
+  refering: referring
+  reponse: response
+  Reponse: Response
+  resturn: return
+  senstive: sensitive
+  Serice: Service
+  Souce: Source
+  Subsciption: Subscription
+  sucess: success
+  uprade: upgrade
+  verfication: verification
+  withing: within
+  accociated: associated
+  condigures: configures
+  programed: programmed
+
+  # --- Low frequency (1 occurrence) ---
+  acccess: access
+  assgined: assigned
+  assigments: assignments
+  assingned: assigned
+  assesment: assessment
+  Attachements: Attachments
+  avaialable: available
+  Availble: Available
+  celcius: celsius
+  cerificates: certificates
+  Chanel: Channel
+  choise: choice
+  cna: can
+  Colletor: Collector
+  Connnect: Connect
+  contails: contains
+  Creadential: Credential
+  DECOMISSIONING: DECOMMISSIONING
+  deinition: definition
+  dependant: dependent
+  Dignosis: Diagnosis
+  enviroment: environment
+  exising: existing
+  fileystem: filesystem
+  followig: following
+  idenfify: identify
+  inclusing: including
+  indentified: identified
+  infomation: information
+  Insatnce: Instance
+  intiated: initiated
+  managment: management
+  Manangement: Management
+  mechanims: mechanisms
+  multple: multiple
+  Newtork: Network
+  oberved: observed
+  objec: object
+  paramters: parameters
+  Probablity: Probability
+  procotol: protocol
+  Referesh: Refresh
+  repesents: represents
+  Resurce: Resource
+  Reture: Return
+  secuirty: security
+  segemnts: segments
+  separte: separate
+  Sesions: Sessions
+  specificed: specified
+  Staus: Status
+  succcessfully: successfully
+  summay: summary
+  suspicous: suspicious
+  targetting: targeting
+  Totol: Total
+  vaidators: validators
+  virutal: virtual
+  wihtout: without
+  objec: object
+  responce: response
+  responde: respond
+  respresents: represents
+
+# Words that codespell flags but are NOT typos in this context.
+# These must not be corrected.
+false_positives:
+  - notin       # BNF keyword in Kubernetes label selector syntax
+  - NotIn       # Same as above, capitalized variant
+  - OT          # Substring of enum values (ENOTFOUND, STATUS_DO_NOT_PUBLISH)
+  - requestor   # Legitimate alternate spelling
+  - thats       # Contraction without apostrophe, common in API descriptions
+  - eventhough  # Compound word, context-dependent
+  - pathes      # May be intentional in some API contexts
+  - re-use      # Hyphenated form is acceptable
+  - re-used     # Hyphenated form is acceptable
+  - implementors  # Acceptable variant of implementers

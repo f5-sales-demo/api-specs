@@ -1,5 +1,5 @@
 ---
-title: Spectral Linting Rules
+title: กฎการตรวจสอบด้วย Spectral
 description: >-
   สถาปัตยกรรม Spectral แบบสองคอนฟิกพร้อมกฎ OAS พื้นฐานและฟังก์ชันกำหนดเอง
   f5-path-params
@@ -8,7 +8,7 @@ i18n:
   translator: machine
 ---
 
-โปรเจกต์นี้ใช้ [Spectral](https://stoplight.io/open-source/spectral) สำหรับการ lint OAS3 ด้วยสถาปัตยกรรมแบบสองคอนฟิกที่แยก CI/เครื่องมือภายนอกออกจากลอจิกกำหนดเองของไปป์ไลน์
+โปรเจกต์นี้ใช้ [Spectral](https://stoplight.io/open-source/spectral) สำหรับการตรวจสอบ OAS3 ด้วยสถาปัตยกรรมแบบสองคอนฟิกที่แยก CI/เครื่องมือภายนอกออกจากลอจิกกำหนดเองของไปป์ไลน์
 
 ## สถาปัตยกรรมแบบสองคอนฟิก
 
@@ -55,46 +55,46 @@ rules:
       function: f5-path-params
 ```
 
-## เหตุผลที่ `path-params` ถูกปิดใช้งาน
+## เหตุผลที่ปิดใช้งาน `path-params`
 
-กฎ `path-params` ในตัวของ Spectral แจ้งเตือนผิดพลาดสำหรับ F5 XC API ที่ใช้ชื่อพารามิเตอร์แบบมีจุดเช่น `{metadata.namespace}` และ `{metadata.name}` กฎในตัวไม่สามารถแยกวิเคราะห์จุดในชื่อพารามิเตอร์ได้ จึงรายงานว่าพารามิเตอร์เหล่านั้นไม่ได้ถูกประกาศ
+กฎ `path-params` ในตัวของ Spectral แจ้งเตือนผิดพลาดสำหรับ F5 XC API ที่ใช้ชื่อพารามิเตอร์แบบมีจุดเช่น `{metadata.namespace}` และ `{metadata.name}` กฎในตัวไม่สามารถแยกวิเคราะห์จุดในชื่อพารามิเตอร์ได้ จึงรายงานว่าเป็นพารามิเตอร์ที่ไม่ได้ประกาศ
 
-ฟังก์ชันกำหนดเอง `f5-path-params` (`spectral/functions/f5-path-params.js`) จัดการชื่อแบบมีจุดได้อย่างถูกต้องโดยจับคู่เนื้อหา `{placeholder}` ทั้งหมดกับชื่อพารามิเตอร์ที่ประกาศไว้ ฟังก์ชันจะตรวจสอบพารามิเตอร์ทั้งในระดับ path และระดับ operation และรายงานข้อผิดพลาดทั้งสองทิศทาง:
+ฟังก์ชันกำหนดเอง `f5-path-params` (`spectral/functions/f5-path-params.js`) จัดการชื่อแบบมีจุดได้อย่างถูกต้องโดยจับคู่เนื้อหาทั้งหมดของ `{placeholder}` กับชื่อพารามิเตอร์ที่ประกาศไว้ ฟังก์ชันนี้ตรวจสอบพารามิเตอร์ทั้งระดับ path และระดับ operation และรายงานข้อผิดพลาดในทั้งสองทิศทาง:
 
-- ตัวแทน (placeholder) ใน URL path ที่ไม่มีการประกาศพารามิเตอร์ที่ตรงกัน
-- พารามิเตอร์ path ที่ประกาศไว้แต่ไม่ปรากฏใน URL path
+- placeholder ใน URL path ที่ไม่มีการประกาศพารามิเตอร์ที่ตรงกัน
+- พารามิเตอร์ path ที่ประกาศแล้วแต่ไม่ปรากฏใน URL path
 
-## ข้อมูลอ้างอิงกฎ
+## อ้างอิงกฎ
 
 ### กฎที่แก้ไขอัตโนมัติได้
 
-กฎเหล่านี้จะถูกแก้ไขอัตโนมัติโดย reconciler เมื่อตรวจพบการละเมิด ดู [การแก้ไขที่ถูกนำไปใช้](/03-fixes-applied/) สำหรับรายละเอียดของแต่ละการแก้ไข
+กฎเหล่านี้จะถูกแก้ไขอัตโนมัติโดย reconciler เมื่อตรวจพบการละเมิด ดู [การแก้ไขที่ดำเนินการ](/03-fixes-applied/) สำหรับรายละเอียดของแต่ละการแก้ไข
 
 | กฎ | ความรุนแรง | วิธีการแก้ไข | คำอธิบาย |
 |------|----------|------------|-------------|
-| `oas3-api-servers` | warn | `_add_servers` | Spec ต้องมีบล็อก `servers` |
+| `oas3-api-servers` | warn | `_add_servers` | สเปคต้องมีบล็อก `servers` |
 | `info-contact` | warn | `_add_contact` | `info` ต้องมี `contact` |
 | `operation-tags` | warn | `_add_tags` | ทุก operation ต้องมีอย่างน้อยหนึ่ง tag |
 | `oas3-unused-component` | warn | `_remove_unused_component` | ไม่มี component schema ที่ไม่ถูกอ้างอิง |
 | `operation-operationId-unique` | error | `_deduplicate_operation_id` | operationId ทั้งหมดต้องไม่ซ้ำกัน |
 | `oas3-valid-schema-example` | error | `_fix_schema_example` | ตัวอย่าง/ค่าเริ่มต้นต้องตรงกับ schema |
 | `no-script-tags-in-markdown` | warn | `_strip_script_tags` | ไม่มีแท็ก `<script>` ใน description |
-| `f5-path-params` | error | -- | พารามิเตอร์ path ต้องถูกประกาศและถูกใช้งาน |
+| `f5-path-params` | error | -- | พารามิเตอร์ path ต้องถูกประกาศและใช้งาน |
 
 :::note
-`f5-path-params` เป็นกฎระดับความรุนแรง error แต่ไม่ได้รับการแก้ไขอัตโนมัติ การละเมิดบ่งชี้ถึงข้อบกพร่องจริงของ spec ที่ต้องการการตรวจสอบด้วยตนเอง
+`f5-path-params` เป็นกฎระดับความรุนแรง error แต่ไม่ได้ถูกแก้ไขอัตโนมัติ การละเมิดบ่งชี้ถึงข้อบกพร่องของสเปคที่แท้จริงซึ่งต้องมีการตรวจสอบด้วยตนเอง
 :::
 
-### กฎที่ไม่สามารถแก้ไขได้
+### กฎที่แก้ไขไม่ได้
 
 กฎเหล่านี้ถูกลดระดับความรุนแรงเป็น `info` เนื่องจากไม่สามารถแก้ไขอัตโนมัติได้อย่างมีความหมาย:
 
 | กฎ | ความรุนแรง | คำอธิบาย |
 |------|----------|-------------|
-| `operation-description` | info | Operation ควรมีคำอธิบาย |
-| `info-description` | info | ข้อมูล API ควรมีคำอธิบาย |
+| `operation-description` | info | Operation ควรมี description |
+| `info-description` | info | ข้อมูล API ควรมี description |
 
-## การทำงานร่วมกับไปป์ไลน์
+## การรวมเข้ากับไปป์ไลน์
 
 Spectral adapter (`scripts/spectral_lint.py`) ทำงานในสองโหมด:
 
@@ -105,7 +105,7 @@ make spectral-lint
 # Equivalent to: python -m scripts.spectral_lint --mode discover
 ```
 
-สแกน `specs/original/` และเขียน `reports/spectral_report.json` reconciler ใช้รายงานนี้ร่วมกับรายงานการตรวจสอบ
+สแกน `specs/original/` และเขียน `reports/spectral_report.json` reconciler จะใช้รายงานนี้ร่วมกับรายงานการตรวจสอบความถูกต้อง
 
 ### โหมด Gate (หลัง Reconcile)
 
@@ -118,10 +118,10 @@ make spectral-gate
 
 ### การแมปการละเมิด
 
-การละเมิดของ Spectral จะถูกแปลงเป็นอ็อบเจกต์ `Discrepancy` ที่มีสามประเภทย่อย:
+การละเมิด Spectral จะถูกแปลงเป็นอ็อบเจกต์ `Discrepancy` ที่มีสามชนิดย่อย:
 
-| หมวดหมู่กฎ Spectral | DiscrepancyType | ตัวอย่างกฎ |
+| หมวดหมู่กฎ Spectral | DiscrepancyType | กฎตัวอย่าง |
 |------------------------|-----------------|---------------|
-| องค์ประกอบที่จำเป็นขาดหาย | `SPECTRAL_MISSING` | `oas3-api-servers`, `info-contact`, `operation-tags` |
+| องค์ประกอบที่จำเป็นหายไป | `SPECTRAL_MISSING` | `oas3-api-servers`, `info-contact`, `operation-tags` |
 | องค์ประกอบที่มีอยู่ไม่ถูกต้อง | `SPECTRAL_INVALID` | `oas3-valid-schema-example`, `no-script-tags-in-markdown` |
-| โค้ดที่ไม่ได้ใช้ | `SPECTRAL_UNUSED` | `oas3-unused-component` |
+| โค้ดที่ไม่ได้ใช้งาน | `SPECTRAL_UNUSED` | `oas3-unused-component` |

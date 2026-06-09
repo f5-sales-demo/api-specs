@@ -1,5 +1,5 @@
 ---
-title: Aperçu du pipeline
+title: Vue d'ensemble du pipeline
 description: >-
   Pipeline automatisé en six étapes qui télécharge, valide, analyse, réconcilie,
   contrôle et publie les spécifications OpenAPI F5 XC
@@ -8,7 +8,7 @@ i18n:
   translator: machine
 ---
 
-Le pipeline s'exécute quotidiennement à 6h00 UTC via GitHub Actions (`validate-and-release.yml`) et à chaque push sur `main` qui modifie `scripts/`, `config/` ou `pyproject.toml`. Il peut également être déclenché manuellement avec des options pour forcer une publication ou ignorer les tests d'API en conditions réelles.
+Le pipeline s'exécute quotidiennement à 6h00 UTC via GitHub Actions (`validate-and-release.yml`) et à chaque push sur `main` qui modifie `scripts/`, `config/` ou `pyproject.toml`. Il peut également être déclenché manuellement avec des options pour forcer une publication ou ignorer les tests d'API en production.
 
 ## Étapes du pipeline
 
@@ -34,51 +34,51 @@ Le pipeline s'exécute quotidiennement à 6h00 UTC via GitHub Actions (`validate
 
 ### 1. Téléchargement
 
-`scripts/download.py` récupère l'archive ZIP officielle des spécifications OpenAPI F5 XC depuis `docs.cloud.f5.com`. Il utilise les en-têtes HTTP ETag pour les requêtes GET conditionnelles -- si le bundle amont n'a pas changé, le téléchargement est ignoré. Les spécifications JSON extraites sont placées dans `specs/original/`.
+`scripts/download.py` récupère l'archive ZIP officielle des spécifications OpenAPI F5 XC depuis `docs.cloud.f5.com`. Il utilise les en-têtes HTTP ETag pour les requêtes GET conditionnelles -- si le bundle en amont n'a pas changé, le téléchargement est ignoré. Les spécifications JSON extraites sont placées dans `specs/original/`.
 
 ### 2. Validation
 
-`scripts/validate.py` orchestre deux types de tests contre l'API F5 XC en conditions réelles :
+`scripts/validate.py` orchestre deux types de tests contre l'API F5 XC en production :
 
 - **Schemathesis** -- tests basés sur les propriétés qui génèrent des charges utiles aléatoires valides/invalides selon la spécification et vérifient si l'API est conforme aux contraintes de la spécification.
-- **Validation des contraintes** -- tests ciblés pour les 10 catégories de contraintes OpenAPI (longueur de chaîne, motif, bornes numériques, champs obligatoires, énumérations, bornes de tableau, structure d'objet, composition, dépendances, types de données).
+- **Validation des contraintes** -- tests ciblés pour les 10 catégories de contraintes OpenAPI (longueur de chaîne, motif, bornes numériques, champs requis, énumérations, bornes de tableau, structure d'objet, composition, dépendances, types de données).
 
-Les divergences sont enregistrées dans `reports/validation_report.json`.
+Les écarts sont écrits dans `reports/validation_report.json`.
 
 ### 3. Analyse Spectral (Découverte)
 
-`scripts/spectral_lint.py --mode discover` exécute le CLI Spectral sur les spécifications originales en utilisant `spectral-pipeline.yaml`. Cela détecte les problèmes de qualité OAS3 -- blocs servers manquants, informations de contact manquantes, opérations non étiquetées, schémas de composants inutilisés, operationIds dupliqués, exemples invalides et balises script dans les descriptions.
+`scripts/spectral_lint.py --mode discover` exécute le CLI Spectral contre les spécifications originales en utilisant `spectral-pipeline.yaml`. Cela identifie les problèmes de qualité OAS3 -- blocs servers manquants, informations de contact manquantes, opérations sans tags, schémas de composants inutilisés, operationIds en double, exemples invalides et balises script dans les descriptions.
 
-Les violations sont converties en objets `Discrepancy` et enregistrées dans `reports/spectral_report.json`. Consultez [Règles Spectral](/04-spectral-rules/) pour l'ensemble complet des règles.
+Les violations sont converties en objets `Discrepancy` et écrites dans `reports/spectral_report.json`. Consultez [Règles Spectral](/04-spectral-rules/) pour l'ensemble complet des règles.
 
 ### 4. Réconciliation
 
-`scripts/reconcile.py` consomme les deux fichiers de rapports et applique des corrections à chaque spécification :
+`scripts/reconcile.py` consomme les deux fichiers de rapport et applique des corrections à chaque spécification :
 
-- **Corrections de contraintes** : ajustement des contraintes de schéma (assouplir, resserrer, ajouter, supprimer) en fonction du comportement observé de l'API. Voir [Corrections appliquées](/03-fixes-applied/).
-- **Corrections Spectral** : enrichissement des spécifications avec les serveurs, les informations de contact, les tags, les métadonnées de sécurité, et suppression des composants inutilisés.
+- **Corrections de contraintes** : ajustent les contraintes de schéma (assouplir, resserrer, ajouter, supprimer) en fonction du comportement observé de l'API. Voir [Corrections appliquées](/03-fixes-applied/).
+- **Corrections Spectral** : enrichissent les spécifications avec des serveurs, des informations de contact, des tags, des métadonnées de sécurité, et suppriment les composants inutilisés.
 - **Les métadonnées de sécurité** sont toujours injectées si la configuration `security_scheme` est présente, même lorsque Spectral ne l'a pas signalé.
 
 Les spécifications corrigées sont écrites dans `release/specs/` et validées avec `openapi-spec-validator` avant l'enregistrement. Si une spécification corrigée échoue à la validation, l'originale est utilisée comme solution de repli.
 
 ### 5. Contrôle Spectral
 
-`scripts/spectral_lint.py --mode gate` réexécute Spectral sur les spécifications réconciliées dans `release/specs/`. Le contrôle vérifie les compteurs d'erreurs et d'avertissements par rapport à des seuils configurables (`spectral.gate.max_errors` et `spectral.gate.max_warnings` dans `validation.yaml`).
+`scripts/spectral_lint.py --mode gate` relance Spectral contre les spécifications réconciliées dans `release/specs/`. Le contrôle vérifie les compteurs d'erreurs et d'avertissements par rapport à des seuils configurables (`spectral.gate.max_errors` et `spectral.gate.max_warnings` dans `validation.yaml`).
 
 :::note
-Phase 1 (actuelle) : les seuils sont à `null` (avertissement uniquement). Définissez `max_errors: 0` pour appliquer un contrôle zéro erreur.
+Phase 1 (actuelle) : les seuils sont à `null` (avertissement uniquement). Définissez `max_errors: 0` pour imposer un contrôle zéro erreur.
 :::
 
 ### 6. Publication
 
-`scripts/release.py` empaquette les spécifications réconciliées dans une archive ZIP versionnée. Les versions utilisent le format `YYYY.MM.DD-<patch>` dérivé de la date des métadonnées de la spécification amont. La publication inclut :
+`scripts/release.py` empaquette les spécifications réconciliées dans une archive ZIP versionnée. Les versions utilisent le format `YYYY.MM.DD-<patch>` dérivé de la date des métadonnées de la spécification en amont. La publication inclut :
 
-- Les fichiers de spécification individuels par domaine (268 fichiers JSON)
+- Les fichiers de spécification par domaine individuels (268 fichiers JSON)
 - Un fichier `openapi.json` fusionné combinant tous les domaines
 - Un `CHANGELOG.md` listant chaque correction appliquée
 - Un résumé `VALIDATION_REPORT.md`
 
-Le job CI crée une Release GitHub avec l'archive ZIP en pièce jointe, étiquetée `v<version>`. Un hash de contenu empêche les publications en double lorsque rien n'a changé.
+Le job CI crée une Release GitHub avec l'archive ZIP en pièce jointe, taguée `v<version>`. Un hash de contenu empêche les publications en double lorsque rien n'a changé.
 
 ## Mise à jour de la documentation
 

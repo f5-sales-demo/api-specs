@@ -26,8 +26,8 @@ api:
 |-------|-------------|
 | `base_url` | URL base de la API de la consola F5 XC. Se puede sobrescribir con la variable de entorno `F5XC_API_URL`. |
 | `tenant` | Nombre del tenant utilizado en las rutas de la API. |
-| `namespace` | Namespace predeterminado para las operaciones CRUD. |
-| `timeout` | Tiempo de espera de la solicitud HTTP en segundos. |
+| `namespace` | Namespace predeterminado para operaciones CRUD. |
+| `timeout` | Tiempo de espera de solicitudes HTTP en segundos. |
 | `retries` | Número de intentos de reintento en caso de fallo. |
 | `retry_delay` | Segundos entre reintentos. |
 
@@ -56,12 +56,12 @@ download:
 | Campo | Descripción |
 |-------|-------------|
 | `url` | URL del paquete oficial de especificaciones OpenAPI de F5 XC (ZIP). |
-| `output_dir` | Donde se almacenan las especificaciones extraídas. |
+| `output_dir` | Directorio donde se almacenan las especificaciones extraídas. |
 | `etag_cache` | Archivo que almacena el ETag HTTP para descargas condicionales. |
 
 ### Categorías de Validación
 
-Diez categorías correspondientes a los tipos de restricción del esquema OpenAPI. Cada una puede habilitarse/deshabilitarse de forma independiente.
+Diez categorías correspondientes a los tipos de restricciones del esquema OpenAPI. Cada una puede habilitarse/deshabilitarse de forma independiente.
 
 ```yaml
 validation_categories:
@@ -72,7 +72,7 @@ validation_categories:
 ```
 
 | Categoría | Palabras clave |
-|-----------|----------------|
+|----------|----------|
 | `string_length` | `minLength`, `maxLength` |
 | `pattern` | `pattern` |
 | `numeric_bounds` | `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum` |
@@ -101,12 +101,12 @@ schemathesis:
 
 | Campo | Descripción |
 |-------|-------------|
-| `enabled` | Activar/desactivar las pruebas de Schemathesis. |
+| `enabled` | Activa o desactiva las pruebas con Schemathesis. |
 | `max_examples` | Número máximo de casos de prueba generados por operación. |
 | `hypothesis_phases` | Fases de Hypothesis a ejecutar (`generate`, `target`). |
-| `stateful_testing` | Habilitar pruebas con estado basadas en enlaces entre operaciones. |
-| `base_url_override` | Sobrescribir la URL base de la API para las pruebas. `null` utiliza `api.base_url`. |
-| `auth_header` | Nombre del encabezado HTTP para la autenticación. |
+| `stateful_testing` | Habilita pruebas con estado basadas en enlaces entre operaciones. |
+| `base_url_override` | Sobrescribe la URL base de la API para las pruebas. `null` utiliza `api.base_url`. |
+| `auth_header` | Nombre del encabezado HTTP para autenticación. |
 | `auth_prefix` | Formato del prefijo del token (las solicitudes se envían como `APIToken <token>`). |
 
 ### Configuración de Reconciliación
@@ -127,7 +127,7 @@ reconciliation:
 | Campo | Descripción |
 |-------|-------------|
 | `priority` | Orden de preferencia cuando múltiples fuentes de datos discrepan. |
-| `fix_strategies` | Mapea cada tipo de discrepancia a su acción de corrección. Consulte [Correcciones Aplicadas](/03-fixes-applied/). |
+| `fix_strategies` | Asigna a cada tipo de discrepancia su acción de corrección. Consulte [Correcciones Aplicadas](/03-fixes-applied/). |
 
 ### Configuración de Spectral
 
@@ -166,14 +166,14 @@ spectral:
 
 | Campo | Descripción |
 |-------|-------------|
-| `enabled` | Activar/desactivar completamente el linting de Spectral. |
-| `ruleset` | Qué archivo de configuración de Spectral utilizar (el pipeline usa `spectral-pipeline.yaml`). |
+| `enabled` | Activa o desactiva completamente el linting con Spectral. |
+| `ruleset` | Archivo de configuración de Spectral a utilizar (el pipeline usa `spectral-pipeline.yaml`). |
 | `auto_fix` | Mapa de nombre de regla a booleano. `true` significa que el reconciliador corregirá las violaciones. |
 | `gate.max_errors` | Número máximo de errores permitidos en la compuerta post-reconciliación. `null` deshabilita la verificación. |
 | `gate.max_warnings` | Número máximo de advertencias permitidas. `null` deshabilita la verificación. |
 | `contact` | Información de contacto inyectada en `info.contact` por el corrector de `info-contact`. |
 | `servers` | Array de servidores inyectado por el corrector de `oas3-api-servers`. |
-| `security_scheme` | Definición del esquema de seguridad inyectada en cada especificación. |
+| `security_scheme` | Definición del esquema de seguridad inyectado en cada especificación. |
 
 ### Configuración de Informes
 
@@ -207,9 +207,9 @@ release:
 
 ## `config/endpoints.yaml`
 
-Define los endpoints de referencia utilizados para la validación en vivo de la API. Cada entrada mapea un nombre de recurso lógico a su archivo de especificación, grupo de API y rutas CRUD.
+Define los endpoints base utilizados para la validación en vivo de la API. Cada entrada asocia un nombre lógico de recurso con su archivo de especificación, grupo de API y rutas CRUD.
 
-### Estructura de un Endpoint
+### Estructura de Endpoints
 
 ```yaml
 endpoints:
@@ -236,22 +236,22 @@ endpoints:
 | `test_priority` | `high`, `medium` o `low` -- controla el orden de ejecución de las pruebas. |
 | `description` | Descripción legible del recurso. |
 
-### Endpoints de Referencia Actuales
+### Endpoints Base Actuales
 
-10 endpoints distribuidos en tres dominios:
+10 endpoints en tres dominios:
 
 | Endpoint | Dominio | Prioridad |
-|----------|---------|-----------|
-| `healthcheck` | Virtual | high |
-| `origin_pool` | Virtual | high |
-| `app_firewall` | Virtual | high |
-| `service_policy` | Virtual | medium |
-| `api_definition` | API Security | high |
-| `api_discovery` | API Security | medium |
-| `api_groups` | API Security | medium |
-| `code_base_integration` | API Security | low |
-| `data_type` | Data Privacy | medium |
-| `sensitive_data_policy` | Data Privacy | medium |
+|----------|--------|----------|
+| `healthcheck` | Virtual | alta |
+| `origin_pool` | Virtual | alta |
+| `app_firewall` | Virtual | alta |
+| `service_policy` | Virtual | media |
+| `api_definition` | Seguridad de API | alta |
+| `api_discovery` | Seguridad de API | media |
+| `api_groups` | Seguridad de API | media |
+| `code_base_integration` | Seguridad de API | baja |
+| `data_type` | Privacidad de Datos | media |
+| `sensitive_data_policy` | Privacidad de Datos | media |
 
 ### Agregar Nuevos Endpoints
 

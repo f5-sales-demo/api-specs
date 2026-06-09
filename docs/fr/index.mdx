@@ -1,5 +1,5 @@
 ---
-title: F5 XC API Specs
+title: Spécifications API F5 XC
 description: >-
   Spécifications OpenAPI validées, enrichies et conformes à OAS3 pour F5
   Distributed Cloud
@@ -8,15 +8,16 @@ sidebar:
   hidden: true
 hero:
   tagline: >-
-    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
-    the live API, auto-repaired, and enriched with security metadata, server
-    definitions, and operation tags.
+    Spécifications OpenAPI prêtes pour la production pour F5 Distributed Cloud —
+    validées par rapport à l'API en ligne, réparées automatiquement et enrichies
+    avec des métadonnées de sécurité, des définitions de serveurs et des tags
+    d'opérations.
   actions:
-    - text: Pipeline Overview
+    - text: Vue d'ensemble du pipeline
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
-    - text: View Latest Report
+    - text: Voir le dernier rapport
       link: 01-validation-report/
       variant: secondary
 i18n:
@@ -27,8 +28,8 @@ i18n:
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
-  <Card title="Aperçu du pipeline" icon="rocket">
-    Pipeline automatisé en six étapes : téléchargement, validation, linting, réconciliation, contrôle, publication.
+  <Card title="Vue d'ensemble du pipeline" icon="rocket">
+    Pipeline automatisé en six étapes : téléchargement, validation, analyse, réconciliation, contrôle, publication.
     [En savoir plus](/02-pipeline/)
   </Card>
   <Card title="Corrections appliquées" icon="pencil">
@@ -44,11 +45,11 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
     [En savoir plus](/05-configuration/)
   </Card>
   <Card title="Rapport de validation" icon="document">
-    Rapport auto-généré de toutes les corrections appliquées lors de la dernière exécution du pipeline.
+    Rapport généré automatiquement de toutes les corrections appliquées lors de la dernière exécution du pipeline.
     [En savoir plus](/01-validation-report/)
   </Card>
   <Card title="Contribuer" icon="github">
-    Configuration de l'environnement de développement, pipeline local, tests et workflow de PR.
+    Configuration de l'environnement de développement, pipeline local, tests et flux de travail des PR.
     [En savoir plus](/06-contributing/)
   </Card>
 </CardGrid>

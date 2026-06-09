@@ -6,33 +6,33 @@ i18n:
   translator: machine
 ---
 
-协调器（`scripts/reconcile.py`）对上游规范应用四类修复。约束修复会更改 API 契约以匹配观察到的行为。所有其他修复仅涉及元数据，不会更改 API 契约。
+协调器（`scripts/reconcile.py`）对上游规范应用四类修复。约束修复会更改 API 契约以匹配观察到的行为。所有其他修复仅涉及元数据，不会改变 API 契约。
 
 ## 约束修复
 
-这些修复调整 OpenAPI 模式约束，使规范与实际 API 的实际执行行为一致。每项修复由[验证](/02-pipeline/#2-validate)过程中产生的 `Discrepancy` 对象驱动。
+这些修复调整 OpenAPI 模式约束，使规范与实际 API 的执行行为保持一致。每项修复由[验证](/02-pipeline/#2-validate)阶段产生的 `Discrepancy` 对象驱动。
 
 | 策略 | 触发条件 | 执行操作 | 契约变更 |
 |----------|---------|--------------|-----------------|
-| **放宽** | `SPEC_STRICTER` | 规范拒绝了 API 实际接受的值。降低 `minLength`/`minimum`，提高 `maxLength`/`maximum`，添加缺失的枚举值。 | 是——扩大可接受的值范围 |
-| **收紧** | `SPEC_LOOSER` | 规范接受了 API 实际拒绝的值。提高 `minLength`/`minimum`，降低 `maxLength`/`maximum`，将枚举限制为观察到的值。 | 是——缩小可接受的值范围 |
+| **放宽** | `SPEC_STRICTER` | 规范拒绝了 API 接受的值。降低 `minLength`/`minimum`，提高 `maxLength`/`maximum`，添加缺失的枚举值。 | 是——扩大接受的值范围 |
+| **收紧** | `SPEC_LOOSER` | 规范接受了 API 拒绝的值。提高 `minLength`/`minimum`，降低 `maxLength`/`maximum`，将枚举限制为观察到的值。 | 是——缩小接受的值范围 |
 | **添加** | `MISSING_CONSTRAINT` | API 执行了规范中未记录的约束。将该约束添加到模式中。 | 是——添加新约束 |
 | **移除** | `EXTRA_CONSTRAINT` | 规范声明了 API 忽略的约束。从模式中移除该约束。 | 是——移除约束 |
 
 :::caution
-约束修复会更改 API 契约。仅在有来自 Schemathesis 或针对实际 API 的约束验证测试的证据支持时才会应用。
+约束修复会更改 API 契约。仅在有来自 Schemathesis 或针对实际 API 进行约束验证测试的证据支持时，才会应用这些修复。
 :::
 
 ### 支持的约束类型
 
-测试和修复的 10 个 OpenAPI 约束类别：
+测试和修复的 10 种 OpenAPI 约束类别：
 
 - **字符串长度** -- `minLength`、`maxLength`
 - **模式** -- `pattern`（正则表达式）
 - **数值范围** -- `minimum`、`maximum`、`exclusiveMinimum`、`exclusiveMaximum`
 - **必填字段** -- `required`
 - **枚举值** -- `enum`
-- **数组边界** -- `minItems`、`maxItems`、`uniqueItems`
+- **数组范围** -- `minItems`、`maxItems`、`uniqueItems`
 - **对象结构** -- `additionalProperties`、`properties`、`propertyNames`
 - **组合** -- `oneOf`、`anyOf`、`allOf`
 - **依赖关系** -- `dependentRequired`、`dependentSchemas`
@@ -40,7 +40,7 @@ i18n:
 
 ## Spectral 增强
 
-这些修复解决 [Spectral 检查](/04-spectral-rules/)发现的 OAS3 质量问题。它们添加或更正元数据，而不改变 API 行为。
+这些修复解决由 [Spectral 检查](/04-spectral-rules/)发现的 OAS3 质量问题。它们添加或修正元数据，而不改变 API 行为。
 
 ### 服务器块注入
 
@@ -67,7 +67,7 @@ i18n:
 
 **规则**: `info-contact` | **契约变更**: 否
 
-为缺少联系信息的规范向 `info.contact` 添加联系信息：
+为缺少联系信息的规范在 `info.contact` 中添加联系方式：
 
 ```json
 "contact": {
@@ -79,11 +79,11 @@ i18n:
 
 值来自 [validation.yaml](/05-configuration/) 中的 `spectral.contact`。
 
-### 操作标签推导
+### 操作标签派生
 
 **规则**: `operation-tags` | **契约变更**: 否
 
-为未添加标签的操作从 URL 路径前缀推导标签。对于类似 `/api/config/namespaces/{namespace}/healthchecks` 的路径，标签为 `config`（第二个非参数段）。该标签会同时添加到操作的 `tags` 数组和规范级别的 `tags` 列表中。
+为未标记的操作从 URL 路径前缀派生标签。对于 `/api/config/namespaces/{namespace}/healthchecks` 这样的路径，标签为 `config`（第二个非参数路径段）。该标签会被添加到操作的 `tags` 数组和规范级别的 `tags` 列表中。
 
 ### 未使用组件移除
 
@@ -95,25 +95,25 @@ i18n:
 
 **规则**: `operation-operationId-unique` | **契约变更**: 否
 
-当多个操作共享相同的 `operationId` 时，附加 HTTP 方法作为后缀（例如 `ListItems_get`）。这使每个 operationId 对代码生成器而言是唯一的。
+当多个操作共享相同的 `operationId` 时，追加 HTTP 方法作为后缀（例如 `ListItems_get`）。这使每个 operationId 对代码生成器而言都是唯一的。
 
 ### 无效示例/默认值移除
 
 **规则**: `oas3-valid-schema-example` | **契约变更**: 否
 
-当 `example` 或 `default` 值不符合模式自身的约束（类型错误、超出范围等）时，从模式中移除这些值。防止代码生成器生成无效的示例负载。
+当 `example` 或 `default` 值不符合模式自身的约束（类型错误、超出范围等）时，将其从模式中移除。防止代码生成器生成无效的示例载荷。
 
 ### Script 标签剥离
 
 **规则**: `no-script-tags-in-markdown` | **契约变更**: 否
 
-使用正则表达式替换从 `description` 字段中剥离 `<script>` 标签。某些上游规范包含注入的 script 标签，这些标签会破坏文档渲染器。
+使用正则表达式替换从 `description` 字段中剥离 `<script>` 标签。某些上游规范包含注入的 script 标签，会破坏文档渲染器。
 
 ## 安全元数据
 
 **契约变更**: 否（仅文档）
 
-每个规范如果尚未包含 `apiKeyAuth` 安全方案，则会接收一个。无论 Spectral 是否标记，这始终会被注入。
+如果规范中尚未存在 `apiKeyAuth` 安全方案，则会为每个规范注入一个。无论 Spectral 是否标记了相关问题，该注入始终执行。
 
 ```json
 "components": {
@@ -129,13 +129,13 @@ i18n:
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-安全方案定义来自 [validation.yaml](/05-configuration/) 中的 `spectral.security_scheme`。这告诉 API 使用者如何进行身份验证，但不改变运行时行为。
+安全方案定义来自 [validation.yaml](/05-configuration/) 中的 `spectral.security_scheme`。这告知 API 消费者如何进行身份验证，但不改变运行时行为。
 
 ## JSON 格式化
 
 **契约变更**: 否
 
-所有输出的 JSON 规范都会通过 Biome 兼容的数组压缩器（`scripts/utils/spec_loader.py` 中的 `_compact_short_arrays`）处理。能在 120 个字符内容纳的短数组会被折叠为单行：
+所有输出的 JSON 规范都通过 Biome 兼容的数组压缩器（`scripts/utils/spec_loader.py` 中的 `_compact_short_arrays`）处理。可以在 120 个字符内容纳的短数组会被折叠为单行：
 
 ```json
 // Before
@@ -152,10 +152,10 @@ i18n:
 
 ## 修复优先级
 
-当可能应用多种修复策略时，协调器使用 `reconciliation.priority` 中配置的优先级顺序：
+当多种修复策略可能适用时，协调器使用 `reconciliation.priority` 中配置的优先级顺序：
 
 1. **existing** -- 如果现有规范约束有效，则使用现有约束
 2. **discovery** -- 使用发现的实际 API 行为
-3. **inferred** -- 从类似端点的模式中推断
+3. **inferred** -- 从相似端点的模式中推断
 
-所有修复应用后，每个已修复的规范都会通过 `openapi-spec-validator` 进行验证。如果验证失败，则使用原始规范作为回退，并将该修复记录为错误。
+所有修复完成后，每个已修复的规范都会通过 `openapi-spec-validator` 进行验证。如果验证失败，则使用原始规范作为回退，并将该修复记录为错误。

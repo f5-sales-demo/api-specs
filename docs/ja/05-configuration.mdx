@@ -1,12 +1,12 @@
 ---
 title: 設定リファレンス
-description: validation.yaml および endpoints.yaml 設定ファイルのリファレンス
+description: validation.yaml と endpoints.yaml 設定ファイルのリファレンス
 i18n:
   sourceHash: ca5e781b7000
   translator: machine
 ---
 
-すべてのパイプラインの動作は、`config/` 内の2つのYAMLファイルによって制御されます。
+すべてのパイプラインの動作は `config/` 内の2つのYAMLファイルによって制御されます。
 
 ## `config/validation.yaml`
 
@@ -24,15 +24,15 @@ api:
 
 | フィールド | 説明 |
 |-------|-------------|
-| `base_url` | F5 XCコンソールAPIのベースURL。`F5XC_API_URL` 環境変数で上書き可能。 |
+| `base_url` | F5 XCコンソールAPIのベースURL。環境変数 `F5XC_API_URL` で上書き可能。 |
 | `tenant` | APIパスで使用されるテナント名。 |
-| `namespace` | CRUD操作のデフォルトネームスペース。 |
+| `namespace` | CRUD操作のデフォルト名前空間。 |
 | `timeout` | HTTPリクエストのタイムアウト（秒）。 |
 | `retries` | 失敗時のリトライ回数。 |
-| `retry_delay` | リトライ間の秒数。 |
+| `retry_delay` | リトライ間の待機秒数。 |
 
 :::caution
-`validation.yaml` の `base_url`、`tenant`、`namespace` の値は汎用的なプレースホルダーです。パイプラインを実行する前に、環境変数を使用してお使いの環境に合わせて**必ず**設定してください：
+`validation.yaml` の `base_url`、`tenant`、`namespace` の値は汎用的なプレースホルダーです。パイプラインを実行する前に、環境変数を使用してご自身の環境に合わせて**必ず**設定してください：
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
@@ -61,7 +61,7 @@ download:
 
 ### バリデーションカテゴリ
 
-OpenAPIスキーマの制約タイプに対応する10のカテゴリ。それぞれ個別に有効/無効を切り替えることができます。
+OpenAPIスキーマの制約タイプに対応する10のカテゴリ。それぞれ個別に有効化/無効化できます。
 
 ```yaml
 validation_categories:
@@ -126,7 +126,7 @@ reconciliation:
 
 | フィールド | 説明 |
 |-------|-------------|
-| `priority` | 複数のデータソースが一致しない場合の優先順位。 |
+| `priority` | 複数のデータソースが不一致の場合の優先順位。 |
 | `fix_strategies` | 各不一致タイプを修正アクションにマッピング。[適用される修正](/03-fixes-applied/)を参照。 |
 
 ### Spectral設定
@@ -167,13 +167,13 @@ spectral:
 | フィールド | 説明 |
 |-------|-------------|
 | `enabled` | Spectralリンティング全体の有効/無効を切り替え。 |
-| `ruleset` | 使用するSpectral設定ファイル（パイプラインは `spectral-pipeline.yaml` を使用）。 |
-| `auto_fix` | ルール名からブール値へのマップ。`true` の場合、リコンサイラーが違反を修正。 |
+| `ruleset` | 使用するSpectral設定ファイル（パイプラインでは `spectral-pipeline.yaml` を使用）。 |
+| `auto_fix` | ルール名とブール値のマップ。`true` の場合、リコンサイラーが違反を修正。 |
 | `gate.max_errors` | リコンシリエーション後のゲートで許容される最大エラー数。`null` でチェックを無効化。 |
 | `gate.max_warnings` | 許容される最大警告数。`null` でチェックを無効化。 |
-| `contact` | `info-contact` フィクサーによって `info.contact` に挿入される連絡先情報。 |
-| `servers` | `oas3-api-servers` フィクサーによって挿入されるサーバー配列。 |
-| `security_scheme` | すべてのスペックに挿入されるセキュリティスキーム定義。 |
+| `contact` | `info-contact` フィクサーによって `info.contact` に注入される連絡先情報。 |
+| `servers` | `oas3-api-servers` フィクサーによって注入されるサーバー配列。 |
+| `security_scheme` | すべてのスペックに注入されるセキュリティスキーム定義。 |
 
 ### レポート設定
 
@@ -203,13 +203,13 @@ release:
 | `output_dir` | リリースアーティファクトのディレクトリ。 |
 | `include_changelog` | リリースパッケージに `CHANGELOG.md` を含める。 |
 | `include_validation_report` | リリースパッケージにバリデーションレポートを含める。 |
-| `version_from` | バージョンのソース。`git` はスペックのメタデータ日付 + パッチ番号からバージョンを導出。 |
+| `version_from` | バージョンソース。`git` はスペックのメタデータ日付 + パッチ番号からバージョンを導出。 |
 
 ## `config/endpoints.yaml`
 
-ライブAPIバリデーションに使用されるベースラインエンドポイントを定義します。各エントリは論理リソース名をスペックファイル、APIグループ、およびCRUDパスにマッピングします。
+ライブAPIバリデーションに使用されるベースラインエンドポイントを定義します。各エントリは論理リソース名をスペックファイル、APIグループ、CRUDパスにマッピングします。
 
-### エンドポイントの構造
+### エンドポイント構造
 
 ```yaml
 endpoints:
@@ -231,14 +231,14 @@ endpoints:
 |-------|-------------|
 | `resource` | APIリソース名（URLパスで使用）。 |
 | `domain_file` | `specs/original/` 内のOpenAPIスペックのファイル名。 |
-| `api_group` | APIグループのプレフィックス（`config`、`web` など）。 |
+| `api_group` | APIグループプレフィックス（`config`、`web` など）。 |
 | `crud_operations` | 各CRUD操作のHTTPメソッドとパス。 |
-| `test_priority` | `high`、`medium`、または `low` -- テスト実行の優先順位を制御。 |
+| `test_priority` | `high`、`medium`、または `low` -- テスト実行順序を制御。 |
 | `description` | リソースの人間が読める説明。 |
 
 ### 現在のベースラインエンドポイント
 
-3つのドメインにわたる10のエンドポイント：
+3つのドメインにまたがる10のエンドポイント：
 
 | エンドポイント | ドメイン | 優先度 |
 |----------|--------|----------|
@@ -255,13 +255,13 @@ endpoints:
 
 ### 新しいエンドポイントの追加
 
-バリデーション用の新しいエンドポイントを追加するには：
+バリデーション用に新しいエンドポイントを追加するには：
 
-1. `specs/original/` でスペックのファイル名を見つけます（形式：`docs-cloud-f5-com.NNNN.*.ves-swagger.json`）
-2. 上記の構造に従って `endpoints:` の下にエントリを追加します
-3. `domain_files:` の下に優先度番号付きでドメインファイルのマッピングを追加します
-4. 希望する位置の `test_order:` にエンドポイント名を追加します
+1. `specs/original/` でスペックのファイル名を見つける（形式：`docs-cloud-f5-com.NNNN.*.ves-swagger.json`）
+2. 上記の構造に従って `endpoints:` の下にエントリを追加する
+3. `domain_files:` の下に優先度番号付きでドメインファイルマッピングを追加する
+4. 希望する位置で `test_order:` にエンドポイント名を追加する
 
 :::tip
-フレームワークは `endpoints.yaml` に記載されている内容に関係なく、リコンシリエーション中に全268スペックをバリデーションします。エンドポイント設定は、SchemathesisによるライブAPIテストの対象となるリソースを制御します。
+フレームワークは `endpoints.yaml` に記載されている内容に関係なく、リコンシリエーション中にすべての268スペックをバリデーションします。エンドポイント設定は、SchemathesisによるライブAPIテストの対象リソースを制御します。
 :::

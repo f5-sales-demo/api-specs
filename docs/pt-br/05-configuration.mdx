@@ -10,7 +10,7 @@ Todo o comportamento do pipeline é controlado por dois arquivos YAML em `config
 
 ## `config/validation.yaml`
 
-### Configurações de API
+### Configurações da API
 
 ```yaml
 api:
@@ -25,11 +25,11 @@ api:
 | Campo | Descrição |
 |-------|-----------|
 | `base_url` | URL base da API do console F5 XC. Sobrescreva com a variável de ambiente `F5XC_API_URL`. |
-| `tenant` | Nome do tenant utilizado nos caminhos da API. |
+| `tenant` | Nome do tenant usado nos caminhos da API. |
 | `namespace` | Namespace padrão para operações CRUD. |
-| `timeout` | Timeout de requisição HTTP em segundos. |
-| `retries` | Número de tentativas em caso de falha. |
-| `retry_delay` | Segundos entre as tentativas. |
+| `timeout` | Tempo limite de requisição HTTP em segundos. |
+| `retries` | Número de tentativas de repetição em caso de falha. |
+| `retry_delay` | Segundos entre tentativas de repetição. |
 
 :::caution
 Os valores de `base_url`, `tenant` e `namespace` em `validation.yaml` são placeholders genéricos. Você **deve** configurá-los para o seu ambiente por meio de variáveis de ambiente antes de executar o pipeline:
@@ -61,7 +61,7 @@ download:
 
 ### Categorias de Validação
 
-Dez categorias correspondentes aos tipos de restrição do esquema OpenAPI. Cada uma pode ser habilitada/desabilitada independentemente.
+Dez categorias correspondentes aos tipos de restrição do schema OpenAPI. Cada uma pode ser habilitada/desabilitada independentemente.
 
 ```yaml
 validation_categories:
@@ -72,7 +72,7 @@ validation_categories:
 ```
 
 | Categoria | Palavras-chave |
-|-----------|---------------|
+|-----------|----------------|
 | `string_length` | `minLength`, `maxLength` |
 | `pattern` | `pattern` |
 | `numeric_bounds` | `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum` |
@@ -101,11 +101,11 @@ schemathesis:
 
 | Campo | Descrição |
 |-------|-----------|
-| `enabled` | Habilita/desabilita os testes com Schemathesis. |
+| `enabled` | Ativa/desativa os testes do Schemathesis. |
 | `max_examples` | Número máximo de casos de teste gerados por operação. |
-| `hypothesis_phases` | Fases do Hypothesis a serem executadas (`generate`, `target`). |
+| `hypothesis_phases` | Fases do Hypothesis a executar (`generate`, `target`). |
 | `stateful_testing` | Habilita testes stateful baseados em links entre operações. |
-| `base_url_override` | Sobrescreve a URL base da API para os testes. `null` utiliza `api.base_url`. |
+| `base_url_override` | Sobrescreve a URL base da API para testes. `null` usa `api.base_url`. |
 | `auth_header` | Nome do cabeçalho HTTP para autenticação. |
 | `auth_prefix` | Formato do prefixo do token (as requisições são enviadas como `APIToken <token>`). |
 
@@ -127,7 +127,7 @@ reconciliation:
 | Campo | Descrição |
 |-------|-----------|
 | `priority` | Ordem de preferência quando múltiplas fontes de dados divergem. |
-| `fix_strategies` | Mapeia cada tipo de discrepância para sua ação de correção. Consulte [Correções Aplicadas](/03-fixes-applied/). |
+| `fix_strategies` | Mapeia cada tipo de discrepância para sua ação de correção. Veja [Correções Aplicadas](/03-fixes-applied/). |
 
 ### Configurações do Spectral
 
@@ -166,16 +166,16 @@ spectral:
 
 | Campo | Descrição |
 |-------|-----------|
-| `enabled` | Habilita/desabilita completamente o linting do Spectral. |
-| `ruleset` | Qual arquivo de configuração do Spectral utilizar (o pipeline usa `spectral-pipeline.yaml`). |
+| `enabled` | Ativa/desativa completamente o linting do Spectral. |
+| `ruleset` | Qual arquivo de configuração do Spectral usar (o pipeline usa `spectral-pipeline.yaml`). |
 | `auto_fix` | Mapa de nome da regra para booleano. `true` significa que o reconciliador corrigirá as violações. |
 | `gate.max_errors` | Número máximo de erros permitidos no gate pós-reconciliação. `null` desabilita a verificação. |
 | `gate.max_warnings` | Número máximo de avisos permitidos. `null` desabilita a verificação. |
 | `contact` | Informações de contato injetadas em `info.contact` pelo corretor `info-contact`. |
 | `servers` | Array de servidores injetado pelo corretor `oas3-api-servers`. |
-| `security_scheme` | Definição do esquema de segurança injetada em todas as especificações. |
+| `security_scheme` | Definição do esquema de segurança injetado em cada especificação. |
 
-### Configurações de Relatório
+### Configurações de Relatórios
 
 ```yaml
 reports:
@@ -200,14 +200,14 @@ release:
 
 | Campo | Descrição |
 |-------|-----------|
-| `output_dir` | Diretório para os artefatos de release. |
-| `include_changelog` | Inclui o `CHANGELOG.md` no pacote de release. |
-| `include_validation_report` | Inclui o relatório de validação no pacote de release. |
+| `output_dir` | Diretório para artefatos de release. |
+| `include_changelog` | Incluir `CHANGELOG.md` no pacote de release. |
+| `include_validation_report` | Incluir o relatório de validação no pacote de release. |
 | `version_from` | Fonte da versão. `git` deriva a versão a partir da data dos metadados da especificação + número do patch. |
 
 ## `config/endpoints.yaml`
 
-Define os endpoints de referência utilizados para validação da API em tempo real. Cada entrada mapeia um nome lógico de recurso para seu arquivo de especificação, grupo de API e caminhos CRUD.
+Define os endpoints de referência usados para validação ao vivo da API. Cada entrada mapeia um nome lógico de recurso para seu arquivo de especificação, grupo da API e caminhos CRUD.
 
 ### Estrutura do Endpoint
 
@@ -229,9 +229,9 @@ endpoints:
 
 | Campo | Descrição |
 |-------|-----------|
-| `resource` | Nome do recurso da API (utilizado nos caminhos de URL). |
+| `resource` | Nome do recurso da API (usado nos caminhos de URL). |
 | `domain_file` | Nome do arquivo da especificação OpenAPI em `specs/original/`. |
-| `api_group` | Prefixo do grupo de API (`config`, `web`, etc.). |
+| `api_group` | Prefixo do grupo da API (`config`, `web`, etc.). |
 | `crud_operations` | Método HTTP e caminho para cada operação CRUD. |
 | `test_priority` | `high`, `medium` ou `low` -- controla a ordem de execução dos testes. |
 | `description` | Descrição legível do recurso. |
@@ -263,5 +263,5 @@ Para adicionar um novo endpoint para validação:
 4. Adicione o nome do endpoint em `test_order:` na posição desejada
 
 :::tip
-O framework valida todas as 268 especificações durante a reconciliação, independentemente do que está listado em `endpoints.yaml`. A configuração de endpoints controla quais recursos recebem testes de API em tempo real com o Schemathesis.
+O framework valida todas as 268 especificações durante a reconciliação, independentemente do que está listado em `endpoints.yaml`. A configuração de endpoints controla quais recursos recebem testes ao vivo da API com o Schemathesis.
 :::

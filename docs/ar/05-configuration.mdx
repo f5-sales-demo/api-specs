@@ -1,12 +1,12 @@
 ---
-title: مرجع التكوين
-description: مرجع لملفات تكوين validation.yaml و endpoints.yaml
+title: مرجع الإعدادات
+description: مرجع لملفات إعدادات validation.yaml و endpoints.yaml
 i18n:
   sourceHash: ca5e781b7000
   translator: machine
 ---
 
-يتم التحكم في جميع سلوكيات خط الأنابيب من خلال ملفي YAML في `config/`.
+يتم التحكم في جميع سلوكيات خط المعالجة من خلال ملفي YAML في `config/`.
 
 ## `config/validation.yaml`
 
@@ -23,16 +23,16 @@ api:
 ```
 
 | الحقل | الوصف |
-|-------|-------------|
+|-------|-------|
 | `base_url` | عنوان URL الأساسي لواجهة برمجة تطبيقات وحدة تحكم F5 XC. يمكن تجاوزه بمتغير البيئة `F5XC_API_URL`. |
 | `tenant` | اسم المستأجر المستخدم في مسارات واجهة برمجة التطبيقات. |
-| `namespace` | مساحة الاسم الافتراضية لعمليات CRUD. |
+| `namespace` | مساحة الأسماء الافتراضية لعمليات CRUD. |
 | `timeout` | مهلة طلب HTTP بالثواني. |
 | `retries` | عدد محاولات إعادة المحاولة عند الفشل. |
-| `retry_delay` | عدد الثواني بين محاولات إعادة المحاولة. |
+| `retry_delay` | الثواني بين محاولات إعادة المحاولة. |
 
 :::caution
-قيم `base_url` و `tenant` و `namespace` في `validation.yaml` هي عناصر نائبة عامة. **يجب** عليك تكوين هذه القيم لبيئتك عبر متغيرات البيئة قبل تشغيل خط الأنابيب:
+قيم `base_url` و `tenant` و `namespace` في `validation.yaml` هي عناصر نائبة عامة. **يجب** عليك تهيئة هذه القيم لبيئتك عبر متغيرات البيئة قبل تشغيل خط المعالجة:
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
@@ -41,7 +41,7 @@ export F5XC_NAMESPACE="example-namespace"
 export F5XC_API_TOKEN="your-api-token"
 ```
 
-تأخذ متغيرات البيئة الأسبقية على القيم الافتراضية في YAML أثناء التشغيل.
+تأخذ متغيرات البيئة الأولوية على القيم الافتراضية في ملف YAML أثناء التشغيل.
 :::
 
 ### إعدادات التنزيل
@@ -54,10 +54,10 @@ download:
 ```
 
 | الحقل | الوصف |
-|-------|-------------|
-| `url` | عنوان URL لحزمة مواصفات OpenAPI الرسمية لـ F5 XC (ملف ZIP). |
+|-------|-------|
+| `url` | عنوان URL لحزمة مواصفات OpenAPI الرسمية من F5 XC (بصيغة ZIP). |
 | `output_dir` | مكان تخزين المواصفات المستخرجة. |
-| `etag_cache` | الملف الذي يخزن علامة HTTP ETag للتنزيلات المشروطة. |
+| `etag_cache` | الملف الذي يخزن علامة ETag الخاصة ببروتوكول HTTP للتنزيلات المشروطة. |
 
 ### فئات التحقق
 
@@ -72,17 +72,17 @@ validation_categories:
 ```
 
 | الفئة | الكلمات المفتاحية |
-|----------|----------|
-| `string_length` | `minLength`, `maxLength` |
+|-------|-------------------|
+| `string_length` | `minLength`، `maxLength` |
 | `pattern` | `pattern` |
-| `numeric_bounds` | `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum` |
+| `numeric_bounds` | `minimum`، `maximum`، `exclusiveMinimum`، `exclusiveMaximum` |
 | `required_fields` | `required` |
 | `enum_values` | `enum` |
-| `array_bounds` | `minItems`, `maxItems`, `uniqueItems` |
-| `object_structure` | `additionalProperties`, `properties`, `propertyNames` |
-| `composition` | `oneOf`, `anyOf`, `allOf` |
-| `dependencies` | `dependentRequired`, `dependentSchemas` |
-| `data_types` | `type`, `format` |
+| `array_bounds` | `minItems`، `maxItems`، `uniqueItems` |
+| `object_structure` | `additionalProperties`، `properties`، `propertyNames` |
+| `composition` | `oneOf`، `anyOf`، `allOf` |
+| `dependencies` | `dependentRequired`، `dependentSchemas` |
+| `data_types` | `type`، `format` |
 
 ### إعدادات Schemathesis
 
@@ -100,16 +100,16 @@ schemathesis:
 ```
 
 | الحقل | الوصف |
-|-------|-------------|
-| `enabled` | تبديل اختبار Schemathesis. |
-| `max_examples` | الحد الأقصى لعدد حالات الاختبار المُنشأة لكل عملية. |
-| `hypothesis_phases` | مراحل Hypothesis المراد تشغيلها (`generate`, `target`). |
+|-------|-------|
+| `enabled` | تبديل تشغيل/إيقاف اختبار Schemathesis. |
+| `max_examples` | الحد الأقصى لعدد حالات الاختبار المولدة لكل عملية. |
+| `hypothesis_phases` | مراحل Hypothesis المراد تشغيلها (`generate`، `target`). |
 | `stateful_testing` | تمكين الاختبار ذي الحالة القائم على الروابط عبر العمليات. |
-| `base_url_override` | تجاوز عنوان URL الأساسي لواجهة برمجة التطبيقات للاختبارات. `null` يستخدم `api.base_url`. |
+| `base_url_override` | تجاوز عنوان URL الأساسي لواجهة برمجة التطبيقات للاختبارات. القيمة `null` تستخدم `api.base_url`. |
 | `auth_header` | اسم ترويسة HTTP للمصادقة. |
 | `auth_prefix` | تنسيق بادئة الرمز المميز (تُرسل الطلبات بصيغة `APIToken <token>`). |
 
-### إعدادات التوفيق
+### إعدادات التسوية
 
 ```yaml
 reconciliation:
@@ -125,9 +125,9 @@ reconciliation:
 ```
 
 | الحقل | الوصف |
-|-------|-------------|
-| `priority` | ترتيب الأفضلية عندما تتعارض مصادر بيانات متعددة. |
-| `fix_strategies` | يربط كل نوع من أنواع التناقضات بإجراء الإصلاح المناسب. انظر [الإصلاحات المُطبّقة](/03-fixes-applied/). |
+|-------|-------|
+| `priority` | ترتيب الأولوية عندما تتعارض مصادر البيانات المتعددة. |
+| `fix_strategies` | يربط كل نوع من التناقضات بإجراء الإصلاح الخاص به. انظر [الإصلاحات المُطبقة](/03-fixes-applied/). |
 
 ### إعدادات Spectral
 
@@ -165,15 +165,15 @@ spectral:
 ```
 
 | الحقل | الوصف |
-|-------|-------------|
-| `enabled` | تبديل فحص Spectral بالكامل. |
-| `ruleset` | ملف تكوين Spectral المراد استخدامه (يستخدم خط الأنابيب `spectral-pipeline.yaml`). |
-| `auto_fix` | خريطة من اسم القاعدة إلى قيمة منطقية. `true` تعني أن المُوفِّق سيصلح المخالفات. |
-| `gate.max_errors` | الحد الأقصى المسموح به من الأخطاء في بوابة ما بعد التوفيق. `null` يعطل الفحص. |
-| `gate.max_warnings` | الحد الأقصى المسموح به من التحذيرات. `null` يعطل الفحص. |
-| `contact` | معلومات الاتصال المحقونة في `info.contact` بواسطة مُصلح `info-contact`. |
-| `servers` | مصفوفة الخوادم المحقونة بواسطة مُصلح `oas3-api-servers`. |
-| `security_scheme` | تعريف مخطط الأمان المحقون في كل مواصفة. |
+|-------|-------|
+| `enabled` | تبديل تشغيل/إيقاف فحص Spectral بالكامل. |
+| `ruleset` | ملف إعدادات Spectral المراد استخدامه (يستخدم خط المعالجة `spectral-pipeline.yaml`). |
+| `auto_fix` | خريطة من اسم القاعدة إلى قيمة منطقية. القيمة `true` تعني أن المُسوّي سيصلح الانتهاكات. |
+| `gate.max_errors` | الحد الأقصى المسموح به للأخطاء في بوابة ما بعد التسوية. القيمة `null` تعطل الفحص. |
+| `gate.max_warnings` | الحد الأقصى المسموح به للتحذيرات. القيمة `null` تعطل الفحص. |
+| `contact` | معلومات الاتصال المُدرجة في `info.contact` بواسطة مُصلح `info-contact`. |
+| `servers` | مصفوفة الخوادم المُدرجة بواسطة مُصلح `oas3-api-servers`. |
+| `security_scheme` | تعريف مخطط الأمان المُدرج في كل مواصفة. |
 
 ### إعدادات التقارير
 
@@ -199,17 +199,17 @@ release:
 ```
 
 | الحقل | الوصف |
-|-------|-------------|
+|-------|-------|
 | `output_dir` | دليل مخرجات الإصدار. |
 | `include_changelog` | تضمين `CHANGELOG.md` في حزمة الإصدار. |
 | `include_validation_report` | تضمين تقرير التحقق في حزمة الإصدار. |
-| `version_from` | مصدر الإصدار. `git` يستخرج الإصدار من تاريخ بيانات المواصفة الوصفية + رقم التصحيح. |
+| `version_from` | مصدر الإصدار. القيمة `git` تستخلص الإصدار من تاريخ بيانات المواصفات الوصفية + رقم التصحيح. |
 
 ## `config/endpoints.yaml`
 
-يحدد نقاط النهاية الأساسية المستخدمة للتحقق المباشر من واجهة برمجة التطبيقات. يربط كل إدخال اسم مورد منطقي بملف المواصفة الخاص به ومجموعة واجهة برمجة التطبيقات ومسارات CRUD.
+يحدد نقاط النهاية الأساسية المستخدمة للتحقق المباشر من واجهة برمجة التطبيقات. يربط كل إدخال اسم مورد منطقي بملف المواصفات الخاص به ومجموعة واجهة برمجة التطبيقات ومسارات CRUD.
 
-### بنية نقطة النهاية
+### هيكل نقطة النهاية
 
 ```yaml
 endpoints:
@@ -228,40 +228,40 @@ endpoints:
 ```
 
 | الحقل | الوصف |
-|-------|-------------|
+|-------|-------|
 | `resource` | اسم مورد واجهة برمجة التطبيقات (يُستخدم في مسارات URL). |
-| `domain_file` | اسم ملف مواصفة OpenAPI في `specs/original/`. |
-| `api_group` | بادئة مجموعة واجهة برمجة التطبيقات (`config`, `web`, إلخ). |
+| `domain_file` | اسم ملف مواصفات OpenAPI في `specs/original/`. |
+| `api_group` | بادئة مجموعة واجهة برمجة التطبيقات (`config`، `web`، إلخ). |
 | `crud_operations` | طريقة HTTP والمسار لكل عملية CRUD. |
 | `test_priority` | `high` أو `medium` أو `low` -- يتحكم في ترتيب تنفيذ الاختبارات. |
 | `description` | وصف مقروء للمورد. |
 
 ### نقاط النهاية الأساسية الحالية
 
-10 نقاط نهاية عبر ثلاثة مجالات:
+10 نقاط نهاية عبر ثلاثة نطاقات:
 
-| نقطة النهاية | المجال | الأولوية |
-|----------|--------|----------|
-| `healthcheck` | Virtual | عالية |
-| `origin_pool` | Virtual | عالية |
-| `app_firewall` | Virtual | عالية |
-| `service_policy` | Virtual | متوسطة |
-| `api_definition` | API Security | عالية |
-| `api_discovery` | API Security | متوسطة |
-| `api_groups` | API Security | متوسطة |
-| `code_base_integration` | API Security | منخفضة |
-| `data_type` | Data Privacy | متوسطة |
-| `sensitive_data_policy` | Data Privacy | متوسطة |
+| نقطة النهاية | النطاق | الأولوية |
+|--------------|--------|----------|
+| `healthcheck` | افتراضي | عالية |
+| `origin_pool` | افتراضي | عالية |
+| `app_firewall` | افتراضي | عالية |
+| `service_policy` | افتراضي | متوسطة |
+| `api_definition` | أمان واجهة برمجة التطبيقات | عالية |
+| `api_discovery` | أمان واجهة برمجة التطبيقات | متوسطة |
+| `api_groups` | أمان واجهة برمجة التطبيقات | متوسطة |
+| `code_base_integration` | أمان واجهة برمجة التطبيقات | منخفضة |
+| `data_type` | خصوصية البيانات | متوسطة |
+| `sensitive_data_policy` | خصوصية البيانات | متوسطة |
 
 ### إضافة نقاط نهاية جديدة
 
 لإضافة نقطة نهاية جديدة للتحقق:
 
-1. ابحث عن اسم ملف المواصفة في `specs/original/` (الصيغة: `docs-cloud-f5-com.NNNN.*.ves-swagger.json`)
-2. أضف إدخالاً تحت `endpoints:` متبعاً البنية أعلاه
-3. أضف ربط ملف المجال تحت `domain_files:` مع رقم أولوية
+1. ابحث عن اسم ملف المواصفات في `specs/original/` (الصيغة: `docs-cloud-f5-com.NNNN.*.ves-swagger.json`)
+2. أضف إدخالاً تحت `endpoints:` باتباع الهيكل الموضح أعلاه
+3. أضف ربط ملف النطاق تحت `domain_files:` مع رقم أولوية
 4. أضف اسم نقطة النهاية إلى `test_order:` في الموضع المطلوب
 
 :::tip
-يتحقق إطار العمل من جميع المواصفات البالغ عددها 268 أثناء التوفيق بغض النظر عما هو مدرج في `endpoints.yaml`. يتحكم تكوين نقاط النهاية في الموارد التي تخضع لاختبار واجهة برمجة التطبيقات المباشر باستخدام Schemathesis.
+يتحقق الإطار من جميع المواصفات البالغ عددها 268 أثناء التسوية بغض النظر عما هو مدرج في `endpoints.yaml`. تتحكم إعدادات نقاط النهاية في الموارد التي تخضع لاختبار واجهة برمجة التطبيقات المباشر باستخدام Schemathesis.
 :::

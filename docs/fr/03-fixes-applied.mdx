@@ -1,5 +1,5 @@
 ---
-title: Correctifs appliqués aux spécifications en amont
+title: Correctifs appliqués aux spécifications amont
 description: >-
   Référence complète de chaque correctif que le moteur de réconciliation
   applique aux spécifications OpenAPI de F5 XC
@@ -8,21 +8,21 @@ i18n:
   translator: machine
 ---
 
-Le réconciliateur (`scripts/reconcile.py`) applique quatre catégories de correctifs aux spécifications en amont. Les correctifs de contraintes modifient les contrats d'API pour correspondre au comportement observé. Tous les autres correctifs concernent uniquement les métadonnées et ne modifient pas les contrats d'API.
+Le réconciliateur (`scripts/reconcile.py`) applique quatre catégories de correctifs aux spécifications amont. Les correctifs de contraintes modifient les contrats d'API pour correspondre au comportement observé. Tous les autres correctifs concernent uniquement les métadonnées et ne modifient pas les contrats d'API.
 
 ## Correctifs de contraintes
 
-Ces correctifs ajustent les contraintes des schémas OpenAPI afin que la spécification corresponde à ce que l'API en production applique réellement. Chaque correctif est piloté par un objet `Discrepancy` produit lors de la [validation](/02-pipeline/#2-validate).
+Ces correctifs ajustent les contraintes de schéma OpenAPI afin que la spécification corresponde à ce que l'API en production applique réellement. Chaque correctif est piloté par un objet `Discrepancy` produit lors de la [validation](/02-pipeline/#2-validate).
 
-| Stratégie | Déclencheur | Ce qu'il fait | Changement de contrat |
+| Stratégie | Déclencheur | Ce qu'il fait | Modification du contrat |
 |----------|---------|--------------|-----------------|
-| **Relax** | `SPEC_STRICTER` | La spécification rejette des valeurs que l'API accepte. Abaisse `minLength`/`minimum`, augmente `maxLength`/`maximum`, ajoute les valeurs d'énumération manquantes. | Oui -- élargit les valeurs acceptées |
-| **Tighten** | `SPEC_LOOSER` | La spécification accepte des valeurs que l'API rejette. Augmente `minLength`/`minimum`, abaisse `maxLength`/`maximum`, restreint les énumérations aux valeurs observées. | Oui -- restreint les valeurs acceptées |
+| **Relax** | `SPEC_STRICTER` | La spécification rejette des valeurs que l'API accepte. Abaisse `minLength`/`minimum`, augmente `maxLength`/`maximum`, ajoute les valeurs d'enum manquantes. | Oui -- élargit les valeurs acceptées |
+| **Tighten** | `SPEC_LOOSER` | La spécification accepte des valeurs que l'API rejette. Augmente `minLength`/`minimum`, abaisse `maxLength`/`maximum`, restreint les enums aux valeurs observées. | Oui -- restreint les valeurs acceptées |
 | **Add** | `MISSING_CONSTRAINT` | L'API applique une contrainte non documentée dans la spécification. Ajoute la contrainte au schéma. | Oui -- ajoute une nouvelle contrainte |
 | **Remove** | `EXTRA_CONSTRAINT` | La spécification déclare une contrainte que l'API ignore. Supprime la contrainte du schéma. | Oui -- supprime la contrainte |
 
 :::caution
-Les correctifs de contraintes modifient le contrat d'API. Ils ne sont appliqués que lorsqu'ils sont étayés par des preuves provenant de Schemathesis ou de tests de validation de contraintes contre l'API en production.
+Les correctifs de contraintes modifient le contrat d'API. Ils ne sont appliqués que lorsqu'ils sont étayés par des preuves issues de Schemathesis ou de tests de validation de contraintes contre l'API en production.
 :::
 
 ### Types de contraintes pris en charge
@@ -46,7 +46,7 @@ Ces correctifs traitent les problèmes de qualité OAS3 détectés par le [linti
 
 ### Injection du bloc Servers
 
-**Règle** : `oas3-api-servers` | **Changement de contrat** : Non
+**Règle** : `oas3-api-servers` | **Modification du contrat** : Non
 
 Ajoute le modèle d'URL du tenant F5 XC aux spécifications dépourvues d'un bloc `servers` :
 
@@ -67,9 +67,9 @@ L'URL du serveur et les valeurs des variables proviennent de `spectral.servers` 
 
 ### Injection des informations de contact
 
-**Règle** : `info-contact` | **Changement de contrat** : Non
+**Règle** : `info-contact` | **Modification du contrat** : Non
 
-Ajoute les informations de contact dans `info.contact` pour les spécifications qui en sont dépourvues :
+Ajoute les informations de contact à `info.contact` pour les spécifications qui en sont dépourvues :
 
 ```json
 "contact": {
@@ -83,37 +83,37 @@ Les valeurs proviennent de `spectral.contact` dans [validation.yaml](/05-configu
 
 ### Dérivation des tags d'opération
 
-**Règle** : `operation-tags` | **Changement de contrat** : Non
+**Règle** : `operation-tags` | **Modification du contrat** : Non
 
-Dérive un tag à partir du préfixe du chemin URL pour les opérations non taguées. Pour un chemin comme `/api/config/namespaces/{namespace}/healthchecks`, le tag est `config` (le deuxième segment non paramétrique). Le tag est ajouté à la fois au tableau `tags` de l'opération et à la liste `tags` au niveau de la spécification.
+Dérive un tag à partir du préfixe du chemin d'URL pour les opérations non taguées. Pour un chemin comme `/api/config/namespaces/{namespace}/healthchecks`, le tag est `config` (le deuxième segment non paramétrique). Le tag est ajouté à la fois au tableau `tags` de l'opération et à la liste `tags` au niveau de la spécification.
 
 ### Suppression des composants inutilisés
 
-**Règle** : `oas3-unused-component` | **Changement de contrat** : Non
+**Règle** : `oas3-unused-component` | **Modification du contrat** : Non
 
 Supprime les schémas de composants de `components.schemas` qui ne sont référencés nulle part dans la spécification. Réduit la taille de la spécification sans affecter aucune opération.
 
 ### Déduplication des OperationId
 
-**Règle** : `operation-operationId-unique` | **Changement de contrat** : Non
+**Règle** : `operation-operationId-unique` | **Modification du contrat** : Non
 
-Ajoute la méthode HTTP en suffixe (par exemple, `ListItems_get`) lorsque plusieurs opérations partagent le même `operationId`. Cela rend chaque operationId unique pour les générateurs de code.
+Ajoute la méthode HTTP en suffixe (par ex., `ListItems_get`) lorsque plusieurs opérations partagent le même `operationId`. Cela rend chaque operationId unique pour les générateurs de code.
 
 ### Suppression des exemples/valeurs par défaut invalides
 
-**Règle** : `oas3-valid-schema-example` | **Changement de contrat** : Non
+**Règle** : `oas3-valid-schema-example` | **Modification du contrat** : Non
 
-Supprime les valeurs `example` ou `default` des schémas lorsque la valeur n'est pas conforme aux propres contraintes du schéma (type incorrect, hors limites, etc.). Empêche les générateurs de code de produire des échantillons de données invalides.
+Supprime les valeurs `example` ou `default` des schémas lorsque la valeur n'est pas conforme aux contraintes propres du schéma (type incorrect, hors limites, etc.). Empêche les générateurs de code de produire des exemples de charge utile invalides.
 
 ### Suppression des balises script
 
-**Règle** : `no-script-tags-in-markdown` | **Changement de contrat** : Non
+**Règle** : `no-script-tags-in-markdown` | **Modification du contrat** : Non
 
-Supprime les balises `<script>` des champs `description` à l'aide d'un remplacement par expression régulière. Certaines spécifications en amont contiennent des balises script injectées qui perturbent les moteurs de rendu de documentation.
+Supprime les balises `<script>` des champs `description` à l'aide d'un remplacement par expression régulière. Certaines spécifications amont contiennent des balises script injectées qui perturbent les moteurs de rendu de documentation.
 
 ## Métadonnées de sécurité
 
-**Changement de contrat** : Non (documentation uniquement)
+**Modification du contrat** : Non (documentation uniquement)
 
 Chaque spécification reçoit un schéma de sécurité `apiKeyAuth` s'il n'en possède pas déjà un. Celui-ci est toujours injecté, que Spectral l'ait signalé ou non.
 
@@ -131,11 +131,11 @@ Chaque spécification reçoit un schéma de sécurité `apiKeyAuth` s'il n'en po
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-La définition du schéma provient de `spectral.security_scheme` dans [validation.yaml](/05-configuration/). Cela indique aux consommateurs de l'API comment s'authentifier sans modifier le comportement à l'exécution.
+La définition du schéma provient de `spectral.security_scheme` dans [validation.yaml](/05-configuration/). Cela indique aux consommateurs de l'API comment s'authentifier, mais ne modifie pas le comportement à l'exécution.
 
 ## Formatage JSON
 
-**Changement de contrat** : Non
+**Modification du contrat** : Non
 
 Toutes les spécifications JSON en sortie passent par un compacteur de tableaux compatible Biome (`_compact_short_arrays` dans `scripts/utils/spec_loader.py`). Les tableaux courts qui tiennent dans 120 caractères sont condensés sur une seule ligne :
 
@@ -157,7 +157,7 @@ Les tableaux dépassant le seuil de longueur de ligne restent sur plusieurs lign
 Lorsque plusieurs stratégies de correctifs pourraient s'appliquer, le réconciliateur utilise un ordre de priorité configuré dans `reconciliation.priority` :
 
 1. **existing** -- Utiliser la contrainte existante de la spécification si elle est valide
-2. **discovery** -- Utiliser le comportement découvert de l'API en production
-3. **inferred** -- Inférer à partir des motifs observés sur des endpoints similaires
+2. **discovery** -- Utiliser le comportement observé de l'API en production
+3. **inferred** -- Inférer à partir de motifs similaires entre endpoints comparables
 
-Chaque spécification corrigée est validée avec `openapi-spec-validator` après l'application de tous les correctifs. Si la validation échoue, la spécification originale est utilisée comme solution de repli et le correctif est enregistré comme erreur.
+Chaque spécification corrigée est validée avec `openapi-spec-validator` après l'application de tous les correctifs. Si la validation échoue, la spécification originale est utilisée comme solution de repli et le correctif est enregistré comme une erreur.

@@ -22,14 +22,14 @@ npm install -g @stoplight/spectral-cli
 
 ### Variáveis de Ambiente
 
-A validação de API em tempo real requer:
+A validação ao vivo da API requer:
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
 export F5XC_API_TOKEN="your-api-token"
 ```
 
-Sem essas variáveis, `make validate` utiliza o modo dry-run como fallback.
+Sem essas variáveis, `make validate` recorre ao modo dry-run.
 
 ## Executando o Pipeline
 
@@ -43,63 +43,63 @@ make all
 ### Etapas Individuais
 
 ```bash
-make download        # Busca as specs upstream
-make validate        # Executa testes de API em tempo real (requer token de API)
-make validate-dry    # Execução simulada (sem chamadas de API)
-make spectral-lint   # Modo discover do Spectral nas specs originais
-make reconcile       # Aplica correções de ambos os relatórios
-make spectral-gate   # Quality gate do Spectral nas specs reconciliadas
-make release         # Gera o pacote de release
+make download        # Buscar specs upstream
+make validate        # Executar testes ao vivo na API (requer token de API)
+make validate-dry    # Execução dry run (sem chamadas à API)
+make spectral-lint   # Modo de descoberta Spectral nas specs originais
+make reconcile       # Aplicar correções de ambos os relatórios
+make spectral-gate   # Quality gate Spectral nas specs reconciliadas
+make release         # Gerar pacote de release
 ```
 
 ### Documentação
 
 ```bash
-make docs-generate   # Regenera docs/01-validation-report.mdx a partir dos relatórios
-make docs            # Gera o site de documentação completo
+make docs-generate   # Regenerar docs/01-validation-report.mdx a partir dos relatórios
+make docs            # Compilar o site de documentação completo
 make docs-serve      # Servidor de desenvolvimento local com hot reload
 ```
 
-## Executando os Testes
+## Executando Testes
 
 ```bash
 make test           # pytest com cobertura
 make lint           # ruff check + verificação de formatação
-make typecheck      # verificação de tipos com mypy
+make typecheck      # Verificação de tipos com mypy
 make ci-test        # Todos os três (usado no CI)
 ```
 
 Os hooks de pre-commit são executados automaticamente no commit, se instalados:
 
 ```bash
-make pre-commit-install   # Instala os git hooks
-make pre-commit           # Executa todos os hooks manualmente
+make pre-commit-install   # Instalar git hooks
+make pre-commit           # Executar todos os hooks manualmente
 ```
 
 ## Estrutura do Projeto
 
 ```
 scripts/
-  download.py           # Etapa 1: Busca specs do F5
-  validate.py           # Etapa 2: Testes de API em tempo real
-  spectral_lint.py      # Etapa 3/5: Adaptador de linting do Spectral
-  reconcile.py          # Etapa 4: Aplica correções nas specs
-  release.py            # Etapa 6: Empacotamento da release
-  generate_docs.py      # Gera MDX a partir dos relatórios
+  download.py           # Etapa 1: Buscar specs do F5
+  validate.py           # Etapa 2: Testes ao vivo na API
+  spectral_lint.py      # Etapa 3/5: Adaptador de linting Spectral
+  reconcile.py          # Etapa 4: Aplicar correções nas specs
+  release.py            # Etapa 6: Empacotar release
+  generate_docs.py      # Gerar MDX a partir dos relatórios
   utils/
     auth.py             # Autenticação na API F5 XC
-    constraint_validator.py  # Testes de restrições + tipos de Discrepancy
+    constraint_validator.py  # Teste de restrições + tipos de Discrepancy
     report_generator.py      # Formatação de relatórios
     schemathesis_runner.py   # Orquestração de testes Schemathesis
-    spec_loader.py           # I/O de specs + formatação JSON
+    spec_loader.py           # E/S de specs + formatação JSON
 
 config/
   validation.yaml       # Configuração do pipeline
-  endpoints.yaml        # Endpoints de referência para testes em tempo real
+  endpoints.yaml        # Endpoints base para testes ao vivo
 
 spectral/
   functions/
-    f5-path-params.js   # Função customizada do Spectral
+    f5-path-params.js   # Função Spectral customizada
 
 docs/                   # Documentação MDX Starlight
 tests/                  # Suíte de testes pytest
@@ -109,11 +109,11 @@ reports/                # Saída: relatórios de validação e Spectral
 
 ## Adicionando um Novo Método de Correção
 
-Para adicionar uma nova correção automática do Spectral ao reconciliador:
+Para adicionar uma nova correção automática Spectral ao reconciliador:
 
 1. **Adicione a regra** ao `.spectral.yaml` com a severidade desejada.
 
-2. **Habilite a correção automática** em `config/validation.yaml` em `spectral.auto_fix`:
+2. **Habilite a correção automática** em `config/validation.yaml` sob `spectral.auto_fix`:
    ```yaml
    spectral:
      auto_fix:
@@ -139,11 +139,11 @@ Para adicionar uma nova correção automática do Spectral ao reconciliador:
 
 5. **Adicione testes** cobrindo o novo método de correção.
 
-## Adicionando uma Nova Regra do Spectral
+## Adicionando uma Nova Regra Spectral
 
-Para adicionar uma regra customizada do Spectral com uma função JavaScript:
+Para adicionar uma regra Spectral customizada com uma função JavaScript:
 
-1. Crie a função em `spectral/functions/your-rule.js`. Exporte uma função padrão que receba `(targetVal, options, context)` e retorne um array de objetos `{message, path}`.
+1. Crie a função em `spectral/functions/your-rule.js`. Exporte uma função default que recebe `(targetVal, options, context)` e retorna um array de objetos `{message, path}`.
 
 2. Registre-a em `spectral-pipeline.yaml`:
    ```yaml
@@ -170,25 +170,25 @@ Funções customizadas funcionam apenas em `spectral-pipeline.yaml`. Não adicio
 O workflow do GitHub Actions (`validate-and-release.yml`) é executado em:
 
 - **Agendamento**: Diariamente às 6h UTC
-- **Push para main**: Quando há alterações em `scripts/`, `config/` ou `pyproject.toml`
-- **Execução manual**: Com opções para release forçada ou dry-run
+- **Push para main**: Quando `scripts/`, `config/` ou `pyproject.toml` são alterados
+- **Disparo manual**: Com opções para release forçada ou dry-run
 
 O workflow possui quatro jobs:
 
-1. **validate** -- Baixa as specs, executa validação, lint do Spectral, reconciliação, quality gate do Spectral
+1. **validate** -- Baixa specs, executa validação, Spectral lint, reconcile, Spectral gate
 2. **check-release-needed** -- Compara hashes de conteúdo para decidir se uma release é necessária
-3. **release** -- Empacota e cria uma Release no GitHub (apenas se o conteúdo mudou)
+3. **release** -- Empacota e cria um GitHub Release (apenas se o conteúdo mudou)
 4. **update-docs** -- Regenera `01-validation-report.mdx` e abre um PR se houver alterações
 
-Um job **notify** cria uma issue no GitHub se algum job falhar.
+Um job **notify** cria uma issue no GitHub se qualquer job falhar.
 
 ## Fluxo de Branches e PRs
 
-Todas as alterações seguem: **Issue -> Branch -> PR -> CI aprovado -> Merge**.
+Todas as alterações seguem: **Issue -> Branch -> PR -> CI passa -> Merge**.
 
 - Nomes de branches: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`
 - PRs devem referenciar uma issue (`Closes #N` na descrição)
 - Verificações de CI obrigatórias: `Check linked issues` e `Lint Code Base`
-- Squash merge é preferido; branches são excluídas automaticamente após o merge
+- Squash merge preferido; branches são excluídas automaticamente após o merge
 
 Consulte `CONTRIBUTING.md` para as regras completas do fluxo de trabalho.

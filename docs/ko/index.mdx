@@ -1,20 +1,19 @@
 ---
-title: F5 XC API 스펙
-description: 'F5 Distributed Cloud를 위한 검증, 보강 및 OAS3 호환 OpenAPI 사양'
+title: F5 XC API 명세
+description: 'F5 Distributed Cloud를 위한 검증, 보강 및 OAS3 호환 OpenAPI 명세'
 template: splash
 sidebar:
   hidden: true
 hero:
   tagline: >-
-    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
-    the live API, auto-repaired, and enriched with security metadata, server
-    definitions, and operation tags.
+    F5 Distributed Cloud를 위한 프로덕션 지원 OpenAPI 명세 — 라이브 API 대비 검증, 자동 복구, 보안
+    메타데이터·서버 정의·오퍼레이션 태그 보강 완료.
   actions:
-    - text: Pipeline Overview
+    - text: 파이프라인 개요
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
-    - text: View Latest Report
+    - text: 최신 보고서 보기
       link: 01-validation-report/
       variant: secondary
 i18n:
@@ -27,26 +26,26 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 <CardGrid>
   <Card title="파이프라인 개요" icon="rocket">
     6단계 자동화 파이프라인: 다운로드, 검증, 린트, 조정, 게이트, 릴리스.
-    [더 읽기](/02-pipeline/)
+    [자세히 보기](/02-pipeline/)
   </Card>
   <Card title="적용된 수정 사항" icon="pencil">
-    제약 조건 복구, Spectral 보강, 보안 메타데이터 및 JSON 포맷팅.
-    [더 읽기](/03-fixes-applied/)
+    제약 조건 복구, Spectral 보강, 보안 메타데이터 및 JSON 포매팅.
+    [자세히 보기](/03-fixes-applied/)
   </Card>
   <Card title="Spectral 규칙" icon="warning">
     커스텀 `f5-path-params` 함수를 포함한 이중 구성 린팅 아키텍처.
-    [더 읽기](/04-spectral-rules/)
+    [자세히 보기](/04-spectral-rules/)
   </Card>
   <Card title="구성" icon="setting">
     `validation.yaml` 및 `endpoints.yaml` 레퍼런스.
-    [더 읽기](/05-configuration/)
+    [자세히 보기](/05-configuration/)
   </Card>
-  <Card title="검증 리포트" icon="document">
-    최신 파이프라인 실행에서 적용된 모든 수정 사항의 자동 생성 리포트.
-    [더 읽기](/01-validation-report/)
+  <Card title="검증 보고서" icon="document">
+    최신 파이프라인 실행에서 적용된 모든 수정 사항의 자동 생성 보고서.
+    [자세히 보기](/01-validation-report/)
   </Card>
   <Card title="기여하기" icon="github">
-    개발 환경 설정, 로컬 파이프라인, 테스트 및 PR 워크플로.
-    [더 읽기](/06-contributing/)
+    개발 환경 설정, 로컬 파이프라인, 테스트 및 PR 워크플로우.
+    [자세히 보기](/06-contributing/)
   </Card>
 </CardGrid>

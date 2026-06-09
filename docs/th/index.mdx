@@ -1,22 +1,22 @@
 ---
 title: F5 XC API Specs
 description: >-
-  สเปกข้อกำหนด OpenAPI สำหรับ F5 Distributed Cloud ที่ผ่านการตรวจสอบ
-  เพิ่มข้อมูลเสริม และเป็นไปตามมาตรฐาน OAS3
+  สเปกของ OpenAPI ที่ผ่านการตรวจสอบ เสริมข้อมูล และเป็นไปตามมาตรฐาน OAS3 สำหรับ
+  F5 Distributed Cloud
 template: splash
 sidebar:
   hidden: true
 hero:
   tagline: >-
-    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
-    the live API, auto-repaired, and enriched with security metadata, server
-    definitions, and operation tags.
+    สเปก OpenAPI พร้อมใช้งานจริงสำหรับ F5 Distributed Cloud — ผ่านการตรวจสอบกับ
+    API จริง ซ่อมแซมอัตโนมัติ และเสริมด้วยเมตาดาต้าด้านความปลอดภัย
+    คำจำกัดความเซิร์ฟเวอร์ และแท็กของ operation
   actions:
-    - text: Pipeline Overview
+    - text: ภาพรวมไปป์ไลน์
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
-    - text: View Latest Report
+    - text: ดูรายงานล่าสุด
       link: 01-validation-report/
       variant: secondary
 i18n:
@@ -28,27 +28,27 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
   <Card title="ภาพรวมไปป์ไลน์" icon="rocket">
-    ไปป์ไลน์อัตโนมัติ 6 ขั้นตอน: ดาวน์โหลด, ตรวจสอบ, ลินต์, ปรับปรุง, ตรวจสอบเกต, เผยแพร่
+    ไปป์ไลน์อัตโนมัติ 6 ขั้นตอน: ดาวน์โหลด, ตรวจสอบ, lint, ปรับปรุง, ตรวจสอบเกณฑ์, เผยแพร่
     [อ่านเพิ่มเติม](/02-pipeline/)
   </Card>
   <Card title="การแก้ไขที่ดำเนินการ" icon="pencil">
-    การซ่อมแซมข้อจำกัด, การเพิ่มข้อมูลเสริมด้วย Spectral, ข้อมูลเมตาด้านความปลอดภัย และการจัดรูปแบบ JSON
+    การซ่อมแซม constraint, การเสริมด้วย Spectral, เมตาดาต้าด้านความปลอดภัย และการจัดรูปแบบ JSON
     [อ่านเพิ่มเติม](/03-fixes-applied/)
   </Card>
   <Card title="กฎ Spectral" icon="warning">
-    สถาปัตยกรรมการลินต์แบบสองการตั้งค่าพร้อมฟังก์ชัน `f5-path-params` แบบกำหนดเอง
+    สถาปัตยกรรมการ lint แบบสองการกำหนดค่าพร้อมฟังก์ชันกำหนดเอง `f5-path-params`
     [อ่านเพิ่มเติม](/04-spectral-rules/)
   </Card>
-  <Card title="การตั้งค่า" icon="setting">
+  <Card title="การกำหนดค่า" icon="setting">
     เอกสารอ้างอิงสำหรับ `validation.yaml` และ `endpoints.yaml`
     [อ่านเพิ่มเติม](/05-configuration/)
   </Card>
   <Card title="รายงานการตรวจสอบ" icon="document">
-    รายงานที่สร้างอัตโนมัติของการแก้ไขทั้งหมดที่ดำเนินการในการรันไปป์ไลน์ล่าสุด
+    รายงานที่สร้างโดยอัตโนมัติของการแก้ไขทั้งหมดที่ดำเนินการในการรันไปป์ไลน์ล่าสุด
     [อ่านเพิ่มเติม](/01-validation-report/)
   </Card>
   <Card title="การมีส่วนร่วม" icon="github">
-    การตั้งค่าสภาพแวดล้อมพัฒนา, ไปป์ไลน์ในเครื่อง, การทดสอบ และขั้นตอนการทำ PR
+    การตั้งค่าสำหรับการพัฒนา, ไปป์ไลน์ในเครื่อง, การทดสอบ และเวิร์กโฟลว์ PR
     [อ่านเพิ่มเติม](/06-contributing/)
   </Card>
 </CardGrid>

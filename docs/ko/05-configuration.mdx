@@ -1,6 +1,6 @@
 ---
-title: 구성 참조
-description: validation.yaml 및 endpoints.yaml 구성 파일에 대한 참조
+title: 설정 참조
+description: validation.yaml 및 endpoints.yaml 설정 파일에 대한 참조
 i18n:
   sourceHash: ca5e781b7000
   translator: machine
@@ -29,10 +29,10 @@ api:
 | `namespace` | CRUD 작업의 기본 네임스페이스. |
 | `timeout` | HTTP 요청 타임아웃(초). |
 | `retries` | 실패 시 재시도 횟수. |
-| `retry_delay` | 재시도 간 대기 시간(초). |
+| `retry_delay` | 재시도 간격(초). |
 
 :::caution
-`validation.yaml`의 `base_url`, `tenant`, `namespace` 값은 일반적인 플레이스홀더입니다. 파이프라인을 실행하기 전에 환경 변수를 통해 사용 환경에 맞게 **반드시** 구성해야 합니다:
+`validation.yaml`의 `base_url`, `tenant`, `namespace` 값은 일반적인 플레이스홀더입니다. 파이프라인을 실행하기 전에 환경 변수를 통해 해당 환경에 맞게 **반드시** 설정해야 합니다:
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
@@ -41,7 +41,7 @@ export F5XC_NAMESPACE="example-namespace"
 export F5XC_API_TOKEN="your-api-token"
 ```
 
-환경 변수는 런타임에서 YAML 기본값보다 우선합니다.
+환경 변수는 런타임에 YAML 기본값보다 우선합니다.
 :::
 
 ### 다운로드 설정
@@ -61,7 +61,7 @@ download:
 
 ### 유효성 검사 카테고리
 
-OpenAPI 스키마 제약 조건 유형에 해당하는 10개의 카테고리입니다. 각각 독립적으로 활성화/비활성화할 수 있습니다.
+OpenAPI 스키마 제약 조건 유형에 해당하는 10개의 카테고리입니다. 각 카테고리는 독립적으로 활성화/비활성화할 수 있습니다.
 
 ```yaml
 validation_categories:
@@ -101,13 +101,13 @@ schemathesis:
 
 | 필드 | 설명 |
 |-------|-------------|
-| `enabled` | Schemathesis 테스트 활성화/비활성화. |
+| `enabled` | Schemathesis 테스트 토글. |
 | `max_examples` | 작업당 생성되는 최대 테스트 케이스 수. |
 | `hypothesis_phases` | 실행할 Hypothesis 단계 (`generate`, `target`). |
 | `stateful_testing` | 작업 간 상태 기반 링크 테스트 활성화. |
 | `base_url_override` | 테스트용 API 기본 URL 재정의. `null`이면 `api.base_url`을 사용합니다. |
 | `auth_header` | 인증에 사용되는 HTTP 헤더 이름. |
-| `auth_prefix` | 토큰 접두사 형식 (요청은 `APIToken <token>` 형식으로 전송됩니다). |
+| `auth_prefix` | 토큰 접두사 형식 (요청은 `APIToken <token>` 형태로 전송됩니다). |
 
 ### 조정(Reconciliation) 설정
 
@@ -126,8 +126,8 @@ reconciliation:
 
 | 필드 | 설명 |
 |-------|-------------|
-| `priority` | 여러 데이터 소스가 불일치할 때의 우선순위 순서. |
-| `fix_strategies` | 각 불일치 유형을 수정 작업에 매핑합니다. [적용된 수정 사항](/03-fixes-applied/)을 참조하십시오. |
+| `priority` | 여러 데이터 소스가 일치하지 않을 때의 우선순위. |
+| `fix_strategies` | 각 불일치 유형을 수정 작업에 매핑합니다. [적용된 수정 사항](/03-fixes-applied/)을 참조하세요. |
 
 ### Spectral 설정
 
@@ -166,13 +166,13 @@ spectral:
 
 | 필드 | 설명 |
 |-------|-------------|
-| `enabled` | Spectral 린팅 전체 활성화/비활성화. |
-| `ruleset` | 사용할 Spectral 구성 파일 (파이프라인은 `spectral-pipeline.yaml`을 사용합니다). |
+| `enabled` | Spectral 린팅 전체 토글. |
+| `ruleset` | 사용할 Spectral 설정 파일 (파이프라인은 `spectral-pipeline.yaml`을 사용합니다). |
 | `auto_fix` | 규칙 이름과 불리언 값의 매핑. `true`이면 조정기가 위반 사항을 수정합니다. |
 | `gate.max_errors` | 조정 후 게이트에서 허용되는 최대 오류 수. `null`이면 검사를 비활성화합니다. |
 | `gate.max_warnings` | 허용되는 최대 경고 수. `null`이면 검사를 비활성화합니다. |
-| `contact` | `info-contact` 수정기에 의해 `info.contact`에 삽입되는 연락처 정보. |
-| `servers` | `oas3-api-servers` 수정기에 의해 삽입되는 서버 배열. |
+| `contact` | `info-contact` 수정기가 `info.contact`에 삽입하는 연락처 정보. |
+| `servers` | `oas3-api-servers` 수정기가 삽입하는 서버 배열. |
 | `security_scheme` | 모든 스펙에 삽입되는 보안 스키마 정의. |
 
 ### 보고서 설정
@@ -200,14 +200,14 @@ release:
 
 | 필드 | 설명 |
 |-------|-------------|
-| `output_dir` | 릴리스 아티팩트를 위한 디렉토리. |
+| `output_dir` | 릴리스 아티팩트 디렉토리. |
 | `include_changelog` | 릴리스 패키지에 `CHANGELOG.md`를 포함합니다. |
 | `include_validation_report` | 릴리스 패키지에 유효성 검사 보고서를 포함합니다. |
 | `version_from` | 버전 소스. `git`은 스펙 메타데이터 날짜 + 패치 번호에서 버전을 도출합니다. |
 
 ## `config/endpoints.yaml`
 
-라이브 API 유효성 검사에 사용되는 기준 엔드포인트를 정의합니다. 각 항목은 논리적 리소스 이름을 해당 스펙 파일, API 그룹 및 CRUD 경로에 매핑합니다.
+라이브 API 유효성 검사에 사용되는 기준 엔드포인트를 정의합니다. 각 항목은 논리적 리소스 이름을 스펙 파일, API 그룹 및 CRUD 경로에 매핑합니다.
 
 ### 엔드포인트 구조
 
@@ -233,12 +233,12 @@ endpoints:
 | `domain_file` | `specs/original/`에 있는 OpenAPI 스펙의 파일명. |
 | `api_group` | API 그룹 접두사 (`config`, `web` 등). |
 | `crud_operations` | 각 CRUD 작업에 대한 HTTP 메서드 및 경로. |
-| `test_priority` | `high`, `medium`, 또는 `low` -- 테스트 실행 순서를 제어합니다. |
+| `test_priority` | `high`, `medium` 또는 `low` -- 테스트 실행 순서를 제어합니다. |
 | `description` | 리소스에 대한 사람이 읽을 수 있는 설명. |
 
 ### 현재 기준 엔드포인트
 
-3개 도메인에 걸친 10개의 엔드포인트:
+세 가지 도메인에 걸쳐 10개의 엔드포인트:
 
 | 엔드포인트 | 도메인 | 우선순위 |
 |----------|--------|----------|
@@ -260,8 +260,8 @@ endpoints:
 1. `specs/original/`에서 스펙 파일명을 찾습니다 (형식: `docs-cloud-f5-com.NNNN.*.ves-swagger.json`)
 2. 위의 구조를 따라 `endpoints:` 아래에 항목을 추가합니다
 3. `domain_files:` 아래에 우선순위 번호와 함께 도메인 파일 매핑을 추가합니다
-4. `test_order:`에 원하는 위치에 엔드포인트 이름을 추가합니다
+4. 원하는 위치의 `test_order:`에 엔드포인트 이름을 추가합니다
 
 :::tip
-프레임워크는 `endpoints.yaml`에 나열된 항목과 관계없이 조정 중에 모든 268개 스펙에 대해 유효성 검사를 수행합니다. 엔드포인트 구성은 Schemathesis를 통해 라이브 API 테스트를 받는 리소스를 제어합니다.
+프레임워크는 `endpoints.yaml`에 나열된 항목과 관계없이 조정 과정에서 268개의 모든 스펙에 대해 유효성 검사를 수행합니다. 엔드포인트 설정은 Schemathesis를 사용한 라이브 API 테스트를 받을 리소스를 제어합니다.
 :::

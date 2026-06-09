@@ -1,8 +1,8 @@
 ---
-title: Correzioni Applicate alle Specifiche Upstream
+title: Correzioni applicate alle specifiche upstream
 description: >-
-  Riferimento completo di ogni correzione applicata dal motore di
-  riconciliazione alle specifiche OpenAPI di F5 XC
+  Riferimento completo di ogni correzione che il motore di riconciliazione
+  applica alle specifiche OpenAPI di F5 XC
 i18n:
   sourceHash: d33e60c0fb4a
   translator: machine
@@ -10,22 +10,22 @@ i18n:
 
 Il riconciliatore (`scripts/reconcile.py`) applica quattro categorie di correzioni alle specifiche upstream. Le correzioni dei vincoli modificano i contratti API per allinearli al comportamento osservato. Tutte le altre correzioni riguardano esclusivamente i metadati e non alterano i contratti API.
 
-## Correzioni dei Vincoli
+## Correzioni dei vincoli
 
 Queste correzioni regolano i vincoli degli schemi OpenAPI affinché la specifica corrisponda a ciò che l'API live effettivamente applica. Ogni correzione è guidata da un oggetto `Discrepancy` prodotto durante la [validazione](/02-pipeline/#2-validate).
 
-| Strategia | Trigger | Cosa Fa | Modifica al Contratto |
+| Strategia | Trigger | Cosa fa | Modifica del contratto |
 |----------|---------|--------------|-----------------|
-| **Relax** | `SPEC_STRICTER` | La specifica rifiuta valori che l'API accetta. Abbassa `minLength`/`minimum`, innalza `maxLength`/`maximum`, aggiunge valori enum mancanti. | Sì -- amplia i valori accettati |
-| **Tighten** | `SPEC_LOOSER` | La specifica accetta valori che l'API rifiuta. Innalza `minLength`/`minimum`, abbassa `maxLength`/`maximum`, restringe gli enum ai valori osservati. | Sì -- restringe i valori accettati |
+| **Relax** | `SPEC_STRICTER` | La specifica rifiuta valori che l'API accetta. Abbassa `minLength`/`minimum`, alza `maxLength`/`maximum`, aggiunge valori enum mancanti. | Sì -- amplia i valori accettati |
+| **Tighten** | `SPEC_LOOSER` | La specifica accetta valori che l'API rifiuta. Alza `minLength`/`minimum`, abbassa `maxLength`/`maximum`, limita gli enum ai valori osservati. | Sì -- restringe i valori accettati |
 | **Add** | `MISSING_CONSTRAINT` | L'API applica un vincolo non documentato nella specifica. Aggiunge il vincolo allo schema. | Sì -- aggiunge un nuovo vincolo |
 | **Remove** | `EXTRA_CONSTRAINT` | La specifica dichiara un vincolo che l'API ignora. Rimuove il vincolo dallo schema. | Sì -- rimuove il vincolo |
 
 :::caution
-Le correzioni dei vincoli modificano il contratto API. Vengono applicate solo quando supportate da evidenze provenienti da Schemathesis o da test di validazione dei vincoli contro l'API live.
+Le correzioni dei vincoli modificano il contratto API. Vengono applicate solo quando supportate da evidenze provenienti da Schemathesis o da test di validazione dei vincoli eseguiti contro l'API live.
 :::
 
-### Tipi di Vincoli Supportati
+### Tipi di vincoli supportati
 
 Le 10 categorie di vincoli OpenAPI testate e corrette:
 
@@ -34,21 +34,21 @@ Le 10 categorie di vincoli OpenAPI testate e corrette:
 - **Limiti numerici** -- `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum`
 - **Campi obbligatori** -- `required`
 - **Valori enum** -- `enum`
-- **Limiti array** -- `minItems`, `maxItems`, `uniqueItems`
-- **Struttura oggetto** -- `additionalProperties`, `properties`, `propertyNames`
+- **Limiti degli array** -- `minItems`, `maxItems`, `uniqueItems`
+- **Struttura degli oggetti** -- `additionalProperties`, `properties`, `propertyNames`
 - **Composizione** -- `oneOf`, `anyOf`, `allOf`
 - **Dipendenze** -- `dependentRequired`, `dependentSchemas`
-- **Tipi di dato** -- `type`, `format`
+- **Tipi di dati** -- `type`, `format`
 
 ## Arricchimenti Spectral
 
-Queste correzioni affrontano problemi di qualità OAS3 individuati dal [linting Spectral](/04-spectral-rules/). Aggiungono o correggono metadati senza modificare il comportamento dell'API.
+Queste correzioni risolvono problemi di qualità OAS3 individuati dal [linting Spectral](/04-spectral-rules/). Aggiungono o correggono metadati senza modificare il comportamento dell'API.
 
-### Iniezione del Blocco Servers
+### Iniezione del blocco servers
 
-**Regola**: `oas3-api-servers` | **Modifica al contratto**: No
+**Regola**: `oas3-api-servers` | **Modifica del contratto**: No
 
-Aggiunge il template URL del tenant F5 XC alle specifiche prive di un blocco `servers`:
+Aggiunge il template dell'URL del tenant F5 XC alle specifiche prive di un blocco `servers`:
 
 ```json
 "servers": [{
@@ -65,11 +65,11 @@ Aggiunge il template URL del tenant F5 XC alle specifiche prive di un blocco `se
 
 L'URL del server e i valori delle variabili provengono da `spectral.servers` in [validation.yaml](/05-configuration/).
 
-### Iniezione delle Informazioni di Contatto
+### Iniezione delle informazioni di contatto
 
-**Regola**: `info-contact` | **Modifica al contratto**: No
+**Regola**: `info-contact` | **Modifica del contratto**: No
 
-Aggiunge informazioni di contatto in `info.contact` per le specifiche che ne sono prive:
+Aggiunge le informazioni di contatto in `info.contact` per le specifiche che ne sono prive:
 
 ```json
 "contact": {
@@ -81,41 +81,41 @@ Aggiunge informazioni di contatto in `info.contact` per le specifiche che ne son
 
 I valori provengono da `spectral.contact` in [validation.yaml](/05-configuration/).
 
-### Derivazione dei Tag delle Operazioni
+### Derivazione dei tag delle operazioni
 
-**Regola**: `operation-tags` | **Modifica al contratto**: No
+**Regola**: `operation-tags` | **Modifica del contratto**: No
 
 Deriva un tag dal prefisso del percorso URL per le operazioni prive di tag. Per un percorso come `/api/config/namespaces/{namespace}/healthchecks`, il tag è `config` (il secondo segmento non parametrico). Il tag viene aggiunto sia all'array `tags` dell'operazione sia alla lista `tags` a livello di specifica.
 
-### Rimozione dei Componenti Inutilizzati
+### Rimozione dei componenti inutilizzati
 
-**Regola**: `oas3-unused-component` | **Modifica al contratto**: No
+**Regola**: `oas3-unused-component` | **Modifica del contratto**: No
 
-Rimuove gli schemi dei componenti da `components.schemas` che non sono referenziati in nessun punto della specifica. Riduce le dimensioni della specifica senza influenzare alcuna operazione.
+Rimuove gli schemi dei componenti da `components.schemas` che non sono referenziati in nessun punto della specifica. Riduce la dimensione della specifica senza influire su alcuna operazione.
 
-### Deduplicazione degli OperationId
+### Deduplicazione degli operationId
 
-**Regola**: `operation-operationId-unique` | **Modifica al contratto**: No
+**Regola**: `operation-operationId-unique` | **Modifica del contratto**: No
 
-Aggiunge il metodo HTTP come suffisso (es. `ListItems_get`) quando più operazioni condividono lo stesso `operationId`. Questo rende ogni operationId univoco per i generatori di codice.
+Aggiunge il metodo HTTP come suffisso (ad es. `ListItems_get`) quando più operazioni condividono lo stesso `operationId`. Questo rende ogni operationId univoco per i generatori di codice.
 
-### Rimozione di Esempi/Valori Predefiniti Non Validi
+### Rimozione di esempio/default non validi
 
-**Regola**: `oas3-valid-schema-example` | **Modifica al contratto**: No
+**Regola**: `oas3-valid-schema-example` | **Modifica del contratto**: No
 
-Rimuove i valori `example` o `default` dagli schemi quando il valore non è conforme ai vincoli dello schema stesso (tipo errato, fuori intervallo, ecc.). Previene la generazione di payload di esempio non validi da parte dei generatori di codice.
+Rimuove i valori `example` o `default` dagli schemi quando il valore non è conforme ai vincoli dello schema stesso (tipo errato, fuori intervallo, ecc.). Impedisce ai generatori di codice di produrre payload di esempio non validi.
 
-### Rimozione dei Tag Script
+### Rimozione dei tag script
 
-**Regola**: `no-script-tags-in-markdown` | **Modifica al contratto**: No
+**Regola**: `no-script-tags-in-markdown` | **Modifica del contratto**: No
 
-Rimuove i tag `<script>` dai campi `description` utilizzando una sostituzione regex. Alcune specifiche upstream contengono tag script iniettati che compromettono il funzionamento dei renderer di documentazione.
+Rimuove i tag `<script>` dai campi `description` tramite sostituzione regex. Alcune specifiche upstream contengono tag script iniettati che compromettono il funzionamento dei renderer della documentazione.
 
-## Metadati di Sicurezza
+## Metadati di sicurezza
 
-**Modifica al contratto**: No (solo documentazione)
+**Modifica del contratto**: No (solo documentazione)
 
-Ogni specifica riceve uno schema di sicurezza `apiKeyAuth` se non è già presente. Questo viene sempre iniettato indipendentemente dal fatto che Spectral lo abbia segnalato.
+Ogni specifica riceve uno schema di sicurezza `apiKeyAuth` se non ne è già presente uno. Questo viene sempre iniettato indipendentemente dal fatto che Spectral lo abbia segnalato.
 
 ```json
 "components": {
@@ -131,13 +131,13 @@ Ogni specifica riceve uno schema di sicurezza `apiKeyAuth` se non è già presen
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-La definizione dello schema proviene da `spectral.security_scheme` in [validation.yaml](/05-configuration/). Questo indica ai consumatori dell'API come autenticarsi ma non modifica il comportamento a runtime.
+La definizione dello schema proviene da `spectral.security_scheme` in [validation.yaml](/05-configuration/). Questo indica ai consumatori dell'API come autenticarsi, ma non modifica il comportamento a runtime.
 
 ## Formattazione JSON
 
-**Modifica al contratto**: No
+**Modifica del contratto**: No
 
-Tutte le specifiche JSON in output passano attraverso un compattatore di array compatibile con Biome (`_compact_short_arrays` in `scripts/utils/spec_loader.py`). Gli array brevi che rientrano in 120 caratteri vengono compressi in una singola riga:
+Tutte le specifiche JSON in output passano attraverso un compattatore di array compatibile con Biome (`_compact_short_arrays` in `scripts/utils/spec_loader.py`). Gli array brevi che rientrano in 120 caratteri vengono compressi su una singola riga:
 
 ```json
 // Before
@@ -152,12 +152,12 @@ Tutte le specifiche JSON in output passano attraverso un compattatore di array c
 
 Gli array che superano la soglia di lunghezza della riga rimangono su più righe.
 
-## Priorità delle Correzioni
+## Priorità delle correzioni
 
 Quando più strategie di correzione potrebbero essere applicabili, il riconciliatore utilizza un ordine di priorità configurato in `reconciliation.priority`:
 
-1. **existing** -- Utilizza il vincolo della specifica esistente se è valido
-2. **discovery** -- Utilizza il comportamento scoperto dall'API live
-3. **inferred** -- Inferisce da pattern riscontrati in endpoint simili
+1. **existing** -- Usa il vincolo della specifica esistente se è valido
+2. **discovery** -- Usa il comportamento scoperto dall'API live
+3. **inferred** -- Inferisci da pattern riscontrati in endpoint simili
 
 Ogni specifica corretta viene validata con `openapi-spec-validator` dopo l'applicazione di tutte le correzioni. Se la validazione fallisce, la specifica originale viene utilizzata come fallback e la correzione viene registrata come errore.

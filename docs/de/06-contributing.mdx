@@ -1,6 +1,6 @@
 ---
 title: Entwicklungsleitfaden
-description: 'Einrichtung, Ausführung, Tests und Beiträge zum F5 XC API Specs-Projekt'
+description: 'Einrichtung, Ausführung, Tests und Mitwirkung am F5 XC API Specs Projekt'
 i18n:
   sourceHash: 1dc0c369e7a0
   translator: machine
@@ -9,7 +9,7 @@ i18n:
 ## Einrichtung
 
 ```bash
-# Klonen und Entwicklungsabhängigkeiten installieren
+# Repository klonen und Entwicklungsabhängigkeiten installieren
 git clone https://github.com/f5xc-salesdemos/api-specs.git
 cd api-specs
 make dev-install
@@ -18,20 +18,20 @@ make dev-install
 npm install -g @stoplight/spectral-cli
 ```
 
-`make dev-install` erstellt eine virtuelle Umgebung in `.venv/` und installiert das Projekt mit Entwicklungs-Extras (pytest, ruff, mypy).
+`make dev-install` erstellt eine virtuelle Umgebung in `.venv/` und installiert das Projekt mit Entwicklungszusätzen (pytest, ruff, mypy).
 
 ### Umgebungsvariablen
 
-Die Live-API-Validierung erfordert:
+Für die Live-API-Validierung werden benötigt:
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
 export F5XC_API_TOKEN="your-api-token"
 ```
 
-Ohne diese Variablen fällt `make validate` auf den Trockenlaufmodus zurück.
+Ohne diese Variablen fällt `make validate` auf den Trockenlauf-Modus zurück.
 
-## Ausführung der Pipeline
+## Pipeline ausführen
 
 ### Vollständige Pipeline
 
@@ -44,11 +44,11 @@ make all
 
 ```bash
 make download        # Upstream-Spezifikationen abrufen
-make validate        # Live-API-Tests ausführen (erfordert API-Token)
+make validate        # Live-API-Tests ausführen (API-Token erforderlich)
 make validate-dry    # Trockenlauf (keine API-Aufrufe)
-make spectral-lint   # Spectral-Erkennungsmodus für Originalspezifikationen
+make spectral-lint   # Spectral Discovery-Modus auf Originalspezifikationen
 make reconcile       # Korrekturen aus beiden Berichten anwenden
-make spectral-gate   # Spectral-Qualitätsprüfung für abgeglichene Spezifikationen
+make spectral-gate   # Spectral Quality Gate auf abgeglichene Spezifikationen
 make release         # Release-Paket erstellen
 ```
 
@@ -63,13 +63,13 @@ make docs-serve      # Lokaler Entwicklungsserver mit Hot Reload
 ## Tests ausführen
 
 ```bash
-make test           # pytest mit Coverage
-make lint           # ruff check + Format-Prüfung
+make test           # pytest mit Abdeckung
+make lint           # ruff check + Formatprüfung
 make typecheck      # mypy Typprüfung
 make ci-test        # Alle drei (wird in CI verwendet)
 ```
 
-Pre-Commit-Hooks werden bei installierter Konfiguration automatisch beim Commit ausgeführt:
+Pre-Commit-Hooks werden automatisch beim Commit ausgeführt, wenn sie installiert sind:
 
 ```bash
 make pre-commit-install   # Git-Hooks installieren
@@ -90,8 +90,8 @@ scripts/
     auth.py             # F5 XC API-Authentifizierung
     constraint_validator.py  # Constraint-Tests + Diskrepanztypen
     report_generator.py      # Berichtsformatierung
-    schemathesis_runner.py   # Schemathesis-Test-Orchestrierung
-    spec_loader.py           # Spec-I/O + JSON-Formatierung
+    schemathesis_runner.py   # Schemathesis-Testorchestrierung
+    spec_loader.py           # Spezifikations-I/O + JSON-Formatierung
 
 config/
   validation.yaml       # Pipeline-Konfiguration
@@ -111,25 +111,25 @@ reports/                # Ausgabe: Validierungs- und Spectral-Berichte
 
 Um einen neuen automatischen Spectral-Fix zum Reconciler hinzuzufügen:
 
-1. **Fügen Sie die Regel** zu `.spectral.yaml` mit der gewünschten Schwere hinzu.
+1. **Regel hinzufügen** in `.spectral.yaml` mit dem gewünschten Schweregrad.
 
-2. **Aktivieren Sie den Auto-Fix** in `config/validation.yaml` unter `spectral.auto_fix`:
+2. **Auto-Fix aktivieren** in `config/validation.yaml` unter `spectral.auto_fix`:
    ```yaml
    spectral:
      auto_fix:
        your-new-rule: true
    ```
 
-3. **Fügen Sie die Fixer-Methode** zu `SpecReconciler` in `scripts/reconcile.py` hinzu:
+3. **Fixer-Methode hinzufügen** zu `SpecReconciler` in `scripts/reconcile.py`:
    ```python
    def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
        """Fix description."""
-       # Spec direkt modifizieren
-       # Spec zurückgeben wenn geändert, None wenn keine Änderung nötig
+       # Spezifikation direkt modifizieren
+       # spec zurückgeben falls geändert, None falls keine Änderung nötig
        return spec
    ```
 
-4. **Registrieren Sie sie** im `_apply_spectral_fix`-Dispatcher:
+4. **Registrieren** im `_apply_spectral_fix`-Dispatcher:
    ```python
    spectral_fixers = {
        # ... bestehende Fixer ...
@@ -137,7 +137,7 @@ Um einen neuen automatischen Spectral-Fix zum Reconciler hinzuzufügen:
    }
    ```
 
-5. **Fügen Sie Tests** hinzu, die die neue Fix-Methode abdecken.
+5. **Tests hinzufügen**, die die neue Fix-Methode abdecken.
 
 ## Eine neue Spectral-Regel hinzufügen
 
@@ -162,33 +162,33 @@ Um eine benutzerdefinierte Spectral-Regel mit einer JavaScript-Funktion hinzuzuf
    ```
 
 :::caution
-Benutzerdefinierte Funktionen funktionieren nur in `spectral-pipeline.yaml`. Fügen Sie `functionsDir` oder `functions` nicht zu `.spectral.yaml` hinzu -- diese Konfiguration muss mit Super-Linter und anderen externen Tools kompatibel bleiben.
+Benutzerdefinierte Funktionen funktionieren nur in `spectral-pipeline.yaml`. Fügen Sie `functionsDir` oder `functions` nicht zu `.spectral.yaml` hinzu -- diese Konfiguration muss kompatibel mit Super-Linter und anderen externen Tools bleiben.
 :::
 
 ## CI-Pipeline
 
-Der GitHub Actions-Workflow (`validate-and-release.yml`) wird ausgeführt bei:
+Der GitHub Actions Workflow (`validate-and-release.yml`) wird ausgeführt bei:
 
 - **Zeitplan**: Täglich um 6 Uhr UTC
 - **Push auf main**: Wenn sich `scripts/`, `config/` oder `pyproject.toml` ändern
-- **Manuelle Auslösung**: Mit Optionen für erzwungenes Release oder Trockenlauf
+- **Manueller Dispatch**: Mit Optionen für erzwungenes Release oder Trockenlauf
 
-Der Workflow umfasst vier Jobs:
+Der Workflow hat vier Jobs:
 
-1. **validate** -- Lädt Spezifikationen herunter, führt Validierung, Spectral-Lint, Reconcile und Spectral-Gate aus
-2. **check-release-needed** -- Vergleicht Inhalts-Hashes, um zu entscheiden, ob ein Release gerechtfertigt ist
-3. **release** -- Paketiert und erstellt ein GitHub Release (nur wenn sich der Inhalt geändert hat)
-4. **update-docs** -- Regeneriert `01-validation-report.mdx` und öffnet einen PR, wenn sich etwas geändert hat
+1. **validate** -- Lädt Spezifikationen herunter, führt Validierung, Spectral-Lint, Abgleich und Spectral-Gate aus
+2. **check-release-needed** -- Vergleicht Content-Hashes, um zu entscheiden, ob ein Release gerechtfertigt ist
+3. **release** -- Paketiert und erstellt ein GitHub Release (nur wenn sich Inhalte geändert haben)
+4. **update-docs** -- Regeneriert `01-validation-report.mdx` und öffnet einen PR, falls Änderungen vorliegen
 
 Ein **notify**-Job erstellt ein GitHub Issue, wenn ein Job fehlschlägt.
 
 ## Branch- und PR-Workflow
 
-Alle Änderungen folgen dem Schema: **Issue -> Branch -> PR -> CI besteht -> Merge**.
+Alle Änderungen folgen dem Schema: **Issue -> Branch -> PR -> CI bestanden -> Merge**.
 
 - Branch-Namen: `feature/<issue>-desc`, `fix/<issue>-desc`, `docs/<issue>-desc`
-- PRs müssen ein Issue verknüpfen (`Closes #N` in der Beschreibung)
-- Erforderliche CI-Prüfungen: `Check linked issues` und `Lint Code Base`
+- PRs müssen ein Issue verlinken (`Closes #N` in der Beschreibung)
+- Erforderliche CI-Checks: `Check linked issues` und `Lint Code Base`
 - Squash-Merge bevorzugt; Branches werden nach dem Merge automatisch gelöscht
 
 Siehe `CONTRIBUTING.md` für die vollständigen Workflow-Regeln.

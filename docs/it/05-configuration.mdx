@@ -27,12 +27,12 @@ api:
 | `base_url` | URL base dell'API della console F5 XC. Sovrascrivibile con la variabile d'ambiente `F5XC_API_URL`. |
 | `tenant` | Nome del tenant utilizzato nei percorsi API. |
 | `namespace` | Namespace predefinito per le operazioni CRUD. |
-| `timeout` | Timeout delle richieste HTTP in secondi. |
+| `timeout` | Timeout della richiesta HTTP in secondi. |
 | `retries` | Numero di tentativi di ripetizione in caso di errore. |
-| `retry_delay` | Secondi tra un tentativo e l'altro. |
+| `retry_delay` | Secondi tra i tentativi di ripetizione. |
 
 :::caution
-I valori `base_url`, `tenant` e `namespace` in `validation.yaml` sono segnaposto generici. **È necessario** configurarli per il proprio ambiente tramite variabili d'ambiente prima di eseguire la pipeline:
+I valori `base_url`, `tenant` e `namespace` in `validation.yaml` sono segnaposto generici. **Dovete** configurarli per il vostro ambiente tramite variabili d'ambiente prima di eseguire la pipeline:
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
@@ -41,7 +41,7 @@ export F5XC_NAMESPACE="example-namespace"
 export F5XC_API_TOKEN="your-api-token"
 ```
 
-Le variabili d'ambiente hanno la precedenza sui valori predefiniti del file YAML al momento dell'esecuzione.
+Le variabili d'ambiente hanno la precedenza sui valori predefiniti YAML al momento dell'esecuzione.
 :::
 
 ### Impostazioni di Download
@@ -56,12 +56,12 @@ download:
 | Campo | Descrizione |
 |-------|-------------|
 | `url` | URL del bundle ufficiale delle specifiche OpenAPI di F5 XC (ZIP). |
-| `output_dir` | Directory in cui vengono salvate le specifiche estratte. |
+| `output_dir` | Dove vengono salvate le specifiche estratte. |
 | `etag_cache` | File che memorizza l'ETag HTTP per i download condizionali. |
 
 ### Categorie di Validazione
 
-Dieci categorie corrispondenti ai tipi di vincolo dello schema OpenAPI. Ciascuna può essere abilitata/disabilitata indipendentemente.
+Dieci categorie corrispondenti ai tipi di vincoli dello schema OpenAPI. Ciascuna può essere abilitata/disabilitata indipendentemente.
 
 ```yaml
 validation_categories:
@@ -72,7 +72,7 @@ validation_categories:
 ```
 
 | Categoria | Parole chiave |
-|-----------|---------------|
+|----------|----------|
 | `string_length` | `minLength`, `maxLength` |
 | `pattern` | `pattern` |
 | `numeric_bounds` | `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum` |
@@ -84,7 +84,7 @@ validation_categories:
 | `dependencies` | `dependentRequired`, `dependentSchemas` |
 | `data_types` | `type`, `format` |
 
-### Impostazioni Schemathesis
+### Impostazioni di Schemathesis
 
 ```yaml
 schemathesis:
@@ -101,10 +101,10 @@ schemathesis:
 
 | Campo | Descrizione |
 |-------|-------------|
-| `enabled` | Attiva/disattiva i test Schemathesis. |
+| `enabled` | Attiva/disattiva il testing con Schemathesis. |
 | `max_examples` | Numero massimo di casi di test generati per operazione. |
 | `hypothesis_phases` | Fasi di Hypothesis da eseguire (`generate`, `target`). |
-| `stateful_testing` | Abilita i test stateful basati su link tra le operazioni. |
+| `stateful_testing` | Abilita il testing stateful basato su link tra le operazioni. |
 | `base_url_override` | Sovrascrive l'URL base dell'API per i test. `null` utilizza `api.base_url`. |
 | `auth_header` | Nome dell'header HTTP per l'autenticazione. |
 | `auth_prefix` | Formato del prefisso del token (le richieste vengono inviate come `APIToken <token>`). |
@@ -126,10 +126,10 @@ reconciliation:
 
 | Campo | Descrizione |
 |-------|-------------|
-| `priority` | Ordine di preferenza quando più fonti di dati sono in disaccordo. |
-| `fix_strategies` | Mappa ogni tipo di discrepanza alla relativa azione correttiva. Vedere [Correzioni Applicate](/03-fixes-applied/). |
+| `priority` | Ordine di preferenza quando più fonti dati sono in disaccordo. |
+| `fix_strategies` | Mappa ciascun tipo di discrepanza alla relativa azione correttiva. Vedere [Correzioni Applicate](/03-fixes-applied/). |
 
-### Impostazioni Spectral
+### Impostazioni di Spectral
 
 ```yaml
 spectral:
@@ -166,13 +166,13 @@ spectral:
 
 | Campo | Descrizione |
 |-------|-------------|
-| `enabled` | Attiva/disattiva completamente il linting Spectral. |
-| `ruleset` | File di configurazione Spectral da utilizzare (la pipeline usa `spectral-pipeline.yaml`). |
-| `auto_fix` | Mappa dal nome della regola a un valore booleano. `true` significa che il riconciliatore correggerà le violazioni. |
+| `enabled` | Attiva/disattiva completamente il linting di Spectral. |
+| `ruleset` | Quale file di configurazione Spectral utilizzare (la pipeline usa `spectral-pipeline.yaml`). |
+| `auto_fix` | Mappa del nome della regola a un booleano. `true` significa che il riconciliatore correggerà le violazioni. |
 | `gate.max_errors` | Numero massimo di errori consentiti nel gate post-riconciliazione. `null` disabilita il controllo. |
 | `gate.max_warnings` | Numero massimo di avvisi consentiti. `null` disabilita il controllo. |
-| `contact` | Informazioni di contatto iniettate in `info.contact` dal correttore `info-contact`. |
-| `servers` | Array dei server iniettato dal correttore `oas3-api-servers`. |
+| `contact` | Informazioni di contatto iniettate in `info.contact` dal fixer `info-contact`. |
+| `servers` | Array dei server iniettato dal fixer `oas3-api-servers`. |
 | `security_scheme` | Definizione dello schema di sicurezza iniettata in ogni specifica. |
 
 ### Impostazioni dei Report
@@ -207,7 +207,7 @@ release:
 
 ## `config/endpoints.yaml`
 
-Definisce gli endpoint di riferimento utilizzati per la validazione live dell'API. Ogni voce mappa un nome logico di risorsa al relativo file di specifica, gruppo API e percorsi CRUD.
+Definisce gli endpoint di riferimento utilizzati per la validazione live dell'API. Ogni voce mappa un nome logico di risorsa al suo file di specifica, gruppo API e percorsi CRUD.
 
 ### Struttura degli Endpoint
 
@@ -232,28 +232,28 @@ endpoints:
 | `resource` | Nome della risorsa API (utilizzato nei percorsi URL). |
 | `domain_file` | Nome del file della specifica OpenAPI in `specs/original/`. |
 | `api_group` | Prefisso del gruppo API (`config`, `web`, ecc.). |
-| `crud_operations` | Metodo HTTP e percorso per ogni operazione CRUD. |
+| `crud_operations` | Metodo HTTP e percorso per ciascuna operazione CRUD. |
 | `test_priority` | `high`, `medium` o `low` -- controlla l'ordine di esecuzione dei test. |
 | `description` | Descrizione leggibile della risorsa. |
 
 ### Endpoint di Riferimento Attuali
 
-10 endpoint distribuiti su tre domini:
+10 endpoint su tre domini:
 
 | Endpoint | Dominio | Priorità |
-|----------|---------|----------|
-| `healthcheck` | Virtual | high |
-| `origin_pool` | Virtual | high |
-| `app_firewall` | Virtual | high |
-| `service_policy` | Virtual | medium |
-| `api_definition` | API Security | high |
-| `api_discovery` | API Security | medium |
-| `api_groups` | API Security | medium |
-| `code_base_integration` | API Security | low |
-| `data_type` | Data Privacy | medium |
-| `sensitive_data_policy` | Data Privacy | medium |
+|----------|--------|----------|
+| `healthcheck` | Virtual | alta |
+| `origin_pool` | Virtual | alta |
+| `app_firewall` | Virtual | alta |
+| `service_policy` | Virtual | media |
+| `api_definition` | API Security | alta |
+| `api_discovery` | API Security | media |
+| `api_groups` | API Security | media |
+| `code_base_integration` | API Security | bassa |
+| `data_type` | Data Privacy | media |
+| `sensitive_data_policy` | Data Privacy | media |
 
-### Aggiungere Nuovi Endpoint
+### Aggiunta di Nuovi Endpoint
 
 Per aggiungere un nuovo endpoint per la validazione:
 

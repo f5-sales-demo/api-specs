@@ -1,22 +1,20 @@
 ---
 title: مواصفات F5 XC API
-description: >-
-  مواصفات OpenAPI مُتحقق منها ومُحسّنة ومتوافقة مع OAS3 لخدمة F5 Distributed
-  Cloud
+description: مواصفات OpenAPI محققة ومُثرية ومتوافقة مع OAS3 لخدمات F5 Distributed Cloud
 template: splash
 sidebar:
   hidden: true
 hero:
   tagline: >-
-    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
-    the live API, auto-repaired, and enriched with security metadata, server
-    definitions, and operation tags.
+    مواصفات OpenAPI جاهزة للإنتاج لخدمات F5 Distributed Cloud — محققة مقابل
+    واجهة API الحية، ومُصلحة تلقائياً، ومُثرية ببيانات الأمان الوصفية وتعريفات
+    الخوادم ووسوم العمليات.
   actions:
-    - text: Pipeline Overview
+    - text: نظرة عامة على خط الإنتاج
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
-    - text: View Latest Report
+    - text: عرض أحدث تقرير
       link: 01-validation-report/
       variant: secondary
 i18n:
@@ -27,11 +25,11 @@ i18n:
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
-  <Card title="نظرة عامة على خط المعالجة" icon="rocket">
-    خط معالجة آلي من ست مراحل: التنزيل، التحقق، الفحص، المطابقة، البوابة، الإصدار.
+  <Card title="نظرة عامة على خط الإنتاج" icon="rocket">
+    خط إنتاج آلي من ست مراحل: التنزيل، التحقق، الفحص، المطابقة، البوابة، الإصدار.
     [اقرأ المزيد](/02-pipeline/)
   </Card>
-  <Card title="الإصلاحات المُطبَّقة" icon="pencil">
+  <Card title="الإصلاحات المُطبقة" icon="pencil">
     إصلاحات القيود، تحسينات Spectral، بيانات الأمان الوصفية، وتنسيق JSON.
     [اقرأ المزيد](/03-fixes-applied/)
   </Card>
@@ -44,11 +42,11 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
     [اقرأ المزيد](/05-configuration/)
   </Card>
   <Card title="تقرير التحقق" icon="document">
-    تقرير مُولَّد تلقائياً لجميع الإصلاحات المُطبَّقة في آخر تشغيل لخط المعالجة.
+    تقرير يُنشأ تلقائياً لجميع الإصلاحات المُطبقة في أحدث تشغيل لخط الإنتاج.
     [اقرأ المزيد](/01-validation-report/)
   </Card>
   <Card title="المساهمة" icon="github">
-    إعداد بيئة التطوير، خط المعالجة المحلي، الاختبارات، وسير عمل طلبات السحب.
+    إعداد بيئة التطوير، خط الإنتاج المحلي، الاختبارات، وسير عمل طلبات الدمج.
     [اقرأ المزيد](/06-contributing/)
   </Card>
 </CardGrid>

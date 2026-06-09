@@ -24,8 +24,8 @@ api:
 
 | Feld | Beschreibung |
 |------|-------------|
-| `base_url` | Basis-URL der F5 XC Konsolen-API. Kann mit der Umgebungsvariable `F5XC_API_URL` überschrieben werden. |
-| `tenant` | Tenant-Name, der in API-Pfaden verwendet wird. |
+| `base_url` | Basis-URL der F5 XC Console-API. Kann mit der Umgebungsvariable `F5XC_API_URL` überschrieben werden. |
+| `tenant` | Mandantenname, der in API-Pfaden verwendet wird. |
 | `namespace` | Standard-Namespace für CRUD-Operationen. |
 | `timeout` | HTTP-Anfrage-Timeout in Sekunden. |
 | `retries` | Anzahl der Wiederholungsversuche bei Fehlern. |
@@ -55,13 +55,13 @@ download:
 
 | Feld | Beschreibung |
 |------|-------------|
-| `url` | URL des offiziellen F5 XC OpenAPI-Spezifikationspakets (ZIP). |
+| `url` | URL des offiziellen F5 XC OpenAPI-Spezifikationsbündels (ZIP). |
 | `output_dir` | Speicherort für extrahierte Spezifikationen. |
 | `etag_cache` | Datei, die den HTTP-ETag für bedingte Downloads speichert. |
 
 ### Validierungskategorien
 
-Zehn Kategorien, die den Constraint-Typen des OpenAPI-Schemas entsprechen. Jede kann unabhängig aktiviert/deaktiviert werden.
+Zehn Kategorien, die den OpenAPI-Schema-Einschränkungstypen entsprechen. Jede kann unabhängig aktiviert/deaktiviert werden.
 
 ```yaml
 validation_categories:
@@ -101,10 +101,10 @@ schemathesis:
 
 | Feld | Beschreibung |
 |------|-------------|
-| `enabled` | Schemathesis-Tests ein-/ausschalten. |
+| `enabled` | Schemathesis-Tests aktivieren/deaktivieren. |
 | `max_examples` | Maximale Anzahl generierter Testfälle pro Operation. |
 | `hypothesis_phases` | Auszuführende Hypothesis-Phasen (`generate`, `target`). |
-| `stateful_testing` | Zustandsbehaftetes, linkbasiertes Testen über Operationen hinweg aktivieren. |
+| `stateful_testing` | Zustandsbasiertes, linkgestütztes Testen über Operationen hinweg aktivieren. |
 | `base_url_override` | Überschreibt die API-Basis-URL für Tests. `null` verwendet `api.base_url`. |
 | `auth_header` | Name des HTTP-Headers für die Authentifizierung. |
 | `auth_prefix` | Token-Präfix-Format (Anfragen werden als `APIToken <token>` gesendet). |
@@ -126,7 +126,7 @@ reconciliation:
 
 | Feld | Beschreibung |
 |------|-------------|
-| `priority` | Reihenfolge der Bevorzugung, wenn mehrere Datenquellen nicht übereinstimmen. |
+| `priority` | Prioritätsreihenfolge, wenn mehrere Datenquellen nicht übereinstimmen. |
 | `fix_strategies` | Ordnet jeden Diskrepanztyp seiner Korrekturmaßnahme zu. Siehe [Angewandte Korrekturen](/03-fixes-applied/). |
 
 ### Spectral-Einstellungen
@@ -166,14 +166,14 @@ spectral:
 
 | Feld | Beschreibung |
 |------|-------------|
-| `enabled` | Spectral-Linting vollständig ein-/ausschalten. |
+| `enabled` | Spectral-Linting vollständig aktivieren/deaktivieren. |
 | `ruleset` | Zu verwendende Spectral-Konfigurationsdatei (die Pipeline verwendet `spectral-pipeline.yaml`). |
-| `auto_fix` | Zuordnung von Regelname zu Boolean. `true` bedeutet, dass der Reconciler Verstöße behebt. |
-| `gate.max_errors` | Maximal zulässige Fehler im Post-Reconcile-Gate. `null` deaktiviert die Prüfung. |
-| `gate.max_warnings` | Maximal zulässige Warnungen. `null` deaktiviert die Prüfung. |
+| `auto_fix` | Zuordnung von Regelname zu Boolean. `true` bedeutet, dass der Abgleicher Verstöße behebt. |
+| `gate.max_errors` | Maximal erlaubte Fehler im Post-Abgleich-Gate. `null` deaktiviert die Prüfung. |
+| `gate.max_warnings` | Maximal erlaubte Warnungen. `null` deaktiviert die Prüfung. |
 | `contact` | Kontaktinformationen, die vom `info-contact`-Fixer in `info.contact` eingefügt werden. |
 | `servers` | Server-Array, das vom `oas3-api-servers`-Fixer eingefügt wird. |
-| `security_scheme` | Sicherheitsschema-Definition, die in jede Spezifikation eingefügt wird. |
+| `security_scheme` | Sicherheitsschemadefinition, die in jede Spezifikation eingefügt wird. |
 
 ### Berichtseinstellungen
 
@@ -201,9 +201,9 @@ release:
 | Feld | Beschreibung |
 |------|-------------|
 | `output_dir` | Verzeichnis für Release-Artefakte. |
-| `include_changelog` | `CHANGELOG.md` in das Release-Paket aufnehmen. |
-| `include_validation_report` | Den Validierungsbericht in das Release-Paket aufnehmen. |
-| `version_from` | Versionsquelle. `git` leitet die Version aus dem Datum der Spezifikationsmetadaten + Patchnummer ab. |
+| `include_changelog` | `CHANGELOG.md` in das Release-Paket einschließen. |
+| `include_validation_report` | Den Validierungsbericht in das Release-Paket einschließen. |
+| `version_from` | Versionsquelle. `git` leitet die Version aus dem Spezifikations-Metadatendatum + Patchnummer ab. |
 
 ## `config/endpoints.yaml`
 
@@ -231,14 +231,14 @@ endpoints:
 |------|-------------|
 | `resource` | API-Ressourcenname (wird in URL-Pfaden verwendet). |
 | `domain_file` | Dateiname der OpenAPI-Spezifikation in `specs/original/`. |
-| `api_group` | API-Gruppenprefix (`config`, `web`, usw.). |
+| `api_group` | API-Gruppen-Präfix (`config`, `web`, usw.). |
 | `crud_operations` | HTTP-Methode und Pfad für jede CRUD-Operation. |
-| `test_priority` | `high`, `medium` oder `low` -- steuert die Reihenfolge der Testausführung. |
+| `test_priority` | `high`, `medium` oder `low` – steuert die Reihenfolge der Testausführung. |
 | `description` | Menschenlesbare Beschreibung der Ressource. |
 
 ### Aktuelle Basis-Endpunkte
 
-10 Endpunkte über drei Domänen:
+10 Endpunkte über drei Domänen hinweg:
 
 | Endpunkt | Domäne | Priorität |
 |----------|--------|-----------|
@@ -255,13 +255,13 @@ endpoints:
 
 ### Neue Endpunkte hinzufügen
 
-Um einen neuen Endpunkt zur Validierung hinzuzufügen:
+Um einen neuen Endpunkt für die Validierung hinzuzufügen:
 
-1. Finden Sie den Spezifikationsdateinamen in `specs/original/` (Format: `docs-cloud-f5-com.NNNN.*.ves-swagger.json`)
+1. Suchen Sie den Spezifikationsdateinamen in `specs/original/` (Format: `docs-cloud-f5-com.NNNN.*.ves-swagger.json`)
 2. Fügen Sie einen Eintrag unter `endpoints:` gemäß der obigen Struktur hinzu
 3. Fügen Sie die Domänendatei-Zuordnung unter `domain_files:` mit einer Prioritätsnummer hinzu
 4. Fügen Sie den Endpunktnamen an der gewünschten Position zu `test_order:` hinzu
 
 :::tip
-Das Framework validiert während des Abgleichs alle 268 Spezifikationen, unabhängig davon, was in `endpoints.yaml` aufgeführt ist. Die Endpunkt-Konfiguration steuert, welche Ressourcen mit Schemathesis live API-Tests durchlaufen.
+Das Framework validiert während des Abgleichs alle 268 Spezifikationen, unabhängig davon, was in `endpoints.yaml` aufgeführt ist. Die Endpunkt-Konfiguration steuert, welche Ressourcen Live-API-Tests mit Schemathesis erhalten.
 :::

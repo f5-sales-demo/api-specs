@@ -6,7 +6,7 @@ i18n:
   translator: machine
 ---
 
-所有流水线行为由 `config/` 目录中的两个 YAML 文件控制。
+所有流水线行为由 `config/` 中的两个 YAML 文件控制。
 
 ## `config/validation.yaml`
 
@@ -25,11 +25,11 @@ api:
 | 字段 | 描述 |
 |-------|-------------|
 | `base_url` | F5 XC 控制台 API 基础 URL。可通过 `F5XC_API_URL` 环境变量覆盖。 |
-| `tenant` | API 路径中使用的租户名称。 |
+| `tenant` | 用于 API 路径的租户名称。 |
 | `namespace` | CRUD 操作的默认命名空间。 |
 | `timeout` | HTTP 请求超时时间（秒）。 |
 | `retries` | 失败时的重试次数。 |
-| `retry_delay` | 重试之间的间隔时间（秒）。 |
+| `retry_delay` | 重试之间的间隔秒数。 |
 
 :::caution
 `validation.yaml` 中的 `base_url`、`tenant` 和 `namespace` 值是通用占位符。在运行流水线之前，您**必须**通过环境变量为您的环境配置这些值：
@@ -56,12 +56,12 @@ download:
 | 字段 | 描述 |
 |-------|-------------|
 | `url` | 官方 F5 XC OpenAPI 规范包（ZIP）的 URL。 |
-| `output_dir` | 解压后规范文件的存储位置。 |
-| `etag_cache` | 存储 HTTP ETag 用于条件下载的文件。 |
+| `output_dir` | 解压后的规范文件存储位置。 |
+| `etag_cache` | 存储 HTTP ETag 以进行条件下载的文件。 |
 
 ### 验证类别
 
-十个类别对应 OpenAPI 模式约束类型。每个类别都可以独立启用/禁用。
+十个类别对应 OpenAPI schema 约束类型。每个类别可以独立启用/禁用。
 
 ```yaml
 validation_categories:
@@ -101,11 +101,11 @@ schemathesis:
 
 | 字段 | 描述 |
 |-------|-------------|
-| `enabled` | 开关 Schemathesis 测试。 |
-| `max_examples` | 每个操作生成的最大测试用例数量。 |
+| `enabled` | 开启/关闭 Schemathesis 测试。 |
+| `max_examples` | 每个操作生成的最大测试用例数。 |
 | `hypothesis_phases` | 要运行的 Hypothesis 阶段（`generate`、`target`）。 |
 | `stateful_testing` | 启用跨操作的有状态链接测试。 |
-| `base_url_override` | 覆盖测试使用的 API 基础 URL。`null` 表示使用 `api.base_url`。 |
+| `base_url_override` | 覆盖测试的 API 基础 URL。`null` 使用 `api.base_url`。 |
 | `auth_header` | 用于身份验证的 HTTP 头名称。 |
 | `auth_prefix` | 令牌前缀格式（请求以 `APIToken <token>` 格式发送）。 |
 
@@ -126,7 +126,7 @@ reconciliation:
 
 | 字段 | 描述 |
 |-------|-------------|
-| `priority` | 当多个数据源存在分歧时的优先顺序。 |
+| `priority` | 多个数据源存在分歧时的优先顺序。 |
 | `fix_strategies` | 将每种差异类型映射到其修复操作。参见[已应用的修复](/03-fixes-applied/)。 |
 
 ### Spectral 设置
@@ -166,11 +166,11 @@ spectral:
 
 | 字段 | 描述 |
 |-------|-------------|
-| `enabled` | 完全开关 Spectral 检查。 |
+| `enabled` | 完全开启/关闭 Spectral 检查。 |
 | `ruleset` | 使用的 Spectral 配置文件（流水线使用 `spectral-pipeline.yaml`）。 |
 | `auto_fix` | 规则名称到布尔值的映射。`true` 表示协调器将修复违规项。 |
-| `gate.max_errors` | 协调后门禁中允许的最大错误数。`null` 表示禁用该检查。 |
-| `gate.max_warnings` | 允许的最大警告数。`null` 表示禁用该检查。 |
+| `gate.max_errors` | 协调后门禁中允许的最大错误数。`null` 禁用该检查。 |
+| `gate.max_warnings` | 允许的最大警告数。`null` 禁用该检查。 |
 | `contact` | 由 `info-contact` 修复器注入到 `info.contact` 中的联系信息。 |
 | `servers` | 由 `oas3-api-servers` 修复器注入的服务器数组。 |
 | `security_scheme` | 注入到每个规范中的安全方案定义。 |
@@ -207,7 +207,7 @@ release:
 
 ## `config/endpoints.yaml`
 
-定义用于实时 API 验证的基准端点。每个条目将一个逻辑资源名称映射到其规范文件、API 组和 CRUD 路径。
+定义用于实时 API 验证的基线端点。每个条目将逻辑资源名称映射到其规范文件、API 组和 CRUD 路径。
 
 ### 端点结构
 
@@ -233,35 +233,35 @@ endpoints:
 | `domain_file` | `specs/original/` 中 OpenAPI 规范的文件名。 |
 | `api_group` | API 组前缀（`config`、`web` 等）。 |
 | `crud_operations` | 每个 CRUD 操作的 HTTP 方法和路径。 |
-| `test_priority` | `high`、`medium` 或 `low` —— 控制测试执行顺序。 |
+| `test_priority` | `high`、`medium` 或 `low` -- 控制测试执行顺序。 |
 | `description` | 资源的可读描述。 |
 
-### 当前基准端点
+### 当前基线端点
 
 跨三个领域的 10 个端点：
 
 | 端点 | 领域 | 优先级 |
 |----------|--------|----------|
-| `healthcheck` | Virtual | high |
-| `origin_pool` | Virtual | high |
-| `app_firewall` | Virtual | high |
-| `service_policy` | Virtual | medium |
-| `api_definition` | API Security | high |
-| `api_discovery` | API Security | medium |
-| `api_groups` | API Security | medium |
-| `code_base_integration` | API Security | low |
-| `data_type` | Data Privacy | medium |
-| `sensitive_data_policy` | Data Privacy | medium |
+| `healthcheck` | 虚拟 | high |
+| `origin_pool` | 虚拟 | high |
+| `app_firewall` | 虚拟 | high |
+| `service_policy` | 虚拟 | medium |
+| `api_definition` | API 安全 | high |
+| `api_discovery` | API 安全 | medium |
+| `api_groups` | API 安全 | medium |
+| `code_base_integration` | API 安全 | low |
+| `data_type` | 数据隐私 | medium |
+| `sensitive_data_policy` | 数据隐私 | medium |
 
 ### 添加新端点
 
 要添加新的验证端点：
 
 1. 在 `specs/original/` 中找到规范文件名（格式：`docs-cloud-f5-com.NNNN.*.ves-swagger.json`）
-2. 在 `endpoints:` 下按照上述结构添加一个条目
+2. 按照上述结构在 `endpoints:` 下添加一个条目
 3. 在 `domain_files:` 下添加域文件映射及优先级编号
 4. 将端点名称添加到 `test_order:` 中的期望位置
 
 :::tip
-无论 `endpoints.yaml` 中列出了什么内容，框架在协调过程中都会验证全部 268 个规范。端点配置控制哪些资源使用 Schemathesis 进行实时 API 测试。
+无论 `endpoints.yaml` 中列出了什么，框架在协调过程中都会验证全部 268 个规范。端点配置控制的是哪些资源使用 Schemathesis 进行实时 API 测试。
 :::

@@ -1,14 +1,14 @@
 ---
-title: Spectral Linting Rules
+title: Règles de linting Spectral
 description: >-
-  Architecture Spectral à deux configurations avec règles OAS de base et une
+  Architecture Spectral à deux configurations avec des règles OAS de base et une
   fonction personnalisée f5-path-params
 i18n:
   sourceHash: 0e32e7569d97
   translator: machine
 ---
 
-Le projet utilise [Spectral](https://stoplight.io/open-source/spectral) pour le linting OAS3 avec une architecture à deux configurations qui sépare le CI/l'outillage externe de la logique personnalisée du pipeline.
+Le projet utilise [Spectral](https://stoplight.io/open-source/spectral) pour le linting OAS3 avec une architecture à deux configurations qui sépare le CI/outillage externe de la logique personnalisée du pipeline.
 
 ## Architecture à deux configurations
 
@@ -57,46 +57,46 @@ rules:
 
 ## Pourquoi `path-params` est désactivée
 
-La règle intégrée `path-params` de Spectral signale incorrectement les API F5 XC qui utilisent des noms de paramètres avec des points comme `{metadata.namespace}` et `{metadata.name}`. La règle intégrée ne parse pas les points dans les noms de paramètres, et les signale donc comme non déclarés.
+La règle intégrée `path-params` de Spectral signale incorrectement les API F5 XC qui utilisent des noms de paramètres avec points tels que `{metadata.namespace}` et `{metadata.name}`. La règle intégrée ne parse pas les points dans les noms de paramètres, elle les signale donc comme non déclarés.
 
-La fonction personnalisée `f5-path-params` (`spectral/functions/f5-path-params.js`) gère correctement les noms avec des points en comparant le contenu complet du `{placeholder}` avec les noms de paramètres déclarés. Elle vérifie les paramètres au niveau du chemin et au niveau de l'opération, et signale les erreurs dans les deux sens :
+La fonction personnalisée `f5-path-params` (`spectral/functions/f5-path-params.js`) gère correctement les noms avec points en faisant correspondre le contenu complet du `{placeholder}` avec les noms de paramètres déclarés. Elle vérifie les paramètres au niveau du chemin et au niveau de l'opération, et signale les erreurs dans les deux sens :
 
-- Un placeholder dans le chemin URL qui n'a aucune déclaration de paramètre correspondante
+- Un placeholder dans le chemin URL qui n'a pas de déclaration de paramètre correspondante
 - Un paramètre de chemin déclaré qui n'apparaît pas dans le chemin URL
 
 ## Référence des règles
 
-### Règles à correction automatique
+### Règles auto-corrigibles
 
-Ces règles sont automatiquement corrigées par le réconcilieur lorsque des violations sont détectées. Voir [Corrections appliquées](/03-fixes-applied/) pour les détails sur chaque correction.
+Ces règles sont auto-corrigées par le réconcilieur lorsque des violations sont détectées. Voir [Corrections appliquées](/03-fixes-applied/) pour les détails sur chaque correction.
 
 | Règle | Sévérité | Méthode de correction | Description |
-|------|----------|------------|-------------|
+|-------|----------|----------------------|-------------|
 | `oas3-api-servers` | warn | `_add_servers` | La spécification doit avoir un bloc `servers` |
 | `info-contact` | warn | `_add_contact` | `info` doit inclure `contact` |
 | `operation-tags` | warn | `_add_tags` | Chaque opération doit avoir au moins un tag |
-| `oas3-unused-component` | warn | `_remove_unused_component` | Pas de schémas de composants non référencés |
+| `oas3-unused-component` | warn | `_remove_unused_component` | Aucun schéma de composant non référencé |
 | `operation-operationId-unique` | error | `_deduplicate_operation_id` | Tous les operationIds doivent être uniques |
 | `oas3-valid-schema-example` | error | `_fix_schema_example` | Les exemples/valeurs par défaut doivent correspondre à leur schéma |
-| `no-script-tags-in-markdown` | warn | `_strip_script_tags` | Pas de balises `<script>` dans les descriptions |
+| `no-script-tags-in-markdown` | warn | `_strip_script_tags` | Aucune balise `<script>` dans les descriptions |
 | `f5-path-params` | error | -- | Les paramètres de chemin doivent être déclarés et utilisés |
 
 :::note
-`f5-path-params` est une règle de sévérité error mais n'est pas corrigée automatiquement. Les violations indiquent un défaut réel de la spécification qui nécessite une revue manuelle.
+`f5-path-params` est une règle de sévérité error mais n'est pas auto-corrigée. Les violations indiquent un véritable défaut de spécification qui nécessite une revue manuelle.
 :::
 
-### Règles non corrigeables
+### Règles non corrigibles
 
-Ces règles sont rétrogradées à la sévérité `info` car elles ne peuvent pas être corrigées automatiquement de manière pertinente :
+Ces règles sont rétrogradées à la sévérité `info` car elles ne peuvent pas être auto-corrigées de manière significative :
 
 | Règle | Sévérité | Description |
-|------|----------|-------------|
+|-------|----------|-------------|
 | `operation-description` | info | Les opérations devraient avoir une description |
 | `info-description` | info | Les informations de l'API devraient avoir une description |
 
 ## Intégration au pipeline
 
-L'adaptateur Spectral (`scripts/spectral_lint.py`) s'exécute en deux modes :
+L'adaptateur Spectral (`scripts/spectral_lint.py`) fonctionne en deux modes :
 
 ### Mode Discover (pré-réconciliation)
 
@@ -120,8 +120,8 @@ Analyse `release/specs/` et écrit `reports/spectral_gate_report.json`. Retourne
 
 Les violations Spectral sont converties en objets `Discrepancy` avec trois sous-types :
 
-| Catégorie de règle Spectral | DiscrepancyType | Exemples de règles |
-|------------------------|-----------------|---------------|
+| Catégorie de règle Spectral | DiscrepancyType | Règles d'exemple |
+|----------------------------|-----------------|------------------|
 | Élément requis manquant | `SPECTRAL_MISSING` | `oas3-api-servers`, `info-contact`, `operation-tags` |
 | Élément existant invalide | `SPECTRAL_INVALID` | `oas3-valid-schema-example`, `no-script-tags-in-markdown` |
 | Code mort | `SPECTRAL_UNUSED` | `oas3-unused-component` |

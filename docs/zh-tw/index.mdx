@@ -6,15 +6,14 @@ sidebar:
   hidden: true
 hero:
   tagline: >-
-    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
-    the live API, auto-repaired, and enriched with security metadata, server
-    definitions, and operation tags.
+    適用於 F5 Distributed Cloud 的生產就緒 OpenAPI 規格 — 透過即時 API
+    驗證、自動修復，並強化安全性中繼資料、伺服器定義及操作標籤。
   actions:
-    - text: Pipeline Overview
+    - text: 流水線概覽
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
-    - text: View Latest Report
+    - text: 查看最新報告
       link: 01-validation-report/
       variant: secondary
 i18n:
@@ -26,7 +25,7 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
   <Card title="流水線概覽" icon="rocket">
-    六階段自動化流水線：下載、驗證、檢查、調和、把關、發佈。
+    六階段自動化流水線：下載、驗證、檢查、調和、閘門、發佈。
     [閱讀更多](/02-pipeline/)
   </Card>
   <Card title="已套用的修正" icon="pencil">
@@ -34,18 +33,18 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
     [閱讀更多](/03-fixes-applied/)
   </Card>
   <Card title="Spectral 規則" icon="warning">
-    雙設定檔檢查架構，搭配自訂 `f5-path-params` 函式。
+    雙組態檢查架構，搭配自訂 `f5-path-params` 函式。
     [閱讀更多](/04-spectral-rules/)
   </Card>
-  <Card title="設定" icon="setting">
-    `validation.yaml` 與 `endpoints.yaml` 參考文件。
+  <Card title="組態設定" icon="setting">
+    `validation.yaml` 與 `endpoints.yaml` 的參考文件。
     [閱讀更多](/05-configuration/)
   </Card>
   <Card title="驗證報告" icon="document">
-    自動產生的報告，列出最近一次流水線執行中套用的所有修正。
+    自動產生的報告，涵蓋最新流水線執行中套用的所有修正。
     [閱讀更多](/01-validation-report/)
   </Card>
-  <Card title="貢獻指南" icon="github">
+  <Card title="參與貢獻" icon="github">
     開發環境設定、本機流水線、測試及 PR 工作流程。
     [閱讀更多](/06-contributing/)
   </Card>

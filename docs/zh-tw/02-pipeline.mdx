@@ -1,12 +1,12 @@
 ---
 title: 管線概覽
-description: 六階段自動化管線，負責下載、驗證、檢查、調和、閘控並發布 F5 XC OpenAPI 規格
+description: 六階段自動化管線，負責下載、驗證、靜態分析、調和、品質閘門及發布 F5 XC OpenAPI 規格
 i18n:
   sourceHash: 8b956cf69c75
   translator: machine
 ---
 
-此管線透過 GitHub Actions (`validate-and-release.yml`) 每日 UTC 時間早上 6 點執行，並在每次推送到 `main` 且涉及 `scripts/`、`config/` 或 `pyproject.toml` 時觸發。也可以手動觸發，並提供強制發布或跳過即時 API 測試的選項。
+此管線透過 GitHub Actions（`validate-and-release.yml`）每日於 UTC 早上 6 點執行，並在每次推送至 `main` 分支且涉及 `scripts/`、`config/` 或 `pyproject.toml` 的變更時觸發。也可以手動觸發，並提供強制發布或跳過即時 API 測試的選項。
 
 ## 管線階段
 
@@ -32,52 +32,52 @@ i18n:
 
 ### 1. 下載
 
-`scripts/download.py` 從 `docs.cloud.f5.com` 擷取官方 F5 XC OpenAPI 規格 ZIP 檔案。它使用 HTTP ETag 標頭進行條件式 GET 請求——如果上游套件未發生變更，則跳過下載。解壓縮後的 JSON 規格檔案存放於 `specs/original/`。
+`scripts/download.py` 從 `docs.cloud.f5.com` 取得官方 F5 XC OpenAPI 規格 ZIP 檔案。它使用 HTTP ETag 標頭進行條件式 GET 請求——若上游套件未變更，則跳過下載。解壓縮後的 JSON 規格檔案存放於 `specs/original/`。
 
 ### 2. 驗證
 
-`scripts/validate.py` 針對即時 F5 XC API 協調兩種測試：
+`scripts/validate.py` 針對即時 F5 XC API 協調執行兩種測試：
 
-- **Schemathesis** —— 基於屬性的測試，根據規格生成隨機的有效/無效酬載，並檢查 API 是否符合規格的約束條件。
-- **約束驗證** —— 針對所有 10 種 OpenAPI 約束類別的目標測試（字串長度、模式、數值範圍、必要欄位、列舉、陣列範圍、物件結構、組合、依賴關係、資料類型）。
+- **Schemathesis** —— 基於屬性的測試，依據規格產生隨機的有效/無效酬載，並檢查 API 是否符合規格的約束條件。
+- **約束驗證** —— 針對所有 10 種 OpenAPI 約束類別的目標測試（字串長度、模式匹配、數值範圍、必填欄位、列舉、陣列範圍、物件結構、組合、相依性、資料型別）。
 
-差異結果寫入 `reports/validation_report.json`。
+發現的差異會寫入 `reports/validation_report.json`。
 
-### 3. Spectral 檢查（探索）
+### 3. Spectral 靜態分析（探索）
 
-`scripts/spectral_lint.py --mode discover` 使用 `spectral-pipeline.yaml` 對原始規格執行 Spectral CLI。這會找出 OAS3 品質問題——缺少 servers 區塊、缺少聯絡資訊、未標記的操作、未使用的元件結構描述、重複的 operationId、無效的範例，以及描述中的 script 標籤。
+`scripts/spectral_lint.py --mode discover` 使用 `spectral-pipeline.yaml` 對原始規格執行 Spectral CLI。此步驟會找出 OAS3 品質問題——缺少 servers 區塊、缺少聯絡資訊、未標記標籤的操作、未使用的元件結構描述、重複的 operationId、無效的範例，以及描述中的 script 標籤。
 
 違規項目會轉換為 `Discrepancy` 物件並寫入 `reports/spectral_report.json`。完整規則集請參閱 [Spectral 規則](/04-spectral-rules/)。
 
 ### 4. 調和
 
-`scripts/reconcile.py` 讀取兩份報告檔案並對每個規格套用修正：
+`scripts/reconcile.py` 消費兩份報告檔案，並對每個規格套用修正：
 
-- **約束修正** 根據觀察到的 API 行為調整結構描述約束（放寬、收緊、新增、移除）。請參閱[已套用的修正](/03-fixes-applied/)。
-- **Spectral 修正** 為規格補充 servers、聯絡資訊、標籤、安全性中繼資料，並移除無用的元件。
-- **安全性中繼資料** 在 `security_scheme` 設定存在時一律注入，即使 Spectral 未標記也是如此。
+- **約束修正**根據觀察到的 API 行為調整結構描述約束（放寬、收緊、新增、移除）。請參閱[已套用的修正](/03-fixes-applied/)。
+- **Spectral 修正**為規格補充 servers、聯絡資訊、標籤、安全性中繼資料，並移除無用的元件。
+- **安全性中繼資料**在 `security_scheme` 設定存在時一律注入，即使 Spectral 未標記問題。
 
-修正後的規格寫入 `release/specs/`，並在儲存前使用 `openapi-spec-validator` 進行驗證。如果修正後的規格驗證失敗，則使用原始規格作為備援。
+修正後的規格寫入 `release/specs/`，並在儲存前使用 `openapi-spec-validator` 進行驗證。若修正後的規格驗證失敗，則使用原始規格作為備援。
 
-### 5. Spectral 閘控
+### 5. Spectral 品質閘門
 
-`scripts/spectral_lint.py --mode gate` 對 `release/specs/` 中已調和的規格重新執行 Spectral。閘控會根據可設定的閾值（`validation.yaml` 中的 `spectral.gate.max_errors` 和 `spectral.gate.max_warnings`）檢查錯誤和警告計數。
+`scripts/spectral_lint.py --mode gate` 針對 `release/specs/` 中已調和的規格重新執行 Spectral。品質閘門會根據可設定的閾值（`validation.yaml` 中的 `spectral.gate.max_errors` 和 `spectral.gate.max_warnings`）檢查錯誤和警告數量。
 
 :::note
-第一階段（目前）：閾值為 `null`（僅警告）。設定 `max_errors: 0` 可強制執行零錯誤閘控。
+第一階段（目前）：閾值設定為 `null`（僅警告模式）。設定 `max_errors: 0` 可啟用零錯誤品質閘門。
 :::
 
 ### 6. 發布
 
-`scripts/release.py` 將調和後的規格打包為版本化的 ZIP 壓縮檔。版本使用格式 `YYYY.MM.DD-<patch>`，衍生自上游規格中繼資料日期。發布內容包括：
+`scripts/release.py` 將已調和的規格打包為帶版本號的 ZIP 壓縮檔。版本號使用 `YYYY.MM.DD-<patch>` 格式，衍生自上游規格中繼資料的日期。發布內容包含：
 
 - 個別領域規格檔案（268 個 JSON 檔案）
 - 合併所有領域的 `openapi.json`
 - 列出所有已套用修正的 `CHANGELOG.md`
 - `VALIDATION_REPORT.md` 摘要
 
-CI 工作會建立附帶 ZIP 檔案的 GitHub Release，標記為 `v<version>`。內容雜湊值可防止在未發生變更時重複發布。
+CI 工作會建立 GitHub Release，附加 ZIP 檔案並標記為 `v<version>`。內容雜湊值可防止在無任何變更時產生重複發布。
 
 ## 文件更新
 
-平行的 CI 工作使用 `scripts/generate_docs.py` 從驗證報告生成 `docs/01-validation-report.mdx`，如果內容有變更則開啟 PR。
+一個平行的 CI 工作使用 `scripts/generate_docs.py` 從驗證報告產生 `docs/01-validation-report.mdx`，若內容有變更則開啟 PR。

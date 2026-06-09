@@ -1,5 +1,5 @@
 ---
-title: Spectral Linting Rules
+title: Regole di Linting Spectral
 description: >-
   Architettura Spectral a due configurazioni con regole OAS di base e una
   funzione personalizzata f5-path-params
@@ -33,7 +33,7 @@ rules:
   info-description: info
 ```
 
-### `spectral-pipeline.yaml` -- Configurazione Pipeline
+### `spectral-pipeline.yaml` -- Configurazione della Pipeline
 
 Utilizzata da `scripts/spectral_lint.py` (sia in modalità discover che gate). Estende la configurazione base e aggiunge la funzione personalizzata `f5-path-params`:
 
@@ -55,29 +55,29 @@ rules:
       function: f5-path-params
 ```
 
-## Perché `path-params` è Disabilitata
+## Perché `path-params` È Disabilitata
 
-La regola integrata `path-params` di Spectral segnala erroneamente le API F5 XC che utilizzano nomi di parametri con notazione a punti come `{metadata.namespace}` e `{metadata.name}`. La regola integrata non analizza i punti nei nomi dei parametri, pertanto li segnala come non dichiarati.
+La regola integrata `path-params` di Spectral segnala erroneamente le API F5 XC che utilizzano nomi di parametri con notazione a punti come `{metadata.namespace}` e `{metadata.name}`. La regola integrata non analizza i punti nei nomi dei parametri, quindi li segnala come non dichiarati.
 
-La funzione personalizzata `f5-path-params` (`spectral/functions/f5-path-params.js`) gestisce correttamente i nomi con notazione a punti confrontando l'intero contenuto del `{placeholder}` con i nomi dei parametri dichiarati. Controlla sia i parametri a livello di percorso che quelli a livello di operazione, e segnala errori in entrambe le direzioni:
+La funzione personalizzata `f5-path-params` (`spectral/functions/f5-path-params.js`) gestisce correttamente i nomi con notazione a punti confrontando l'intero contenuto del `{placeholder}` con i nomi dei parametri dichiarati. Controlla sia i parametri a livello di percorso che a livello di operazione e segnala errori in entrambe le direzioni:
 
-- Un placeholder nel percorso URL che non ha una dichiarazione di parametro corrispondente
+- Un placeholder nel percorso URL che non ha una corrispondente dichiarazione di parametro
 - Un parametro di percorso dichiarato che non appare nel percorso URL
 
-## Riferimento Regole
+## Riferimento delle Regole
 
 ### Regole con Correzione Automatica
 
-Queste regole vengono corrette automaticamente dal reconciler quando vengono rilevate violazioni. Consultare [Correzioni Applicate](/03-fixes-applied/) per dettagli su ogni correzione.
+Queste regole vengono corrette automaticamente dal riconciliatore quando vengono rilevate violazioni. Consultare [Correzioni Applicate](/03-fixes-applied/) per i dettagli su ciascuna correzione.
 
 | Regola | Severità | Metodo di Correzione | Descrizione |
 |--------|----------|---------------------|-------------|
 | `oas3-api-servers` | warn | `_add_servers` | La specifica deve avere un blocco `servers` |
 | `info-contact` | warn | `_add_contact` | `info` deve includere `contact` |
 | `operation-tags` | warn | `_add_tags` | Ogni operazione deve avere almeno un tag |
-| `oas3-unused-component` | warn | `_remove_unused_component` | Nessuno schema di componente non referenziato |
+| `oas3-unused-component` | warn | `_remove_unused_component` | Nessun schema di componente non referenziato |
 | `operation-operationId-unique` | error | `_deduplicate_operation_id` | Tutti gli operationId devono essere univoci |
-| `oas3-valid-schema-example` | error | `_fix_schema_example` | Gli esempi/valori predefiniti devono corrispondere al loro schema |
+| `oas3-valid-schema-example` | error | `_fix_schema_example` | Esempi/valori predefiniti devono corrispondere al loro schema |
 | `no-script-tags-in-markdown` | warn | `_strip_script_tags` | Nessun tag `<script>` nelle descrizioni |
 | `f5-path-params` | error | -- | I parametri di percorso devono essere dichiarati e utilizzati |
 
@@ -98,16 +98,16 @@ Queste regole sono declassate a severità `info` perché non possono essere corr
 
 L'adattatore Spectral (`scripts/spectral_lint.py`) viene eseguito in due modalità:
 
-### Modalità Discover (Pre-Reconcile)
+### Modalità Discover (Pre-Riconciliazione)
 
 ```bash
 make spectral-lint
 # Equivalent to: python -m scripts.spectral_lint --mode discover
 ```
 
-Analizza `specs/original/` e scrive `reports/spectral_report.json`. Il reconciler consuma questo report insieme al report di validazione.
+Analizza `specs/original/` e scrive `reports/spectral_report.json`. Il riconciliatore consuma questo report insieme al report di validazione.
 
-### Modalità Gate (Post-Reconcile)
+### Modalità Gate (Post-Riconciliazione)
 
 ```bash
 make spectral-gate
@@ -122,6 +122,6 @@ Le violazioni Spectral vengono convertite in oggetti `Discrepancy` con tre sotto
 
 | Categoria Regola Spectral | DiscrepancyType | Regole di Esempio |
 |---------------------------|-----------------|-------------------|
-| Elemento obbligatorio mancante | `SPECTRAL_MISSING` | `oas3-api-servers`, `info-contact`, `operation-tags` |
+| Elemento richiesto mancante | `SPECTRAL_MISSING` | `oas3-api-servers`, `info-contact`, `operation-tags` |
 | Elemento esistente non valido | `SPECTRAL_INVALID` | `oas3-valid-schema-example`, `no-script-tags-in-markdown` |
 | Codice morto | `SPECTRAL_UNUSED` | `oas3-unused-component` |

@@ -1,26 +1,26 @@
 ---
-title: 업스트림 스펙에 적용된 수정 사항
-description: 조정 엔진이 F5 XC OpenAPI 사양에 적용하는 모든 수정 사항의 완전한 참조
+title: 업스트림 사양에 적용된 수정 사항
+description: 조정 엔진이 F5 XC OpenAPI 사양에 적용하는 모든 수정 사항의 전체 레퍼런스
 i18n:
   sourceHash: d33e60c0fb4a
   translator: machine
 ---
 
-조정기(`scripts/reconcile.py`)는 업스트림 스펙에 네 가지 범주의 수정 사항을 적용합니다. 제약 조건 수정은 관찰된 동작과 일치하도록 API 계약을 변경합니다. 그 외 모든 수정은 메타데이터 전용이며 API 계약을 변경하지 않습니다.
+조정기(`scripts/reconcile.py`)는 업스트림 사양에 네 가지 범주의 수정을 적용합니다. 제약 조건 수정은 관찰된 동작과 일치하도록 API 계약을 변경합니다. 그 외 모든 수정은 메타데이터 전용이며 API 계약을 변경하지 않습니다.
 
 ## 제약 조건 수정
 
-이 수정 사항은 스펙이 실제 API가 적용하는 내용과 일치하도록 OpenAPI 스키마 제약 조건을 조정합니다. 각 수정은 [유효성 검사](/02-pipeline/#2-validate) 중에 생성된 `Discrepancy` 객체에 의해 구동됩니다.
+이 수정들은 사양이 실제 API가 적용하는 내용과 일치하도록 OpenAPI 스키마 제약 조건을 조정합니다. 각 수정은 [유효성 검사](/02-pipeline/#2-validate) 중에 생성된 `Discrepancy` 객체에 의해 구동됩니다.
 
 | 전략 | 트리거 | 수행 내용 | 계약 변경 |
 |----------|---------|--------------|-----------------|
-| **Relax** | `SPEC_STRICTER` | 스펙이 API가 수용하는 값을 거부함. `minLength`/`minimum`을 낮추고, `maxLength`/`maximum`을 높이며, 누락된 enum 값을 추가함. | 예 -- 수용 값 범위 확대 |
-| **Tighten** | `SPEC_LOOSER` | 스펙이 API가 거부하는 값을 수용함. `minLength`/`minimum`을 높이고, `maxLength`/`maximum`을 낮추며, 관찰된 값으로 enum을 제한함. | 예 -- 수용 값 범위 축소 |
-| **Add** | `MISSING_CONSTRAINT` | API가 스펙에 문서화되지 않은 제약 조건을 적용함. 스키마에 제약 조건을 추가함. | 예 -- 새 제약 조건 추가 |
-| **Remove** | `EXTRA_CONSTRAINT` | 스펙이 API가 무시하는 제약 조건을 선언함. 스키마에서 제약 조건을 제거함. | 예 -- 제약 조건 제거 |
+| **완화** | `SPEC_STRICTER` | 사양이 API가 허용하는 값을 거부함. `minLength`/`minimum`을 낮추고, `maxLength`/`maximum`을 높이며, 누락된 enum 값을 추가함. | 예 -- 허용 값 범위 확대 |
+| **강화** | `SPEC_LOOSER` | 사양이 API가 거부하는 값을 허용함. `minLength`/`minimum`을 높이고, `maxLength`/`maximum`을 낮추며, enum을 관찰된 값으로 제한함. | 예 -- 허용 값 범위 축소 |
+| **추가** | `MISSING_CONSTRAINT` | API가 사양에 문서화되지 않은 제약 조건을 적용함. 스키마에 해당 제약 조건을 추가함. | 예 -- 새 제약 조건 추가 |
+| **제거** | `EXTRA_CONSTRAINT` | 사양이 API가 무시하는 제약 조건을 선언함. 스키마에서 해당 제약 조건을 제거함. | 예 -- 제약 조건 제거 |
 
 :::caution
-제약 조건 수정은 API 계약을 변경합니다. 이러한 수정은 실제 API에 대한 Schemathesis 또는 제약 조건 유효성 검사 테스트의 증거가 있을 때만 적용됩니다.
+제약 조건 수정은 API 계약을 변경합니다. Schemathesis 또는 라이브 API에 대한 제약 조건 유효성 검사 테스트의 증거가 뒷받침될 때만 적용됩니다.
 :::
 
 ### 지원되는 제약 조건 유형
@@ -29,24 +29,24 @@ i18n:
 
 - **문자열 길이** -- `minLength`, `maxLength`
 - **패턴** -- `pattern` (정규식)
-- **숫자 범위** -- `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum`
+- **수치 범위** -- `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum`
 - **필수 필드** -- `required`
 - **열거형 값** -- `enum`
 - **배열 범위** -- `minItems`, `maxItems`, `uniqueItems`
 - **객체 구조** -- `additionalProperties`, `properties`, `propertyNames`
 - **합성** -- `oneOf`, `anyOf`, `allOf`
-- **종속성** -- `dependentRequired`, `dependentSchemas`
-- **데이터 유형** -- `type`, `format`
+- **의존성** -- `dependentRequired`, `dependentSchemas`
+- **데이터 타입** -- `type`, `format`
 
 ## Spectral 보강
 
-이 수정 사항은 [Spectral 린팅](/04-spectral-rules/)에서 발견된 OAS3 품질 문제를 해결합니다. API 동작을 변경하지 않고 메타데이터를 추가하거나 수정합니다.
+이 수정들은 [Spectral 린팅](/04-spectral-rules/)에서 발견된 OAS3 품질 문제를 해결합니다. API 동작을 변경하지 않고 메타데이터를 추가하거나 수정합니다.
 
 ### 서버 블록 주입
 
 **규칙**: `oas3-api-servers` | **계약 변경**: 아니오
 
-`servers` 블록이 누락된 스펙에 F5 XC 테넌트 URL 템플릿을 추가합니다:
+`servers` 블록이 누락된 사양에 F5 XC 테넌트 URL 템플릿을 추가합니다:
 
 ```json
 "servers": [{
@@ -67,7 +67,7 @@ i18n:
 
 **규칙**: `info-contact` | **계약 변경**: 아니오
 
-연락처 정보가 누락된 스펙의 `info.contact`에 연락처 정보를 추가합니다:
+연락처 정보가 누락된 사양의 `info.contact`에 연락처 정보를 추가합니다:
 
 ```json
 "contact": {
@@ -79,41 +79,41 @@ i18n:
 
 값은 [validation.yaml](/05-configuration/)의 `spectral.contact`에서 가져옵니다.
 
-### 오퍼레이션 태그 파생
+### 오퍼레이션 태그 도출
 
 **규칙**: `operation-tags` | **계약 변경**: 아니오
 
-태그가 지정되지 않은 오퍼레이션에 대해 URL 경로 접두사에서 태그를 파생합니다. `/api/config/namespaces/{namespace}/healthchecks`와 같은 경로의 경우 태그는 `config`(두 번째 비매개변수 세그먼트)입니다. 태그는 오퍼레이션의 `tags` 배열과 스펙 수준의 `tags` 목록 모두에 추가됩니다.
+태그가 지정되지 않은 오퍼레이션에 대해 URL 경로 접두사에서 태그를 도출합니다. `/api/config/namespaces/{namespace}/healthchecks`와 같은 경로의 경우, 태그는 `config`(두 번째 비매개변수 세그먼트)입니다. 태그는 오퍼레이션의 `tags` 배열과 사양 수준의 `tags` 목록 모두에 추가됩니다.
 
 ### 미사용 컴포넌트 제거
 
 **규칙**: `oas3-unused-component` | **계약 변경**: 아니오
 
-스펙의 어디에서도 참조되지 않는 `components.schemas`의 컴포넌트 스키마를 제거합니다. 어떤 오퍼레이션에도 영향을 주지 않으면서 스펙 크기를 줄입니다.
+사양 어디에서도 참조되지 않는 컴포넌트 스키마를 `components.schemas`에서 제거합니다. 어떤 오퍼레이션에도 영향을 주지 않으면서 사양 크기를 줄입니다.
 
 ### OperationId 중복 제거
 
 **규칙**: `operation-operationId-unique` | **계약 변경**: 아니오
 
-여러 오퍼레이션이 동일한 `operationId`를 공유하는 경우 HTTP 메서드를 접미사로 추가합니다(예: `ListItems_get`). 이를 통해 코드 생성기에서 각 operationId를 고유하게 만듭니다.
+여러 오퍼레이션이 동일한 `operationId`를 공유할 때 HTTP 메서드를 접미사로 추가합니다(예: `ListItems_get`). 이를 통해 코드 생성기를 위해 각 operationId를 고유하게 만듭니다.
 
 ### 유효하지 않은 예시/기본값 제거
 
 **규칙**: `oas3-valid-schema-example` | **계약 변경**: 아니오
 
-값이 스키마 자체의 제약 조건에 부합하지 않는 경우(잘못된 유형, 범위 초과 등) 스키마에서 `example` 또는 `default` 값을 제거합니다. 코드 생성기가 유효하지 않은 샘플 페이로드를 생성하는 것을 방지합니다.
+값이 스키마 자체의 제약 조건(잘못된 타입, 범위 초과 등)을 준수하지 않을 때 스키마에서 `example` 또는 `default` 값을 제거합니다. 코드 생성기가 유효하지 않은 샘플 페이로드를 생성하는 것을 방지합니다.
 
-### Script 태그 제거
+### 스크립트 태그 제거
 
 **규칙**: `no-script-tags-in-markdown` | **계약 변경**: 아니오
 
-정규식 대체를 사용하여 `description` 필드에서 `<script>` 태그를 제거합니다. 일부 업스트림 스펙에는 문서 렌더러를 손상시키는 주입된 스크립트 태그가 포함되어 있습니다.
+정규식 치환을 사용하여 `description` 필드에서 `<script>` 태그를 제거합니다. 일부 업스트림 사양에는 문서 렌더러를 손상시키는 주입된 스크립트 태그가 포함되어 있습니다.
 
 ## 보안 메타데이터
 
 **계약 변경**: 아니오 (문서 전용)
 
-모든 스펙은 `apiKeyAuth` 보안 스키마가 아직 존재하지 않는 경우 이를 부여받습니다. 이는 Spectral이 플래그를 지정했는지 여부와 관계없이 항상 주입됩니다.
+모든 사양은 `apiKeyAuth` 보안 스킴이 아직 존재하지 않는 경우 이를 부여받습니다. 이는 Spectral이 플래그를 지정했는지 여부와 관계없이 항상 주입됩니다.
 
 ```json
 "components": {
@@ -129,13 +129,13 @@ i18n:
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-스키마 정의는 [validation.yaml](/05-configuration/)의 `spectral.security_scheme`에서 가져옵니다. 이는 API 소비자에게 인증 방법을 알려주지만 런타임 동작을 변경하지 않습니다.
+스킴 정의는 [validation.yaml](/05-configuration/)의 `spectral.security_scheme`에서 가져옵니다. 이는 API 소비자에게 인증 방법을 알려주지만 런타임 동작을 변경하지 않습니다.
 
 ## JSON 포맷팅
 
 **계약 변경**: 아니오
 
-모든 출력 JSON 스펙은 Biome 호환 배열 압축기(`scripts/utils/spec_loader.py`의 `_compact_short_arrays`)를 거칩니다. 120자 이내에 들어맞는 짧은 배열은 한 줄로 축소됩니다:
+모든 출력 JSON 사양은 Biome 호환 배열 압축기(`scripts/utils/spec_loader.py`의 `_compact_short_arrays`)를 통과합니다. 120자 이내에 맞는 짧은 배열은 한 줄로 축소됩니다:
 
 ```json
 // Before
@@ -152,10 +152,10 @@ i18n:
 
 ## 수정 우선순위
 
-여러 수정 전략이 적용될 수 있는 경우, 조정기는 `reconciliation.priority`에 구성된 우선순위를 사용합니다:
+여러 수정 전략이 적용될 수 있는 경우, 조정기는 `reconciliation.priority`에 설정된 우선순위 순서를 사용합니다:
 
-1. **existing** -- 기존 스펙 제약 조건이 유효한 경우 이를 사용
-2. **discovery** -- 발견된 실제 API 동작을 사용
+1. **existing** -- 기존 사양 제약 조건이 유효한 경우 이를 사용
+2. **discovery** -- 발견된 라이브 API 동작을 사용
 3. **inferred** -- 유사한 엔드포인트 간의 패턴에서 추론
 
-모든 수정된 스펙은 모든 수정 사항이 적용된 후 `openapi-spec-validator`로 유효성이 검사됩니다. 유효성 검사가 실패하면 원본 스펙이 폴백으로 사용되며 해당 수정은 오류로 기록됩니다.
+모든 수정된 사양은 모든 수정이 적용된 후 `openapi-spec-validator`로 유효성 검사를 거칩니다. 유효성 검사가 실패하면 원본 사양이 대체로 사용되며 해당 수정은 오류로 기록됩니다.

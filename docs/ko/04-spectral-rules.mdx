@@ -1,18 +1,18 @@
 ---
 title: Spectral 린팅 규칙
-description: 기본 OAS 규칙과 사용자 정의 f5-path-params 함수를 포함하는 두 개의 설정 파일로 구성된 Spectral 아키텍처
+description: 기본 OAS 규칙과 커스텀 f5-path-params 함수를 포함하는 이중 구성 Spectral 아키텍처
 i18n:
   sourceHash: 0e32e7569d97
   translator: machine
 ---
 
-이 프로젝트는 OAS3 린팅을 위해 [Spectral](https://stoplight.io/open-source/spectral)을 사용하며, CI/외부 도구와 파이프라인의 사용자 정의 로직을 분리하는 두 개의 설정 파일 아키텍처를 채택하고 있습니다.
+이 프로젝트는 OAS3 린팅을 위해 [Spectral](https://stoplight.io/open-source/spectral)을 사용하며, CI/외부 도구와 파이프라인의 커스텀 로직을 분리하는 이중 구성 아키텍처를 채택하고 있습니다.
 
-## 두 개의 설정 파일 아키텍처
+## 이중 구성 아키텍처
 
-### `.spectral.yaml` -- 기본 설정
+### `.spectral.yaml` -- 기본 구성
 
-GitHub Super-Linter 및 모든 외부 CI 도구에서 사용됩니다. `spectral:oas`(내장 OAS 규칙 세트)를 확장합니다. 사용자 정의 함수를 포함하지 않으므로 `spectral/functions/` 디렉토리에 접근하지 않고 Spectral을 실행하는 도구와도 호환됩니다.
+GitHub Super-Linter 및 외부 CI 도구에서 사용됩니다. `spectral:oas`(내장 OAS 규칙 세트)를 확장합니다. 커스텀 함수를 포함하지 않으며, 이를 통해 `spectral/functions/` 디렉토리에 접근하지 않고 Spectral을 실행하는 도구와의 호환성을 유지합니다.
 
 ```yaml
 extends:
@@ -31,9 +31,9 @@ rules:
   info-description: info
 ```
 
-### `spectral-pipeline.yaml` -- 파이프라인 설정
+### `spectral-pipeline.yaml` -- 파이프라인 구성
 
-`scripts/spectral_lint.py`(discover 및 gate 모드 모두)에서 사용됩니다. 기본 설정을 확장하고 사용자 정의 `f5-path-params` 함수를 추가합니다:
+`scripts/spectral_lint.py`(discover 및 gate 모드 모두)에서 사용됩니다. 기본 구성을 확장하고 커스텀 `f5-path-params` 함수를 추가합니다:
 
 ```yaml
 extends:
@@ -55,29 +55,29 @@ rules:
 
 ## `path-params`가 비활성화된 이유
 
-Spectral의 내장 `path-params` 규칙은 `{metadata.namespace}` 및 `{metadata.name}`과 같은 점으로 구분된 매개변수 이름을 사용하는 F5 XC API를 잘못 감지합니다. 내장 규칙은 매개변수 이름의 점을 파싱하지 못하므로 이를 선언되지 않은 것으로 보고합니다.
+Spectral의 내장 `path-params` 규칙은 `{metadata.namespace}` 및 `{metadata.name}`과 같은 점 표기법 파라미터 이름을 사용하는 F5 XC API를 잘못 감지합니다. 내장 규칙은 파라미터 이름의 점을 파싱하지 못하므로 선언되지 않은 것으로 보고합니다.
 
-사용자 정의 `f5-path-params` 함수(`spectral/functions/f5-path-params.js`)는 `{placeholder}` 내용 전체를 선언된 매개변수 이름과 대조하여 점으로 구분된 이름을 올바르게 처리합니다. 이 함수는 경로 수준과 작업 수준 매개변수를 모두 검사하며, 양방향으로 오류를 보고합니다:
+커스텀 `f5-path-params` 함수(`spectral/functions/f5-path-params.js`)는 전체 `{placeholder}` 내용을 선언된 파라미터 이름과 매칭하여 점 표기법 이름을 올바르게 처리합니다. path 수준 및 operation 수준 파라미터를 모두 검사하며, 양방향으로 오류를 보고합니다:
 
-- URL 경로의 플레이스홀더에 해당하는 매개변수 선언이 없는 경우
-- 선언된 경로 매개변수가 URL 경로에 나타나지 않는 경우
+- URL 경로의 플레이스홀더에 일치하는 파라미터 선언이 없는 경우
+- 선언된 경로 파라미터가 URL 경로에 나타나지 않는 경우
 
 ## 규칙 참조
 
 ### 자동 수정 가능한 규칙
 
-이 규칙들은 위반이 감지되면 조정기에 의해 자동으로 수정됩니다. 각 수정에 대한 자세한 내용은 [적용된 수정 사항](/03-fixes-applied/)을 참조하세요.
+이 규칙들은 위반이 감지되면 조정기(reconciler)에 의해 자동 수정됩니다. 각 수정 사항에 대한 자세한 내용은 [적용된 수정 사항](/03-fixes-applied/)을 참조하세요.
 
-| 규칙 | 심각도 | 수정 메서드 | 설명 |
-|------|----------|------------|-------------|
+| 규칙 | 심각도 | 수정 방법 | 설명 |
+|------|--------|----------|------|
 | `oas3-api-servers` | warn | `_add_servers` | 스펙에 `servers` 블록이 있어야 합니다 |
 | `info-contact` | warn | `_add_contact` | `info`에 `contact`가 포함되어야 합니다 |
-| `operation-tags` | warn | `_add_tags` | 모든 작업에 최소 하나의 태그가 있어야 합니다 |
-| `oas3-unused-component` | warn | `_remove_unused_component` | 참조되지 않는 컴포넌트 스키마가 없어야 합니다 |
+| `operation-tags` | warn | `_add_tags` | 모든 operation에 최소 하나의 태그가 있어야 합니다 |
+| `oas3-unused-component` | warn | `_remove_unused_component` | 참조되지 않는 컴포넌트 스키마 없음 |
 | `operation-operationId-unique` | error | `_deduplicate_operation_id` | 모든 operationId가 고유해야 합니다 |
-| `oas3-valid-schema-example` | error | `_fix_schema_example` | 예시/기본값이 해당 스키마와 일치해야 합니다 |
-| `no-script-tags-in-markdown` | warn | `_strip_script_tags` | 설명에 `<script>` 태그가 없어야 합니다 |
-| `f5-path-params` | error | -- | 경로 매개변수가 선언되고 사용되어야 합니다 |
+| `oas3-valid-schema-example` | error | `_fix_schema_example` | 예시/기본값이 스키마와 일치해야 합니다 |
+| `no-script-tags-in-markdown` | warn | `_strip_script_tags` | 설명에 `<script>` 태그 없음 |
+| `f5-path-params` | error | -- | 경로 파라미터가 선언되고 사용되어야 합니다 |
 
 :::note
 `f5-path-params`는 error 심각도 규칙이지만 자동 수정되지 않습니다. 위반은 수동 검토가 필요한 실제 스펙 결함을 나타냅니다.
@@ -85,11 +85,11 @@ Spectral의 내장 `path-params` 규칙은 `{metadata.namespace}` 및 `{metadata
 
 ### 수정 불가능한 규칙
 
-이 규칙들은 의미 있는 자동 수정이 불가능하기 때문에 `info` 심각도로 하향 조정되었습니다:
+이 규칙들은 의미 있는 자동 수정이 불가능하므로 `info` 심각도로 하향 조정됩니다:
 
 | 규칙 | 심각도 | 설명 |
-|------|----------|-------------|
-| `operation-description` | info | 작업에 설명이 있어야 합니다 |
+|------|--------|------|
+| `operation-description` | info | Operation에 설명이 있어야 합니다 |
 | `info-description` | info | API 정보에 설명이 있어야 합니다 |
 
 ## 파이프라인 통합
@@ -103,7 +103,7 @@ make spectral-lint
 # Equivalent to: python -m scripts.spectral_lint --mode discover
 ```
 
-`specs/original/`을 스캔하고 `reports/spectral_report.json`을 작성합니다. 조정기는 유효성 검증 보고서와 함께 이 보고서를 사용합니다.
+`specs/original/`을 스캔하고 `reports/spectral_report.json`을 작성합니다. 조정기는 유효성 검사 보고서와 함께 이 보고서를 소비합니다.
 
 ### Gate 모드 (조정 후)
 
@@ -112,14 +112,14 @@ make spectral-gate
 # Equivalent to: python -m scripts.spectral_lint --mode gate
 ```
 
-`release/specs/`를 스캔하고 `reports/spectral_gate_report.json`을 작성합니다. 위반이 설정된 임계값을 초과하면 종료 코드 1을 반환합니다.
+`release/specs/`를 스캔하고 `reports/spectral_gate_report.json`을 작성합니다. 위반이 구성된 임계값을 초과하면 종료 코드 1을 반환합니다.
 
 ### 위반 매핑
 
-Spectral 위반은 세 가지 하위 유형을 가진 `Discrepancy` 객체로 변환됩니다:
+Spectral 위반은 세 가지 하위 유형의 `Discrepancy` 객체로 변환됩니다:
 
-| Spectral 규칙 카테고리 | DiscrepancyType | 예시 규칙 |
-|------------------------|-----------------|---------------|
+| Spectral 규칙 범주 | DiscrepancyType | 예시 규칙 |
+|-------------------|-----------------|----------|
 | 필수 요소 누락 | `SPECTRAL_MISSING` | `oas3-api-servers`, `info-contact`, `operation-tags` |
-| 잘못된 기존 요소 | `SPECTRAL_INVALID` | `oas3-valid-schema-example`, `no-script-tags-in-markdown` |
+| 기존 요소 유효하지 않음 | `SPECTRAL_INVALID` | `oas3-valid-schema-example`, `no-script-tags-in-markdown` |
 | 데드 코드 | `SPECTRAL_UNUSED` | `oas3-unused-component` |

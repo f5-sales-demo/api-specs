@@ -1,8 +1,8 @@
 ---
 title: Visão Geral do Pipeline
 description: >-
-  Pipeline automatizado de seis estágios que baixa, valida, faz lint,
-  reconcilia, aplica gates e publica especificações OpenAPI do F5 XC
+  Pipeline automatizado de seis estágios que baixa, valida, analisa, reconcilia,
+  controla e publica especificações OpenAPI do F5 XC
 i18n:
   sourceHash: 8b956cf69c75
   translator: machine
@@ -34,51 +34,51 @@ O pipeline é executado diariamente às 6h UTC via GitHub Actions (`validate-and
 
 ### 1. Download
 
-`scripts/download.py` busca o ZIP oficial da especificação OpenAPI do F5 XC em `docs.cloud.f5.com`. Ele utiliza cabeçalhos HTTP ETag para requisições GET condicionais -- se o pacote upstream não foi alterado, o download é ignorado. Os arquivos JSON extraídos são armazenados em `specs/original/`.
+`scripts/download.py` obtém o ZIP oficial da especificação OpenAPI do F5 XC a partir de `docs.cloud.f5.com`. Ele utiliza cabeçalhos HTTP ETag para requisições GET condicionais -- se o pacote upstream não foi alterado, o download é ignorado. Os arquivos JSON de especificação extraídos são armazenados em `specs/original/`.
 
 ### 2. Validação
 
 `scripts/validate.py` orquestra dois tipos de testes contra a API ao vivo do F5 XC:
 
-- **Schemathesis** -- testes baseados em propriedades que geram payloads aleatórios válidos/inválidos conforme a especificação e verificam se a API está de acordo com as restrições da spec.
+- **Schemathesis** -- testes baseados em propriedades que geram payloads aleatórios válidos/inválidos conforme a especificação e verificam se a API está em conformidade com as restrições da especificação.
 - **Validação de restrições** -- testes direcionados para todas as 10 categorias de restrições OpenAPI (comprimento de string, padrão, limites numéricos, campos obrigatórios, enums, limites de array, estrutura de objeto, composição, dependências, tipos de dados).
 
 As discrepâncias são registradas em `reports/validation_report.json`.
 
 ### 3. Spectral Lint (Descoberta)
 
-`scripts/spectral_lint.py --mode discover` executa o CLI do Spectral contra as especificações originais usando `spectral-pipeline.yaml`. Isso identifica problemas de qualidade OAS3 -- blocos de servers ausentes, informações de contato ausentes, operações sem tags, schemas de componentes não utilizados, operationIds duplicados, exemplos inválidos e tags de script em descrições.
+`scripts/spectral_lint.py --mode discover` executa o CLI do Spectral contra as especificações originais usando `spectral-pipeline.yaml`. Isso identifica problemas de qualidade OAS3 -- blocos de servidores ausentes, informações de contato ausentes, operações sem tags, esquemas de componentes não utilizados, operationIds duplicados, exemplos inválidos e tags de script em descrições.
 
-As violações são convertidas em objetos `Discrepancy` e registradas em `reports/spectral_report.json`. Consulte [Regras do Spectral](/04-spectral-rules/) para o conjunto completo de regras.
+As violações são convertidas em objetos `Discrepancy` e escritas em `reports/spectral_report.json`. Consulte [Regras do Spectral](/04-spectral-rules/) para o conjunto completo de regras.
 
 ### 4. Reconciliação
 
-`scripts/reconcile.py` consome ambos os arquivos de relatório e aplica correções a cada especificação:
+`scripts/reconcile.py` consome ambos os arquivos de relatório e aplica correções em cada especificação:
 
-- **Correções de restrições** ajustam as restrições do schema (relaxar, restringir, adicionar, remover) com base no comportamento observado da API. Consulte [Correções Aplicadas](/03-fixes-applied/).
-- **Correções do Spectral** enriquecem as especificações com servers, informações de contato, tags, metadados de segurança e removem componentes inativos.
-- **Metadados de segurança** são sempre injetados se a configuração `security_scheme` estiver presente, mesmo quando o Spectral não sinalizou problemas.
+- **Correções de restrições** ajustam as restrições de esquema (relaxar, restringir, adicionar, remover) com base no comportamento observado da API. Consulte [Correções Aplicadas](/03-fixes-applied/).
+- **Correções do Spectral** enriquecem as especificações com servidores, informações de contato, tags, metadados de segurança e removem componentes inativos.
+- **Metadados de segurança** são sempre injetados se a configuração `security_scheme` estiver presente, mesmo quando o Spectral não sinalizou.
 
-As especificações corrigidas são gravadas em `release/specs/` e validadas com `openapi-spec-validator` antes de serem salvas. Se uma especificação corrigida falhar na validação, a original é usada como fallback.
+As especificações corrigidas são escritas em `release/specs/` e validadas com `openapi-spec-validator` antes de serem salvas. Se uma especificação corrigida falhar na validação, a original é usada como fallback.
 
-### 5. Gate do Spectral
+### 5. Controle do Spectral
 
-`scripts/spectral_lint.py --mode gate` re-executa o Spectral contra as especificações reconciliadas em `release/specs/`. O gate verifica as contagens de erros e avisos contra limites configuráveis (`spectral.gate.max_errors` e `spectral.gate.max_warnings` em `validation.yaml`).
+`scripts/spectral_lint.py --mode gate` reexecuta o Spectral contra as especificações reconciliadas em `release/specs/`. O controle verifica as contagens de erros e avisos contra limites configuráveis (`spectral.gate.max_errors` e `spectral.gate.max_warnings` em `validation.yaml`).
 
 :::note
-Fase 1 (atual): os limites são `null` (apenas aviso). Defina `max_errors: 0` para aplicar um gate de zero erros.
+Fase 1 (atual): os limites são `null` (apenas aviso). Defina `max_errors: 0` para aplicar um controle de zero erros.
 :::
 
 ### 6. Publicação
 
-`scripts/release.py` empacota as especificações reconciliadas em um arquivo ZIP versionado. As versões utilizam o formato `YYYY.MM.DD-<patch>` derivado da data dos metadados da especificação upstream. A publicação inclui:
+`scripts/release.py` empacota as especificações reconciliadas em um arquivo ZIP versionado. As versões usam o formato `YYYY.MM.DD-<patch>` derivado da data dos metadados da especificação upstream. A publicação inclui:
 
-- Arquivos individuais de especificação por domínio (268 arquivos JSON)
-- Um `openapi.json` consolidado combinando todos os domínios
+- Arquivos de especificação individuais por domínio (268 arquivos JSON)
+- Um `openapi.json` mesclado combinando todos os domínios
 - Um `CHANGELOG.md` listando cada correção aplicada
 - Um resumo `VALIDATION_REPORT.md`
 
-O job de CI cria um GitHub Release com o ZIP anexado, com a tag `v<version>`. Um hash de conteúdo previne publicações duplicadas quando nada foi alterado.
+O job de CI cria uma Release no GitHub com o ZIP anexado, com tag `v<version>`. Um hash de conteúdo evita publicações duplicadas quando nada foi alterado.
 
 ## Atualização da Documentação
 

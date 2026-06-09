@@ -1,22 +1,20 @@
 ---
-title: F5 XC API स्पेसिफिकेशन्स
-description: >-
-  F5 Distributed Cloud के लिए सत्यापित, समृद्ध, और OAS3-अनुपालक OpenAPI
-  स्पेसिफिकेशन्स
+title: F5 XC API स्पेक्स
+description: 'F5 Distributed Cloud के लिए मान्य, संवर्धित, और OAS3-अनुरूप OpenAPI विनिर्देश'
 template: splash
 sidebar:
   hidden: true
 hero:
   tagline: >-
-    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
-    the live API, auto-repaired, and enriched with security metadata, server
-    definitions, and operation tags.
+    F5 Distributed Cloud के लिए प्रोडक्शन-रेडी OpenAPI स्पेक्स — लाइव API के
+    विरुद्ध मान्य, स्वचालित रूप से मरम्मत किए गए, और सुरक्षा मेटाडेटा, सर्वर
+    परिभाषाओं, और ऑपरेशन टैग्स के साथ संवर्धित।
   actions:
-    - text: Pipeline Overview
+    - text: पाइपलाइन अवलोकन
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
-    - text: View Latest Report
+    - text: नवीनतम रिपोर्ट देखें
       link: 01-validation-report/
       variant: secondary
 i18n:
@@ -28,27 +26,27 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
   <Card title="पाइपलाइन अवलोकन" icon="rocket">
-    छह-चरणीय स्वचालित पाइपलाइन: डाउनलोड, सत्यापन, लिंट, समाधान, गेट, रिलीज़।
+    छह-चरणीय स्वचालित पाइपलाइन: डाउनलोड, मान्यकरण, लिंट, समन्वय, गेट, रिलीज़।
     [और पढ़ें](/02-pipeline/)
   </Card>
   <Card title="लागू किए गए सुधार" icon="pencil">
-    कंस्ट्रेंट मरम्मत, Spectral संवर्धन, सुरक्षा मेटाडेटा, और JSON फॉर्मेटिंग।
+    कंस्ट्रेंट मरम्मत, Spectral संवर्धन, सुरक्षा मेटाडेटा, और JSON फ़ॉर्मेटिंग।
     [और पढ़ें](/03-fixes-applied/)
   </Card>
   <Card title="Spectral नियम" icon="warning">
-    कस्टम `f5-path-params` फ़ंक्शन के साथ दो-कॉन्फ़िगरेशन लिंटिंग आर्किटेक्चर।
+    कस्टम `f5-path-params` फ़ंक्शन के साथ दो-कॉन्फ़िग लिंटिंग आर्किटेक्चर।
     [और पढ़ें](/04-spectral-rules/)
   </Card>
   <Card title="कॉन्फ़िगरेशन" icon="setting">
     `validation.yaml` और `endpoints.yaml` के लिए संदर्भ।
     [और पढ़ें](/05-configuration/)
   </Card>
-  <Card title="सत्यापन रिपोर्ट" icon="document">
-    नवीनतम पाइपलाइन रन में लागू किए गए सभी सुधारों की स्वतः-जनित रिपोर्ट।
+  <Card title="मान्यकरण रिपोर्ट" icon="document">
+    नवीनतम पाइपलाइन रन में लागू किए गए सभी सुधारों की स्वचालित रूप से जनरेट की गई रिपोर्ट।
     [और पढ़ें](/01-validation-report/)
   </Card>
   <Card title="योगदान" icon="github">
-    डेवलपमेंट सेटअप, लोकल पाइपलाइन, परीक्षण, और PR वर्कफ़्लो।
+    डेवलपमेंट सेटअप, लोकल पाइपलाइन, टेस्ट, और PR वर्कफ़्लो।
     [और पढ़ें](/06-contributing/)
   </Card>
 </CardGrid>

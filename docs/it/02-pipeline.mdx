@@ -1,14 +1,14 @@
 ---
 title: Panoramica della Pipeline
 description: >-
-  Pipeline automatizzata a sei fasi che scarica, valida, esegue il lint,
+  Pipeline automatizzata in sei fasi che scarica, valida, analizza con linter,
   riconcilia, applica i gate e rilascia le specifiche OpenAPI di F5 XC
 i18n:
   sourceHash: 8b956cf69c75
   translator: machine
 ---
 
-La pipeline viene eseguita quotidianamente alle 6:00 UTC tramite GitHub Actions (`validate-and-release.yml`) e ad ogni push su `main` che modifica `scripts/`, `config/` o `pyproject.toml`. Può anche essere attivata manualmente con opzioni per forzare un rilascio o saltare i test sulle API live.
+La pipeline viene eseguita quotidianamente alle 6:00 UTC tramite GitHub Actions (`validate-and-release.yml`) e ad ogni push su `main` che modifica `scripts/`, `config/` o `pyproject.toml`. Può anche essere attivata manualmente con opzioni per forzare un rilascio o saltare i test API live.
 
 ## Fasi della Pipeline
 
@@ -34,20 +34,20 @@ La pipeline viene eseguita quotidianamente alle 6:00 UTC tramite GitHub Actions 
 
 ### 1. Download
 
-`scripts/download.py` scarica il file ZIP ufficiale delle specifiche OpenAPI di F5 XC da `docs.cloud.f5.com`. Utilizza gli header HTTP ETag per richieste GET condizionali -- se il bundle upstream non è cambiato, il download viene saltato. Le specifiche JSON estratte vengono salvate in `specs/original/`.
+`scripts/download.py` scarica il file ZIP ufficiale delle specifiche OpenAPI di F5 XC da `docs.cloud.f5.com`. Utilizza gli header HTTP ETag per richieste GET condizionali -- se il bundle upstream non è cambiato, il download viene saltato. Le specifiche JSON estratte vengono posizionate in `specs/original/`.
 
 ### 2. Validazione
 
 `scripts/validate.py` orchestra due tipi di test contro l'API live di F5 XC:
 
 - **Schemathesis** -- test basati su proprietà che generano payload casuali validi/invalidi secondo la specifica e verificano se l'API è coerente con i vincoli della specifica.
-- **Validazione dei vincoli** -- test mirati per tutte le 10 categorie di vincoli OpenAPI (lunghezza stringhe, pattern, limiti numerici, campi obbligatori, enum, limiti array, struttura oggetti, composizione, dipendenze, tipi di dati).
+- **Validazione dei vincoli** -- test mirati per tutte le 10 categorie di vincoli OpenAPI (lunghezza delle stringhe, pattern, limiti numerici, campi obbligatori, enum, limiti degli array, struttura degli oggetti, composizione, dipendenze, tipi di dati).
 
 Le discrepanze vengono scritte in `reports/validation_report.json`.
 
-### 3. Spectral Lint (Scoperta)
+### 3. Spectral Lint (Individuazione)
 
-`scripts/spectral_lint.py --mode discover` esegue la CLI di Spectral sulle specifiche originali utilizzando `spectral-pipeline.yaml`. Questo individua problemi di qualità OAS3 -- blocchi servers mancanti, informazioni di contatto mancanti, operazioni senza tag, schemi di componenti inutilizzati, operationId duplicati, esempi non validi e tag script nelle descrizioni.
+`scripts/spectral_lint.py --mode discover` esegue la CLI di Spectral sulle specifiche originali utilizzando `spectral-pipeline.yaml`. Questo individua problemi di qualità OAS3 -- blocchi servers mancanti, informazioni di contatto mancanti, operazioni senza tag, schemi di componenti non utilizzati, operationId duplicati, esempi non validi e tag script nelle descrizioni.
 
 Le violazioni vengono convertite in oggetti `Discrepancy` e scritte in `reports/spectral_report.json`. Consultare [Regole Spectral](/04-spectral-rules/) per l'insieme completo delle regole.
 
@@ -55,30 +55,30 @@ Le violazioni vengono convertite in oggetti `Discrepancy` e scritte in `reports/
 
 `scripts/reconcile.py` consuma entrambi i file di report e applica le correzioni a ogni specifica:
 
-- **Correzioni dei vincoli** modificano i vincoli dello schema (rilassamento, irrigidimento, aggiunta, rimozione) in base al comportamento osservato dell'API. Consultare [Correzioni Applicate](/03-fixes-applied/).
+- **Correzioni dei vincoli** modificano i vincoli dello schema (allentano, restringono, aggiungono, rimuovono) in base al comportamento osservato dell'API. Consultare [Correzioni Applicate](/03-fixes-applied/).
 - **Correzioni Spectral** arricchiscono le specifiche con servers, informazioni di contatto, tag, metadati di sicurezza e rimuovono i componenti inutilizzati.
-- **I metadati di sicurezza** vengono sempre iniettati se la configurazione `security_scheme` è presente, anche quando Spectral non ha segnalato problemi.
+- **I metadati di sicurezza** vengono sempre iniettati se la configurazione `security_scheme` è presente, anche quando Spectral non li ha segnalati.
 
 Le specifiche corrette vengono scritte in `release/specs/` e validate con `openapi-spec-validator` prima del salvataggio. Se una specifica corretta non supera la validazione, viene utilizzata quella originale come fallback.
 
 ### 5. Spectral Gate
 
-`scripts/spectral_lint.py --mode gate` riesegue Spectral sulle specifiche riconciliate in `release/specs/`. Il gate verifica i conteggi di errori e warning rispetto a soglie configurabili (`spectral.gate.max_errors` e `spectral.gate.max_warnings` in `validation.yaml`).
+`scripts/spectral_lint.py --mode gate` riesegue Spectral sulle specifiche riconciliate in `release/specs/`. Il gate verifica i conteggi di errori e avvisi rispetto a soglie configurabili (`spectral.gate.max_errors` e `spectral.gate.max_warnings` in `validation.yaml`).
 
 :::note
-Fase 1 (attuale): le soglie sono `null` (solo warning). Impostare `max_errors: 0` per applicare un gate a zero errori.
+Fase 1 (attuale): le soglie sono `null` (solo avvisi). Impostare `max_errors: 0` per applicare un gate a zero errori.
 :::
 
 ### 6. Rilascio
 
 `scripts/release.py` impacchetta le specifiche riconciliate in un archivio ZIP versionato. Le versioni utilizzano il formato `YYYY.MM.DD-<patch>` derivato dalla data dei metadati della specifica upstream. Il rilascio include:
 
-- File di specifica per singolo dominio (268 file JSON)
+- File di specifiche per singolo dominio (268 file JSON)
 - Un file `openapi.json` unificato che combina tutti i domini
 - Un `CHANGELOG.md` che elenca ogni correzione applicata
 - Un riepilogo `VALIDATION_REPORT.md`
 
-Il job CI crea una GitHub Release con il file ZIP allegato, con tag `v<version>`. Un hash del contenuto previene rilasci duplicati quando non è cambiato nulla.
+Il job CI crea una GitHub Release con lo ZIP allegato, taggata `v<version>`. Un hash del contenuto previene rilasci duplicati quando nulla è cambiato.
 
 ## Aggiornamento della Documentazione
 

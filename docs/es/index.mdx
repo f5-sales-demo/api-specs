@@ -8,15 +8,15 @@ sidebar:
   hidden: true
 hero:
   tagline: >-
-    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
-    the live API, auto-repaired, and enriched with security metadata, server
-    definitions, and operation tags.
+    Especificaciones OpenAPI listas para producción para F5 Distributed Cloud —
+    validadas contra la API en vivo, auto-reparadas y enriquecidas con metadatos
+    de seguridad, definiciones de servidor y etiquetas de operación.
   actions:
-    - text: Pipeline Overview
+    - text: Descripción del Pipeline
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
-    - text: View Latest Report
+    - text: Ver Último Informe
       link: 01-validation-report/
       variant: secondary
 i18n:
@@ -28,7 +28,7 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
   <Card title="Descripción del Pipeline" icon="rocket">
-    Pipeline automatizado de seis etapas: descarga, validación, linting, reconciliación, compuerta, publicación.
+    Pipeline automatizado de seis etapas: descarga, validación, linting, reconciliación, control de calidad, publicación.
     [Leer más](/02-pipeline/)
   </Card>
   <Card title="Correcciones Aplicadas" icon="pencil">
@@ -44,7 +44,7 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
     [Leer más](/05-configuration/)
   </Card>
   <Card title="Informe de Validación" icon="document">
-    Informe generado automáticamente de todas las correcciones aplicadas en la última ejecución del pipeline.
+    Informe auto-generado de todas las correcciones aplicadas en la última ejecución del pipeline.
     [Leer más](/01-validation-report/)
   </Card>
   <Card title="Contribuir" icon="github">

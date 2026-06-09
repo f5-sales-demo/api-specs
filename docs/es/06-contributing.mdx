@@ -29,7 +29,7 @@ export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
 export F5XC_API_TOKEN="your-api-token"
 ```
 
-Sin estas variables, `make validate` recurre al modo dry-run.
+Sin estas variables, `make validate` recurre al modo de ejecución en seco (dry-run).
 
 ## Ejecución del Pipeline
 
@@ -43,20 +43,20 @@ make all
 ### Etapas Individuales
 
 ```bash
-make download        # Obtener specs del upstream
+make download        # Obtener specs del origen
 make validate        # Ejecutar pruebas en vivo de la API (requiere token de API)
 make validate-dry    # Ejecución en seco (sin llamadas a la API)
-make spectral-lint   # Modo descubrimiento de Spectral sobre las specs originales
+make spectral-lint   # Modo de descubrimiento de Spectral sobre specs originales
 make reconcile       # Aplicar correcciones de ambos informes
-make spectral-gate   # Puerta de calidad de Spectral sobre las specs reconciliadas
-make release         # Construir paquete de release
+make spectral-gate   # Puerta de calidad de Spectral sobre specs reconciliadas
+make release         # Construir paquete de lanzamiento
 ```
 
 ### Documentación
 
 ```bash
-make docs-generate   # Regenerar docs/01-validation-report.mdx desde los informes
-make docs            # Construir el sitio de documentación completo
+make docs-generate   # Regenerar docs/01-validation-report.mdx desde informes
+make docs            # Construir sitio de documentación completo
 make docs-serve      # Servidor de desarrollo local con recarga en caliente
 ```
 
@@ -66,10 +66,10 @@ make docs-serve      # Servidor de desarrollo local con recarga en caliente
 make test           # pytest con cobertura
 make lint           # ruff check + verificación de formato
 make typecheck      # Verificación de tipos con mypy
-make ci-test        # Los tres anteriores (usado en CI)
+make ci-test        # Los tres (usado en CI)
 ```
 
-Los hooks de pre-commit se ejecutan automáticamente en cada commit si están instalados:
+Los hooks de pre-commit se ejecutan automáticamente al hacer commit si están instalados:
 
 ```bash
 make pre-commit-install   # Instalar hooks de git
@@ -82,16 +82,16 @@ make pre-commit           # Ejecutar todos los hooks manualmente
 scripts/
   download.py           # Etapa 1: Obtener specs de F5
   validate.py           # Etapa 2: Pruebas en vivo de la API
-  spectral_lint.py      # Etapa 3/5: Adaptador de linting Spectral
-  reconcile.py          # Etapa 4: Aplicar correcciones a las specs
-  release.py            # Etapa 6: Empaquetar release
-  generate_docs.py      # Generar MDX desde los informes
+  spectral_lint.py      # Etapa 3/5: Adaptador de linting de Spectral
+  reconcile.py          # Etapa 4: Aplicar correcciones a specs
+  release.py            # Etapa 6: Empaquetar lanzamiento
+  generate_docs.py      # Generar MDX desde informes
   utils/
-    auth.py             # Autenticación de la API F5 XC
+    auth.py             # Autenticación de API F5 XC
     constraint_validator.py  # Pruebas de restricciones + tipos de Discrepancia
     report_generator.py      # Formato de informes
     schemathesis_runner.py   # Orquestación de pruebas Schemathesis
-    spec_loader.py           # E/S de specs + formato JSON
+    spec_loader.py           # E/S de Specs + formato JSON
 
 config/
   validation.yaml       # Configuración del pipeline
@@ -103,7 +103,7 @@ spectral/
 
 docs/                   # Documentación MDX de Starlight
 tests/                  # Suite de pruebas pytest
-release/specs/          # Salida: archivos de specs reconciliados
+release/specs/          # Salida: archivos de specs reconciliadas
 reports/                # Salida: informes de validación y Spectral
 ```
 
@@ -129,7 +129,7 @@ Para agregar una nueva corrección automática de Spectral al reconciliador:
        return spec
    ```
 
-4. **Registrarlo** en el dispatcher `_apply_spectral_fix`:
+4. **Registrarlo** en el despachador `_apply_spectral_fix`:
    ```python
    spectral_fixers = {
        # ... existing fixers ...
@@ -143,7 +143,7 @@ Para agregar una nueva corrección automática de Spectral al reconciliador:
 
 Para agregar una regla personalizada de Spectral con una función JavaScript:
 
-1. Crear la función en `spectral/functions/your-rule.js`. Exportar una función por defecto que reciba `(targetVal, options, context)` y devuelva un array de objetos `{message, path}`.
+1. Crear la función en `spectral/functions/your-rule.js`. Exportar una función por defecto que reciba `(targetVal, options, context)` y devuelva un arreglo de objetos `{message, path}`.
 
 2. Registrarla en `spectral-pipeline.yaml`:
    ```yaml
@@ -162,7 +162,7 @@ Para agregar una regla personalizada de Spectral con una función JavaScript:
    ```
 
 :::caution
-Las funciones personalizadas solo funcionan en `spectral-pipeline.yaml`. No agregue `functionsDir` ni `functions` a `.spectral.yaml` -- esa configuración debe permanecer compatible con Super-Linter y otras herramientas externas.
+Las funciones personalizadas solo funcionan en `spectral-pipeline.yaml`. No agregue `functionsDir` o `functions` a `.spectral.yaml` -- esa configuración debe permanecer compatible con Super-Linter y otras herramientas externas.
 :::
 
 ## Pipeline de CI
@@ -171,12 +171,12 @@ El flujo de trabajo de GitHub Actions (`validate-and-release.yml`) se ejecuta en
 
 - **Programación**: Diariamente a las 6 AM UTC
 - **Push a main**: Cuando cambian `scripts/`, `config/` o `pyproject.toml`
-- **Despacho manual**: Con opciones para release forzado o dry-run
+- **Despacho manual**: Con opciones para lanzamiento forzado o ejecución en seco
 
 El flujo de trabajo tiene cuatro jobs:
 
-1. **validate** -- Descarga specs, ejecuta validación, lint de Spectral, reconciliación, puerta de calidad de Spectral
-2. **check-release-needed** -- Compara hashes de contenido para decidir si un release es necesario
+1. **validate** -- Descarga specs, ejecuta validación, lint de Spectral, reconciliación, puerta de Spectral
+2. **check-release-needed** -- Compara hashes de contenido para decidir si un lanzamiento es necesario
 3. **release** -- Empaqueta y crea un GitHub Release (solo si el contenido cambió)
 4. **update-docs** -- Regenera `01-validation-report.mdx` y abre un PR si hubo cambios
 

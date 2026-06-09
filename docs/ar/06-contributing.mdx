@@ -1,6 +1,6 @@
 ---
 title: دليل التطوير
-description: كيفية إعداد مشروع F5 XC API Specs وتشغيله واختباره والمساهمة فيه
+description: كيفية إعداد وتشغيل واختبار والمساهمة في مشروع F5 XC API Specs
 i18n:
   sourceHash: 1dc0c369e7a0
   translator: machine
@@ -22,14 +22,14 @@ npm install -g @stoplight/spectral-cli
 
 ### متغيرات البيئة
 
-يتطلب التحقق المباشر من واجهة برمجة التطبيقات:
+يتطلب التحقق المباشر من واجهة برمجة التطبيقات ما يلي:
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
 export F5XC_API_TOKEN="your-api-token"
 ```
 
-بدون هذه المتغيرات، يعود `make validate` إلى وضع التشغيل الجاف.
+بدون هذه المتغيرات، يعود `make validate` إلى وضع التشغيل التجريبي (dry-run).
 
 ## تشغيل خط الأنابيب
 
@@ -69,7 +69,7 @@ make typecheck      # mypy type checking
 make ci-test        # All three (used in CI)
 ```
 
-تعمل خطافات ما قبل الإيداع (pre-commit hooks) تلقائياً عند الإيداع إذا كانت مثبّتة:
+تعمل خطافات ما قبل الالتزام (pre-commit hooks) تلقائيًا عند كل التزام إذا تم تثبيتها:
 
 ```bash
 make pre-commit-install   # Install git hooks
@@ -109,7 +109,7 @@ reports/                # Output: validation and Spectral reports
 
 ## إضافة طريقة إصلاح جديدة
 
-لإضافة إصلاح تلقائي جديد لـ Spectral إلى المُوفِّق (reconciler):
+لإضافة إصلاح تلقائي جديد لـ Spectral إلى أداة التوفيق (reconciler):
 
 1. **أضف القاعدة** إلى `.spectral.yaml` مع مستوى الخطورة المطلوب.
 
@@ -162,33 +162,33 @@ reports/                # Output: validation and Spectral reports
    ```
 
 :::caution
-تعمل الدوال المخصصة فقط في `spectral-pipeline.yaml`. لا تُضف `functionsDir` أو `functions` إلى `.spectral.yaml` -- يجب أن يبقى هذا التكوين متوافقاً مع Super-Linter والأدوات الخارجية الأخرى.
+تعمل الدوال المخصصة فقط في `spectral-pipeline.yaml`. لا تضف `functionsDir` أو `functions` إلى `.spectral.yaml` -- يجب أن يبقى هذا التكوين متوافقًا مع Super-Linter والأدوات الخارجية الأخرى.
 :::
 
 ## خط أنابيب التكامل المستمر (CI)
 
-يعمل سير عمل GitHub Actions (`validate-and-release.yml`) عند:
+يعمل سير عمل GitHub Actions (`validate-and-release.yml`) في الحالات التالية:
 
-- **الجدولة**: يومياً في الساعة 6 صباحاً بالتوقيت العالمي (UTC)
+- **مجدول**: يوميًا في الساعة 6 صباحًا بتوقيت UTC
 - **الدفع إلى main**: عند تغيير `scripts/` أو `config/` أو `pyproject.toml`
-- **التشغيل اليدوي**: مع خيارات لفرض الإصدار أو التشغيل الجاف
+- **التشغيل اليدوي**: مع خيارات للإصدار الإجباري أو التشغيل التجريبي
 
-يتضمن سير العمل أربع مهام:
+يحتوي سير العمل على أربع مهام:
 
-1. **validate** -- تنزيل المواصفات، تشغيل التحقق، فحص Spectral، المُوفَقة، بوابة جودة Spectral
-2. **check-release-needed** -- مقارنة تجزئات المحتوى لتحديد ما إذا كان الإصدار مبرراً
+1. **validate** -- تنزيل المواصفات، تشغيل التحقق، فحص Spectral، التوفيق، بوابة جودة Spectral
+2. **check-release-needed** -- مقارنة تجزئات المحتوى لتحديد ما إذا كان الإصدار مطلوبًا
 3. **release** -- تجميع وإنشاء إصدار GitHub (فقط إذا تغيّر المحتوى)
 4. **update-docs** -- إعادة إنشاء `01-validation-report.mdx` وفتح طلب سحب (PR) إذا تغيّر
 
-تقوم مهمة **notify** بإنشاء مشكلة (issue) على GitHub إذا فشلت أي مهمة.
+تقوم مهمة **notify** بإنشاء تذكرة (issue) على GitHub إذا فشلت أي مهمة.
 
 ## سير عمل الفروع وطلبات السحب
 
-تتبع جميع التغييرات المسار: **مشكلة -> فرع -> طلب سحب -> نجاح التكامل المستمر -> دمج**.
+تتبع جميع التغييرات النمط التالي: **تذكرة -> فرع -> طلب سحب -> نجاح CI -> دمج**.
 
 - أسماء الفروع: `feature/<issue>-desc`، `fix/<issue>-desc`، `docs/<issue>-desc`
-- يجب أن تربط طلبات السحب بمشكلة (`Closes #N` في الوصف)
-- فحوصات التكامل المستمر المطلوبة: `Check linked issues` و `Lint Code Base`
-- يُفضّل الدمج بالضغط (squash merge)؛ تُحذف الفروع تلقائياً بعد الدمج
+- يجب أن تربط طلبات السحب بتذكرة (`Closes #N` في الوصف)
+- فحوصات CI المطلوبة: `Check linked issues` و `Lint Code Base`
+- يُفضّل الدمج بالضغط (squash merge)؛ تُحذف الفروع تلقائيًا بعد الدمج
 
 راجع `CONTRIBUTING.md` للاطلاع على قواعد سير العمل الكاملة.

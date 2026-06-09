@@ -8,15 +8,15 @@ sidebar:
   hidden: true
 hero:
   tagline: >-
-    Production-ready OpenAPI specs for F5 Distributed Cloud — validated against
-    the live API, auto-repaired, and enriched with security metadata, server
-    definitions, and operation tags.
+    Specifiche OpenAPI pronte per la produzione per F5 Distributed Cloud —
+    validate rispetto all'API live, riparate automaticamente e arricchite con
+    metadati di sicurezza, definizioni dei server e tag delle operazioni.
   actions:
-    - text: Pipeline Overview
+    - text: Panoramica della Pipeline
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
-    - text: View Latest Report
+    - text: Visualizza l'Ultimo Report
       link: 01-validation-report/
       variant: secondary
 i18n:
@@ -28,27 +28,27 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
   <Card title="Panoramica della Pipeline" icon="rocket">
-    Pipeline automatizzata a sei fasi: download, validazione, linting, riconciliazione, gate, rilascio.
-    [Scopri di più](/02-pipeline/)
+    Pipeline automatizzata a sei fasi: download, validazione, lint, riconciliazione, gate, rilascio.
+    [Leggi di più](/02-pipeline/)
   </Card>
   <Card title="Correzioni Applicate" icon="pencil">
     Riparazioni dei vincoli, arricchimenti Spectral, metadati di sicurezza e formattazione JSON.
-    [Scopri di più](/03-fixes-applied/)
+    [Leggi di più](/03-fixes-applied/)
   </Card>
   <Card title="Regole Spectral" icon="warning">
-    Architettura di linting a doppia configurazione con una funzione personalizzata `f5-path-params`.
-    [Scopri di più](/04-spectral-rules/)
+    Architettura di linting a due configurazioni con una funzione personalizzata `f5-path-params`.
+    [Leggi di più](/04-spectral-rules/)
   </Card>
   <Card title="Configurazione" icon="setting">
     Riferimento per `validation.yaml` e `endpoints.yaml`.
-    [Scopri di più](/05-configuration/)
+    [Leggi di più](/05-configuration/)
   </Card>
   <Card title="Report di Validazione" icon="document">
     Report generato automaticamente di tutte le correzioni applicate nell'ultima esecuzione della pipeline.
-    [Scopri di più](/01-validation-report/)
+    [Leggi di più](/01-validation-report/)
   </Card>
   <Card title="Contribuire" icon="github">
-    Configurazione dell'ambiente di sviluppo, pipeline locale, test e flusso di lavoro per le PR.
-    [Scopri di più](/06-contributing/)
+    Configurazione dell'ambiente di sviluppo, pipeline locale, test e flusso di lavoro PR.
+    [Leggi di più](/06-contributing/)
   </Card>
 </CardGrid>

@@ -1,18 +1,18 @@
 ---
-title: Spectral Linting Rules
-description: بنية Spectral ثنائية التكوين مع قواعد OAS أساسية ودالة f5-path-params مخصصة
+title: قواعد التحقق في Spectral
+description: بنية Spectral ذات التكوينين مع قواعد OAS الأساسية ودالة f5-path-params مخصصة
 i18n:
   sourceHash: 0e32e7569d97
   translator: machine
 ---
 
-يستخدم المشروع [Spectral](https://stoplight.io/open-source/spectral) لفحص OAS3 ببنية ثنائية التكوين تفصل أدوات CI/الأدوات الخارجية عن المنطق المخصص لخط الأنابيب.
+يستخدم المشروع [Spectral](https://stoplight.io/open-source/spectral) للتحقق من OAS3 ببنية ذات تكوينين تفصل أدوات CI/الأدوات الخارجية عن المنطق المخصص لخط الأنابيب.
 
-## بنية التكوين الثنائية
+## بنية التكوينين
 
 ### `.spectral.yaml` -- التكوين الأساسي
 
-يُستخدم بواسطة GitHub Super-Linter وأي أداة CI خارجية. يمتد من `spectral:oas` (مجموعة قواعد OAS المدمجة). لا يحتوي على دوال مخصصة -- مما يبقيه متوافقًا مع الأدوات التي تشغّل Spectral دون الوصول إلى دليل `spectral/functions/`.
+يُستخدم بواسطة GitHub Super-Linter وأي أداة CI خارجية. يمتد من `spectral:oas` (مجموعة قواعد OAS المدمجة). لا يحتوي على دوال مخصصة -- وهذا يبقيه متوافقاً مع الأدوات التي تشغل Spectral دون الوصول إلى مجلد `spectral/functions/`.
 
 ```yaml
 extends:
@@ -33,7 +33,7 @@ rules:
 
 ### `spectral-pipeline.yaml` -- تكوين خط الأنابيب
 
-يُستخدم بواسطة `scripts/spectral_lint.py` (في وضعي الاكتشاف والبوابة). يمتد من التكوين الأساسي ويضيف الدالة المخصصة `f5-path-params`:
+يُستخدم بواسطة `scripts/spectral_lint.py` (في وضعي الاكتشاف والبوابة). يمتد من التكوين الأساسي ويضيف دالة `f5-path-params` المخصصة:
 
 ```yaml
 extends:
@@ -55,68 +55,68 @@ rules:
 
 ## لماذا تم تعطيل `path-params`
 
-تُشير قاعدة `path-params` المدمجة في Spectral بشكل خاطئ إلى واجهات برمجة تطبيقات F5 XC التي تستخدم أسماء معاملات منقوطة مثل `{metadata.namespace}` و `{metadata.name}`. القاعدة المدمجة لا تحلل النقاط في أسماء المعاملات، لذلك تُبلغ عنها كمعاملات غير معرّفة.
+قاعدة `path-params` المدمجة في Spectral تُبلّغ خطأً عن واجهات F5 XC APIs التي تستخدم أسماء معاملات منقطة مثل `{metadata.namespace}` و`{metadata.name}`. القاعدة المدمجة لا تحلل النقاط في أسماء المعاملات، لذا تُبلّغ عنها كمعاملات غير مُعلنة.
 
-الدالة المخصصة `f5-path-params` (`spectral/functions/f5-path-params.js`) تتعامل بشكل صحيح مع الأسماء المنقوطة عن طريق مطابقة محتوى `{placeholder}` الكامل مع أسماء المعاملات المعرّفة. تتحقق من المعاملات على مستوى المسار ومستوى العملية، وتُبلغ عن الأخطاء في كلا الاتجاهين:
+دالة `f5-path-params` المخصصة (`spectral/functions/f5-path-params.js`) تتعامل بشكل صحيح مع الأسماء المنقطة عن طريق مطابقة محتوى `{placeholder}` الكامل مع أسماء المعاملات المُعلنة. تتحقق من المعاملات على مستوى المسار ومستوى العملية، وتُبلّغ عن الأخطاء في كلا الاتجاهين:
 
 - عنصر نائب في مسار URL لا يوجد له تعريف معامل مطابق
-- معامل مسار معرّف لا يظهر في مسار URL
+- معامل مسار مُعلن لا يظهر في مسار URL
 
 ## مرجع القواعد
 
 ### القواعد القابلة للإصلاح التلقائي
 
-يتم إصلاح هذه القواعد تلقائيًا بواسطة المُوفِّق عند اكتشاف المخالفات. انظر [الإصلاحات المطبقة](/03-fixes-applied/) للحصول على تفاصيل حول كل إصلاح.
+يتم إصلاح هذه القواعد تلقائياً بواسطة المُوفّق عند اكتشاف انتهاكات. راجع [الإصلاحات المُطبّقة](/03-fixes-applied/) لمزيد من التفاصيل حول كل إصلاح.
 
 | القاعدة | الخطورة | طريقة الإصلاح | الوصف |
 |------|----------|------------|-------------|
-| `oas3-api-servers` | warn | `_add_servers` | يجب أن تحتوي المواصفة على كتلة `servers` |
-| `info-contact` | warn | `_add_contact` | يجب أن يتضمن `info` معلومات `contact` |
-| `operation-tags` | warn | `_add_tags` | يجب أن تحتوي كل عملية على وسم واحد على الأقل |
-| `oas3-unused-component` | warn | `_remove_unused_component` | لا مخططات مكونات غير مرجعية |
-| `operation-operationId-unique` | error | `_deduplicate_operation_id` | يجب أن تكون جميع معرّفات العمليات فريدة |
-| `oas3-valid-schema-example` | error | `_fix_schema_example` | يجب أن تتطابق الأمثلة/القيم الافتراضية مع مخططاتها |
-| `no-script-tags-in-markdown` | warn | `_strip_script_tags` | لا وسوم `<script>` في الأوصاف |
-| `f5-path-params` | error | -- | يجب أن تكون معاملات المسار معرّفة ومستخدمة |
+| `oas3-api-servers` | تحذير | `_add_servers` | يجب أن تحتوي المواصفة على كتلة `servers` |
+| `info-contact` | تحذير | `_add_contact` | يجب أن يتضمن `info` حقل `contact` |
+| `operation-tags` | تحذير | `_add_tags` | يجب أن تحتوي كل عملية على وسم واحد على الأقل |
+| `oas3-unused-component` | تحذير | `_remove_unused_component` | لا مخططات مكونات غير مُشار إليها |
+| `operation-operationId-unique` | خطأ | `_deduplicate_operation_id` | يجب أن تكون جميع معرفات العمليات فريدة |
+| `oas3-valid-schema-example` | خطأ | `_fix_schema_example` | يجب أن تتطابق الأمثلة/القيم الافتراضية مع مخططاتها |
+| `no-script-tags-in-markdown` | تحذير | `_strip_script_tags` | لا وسوم `<script>` في الأوصاف |
+| `f5-path-params` | خطأ | -- | يجب تعريف معاملات المسار واستخدامها |
 
 :::note
-`f5-path-params` هي قاعدة بخطورة error لكنها لا تُصلح تلقائيًا. تشير المخالفات إلى عيب حقيقي في المواصفة يتطلب مراجعة يدوية.
+`f5-path-params` هي قاعدة بخطورة مستوى خطأ لكنها لا تُصلح تلقائياً. تشير الانتهاكات إلى عيب حقيقي في المواصفة يتطلب مراجعة يدوية.
 :::
 
 ### القواعد غير القابلة للإصلاح
 
-تم تخفيض خطورة هذه القواعد إلى `info` لأنه لا يمكن إصلاحها تلقائيًا بشكل ذي معنى:
+تم تخفيض خطورة هذه القواعد إلى `info` لأنه لا يمكن إصلاحها تلقائياً بشكل ذي معنى:
 
 | القاعدة | الخطورة | الوصف |
 |------|----------|-------------|
-| `operation-description` | info | يجب أن تحتوي العمليات على وصف |
-| `info-description` | info | يجب أن تحتوي معلومات API على وصف |
+| `operation-description` | معلومات | يجب أن تحتوي العمليات على وصف |
+| `info-description` | معلومات | يجب أن تحتوي معلومات API على وصف |
 
 ## التكامل مع خط الأنابيب
 
-يعمل محول Spectral (`scripts/spectral_lint.py`) في وضعين:
+محول Spectral (`scripts/spectral_lint.py`) يعمل في وضعين:
 
-### وضع الاكتشاف (قبل التوفيق)
+### وضع الاكتشاف (قبل المُوفّق)
 
 ```bash
 make spectral-lint
 # Equivalent to: python -m scripts.spectral_lint --mode discover
 ```
 
-يفحص `specs/original/` ويكتب `reports/spectral_report.json`. يستهلك المُوفِّق هذا التقرير إلى جانب تقرير التحقق.
+يفحص `specs/original/` ويكتب `reports/spectral_report.json`. يستهلك المُوفّق هذا التقرير إلى جانب تقرير التحقق.
 
-### وضع البوابة (بعد التوفيق)
+### وضع البوابة (بعد المُوفّق)
 
 ```bash
 make spectral-gate
 # Equivalent to: python -m scripts.spectral_lint --mode gate
 ```
 
-يفحص `release/specs/` ويكتب `reports/spectral_gate_report.json`. يُرجع رمز خروج 1 إذا تجاوزت المخالفات الحدود المكوّنة.
+يفحص `release/specs/` ويكتب `reports/spectral_gate_report.json`. يُرجع رمز خروج 1 إذا تجاوزت الانتهاكات الحدود المُكوّنة.
 
-### تعيين المخالفات
+### تعيين الانتهاكات
 
-تُحوَّل مخالفات Spectral إلى كائنات `Discrepancy` بثلاثة أنواع فرعية:
+يتم تحويل انتهاكات Spectral إلى كائنات `Discrepancy` بثلاثة أنواع فرعية:
 
 | فئة قاعدة Spectral | DiscrepancyType | أمثلة على القواعد |
 |------------------------|-----------------|---------------|

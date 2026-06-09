@@ -1,34 +1,34 @@
 ---
 title: 套用至上游規格的修正
-description: 調和引擎套用至 F5 XC OpenAPI 規格的每項修正完整參考
+description: 協調引擎對 F5 XC OpenAPI 規格套用的每項修正完整參考
 i18n:
   sourceHash: d33e60c0fb4a
   translator: machine
 ---
 
-調和器（`scripts/reconcile.py`）會對上游規格套用四類修正。約束修正會變更 API 合約以符合觀察到的行為。所有其他修正僅涉及中繼資料，不會更改 API 合約。
+協調器（`scripts/reconcile.py`）對上游規格套用四類修正。約束修正會變更 API 合約以符合觀察到的行為。所有其他修正僅涉及中繼資料，不會改變 API 合約。
 
 ## 約束修正
 
-這些修正會調整 OpenAPI 結構描述約束，使規格與實際 API 執行的行為一致。每項修正都由[驗證](/02-pipeline/#2-validate)過程中產生的 `Discrepancy` 物件所驅動。
+這些修正調整 OpenAPI 結構描述約束，使規格與即時 API 實際執行的行為一致。每項修正由[驗證](/02-pipeline/#2-validate)過程中產生的 `Discrepancy` 物件驅動。
 
-| 策略 | 觸發條件 | 執行內容 | 合約變更 |
+| 策略 | 觸發條件 | 執行動作 | 合約變更 |
 |----------|---------|--------------|-----------------|
-| **放寬** | `SPEC_STRICTER` | 規格拒絕了 API 實際接受的值。降低 `minLength`/`minimum`，提高 `maxLength`/`maximum`，新增缺少的列舉值。 | 是 -- 擴大可接受的值 |
-| **收緊** | `SPEC_LOOSER` | 規格接受了 API 實際拒絕的值。提高 `minLength`/`minimum`，降低 `maxLength`/`maximum`，將列舉限制為觀察到的值。 | 是 -- 縮小可接受的值 |
-| **新增** | `MISSING_CONSTRAINT` | API 執行了規格中未記載的約束。將該約束新增至結構描述。 | 是 -- 新增約束 |
-| **移除** | `EXTRA_CONSTRAINT` | 規格宣告了 API 忽略的約束。從結構描述中移除該約束。 | 是 -- 移除約束 |
+| **放寬** | `SPEC_STRICTER` | 規格拒絕了 API 接受的值。降低 `minLength`/`minimum`，提高 `maxLength`/`maximum`，新增缺少的列舉值。 | 是 -- 擴大接受的值 |
+| **收緊** | `SPEC_LOOSER` | 規格接受了 API 拒絕的值。提高 `minLength`/`minimum`，降低 `maxLength`/`maximum`，將列舉限制為觀察到的值。 | 是 -- 縮小接受的值 |
+| **新增** | `MISSING_CONSTRAINT` | API 執行了規格中未記錄的約束。將約束新增至結構描述。 | 是 -- 新增約束 |
+| **移除** | `EXTRA_CONSTRAINT` | 規格宣告了 API 忽略的約束。從結構描述中移除約束。 | 是 -- 移除約束 |
 
 :::caution
-約束修正會變更 API 合約。這些修正僅在有來自 Schemathesis 或針對實際 API 進行約束驗證測試的證據支持時才會套用。
+約束修正會變更 API 合約。僅在有來自 Schemathesis 或針對即時 API 的約束驗證測試的證據支持時才會套用。
 :::
 
 ### 支援的約束類型
 
-測試與修正的 10 種 OpenAPI 約束類別：
+已測試和修正的 10 個 OpenAPI 約束類別：
 
 - **字串長度** -- `minLength`、`maxLength`
-- **模式** -- `pattern`（正規表示式）
+- **模式** -- `pattern`（正規表達式）
 - **數值範圍** -- `minimum`、`maximum`、`exclusiveMinimum`、`exclusiveMaximum`
 - **必要欄位** -- `required`
 - **列舉值** -- `enum`
@@ -36,11 +36,11 @@ i18n:
 - **物件結構** -- `additionalProperties`、`properties`、`propertyNames`
 - **組合** -- `oneOf`、`anyOf`、`allOf`
 - **相依性** -- `dependentRequired`、`dependentSchemas`
-- **資料型別** -- `type`、`format`
+- **資料類型** -- `type`、`format`
 
 ## Spectral 增強
 
-這些修正處理由 [Spectral 檢查](/04-spectral-rules/)發現的 OAS3 品質問題。它們新增或修正中繼資料，不會變更 API 行為。
+這些修正處理由 [Spectral 檢查](/04-spectral-rules/)發現的 OAS3 品質問題。它們新增或修正中繼資料，不會改變 API 行為。
 
 ### 伺服器區塊注入
 
@@ -83,37 +83,37 @@ i18n:
 
 **規則**：`operation-tags` | **合約變更**：否
 
-為未標記的操作從 URL 路徑前綴衍生標籤。對於如 `/api/config/namespaces/{namespace}/healthchecks` 的路徑，標籤為 `config`（第二個非參數區段）。該標籤會同時新增至操作的 `tags` 陣列和規格層級的 `tags` 清單。
+為未標記的操作從 URL 路徑前綴衍生標籤。對於 `/api/config/namespaces/{namespace}/healthchecks` 這樣的路徑，標籤為 `config`（第二個非參數區段）。標籤會同時新增至操作的 `tags` 陣列和規格層級的 `tags` 列表。
 
 ### 未使用元件移除
 
 **規則**：`oas3-unused-component` | **合約變更**：否
 
-從 `components.schemas` 中移除未在規格任何地方被參照的元件結構描述。在不影響任何操作的情況下縮減規格大小。
+移除 `components.schemas` 中在規格任何地方都未被參照的元件結構描述。在不影響任何操作的情況下縮小規格大小。
 
-### 操作識別碼去重
+### OperationId 去重
 
 **規則**：`operation-operationId-unique` | **合約變更**：否
 
-當多個操作共用相同的 `operationId` 時，附加 HTTP 方法作為後綴（例如 `ListItems_get`）。這使每個 operationId 在程式碼產生器中保持唯一。
+當多個操作共用相同的 `operationId` 時，附加 HTTP 方法作為後綴（例如 `ListItems_get`）。這使每個 operationId 對程式碼產生器而言都是唯一的。
 
 ### 無效範例/預設值移除
 
 **規則**：`oas3-valid-schema-example` | **合約變更**：否
 
-當 `example` 或 `default` 值不符合結構描述自身的約束（型別錯誤、超出範圍等）時，從結構描述中移除這些值。防止程式碼產生器產生無效的範例負載。
+當 `example` 或 `default` 值不符合結構描述自身的約束（類型錯誤、超出範圍等）時，從結構描述中移除這些值。防止程式碼產生器產生無效的範例負載。
 
 ### Script 標籤清除
 
 **規則**：`no-script-tags-in-markdown` | **合約變更**：否
 
-使用正規表示式替換從 `description` 欄位中清除 `<script>` 標籤。部分上游規格包含注入的 script 標籤，這些標籤會導致文件呈現工具損壞。
+使用正規表達式替換從 `description` 欄位中清除 `<script>` 標籤。部分上游規格包含注入的 script 標籤，會導致文件渲染器異常。
 
 ## 安全性中繼資料
 
-**合約變更**：否（僅文件）
+**合約變更**：否（僅文件用途）
 
-每個規格若尚未存在 `apiKeyAuth` 安全方案，則會自動注入一個。無論 Spectral 是否標記，此注入一律執行。
+每個規格若尚未存在 `apiKeyAuth` 安全方案，則會接收一個。無論 Spectral 是否標記，此方案都會注入。
 
 ```json
 "components": {
@@ -129,13 +129,13 @@ i18n:
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-方案定義來自 [validation.yaml](/05-configuration/) 中的 `spectral.security_scheme`。這會告知 API 使用者如何進行驗證，但不會變更執行階段行為。
+方案定義來自 [validation.yaml](/05-configuration/) 中的 `spectral.security_scheme`。這告訴 API 使用者如何進行身份驗證，但不會改變執行時行為。
 
 ## JSON 格式化
 
 **合約變更**：否
 
-所有輸出的 JSON 規格都會經過與 Biome 相容的陣列壓縮器（`scripts/utils/spec_loader.py` 中的 `_compact_short_arrays`）處理。能在 120 個字元內容納的短陣列會被壓縮為單行：
+所有輸出的 JSON 規格都會通過與 Biome 相容的陣列壓縮器（`scripts/utils/spec_loader.py` 中的 `_compact_short_arrays`）處理。能容納在 120 個字元內的短陣列會摺疊為單行：
 
 ```json
 // Before
@@ -148,14 +148,14 @@ i18n:
 "enum": ["ACTIVE", "INACTIVE"]
 ```
 
-超過行長度閾值的陣列仍維持多行格式。
+超過行長度閾值的陣列維持多行格式。
 
 ## 修正優先順序
 
-當多種修正策略可能適用時，調和器使用 `reconciliation.priority` 中配置的優先順序：
+當可能套用多種修正策略時，協調器使用在 `reconciliation.priority` 中設定的優先順序：
 
-1. **existing** -- 若現有規格約束有效，則使用現有約束
-2. **discovery** -- 使用發現的實際 API 行為
-3. **inferred** -- 從類似端點的模式中推斷
+1. **existing** -- 若現有規格約束有效則使用
+2. **discovery** -- 使用發現的即時 API 行為
+3. **inferred** -- 從類似端點的模式推斷
 
-所有修正套用完成後，每個已修正的規格都會使用 `openapi-spec-validator` 進行驗證。若驗證失敗，則回退使用原始規格，並將該修正記錄為錯誤。
+所有修正套用後，每個已修正的規格都會以 `openapi-spec-validator` 進行驗證。若驗證失敗，則使用原始規格作為備援，並將修正記錄為錯誤。

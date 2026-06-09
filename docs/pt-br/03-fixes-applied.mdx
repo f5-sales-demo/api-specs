@@ -1,5 +1,5 @@
 ---
-title: Correções Aplicadas às Specs Upstream
+title: Correções Aplicadas às Especificações Upstream
 description: >-
   Referência completa de todas as correções que o mecanismo de reconciliação
   aplica às especificações OpenAPI do F5 XC
@@ -8,26 +8,26 @@ i18n:
   translator: machine
 ---
 
-O reconciliador (`scripts/reconcile.py`) aplica quatro categorias de correções às specs upstream. As correções de restrições alteram contratos de API para corresponder ao comportamento observado. Todas as outras correções são apenas de metadados e não alteram contratos de API.
+O reconciliador (`scripts/reconcile.py`) aplica quatro categorias de correções às especificações upstream. Correções de restrição alteram contratos de API para corresponder ao comportamento observado. Todas as outras correções são apenas de metadados e não alteram contratos de API.
 
-## Correções de Restrições
+## Correções de Restrição
 
-Essas correções ajustam as restrições de schema OpenAPI para que a spec corresponda ao que a API em produção realmente aplica. Cada correção é gerada por um objeto `Discrepancy` produzido durante a [validação](/02-pipeline/#2-validate).
+Essas correções ajustam as restrições do esquema OpenAPI para que a especificação corresponda ao que a API em produção realmente aplica. Cada correção é conduzida por um objeto `Discrepancy` produzido durante a [validação](/02-pipeline/#2-validate).
 
 | Estratégia | Gatilho | O Que Faz | Alteração de Contrato |
 |----------|---------|--------------|-----------------|
-| **Relax** | `SPEC_STRICTER` | A spec rejeita valores que a API aceita. Reduz `minLength`/`minimum`, aumenta `maxLength`/`maximum`, adiciona valores enum ausentes. | Sim -- amplia valores aceitos |
-| **Tighten** | `SPEC_LOOSER` | A spec aceita valores que a API rejeita. Aumenta `minLength`/`minimum`, reduz `maxLength`/`maximum`, restringe enums aos valores observados. | Sim -- restringe valores aceitos |
-| **Add** | `MISSING_CONSTRAINT` | A API aplica uma restrição não documentada na spec. Adiciona a restrição ao schema. | Sim -- adiciona nova restrição |
-| **Remove** | `EXTRA_CONSTRAINT` | A spec declara uma restrição que a API ignora. Remove a restrição do schema. | Sim -- remove restrição |
+| **Relaxar** | `SPEC_STRICTER` | A especificação rejeita valores que a API aceita. Reduz `minLength`/`minimum`, aumenta `maxLength`/`maximum`, adiciona valores enum faltantes. | Sim -- amplia valores aceitos |
+| **Restringir** | `SPEC_LOOSER` | A especificação aceita valores que a API rejeita. Aumenta `minLength`/`minimum`, reduz `maxLength`/`maximum`, restringe enums aos valores observados. | Sim -- reduz valores aceitos |
+| **Adicionar** | `MISSING_CONSTRAINT` | A API aplica uma restrição não documentada na especificação. Adiciona a restrição ao esquema. | Sim -- adiciona nova restrição |
+| **Remover** | `EXTRA_CONSTRAINT` | A especificação declara uma restrição que a API ignora. Remove a restrição do esquema. | Sim -- remove restrição |
 
 :::caution
-Correções de restrições alteram o contrato da API. Elas são aplicadas apenas quando respaldadas por evidências do Schemathesis ou testes de validação de restrições contra a API em produção.
+Correções de restrição alteram o contrato da API. Elas são aplicadas apenas quando respaldadas por evidências do Schemathesis ou testes de validação de restrições contra a API em produção.
 :::
 
-### Tipos de Restrições Suportados
+### Tipos de Restrição Suportados
 
-As 10 categorias de restrições OpenAPI testadas e corrigidas:
+As 10 categorias de restrição OpenAPI testadas e corrigidas:
 
 - **Comprimento de string** -- `minLength`, `maxLength`
 - **Padrão** -- `pattern` (regex)
@@ -48,7 +48,7 @@ Essas correções tratam problemas de qualidade OAS3 encontrados pelo [linting S
 
 **Regra**: `oas3-api-servers` | **Alteração de contrato**: Não
 
-Adiciona o template de URL do tenant F5 XC às specs que não possuem um bloco `servers`:
+Adiciona o template de URL do tenant F5 XC às especificações que não possuem um bloco `servers`:
 
 ```json
 "servers": [{
@@ -69,7 +69,7 @@ A URL do servidor e os valores das variáveis vêm de `spectral.servers` em [val
 
 **Regra**: `info-contact` | **Alteração de contrato**: Não
 
-Adiciona informações de contato em `info.contact` para specs que não as possuem:
+Adiciona informações de contato em `info.contact` para especificações que não as possuem:
 
 ```json
 "contact": {
@@ -85,13 +85,13 @@ Os valores vêm de `spectral.contact` em [validation.yaml](/05-configuration/).
 
 **Regra**: `operation-tags` | **Alteração de contrato**: Não
 
-Deriva uma tag a partir do prefixo do caminho da URL para operações sem tags. Para um caminho como `/api/config/namespaces/{namespace}/healthchecks`, a tag é `config` (o segundo segmento que não é parâmetro). A tag é adicionada tanto ao array `tags` da operação quanto à lista `tags` no nível da spec.
+Deriva uma tag a partir do prefixo do caminho URL para operações sem tags. Para um caminho como `/api/config/namespaces/{namespace}/healthchecks`, a tag é `config` (o segundo segmento que não é parâmetro). A tag é adicionada tanto ao array `tags` da operação quanto à lista `tags` no nível da especificação.
 
 ### Remoção de Componentes Não Utilizados
 
 **Regra**: `oas3-unused-component` | **Alteração de contrato**: Não
 
-Remove schemas de componentes de `components.schemas` que não são referenciados em nenhum lugar da spec. Reduz o tamanho da spec sem afetar nenhuma operação.
+Remove esquemas de componentes de `components.schemas` que não são referenciados em nenhum lugar da especificação. Reduz o tamanho da especificação sem afetar nenhuma operação.
 
 ### Deduplicação de OperationId
 
@@ -103,19 +103,19 @@ Adiciona o método HTTP como sufixo (ex.: `ListItems_get`) quando múltiplas ope
 
 **Regra**: `oas3-valid-schema-example` | **Alteração de contrato**: Não
 
-Remove valores `example` ou `default` de schemas quando o valor não está em conformidade com as restrições do próprio schema (tipo incorreto, fora do intervalo, etc.). Evita que geradores de código produzam payloads de exemplo inválidos.
+Remove valores `example` ou `default` dos esquemas quando o valor não está em conformidade com as próprias restrições do esquema (tipo errado, fora do intervalo, etc.). Evita que geradores de código produzam payloads de exemplo inválidos.
 
 ### Remoção de Tags Script
 
 **Regra**: `no-script-tags-in-markdown` | **Alteração de contrato**: Não
 
-Remove tags `<script>` de campos `description` usando substituição por regex. Algumas specs upstream contêm tags script injetadas que quebram renderizadores de documentação.
+Remove tags `<script>` dos campos `description` usando substituição por regex. Algumas especificações upstream contêm tags script injetadas que quebram renderizadores de documentação.
 
 ## Metadados de Segurança
 
 **Alteração de contrato**: Não (apenas documentação)
 
-Toda spec recebe um esquema de segurança `apiKeyAuth` se um ainda não estiver presente. Isso é sempre injetado independentemente de o Spectral ter sinalizado ou não.
+Toda especificação recebe um esquema de segurança `apiKeyAuth` se um ainda não estiver presente. Isso é sempre injetado independentemente de o Spectral ter sinalizado ou não.
 
 ```json
 "components": {
@@ -137,7 +137,7 @@ A definição do esquema vem de `spectral.security_scheme` em [validation.yaml](
 
 **Alteração de contrato**: Não
 
-Todas as specs JSON de saída passam por um compactador de arrays compatível com Biome (`_compact_short_arrays` em `scripts/utils/spec_loader.py`). Arrays curtos que cabem em 120 caracteres são compactados em uma única linha:
+Todas as especificações JSON de saída passam por um compactador de arrays compatível com Biome (`_compact_short_arrays` em `scripts/utils/spec_loader.py`). Arrays curtos que cabem em 120 caracteres são colapsados em uma única linha:
 
 ```json
 // Before
@@ -152,12 +152,12 @@ Todas as specs JSON de saída passam por um compactador de arrays compatível co
 
 Arrays que excedem o limite de comprimento de linha permanecem em múltiplas linhas.
 
-## Prioridade de Correções
+## Prioridade de Correção
 
 Quando múltiplas estratégias de correção podem ser aplicadas, o reconciliador usa uma ordem de prioridade configurada em `reconciliation.priority`:
 
-1. **existing** -- Usa a restrição existente da spec se ela for válida
-2. **discovery** -- Usa o comportamento descoberto da API em produção
-3. **inferred** -- Infere a partir de padrões em endpoints similares
+1. **existing** -- Usar a restrição existente da especificação se for válida
+2. **discovery** -- Usar o comportamento descoberto da API em produção
+3. **inferred** -- Inferir a partir de padrões em endpoints similares
 
-Toda spec corrigida é validada com `openapi-spec-validator` após todas as correções serem aplicadas. Se a validação falhar, a spec original é usada como fallback e a correção é registrada como erro.
+Toda especificação corrigida é validada com `openapi-spec-validator` após todas as correções serem aplicadas. Se a validação falhar, a especificação original é usada como fallback e a correção é registrada como erro.

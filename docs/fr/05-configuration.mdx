@@ -6,7 +6,7 @@ i18n:
   translator: machine
 ---
 
-L'ensemble du comportement du pipeline est contrôlé par deux fichiers YAML dans `config/`.
+Tout le comportement du pipeline est contrôlé par deux fichiers YAML dans `config/`.
 
 ## `config/validation.yaml`
 
@@ -24,15 +24,15 @@ api:
 
 | Champ | Description |
 |-------|-------------|
-| `base_url` | URL de base de l'API de la console F5 XC. Peut être remplacée par la variable d'environnement `F5XC_API_URL`. |
+| `base_url` | URL de base de l'API de la console F5 XC. Peut être surchargée avec la variable d'environnement `F5XC_API_URL`. |
 | `tenant` | Nom du tenant utilisé dans les chemins de l'API. |
-| `namespace` | Namespace par défaut pour les opérations CRUD. |
+| `namespace` | Espace de noms par défaut pour les opérations CRUD. |
 | `timeout` | Délai d'expiration des requêtes HTTP en secondes. |
 | `retries` | Nombre de tentatives de réessai en cas d'échec. |
-| `retry_delay` | Nombre de secondes entre les réessais. |
+| `retry_delay` | Secondes entre les réessais. |
 
 :::caution
-Les valeurs `base_url`, `tenant` et `namespace` dans `validation.yaml` sont des valeurs génériques de substitution. Vous **devez** les configurer pour votre environnement via des variables d'environnement avant d'exécuter le pipeline :
+Les valeurs `base_url`, `tenant` et `namespace` dans `validation.yaml` sont des espaces réservés génériques. Vous **devez** les configurer pour votre environnement via des variables d'environnement avant d'exécuter le pipeline :
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
@@ -41,7 +41,7 @@ export F5XC_NAMESPACE="example-namespace"
 export F5XC_API_TOKEN="your-api-token"
 ```
 
-Les variables d'environnement ont la priorité sur les valeurs par défaut du YAML à l'exécution.
+Les variables d'environnement prennent le pas sur les valeurs par défaut du YAML au moment de l'exécution.
 :::
 
 ### Paramètres de téléchargement
@@ -56,7 +56,7 @@ download:
 | Champ | Description |
 |-------|-------------|
 | `url` | URL du bundle officiel de spécifications OpenAPI F5 XC (ZIP). |
-| `output_dir` | Répertoire de stockage des spécifications extraites. |
+| `output_dir` | Emplacement de stockage des spécifications extraites. |
 | `etag_cache` | Fichier qui stocke l'ETag HTTP pour les téléchargements conditionnels. |
 
 ### Catégories de validation
@@ -84,7 +84,7 @@ validation_categories:
 | `dependencies` | `dependentRequired`, `dependentSchemas` |
 | `data_types` | `type`, `format` |
 
-### Paramètres de Schemathesis
+### Paramètres Schemathesis
 
 ```yaml
 schemathesis:
@@ -104,10 +104,10 @@ schemathesis:
 | `enabled` | Active ou désactive les tests Schemathesis. |
 | `max_examples` | Nombre maximum de cas de test générés par opération. |
 | `hypothesis_phases` | Phases Hypothesis à exécuter (`generate`, `target`). |
-| `stateful_testing` | Active les tests avec état basés sur les liens entre opérations. |
-| `base_url_override` | Remplace l'URL de base de l'API pour les tests. `null` utilise `api.base_url`. |
+| `stateful_testing` | Active les tests à état basés sur les liens entre les opérations. |
+| `base_url_override` | Surcharge l'URL de base de l'API pour les tests. `null` utilise `api.base_url`. |
 | `auth_header` | Nom de l'en-tête HTTP pour l'authentification. |
-| `auth_prefix` | Format du préfixe du token (les requêtes sont envoyées sous la forme `APIToken <token>`). |
+| `auth_prefix` | Format du préfixe du jeton (les requêtes sont envoyées sous la forme `APIToken <token>`). |
 
 ### Paramètres de réconciliation
 
@@ -127,9 +127,9 @@ reconciliation:
 | Champ | Description |
 |-------|-------------|
 | `priority` | Ordre de préférence lorsque plusieurs sources de données sont en désaccord. |
-| `fix_strategies` | Associe chaque type de divergence à son action de correction. Voir [Corrections appliquées](/03-fixes-applied/). |
+| `fix_strategies` | Associe chaque type de divergence à son action corrective. Voir [Corrections appliquées](/03-fixes-applied/). |
 
-### Paramètres de Spectral
+### Paramètres Spectral
 
 ```yaml
 spectral:
@@ -169,11 +169,11 @@ spectral:
 | `enabled` | Active ou désactive entièrement le linting Spectral. |
 | `ruleset` | Fichier de configuration Spectral à utiliser (le pipeline utilise `spectral-pipeline.yaml`). |
 | `auto_fix` | Correspondance entre le nom de la règle et un booléen. `true` signifie que le réconciliateur corrigera les violations. |
-| `gate.max_errors` | Nombre maximum d'erreurs autorisées dans la vérification post-réconciliation. `null` désactive la vérification. |
-| `gate.max_warnings` | Nombre maximum d'avertissements autorisés. `null` désactive la vérification. |
+| `gate.max_errors` | Nombre maximum d'erreurs autorisées dans la porte de validation post-réconciliation. `null` désactive la vérification. |
+| `gate.max_warnings` | Nombre maximum d'avertissements. `null` désactive la vérification. |
 | `contact` | Informations de contact injectées dans `info.contact` par le correcteur `info-contact`. |
 | `servers` | Tableau de serveurs injecté par le correcteur `oas3-api-servers`. |
-| `security_scheme` | Définition du schéma de sécurité injecté dans chaque spécification. |
+| `security_scheme` | Définition du schéma de sécurité injectée dans chaque spécification. |
 
 ### Paramètres des rapports
 
@@ -201,15 +201,15 @@ release:
 | Champ | Description |
 |-------|-------------|
 | `output_dir` | Répertoire pour les artefacts de publication. |
-| `include_changelog` | Inclure `CHANGELOG.md` dans le package de publication. |
-| `include_validation_report` | Inclure le rapport de validation dans le package de publication. |
+| `include_changelog` | Inclut `CHANGELOG.md` dans le package de publication. |
+| `include_validation_report` | Inclut le rapport de validation dans le package de publication. |
 | `version_from` | Source de la version. `git` dérive la version à partir de la date des métadonnées de la spécification + numéro de correctif. |
 
 ## `config/endpoints.yaml`
 
-Définit les endpoints de référence utilisés pour la validation en direct de l'API. Chaque entrée associe un nom de ressource logique à son fichier de spécification, son groupe d'API et ses chemins CRUD.
+Définit les points de terminaison de référence utilisés pour la validation en direct de l'API. Chaque entrée associe un nom de ressource logique à son fichier de spécification, son groupe d'API et ses chemins CRUD.
 
-### Structure d'un endpoint
+### Structure d'un point de terminaison
 
 ```yaml
 endpoints:
@@ -233,14 +233,14 @@ endpoints:
 | `domain_file` | Nom du fichier de spécification OpenAPI dans `specs/original/`. |
 | `api_group` | Préfixe du groupe d'API (`config`, `web`, etc.). |
 | `crud_operations` | Méthode HTTP et chemin pour chaque opération CRUD. |
-| `test_priority` | `high`, `medium` ou `low` -- contrôle l'ordre d'exécution des tests. |
+| `test_priority` | `high`, `medium` ou `low` — contrôle l'ordre d'exécution des tests. |
 | `description` | Description lisible de la ressource. |
 
-### Endpoints de référence actuels
+### Points de terminaison de référence actuels
 
-10 endpoints répartis sur trois domaines :
+10 points de terminaison répartis sur trois domaines :
 
-| Endpoint | Domaine | Priorité |
+| Point de terminaison | Domaine | Priorité |
 |----------|--------|----------|
 | `healthcheck` | Virtual | high |
 | `origin_pool` | Virtual | high |
@@ -253,15 +253,15 @@ endpoints:
 | `data_type` | Data Privacy | medium |
 | `sensitive_data_policy` | Data Privacy | medium |
 
-### Ajout de nouveaux endpoints
+### Ajout de nouveaux points de terminaison
 
-Pour ajouter un nouvel endpoint à la validation :
+Pour ajouter un nouveau point de terminaison à valider :
 
 1. Trouvez le nom du fichier de spécification dans `specs/original/` (format : `docs-cloud-f5-com.NNNN.*.ves-swagger.json`)
 2. Ajoutez une entrée sous `endpoints:` en suivant la structure ci-dessus
-3. Ajoutez le mappage du fichier de domaine sous `domain_files:` avec un numéro de priorité
-4. Ajoutez le nom de l'endpoint dans `test_order:` à la position souhaitée
+3. Ajoutez la correspondance du fichier de domaine sous `domain_files:` avec un numéro de priorité
+4. Ajoutez le nom du point de terminaison à `test_order:` à la position souhaitée
 
 :::tip
-Le framework valide l'ensemble des 268 spécifications pendant la réconciliation, indépendamment de ce qui est listé dans `endpoints.yaml`. La configuration des endpoints contrôle quelles ressources font l'objet de tests en direct de l'API avec Schemathesis.
+Le framework valide l'ensemble des 268 spécifications pendant la réconciliation, indépendamment de ce qui est listé dans `endpoints.yaml`. La configuration des points de terminaison contrôle quelles ressources font l'objet de tests en direct de l'API avec Schemathesis.
 :::

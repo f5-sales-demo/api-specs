@@ -1,6 +1,6 @@
 ---
 title: 開發指南
-description: 如何設定、執行、測試及貢獻 F5 XC API Specs 專案
+description: 如何設定、執行、測試及參與貢獻 F5 XC API Specs 專案
 i18n:
   sourceHash: 1dc0c369e7a0
   translator: machine
@@ -9,16 +9,16 @@ i18n:
 ## 設定
 
 ```bash
-# 複製儲存庫並安裝開發依賴
+# 複製儲存庫並安裝開發依賴項
 git clone https://github.com/f5xc-salesdemos/api-specs.git
 cd api-specs
 make dev-install
 
-# 安裝 Spectral CLI（lint 階段必須）
+# 安裝 Spectral CLI（lint 階段所需）
 npm install -g @stoplight/spectral-cli
 ```
 
-`make dev-install` 會在 `.venv/` 中建立虛擬環境，並安裝含開發擴充套件（pytest、ruff、mypy）的專案。
+`make dev-install` 會在 `.venv/` 中建立虛擬環境，並安裝包含開發附加套件（pytest、ruff、mypy）的專案。
 
 ### 環境變數
 
@@ -44,11 +44,11 @@ make all
 
 ```bash
 make download        # 取得上游規格
-make validate        # 執行即時 API 測試（需要 API 權杖）
-make validate-dry    # 乾跑模式（不呼叫 API）
+make validate        # 執行即時 API 測試（需要 API 令牌）
+make validate-dry    # 乾跑模式（不進行 API 呼叫）
 make spectral-lint   # 對原始規格執行 Spectral 探索模式
 make reconcile       # 根據兩份報告套用修正
-make spectral-gate   # 對已修正規格執行 Spectral 品質門檻
+make spectral-gate   # 對調和後的規格執行 Spectral 品質關卡
 make release         # 建置發佈套件
 ```
 
@@ -57,19 +57,19 @@ make release         # 建置發佈套件
 ```bash
 make docs-generate   # 從報告重新產生 docs/01-validation-report.mdx
 make docs            # 建置完整文件網站
-make docs-serve      # 本地開發伺服器，支援熱重載
+make docs-serve      # 具有熱重載功能的本機開發伺服器
 ```
 
 ## 執行測試
 
 ```bash
 make test           # 含覆蓋率的 pytest
-make lint           # ruff check + format check
+make lint           # ruff 檢查 + 格式檢查
 make typecheck      # mypy 型別檢查
 make ci-test        # 以上三者全部執行（用於 CI）
 ```
 
-若已安裝，Pre-commit hooks 會在提交時自動執行：
+若已安裝，pre-commit hooks 會在提交時自動執行：
 
 ```bash
 make pre-commit-install   # 安裝 git hooks
@@ -82,7 +82,7 @@ make pre-commit           # 手動執行所有 hooks
 scripts/
   download.py           # 階段 1：從 F5 取得規格
   validate.py           # 階段 2：即時 API 測試
-  spectral_lint.py      # 階段 3/5：Spectral lint 適配器
+  spectral_lint.py      # 階段 3/5：Spectral linting 適配器
   reconcile.py          # 階段 4：對規格套用修正
   release.py            # 階段 6：打包發佈
   generate_docs.py      # 從報告產生 MDX
@@ -94,7 +94,7 @@ scripts/
     spec_loader.py           # 規格 I/O + JSON 格式化
 
 config/
-  validation.yaml       # 管線設定
+  validation.yaml       # 管線配置
   endpoints.yaml        # 即時測試的基準端點
 
 spectral/
@@ -103,24 +103,24 @@ spectral/
 
 docs/                   # Starlight MDX 文件
 tests/                  # pytest 測試套件
-release/specs/          # 輸出：已修正的規格檔案
-reports/                # 輸出：驗證與 Spectral 報告
+release/specs/          # 輸出：調和後的規格檔案
+reports/                # 輸出：驗證及 Spectral 報告
 ```
 
 ## 新增修正方法
 
-若要在修正器中新增 Spectral 自動修正：
+要為調和器新增 Spectral 自動修正：
 
-1. **新增規則**到 `.spectral.yaml`，設定所需的嚴重性等級。
+1. **新增規則**至 `.spectral.yaml`，設定所需的嚴重性等級。
 
-2. **啟用自動修正**，在 `config/validation.yaml` 的 `spectral.auto_fix` 下設定：
+2. **啟用自動修正**，在 `config/validation.yaml` 的 `spectral.auto_fix` 下：
    ```yaml
    spectral:
      auto_fix:
        your-new-rule: true
    ```
 
-3. **新增修正方法**到 `scripts/reconcile.py` 中的 `SpecReconciler`：
+3. **新增修正方法**至 `scripts/reconcile.py` 中的 `SpecReconciler`：
    ```python
    def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
        """Fix description."""
@@ -129,7 +129,7 @@ reports/                # 輸出：驗證與 Spectral 報告
        return spec
    ```
 
-4. **註冊方法**到 `_apply_spectral_fix` 分派器中：
+4. **註冊**至 `_apply_spectral_fix` 分發器：
    ```python
    spectral_fixers = {
        # ... existing fixers ...
@@ -141,9 +141,9 @@ reports/                # 輸出：驗證與 Spectral 報告
 
 ## 新增 Spectral 規則
 
-若要新增含 JavaScript 函式的自訂 Spectral 規則：
+要新增帶有 JavaScript 函式的自訂 Spectral 規則：
 
-1. 在 `spectral/functions/your-rule.js` 中建立函式。匯出一個預設函式，接收 `(targetVal, options, context)` 並回傳 `{message, path}` 物件的陣列。
+1. 在 `spectral/functions/your-rule.js` 中建立函式。匯出一個接收 `(targetVal, options, context)` 的預設函式，並回傳 `{message, path}` 物件陣列。
 
 2. 在 `spectral-pipeline.yaml` 中註冊：
    ```yaml
@@ -162,25 +162,25 @@ reports/                # 輸出：驗證與 Spectral 報告
    ```
 
 :::caution
-自訂函式僅在 `spectral-pipeline.yaml` 中有效。請勿在 `.spectral.yaml` 中新增 `functionsDir` 或 `functions` — 該設定必須保持與 Super-Linter 及其他外部工具的相容性。
+自訂函式僅能在 `spectral-pipeline.yaml` 中使用。請勿將 `functionsDir` 或 `functions` 新增至 `.spectral.yaml`——該配置必須保持與 Super-Linter 及其他外部工具的相容性。
 :::
 
 ## CI 管線
 
 GitHub Actions 工作流程（`validate-and-release.yml`）在以下情況執行：
 
-- **排程**：每日 UTC 上午 6 點
+- **排程**：每日 UTC 時間上午 6 點
 - **推送至 main**：當 `scripts/`、`config/` 或 `pyproject.toml` 有變更時
 - **手動觸發**：可選擇強制發佈或乾跑模式
 
-此工作流程包含四個工作：
+工作流程包含四個工作：
 
-1. **validate** — 下載規格、執行驗證、Spectral lint、修正、Spectral 品質門檻
-2. **check-release-needed** — 比較內容雜湊值以決定是否需要發佈
-3. **release** — 打包並建立 GitHub Release（僅在內容變更時）
-4. **update-docs** — 重新產生 `01-validation-report.mdx`，若有變更則開啟 PR
+1. **validate** —— 下載規格、執行驗證、Spectral lint、調和、Spectral 品質關卡
+2. **check-release-needed** —— 比較內容雜湊值以判斷是否需要發佈
+3. **release** —— 打包並建立 GitHub Release（僅在內容有變更時）
+4. **update-docs** —— 重新產生 `01-validation-report.mdx`，若有變更則開啟 PR
 
-若任何工作失敗，**notify** 工作會建立一個 GitHub issue。
+若任何工作失敗，**notify** 工作會建立 GitHub issue。
 
 ## 分支與 PR 工作流程
 

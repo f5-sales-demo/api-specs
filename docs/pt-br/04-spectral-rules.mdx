@@ -8,13 +8,13 @@ i18n:
   translator: machine
 ---
 
-O projeto utiliza o [Spectral](https://stoplight.io/open-source/spectral) para linting OAS3 com uma arquitetura de duas configurações que separa CI/ferramentas externas da lógica customizada do pipeline.
+O projeto utiliza o [Spectral](https://stoplight.io/open-source/spectral) para linting OAS3 com uma arquitetura de duas configurações que separa o CI/ferramentas externas da lógica customizada do pipeline.
 
 ## Arquitetura de Duas Configurações
 
 ### `.spectral.yaml` -- Configuração Base
 
-Utilizada pelo GitHub Super-Linter e qualquer ferramenta externa de CI. Estende `spectral:oas` (o conjunto de regras OAS integrado). Não contém funções customizadas -- isso a mantém compatível com ferramentas que executam o Spectral sem acesso ao diretório `spectral/functions/`.
+Utilizada pelo GitHub Super-Linter e qualquer ferramenta de CI externa. Estende `spectral:oas` (o conjunto de regras OAS integrado). Não contém funções customizadas -- isso mantém a compatibilidade com ferramentas que executam o Spectral sem acesso ao diretório `spectral/functions/`.
 
 ```yaml
 extends:
@@ -35,7 +35,7 @@ rules:
 
 ### `spectral-pipeline.yaml` -- Configuração do Pipeline
 
-Utilizada por `scripts/spectral_lint.py` (modos discover e gate). Estende a configuração base e adiciona a função customizada `f5-path-params`:
+Utilizada por `scripts/spectral_lint.py` (nos modos discover e gate). Estende a configuração base e adiciona a função customizada `f5-path-params`:
 
 ```yaml
 extends:
@@ -57,9 +57,9 @@ rules:
 
 ## Por que `path-params` Está Desabilitada
 
-A regra integrada `path-params` do Spectral sinaliza incorretamente APIs F5 XC que utilizam nomes de parâmetros com pontos como `{metadata.namespace}` e `{metadata.name}`. A regra integrada não analisa pontos nos nomes de parâmetros, então os reporta como não declarados.
+A regra integrada `path-params` do Spectral sinaliza incorretamente APIs F5 XC que utilizam nomes de parâmetros com pontos, como `{metadata.namespace}` e `{metadata.name}`. A regra integrada não analisa pontos em nomes de parâmetros, então os reporta como não declarados.
 
-A função customizada `f5-path-params` (`spectral/functions/f5-path-params.js`) lida corretamente com nomes com pontos, comparando o conteúdo completo do `{placeholder}` com os nomes de parâmetros declarados. Ela verifica parâmetros tanto no nível do path quanto no nível da operação, e reporta erros em ambas as direções:
+A função customizada `f5-path-params` (`spectral/functions/f5-path-params.js`) lida corretamente com nomes pontilhados ao comparar o conteúdo completo do `{placeholder}` com os nomes de parâmetros declarados. Ela verifica parâmetros tanto no nível do path quanto no nível da operação, e reporta erros em ambas as direções:
 
 - Um placeholder no caminho da URL que não possui declaração de parâmetro correspondente
 - Um parâmetro de path declarado que não aparece no caminho da URL
@@ -71,7 +71,7 @@ A função customizada `f5-path-params` (`spectral/functions/f5-path-params.js`)
 Estas regras são corrigidas automaticamente pelo reconciliador quando violações são detectadas. Consulte [Correções Aplicadas](/03-fixes-applied/) para detalhes sobre cada correção.
 
 | Regra | Severidade | Método de Correção | Descrição |
-|-------|------------|---------------------|-----------|
+|-------|------------|-------------------|-----------|
 | `oas3-api-servers` | warn | `_add_servers` | A especificação deve ter um bloco `servers` |
 | `info-contact` | warn | `_add_contact` | `info` deve incluir `contact` |
 | `operation-tags` | warn | `_add_tags` | Toda operação deve ter pelo menos uma tag |
@@ -82,12 +82,12 @@ Estas regras são corrigidas automaticamente pelo reconciliador quando violaçõ
 | `f5-path-params` | error | -- | Parâmetros de path devem ser declarados e utilizados |
 
 :::note
-`f5-path-params` é uma regra de severidade error, mas não é corrigida automaticamente. Violações indicam um defeito genuíno na especificação que requer revisão manual.
+`f5-path-params` é uma regra com severidade de erro, mas não é corrigida automaticamente. Violações indicam um defeito genuíno na especificação que requer revisão manual.
 :::
 
 ### Regras Sem Correção
 
-Estas regras foram rebaixadas para severidade `info` porque não podem ser corrigidas automaticamente de forma significativa:
+Estas regras são rebaixadas para severidade `info` porque não podem ser corrigidas automaticamente de forma significativa:
 
 | Regra | Severidade | Descrição |
 |-------|------------|-----------|
@@ -96,29 +96,29 @@ Estas regras foram rebaixadas para severidade `info` porque não podem ser corri
 
 ## Integração com o Pipeline
 
-O adaptador Spectral (`scripts/spectral_lint.py`) opera em dois modos:
+O adaptador Spectral (`scripts/spectral_lint.py`) executa em dois modos:
 
 ### Modo Discover (Pré-Reconciliação)
 
 ```bash
 make spectral-lint
-# Equivalent to: python -m scripts.spectral_lint --mode discover
+# Equivalente a: python -m scripts.spectral_lint --mode discover
 ```
 
-Escaneia `specs/original/` e gera `reports/spectral_report.json`. O reconciliador consome este relatório juntamente com o relatório de validação.
+Analisa `specs/original/` e grava `reports/spectral_report.json`. O reconciliador consome este relatório junto com o relatório de validação.
 
 ### Modo Gate (Pós-Reconciliação)
 
 ```bash
 make spectral-gate
-# Equivalent to: python -m scripts.spectral_lint --mode gate
+# Equivalente a: python -m scripts.spectral_lint --mode gate
 ```
 
-Escaneia `release/specs/` e gera `reports/spectral_gate_report.json`. Retorna código de saída 1 se as violações excederem os limites configurados.
+Analisa `release/specs/` e grava `reports/spectral_gate_report.json`. Retorna código de saída 1 se as violações excederem os limites configurados.
 
 ### Mapeamento de Violações
 
-Violações do Spectral são convertidas em objetos `Discrepancy` com três subtipos:
+As violações do Spectral são convertidas em objetos `Discrepancy` com três subtipos:
 
 | Categoria de Regra Spectral | DiscrepancyType | Regras de Exemplo |
 |-----------------------------|-----------------|-------------------|

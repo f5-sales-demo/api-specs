@@ -8,28 +8,28 @@ i18n:
   translator: machine
 ---
 
-Der Reconciler (`scripts/reconcile.py`) wendet vier Kategorien von Korrekturen auf Upstream-Spezifikationen an. Constraint-Korrekturen ändern API-Verträge, um sie an das beobachtete Verhalten anzupassen. Alle anderen Korrekturen betreffen nur Metadaten und ändern keine API-Verträge.
+Der Reconciler (`scripts/reconcile.py`) wendet vier Kategorien von Korrekturen auf Upstream-Spezifikationen an. Constraint-Korrekturen ändern API-Verträge, um dem beobachteten Verhalten zu entsprechen. Alle anderen Korrekturen betreffen ausschließlich Metadaten und verändern keine API-Verträge.
 
 ## Constraint-Korrekturen
 
-Diese Korrekturen passen OpenAPI-Schema-Constraints an, damit die Spezifikation mit dem übereinstimmt, was die Live-API tatsächlich durchsetzt. Jede Korrektur wird durch ein `Discrepancy`-Objekt gesteuert, das während der [Validierung](/02-pipeline/#2-validate) erzeugt wird.
+Diese Korrekturen passen OpenAPI-Schema-Constraints an, damit die Spezifikation dem entspricht, was die Live-API tatsächlich durchsetzt. Jede Korrektur wird durch ein `Discrepancy`-Objekt gesteuert, das während der [Validierung](/02-pipeline/#2-validate) erzeugt wird.
 
-| Strategie | Auslöser | Wirkung | Vertragsänderung |
-|-----------|----------|---------|-------------------|
+| Strategie | Auslöser | Funktionsweise | Vertragsänderung |
+|-----------|----------|----------------|-------------------|
 | **Relax** | `SPEC_STRICTER` | Spezifikation lehnt Werte ab, die die API akzeptiert. Senkt `minLength`/`minimum`, erhöht `maxLength`/`maximum`, fügt fehlende Enum-Werte hinzu. | Ja -- erweitert akzeptierte Werte |
-| **Tighten** | `SPEC_LOOSER` | Spezifikation akzeptiert Werte, die die API ablehnt. Erhöht `minLength`/`minimum`, senkt `maxLength`/`maximum`, beschränkt Enums auf beobachtete Werte. | Ja -- verengt akzeptierte Werte |
-| **Add** | `MISSING_CONSTRAINT` | API erzwingt einen Constraint, der in der Spezifikation nicht dokumentiert ist. Fügt den Constraint zum Schema hinzu. | Ja -- fügt neuen Constraint hinzu |
+| **Tighten** | `SPEC_LOOSER` | Spezifikation akzeptiert Werte, die die API ablehnt. Erhöht `minLength`/`minimum`, senkt `maxLength`/`maximum`, beschränkt Enums auf beobachtete Werte. | Ja -- schränkt akzeptierte Werte ein |
+| **Add** | `MISSING_CONSTRAINT` | API erzwingt einen Constraint, der in der Spezifikation nicht dokumentiert ist. Fügt den Constraint dem Schema hinzu. | Ja -- fügt neuen Constraint hinzu |
 | **Remove** | `EXTRA_CONSTRAINT` | Spezifikation deklariert einen Constraint, den die API ignoriert. Entfernt den Constraint aus dem Schema. | Ja -- entfernt Constraint |
 
 :::caution
-Constraint-Korrekturen ändern den API-Vertrag. Sie werden nur angewendet, wenn sie durch Belege aus Schemathesis- oder Constraint-Validierungstests gegen die Live-API gestützt werden.
+Constraint-Korrekturen ändern den API-Vertrag. Sie werden nur angewendet, wenn sie durch Evidenz aus Schemathesis oder Constraint-Validierungstests gegen die Live-API gestützt werden.
 :::
 
 ### Unterstützte Constraint-Typen
 
 Die 10 OpenAPI-Constraint-Kategorien, die getestet und korrigiert werden:
 
-- **Zeichenkettenlänge** -- `minLength`, `maxLength`
+- **String-Länge** -- `minLength`, `maxLength`
 - **Muster** -- `pattern` (Regex)
 - **Numerische Grenzen** -- `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum`
 - **Pflichtfelder** -- `required`
@@ -44,7 +44,7 @@ Die 10 OpenAPI-Constraint-Kategorien, die getestet und korrigiert werden:
 
 Diese Korrekturen beheben OAS3-Qualitätsprobleme, die durch [Spectral-Linting](/04-spectral-rules/) gefunden wurden. Sie fügen Metadaten hinzu oder korrigieren diese, ohne das API-Verhalten zu ändern.
 
-### Servers-Block-Injektion
+### Server-Block-Injektion
 
 **Regel**: `oas3-api-servers` | **Vertragsänderung**: Nein
 
@@ -85,37 +85,37 @@ Die Werte stammen aus `spectral.contact` in [validation.yaml](/05-configuration/
 
 **Regel**: `operation-tags` | **Vertragsänderung**: Nein
 
-Leitet ein Tag aus dem URL-Pfadpräfix für nicht getaggte Operationen ab. Für einen Pfad wie `/api/config/namespaces/{namespace}/healthchecks` lautet das Tag `config` (das zweite Nicht-Parameter-Segment). Das Tag wird sowohl zum `tags`-Array der Operation als auch zur `tags`-Liste auf Spezifikationsebene hinzugefügt.
+Leitet einen Tag aus dem URL-Pfad-Präfix für nicht getaggte Operationen ab. Für einen Pfad wie `/api/config/namespaces/{namespace}/healthchecks` lautet der Tag `config` (das zweite Nicht-Parameter-Segment). Der Tag wird sowohl dem `tags`-Array der Operation als auch der `tags`-Liste auf Spezifikationsebene hinzugefügt.
 
 ### Entfernung ungenutzter Komponenten
 
 **Regel**: `oas3-unused-component` | **Vertragsänderung**: Nein
 
-Entfernt Komponentenschemas aus `components.schemas`, die nirgendwo in der Spezifikation referenziert werden. Reduziert die Spezifikationsgröße, ohne eine Operation zu beeinflussen.
+Entfernt Komponentenschemata aus `components.schemas`, die nirgendwo in der Spezifikation referenziert werden. Reduziert die Spezifikationsgröße, ohne eine Operation zu beeinflussen.
 
 ### OperationId-Deduplizierung
 
 **Regel**: `operation-operationId-unique` | **Vertragsänderung**: Nein
 
-Hängt die HTTP-Methode als Suffix an (z. B. `ListItems_get`), wenn mehrere Operationen dieselbe `operationId` teilen. Dies macht jede operationId für Code-Generatoren eindeutig.
+Hängt die HTTP-Methode als Suffix an (z. B. `ListItems_get`), wenn mehrere Operationen dieselbe `operationId` teilen. Dadurch wird jede operationId für Code-Generatoren eindeutig.
 
-### Entfernung ungültiger Example/Default-Werte
+### Entfernung ungültiger Example-/Default-Werte
 
 **Regel**: `oas3-valid-schema-example` | **Vertragsänderung**: Nein
 
-Entfernt `example`- oder `default`-Werte aus Schemas, wenn der Wert nicht den eigenen Constraints des Schemas entspricht (falscher Typ, außerhalb des Bereichs usw.). Verhindert, dass Code-Generatoren ungültige Beispiel-Payloads erzeugen.
+Entfernt `example`- oder `default`-Werte aus Schemata, wenn der Wert nicht den eigenen Constraints des Schemas entspricht (falscher Typ, außerhalb des Bereichs usw.). Verhindert, dass Code-Generatoren ungültige Beispiel-Payloads erzeugen.
 
-### Script-Tag-Bereinigung
+### Script-Tag-Entfernung
 
 **Regel**: `no-script-tags-in-markdown` | **Vertragsänderung**: Nein
 
-Entfernt `<script>`-Tags aus `description`-Feldern mittels Regex-Ersetzung. Einige Upstream-Spezifikationen enthalten eingeschleuste Script-Tags, die Dokumentationsrenderer beschädigen.
+Entfernt `<script>`-Tags aus `description`-Feldern mittels Regex-Ersetzung. Einige Upstream-Spezifikationen enthalten eingefügte Script-Tags, die Dokumentations-Renderer beschädigen.
 
 ## Sicherheitsmetadaten
 
 **Vertragsänderung**: Nein (nur Dokumentation)
 
-Jede Spezifikation erhält ein `apiKeyAuth`-Sicherheitsschema, sofern noch keines vorhanden ist. Dies wird immer injiziert, unabhängig davon, ob Spectral es beanstandet hat.
+Jede Spezifikation erhält ein `apiKeyAuth`-Sicherheitsschema, sofern nicht bereits eines vorhanden ist. Dies wird immer injiziert, unabhängig davon, ob Spectral es beanstandet hat.
 
 ```json
 "components": {
@@ -131,13 +131,13 @@ Jede Spezifikation erhält ein `apiKeyAuth`-Sicherheitsschema, sofern noch keine
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-Die Schema-Definition stammt aus `spectral.security_scheme` in [validation.yaml](/05-configuration/). Dies teilt API-Nutzern mit, wie sie sich authentifizieren, ändert aber nicht das Laufzeitverhalten.
+Die Schema-Definition stammt aus `spectral.security_scheme` in [validation.yaml](/05-configuration/). Dies informiert API-Konsumenten über die Authentifizierung, ändert jedoch nicht das Laufzeitverhalten.
 
 ## JSON-Formatierung
 
 **Vertragsänderung**: Nein
 
-Alle ausgegebenen JSON-Spezifikationen durchlaufen einen Biome-kompatiblen Array-Komprimierer (`_compact_short_arrays` in `scripts/utils/spec_loader.py`). Kurze Arrays, die in 120 Zeichen passen, werden in eine einzelne Zeile zusammengefasst:
+Alle ausgegebenen JSON-Spezifikationen durchlaufen einen Biome-kompatiblen Array-Komprimator (`_compact_short_arrays` in `scripts/utils/spec_loader.py`). Kurze Arrays, die innerhalb von 120 Zeichen passen, werden auf eine einzelne Zeile zusammengefasst:
 
 ```json
 // Before
@@ -150,14 +150,14 @@ Alle ausgegebenen JSON-Spezifikationen durchlaufen einen Biome-kompatiblen Array
 "enum": ["ACTIVE", "INACTIVE"]
 ```
 
-Arrays, die den Zeilenlängenschwellenwert überschreiten, bleiben mehrzeilig.
+Arrays, die den Zeilenlängen-Schwellenwert überschreiten, bleiben mehrzeilig.
 
 ## Korrektur-Priorität
 
-Wenn mehrere Korrekturstrategien anwendbar sein könnten, verwendet der Reconciler eine Prioritätsreihenfolge, die in `reconciliation.priority` konfiguriert ist:
+Wenn mehrere Korrekturstrategien anwendbar sein könnten, verwendet der Reconciler eine in `reconciliation.priority` konfigurierte Prioritätsreihenfolge:
 
 1. **existing** -- Verwendet den bestehenden Spezifikations-Constraint, wenn er gültig ist
-2. **discovery** -- Verwendet das entdeckte Verhalten der Live-API
+2. **discovery** -- Verwendet das entdeckte Live-API-Verhalten
 3. **inferred** -- Leitet aus Mustern über ähnliche Endpunkte hinweg ab
 
-Jede korrigierte Spezifikation wird nach Anwendung aller Korrekturen mit `openapi-spec-validator` validiert. Wenn die Validierung fehlschlägt, wird die Originalspezifikation als Fallback verwendet und die Korrektur als Fehler protokolliert.
+Jede korrigierte Spezifikation wird nach Anwendung aller Korrekturen mit `openapi-spec-validator` validiert. Wenn die Validierung fehlschlägt, wird die ursprüngliche Spezifikation als Fallback verwendet und die Korrektur als Fehler protokolliert.

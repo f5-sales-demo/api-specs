@@ -1,6 +1,6 @@
 ---
 title: เอกสารอ้างอิงการกำหนดค่า
-description: เอกสารอ้างอิงสำหรับไฟล์การกำหนดค่า validation.yaml และ endpoints.yaml
+description: เอกสารอ้างอิงสำหรับไฟล์กำหนดค่า validation.yaml และ endpoints.yaml
 i18n:
   sourceHash: ca5e781b7000
   translator: machine
@@ -24,15 +24,15 @@ api:
 
 | ฟิลด์ | คำอธิบาย |
 |-------|-------------|
-| `base_url` | URL ฐานของ API คอนโซล F5 XC สามารถแทนที่ได้ด้วยตัวแปรสภาพแวดล้อม `F5XC_API_URL` |
+| `base_url` | URL พื้นฐานของ API คอนโซล F5 XC สามารถแทนที่ด้วยตัวแปรสภาพแวดล้อม `F5XC_API_URL` |
 | `tenant` | ชื่อ tenant ที่ใช้ในเส้นทาง API |
 | `namespace` | namespace เริ่มต้นสำหรับการดำเนินการ CRUD |
-| `timeout` | ระยะหมดเวลาของคำขอ HTTP เป็นวินาที |
-| `retries` | จำนวนครั้งที่พยายามใหม่เมื่อเกิดข้อผิดพลาด |
-| `retry_delay` | จำนวนวินาทีระหว่างการพยายามใหม่แต่ละครั้ง |
+| `timeout` | ระยะเวลาหมดเวลาของคำขอ HTTP เป็นวินาที |
+| `retries` | จำนวนครั้งในการลองใหม่เมื่อเกิดความล้มเหลว |
+| `retry_delay` | จำนวนวินาทีระหว่างการลองใหม่แต่ละครั้ง |
 
 :::caution
-ค่า `base_url`, `tenant` และ `namespace` ใน `validation.yaml` เป็นค่าตัวยึดตำแหน่งทั่วไป คุณ**จำเป็นต้อง**กำหนดค่าเหล่านี้สำหรับสภาพแวดล้อมของคุณผ่านตัวแปรสภาพแวดล้อมก่อนรัน pipeline:
+ค่า `base_url`, `tenant` และ `namespace` ใน `validation.yaml` เป็นค่าตัวแทนทั่วไป คุณ**จำเป็นต้อง**กำหนดค่าเหล่านี้สำหรับสภาพแวดล้อมของคุณผ่านตัวแปรสภาพแวดล้อมก่อนรัน pipeline:
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
@@ -41,7 +41,7 @@ export F5XC_NAMESPACE="example-namespace"
 export F5XC_API_TOKEN="your-api-token"
 ```
 
-ตัวแปรสภาพแวดล้อมจะมีความสำคัญเหนือกว่าค่าเริ่มต้นใน YAML ณ เวลาที่รัน
+ตัวแปรสภาพแวดล้อมจะมีความสำคัญเหนือกว่าค่าเริ่มต้นใน YAML ขณะรันไทม์
 :::
 
 ### การตั้งค่าการดาวน์โหลด
@@ -56,10 +56,10 @@ download:
 | ฟิลด์ | คำอธิบาย |
 |-------|-------------|
 | `url` | URL ของชุด OpenAPI spec อย่างเป็นทางการของ F5 XC (ZIP) |
-| `output_dir` | ตำแหน่งที่เก็บ spec ที่แตกไฟล์แล้ว |
-| `etag_cache` | ไฟล์ที่เก็บ HTTP ETag สำหรับการดาวน์โหลดแบบมีเงื่อนไข |
+| `output_dir` | ตำแหน่งที่จัดเก็บ spec ที่แตกไฟล์แล้ว |
+| `etag_cache` | ไฟล์ที่จัดเก็บ HTTP ETag สำหรับการดาวน์โหลดแบบมีเงื่อนไข |
 
-### หมวดหมู่การตรวจสอบความถูกต้อง
+### หมวดหมู่การตรวจสอบ
 
 สิบหมวดหมู่ที่สอดคล้องกับประเภทข้อจำกัดของ OpenAPI schema แต่ละหมวดหมู่สามารถเปิด/ปิดใช้งานได้อย่างอิสระ
 
@@ -101,15 +101,15 @@ schemathesis:
 
 | ฟิลด์ | คำอธิบาย |
 |-------|-------------|
-| `enabled` | สลับเปิด/ปิดการทดสอบ Schemathesis |
-| `max_examples` | จำนวนสูงสุดของกรณีทดสอบที่สร้างขึ้นต่อ operation หนึ่งรายการ |
+| `enabled` | เปิด/ปิดการทดสอบ Schemathesis |
+| `max_examples` | จำนวนสูงสุดของกรณีทดสอบที่สร้างขึ้นต่อ operation |
 | `hypothesis_phases` | เฟสของ Hypothesis ที่จะรัน (`generate`, `target`) |
-| `stateful_testing` | เปิดใช้งานการทดสอบแบบ stateful ที่อิงตาม link ข้าม operation |
-| `base_url_override` | แทนที่ URL ฐานของ API สำหรับการทดสอบ `null` จะใช้ `api.base_url` |
+| `stateful_testing` | เปิดใช้การทดสอบแบบ stateful ที่อิงตาม link ข้าม operation |
+| `base_url_override` | แทนที่ URL พื้นฐานของ API สำหรับการทดสอบ `null` จะใช้ `api.base_url` |
 | `auth_header` | ชื่อ HTTP header สำหรับการยืนยันตัวตน |
-| `auth_prefix` | รูปแบบ prefix ของ token (คำขอจะถูกส่งในรูปแบบ `APIToken <token>`) |
+| `auth_prefix` | รูปแบบ prefix ของ token (คำขอจะถูกส่งเป็น `APIToken <token>`) |
 
-### การตั้งค่าการปรับปรุงแก้ไข (Reconciliation)
+### การตั้งค่าการปรับปรุงความสอดคล้อง
 
 ```yaml
 reconciliation:
@@ -127,7 +127,7 @@ reconciliation:
 | ฟิลด์ | คำอธิบาย |
 |-------|-------------|
 | `priority` | ลำดับความสำคัญเมื่อแหล่งข้อมูลหลายแหล่งไม่ตรงกัน |
-| `fix_strategies` | แมปประเภทความไม่สอดคล้องแต่ละแบบไปยังการดำเนินการแก้ไข ดู [การแก้ไขที่ดำเนินการ](/03-fixes-applied/) |
+| `fix_strategies` | แมปประเภทความไม่สอดคล้องแต่ละประเภทกับการดำเนินการแก้ไข ดู [การแก้ไขที่ใช้](/03-fixes-applied/) |
 
 ### การตั้งค่า Spectral
 
@@ -166,14 +166,14 @@ spectral:
 
 | ฟิลด์ | คำอธิบาย |
 |-------|-------------|
-| `enabled` | สลับเปิด/ปิดการตรวจสอบด้วย Spectral ทั้งหมด |
-| `ruleset` | ไฟล์การกำหนดค่า Spectral ที่จะใช้ (pipeline ใช้ `spectral-pipeline.yaml`) |
-| `auto_fix` | แมปชื่อกฎไปยังค่า boolean `true` หมายความว่า reconciler จะแก้ไขการละเมิด |
-| `gate.max_errors` | จำนวนข้อผิดพลาดสูงสุดที่อนุญาตในเกตหลังการปรับปรุงแก้ไข `null` จะปิดการตรวจสอบนี้ |
-| `gate.max_warnings` | จำนวนคำเตือนสูงสุดที่อนุญาต `null` จะปิดการตรวจสอบนี้ |
-| `contact` | ข้อมูลผู้ติดต่อที่จะแทรกลงใน `info.contact` โดยตัวแก้ไข `info-contact` |
-| `servers` | อาร์เรย์ servers ที่แทรกโดยตัวแก้ไข `oas3-api-servers` |
-| `security_scheme` | คำจำกัดความ security scheme ที่แทรกลงในทุก spec |
+| `enabled` | เปิด/ปิดการ lint ด้วย Spectral ทั้งหมด |
+| `ruleset` | ไฟล์กำหนดค่า Spectral ที่จะใช้ (pipeline ใช้ `spectral-pipeline.yaml`) |
+| `auto_fix` | แมปชื่อกฎกับค่า boolean `true` หมายความว่า reconciler จะแก้ไขการละเมิดกฎ |
+| `gate.max_errors` | จำนวน error สูงสุดที่อนุญาตใน gate หลังการปรับปรุง `null` จะปิดใช้งานการตรวจสอบ |
+| `gate.max_warnings` | จำนวน warning สูงสุดที่อนุญาต `null` จะปิดใช้งานการตรวจสอบ |
+| `contact` | ข้อมูลติดต่อที่ถูกใส่ลงใน `info.contact` โดย fixer `info-contact` |
+| `servers` | อาร์เรย์ servers ที่ถูกใส่โดย fixer `oas3-api-servers` |
+| `security_scheme` | คำจำกัดความ security scheme ที่ถูกใส่ลงในทุก spec |
 
 ### การตั้งค่ารายงาน
 
@@ -188,7 +188,7 @@ reports:
   max_examples_per_issue: 5
 ```
 
-### การตั้งค่าการปล่อยเวอร์ชัน (Release)
+### การตั้งค่าการเผยแพร่
 
 ```yaml
 release:
@@ -200,14 +200,14 @@ release:
 
 | ฟิลด์ | คำอธิบาย |
 |-------|-------------|
-| `output_dir` | ไดเรกทอรีสำหรับ artifact ของการปล่อยเวอร์ชัน |
-| `include_changelog` | รวม `CHANGELOG.md` ในแพ็กเกจการปล่อยเวอร์ชัน |
-| `include_validation_report` | รวมรายงานการตรวจสอบความถูกต้องในแพ็กเกจการปล่อยเวอร์ชัน |
-| `version_from` | แหล่งที่มาของเวอร์ชัน `git` จะอนุมานเวอร์ชันจากวันที่ของ spec metadata + หมายเลข patch |
+| `output_dir` | ไดเรกทอรีสำหรับ artifact ของการเผยแพร่ |
+| `include_changelog` | รวม `CHANGELOG.md` ในแพ็คเกจเผยแพร่ |
+| `include_validation_report` | รวมรายงานการตรวจสอบในแพ็คเกจเผยแพร่ |
+| `version_from` | แหล่งที่มาของเวอร์ชัน `git` จะคำนวณเวอร์ชันจากวันที่ metadata ของ spec + หมายเลข patch |
 
 ## `config/endpoints.yaml`
 
-กำหนด endpoint พื้นฐานที่ใช้สำหรับการตรวจสอบความถูกต้องของ API แบบสด (live) แต่ละรายการจะแมปชื่อทรัพยากรเชิงตรรกะไปยังไฟล์ spec, กลุ่ม API และเส้นทาง CRUD ของมัน
+กำหนด endpoint พื้นฐานที่ใช้สำหรับการตรวจสอบ API แบบ live แต่ละรายการแมปชื่อทรัพยากรเชิงตรรกะกับไฟล์ spec, กลุ่ม API และเส้นทาง CRUD
 
 ### โครงสร้าง Endpoint
 
@@ -231,14 +231,14 @@ endpoints:
 |-------|-------------|
 | `resource` | ชื่อทรัพยากร API (ใช้ในเส้นทาง URL) |
 | `domain_file` | ชื่อไฟล์ของ OpenAPI spec ใน `specs/original/` |
-| `api_group` | prefix กลุ่ม API (`config`, `web` เป็นต้น) |
-| `crud_operations` | HTTP method และเส้นทางสำหรับแต่ละ operation ของ CRUD |
-| `test_priority` | `high`, `medium` หรือ `low` -- ควบคุมลำดับการรันการทดสอบ |
-| `description` | คำอธิบายทรัพยากรที่อ่านเข้าใจได้ง่าย |
+| `api_group` | prefix กลุ่ม API (`config`, `web` ฯลฯ) |
+| `crud_operations` | HTTP method และเส้นทางสำหรับแต่ละการดำเนินการ CRUD |
+| `test_priority` | `high`, `medium` หรือ `low` -- ควบคุมลำดับการรันทดสอบ |
+| `description` | คำอธิบายทรัพยากรที่มนุษย์อ่านได้ |
 
 ### Endpoint พื้นฐานปัจจุบัน
 
-10 endpoint ครอบคลุม 3 โดเมน:
+10 endpoint ข้ามสามโดเมน:
 
 | Endpoint | โดเมน | ลำดับความสำคัญ |
 |----------|--------|----------|
@@ -255,7 +255,7 @@ endpoints:
 
 ### การเพิ่ม Endpoint ใหม่
 
-หากต้องการเพิ่ม endpoint ใหม่สำหรับการตรวจสอบความถูกต้อง:
+ในการเพิ่ม endpoint ใหม่สำหรับการตรวจสอบ:
 
 1. ค้นหาชื่อไฟล์ spec ใน `specs/original/` (รูปแบบ: `docs-cloud-f5-com.NNNN.*.ves-swagger.json`)
 2. เพิ่มรายการภายใต้ `endpoints:` ตามโครงสร้างด้านบน
@@ -263,5 +263,5 @@ endpoints:
 4. เพิ่มชื่อ endpoint ลงใน `test_order:` ในตำแหน่งที่ต้องการ
 
 :::tip
-เฟรมเวิร์กจะตรวจสอบความถูกต้องของ spec ทั้ง 268 ไฟล์ระหว่างการปรับปรุงแก้ไข โดยไม่คำนึงถึงสิ่งที่ระบุไว้ใน `endpoints.yaml` การกำหนดค่า endpoint จะควบคุมว่าทรัพยากรใดจะได้รับการทดสอบ API แบบสดด้วย Schemathesis
+framework จะตรวจสอบ spec ทั้งหมด 268 ไฟล์ระหว่างการปรับปรุงความสอดคล้องโดยไม่ขึ้นกับสิ่งที่ระบุไว้ใน `endpoints.yaml` การกำหนดค่า endpoints ควบคุมว่าทรัพยากรใดจะได้รับการทดสอบ API แบบ live ด้วย Schemathesis
 :::

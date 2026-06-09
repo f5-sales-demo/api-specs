@@ -1,0 +1,121 @@
+---
+# Property name corrections for misspelled JSON keys in
+# OpenAPI spec schemas.
+#
+# Property names are STRUCTURAL — changing them alters
+# the API contract. Each correction must be verified
+# against the live F5 XC API before applying.
+#
+# Workflow:
+#   1. Add suspected typos with verified: false
+#   2. Run `make verify-property-names` to probe the API
+#   3. Script marks verified: true where the API uses the
+#      corrected name (not the misspelled one)
+#   4. `make transform` applies only verified corrections
+#
+# If the API returns the misspelled key, the spec is
+# correct and the fix must happen upstream.
+#
+# Last verified: 2026-06-09
+# Tenant: nferreira.staging.volterra.us
+
+corrections:
+  # --- Verified: safe to fix ---
+
+  - schema: fleetFlashBladeEndpoint
+    old_key: lables
+    new_key: labels
+    verified: true
+    api_status: fix_spec
+    probe_endpoint: /api/config/namespaces/system/fleets
+    probe_method: GET
+    notes: >-
+      API returns 'labels'.
+      Spec should be corrected. 2 files.
+
+  # --- Verified: upstream platform typos ---
+
+  - schema: schemasiteGetSpecType
+    old_key: volterra_software_overide
+    new_key: volterra_software_override
+    verified: false
+    api_status: upstream_typo
+    probe_endpoint: /api/config/namespaces/system/sites
+    probe_method: GET
+    notes: >-
+      API returns the misspelled key.
+      Typo is in the platform.
+
+  - schema: clusterGetSpecType
+    old_key: disable_lb_source_ip_persistance
+    new_key: disable_lb_source_ip_persistence
+    verified: false
+    api_status: upstream_typo
+    probe_endpoint: /api/config/namespaces/system/clusters
+    probe_method: GET
+    notes: >-
+      API returns the misspelled key.
+      Typo is in the platform.
+
+  - schema: clusterGetSpecType
+    old_key: enable_lb_source_ip_persistance
+    new_key: enable_lb_source_ip_persistence
+    verified: false
+    api_status: upstream_typo
+    probe_endpoint: /api/config/namespaces/system/clusters
+    probe_method: GET
+    notes: >-
+      Paired with disable_ variant.
+      Same upstream platform typo.
+
+  - schema: namespaceHTTPLoadbalancerInventoryFilterType
+    old_key: public_advertisment
+    new_key: public_advertisement
+    verified: false
+    api_status: upstream_typo
+    probe_endpoint: >-
+      /api/config/namespaces/{namespace}/application_inventory
+    probe_method: POST
+    notes: >-
+      API returns 'public_advertisment' alongside correct
+      'private_advertisement'. Inconsistent upstream typo.
+      9 occurrences across HTTP/TCP/UDP LB types.
+
+  - schema: fleetBlockedServicesListType
+    old_key: blocked_sevice
+    new_key: blocked_service
+    verified: false
+    api_status: upstream_typo
+    probe_endpoint: >-
+      /api/config/namespaces/system/azure_vnet_sites
+    probe_method: GET
+    notes: >-
+      API accepts and returns 'blocked_sevice'.
+      Verified via Azure VNET site creation.
+
+  # --- Unverifiable on staging tenant ---
+
+  - schema: recognizeRescueItem
+    old_key: OBSOLOTE_upperBound
+    new_key: OBSOLETE_upperBound
+    verified: false
+    api_status: unverifiable
+    probe_endpoint: >-
+      /api/shape/recognize/namespaces/system/
+      recognize/addon/dashboard/rescue
+    probe_method: POST
+    notes: >-
+      Shape API returned HTTP 403.
+      Needs Shape/Bot Defense entitlement.
+
+  - schema: reportingAutomationTypeData
+    old_key: previous_reqeust_count
+    new_key: previous_request_count
+    verified: false
+    api_status: unverifiable
+    probe_endpoint: >-
+      /api/data/namespaces/system/bot_defense_overview
+    probe_method: GET
+    notes: >-
+      Bot Defense reporting returned HTTP 404.
+      Needs Shape/Bot Defense entitlement.

@@ -1,0 +1,181 @@
+---
+title: Spelling Audit Report
+description: Verified spelling errors in the F5 Distributed Cloud OpenAPI specifications
+---
+
+# Spelling Audit Report
+
+**Date:** 2026-06-09
+**Verified against:** `nferreira.staging.volterra.us` (live API)
+**Specs audited:** 268 OpenAPI JSON files (`release/specs/`)
+
+## Summary
+
+| Category | Count | Status |
+|----------|-------|--------|
+| Text field typos (description/summary/title) | 109 unique errors across 761 fields | Auto-corrected by `fix_spelling` transform |
+| Property name typos — fixable | 1 | Auto-corrected by `fix_property_names` transform |
+| Property name typos — upstream platform | 5 | Spec correctly reflects the live API |
+| Property name typos — unverifiable | 2 | Needs Shape/Bot Defense entitlement |
+
+---
+
+## Upstream Platform Spelling Errors
+
+These misspelled JSON property names exist **in the live F5 XC API itself**. The specs
+correctly reflect the API's actual behavior. These must be fixed at the platform/protobuf
+level and re-exported — changing them in the spec alone would break API consumers.
+
+Each was verified by probing the live API and confirming the misspelled key is returned
+in actual responses.
+
+### `blocked_sevice` → should be `blocked_service`
+
+- **Schema:** `fleetBlockedServicesListType`
+- **Verified by:** Creating an Azure VNET site with custom `blocked_services` config and reading it back
+- **API behavior:** Accepts and returns `blocked_sevice` (misspelled)
+- **Files affected (7):**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → should be `public_advertisement`
+
+- **Schema:** `namespaceHTTPLoadbalancerInventoryFilterType` (and TCP/UDP variants)
+- **Verified by:** Querying `/api/config/namespaces/{ns}/application_inventory`
+- **API behavior:** Returns `public_advertisment` alongside correctly spelled `private_advertisement` in the same response — inconsistent within the same object
+- **Files affected (1):** `ves.io.schema.namespace` (9 occurrences across HTTP/TCP/UDP LB inventory, filter, and result types)
+
+### `volterra_software_overide` → should be `volterra_software_override`
+
+- **Schema:** `schemasiteGetSpecType`, `schemasiteReplaceSpecType`
+- **Verified by:** Reading site detail via `GET /api/config/namespaces/system/sites/{name}`
+- **API behavior:** Returns `volterra_software_overide` (misspelled)
+- **Files affected (1):** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → should be `disable_lb_source_ip_persistence`
+
+- **Schema:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **Verified by:** Reading cluster detail via `GET /api/config/namespaces/{ns}/clusters/{name}`
+- **API behavior:** Returns `disable_lb_source_ip_persistance` (misspelled)
+- **Files affected (3):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → should be `enable_lb_source_ip_persistence`
+
+- **Schema:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **Verified by:** Same cluster endpoints as the `disable_` variant above
+- **API behavior:** Same upstream typo pattern
+- **Files affected (3):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+---
+
+## Unverified Property Name Errors
+
+These could not be verified because the staging tenant lacks the required service entitlements.
+
+### `OBSOLOTE_upperBound` → should be `OBSOLETE_upperBound`
+
+- **Schema:** `recognizeRescueItem`
+- **Probe result:** Shape Recognize API returned HTTP 403 (restricted)
+- **Needs:** Shape/Bot Defense entitlement on the tenant
+- **Files affected (1):** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → should be `previous_request_count`
+
+- **Schema:** `reportingAutomationTypeData`, `reportingTrafficOverviewData`
+- **Probe result:** Bot Defense Reporting API returned HTTP 404
+- **Needs:** Shape/Bot Defense entitlement on the tenant
+- **Files affected (1):** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## Text Field Spelling Errors (Auto-Corrected)
+
+These are typos in `description`, `summary`, and `title` string values — not structural
+property names. They are automatically corrected by the `fix_spelling` transform during
+`make transform`. The full list is in `config/spelling_corrections.yaml`.
+
+### High frequency (10+ occurrences)
+
+| Misspelling | Correction | Occurrences |
+|-------------|-----------|-------------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### Medium frequency (2–9 occurrences)
+
+| Misspelling | Correction |
+|-------------|-----------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### Low frequency (1 occurrence each)
+
+`acccess`, `Manangement`, `secuirty`, `DECOMISSIONING`, `cerificates`, `enviroment`,
+`Dignosis`, `Creadential`, `procotol`, `Probablity`, `Newtork`, `Insatnce`, `idenfify`,
+`indentified`, `infomation`, `virutal`, `wihtout`, `suspicous`, `separte`, `summay`,
+`Totol`, `Staus`, `Sesions`, `Reture`, `Resurce`, `Referesh`, `Colletor`, `Chanel`,
+`Connnect`, `Availble`, `avaialable`, `Attachements`, `Addresss`, `deinition`,
+`dependant`, `responce`, `respresents`, and 30+ more.
+
+The complete dictionary of 109 corrections is maintained in
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml).
+
+---
+
+## Pipeline Integration
+
+### Existing transforms
+
+| Transform | Config | What it fixes |
+|-----------|--------|---------------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | Text field typos (description/summary/title) |
+| `fix_property_names` | `config/property_name_corrections.yaml` | Verified property key renames |
+
+### CI targets
+
+| Command | Purpose |
+|---------|---------|
+| `make spell-check-specs` | Run codespell on spec text fields and property names |
+| `make verify-property-names` | Probe live API to verify property name corrections |
+| `make transform` | Apply all corrections (text fields + verified property renames) |
+
+### Adding new corrections
+
+**Text fields:** Add the typo → correction mapping to `config/spelling_corrections.yaml`.
+It will be applied automatically on the next `make transform`.
+
+**Property names:** Add an entry to `config/property_name_corrections.yaml` with
+`verified: false`. Run `make verify-property-names` with `F5XC_API_URL` and
+`F5XC_API_TOKEN` set to probe the live API. Only corrections verified as `fix_spec`
+(API uses the corrected name) will be applied.

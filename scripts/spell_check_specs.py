@@ -24,7 +24,11 @@ def _extract_text(obj: Any) -> list[str]:
     texts: list[str] = []
     if isinstance(obj, dict):
         for key, value in obj.items():
-            if key in TEXT_FIELDS and isinstance(value, str) and len(value) > _MIN_TEXT_LENGTH:
+            if (
+                key in TEXT_FIELDS
+                and isinstance(value, str)
+                and len(value) > _MIN_TEXT_LENGTH
+            ):
                 texts.append(value)
             texts.extend(_extract_text(value))
     elif isinstance(obj, list):
@@ -84,14 +88,14 @@ def main() -> int:
         all_text.extend(_extract_text(spec))
         all_property_names.update(_extract_property_names(spec))
 
-    console.print(f"  Extracted {len(all_text)} text fields from {len(spec_files)} specs")
+    console.print(
+        f"  Extracted {len(all_text)} text fields from {len(spec_files)} specs"
+    )
     console.print(f"  Found {len(all_property_names)} unique property names")
 
     false_positives = _load_false_positives()
 
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".txt", delete=False
-    ) as tmp:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as tmp:
         tmp.write("\n".join(all_text))
         tmp_path = tmp.name
 
@@ -105,47 +109,53 @@ def main() -> int:
 
     errors_found = False
     if result.stdout.strip():
-        console.print(f"\n[red]Found spelling errors in text fields:[/red]\n{result.stdout}")
+        console.print(
+            f"\n[red]Found spelling errors in text fields:[/red]\n{result.stdout}"
+        )
         errors_found = True
     else:
         console.print("[green]No spelling errors in text fields.[/green]")
 
-    known_corrections = _load_known_property_corrections()
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".txt", delete=False
-    ) as tmp2:
-        tmp2.write("\n".join(all_property_names))
-        prop_path = tmp2.name
-
-    prop_cmd = ["codespell", prop_path]
-    if false_positives:
-        prop_cmd.extend(["--ignore-words-list", ",".join(false_positives)])
-    prop_result = subprocess.run(  # noqa: S603
-        prop_cmd, capture_output=True, text=True, check=False
-    )
-    Path(prop_path).unlink(missing_ok=True)
-
-    if prop_result.stdout.strip():
-        new_findings = []
-        for line in prop_result.stdout.strip().split("\n"):
-            typo = line.split(":")[1].strip().split(" ")[0] if ":" in line else ""
-            if typo and typo not in known_corrections:
-                new_findings.append(line)
-
-        if new_findings:
-            console.print(
-                f"\n[red]Found {len(new_findings)} misspelled property names "
-                f"not yet tracked:[/red]"
-            )
-            for finding in new_findings:
-                console.print(f"  {finding}")
-            errors_found = True
-        else:
-            console.print("[green]All misspelled property names are tracked.[/green]")
-    else:
-        console.print("[green]No spelling errors in property names.[/green]")
+    if _check_property_names(all_property_names, false_positives):
+        errors_found = True
 
     return 1 if errors_found else 0
+
+
+def _check_property_names(property_names: set[str], false_positives: list[str]) -> bool:
+    """Check property names for spelling errors. Returns True if new errors found."""
+    known = _load_known_property_corrections()
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as tmp:
+        tmp.write("\n".join(property_names))
+        tmp_path = tmp.name
+
+    cmd = ["codespell", tmp_path]
+    if false_positives:
+        cmd.extend(["--ignore-words-list", ",".join(false_positives)])
+    result = subprocess.run(cmd, capture_output=True, text=True, check=False)  # noqa: S603
+    Path(tmp_path).unlink(missing_ok=True)
+
+    if not result.stdout.strip():
+        console.print("[green]No spelling errors in property names.[/green]")
+        return False
+
+    new_findings = []
+    for line in result.stdout.strip().split("\n"):
+        typo = line.split(":")[1].strip().split(" ")[0] if ":" in line else ""
+        if typo and typo not in known:
+            new_findings.append(line)
+
+    if new_findings:
+        console.print(
+            f"\n[red]Found {len(new_findings)} misspelled property names "
+            f"not yet tracked:[/red]"
+        )
+        for finding in new_findings:
+            console.print(f"  {finding}")
+        return True
+
+    console.print("[green]All misspelled property names are tracked.[/green]")
+    return False
 
 
 if __name__ == "__main__":

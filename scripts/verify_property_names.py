@@ -88,8 +88,7 @@ def _probe_correction(
         elif has_old and not has_new:
             result["status"] = "upstream_typo"
             result["recommendation"] = (
-                f"API uses '{old_key}' — typo is upstream, "
-                "spec is correct as-is"
+                f"API uses '{old_key}' — typo is upstream, spec is correct as-is"
             )
         elif has_old and has_new:
             result["status"] = "both_present"
@@ -166,7 +165,9 @@ def main() -> int:
         auth = load_auth_from_config(val_config)
     except ValueError as e:
         console.print(f"[red]{e}[/red]")
-        console.print("[yellow]Set F5XC_API_URL and F5XC_API_TOKEN to probe the API[/yellow]")
+        console.print(
+            "[yellow]Set F5XC_API_URL and F5XC_API_TOKEN to probe the API[/yellow]"
+        )
         return 1
 
     results = []
@@ -210,9 +211,7 @@ def main() -> int:
         if changed:
             with args.config.open("w") as fh:
                 yaml.dump(config, fh, default_flow_style=False, sort_keys=False)
-            console.print(
-                "[green]Config updated — verified corrections marked[/green]"
-            )
+            console.print("[green]Config updated — verified corrections marked[/green]")
         else:
             console.print("[yellow]No new corrections to verify[/yellow]")
 

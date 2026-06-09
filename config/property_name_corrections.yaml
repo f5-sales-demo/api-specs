@@ -72,10 +72,10 @@ corrections:
     old_key: blocked_sevice
     new_key: blocked_service
     verified: false
-    api_status: unverifiable
-    probe_endpoint: /api/config/namespaces/system/aws_tgw_sites
+    api_status: upstream_typo
+    probe_endpoint: /api/config/namespaces/system/azure_vnet_sites
     probe_method: GET
-    notes: "No cloud site resources with custom blocked_services config on staging. Needs production tenant with AWS/Azure/GCP sites that have blocked services configured."
+    notes: "API accepts and returns 'blocked_sevice'. Verified by creating an Azure VNET site with blocked_services config. Typo is in the platform."
 
   - schema: recognizeRescueItem
     old_key: OBSOLOTE_upperBound

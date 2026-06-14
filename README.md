@@ -7,18 +7,10 @@
 
 OpenAPI spec validation and reconciliation for F5 Distributed Cloud
 
+
 ## Documentation
 
 Full documentation is available at **[https://f5xc-salesdemos.github.io/api-specs/](https://f5xc-salesdemos.github.io/api-specs/)**.
-
-## Getting Started
-
-```bash
-git clone https://github.com/f5xc-salesdemos/api-specs.git
-```
-
-See the [documentation](https://f5xc-salesdemos.github.io/api-specs/) for detailed setup
-and usage guides.
 
 ## Contributing
 

@@ -1,5 +1,5 @@
 ---
-title: F5 XC ข้อกำหนด API
+title: ข้อกำหนด API F5 XC
 description: >-
   ข้อกำหนด OpenAPI ที่ผ่านการตรวจสอบ เพิ่มประสิทธิภาพ และสอดคล้องกับ OAS3 สำหรับ
   F5 Distributed Cloud
@@ -8,11 +8,12 @@ sidebar:
   hidden: true
 hero:
   tagline: >-
-    ข้อกำหนด OpenAPI ที่พร้อมใช้งานจริงสำหรับ F5 Distributed Cloud — ตรวจสอบกับ
-    API จริง ซ่อมแซมอัตโนมัติ และเพิ่มประสิทธิภาพด้วยข้อมูลเมตาด้านความปลอดภัย
-    คำนิยามเซิร์ฟเวอร์ และแท็กการดำเนินการ
+    ข้อกำหนด OpenAPI ที่พร้อมใช้งานในระบบจริงสำหรับ F5 Distributed Cloud —
+    ผ่านการตรวจสอบกับ API จริง ซ่อมแซมอัตโนมัติ
+    และเพิ่มประสิทธิภาพด้วยข้อมูลเมตาด้านความปลอดภัย คำนิยามเซิร์ฟเวอร์
+    และแท็กการดำเนินการ
   actions:
-    - text: ภาพรวม Pipeline
+    - text: ภาพรวมไปป์ไลน์
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
@@ -27,16 +28,16 @@ i18n:
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
-  <Card title="ภาพรวม Pipeline" icon="rocket">
-    Pipeline อัตโนมัติ 6 ขั้นตอน: ดาวน์โหลด ตรวจสอบ lint ปรับประสาน กำหนดเกณฑ์ และเผยแพร่
+  <Card title="ภาพรวมไปป์ไลน์" icon="rocket">
+    ไปป์ไลน์อัตโนมัติ 6 ขั้นตอน: ดาวน์โหลด ตรวจสอบ ตรวจสอบคุณภาพโค้ด ปรับแก้ ควบคุมคุณภาพ และเผยแพร่
     [อ่านเพิ่มเติม](/02-pipeline/)
   </Card>
-  <Card title="การแก้ไขที่นำไปใช้" icon="pencil">
+  <Card title="การแก้ไขที่ใช้งาน" icon="pencil">
     การซ่อมแซมข้อจำกัด การเพิ่มประสิทธิภาพด้วย Spectral ข้อมูลเมตาด้านความปลอดภัย และการจัดรูปแบบ JSON
     [อ่านเพิ่มเติม](/03-fixes-applied/)
   </Card>
   <Card title="กฎ Spectral" icon="warning">
-    สถาปัตยกรรมการ lint แบบสองการกำหนดค่าพร้อมฟังก์ชัน `f5-path-params` แบบกำหนดเอง
+    สถาปัตยกรรมการตรวจสอบคุณภาพโค้ดแบบสองการกำหนดค่า พร้อมฟังก์ชัน `f5-path-params` แบบกำหนดเอง
     [อ่านเพิ่มเติม](/04-spectral-rules/)
   </Card>
   <Card title="การกำหนดค่า" icon="setting">
@@ -44,11 +45,11 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
     [อ่านเพิ่มเติม](/05-configuration/)
   </Card>
   <Card title="รายงานการตรวจสอบ" icon="document">
-    รายงานที่สร้างอัตโนมัติของการแก้ไขทั้งหมดที่นำไปใช้ในการรัน pipeline ล่าสุด
+    รายงานที่สร้างขึ้นอัตโนมัติของการแก้ไขทั้งหมดที่ใช้งานในการรันไปป์ไลน์ล่าสุด
     [อ่านเพิ่มเติม](/01-validation-report/)
   </Card>
   <Card title="การมีส่วนร่วม" icon="github">
-    การตั้งค่าสภาพแวดล้อมการพัฒนา pipeline ในเครื่อง การทดสอบ และขั้นตอน PR
+    การตั้งค่าสภาพแวดล้อมสำหรับพัฒนา ไปป์ไลน์ในเครื่อง การทดสอบ และขั้นตอนการส่ง PR
     [อ่านเพิ่มเติม](/06-contributing/)
   </Card>
 </CardGrid>

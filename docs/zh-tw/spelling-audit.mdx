@@ -1,0 +1,175 @@
+---
+title: 拼字稽核報告
+description: F5 Distributed Cloud OpenAPI 規格中已驗證的拼字錯誤
+i18n:
+  sourceHash: 9ef5104a9859
+  translator: machine
+---
+
+# 拼字稽核報告
+
+**日期：** 2026-06-09
+**驗證對象：** `nferreira.staging.volterra.us`（線上 API）
+**稽核規格：** 268 個 OpenAPI JSON 檔案（`release/specs/`）
+
+## 摘要
+
+| 類別 | 數量 | 狀態 |
+|------|------|------|
+| 文字欄位錯字（description/summary/title） | 761 個欄位中共 109 個唯一錯誤 | 由 `fix_spelling` 轉換自動修正 |
+| 屬性名稱錯字 — 可修正 | 1 | 由 `fix_property_names` 轉換自動修正 |
+| 屬性名稱錯字 — 上游平台問題 | 5 | 規格正確反映線上 API 的實際行為 |
+| 屬性名稱錯字 — 無法驗證 | 2 | 需要 Shape/Bot Defense 授權 |
+
+---
+
+## 上游平台拼字錯誤
+
+這些拼字錯誤的 JSON 屬性名稱存在於**線上 F5 XC API 本身**。規格正確反映了 API 的實際行為。這些錯誤必須在平台/protobuf 層級修正後重新匯出——僅在規格中修改將會導致 API 使用者出現問題。
+
+每項錯誤均透過探測線上 API 並確認拼字錯誤的鍵值確實出現在實際回應中加以驗證。
+
+### `blocked_sevice` → 應為 `blocked_service`
+
+- **Schema：** `fleetBlockedServicesListType`
+- **驗證方式：** 建立具有自訂 `blocked_services` 設定的 Azure VNET site 並讀取回應
+- **API 行為：** 接受並回傳 `blocked_sevice`（拼字錯誤）
+- **受影響的檔案（7 個）：**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → 應為 `public_advertisement`
+
+- **Schema：** `namespaceHTTPLoadbalancerInventoryFilterType`（以及 TCP/UDP 變體）
+- **驗證方式：** 查詢 `/api/config/namespaces/{ns}/application_inventory`
+- **API 行為：** 在同一個回應中，`public_advertisment`（拼字錯誤）與拼字正確的 `private_advertisement` 並存——同一物件內部出現不一致的情況
+- **受影響的檔案（1 個）：** `ves.io.schema.namespace`（橫跨 HTTP/TCP/UDP LB 清單、篩選器及結果類型，共 9 處）
+
+### `volterra_software_overide` → 應為 `volterra_software_override`
+
+- **Schema：** `schemasiteGetSpecType`、`schemasiteReplaceSpecType`
+- **驗證方式：** 透過 `GET /api/config/namespaces/system/sites/{name}` 讀取 site 詳細資料
+- **API 行為：** 回傳 `volterra_software_overide`（拼字錯誤）
+- **受影響的檔案（1 個）：** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → 應為 `disable_lb_source_ip_persistence`
+
+- **Schema：** `clusterGetSpecType`、`origin_poolOriginPoolAdvancedOptions`
+- **驗證方式：** 透過 `GET /api/config/namespaces/{ns}/clusters/{name}` 讀取叢集詳細資料
+- **API 行為：** 回傳 `disable_lb_source_ip_persistance`（拼字錯誤）
+- **受影響的檔案（3 個）：** `ves.io.schema.cluster`、`ves.io.schema.views.http_loadbalancer`、`ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → 應為 `enable_lb_source_ip_persistence`
+
+- **Schema：** `clusterGetSpecType`、`origin_poolOriginPoolAdvancedOptions`
+- **驗證方式：** 與上方 `disable_` 變體相同的叢集端點
+- **API 行為：** 相同的上游錯字模式
+- **受影響的檔案（3 個）：** `ves.io.schema.cluster`、`ves.io.schema.views.http_loadbalancer`、`ves.io.schema.views.origin_pool`
+
+---
+
+## 未驗證的屬性名稱錯誤
+
+由於測試環境的租戶缺乏所需的服務授權，以下錯誤無法進行驗證。
+
+### `OBSOLOTE_upperBound` → 應為 `OBSOLETE_upperBound`
+
+- **Schema：** `recognizeRescueItem`
+- **探測結果：** Shape Recognize API 回傳 HTTP 403（存取受限）
+- **所需條件：** 租戶具備 Shape/Bot Defense 授權
+- **受影響的檔案（1 個）：** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → 應為 `previous_request_count`
+
+- **Schema：** `reportingAutomationTypeData`、`reportingTrafficOverviewData`
+- **探測結果：** Bot Defense Reporting API 回傳 HTTP 404
+- **所需條件：** 租戶具備 Shape/Bot Defense 授權
+- **受影響的檔案（1 個）：** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## 文字欄位拼字錯誤（自動修正）
+
+以下為 `description`、`summary` 及 `title` 字串值中的錯字——而非結構性屬性名稱。這些錯誤會在執行 `make transform` 時，由 `fix_spelling` 轉換自動修正。完整清單位於 `config/spelling_corrections.yaml`。
+
+### 高頻錯誤（出現 10 次以上）
+
+| 錯誤拼字 | 正確拼字 | 出現次數 |
+|----------|----------|----------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### 中頻錯誤（出現 2–9 次）
+
+| 錯誤拼字 | 正確拼字 |
+|----------|----------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### 低頻錯誤（各出現 1 次）
+
+`acccess`、`Manangement`、`secuirty`、`DECOMISSIONING`、`cerificates`、`enviroment`、
+`Dignosis`、`Creadential`、`procotol`、`Probablity`、`Newtork`、`Insatnce`、`idenfify`、
+`indentified`、`infomation`、`virutal`、`wihtout`、`suspicous`、`separte`、`summay`、
+`Totol`、`Staus`、`Sesions`、`Reture`、`Resurce`、`Referesh`、`Colletor`、`Chanel`、
+`Connnect`、`Availble`、`avaialable`、`Attachements`、`Addresss`、`deinition`、
+`dependant`、`responce`、`respresents`，以及 30 個以上的其他錯誤。
+
+完整的 109 項修正字典維護於
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml)。
+
+---
+
+## Pipeline 整合
+
+### 現有轉換
+
+| 轉換 | 設定檔 | 修正內容 |
+|------|--------|----------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | 文字欄位錯字（description/summary/title） |
+| `fix_property_names` | `config/property_name_corrections.yaml` | 已驗證的屬性鍵值更名 |
+
+### CI 目標
+
+| 指令 | 用途 |
+|------|------|
+| `make spell-check-specs` | 對規格的文字欄位及屬性名稱執行 codespell |
+| `make verify-property-names` | 探測線上 API 以驗證屬性名稱修正 |
+| `make transform` | 套用所有修正（文字欄位及已驗證的屬性更名） |
+
+### 新增修正項目
+
+**文字欄位：** 將錯字 → 正確拼字的對應關係新增至 `config/spelling_corrections.yaml`。下次執行 `make transform` 時將自動套用。
+
+**屬性名稱：** 在 `config/property_name_corrections.yaml` 中新增一筆 `verified: false` 的項目。設定 `F5XC_API_URL` 及 `F5XC_API_TOKEN` 後執行 `make verify-property-names` 以探測線上 API。只有驗證結果為 `fix_spec`（API 使用正確名稱）的修正才會被套用。

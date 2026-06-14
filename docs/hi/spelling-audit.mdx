@@ -1,0 +1,180 @@
+---
+title: वर्तनी ऑडिट रिपोर्ट
+description: F5 Distributed Cloud OpenAPI विनिर्देशों में सत्यापित वर्तनी त्रुटियाँ
+i18n:
+  sourceHash: 9ef5104a9859
+  translator: machine
+---
+
+# वर्तनी ऑडिट रिपोर्ट
+
+**दिनांक:** 2026-06-09
+**के विरुद्ध सत्यापित:** `nferreira.staging.volterra.us` (लाइव API)
+**ऑडिट किए गए विनिर्देश:** 268 OpenAPI JSON फ़ाइलें (`release/specs/`)
+
+## सारांश
+
+| श्रेणी | संख्या | स्थिति |
+|----------|-------|--------|
+| टेक्स्ट फ़ील्ड टाइपो (description/summary/title) | 761 फ़ील्ड में 109 अद्वितीय त्रुटियाँ | `fix_spelling` ट्रांसफ़ॉर्म द्वारा स्वतः-सुधारित |
+| प्रॉपर्टी नाम टाइपो — सुधार योग्य | 1 | `fix_property_names` ट्रांसफ़ॉर्म द्वारा स्वतः-सुधारित |
+| प्रॉपर्टी नाम टाइपो — अपस्ट्रीम प्लेटफ़ॉर्म | 5 | विनिर्देश लाइव API को सही रूप से दर्शाता है |
+| प्रॉपर्टी नाम टाइपो — असत्यापनीय | 2 | Shape/Bot Defense एनटाइटेलमेंट की आवश्यकता है |
+
+---
+
+## अपस्ट्रीम प्लेटफ़ॉर्म वर्तनी त्रुटियाँ
+
+ये गलत वर्तनी वाले JSON प्रॉपर्टी नाम **लाइव F5 XC API में ही मौजूद हैं**। विनिर्देश
+API के वास्तविक व्यवहार को सही रूप से दर्शाते हैं। इन्हें प्लेटफ़ॉर्म/protobuf
+स्तर पर ठीक करके पुनः निर्यात करना होगा — इन्हें केवल विनिर्देश में बदलने से API उपभोक्ताओं के लिए समस्या उत्पन्न होगी।
+
+प्रत्येक को लाइव API पर जाँच करके और यह पुष्टि करके सत्यापित किया गया कि गलत वर्तनी वाली की वास्तविक प्रतिक्रियाओं में वापस की जाती है।
+
+### `blocked_sevice` → `blocked_service` होना चाहिए
+
+- **स्कीमा:** `fleetBlockedServicesListType`
+- **द्वारा सत्यापित:** कस्टम `blocked_services` कॉन्फ़िग के साथ Azure VNET साइट बनाकर और उसे वापस पढ़कर
+- **API व्यवहार:** `blocked_sevice` (गलत वर्तनी) को स्वीकार और वापस करता है
+- **प्रभावित फ़ाइलें (7):**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → `public_advertisement` होना चाहिए
+
+- **स्कीमा:** `namespaceHTTPLoadbalancerInventoryFilterType` (और TCP/UDP वेरिएंट)
+- **द्वारा सत्यापित:** `/api/config/namespaces/{ns}/application_inventory` को क्वेरी करके
+- **API व्यवहार:** उसी ऑब्जेक्ट में सही वर्तनी वाले `private_advertisement` के साथ `public_advertisment` वापस करता है — एक ही ऑब्जेक्ट में असंगत
+- **प्रभावित फ़ाइलें (1):** `ves.io.schema.namespace` (HTTP/TCP/UDP LB इन्वेंटरी, फ़िल्टर और रिजल्ट प्रकारों में 9 घटनाएँ)
+
+### `volterra_software_overide` → `volterra_software_override` होना चाहिए
+
+- **स्कीमा:** `schemasiteGetSpecType`, `schemasiteReplaceSpecType`
+- **द्वारा सत्यापित:** `GET /api/config/namespaces/system/sites/{name}` के माध्यम से साइट विवरण पढ़कर
+- **API व्यवहार:** `volterra_software_overide` (गलत वर्तनी) वापस करता है
+- **प्रभावित फ़ाइलें (1):** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → `disable_lb_source_ip_persistence` होना चाहिए
+
+- **स्कीमा:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **द्वारा सत्यापित:** `GET /api/config/namespaces/{ns}/clusters/{name}` के माध्यम से क्लस्टर विवरण पढ़कर
+- **API व्यवहार:** `disable_lb_source_ip_persistance` (गलत वर्तनी) वापस करता है
+- **प्रभावित फ़ाइलें (3):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → `enable_lb_source_ip_persistence` होना चाहिए
+
+- **स्कीमा:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **द्वारा सत्यापित:** उपरोक्त `disable_` वेरिएंट के समान क्लस्टर एंडपॉइंट
+- **API व्यवहार:** समान अपस्ट्रीम टाइपो पैटर्न
+- **प्रभावित फ़ाइलें (3):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+---
+
+## असत्यापित प्रॉपर्टी नाम त्रुटियाँ
+
+इन्हें सत्यापित नहीं किया जा सका क्योंकि स्टेजिंग टेनेंट में आवश्यक सेवा एनटाइटेलमेंट का अभाव है।
+
+### `OBSOLOTE_upperBound` → `OBSOLETE_upperBound` होना चाहिए
+
+- **स्कीमा:** `recognizeRescueItem`
+- **जाँच परिणाम:** Shape Recognize API ने HTTP 403 (प्रतिबंधित) वापस किया
+- **आवश्यकता:** टेनेंट पर Shape/Bot Defense एनटाइटेलमेंट
+- **प्रभावित फ़ाइलें (1):** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → `previous_request_count` होना चाहिए
+
+- **स्कीमा:** `reportingAutomationTypeData`, `reportingTrafficOverviewData`
+- **जाँच परिणाम:** Bot Defense Reporting API ने HTTP 404 वापस किया
+- **आवश्यकता:** टेनेंट पर Shape/Bot Defense एनटाइटेलमेंट
+- **प्रभावित फ़ाइलें (1):** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## टेक्स्ट फ़ील्ड वर्तनी त्रुटियाँ (स्वतः-सुधारित)
+
+ये `description`, `summary` और `title` स्ट्रिंग मानों में टाइपो हैं — संरचनात्मक
+प्रॉपर्टी नाम नहीं। ये `make transform` के दौरान `fix_spelling` ट्रांसफ़ॉर्म द्वारा स्वतः सुधारी जाती हैं। पूरी सूची `config/spelling_corrections.yaml` में है।
+
+### उच्च आवृत्ति (10+ घटनाएँ)
+
+| गलत वर्तनी | सुधार | घटनाएँ |
+|-------------|-----------|-------------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### मध्यम आवृत्ति (2–9 घटनाएँ)
+
+| गलत वर्तनी | सुधार |
+|-------------|-----------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### कम आवृत्ति (प्रत्येक 1 घटना)
+
+`acccess`, `Manangement`, `secuirty`, `DECOMISSIONING`, `cerificates`, `enviroment`,
+`Dignosis`, `Creadential`, `procotol`, `Probablity`, `Newtork`, `Insatnce`, `idenfify`,
+`indentified`, `infomation`, `virutal`, `wihtout`, `suspicous`, `separte`, `summay`,
+`Totol`, `Staus`, `Sesions`, `Reture`, `Resurce`, `Referesh`, `Colletor`, `Chanel`,
+`Connnect`, `Availble`, `avaialable`, `Attachements`, `Addresss`, `deinition`,
+`dependant`, `responce`, `respresents`, और 30+ अधिक।
+
+109 सुधारों का पूर्ण शब्दकोश
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml) में रखा गया है।
+
+---
+
+## पाइपलाइन एकीकरण
+
+### मौजूदा ट्रांसफ़ॉर्म
+
+| ट्रांसफ़ॉर्म | कॉन्फ़िग | यह क्या ठीक करता है |
+|-----------|--------|---------------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | टेक्स्ट फ़ील्ड टाइपो (description/summary/title) |
+| `fix_property_names` | `config/property_name_corrections.yaml` | सत्यापित प्रॉपर्टी की रीनेम |
+
+### CI लक्ष्य
+
+| कमांड | उद्देश्य |
+|---------|---------|
+| `make spell-check-specs` | विनिर्देश टेक्स्ट फ़ील्ड और प्रॉपर्टी नामों पर codespell चलाएँ |
+| `make verify-property-names` | प्रॉपर्टी नाम सुधारों को सत्यापित करने के लिए लाइव API जाँचें |
+| `make transform` | सभी सुधार लागू करें (टेक्स्ट फ़ील्ड + सत्यापित प्रॉपर्टी रीनेम) |
+
+### नए सुधार जोड़ना
+
+**टेक्स्ट फ़ील्ड:** `config/spelling_corrections.yaml` में टाइपो → सुधार मैपिंग जोड़ें।
+यह अगले `make transform` पर स्वतः लागू हो जाएगा।
+
+**प्रॉपर्टी नाम:** `config/property_name_corrections.yaml` में `verified: false` के साथ एक एंट्री जोड़ें। लाइव API जाँचने के लिए `F5XC_API_URL` और
+`F5XC_API_TOKEN` सेट करके `make verify-property-names` चलाएँ। केवल `fix_spec` के रूप में सत्यापित सुधार (API सुधरे हुए नाम का उपयोग करती है) ही लागू किए जाएँगे।

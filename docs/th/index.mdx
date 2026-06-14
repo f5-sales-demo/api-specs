@@ -1,18 +1,18 @@
 ---
-title: F5 XC API Specs
+title: F5 XC ข้อกำหนด API
 description: >-
-  สเปกของ OpenAPI ที่ผ่านการตรวจสอบ เสริมข้อมูล และเป็นไปตามมาตรฐาน OAS3 สำหรับ
+  ข้อกำหนด OpenAPI ที่ผ่านการตรวจสอบ เพิ่มประสิทธิภาพ และสอดคล้องกับ OAS3 สำหรับ
   F5 Distributed Cloud
 template: splash
 sidebar:
   hidden: true
 hero:
   tagline: >-
-    สเปก OpenAPI พร้อมใช้งานจริงสำหรับ F5 Distributed Cloud — ผ่านการตรวจสอบกับ
-    API จริง ซ่อมแซมอัตโนมัติ และเสริมด้วยเมตาดาต้าด้านความปลอดภัย
-    คำจำกัดความเซิร์ฟเวอร์ และแท็กของ operation
+    ข้อกำหนด OpenAPI ที่พร้อมใช้งานจริงสำหรับ F5 Distributed Cloud — ตรวจสอบกับ
+    API จริง ซ่อมแซมอัตโนมัติ และเพิ่มประสิทธิภาพด้วยข้อมูลเมตาด้านความปลอดภัย
+    คำนิยามเซิร์ฟเวอร์ และแท็กการดำเนินการ
   actions:
-    - text: ภาพรวมไปป์ไลน์
+    - text: ภาพรวม Pipeline
       link: 02-pipeline/
       icon: right-arrow
       variant: primary
@@ -27,28 +27,28 @@ i18n:
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
-  <Card title="ภาพรวมไปป์ไลน์" icon="rocket">
-    ไปป์ไลน์อัตโนมัติ 6 ขั้นตอน: ดาวน์โหลด, ตรวจสอบ, lint, ปรับปรุง, ตรวจสอบเกณฑ์, เผยแพร่
+  <Card title="ภาพรวม Pipeline" icon="rocket">
+    Pipeline อัตโนมัติ 6 ขั้นตอน: ดาวน์โหลด ตรวจสอบ lint ปรับประสาน กำหนดเกณฑ์ และเผยแพร่
     [อ่านเพิ่มเติม](/02-pipeline/)
   </Card>
-  <Card title="การแก้ไขที่ดำเนินการ" icon="pencil">
-    การซ่อมแซม constraint, การเสริมด้วย Spectral, เมตาดาต้าด้านความปลอดภัย และการจัดรูปแบบ JSON
+  <Card title="การแก้ไขที่นำไปใช้" icon="pencil">
+    การซ่อมแซมข้อจำกัด การเพิ่มประสิทธิภาพด้วย Spectral ข้อมูลเมตาด้านความปลอดภัย และการจัดรูปแบบ JSON
     [อ่านเพิ่มเติม](/03-fixes-applied/)
   </Card>
   <Card title="กฎ Spectral" icon="warning">
-    สถาปัตยกรรมการ lint แบบสองการกำหนดค่าพร้อมฟังก์ชันกำหนดเอง `f5-path-params`
+    สถาปัตยกรรมการ lint แบบสองการกำหนดค่าพร้อมฟังก์ชัน `f5-path-params` แบบกำหนดเอง
     [อ่านเพิ่มเติม](/04-spectral-rules/)
   </Card>
   <Card title="การกำหนดค่า" icon="setting">
-    เอกสารอ้างอิงสำหรับ `validation.yaml` และ `endpoints.yaml`
+    ข้อมูลอ้างอิงสำหรับ `validation.yaml` และ `endpoints.yaml`
     [อ่านเพิ่มเติม](/05-configuration/)
   </Card>
   <Card title="รายงานการตรวจสอบ" icon="document">
-    รายงานที่สร้างโดยอัตโนมัติของการแก้ไขทั้งหมดที่ดำเนินการในการรันไปป์ไลน์ล่าสุด
+    รายงานที่สร้างอัตโนมัติของการแก้ไขทั้งหมดที่นำไปใช้ในการรัน pipeline ล่าสุด
     [อ่านเพิ่มเติม](/01-validation-report/)
   </Card>
   <Card title="การมีส่วนร่วม" icon="github">
-    การตั้งค่าสำหรับการพัฒนา, ไปป์ไลน์ในเครื่อง, การทดสอบ และเวิร์กโฟลว์ PR
+    การตั้งค่าสภาพแวดล้อมการพัฒนา pipeline ในเครื่อง การทดสอบ และขั้นตอน PR
     [อ่านเพิ่มเติม](/06-contributing/)
   </Card>
 </CardGrid>

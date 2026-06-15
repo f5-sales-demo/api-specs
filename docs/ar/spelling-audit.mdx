@@ -1,0 +1,183 @@
+---
+title: تقرير تدقيق الإملاء
+description: أخطاء الإملاء المتحقق منها في مواصفات F5 Distributed Cloud OpenAPI
+i18n:
+  sourceHash: 9ef5104a9859
+  translator: machine
+---
+
+# تقرير تدقيق الإملاء
+
+**التاريخ:** 2026-06-09
+**التحقق مقابل:** `nferreira.staging.volterra.us` (واجهة برمجية مباشرة)
+**المواصفات المدققة:** 268 ملف OpenAPI JSON (`release/specs/`)
+
+## الملخص
+
+| الفئة | العدد | الحالة |
+|-------|-------|--------|
+| أخطاء الإملاء في حقول النص (description/summary/title) | 109 أخطاء فريدة عبر 761 حقلاً | تُصحَّح تلقائياً بواسطة تحويل `fix_spelling` |
+| أخطاء الإملاء في أسماء الخصائص — قابلة للإصلاح | 1 | تُصحَّح تلقائياً بواسطة تحويل `fix_property_names` |
+| أخطاء الإملاء في أسماء الخصائص — المنصة الأصلية | 5 | تعكس المواصفات سلوك الواجهة البرمجية المباشرة بشكل صحيح |
+| أخطاء الإملاء في أسماء الخصائص — غير قابلة للتحقق | 2 | تتطلب اشتراك Shape/Bot Defense |
+
+---
+
+## أخطاء الإملاء في المنصة الأصلية
+
+تتواجد أسماء خصائص JSON المكتوبة بشكل خاطئ هذه **في واجهة F5 XC API المباشرة نفسها**. تعكس المواصفات
+السلوك الفعلي للواجهة البرمجية بشكل صحيح. يجب إصلاح هذه الأخطاء على مستوى المنصة/protobuf
+وإعادة التصدير — إذ إن تغييرها في المواصفة وحدها سيتسبب في إيقاف عمل مستهلكي الواجهة البرمجية.
+
+تم التحقق من كل خطأ عن طريق استطلاع الواجهة البرمجية المباشرة والتأكد من إرجاع المفتاح المكتوب بشكل خاطئ
+في الاستجابات الفعلية.
+
+### `blocked_sevice` → يجب أن تكون `blocked_service`
+
+- **المخطط:** `fleetBlockedServicesListType`
+- **التحقق عن طريق:** إنشاء موقع Azure VNET بتهيئة `blocked_services` مخصصة وقراءتها مجدداً
+- **سلوك الواجهة البرمجية:** تقبل وترجع `blocked_sevice` (مكتوبة بشكل خاطئ)
+- **الملفات المتأثرة (7):**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → يجب أن تكون `public_advertisement`
+
+- **المخطط:** `namespaceHTTPLoadbalancerInventoryFilterType` (وأشكال TCP/UDP المقابلة)
+- **التحقق عن طريق:** الاستعلام عن `/api/config/namespaces/{ns}/application_inventory`
+- **سلوك الواجهة البرمجية:** ترجع `public_advertisment` جانباً `private_advertisement` المكتوبة بشكل صحيح في الاستجابة ذاتها — تناقض داخل الكائن نفسه
+- **الملفات المتأثرة (1):** `ves.io.schema.namespace` (9 تكرارات عبر أنواع جرد HTTP/TCP/UDP LB والتصفية والنتائج)
+
+### `volterra_software_overide` → يجب أن تكون `volterra_software_override`
+
+- **المخطط:** `schemasiteGetSpecType`، `schemasiteReplaceSpecType`
+- **التحقق عن طريق:** قراءة تفاصيل الموقع عبر `GET /api/config/namespaces/system/sites/{name}`
+- **سلوك الواجهة البرمجية:** ترجع `volterra_software_overide` (مكتوبة بشكل خاطئ)
+- **الملفات المتأثرة (1):** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → يجب أن تكون `disable_lb_source_ip_persistence`
+
+- **المخطط:** `clusterGetSpecType`، `origin_poolOriginPoolAdvancedOptions`
+- **التحقق عن طريق:** قراءة تفاصيل الكتلة عبر `GET /api/config/namespaces/{ns}/clusters/{name}`
+- **سلوك الواجهة البرمجية:** ترجع `disable_lb_source_ip_persistance` (مكتوبة بشكل خاطئ)
+- **الملفات المتأثرة (3):** `ves.io.schema.cluster`، `ves.io.schema.views.http_loadbalancer`، `ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → يجب أن تكون `enable_lb_source_ip_persistence`
+
+- **المخطط:** `clusterGetSpecType`، `origin_poolOriginPoolAdvancedOptions`
+- **التحقق عن طريق:** نقاط نهاية الكتلة ذاتها المستخدمة في متغير `disable_` أعلاه
+- **سلوك الواجهة البرمجية:** نمط الخطأ الإملائي الأصلي ذاته
+- **الملفات المتأثرة (3):** `ves.io.schema.cluster`، `ves.io.schema.views.http_loadbalancer`، `ves.io.schema.views.origin_pool`
+
+---
+
+## أخطاء أسماء الخصائص غير المتحقق منها
+
+تعذّر التحقق من هذه الأخطاء لأن المستأجر التجريبي يفتقر إلى اشتراكات الخدمة المطلوبة.
+
+### `OBSOLOTE_upperBound` → يجب أن تكون `OBSOLETE_upperBound`
+
+- **المخطط:** `recognizeRescueItem`
+- **نتيجة الاستطلاع:** أرجع Shape Recognize API خطأ HTTP 403 (محظور)
+- **المتطلبات:** اشتراك Shape/Bot Defense على المستأجر
+- **الملفات المتأثرة (1):** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → يجب أن تكون `previous_request_count`
+
+- **المخطط:** `reportingAutomationTypeData`، `reportingTrafficOverviewData`
+- **نتيجة الاستطلاع:** أرجع Bot Defense Reporting API خطأ HTTP 404
+- **المتطلبات:** اشتراك Shape/Bot Defense على المستأجر
+- **الملفات المتأثرة (1):** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## أخطاء الإملاء في حقول النص (المصحَّحة تلقائياً)
+
+هذه أخطاء إملائية في قيم السلاسل النصية لـ `description` و`summary` و`title` — وليست أسماء خصائص هيكلية.
+يتم تصحيحها تلقائياً بواسطة تحويل `fix_spelling` أثناء تشغيل `make transform`. القائمة الكاملة موجودة في `config/spelling_corrections.yaml`.
+
+### عالي التكرار (10 تكرارات أو أكثر)
+
+| الخطأ الإملائي | التصحيح | عدد التكرارات |
+|---------------|---------|--------------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### متوسط التكرار (من 2 إلى 9 تكرارات)
+
+| الخطأ الإملائي | التصحيح |
+|---------------|---------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### منخفض التكرار (تكرار واحد لكل خطأ)
+
+`acccess`، `Manangement`، `secuirty`، `DECOMISSIONING`، `cerificates`، `enviroment`،
+`Dignosis`، `Creadential`، `procotol`، `Probablity`، `Newtork`، `Insatnce`، `idenfify`،
+`indentified`، `infomation`، `virutal`، `wihtout`، `suspicous`، `separte`، `summay`،
+`Totol`، `Staus`، `Sesions`، `Reture`، `Resurce`، `Referesh`، `Colletor`، `Chanel`،
+`Connnect`، `Availble`، `avaialable`، `Attachements`، `Addresss`، `deinition`،
+`dependant`، `responce`، `respresents`، وأكثر من 30 خطأً إضافياً.
+
+يتم الاحتفاظ بالقاموس الكامل المؤلف من 109 تصحيحات في
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml).
+
+---
+
+## تكامل خط الأنابيب
+
+### التحويلات القائمة
+
+| التحويل | التهيئة | ما يُصلحه |
+|---------|---------|----------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | أخطاء إملائية في حقول النص (description/summary/title) |
+| `fix_property_names` | `config/property_name_corrections.yaml` | إعادة تسمية مفاتيح الخصائص المتحقق منها |
+
+### أهداف CI
+
+| الأمر | الغرض |
+|-------|-------|
+| `make spell-check-specs` | تشغيل codespell على حقول نص المواصفات وأسماء الخصائص |
+| `make verify-property-names` | استطلاع الواجهة البرمجية المباشرة للتحقق من تصحيحات أسماء الخصائص |
+| `make transform` | تطبيق جميع التصحيحات (حقول النص + إعادة تسمية الخصائص المتحقق منها) |
+
+### إضافة تصحيحات جديدة
+
+**حقول النص:** أضف تعيين الخطأ الإملائي → التصحيح إلى `config/spelling_corrections.yaml`.
+سيتم تطبيقه تلقائياً عند تشغيل `make transform` التالي.
+
+**أسماء الخصائص:** أضف مدخلاً إلى `config/property_name_corrections.yaml` مع
+`verified: false`. شغّل `make verify-property-names` مع تعيين `F5XC_API_URL` و
+`F5XC_API_TOKEN` لاستطلاع الواجهة البرمجية المباشرة. لن يتم تطبيق سوى التصحيحات المتحقق منها كـ `fix_spec`
+(حيث تستخدم الواجهة البرمجية الاسم المصحح).

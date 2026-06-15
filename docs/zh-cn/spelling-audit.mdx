@@ -1,0 +1,175 @@
+---
+title: 拼写审计报告
+description: F5 Distributed Cloud OpenAPI 规范中已验证的拼写错误
+i18n:
+  sourceHash: 9ef5104a9859
+  translator: machine
+---
+
+# 拼写审计报告
+
+**日期：** 2026-06-09
+**验证环境：** `nferreira.staging.volterra.us`（生产 API）
+**审计规范：** 268 个 OpenAPI JSON 文件（`release/specs/`）
+
+## 概要
+
+| 类别 | 数量 | 状态 |
+|----------|-------|--------|
+| 文本字段拼写错误（description/summary/title） | 761 个字段中共 109 处唯一错误 | 由 `fix_spelling` 转换自动修正 |
+| 属性名拼写错误 — 可修复 | 1 | 由 `fix_property_names` 转换自动修正 |
+| 属性名拼写错误 — 上游平台问题 | 5 | 规范正确反映了生产 API 的实际情况 |
+| 属性名拼写错误 — 无法验证 | 2 | 需要 Shape/Bot Defense 服务权限 |
+
+---
+
+## 上游平台拼写错误
+
+以下拼写错误的 JSON 属性名**存在于 F5 XC 生产 API 本身**。规范正确反映了 API 的实际行为。这些错误必须在平台/protobuf 层面修复并重新导出——仅在规范中修改将会破坏 API 使用方。
+
+每项错误均通过探测生产 API 并确认实际响应中返回了拼写错误的键名来进行验证。
+
+### `blocked_sevice` → 应为 `blocked_service`
+
+- **Schema：** `fleetBlockedServicesListType`
+- **验证方式：** 创建带有自定义 `blocked_services` 配置的 Azure VNET 站点并读取回响应
+- **API 行为：** 接受并返回 `blocked_sevice`（拼写错误）
+- **受影响文件（7 个）：**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → 应为 `public_advertisement`
+
+- **Schema：** `namespaceHTTPLoadbalancerInventoryFilterType`（及 TCP/UDP 变体）
+- **验证方式：** 查询 `/api/config/namespaces/{ns}/application_inventory`
+- **API 行为：** 在同一响应中返回 `public_advertisment` 的同时，也返回拼写正确的 `private_advertisement`——同一对象内存在不一致
+- **受影响文件（1 个）：** `ves.io.schema.namespace`（在 HTTP/TCP/UDP LB 库存、过滤器和结果类型中共出现 9 次）
+
+### `volterra_software_overide` → 应为 `volterra_software_override`
+
+- **Schema：** `schemasiteGetSpecType`、`schemasiteReplaceSpecType`
+- **验证方式：** 通过 `GET /api/config/namespaces/system/sites/{name}` 读取站点详情
+- **API 行为：** 返回 `volterra_software_overide`（拼写错误）
+- **受影响文件（1 个）：** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → 应为 `disable_lb_source_ip_persistence`
+
+- **Schema：** `clusterGetSpecType`、`origin_poolOriginPoolAdvancedOptions`
+- **验证方式：** 通过 `GET /api/config/namespaces/{ns}/clusters/{name}` 读取集群详情
+- **API 行为：** 返回 `disable_lb_source_ip_persistance`（拼写错误）
+- **受影响文件（3 个）：** `ves.io.schema.cluster`、`ves.io.schema.views.http_loadbalancer`、`ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → 应为 `enable_lb_source_ip_persistence`
+
+- **Schema：** `clusterGetSpecType`、`origin_poolOriginPoolAdvancedOptions`
+- **验证方式：** 与上述 `disable_` 变体使用相同的集群端点
+- **API 行为：** 与上游相同的拼写错误模式
+- **受影响文件（3 个）：** `ves.io.schema.cluster`、`ves.io.schema.views.http_loadbalancer`、`ves.io.schema.views.origin_pool`
+
+---
+
+## 未经验证的属性名错误
+
+由于暂存租户缺少所需的服务权限，以下错误无法进行验证。
+
+### `OBSOLOTE_upperBound` → 应为 `OBSOLETE_upperBound`
+
+- **Schema：** `recognizeRescueItem`
+- **探测结果：** Shape Recognize API 返回 HTTP 403（访问受限）
+- **所需条件：** 租户需具备 Shape/Bot Defense 服务权限
+- **受影响文件（1 个）：** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → 应为 `previous_request_count`
+
+- **Schema：** `reportingAutomationTypeData`、`reportingTrafficOverviewData`
+- **探测结果：** Bot Defense Reporting API 返回 HTTP 404
+- **所需条件：** 租户需具备 Shape/Bot Defense 服务权限
+- **受影响文件（1 个）：** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## 文本字段拼写错误（已自动修正）
+
+以下为 `description`、`summary` 和 `title` 字符串值中的拼写错误——并非结构性属性名错误。这些错误在执行 `make transform` 时，由 `fix_spelling` 转换自动修正。完整列表位于 `config/spelling_corrections.yaml`。
+
+### 高频错误（出现 10 次及以上）
+
+| 错误拼写 | 正确拼写 | 出现次数 |
+|-------------|-----------|-------------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### 中频错误（出现 2–9 次）
+
+| 错误拼写 | 正确拼写 |
+|-------------|-----------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### 低频错误（各出现 1 次）
+
+`acccess`、`Manangement`、`secuirty`、`DECOMISSIONING`、`cerificates`、`enviroment`、
+`Dignosis`、`Creadential`、`procotol`、`Probablity`、`Newtork`、`Insatnce`、`idenfify`、
+`indentified`、`infomation`、`virutal`、`wihtout`、`suspicous`、`separte`、`summay`、
+`Totol`、`Staus`、`Sesions`、`Reture`、`Resurce`、`Referesh`、`Colletor`、`Chanel`、
+`Connnect`、`Availble`、`avaialable`、`Attachements`、`Addresss`、`deinition`、
+`dependant`、`responce`、`respresents` 及其他 30 余处。
+
+完整的 109 项修正词典维护于
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml)。
+
+---
+
+## 流水线集成
+
+### 现有转换
+
+| 转换 | 配置 | 修正内容 |
+|-----------|--------|---------------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | 文本字段拼写错误（description/summary/title） |
+| `fix_property_names` | `config/property_name_corrections.yaml` | 已验证的属性键重命名 |
+
+### CI 目标
+
+| 命令 | 用途 |
+|---------|---------|
+| `make spell-check-specs` | 对规范文本字段和属性名运行 codespell 检查 |
+| `make verify-property-names` | 探测生产 API 以验证属性名修正 |
+| `make transform` | 应用所有修正（文本字段 + 已验证的属性重命名） |
+
+### 添加新的修正
+
+**文本字段：** 将错误拼写 → 正确拼写的映射添加至 `config/spelling_corrections.yaml`。下次执行 `make transform` 时将自动应用。
+
+**属性名：** 在 `config/property_name_corrections.yaml` 中添加一条 `verified: false` 的条目。设置 `F5XC_API_URL` 和 `F5XC_API_TOKEN` 后运行 `make verify-property-names` 以探测生产 API。只有被验证为 `fix_spec`（API 使用已修正的名称）的修正才会被应用。

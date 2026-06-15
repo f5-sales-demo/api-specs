@@ -1,0 +1,186 @@
+---
+title: Rapport d'audit orthographique
+description: >-
+  Erreurs d'orthographe vérifiées dans les spécifications OpenAPI de F5
+  Distributed Cloud
+i18n:
+  sourceHash: 9ef5104a9859
+  translator: machine
+---
+
+# Rapport d'audit orthographique
+
+**Date :** 2026-06-09
+**Vérifié contre :** `nferreira.staging.volterra.us` (API en production)
+**Spécifications auditées :** 268 fichiers JSON OpenAPI (`release/specs/`)
+
+## Résumé
+
+| Catégorie | Nombre | Statut |
+|----------|-------|--------|
+| Erreurs typographiques dans les champs texte (description/summary/title) | 109 erreurs uniques sur 761 champs | Corrigées automatiquement par la transformation `fix_spelling` |
+| Erreurs typographiques dans les noms de propriétés — corrigeables | 1 | Corrigée automatiquement par la transformation `fix_property_names` |
+| Erreurs typographiques dans les noms de propriétés — Plateforme en amont | 5 | La spec reflète correctement l'API en production |
+| Erreurs typographiques dans les noms de propriétés — non vérifiables | 2 | Nécessite un droit d'accès Shape/Bot Defense |
+
+---
+
+## Erreurs d'orthographe de la Plateforme en amont
+
+Ces noms de propriétés JSON mal orthographiés existent **dans l'API F5 XC en production elle-même**. Les specs
+reflètent correctement le comportement réel de l'API. Ces erreurs doivent être corrigées au niveau
+de la plateforme/protobuf et réexportées — les modifier dans la spec seule briserait les consommateurs de l'API.
+
+Chaque erreur a été vérifiée en interrogeant l'API en production et en confirmant que la clé mal orthographiée est retournée
+dans les réponses réelles.
+
+### `blocked_sevice` → devrait être `blocked_service`
+
+- **Schéma :** `fleetBlockedServicesListType`
+- **Vérifié par :** Création d'un site Azure VNET avec une configuration `blocked_services` personnalisée et lecture en retour
+- **Comportement de l'API :** Accepte et retourne `blocked_sevice` (mal orthographié)
+- **Fichiers concernés (7) :**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → devrait être `public_advertisement`
+
+- **Schéma :** `namespaceHTTPLoadbalancerInventoryFilterType` (et variantes TCP/UDP)
+- **Vérifié par :** Interrogation de `/api/config/namespaces/{ns}/application_inventory`
+- **Comportement de l'API :** Retourne `public_advertisment` aux côtés de `private_advertisement` correctement orthographié dans la même réponse — incohérence au sein du même objet
+- **Fichiers concernés (1) :** `ves.io.schema.namespace` (9 occurrences dans les types d'inventaire, de filtre et de résultat HTTP/TCP/UDP LB)
+
+### `volterra_software_overide` → devrait être `volterra_software_override`
+
+- **Schéma :** `schemasiteGetSpecType`, `schemasiteReplaceSpecType`
+- **Vérifié par :** Lecture du détail du site via `GET /api/config/namespaces/system/sites/{name}`
+- **Comportement de l'API :** Retourne `volterra_software_overide` (mal orthographié)
+- **Fichiers concernés (1) :** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → devrait être `disable_lb_source_ip_persistence`
+
+- **Schéma :** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **Vérifié par :** Lecture du détail du cluster via `GET /api/config/namespaces/{ns}/clusters/{name}`
+- **Comportement de l'API :** Retourne `disable_lb_source_ip_persistance` (mal orthographié)
+- **Fichiers concernés (3) :** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → devrait être `enable_lb_source_ip_persistence`
+
+- **Schéma :** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **Vérifié par :** Mêmes points d'accès cluster que la variante `disable_` ci-dessus
+- **Comportement de l'API :** Même pattern d'erreur typographique en amont
+- **Fichiers concernés (3) :** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+---
+
+## Erreurs dans les noms de propriétés non vérifiées
+
+Ces erreurs n'ont pas pu être vérifiées car le tenant de staging ne dispose pas des droits de service requis.
+
+### `OBSOLOTE_upperBound` → devrait être `OBSOLETE_upperBound`
+
+- **Schéma :** `recognizeRescueItem`
+- **Résultat de la sonde :** L'API Shape Recognize a retourné HTTP 403 (accès restreint)
+- **Nécessite :** Un droit d'accès Shape/Bot Defense sur le tenant
+- **Fichiers concernés (1) :** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → devrait être `previous_request_count`
+
+- **Schéma :** `reportingAutomationTypeData`, `reportingTrafficOverviewData`
+- **Résultat de la sonde :** L'API Bot Defense Reporting a retourné HTTP 404
+- **Nécessite :** Un droit d'accès Shape/Bot Defense sur le tenant
+- **Fichiers concernés (1) :** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## Erreurs d'orthographe dans les champs texte (corrigées automatiquement)
+
+Il s'agit d'erreurs typographiques dans les valeurs de chaînes `description`, `summary` et `title` — et non dans les
+noms de propriétés structurelles. Elles sont automatiquement corrigées par la transformation `fix_spelling` lors de
+l'exécution de `make transform`. La liste complète se trouve dans `config/spelling_corrections.yaml`.
+
+### Haute fréquence (10 occurrences et plus)
+
+| Erreur typographique | Correction | Occurrences |
+|-------------|-----------|-------------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### Fréquence moyenne (2 à 9 occurrences)
+
+| Erreur typographique | Correction |
+|-------------|-----------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### Basse fréquence (1 occurrence chacune)
+
+`acccess`, `Manangement`, `secuirty`, `DECOMISSIONING`, `cerificates`, `enviroment`,
+`Dignosis`, `Creadential`, `procotol`, `Probablity`, `Newtork`, `Insatnce`, `idenfify`,
+`indentified`, `infomation`, `virutal`, `wihtout`, `suspicous`, `separte`, `summay`,
+`Totol`, `Staus`, `Sesions`, `Reture`, `Resurce`, `Referesh`, `Colletor`, `Chanel`,
+`Connnect`, `Availble`, `avaialable`, `Attachements`, `Addresss`, `deinition`,
+`dependant`, `responce`, `respresents`, et 30 autres.
+
+Le dictionnaire complet de 109 corrections est maintenu dans
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml).
+
+---
+
+## Intégration dans le pipeline
+
+### Transformations existantes
+
+| Transformation | Configuration | Ce qu'elle corrige |
+|-----------|--------|---------------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | Erreurs typographiques dans les champs texte (description/summary/title) |
+| `fix_property_names` | `config/property_name_corrections.yaml` | Renommages de clés de propriétés vérifiés |
+
+### Cibles CI
+
+| Commande | Objectif |
+|---------|---------|
+| `make spell-check-specs` | Exécuter codespell sur les champs texte et les noms de propriétés des specs |
+| `make verify-property-names` | Interroger l'API en production pour vérifier les corrections de noms de propriétés |
+| `make transform` | Appliquer toutes les corrections (champs texte + renommages de propriétés vérifiés) |
+
+### Ajout de nouvelles corrections
+
+**Champs texte :** Ajoutez le mapping erreur → correction dans `config/spelling_corrections.yaml`.
+La correction sera appliquée automatiquement lors du prochain `make transform`.
+
+**Noms de propriétés :** Ajoutez une entrée dans `config/property_name_corrections.yaml` avec
+`verified: false`. Exécutez `make verify-property-names` en définissant les variables `F5XC_API_URL` et
+`F5XC_API_TOKEN` pour interroger l'API en production. Seules les corrections vérifiées comme `fix_spec`
+(l'API utilise le nom corrigé) seront appliquées.

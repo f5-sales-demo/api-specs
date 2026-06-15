@@ -1,0 +1,175 @@
+---
+title: スペルチェック監査レポート
+description: F5 Distributed Cloud OpenAPI 仕様における確認済みスペルエラー
+i18n:
+  sourceHash: 9ef5104a9859
+  translator: machine
+---
+
+# スペルチェック監査レポート
+
+**日付:** 2026-06-09
+**検証対象:** `nferreira.staging.volterra.us` (ライブ API)
+**監査対象仕様:** 268 件の OpenAPI JSON ファイル (`release/specs/`)
+
+## サマリー
+
+| カテゴリ | 件数 | ステータス |
+|----------|-------|--------|
+| テキストフィールドの誤字 (description/summary/title) | 761 フィールドにわたる 109 件の固有エラー | `fix_spelling` トランスフォームにより自動修正 |
+| プロパティ名の誤字 — 修正可能 | 1 | `fix_property_names` トランスフォームにより自動修正 |
+| プロパティ名の誤字 — アップストリームプラットフォーム | 5 | 仕様はライブ API を正しく反映 |
+| プロパティ名の誤字 — 確認不可 | 2 | Shape/Bot Defense エンタイトルメントが必要 |
+
+---
+
+## アップストリームプラットフォームのスペルエラー
+
+これらのスペルが誤った JSON プロパティ名は、**ライブの F5 XC API 自体に**存在します。仕様は API の実際の動作を正しく反映しています。これらはプラットフォーム/protobuf レベルで修正し、再エクスポートする必要があります。仕様のみを変更すると API コンシューマーが破壊されます。
+
+それぞれについて、ライブ API を調査し、スペルの誤ったキーが実際のレスポンスに含まれることを確認しました。
+
+### `blocked_sevice` → 正しくは `blocked_service`
+
+- **スキーマ:** `fleetBlockedServicesListType`
+- **確認方法:** カスタム `blocked_services` 設定で Azure VNET サイトを作成し、読み戻しによる確認
+- **API の動作:** `blocked_sevice`（スペル誤り）を受け入れ、返却する
+- **影響ファイル (7 件):**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → 正しくは `public_advertisement`
+
+- **スキーマ:** `namespaceHTTPLoadbalancerInventoryFilterType`（および TCP/UDP バリアント）
+- **確認方法:** `/api/config/namespaces/{ns}/application_inventory` へのクエリ
+- **API の動作:** 同一レスポンス内で正しくスペルされた `private_advertisement` と並んで `public_advertisment` を返却 — 同一オブジェクト内で不一致
+- **影響ファイル (1 件):** `ves.io.schema.namespace`（HTTP/TCP/UDP LB インベントリ、フィルター、結果タイプにわたる 9 件の出現）
+
+### `volterra_software_overide` → 正しくは `volterra_software_override`
+
+- **スキーマ:** `schemasiteGetSpecType`、`schemasiteReplaceSpecType`
+- **確認方法:** `GET /api/config/namespaces/system/sites/{name}` によるサイト詳細の読み取り
+- **API の動作:** `volterra_software_overide`（スペル誤り）を返却する
+- **影響ファイル (1 件):** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → 正しくは `disable_lb_source_ip_persistence`
+
+- **スキーマ:** `clusterGetSpecType`、`origin_poolOriginPoolAdvancedOptions`
+- **確認方法:** `GET /api/config/namespaces/{ns}/clusters/{name}` によるクラスター詳細の読み取り
+- **API の動作:** `disable_lb_source_ip_persistance`（スペル誤り）を返却する
+- **影響ファイル (3 件):** `ves.io.schema.cluster`、`ves.io.schema.views.http_loadbalancer`、`ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → 正しくは `enable_lb_source_ip_persistence`
+
+- **スキーマ:** `clusterGetSpecType`、`origin_poolOriginPoolAdvancedOptions`
+- **確認方法:** 上記 `disable_` バリアントと同じクラスターエンドポイント
+- **API の動作:** 同様のアップストリーム誤字パターン
+- **影響ファイル (3 件):** `ves.io.schema.cluster`、`ves.io.schema.views.http_loadbalancer`、`ves.io.schema.views.origin_pool`
+
+---
+
+## 未確認のプロパティ名エラー
+
+ステージングテナントに必要なサービスエンタイトルメントがないため、これらは確認できませんでした。
+
+### `OBSOLOTE_upperBound` → 正しくは `OBSOLETE_upperBound`
+
+- **スキーマ:** `recognizeRescueItem`
+- **調査結果:** Shape Recognize API が HTTP 403（アクセス制限）を返却
+- **必要なもの:** テナントへの Shape/Bot Defense エンタイトルメント
+- **影響ファイル (1 件):** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → 正しくは `previous_request_count`
+
+- **スキーマ:** `reportingAutomationTypeData`、`reportingTrafficOverviewData`
+- **調査結果:** Bot Defense レポーティング API が HTTP 404 を返却
+- **必要なもの:** テナントへの Shape/Bot Defense エンタイトルメント
+- **影響ファイル (1 件):** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## テキストフィールドのスペルエラー（自動修正）
+
+これらは `description`、`summary`、`title` 文字列値における誤字であり、構造的なプロパティ名ではありません。`make transform` 実行時に `fix_spelling` トランスフォームにより自動修正されます。完全なリストは `config/spelling_corrections.yaml` に記載されています。
+
+### 高頻度 (10 件以上)
+
+| スペル誤り | 修正後 | 出現回数 |
+|-------------|-----------|-------------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### 中頻度 (2〜9 件)
+
+| スペル誤り | 修正後 |
+|-------------|-----------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### 低頻度 (各 1 件)
+
+`acccess`、`Manangement`、`secuirty`、`DECOMISSIONING`、`cerificates`、`enviroment`、
+`Dignosis`、`Creadential`、`procotol`、`Probablity`、`Newtork`、`Insatnce`、`idenfify`、
+`indentified`、`infomation`、`virutal`、`wihtout`、`suspicous`、`separte`、`summay`、
+`Totol`、`Staus`、`Sesions`、`Reture`、`Resurce`、`Referesh`、`Colletor`、`Chanel`、
+`Connnect`、`Availble`、`avaialable`、`Attachements`、`Addresss`、`deinition`、
+`dependant`、`responce`、`respresents`、その他 30 件以上。
+
+109 件の修正からなる完全な辞書は
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml) で管理されています。
+
+---
+
+## パイプラインとの統合
+
+### 既存のトランスフォーム
+
+| トランスフォーム | 設定ファイル | 修正対象 |
+|-----------|--------|---------------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | テキストフィールドの誤字 (description/summary/title) |
+| `fix_property_names` | `config/property_name_corrections.yaml` | 確認済みプロパティキーのリネーム |
+
+### CI ターゲット
+
+| コマンド | 目的 |
+|---------|---------|
+| `make spell-check-specs` | 仕様のテキストフィールドおよびプロパティ名に対して codespell を実行 |
+| `make verify-property-names` | プロパティ名の修正を確認するためにライブ API を調査 |
+| `make transform` | すべての修正を適用（テキストフィールド + 確認済みプロパティリネーム） |
+
+### 新しい修正の追加方法
+
+**テキストフィールド:** `config/spelling_corrections.yaml` に誤字 → 修正後のマッピングを追加してください。次回の `make transform` 実行時に自動的に適用されます。
+
+**プロパティ名:** `config/property_name_corrections.yaml` に `verified: false` を指定したエントリーを追加してください。`F5XC_API_URL` および `F5XC_API_TOKEN` を設定した状態で `make verify-property-names` を実行し、ライブ API を調査してください。`fix_spec`（API が修正後の名前を使用）として確認された修正のみが適用されます。

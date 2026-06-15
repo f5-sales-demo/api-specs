@@ -1,0 +1,177 @@
+---
+title: Relatório de Auditoria Ortográfica
+description: >-
+  Erros ortográficos verificados nas especificações OpenAPI do F5 Distributed
+  Cloud
+i18n:
+  sourceHash: 9ef5104a9859
+  translator: machine
+---
+
+# Relatório de Auditoria Ortográfica
+
+**Data:** 2026-06-09
+**Verificado contra:** `nferreira.staging.volterra.us` (API em produção)
+**Especificações auditadas:** 268 arquivos OpenAPI JSON (`release/specs/`)
+
+## Resumo
+
+| Categoria | Quantidade | Status |
+|----------|-------|--------|
+| Erros tipográficos em campos de texto (description/summary/title) | 109 erros únicos em 761 campos | Corrigidos automaticamente pela transformação `fix_spelling` |
+| Erros tipográficos em nomes de propriedades — corrigíveis | 1 | Corrigido automaticamente pela transformação `fix_property_names` |
+| Erros tipográficos em nomes de propriedades — plataforma upstream | 5 | A especificação reflete corretamente a API em produção |
+| Erros tipográficos em nomes de propriedades — não verificáveis | 2 | Requer entitlement do Shape/Bot Defense |
+
+---
+
+## Erros Ortográficos na Plataforma Upstream
+
+Esses nomes de propriedades JSON com grafia incorreta existem **na própria API F5 XC em produção**. As especificações refletem corretamente o comportamento real da API. Esses erros devem ser corrigidos no nível da plataforma/protobuf e reexportados — alterá-los apenas na especificação quebraria os consumidores da API.
+
+Cada um foi verificado por meio de sondagem à API em produção, confirmando que a chave com grafia incorreta é retornada nas respostas reais.
+
+### `blocked_sevice` → deveria ser `blocked_service`
+
+- **Schema:** `fleetBlockedServicesListType`
+- **Verificado por:** Criação de um site Azure VNET com configuração personalizada de `blocked_services` e leitura de retorno
+- **Comportamento da API:** Aceita e retorna `blocked_sevice` (com grafia incorreta)
+- **Arquivos afetados (7):**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → deveria ser `public_advertisement`
+
+- **Schema:** `namespaceHTTPLoadbalancerInventoryFilterType` (e variantes TCP/UDP)
+- **Verificado por:** Consulta a `/api/config/namespaces/{ns}/application_inventory`
+- **Comportamento da API:** Retorna `public_advertisment` juntamente com `private_advertisement` (grafado corretamente) na mesma resposta — inconsistência dentro do mesmo objeto
+- **Arquivos afetados (1):** `ves.io.schema.namespace` (9 ocorrências nos tipos de inventário, filtro e resultado de HTTP/TCP/UDP LB)
+
+### `volterra_software_overide` → deveria ser `volterra_software_override`
+
+- **Schema:** `schemasiteGetSpecType`, `schemasiteReplaceSpecType`
+- **Verificado por:** Leitura de detalhe do site via `GET /api/config/namespaces/system/sites/{name}`
+- **Comportamento da API:** Retorna `volterra_software_overide` (com grafia incorreta)
+- **Arquivos afetados (1):** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → deveria ser `disable_lb_source_ip_persistence`
+
+- **Schema:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **Verificado por:** Leitura de detalhe do cluster via `GET /api/config/namespaces/{ns}/clusters/{name}`
+- **Comportamento da API:** Retorna `disable_lb_source_ip_persistance` (com grafia incorreta)
+- **Arquivos afetados (3):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → deveria ser `enable_lb_source_ip_persistence`
+
+- **Schema:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **Verificado por:** Mesmos endpoints de cluster da variante `disable_` acima
+- **Comportamento da API:** Mesmo padrão de erro tipográfico upstream
+- **Arquivos afetados (3):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+---
+
+## Erros em Nomes de Propriedades Não Verificados
+
+Estes não puderam ser verificados porque o tenant de staging não possui os entitlements de serviço necessários.
+
+### `OBSOLOTE_upperBound` → deveria ser `OBSOLETE_upperBound`
+
+- **Schema:** `recognizeRescueItem`
+- **Resultado da sondagem:** A API Shape Recognize retornou HTTP 403 (acesso restrito)
+- **Necessário:** Entitlement do Shape/Bot Defense no tenant
+- **Arquivos afetados (1):** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → deveria ser `previous_request_count`
+
+- **Schema:** `reportingAutomationTypeData`, `reportingTrafficOverviewData`
+- **Resultado da sondagem:** A API Bot Defense Reporting retornou HTTP 404
+- **Necessário:** Entitlement do Shape/Bot Defense no tenant
+- **Arquivos afetados (1):** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## Erros Ortográficos em Campos de Texto (Corrigidos Automaticamente)
+
+Estes são erros tipográficos nos valores de string de `description`, `summary` e `title` — não em nomes de propriedades estruturais. Eles são corrigidos automaticamente pela transformação `fix_spelling` durante a execução de `make transform`. A lista completa está em `config/spelling_corrections.yaml`.
+
+### Alta frequência (10 ou mais ocorrências)
+
+| Grafia incorreta | Correção | Ocorrências |
+|-------------|-----------|-------------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### Frequência média (2 a 9 ocorrências)
+
+| Grafia incorreta | Correção |
+|-------------|-----------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### Baixa frequência (1 ocorrência cada)
+
+`acccess`, `Manangement`, `secuirty`, `DECOMISSIONING`, `cerificates`, `enviroment`,
+`Dignosis`, `Creadential`, `procotol`, `Probablity`, `Newtork`, `Insatnce`, `idenfify`,
+`indentified`, `infomation`, `virutal`, `wihtout`, `suspicous`, `separte`, `summay`,
+`Totol`, `Staus`, `Sesions`, `Reture`, `Resurce`, `Referesh`, `Colletor`, `Chanel`,
+`Connnect`, `Availble`, `avaialable`, `Attachements`, `Addresss`, `deinition`,
+`dependant`, `responce`, `respresents` e mais de 30 outros.
+
+O dicionário completo com 109 correções é mantido em
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml).
+
+---
+
+## Integração com o Pipeline
+
+### Transformações existentes
+
+| Transformação | Configuração | O que corrige |
+|-----------|--------|---------------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | Erros tipográficos em campos de texto (description/summary/title) |
+| `fix_property_names` | `config/property_name_corrections.yaml` | Renomeações verificadas de chaves de propriedades |
+
+### Alvos de CI
+
+| Comando | Finalidade |
+|---------|---------|
+| `make spell-check-specs` | Executa o codespell nos campos de texto e nos nomes de propriedades da especificação |
+| `make verify-property-names` | Sonda a API em produção para verificar as correções de nomes de propriedades |
+| `make transform` | Aplica todas as correções (campos de texto + renomeações de propriedades verificadas) |
+
+### Adicionando novas correções
+
+**Campos de texto:** Adicione o mapeamento de erro tipográfico → correção em `config/spelling_corrections.yaml`. Ele será aplicado automaticamente na próxima execução de `make transform`.
+
+**Nomes de propriedades:** Adicione uma entrada em `config/property_name_corrections.yaml` com `verified: false`. Execute `make verify-property-names` com as variáveis `F5XC_API_URL` e `F5XC_API_TOKEN` definidas para sondar a API em produção. Somente as correções verificadas como `fix_spec` (a API utiliza o nome corrigido) serão aplicadas.

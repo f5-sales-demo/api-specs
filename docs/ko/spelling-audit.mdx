@@ -1,0 +1,182 @@
+---
+title: 철자 감사 보고서
+description: F5 Distributed Cloud OpenAPI 사양에서 확인된 철자 오류
+i18n:
+  sourceHash: 9ef5104a9859
+  translator: machine
+---
+
+# 철자 감사 보고서
+
+**날짜:** 2026-06-09
+**검증 대상:** `nferreira.staging.volterra.us` (라이브 API)
+**감사된 사양:** 268개의 OpenAPI JSON 파일 (`release/specs/`)
+
+## 요약
+
+| 카테고리 | 수량 | 상태 |
+|----------|-------|--------|
+| 텍스트 필드 오타 (description/summary/title) | 761개 필드에서 109개의 고유 오류 | `fix_spelling` 변환에 의해 자동 수정 |
+| 속성 이름 오타 — 수정 가능 | 1 | `fix_property_names` 변환에 의해 자동 수정 |
+| 속성 이름 오타 — 업스트림 플랫폼 | 5 | 사양이 라이브 API를 정확히 반영함 |
+| 속성 이름 오타 — 확인 불가 | 2 | Shape/Bot Defense 이용 권한 필요 |
+
+---
+
+## 업스트림 플랫폼 철자 오류
+
+이러한 잘못된 철자의 JSON 속성 이름은 **라이브 F5 XC API 자체**에 존재합니다. 사양은
+API의 실제 동작을 정확히 반영합니다. 이는 플랫폼/protobuf 수준에서 수정하고 재내보내기해야 하며,
+사양에서만 변경하면 API 사용자에게 장애가 발생할 수 있습니다.
+
+각 항목은 라이브 API를 조회하고 잘못된 철자의 키가 실제 응답에서 반환됨을 확인하여 검증되었습니다.
+
+### `blocked_sevice` → 올바른 표기: `blocked_service`
+
+- **스키마:** `fleetBlockedServicesListType`
+- **검증 방법:** 사용자 정의 `blocked_services` 구성으로 Azure VNET 사이트를 생성하고 다시 읽기
+- **API 동작:** `blocked_sevice` (잘못된 철자)를 수락하고 반환
+- **영향받는 파일 (7개):**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → 올바른 표기: `public_advertisement`
+
+- **스키마:** `namespaceHTTPLoadbalancerInventoryFilterType` (및 TCP/UDP 변형)
+- **검증 방법:** `/api/config/namespaces/{ns}/application_inventory` 쿼리
+- **API 동작:** 동일한 응답 내에서 올바른 철자의 `private_advertisement`와 함께 `public_advertisment`를 반환 — 동일 객체 내에서 일관성 없음
+- **영향받는 파일 (1개):** `ves.io.schema.namespace` (HTTP/TCP/UDP LB 인벤토리, 필터, 결과 유형 전반에 걸쳐 9회 등장)
+
+### `volterra_software_overide` → 올바른 표기: `volterra_software_override`
+
+- **스키마:** `schemasiteGetSpecType`, `schemasiteReplaceSpecType`
+- **검증 방법:** `GET /api/config/namespaces/system/sites/{name}`를 통해 사이트 상세 정보 읽기
+- **API 동작:** `volterra_software_overide` (잘못된 철자)를 반환
+- **영향받는 파일 (1개):** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → 올바른 표기: `disable_lb_source_ip_persistence`
+
+- **스키마:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **검증 방법:** `GET /api/config/namespaces/{ns}/clusters/{name}`를 통해 클러스터 상세 정보 읽기
+- **API 동작:** `disable_lb_source_ip_persistance` (잘못된 철자)를 반환
+- **영향받는 파일 (3개):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → 올바른 표기: `enable_lb_source_ip_persistence`
+
+- **스키마:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **검증 방법:** 위의 `disable_` 변형과 동일한 클러스터 엔드포인트
+- **API 동작:** 동일한 업스트림 오타 패턴
+- **영향받는 파일 (3개):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+---
+
+## 미확인 속성 이름 오류
+
+스테이징 테넌트에 필요한 서비스 이용 권한이 없어 확인할 수 없었습니다.
+
+### `OBSOLOTE_upperBound` → 올바른 표기: `OBSOLETE_upperBound`
+
+- **스키마:** `recognizeRescueItem`
+- **조회 결과:** Shape Recognize API가 HTTP 403 반환 (접근 제한)
+- **필요 조건:** 테넌트에 Shape/Bot Defense 이용 권한
+- **영향받는 파일 (1개):** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → 올바른 표기: `previous_request_count`
+
+- **스키마:** `reportingAutomationTypeData`, `reportingTrafficOverviewData`
+- **조회 결과:** Bot Defense Reporting API가 HTTP 404 반환
+- **필요 조건:** 테넌트에 Shape/Bot Defense 이용 권한
+- **영향받는 파일 (1개):** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## 텍스트 필드 철자 오류 (자동 수정)
+
+이는 구조적 속성 이름이 아닌 `description`, `summary`, `title` 문자열 값의 오타입니다.
+`make transform` 실행 중 `fix_spelling` 변환에 의해 자동으로 수정됩니다. 전체 목록은
+`config/spelling_corrections.yaml`에 있습니다.
+
+### 고빈도 (10회 이상)
+
+| 잘못된 철자 | 수정 | 발생 횟수 |
+|-------------|-----------|-------------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### 중간 빈도 (2–9회)
+
+| 잘못된 철자 | 수정 |
+|-------------|-----------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### 저빈도 (각 1회)
+
+`acccess`, `Manangement`, `secuirty`, `DECOMISSIONING`, `cerificates`, `enviroment`,
+`Dignosis`, `Creadential`, `procotol`, `Probablity`, `Newtork`, `Insatnce`, `idenfify`,
+`indentified`, `infomation`, `virutal`, `wihtout`, `suspicous`, `separte`, `summay`,
+`Totol`, `Staus`, `Sesions`, `Reture`, `Resurce`, `Referesh`, `Colletor`, `Chanel`,
+`Connnect`, `Availble`, `avaialable`, `Attachements`, `Addresss`, `deinition`,
+`dependant`, `responce`, `respresents` 및 30개 이상 추가.
+
+109개 수정 사항의 전체 사전은
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml)에서 관리됩니다.
+
+---
+
+## 파이프라인 통합
+
+### 기존 변환
+
+| 변환 | 구성 | 수정 대상 |
+|-----------|--------|---------------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | 텍스트 필드 오타 (description/summary/title) |
+| `fix_property_names` | `config/property_name_corrections.yaml` | 검증된 속성 키 이름 변경 |
+
+### CI 타겟
+
+| 명령 | 목적 |
+|---------|---------|
+| `make spell-check-specs` | 사양 텍스트 필드 및 속성 이름에 대해 codespell 실행 |
+| `make verify-property-names` | 속성 이름 수정을 검증하기 위해 라이브 API 조회 |
+| `make transform` | 모든 수정 사항 적용 (텍스트 필드 + 검증된 속성 이름 변경) |
+
+### 새로운 수정 사항 추가
+
+**텍스트 필드:** 오타 → 수정 매핑을 `config/spelling_corrections.yaml`에 추가하세요.
+다음 `make transform` 실행 시 자동으로 적용됩니다.
+
+**속성 이름:** `config/property_name_corrections.yaml`에 `verified: false`로 항목을 추가하세요.
+`F5XC_API_URL` 및 `F5XC_API_TOKEN`을 설정한 상태에서 `make verify-property-names`를 실행하여
+라이브 API를 조회하세요. `fix_spec`으로 검증된 수정 사항(API가 수정된 이름을 사용)만 적용됩니다.

@@ -1,0 +1,184 @@
+---
+title: รายงานการตรวจสอบการสะกดคำ
+description: ข้อผิดพลาดในการสะกดคำที่ตรวจพบในข้อกำหนด OpenAPI ของ F5 Distributed Cloud
+i18n:
+  sourceHash: 9ef5104a9859
+  translator: machine
+---
+
+# รายงานการตรวจสอบการสะกดคำ
+
+**วันที่:** 2026-06-09
+**ตรวจสอบกับ:** `nferreira.staging.volterra.us` (Live API)
+**ข้อกำหนดที่ตรวจสอบ:** ไฟล์ OpenAPI JSON จำนวน 268 ไฟล์ (`release/specs/`)
+
+## สรุป
+
+| หมวดหมู่ | จำนวน | สถานะ |
+|----------|-------|--------|
+| ข้อผิดพลาดในฟิลด์ข้อความ (description/summary/title) | ข้อผิดพลาดที่ไม่ซ้ำกัน 109 รายการใน 761 ฟิลด์ | แก้ไขอัตโนมัติโดย `fix_spelling` transform |
+| ข้อผิดพลาดในชื่อพรอพเพอร์ตี้ — แก้ไขได้ | 1 | แก้ไขอัตโนมัติโดย `fix_property_names` transform |
+| ข้อผิดพลาดในชื่อพรอพเพอร์ตี้ — แพลตฟอร์มต้นทาง | 5 | ข้อกำหนดสะท้อน Live API อย่างถูกต้อง |
+| ข้อผิดพลาดในชื่อพรอพเพอร์ตี้ — ไม่สามารถตรวจสอบได้ | 2 | ต้องการสิทธิ์ใช้งาน Shape/Bot Defense |
+
+---
+
+## ข้อผิดพลาดในการสะกดคำของแพลตฟอร์มต้นทาง
+
+ชื่อพรอพเพอร์ตี้ JSON ที่สะกดผิดเหล่านี้มีอยู่**ใน F5 XC API จริง** ข้อกำหนดดังกล่าว
+สะท้อนพฤติกรรมจริงของ API อย่างถูกต้อง จะต้องแก้ไขที่ระดับแพลตฟอร์ม/protobuf
+แล้วส่งออกใหม่ — การเปลี่ยนแปลงเฉพาะในข้อกำหนดจะทำให้ผู้บริโภค API เสียหาย
+
+แต่ละรายการได้รับการตรวจสอบโดยการตรวจสอบ Live API และยืนยันว่าคีย์ที่สะกดผิด
+ถูกส่งกลับมาในการตอบสนองจริง
+
+### `blocked_sevice` → ควรเป็น `blocked_service`
+
+- **Schema:** `fleetBlockedServicesListType`
+- **ตรวจสอบโดย:** การสร้างไซต์ Azure VNET ด้วยการกำหนดค่า `blocked_services` แบบกำหนดเองและอ่านกลับมา
+- **พฤติกรรม API:** รับและส่งกลับ `blocked_sevice` (สะกดผิด)
+- **ไฟล์ที่ได้รับผลกระทบ (7):**
+  - `ves.io.schema.views.aws_tgw_site`
+  - `ves.io.schema.views.aws_vpc_site`
+  - `ves.io.schema.views.voltstack_site`
+  - `ves.io.schema.views.azure_vnet_site`
+  - `ves.io.schema.views.gcp_vpc_site`
+  - `ves.io.schema.views.securemesh_site`
+  - `ves.io.schema.views.securemesh_site_v2`
+
+### `public_advertisment` → ควรเป็น `public_advertisement`
+
+- **Schema:** `namespaceHTTPLoadbalancerInventoryFilterType` (และตัวแปร TCP/UDP)
+- **ตรวจสอบโดย:** การสืบค้น `/api/config/namespaces/{ns}/application_inventory`
+- **พฤติกรรม API:** ส่งกลับ `public_advertisment` พร้อมกับ `private_advertisement` ที่สะกดถูกในการตอบสนองเดียวกัน — ไม่สอดคล้องกันภายในออบเจกต์เดียวกัน
+- **ไฟล์ที่ได้รับผลกระทบ (1):** `ves.io.schema.namespace` (9 ครั้งในประเภท inventory, filter และ result ของ HTTP/TCP/UDP LB)
+
+### `volterra_software_overide` → ควรเป็น `volterra_software_override`
+
+- **Schema:** `schemasiteGetSpecType`, `schemasiteReplaceSpecType`
+- **ตรวจสอบโดย:** การอ่านรายละเอียดไซต์ผ่าน `GET /api/config/namespaces/system/sites/{name}`
+- **พฤติกรรม API:** ส่งกลับ `volterra_software_overide` (สะกดผิด)
+- **ไฟล์ที่ได้รับผลกระทบ (1):** `ves.io.schema.site`
+
+### `disable_lb_source_ip_persistance` → ควรเป็น `disable_lb_source_ip_persistence`
+
+- **Schema:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **ตรวจสอบโดย:** การอ่านรายละเอียดคลัสเตอร์ผ่าน `GET /api/config/namespaces/{ns}/clusters/{name}`
+- **พฤติกรรม API:** ส่งกลับ `disable_lb_source_ip_persistance` (สะกดผิด)
+- **ไฟล์ที่ได้รับผลกระทบ (3):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+### `enable_lb_source_ip_persistance` → ควรเป็น `enable_lb_source_ip_persistence`
+
+- **Schema:** `clusterGetSpecType`, `origin_poolOriginPoolAdvancedOptions`
+- **ตรวจสอบโดย:** Endpoint คลัสเตอร์เดียวกับตัวแปร `disable_` ข้างต้น
+- **พฤติกรรม API:** รูปแบบการสะกดผิดต้นทางเดียวกัน
+- **ไฟล์ที่ได้รับผลกระทบ (3):** `ves.io.schema.cluster`, `ves.io.schema.views.http_loadbalancer`, `ves.io.schema.views.origin_pool`
+
+---
+
+## ข้อผิดพลาดในชื่อพรอพเพอร์ตี้ที่ไม่สามารถตรวจสอบได้
+
+รายการเหล่านี้ไม่สามารถตรวจสอบได้เนื่องจาก staging tenant ขาดสิทธิ์ใช้งานบริการที่จำเป็น
+
+### `OBSOLOTE_upperBound` → ควรเป็น `OBSOLETE_upperBound`
+
+- **Schema:** `recognizeRescueItem`
+- **ผลการตรวจสอบ:** Shape Recognize API ส่งคืน HTTP 403 (ถูกจำกัดการเข้าถึง)
+- **ต้องการ:** สิทธิ์ใช้งาน Shape/Bot Defense บน tenant
+- **ไฟล์ที่ได้รับผลกระทบ (1):** `ves.io.schema.shape.recognize`
+
+### `previous_reqeust_count` → ควรเป็น `previous_request_count`
+
+- **Schema:** `reportingAutomationTypeData`, `reportingTrafficOverviewData`
+- **ผลการตรวจสอบ:** Bot Defense Reporting API ส่งคืน HTTP 404
+- **ต้องการ:** สิทธิ์ใช้งาน Shape/Bot Defense บน tenant
+- **ไฟล์ที่ได้รับผลกระทบ (1):** `ves.io.schema.shape.bot_defense_reporting`
+
+---
+
+## ข้อผิดพลาดในการสะกดคำของฟิลด์ข้อความ (แก้ไขอัตโนมัติ)
+
+เหล่านี้คือข้อผิดพลาดในค่าสตริง `description`, `summary` และ `title` — ไม่ใช่
+ชื่อพรอพเพอร์ตี้เชิงโครงสร้าง โดยจะได้รับการแก้ไขอัตโนมัติด้วย `fix_spelling` transform ในระหว่าง
+`make transform` รายการทั้งหมดอยู่ใน `config/spelling_corrections.yaml`
+
+### ความถี่สูง (10 ครั้งขึ้นไป)
+
+| การสะกดผิด | การแก้ไข | จำนวนครั้ง |
+|-------------|-----------|-------------|
+| `referrred` | referred | 186 |
+| `Validtion` | Validation | 173 |
+| `succeded` | succeeded | 173 |
+| `expresssions` | expressions | 23 |
+| `nework` | network | 21 |
+| `Neworks` | Networks | 20 |
+| `conects` | connects | 20 |
+
+### ความถี่ปานกลาง (2–9 ครั้ง)
+
+| การสะกดผิด | การแก้ไข |
+|-------------|-----------|
+| `positve` | positive |
+| `Refernce` | Reference |
+| `verfication` | verification |
+| `Subsciption` | Subscription |
+| `emtpy` | empty |
+| `Certficate` | Certificate |
+| `Avarage` | Average |
+| `uprade` | upgrade |
+| `detination` | destination |
+| `bellow` | below |
+| `cahce` / `Cahce` | cache / Cache |
+| `contol` | control |
+| `withing` | within |
+| `refering` | referring |
+| `formating` | formatting |
+| `sucess` | success |
+| `senstive` | sensitive |
+| `namesapce` | namespace |
+| `Maximun` | Maximum |
+| `domian` | domain |
+| `assesment` | assessment |
+| `inclusing` | including |
+| `fo` | for |
+
+### ความถี่ต่ำ (1 ครั้งต่อรายการ)
+
+`acccess`, `Manangement`, `secuirty`, `DECOMISSIONING`, `cerificates`, `enviroment`,
+`Dignosis`, `Creadential`, `procotol`, `Probablity`, `Newtork`, `Insatnce`, `idenfify`,
+`indentified`, `infomation`, `virutal`, `wihtout`, `suspicous`, `separte`, `summay`,
+`Totol`, `Staus`, `Sesions`, `Reture`, `Resurce`, `Referesh`, `Colletor`, `Chanel`,
+`Connnect`, `Availble`, `avaialable`, `Attachements`, `Addresss`, `deinition`,
+`dependant`, `responce`, `respresents` และอีกกว่า 30 รายการ
+
+พจนานุกรมครบชุดของการแก้ไข 109 รายการได้รับการดูแลใน
+[`config/spelling_corrections.yaml`](../config/spelling_corrections.yaml)
+
+---
+
+## การผสานรวมกับ Pipeline
+
+### Transform ที่มีอยู่
+
+| Transform | การกำหนดค่า | สิ่งที่แก้ไข |
+|-----------|--------|---------------|
+| `fix_spelling` | `config/spelling_corrections.yaml` | ข้อผิดพลาดในฟิลด์ข้อความ (description/summary/title) |
+| `fix_property_names` | `config/property_name_corrections.yaml` | การเปลี่ยนชื่อคีย์พรอพเพอร์ตี้ที่ตรวจสอบแล้ว |
+
+### เป้าหมาย CI
+
+| คำสั่ง | วัตถุประสงค์ |
+|---------|---------|
+| `make spell-check-specs` | รัน codespell บนฟิลด์ข้อความและชื่อพรอพเพอร์ตี้ของข้อกำหนด |
+| `make verify-property-names` | ตรวจสอบ Live API เพื่อยืนยันการแก้ไขชื่อพรอพเพอร์ตี้ |
+| `make transform` | ใช้การแก้ไขทั้งหมด (ฟิลด์ข้อความ + การเปลี่ยนชื่อพรอพเพอร์ตี้ที่ตรวจสอบแล้ว) |
+
+### การเพิ่มการแก้ไขใหม่
+
+**ฟิลด์ข้อความ:** เพิ่มการแมปข้อผิดพลาด → การแก้ไขใน `config/spelling_corrections.yaml`
+จะถูกนำไปใช้โดยอัตโนมัติใน `make transform` ครั้งถัดไป
+
+**ชื่อพรอพเพอร์ตี้:** เพิ่มรายการใน `config/property_name_corrections.yaml` พร้อมกับ
+`verified: false` รัน `make verify-property-names` โดยตั้งค่า `F5XC_API_URL` และ
+`F5XC_API_TOKEN` เพื่อตรวจสอบ Live API การแก้ไขที่ตรวจสอบแล้วว่าเป็น `fix_spec`
+(API ใช้ชื่อที่ถูกต้อง) เท่านั้นที่จะถูกนำไปใช้

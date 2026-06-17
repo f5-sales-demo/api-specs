@@ -24,3 +24,18 @@ rules:
   # Not auto-fixable - downgrade to info
   operation-description: info
   info-description: info
+
+  # Naming convention: sample resource example values use the example- prefix.
+  # Flags my-/test-/foo-/demo-/sample- placeholder prefixes in example values.
+  # warn (not error) so upstream-sourced examples don't block the build.
+  sample-resource-example-naming:
+    description: "Sample resource example values should use the example- prefix"
+    message: "{{value}} uses a non-standard placeholder prefix; use 'example-' for sample resource names"
+    severity: warn
+    given:
+      - "$..example"
+      - "$..examples[*]"
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: "^(my|test|foo|demo|sample)-[a-z]"

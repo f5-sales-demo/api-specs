@@ -1,3 +1,17 @@
+🌐 English |
+[日本語](https://f5xc-salesdemos.github.io/api-specs/ja/) |
+[한국어](https://f5xc-salesdemos.github.io/api-specs/ko/) |
+[简体中文](https://f5xc-salesdemos.github.io/api-specs/zh-cn/) |
+[繁體中文](https://f5xc-salesdemos.github.io/api-specs/zh-tw/) |
+[Español](https://f5xc-salesdemos.github.io/api-specs/es/) |
+[Português](https://f5xc-salesdemos.github.io/api-specs/pt-br/) |
+[Français](https://f5xc-salesdemos.github.io/api-specs/fr/) |
+[Deutsch](https://f5xc-salesdemos.github.io/api-specs/de/) |
+[Italiano](https://f5xc-salesdemos.github.io/api-specs/it/) |
+[العربية](https://f5xc-salesdemos.github.io/api-specs/ar/) |
+[हिन्दी](https://f5xc-salesdemos.github.io/api-specs/hi/) |
+[ไทย](https://f5xc-salesdemos.github.io/api-specs/th/)
+
 # API Specs
 
 [![GitHub Pages Deploy](https://github.com/f5xc-salesdemos/api-specs/actions/workflows/github-pages-deploy.yml/badge.svg)](https://github.com/f5xc-salesdemos/api-specs/actions/workflows/github-pages-deploy.yml)

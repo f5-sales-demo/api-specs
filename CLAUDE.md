@@ -10,5 +10,8 @@ A hook blocks direct edits — open an issue in docs-control instead.
 - The `main` branch is protected — never commit or push directly to it.
 - Create a feature branch, commit there, and open a pull request.
 - Every pull request must reference a GitHub issue (CI enforces this).
+- **Perform all git operations directly.** Do not delegate git commits,
+  pushes, or pull requests to subagents. Run `git`, `gh`, and CLI
+  commands yourself.
 
 See `CONTRIBUTING.md` for project rules.

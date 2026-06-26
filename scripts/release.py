@@ -496,7 +496,7 @@ See full validation details in the repository.
             "",
             "```bash",
             "# Download and extract",
-            f"curl -LO https://github.com/f5xc-salesdemos/api-specs/releases/download/v{self.version}/api-specs-v{self.version}.zip",
+            f"curl -LO https://github.com/f5-sales-demo/api-specs/releases/download/v{self.version}/api-specs-v{self.version}.zip",
             f"unzip api-specs-v{self.version}.zip",
             "",
             "# Use with your preferred OpenAPI tool",

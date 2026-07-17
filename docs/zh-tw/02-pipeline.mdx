@@ -2,7 +2,7 @@
 title: 管線概覽
 description: 六階段自動化管線，負責下載、驗證、靜態分析、調和、品質閘門及發布 F5 XC OpenAPI 規格
 i18n:
-  sourceHash: 8b956cf69c75
+  sourceHash: 05df123405f7
   translator: machine
 ---
 
@@ -47,13 +47,13 @@ i18n:
 
 `scripts/spectral_lint.py --mode discover` 使用 `spectral-pipeline.yaml` 對原始規格執行 Spectral CLI。此步驟會找出 OAS3 品質問題——缺少 servers 區塊、缺少聯絡資訊、未標記標籤的操作、未使用的元件結構描述、重複的 operationId、無效的範例，以及描述中的 script 標籤。
 
-違規項目會轉換為 `Discrepancy` 物件並寫入 `reports/spectral_report.json`。完整規則集請參閱 [Spectral 規則](/04-spectral-rules/)。
+違規項目會轉換為 `Discrepancy` 物件並寫入 `reports/spectral_report.json`。完整規則集請參閱 [Spectral 規則](04-spectral-rules/)。
 
 ### 4. 調和
 
 `scripts/reconcile.py` 消費兩份報告檔案，並對每個規格套用修正：
 
-- **約束修正**根據觀察到的 API 行為調整結構描述約束（放寬、收緊、新增、移除）。請參閱[已套用的修正](/03-fixes-applied/)。
+- **約束修正**根據觀察到的 API 行為調整結構描述約束（放寬、收緊、新增、移除）。請參閱[已套用的修正](03-fixes-applied/)。
 - **Spectral 修正**為規格補充 servers、聯絡資訊、標籤、安全性中繼資料，並移除無用的元件。
 - **安全性中繼資料**在 `security_scheme` 設定存在時一律注入，即使 Spectral 未標記問題。
 

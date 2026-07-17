@@ -4,7 +4,7 @@ description: >-
   Pipeline automatizzata in sei fasi che scarica, valida, analizza con linter,
   riconcilia, applica i gate e rilascia le specifiche OpenAPI di F5 XC
 i18n:
-  sourceHash: 8b956cf69c75
+  sourceHash: 05df123405f7
   translator: machine
 ---
 
@@ -49,13 +49,13 @@ Le discrepanze vengono scritte in `reports/validation_report.json`.
 
 `scripts/spectral_lint.py --mode discover` esegue la CLI di Spectral sulle specifiche originali utilizzando `spectral-pipeline.yaml`. Questo individua problemi di qualità OAS3 -- blocchi servers mancanti, informazioni di contatto mancanti, operazioni senza tag, schemi di componenti non utilizzati, operationId duplicati, esempi non validi e tag script nelle descrizioni.
 
-Le violazioni vengono convertite in oggetti `Discrepancy` e scritte in `reports/spectral_report.json`. Consultare [Regole Spectral](/04-spectral-rules/) per l'insieme completo delle regole.
+Le violazioni vengono convertite in oggetti `Discrepancy` e scritte in `reports/spectral_report.json`. Consultare [Regole Spectral](04-spectral-rules/) per l'insieme completo delle regole.
 
 ### 4. Riconciliazione
 
 `scripts/reconcile.py` consuma entrambi i file di report e applica le correzioni a ogni specifica:
 
-- **Correzioni dei vincoli** modificano i vincoli dello schema (allentano, restringono, aggiungono, rimuovono) in base al comportamento osservato dell'API. Consultare [Correzioni Applicate](/03-fixes-applied/).
+- **Correzioni dei vincoli** modificano i vincoli dello schema (allentano, restringono, aggiungono, rimuovono) in base al comportamento osservato dell'API. Consultare [Correzioni Applicate](03-fixes-applied/).
 - **Correzioni Spectral** arricchiscono le specifiche con servers, informazioni di contatto, tag, metadati di sicurezza e rimuovono i componenti inutilizzati.
 - **I metadati di sicurezza** vengono sempre iniettati se la configurazione `security_scheme` è presente, anche quando Spectral non li ha segnalati.
 

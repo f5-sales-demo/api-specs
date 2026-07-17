@@ -4,7 +4,7 @@ description: >-
   Pipeline อัตโนมัติ 6 ขั้นตอนที่ดาวน์โหลด ตรวจสอบความถูกต้อง lint ปรับแก้ไข
   ควบคุมเกณฑ์ และเผยแพร่ F5 XC OpenAPI specs
 i18n:
-  sourceHash: 8b956cf69c75
+  sourceHash: 05df123405f7
   translator: machine
 ---
 
@@ -49,13 +49,13 @@ Pipeline ทำงานทุกวันเวลา 6:00 UTC ผ่าน Git
 
 `scripts/spectral_lint.py --mode discover` รัน Spectral CLI กับ specs ต้นฉบับโดยใช้ `spectral-pipeline.yaml` ซึ่งจะค้นหาปัญหาคุณภาพ OAS3 -- บล็อก servers ที่หายไป, ข้อมูลติดต่อที่หายไป, operations ที่ไม่มี tag, component schemas ที่ไม่ได้ใช้งาน, operationIds ที่ซ้ำกัน, examples ที่ไม่ถูกต้อง, และ script tags ใน descriptions
 
-การละเมิดจะถูกแปลงเป็นออบเจ็กต์ `Discrepancy` และเขียนลงใน `reports/spectral_report.json` ดู [กฎ Spectral](/04-spectral-rules/) สำหรับชุดกฎทั้งหมด
+การละเมิดจะถูกแปลงเป็นออบเจ็กต์ `Discrepancy` และเขียนลงใน `reports/spectral_report.json` ดู [กฎ Spectral](04-spectral-rules/) สำหรับชุดกฎทั้งหมด
 
 ### 4. ปรับแก้ไข
 
 `scripts/reconcile.py` ใช้ข้อมูลจากไฟล์รายงานทั้งสองและปรับแก้ไขทุก spec:
 
-- **การแก้ไข Constraint** ปรับ schema constraints (ผ่อนคลาย, เข้มงวดขึ้น, เพิ่ม, ลบ) ตามพฤติกรรม API ที่สังเกตได้ ดู [การแก้ไขที่ใช้](/03-fixes-applied/)
+- **การแก้ไข Constraint** ปรับ schema constraints (ผ่อนคลาย, เข้มงวดขึ้น, เพิ่ม, ลบ) ตามพฤติกรรม API ที่สังเกตได้ ดู [การแก้ไขที่ใช้](03-fixes-applied/)
 - **การแก้ไข Spectral** เพิ่มเติม specs ด้วย servers, ข้อมูลติดต่อ, tags, security metadata และลบ components ที่ไม่ได้ใช้งาน
 - **Security metadata** จะถูกเพิ่มเสมอหากมีการกำหนดค่า `security_scheme` อยู่ แม้ว่า Spectral จะไม่ได้ตั้งค่าสถานะก็ตาม
 

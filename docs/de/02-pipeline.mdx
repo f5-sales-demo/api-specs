@@ -4,7 +4,7 @@ description: >-
   Sechsstufige automatisierte Pipeline, die F5 XC OpenAPI-Spezifikationen
   herunterlädt, validiert, lintet, abgleicht, prüft und veröffentlicht
 i18n:
-  sourceHash: 8b956cf69c75
+  sourceHash: 05df123405f7
   translator: machine
 ---
 
@@ -49,13 +49,13 @@ Abweichungen werden in `reports/validation_report.json` geschrieben.
 
 `scripts/spectral_lint.py --mode discover` führt die Spectral CLI gegen die Original-Spezifikationen unter Verwendung von `spectral-pipeline.yaml` aus. Dies findet OAS3-Qualitätsprobleme -- fehlende Server-Blöcke, fehlende Kontaktinformationen, nicht getaggte Operationen, ungenutzte Komponentenschemata, doppelte operationIds, ungültige Beispiele und Script-Tags in Beschreibungen.
 
-Verstöße werden in `Discrepancy`-Objekte umgewandelt und in `reports/spectral_report.json` geschrieben. Siehe [Spectral-Regeln](/04-spectral-rules/) für den vollständigen Regelsatz.
+Verstöße werden in `Discrepancy`-Objekte umgewandelt und in `reports/spectral_report.json` geschrieben. Siehe [Spectral-Regeln](04-spectral-rules/) für den vollständigen Regelsatz.
 
 ### 4. Abgleich
 
 `scripts/reconcile.py` verarbeitet beide Berichtsdateien und wendet Korrekturen auf jede Spezifikation an:
 
-- **Constraint-Korrekturen** passen Schema-Einschränkungen an (lockern, verschärfen, hinzufügen, entfernen) basierend auf dem beobachteten API-Verhalten. Siehe [Angewandte Korrekturen](/03-fixes-applied/).
+- **Constraint-Korrekturen** passen Schema-Einschränkungen an (lockern, verschärfen, hinzufügen, entfernen) basierend auf dem beobachteten API-Verhalten. Siehe [Angewandte Korrekturen](03-fixes-applied/).
 - **Spectral-Korrekturen** reichern Spezifikationen mit Servern, Kontaktinformationen, Tags, Sicherheitsmetadaten an und entfernen tote Komponenten.
 - **Sicherheitsmetadaten** werden immer injiziert, wenn die `security_scheme`-Konfiguration vorhanden ist, auch wenn Spectral dies nicht bemängelt hat.
 

@@ -2,7 +2,7 @@
 title: 업스트림 사양에 적용된 수정 사항
 description: 조정 엔진이 F5 XC OpenAPI 사양에 적용하는 모든 수정 사항의 전체 레퍼런스
 i18n:
-  sourceHash: d33e60c0fb4a
+  sourceHash: c4029a00f033
   translator: machine
 ---
 
@@ -10,7 +10,7 @@ i18n:
 
 ## 제약 조건 수정
 
-이 수정들은 사양이 실제 API가 적용하는 내용과 일치하도록 OpenAPI 스키마 제약 조건을 조정합니다. 각 수정은 [유효성 검사](/02-pipeline/#2-validate) 중에 생성된 `Discrepancy` 객체에 의해 구동됩니다.
+이 수정들은 사양이 실제 API가 적용하는 내용과 일치하도록 OpenAPI 스키마 제약 조건을 조정합니다. 각 수정은 [유효성 검사](02-pipeline/#2-validate) 중에 생성된 `Discrepancy` 객체에 의해 구동됩니다.
 
 | 전략 | 트리거 | 수행 내용 | 계약 변경 |
 |----------|---------|--------------|-----------------|
@@ -40,7 +40,7 @@ i18n:
 
 ## Spectral 보강
 
-이 수정들은 [Spectral 린팅](/04-spectral-rules/)에서 발견된 OAS3 품질 문제를 해결합니다. API 동작을 변경하지 않고 메타데이터를 추가하거나 수정합니다.
+이 수정들은 [Spectral 린팅](04-spectral-rules/)에서 발견된 OAS3 품질 문제를 해결합니다. API 동작을 변경하지 않고 메타데이터를 추가하거나 수정합니다.
 
 ### 서버 블록 주입
 
@@ -61,7 +61,7 @@ i18n:
 }]
 ```
 
-서버 URL과 변수 값은 [validation.yaml](/05-configuration/)의 `spectral.servers`에서 가져옵니다.
+서버 URL과 변수 값은 [validation.yaml](05-configuration/)의 `spectral.servers`에서 가져옵니다.
 
 ### 연락처 정보 주입
 
@@ -77,7 +77,7 @@ i18n:
 }
 ```
 
-값은 [validation.yaml](/05-configuration/)의 `spectral.contact`에서 가져옵니다.
+값은 [validation.yaml](05-configuration/)의 `spectral.contact`에서 가져옵니다.
 
 ### 오퍼레이션 태그 도출
 
@@ -129,7 +129,7 @@ i18n:
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-스킴 정의는 [validation.yaml](/05-configuration/)의 `spectral.security_scheme`에서 가져옵니다. 이는 API 소비자에게 인증 방법을 알려주지만 런타임 동작을 변경하지 않습니다.
+스킴 정의는 [validation.yaml](05-configuration/)의 `spectral.security_scheme`에서 가져옵니다. 이는 API 소비자에게 인증 방법을 알려주지만 런타임 동작을 변경하지 않습니다.
 
 ## JSON 포맷팅
 

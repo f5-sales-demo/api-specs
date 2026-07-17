@@ -2,7 +2,7 @@
 title: 上流スペックに適用される修正
 description: 調整エンジンがF5 XC OpenAPI仕様に適用するすべての修正の完全なリファレンス
 i18n:
-  sourceHash: d33e60c0fb4a
+  sourceHash: c4029a00f033
   translator: machine
 ---
 
@@ -10,7 +10,7 @@ i18n:
 
 ## 制約の修正
 
-これらの修正は、スペックがライブAPIが実際に適用する内容と一致するよう、OpenAPIスキーマの制約を調整します。各修正は、[バリデーション](/02-pipeline/#2-validate)中に生成される`Discrepancy`オブジェクトによって駆動されます。
+これらの修正は、スペックがライブAPIが実際に適用する内容と一致するよう、OpenAPIスキーマの制約を調整します。各修正は、[バリデーション](02-pipeline/#2-validate)中に生成される`Discrepancy`オブジェクトによって駆動されます。
 
 | 戦略 | トリガー | 動作内容 | コントラクト変更 |
 |----------|---------|--------------|-----------------|
@@ -40,7 +40,7 @@ i18n:
 
 ## Spectralエンリッチメント
 
-これらの修正は、[Spectralリンティング](/04-spectral-rules/)で検出されたOAS3品質の問題に対処します。API動作を変更することなく、メタデータを追加または修正します。
+これらの修正は、[Spectralリンティング](04-spectral-rules/)で検出されたOAS3品質の問題に対処します。API動作を変更することなく、メタデータを追加または修正します。
 
 ### サーバーブロックの挿入
 
@@ -61,7 +61,7 @@ i18n:
 }]
 ```
 
-サーバーURLと変数値は[validation.yaml](/05-configuration/)の`spectral.servers`から取得されます。
+サーバーURLと変数値は[validation.yaml](05-configuration/)の`spectral.servers`から取得されます。
 
 ### 連絡先情報の挿入
 
@@ -77,7 +77,7 @@ i18n:
 }
 ```
 
-値は[validation.yaml](/05-configuration/)の`spectral.contact`から取得されます。
+値は[validation.yaml](05-configuration/)の`spectral.contact`から取得されます。
 
 ### オペレーションタグの導出
 
@@ -129,7 +129,7 @@ i18n:
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-スキーム定義は[validation.yaml](/05-configuration/)の`spectral.security_scheme`から取得されます。これはAPIコンシューマーに認証方法を伝えますが、ランタイム動作は変更しません。
+スキーム定義は[validation.yaml](05-configuration/)の`spectral.security_scheme`から取得されます。これはAPIコンシューマーに認証方法を伝えますが、ランタイム動作は変更しません。
 
 ## JSONフォーマット
 

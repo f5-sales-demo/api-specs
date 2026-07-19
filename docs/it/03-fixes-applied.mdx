@@ -4,7 +4,7 @@ description: >-
   Riferimento completo di ogni correzione che il motore di riconciliazione
   applica alle specifiche OpenAPI di F5 XC
 i18n:
-  sourceHash: c4029a00f033
+  sourceHash: dec89a2175af
   translator: machine
 ---
 
@@ -12,7 +12,7 @@ Il riconciliatore (`scripts/reconcile.py`) applica quattro categorie di correzio
 
 ## Correzioni dei vincoli
 
-Queste correzioni regolano i vincoli degli schemi OpenAPI affinché la specifica corrisponda a ciò che l'API live effettivamente applica. Ogni correzione è guidata da un oggetto `Discrepancy` prodotto durante la [validazione](02-pipeline/#2-validate).
+Queste correzioni regolano i vincoli degli schemi OpenAPI affinché la specifica corrisponda a ciò che l'API live effettivamente applica. Ogni correzione è guidata da un oggetto `Discrepancy` prodotto durante la [validazione](/api-specs/it/02-pipeline/#2-validate).
 
 | Strategia | Trigger | Cosa fa | Modifica del contratto |
 |----------|---------|--------------|-----------------|
@@ -42,7 +42,7 @@ Le 10 categorie di vincoli OpenAPI testate e corrette:
 
 ## Arricchimenti Spectral
 
-Queste correzioni risolvono problemi di qualità OAS3 individuati dal [linting Spectral](04-spectral-rules/). Aggiungono o correggono metadati senza modificare il comportamento dell'API.
+Queste correzioni risolvono problemi di qualità OAS3 individuati dal [linting Spectral](/api-specs/it/04-spectral-rules/). Aggiungono o correggono metadati senza modificare il comportamento dell'API.
 
 ### Iniezione del blocco servers
 
@@ -63,7 +63,7 @@ Aggiunge il template dell'URL del tenant F5 XC alle specifiche prive di un blocc
 }]
 ```
 
-L'URL del server e i valori delle variabili provengono da `spectral.servers` in [validation.yaml](05-configuration/).
+L'URL del server e i valori delle variabili provengono da `spectral.servers` in [validation.yaml](/api-specs/it/05-configuration/).
 
 ### Iniezione delle informazioni di contatto
 
@@ -79,7 +79,7 @@ Aggiunge le informazioni di contatto in `info.contact` per le specifiche che ne 
 }
 ```
 
-I valori provengono da `spectral.contact` in [validation.yaml](05-configuration/).
+I valori provengono da `spectral.contact` in [validation.yaml](/api-specs/it/05-configuration/).
 
 ### Derivazione dei tag delle operazioni
 
@@ -131,7 +131,7 @@ Ogni specifica riceve uno schema di sicurezza `apiKeyAuth` se non ne è già pre
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-La definizione dello schema proviene da `spectral.security_scheme` in [validation.yaml](05-configuration/). Questo indica ai consumatori dell'API come autenticarsi, ma non modifica il comportamento a runtime.
+La definizione dello schema proviene da `spectral.security_scheme` in [validation.yaml](/api-specs/it/05-configuration/). Questo indica ai consumatori dell'API come autenticarsi, ma non modifica il comportamento a runtime.
 
 ## Formattazione JSON
 

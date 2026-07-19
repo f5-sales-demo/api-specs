@@ -7,7 +7,7 @@ The reconciler (`scripts/reconcile.py`) applies four categories of fixes to upst
 
 ## Constraint Fixes
 
-These fixes adjust OpenAPI schema constraints so the spec matches what the live API actually enforces. Each fix is driven by a `Discrepancy` object produced during [validation](02-pipeline/#2-validate).
+These fixes adjust OpenAPI schema constraints so the spec matches what the live API actually enforces. Each fix is driven by a `Discrepancy` object produced during [validation](/api-specs/en/02-pipeline/#2-validate).
 
 | Strategy | Trigger | What It Does | Contract Change |
 |----------|---------|--------------|-----------------|
@@ -37,7 +37,7 @@ The 10 OpenAPI constraint categories tested and fixed:
 
 ## Spectral Enrichments
 
-These fixes address OAS3 quality issues found by [Spectral linting](04-spectral-rules/). They add or correct metadata without changing API behavior.
+These fixes address OAS3 quality issues found by [Spectral linting](/api-specs/en/04-spectral-rules/). They add or correct metadata without changing API behavior.
 
 ### Servers Block Injection
 
@@ -58,7 +58,7 @@ Adds the F5 XC tenant URL template to specs missing a `servers` block:
 }]
 ```
 
-The server URL and variable values come from `spectral.servers` in [validation.yaml](05-configuration/).
+The server URL and variable values come from `spectral.servers` in [validation.yaml](/api-specs/en/05-configuration/).
 
 ### Contact Info Injection
 
@@ -74,7 +74,7 @@ Adds contact information to `info.contact` for specs missing it:
 }
 ```
 
-Values come from `spectral.contact` in [validation.yaml](05-configuration/).
+Values come from `spectral.contact` in [validation.yaml](/api-specs/en/05-configuration/).
 
 ### Operation Tag Derivation
 
@@ -126,7 +126,7 @@ Every spec receives an `apiKeyAuth` security scheme if one is not already presen
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-The scheme definition comes from `spectral.security_scheme` in [validation.yaml](05-configuration/). This tells API consumers how to authenticate but does not change runtime behavior.
+The scheme definition comes from `spectral.security_scheme` in [validation.yaml](/api-specs/en/05-configuration/). This tells API consumers how to authenticate but does not change runtime behavior.
 
 ## JSON Formatting
 

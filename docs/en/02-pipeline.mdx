@@ -44,13 +44,13 @@ Discrepancies are written to `reports/validation_report.json`.
 
 `scripts/spectral_lint.py --mode discover` runs the Spectral CLI against the original specs using `spectral-pipeline.yaml`. This finds OAS3 quality issues -- missing servers blocks, missing contact info, untagged operations, unused component schemas, duplicate operationIds, invalid examples, and script tags in descriptions.
 
-Violations are converted to `Discrepancy` objects and written to `reports/spectral_report.json`. See [Spectral Rules](04-spectral-rules/) for the full rule set.
+Violations are converted to `Discrepancy` objects and written to `reports/spectral_report.json`. See [Spectral Rules](/api-specs/en/04-spectral-rules/) for the full rule set.
 
 ### 4. Reconcile
 
 `scripts/reconcile.py` consumes both report files and applies fixes to every spec:
 
-- **Constraint fixes** adjust schema constraints (relax, tighten, add, remove) based on observed API behavior. See [Fixes Applied](03-fixes-applied/).
+- **Constraint fixes** adjust schema constraints (relax, tighten, add, remove) based on observed API behavior. See [Fixes Applied](/api-specs/en/03-fixes-applied/).
 - **Spectral fixes** enrich specs with servers, contact info, tags, security metadata, and remove dead components.
 - **Security metadata** is always injected if the `security_scheme` config is present, even when Spectral did not flag it.
 

@@ -2,7 +2,7 @@
 title: パイプライン概要
 description: F5 XC OpenAPI仕様のダウンロード、検証、リント、調整、ゲート、リリースを行う6段階の自動化パイプライン
 i18n:
-  sourceHash: 05df123405f7
+  sourceHash: 4dfb349b9347
   translator: machine
 ---
 
@@ -47,13 +47,13 @@ i18n:
 
 `scripts/spectral_lint.py --mode discover`は`spectral-pipeline.yaml`を使用して、オリジナル仕様に対してSpectral CLIを実行します。これによりOAS3の品質問題を検出します -- serversブロックの欠落、連絡先情報の欠落、タグ付けされていないオペレーション、未使用のコンポーネントスキーマ、重複するoperationId、無効なexample、descriptionに含まれるscriptタグなどです。
 
-違反は`Discrepancy`オブジェクトに変換され、`reports/spectral_report.json`に書き出されます。完全なルールセットについては[Spectralルール](04-spectral-rules/)を参照してください。
+違反は`Discrepancy`オブジェクトに変換され、`reports/spectral_report.json`に書き出されます。完全なルールセットについては[Spectralルール](/api-specs/ja/04-spectral-rules/)を参照してください。
 
 ### 4. 調整
 
 `scripts/reconcile.py`は両方のレポートファイルを読み取り、すべての仕様に修正を適用します：
 
-- **制約の修正**は、観測されたAPIの動作に基づいてスキーマ制約を調整します（緩和、厳格化、追加、削除）。[適用された修正](03-fixes-applied/)を参照してください。
+- **制約の修正**は、観測されたAPIの動作に基づいてスキーマ制約を調整します（緩和、厳格化、追加、削除）。[適用された修正](/api-specs/ja/03-fixes-applied/)を参照してください。
 - **Spectralの修正**は、servers、連絡先情報、タグ、セキュリティメタデータを仕様に追加し、不要なコンポーネントを削除します。
 - **セキュリティメタデータ**は、Spectralがフラグを立てなかった場合でも、`security_scheme`設定が存在する限り常に注入されます。
 

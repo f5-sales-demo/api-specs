@@ -2,7 +2,7 @@
 title: 流水线概述
 description: 六阶段自动化流水线，用于下载、验证、检查、协调、门控和发布 F5 XC OpenAPI 规范
 i18n:
-  sourceHash: 05df123405f7
+  sourceHash: 4dfb349b9347
   translator: machine
 ---
 
@@ -47,13 +47,13 @@ i18n:
 
 `scripts/spectral_lint.py --mode discover` 使用 `spectral-pipeline.yaml` 对原始规范运行 Spectral CLI。此阶段查找 OAS3 质量问题——缺少 servers 块、缺少联系信息、未标记的操作、未使用的组件 schema、重复的 operationId、无效的示例以及描述中的 script 标签。
 
-违规项被转换为 `Discrepancy` 对象并写入 `reports/spectral_report.json`。完整的规则集请参阅 [Spectral 规则](04-spectral-rules/)。
+违规项被转换为 `Discrepancy` 对象并写入 `reports/spectral_report.json`。完整的规则集请参阅 [Spectral 规则](/api-specs/zh-cn/04-spectral-rules/)。
 
 ### 4. 协调
 
 `scripts/reconcile.py` 读取两份报告文件并对每个规范应用修复：
 
-- **约束修复** 根据观察到的 API 行为调整 schema 约束（放宽、收紧、添加、移除）。参见[已应用的修复](03-fixes-applied/)。
+- **约束修复** 根据观察到的 API 行为调整 schema 约束（放宽、收紧、添加、移除）。参见[已应用的修复](/api-specs/zh-cn/03-fixes-applied/)。
 - **Spectral 修复** 为规范补充 servers、联系信息、标签、安全元数据，并移除无用的组件。
 - **安全元数据** 在 `security_scheme` 配置存在时始终注入，即使 Spectral 未标记相关问题。
 

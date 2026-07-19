@@ -2,7 +2,7 @@
 title: 应用于上游规范的修复
 description: 协调引擎应用于 F5 XC OpenAPI 规范的每项修复的完整参考
 i18n:
-  sourceHash: c4029a00f033
+  sourceHash: dec89a2175af
   translator: machine
 ---
 
@@ -10,7 +10,7 @@ i18n:
 
 ## 约束修复
 
-这些修复调整 OpenAPI 模式约束，使规范与实际 API 的执行行为保持一致。每项修复由[验证](02-pipeline/#2-validate)阶段产生的 `Discrepancy` 对象驱动。
+这些修复调整 OpenAPI 模式约束，使规范与实际 API 的执行行为保持一致。每项修复由[验证](/api-specs/zh-cn/02-pipeline/#2-validate)阶段产生的 `Discrepancy` 对象驱动。
 
 | 策略 | 触发条件 | 执行操作 | 契约变更 |
 |----------|---------|--------------|-----------------|
@@ -40,7 +40,7 @@ i18n:
 
 ## Spectral 增强
 
-这些修复解决由 [Spectral 检查](04-spectral-rules/)发现的 OAS3 质量问题。它们添加或修正元数据，而不改变 API 行为。
+这些修复解决由 [Spectral 检查](/api-specs/zh-cn/04-spectral-rules/)发现的 OAS3 质量问题。它们添加或修正元数据，而不改变 API 行为。
 
 ### 服务器块注入
 
@@ -61,7 +61,7 @@ i18n:
 }]
 ```
 
-服务器 URL 和变量值来自 [validation.yaml](05-configuration/) 中的 `spectral.servers`。
+服务器 URL 和变量值来自 [validation.yaml](/api-specs/zh-cn/05-configuration/) 中的 `spectral.servers`。
 
 ### 联系信息注入
 
@@ -77,7 +77,7 @@ i18n:
 }
 ```
 
-值来自 [validation.yaml](05-configuration/) 中的 `spectral.contact`。
+值来自 [validation.yaml](/api-specs/zh-cn/05-configuration/) 中的 `spectral.contact`。
 
 ### 操作标签派生
 
@@ -129,7 +129,7 @@ i18n:
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-安全方案定义来自 [validation.yaml](05-configuration/) 中的 `spectral.security_scheme`。这告知 API 消费者如何进行身份验证，但不改变运行时行为。
+安全方案定义来自 [validation.yaml](/api-specs/zh-cn/05-configuration/) 中的 `spectral.security_scheme`。这告知 API 消费者如何进行身份验证，但不改变运行时行为。
 
 ## JSON 格式化
 

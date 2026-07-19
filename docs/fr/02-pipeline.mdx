@@ -4,7 +4,7 @@ description: >-
   Pipeline automatisé en six étapes qui télécharge, valide, analyse, réconcilie,
   contrôle et publie les spécifications OpenAPI F5 XC
 i18n:
-  sourceHash: 05df123405f7
+  sourceHash: 4dfb349b9347
   translator: machine
 ---
 
@@ -49,13 +49,13 @@ Les écarts sont écrits dans `reports/validation_report.json`.
 
 `scripts/spectral_lint.py --mode discover` exécute le CLI Spectral contre les spécifications originales en utilisant `spectral-pipeline.yaml`. Cela identifie les problèmes de qualité OAS3 -- blocs servers manquants, informations de contact manquantes, opérations sans tags, schémas de composants inutilisés, operationIds en double, exemples invalides et balises script dans les descriptions.
 
-Les violations sont converties en objets `Discrepancy` et écrites dans `reports/spectral_report.json`. Consultez [Règles Spectral](04-spectral-rules/) pour l'ensemble complet des règles.
+Les violations sont converties en objets `Discrepancy` et écrites dans `reports/spectral_report.json`. Consultez [Règles Spectral](/api-specs/fr/04-spectral-rules/) pour l'ensemble complet des règles.
 
 ### 4. Réconciliation
 
 `scripts/reconcile.py` consomme les deux fichiers de rapport et applique des corrections à chaque spécification :
 
-- **Corrections de contraintes** : ajustent les contraintes de schéma (assouplir, resserrer, ajouter, supprimer) en fonction du comportement observé de l'API. Voir [Corrections appliquées](03-fixes-applied/).
+- **Corrections de contraintes** : ajustent les contraintes de schéma (assouplir, resserrer, ajouter, supprimer) en fonction du comportement observé de l'API. Voir [Corrections appliquées](/api-specs/fr/03-fixes-applied/).
 - **Corrections Spectral** : enrichissent les spécifications avec des serveurs, des informations de contact, des tags, des métadonnées de sécurité, et suppriment les composants inutilisés.
 - **Les métadonnées de sécurité** sont toujours injectées si la configuration `security_scheme` est présente, même lorsque Spectral ne l'a pas signalé.
 

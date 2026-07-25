@@ -36,9 +36,7 @@ class ReconciliationResult:
 class ReconciliationConfig:
     """Configuration for spec reconciliation."""
 
-    priority: list[str] = field(
-        default_factory=lambda: ["existing", "discovery", "inferred"]
-    )
+    priority: list[str] = field(default_factory=lambda: ["existing", "discovery", "inferred"])
     fix_strategies: dict[str, str] = field(
         default_factory=lambda: {
             "tighter_spec": "relax",
@@ -138,9 +136,7 @@ class SpecReconciler:
 
         if not discrepancies:
             result.fixed_spec = original
-            console.print(
-                f"[green]{spec_path.name}: No changes needed (pass-through)[/green]"
-            )
+            console.print(f"[green]{spec_path.name}: No changes needed (pass-through)[/green]")
             return result
 
         # Apply fixes
@@ -193,12 +189,8 @@ class SpecReconciler:
     def _get_fix_strategy(self, discrepancy: Discrepancy) -> str:
         """Determine fix strategy based on discrepancy type."""
         strategy_map = {
-            DiscrepancyType.SPEC_STRICTER: self.config.fix_strategies.get(
-                "tighter_spec", "relax"
-            ),
-            DiscrepancyType.SPEC_LOOSER: self.config.fix_strategies.get(
-                "looser_spec", "tighten"
-            ),
+            DiscrepancyType.SPEC_STRICTER: self.config.fix_strategies.get("tighter_spec", "relax"),
+            DiscrepancyType.SPEC_LOOSER: self.config.fix_strategies.get("looser_spec", "tighten"),
             DiscrepancyType.MISSING_CONSTRAINT: self.config.fix_strategies.get(
                 "missing_constraint", "add"
             ),
@@ -405,8 +397,36 @@ class SpecReconciler:
 
         return api_behavior
 
+    def prune_stale_specs(self, current: set[str]) -> list[str]:
+        """Delete spec files in the output directory not produced by this run.
+
+        ``release/specs`` is a build product that is also committed, so every
+        run writes on top of the previous one. Upstream filenames embed a
+        sequence index (``docs-cloud-f5-com.0198....json``) that shifts
+        whenever F5 adds or removes a domain, so specs from an earlier run
+        survive under names the current run never writes and are then packaged
+        into the release. Removing them keeps the directory an exact mirror of
+        the current input set. Non-spec files (CHANGELOG.md) and dot-files
+        (.spec_metadata.json) are left alone -- the reconciler never produces
+        them, so it must not delete them either.
+        """
+        removed: list[str] = []
+        for existing in sorted(self.output_dir.glob("*.json")) + sorted(
+            self.output_dir.glob("*.yaml")
+        ):
+            if existing.name.startswith(".") or existing.name in current:
+                continue
+            existing.unlink()
+            removed.append(existing.name)
+
+        if removed:
+            console.print(
+                f"[yellow]Pruned {len(removed)} stale spec(s) from {self.output_dir}[/yellow]"
+            )
+        return removed
+
     def save_results(self) -> dict[str, Path]:
-        """Save reconciled specs to output directory."""
+        """Save reconciled specs to output directory, pruning stale files."""
         saved_files = {}
 
         for result in self.results:
@@ -426,6 +446,8 @@ class SpecReconciler:
 
             status = "fixed" if result.modified else "pass-through"
             console.print(f"  [dim]Saved: {result.filename} ({status})[/dim]")
+
+        self.prune_stale_specs(set(saved_files))
 
         return saved_files
 
@@ -492,14 +514,10 @@ class SpecReconciler:
                     lines.append(f"- **Added** `{constraint}` to `{prop}`: `{new_val}`")
                     has_items = True
                 elif action == "remove":
-                    lines.append(
-                        f"- **Removed** `{constraint}` from `{prop}` (was `{old_val}`)"
-                    )
+                    lines.append(f"- **Removed** `{constraint}` from `{prop}` (was `{old_val}`)")
                     has_items = True
                 elif constraint_type.startswith("spectral:"):
-                    lines.append(
-                        f"- **Spectral fix** `{constraint_type}`: {action or 'applied'}"
-                    )
+                    lines.append(f"- **Spectral fix** `{constraint_type}`: {action or 'applied'}")
                     has_items = True
 
             if not has_items:
@@ -523,9 +541,7 @@ def load_discrepancies(report_path: Path) -> list[Discrepancy]:
             path=d.get("path", ""),
             property_name=d.get("property_name", ""),
             constraint_type=d.get("constraint_type", ""),
-            discrepancy_type=DiscrepancyType(
-                d.get("discrepancy_type", "constraint_mismatch")
-            ),
+            discrepancy_type=DiscrepancyType(d.get("discrepancy_type", "constraint_mismatch")),
             spec_value=d.get("spec_value"),
             api_behavior=d.get("api_behavior"),
             test_values=d.get("test_values", []),
@@ -537,9 +553,7 @@ def load_discrepancies(report_path: Path) -> list[Discrepancy]:
 
 def main() -> int:
     """Main entry point for reconciliation command."""
-    parser = argparse.ArgumentParser(
-        description="Reconcile F5 XC OpenAPI specs with API behavior"
-    )
+    parser = argparse.ArgumentParser(description="Reconcile F5 XC OpenAPI specs with API behavior")
     parser.add_argument(
         "--config",
         type=Path,
@@ -589,15 +603,11 @@ def main() -> int:
     for report_path in args.report:
         loaded = load_discrepancies(report_path)
         discrepancies.extend(loaded)
-        console.print(
-            f"[dim]Loaded {len(loaded)} discrepancies from {report_path}[/dim]"
-        )
+        console.print(f"[dim]Loaded {len(loaded)} discrepancies from {report_path}[/dim]")
 
     # Create reconciler
     recon_config = ReconciliationConfig(
-        priority=reconciliation_config.get(
-            "priority", ["existing", "discovery", "inferred"]
-        ),
+        priority=reconciliation_config.get("priority", ["existing", "discovery", "inferred"]),
         fix_strategies=reconciliation_config.get("fix_strategies", {}),
     )
 

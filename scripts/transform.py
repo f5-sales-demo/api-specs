@@ -17,7 +17,7 @@ from rich.console import Console
 from .utils.spec_loader import save_spec_to_file
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Sequence
 
 console = Console()
 
@@ -29,6 +29,16 @@ HTTP_METHODS: frozenset[str] = frozenset(
 # Index of the path segment used to derive an operation tag.
 # For ``/api/config/namespaces/...`` the tag is ``config`` (index 1).
 _TAG_SEGMENT_INDEX = 1
+
+# Fallback prose fields for :func:`fix_spelling` when ``spelling_corrections.yaml``
+# does not declare ``text_fields``. Data-bearing fields such as ``x-ves-example``
+# are deliberately absent: their values are wire values, not prose.
+DEFAULT_SPELLING_TEXT_FIELDS: tuple[str, ...] = (
+    "description",
+    "summary",
+    "title",
+    "x-displayname",
+)
 
 # ---------------------------------------------------------------------------
 # Transform registry
@@ -133,21 +143,28 @@ def _build_spelling_patterns(
 
 
 def _fix_spelling_recursive(
-    obj: Any, patterns: list[tuple[re.Pattern[str], str]]
+    obj: Any,
+    patterns: list[tuple[re.Pattern[str], str]],
+    text_fields: Sequence[str] = DEFAULT_SPELLING_TEXT_FIELDS,
 ) -> None:
-    """Walk *obj* in-place and fix known spelling errors in text fields."""
+    """Walk *obj* in-place and fix known spelling errors in prose fields.
+
+    Only values stored under a key in *text_fields* are rewritten. Dict keys
+    (property names) and data fields are never touched, so a correction can
+    never rename an API property or alter an enum value.
+    """
     if isinstance(obj, dict):
-        for key in ("description", "summary", "title"):
+        for key in text_fields:
             if key in obj and isinstance(obj[key], str):
                 text = obj[key]
                 for pattern, fix in patterns:
                     text = pattern.sub(fix, text)
                 obj[key] = text
         for value in obj.values():
-            _fix_spelling_recursive(value, patterns)
+            _fix_spelling_recursive(value, patterns, text_fields)
     elif isinstance(obj, list):
         for item in obj:
-            _fix_spelling_recursive(item, patterns)
+            _fix_spelling_recursive(item, patterns, text_fields)
 
 
 def _rewrite_refs(obj: Any, old_ref: str, new_ref: str) -> int:
@@ -191,9 +208,7 @@ def inject_info_version(
     _filename: str,
 ) -> dict:
     """Set ``info.version`` from pipeline metadata."""
-    version = config.metadata.get("spec_date") or config.metadata.get(
-        "download_date", ""
-    )
+    version = config.metadata.get("spec_date") or config.metadata.get("download_date", "")
     spec.setdefault("info", {})["version"] = version
     return spec
 
@@ -465,7 +480,9 @@ def fix_property_names(
 ) -> dict:
     """Rename misspelled JSON property keys in component schemas.
 
-    Only applies corrections marked ``verified: true`` in the config.
+    Only applies corrections marked ``verified: true`` in the config. A rule
+    flagged ``never_apply: true`` is skipped unconditionally: the live API
+    requires the misspelled key, so renaming it would break the wire contract.
     """
     corrections = config.metadata.get("property_name_corrections", [])
     if not corrections:
@@ -473,6 +490,8 @@ def fix_property_names(
 
     schemas = spec.get("components", {}).get("schemas", {})
     for rule in corrections:
+        if rule.get("never_apply", False):
+            continue
         if not rule.get("verified", False):
             continue
         schema_name = rule["schema"]
@@ -502,12 +521,13 @@ def fix_spelling(
     config: TransformConfig,
     _filename: str,
 ) -> dict:
-    """Fix known spelling errors in description, summary, and title fields."""
+    """Fix known spelling errors in the configured prose fields."""
     corrections = config.metadata.get("spelling_corrections", {})
     if not corrections:
         return spec
+    text_fields = config.metadata.get("spelling_text_fields", DEFAULT_SPELLING_TEXT_FIELDS)
     patterns = _build_spelling_patterns(corrections)
-    _fix_spelling_recursive(spec, patterns)
+    _fix_spelling_recursive(spec, patterns, text_fields)
     return spec
 
 
@@ -564,9 +584,7 @@ class SpecTransformer:
                 continue
             result = self._transform_file(spec_file)
             self.results.append(result)
-            console.print(
-                f"  [dim]{result.filename}: {len(result.changes)} changes[/dim]"
-            )
+            console.print(f"  [dim]{result.filename}: {len(result.changes)} changes[/dim]")
 
         return self.results
 
@@ -640,6 +658,9 @@ def load_config(config_path: str | Path) -> TransformConfig:
         with spelling_path.open() as fh:
             spelling_cfg = yaml.safe_load(fh) or {}
         metadata["spelling_corrections"] = spelling_cfg.get("corrections", {})
+        metadata["spelling_text_fields"] = tuple(
+            spelling_cfg.get("text_fields") or DEFAULT_SPELLING_TEXT_FIELDS
+        )
 
     property_path = config_path.parent / "property_name_corrections.yaml"
     if property_path.exists():

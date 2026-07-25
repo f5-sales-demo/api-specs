@@ -12,11 +12,29 @@ from typing import Any
 import yaml
 from rich.console import Console
 
+from scripts.transform import DEFAULT_SPELLING_TEXT_FIELDS
+
 console = Console()
 
 SPEC_DIR = Path("release/specs")
-TEXT_FIELDS = ("description", "summary", "title")
+SPELLING_CONFIG = Path("config/spelling_corrections.yaml")
 _MIN_TEXT_LENGTH = 5
+
+
+def load_text_fields() -> tuple[str, ...]:
+    """Return the prose fields declared in ``spelling_corrections.yaml``.
+
+    Single source of truth shared with the ``fix_spelling`` transform: the
+    checker must inspect exactly the fields the transform corrects.
+    """
+    if not SPELLING_CONFIG.exists():
+        return DEFAULT_SPELLING_TEXT_FIELDS
+    with SPELLING_CONFIG.open() as fh:
+        cfg = yaml.safe_load(fh) or {}
+    return tuple(cfg.get("text_fields") or DEFAULT_SPELLING_TEXT_FIELDS)
+
+
+TEXT_FIELDS = load_text_fields()
 
 
 def _extract_text(obj: Any) -> list[str]:
@@ -24,11 +42,7 @@ def _extract_text(obj: Any) -> list[str]:
     texts: list[str] = []
     if isinstance(obj, dict):
         for key, value in obj.items():
-            if (
-                key in TEXT_FIELDS
-                and isinstance(value, str)
-                and len(value) > _MIN_TEXT_LENGTH
-            ):
+            if key in TEXT_FIELDS and isinstance(value, str) and len(value) > _MIN_TEXT_LENGTH:
                 texts.append(value)
             texts.extend(_extract_text(value))
     elif isinstance(obj, list):
@@ -88,9 +102,7 @@ def main() -> int:
         all_text.extend(_extract_text(spec))
         all_property_names.update(_extract_property_names(spec))
 
-    console.print(
-        f"  Extracted {len(all_text)} text fields from {len(spec_files)} specs"
-    )
+    console.print(f"  Extracted {len(all_text)} text fields from {len(spec_files)} specs")
     console.print(f"  Found {len(all_property_names)} unique property names")
 
     false_positives = _load_false_positives()
@@ -109,9 +121,7 @@ def main() -> int:
 
     errors_found = False
     if result.stdout.strip():
-        console.print(
-            f"\n[red]Found spelling errors in text fields:[/red]\n{result.stdout}"
-        )
+        console.print(f"\n[red]Found spelling errors in text fields:[/red]\n{result.stdout}")
         errors_found = True
     else:
         console.print("[green]No spelling errors in text fields.[/green]")
@@ -147,8 +157,7 @@ def _check_property_names(property_names: set[str], false_positives: list[str]) 
 
     if new_findings:
         console.print(
-            f"\n[red]Found {len(new_findings)} misspelled property names "
-            f"not yet tracked:[/red]"
+            f"\n[red]Found {len(new_findings)} misspelled property names not yet tracked:[/red]"
         )
         for finding in new_findings:
             console.print(f"  {finding}")

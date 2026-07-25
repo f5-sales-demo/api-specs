@@ -1,11 +1,32 @@
 ---
-# Spelling corrections for F5 XC OpenAPI spec description/summary/title fields.
+# Spelling corrections for prose fields in the F5 XC OpenAPI specs.
 # Applied by the fix_spelling transform during `make transform`.
 #
 # Source: codespell audit of 268 released specs (2026-06-09).
 # Each entry maps a misspelled word to its correction.
 # Corrections are case-sensitive and applied as whole-word replacements
 # within JSON string values only.
+#
+# SAFETY -- prose only, never identifiers.
+# A correction must never alter a property name, an enum value, or any other
+# identifier: `blocked_sevice` and `checkin` are real F5 XC wire keys, and a
+# blind text replacement that "fixes" them breaks the API contract. Two
+# mechanisms enforce this:
+#   1. text_fields below restricts replacement to human-readable prose. Data
+#      fields (notably x-ves-example, whose values are wire values such as
+#      "Operational", "ns1" or a label selector) are deliberately excluded.
+#   2. tests/test_spelling_corrections.py fails if any key below matches a
+#      property name, a required entry, an enum value or a parameter name in
+#      the published specs.
+# Before adding a key, confirm it cannot appear as an identifier.
+
+# JSON keys whose string values are prose and may be spell-corrected.
+# Keep in sync with the guard test -- both read this list.
+text_fields:
+  - description
+  - summary
+  - title
+  - x-displayname
 
 corrections:
   # --- High frequency (>= 10 occurrences) ---
@@ -15,6 +36,7 @@ corrections:
   Neworks: Networks
   conects: connects
   expresssions: expressions
+  Nework: Network
   nework: network
 
   # --- Medium frequency (2-9 occurrences) ---
@@ -117,11 +139,19 @@ corrections:
   targetting: targeting
   Totol: Total
   vaidators: validators
+  Virutal: Virtual
   virutal: virtual
   wihtout: without
   responce: response
   responde: respond
   respresents: represents
+
+  # --- Added by the 2026-07-25 audit of x-displayname and description ---
+  Attachement: Attachment
+  Availablity: Availability
+  Malicius: Malicious
+  Souces: Sources
+  informaton: information
 
 # Words that codespell flags but are NOT typos in this context.
 # These must not be corrected.

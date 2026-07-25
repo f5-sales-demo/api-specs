@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_security",
     "description": "API to create API endpoint protection rule suggestion from App Security Monitoring pages",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -109,7 +109,14 @@
           }
         },
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securitySecurityEventsRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securitySecurityEventsRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -220,7 +227,14 @@
           }
         },
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securitySecurityEventsAggregationRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securitySecurityEventsAggregationRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -331,7 +345,14 @@
           }
         },
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securitySearchLoadBalancersRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securitySearchLoadBalancersRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -454,7 +475,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securitySecurityEventsRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securitySecurityEventsRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -577,7 +605,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securitySecurityEventsAggregationRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securitySecurityEventsAggregationRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -594,7 +629,7 @@
       "get": {
         "summary": "Security Event Scroll Query",
         "description": "Scroll request is used to fetch large number of security events in multiple batches with each SecurityEventResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSecurityEventScrollRequest. Use the scroll_id returned in the SecurityEventResponse to fetch the next batch of security events\nand one can continue this process till the scroll_id returned is \"\" which indicates no more events to scroll.",
-        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -719,7 +754,7 @@
       "post": {
         "summary": "Security Event Scroll Query",
         "description": "Scroll request is used to fetch large number of security events in multiple batches with each SecurityEventResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSecurityEventScrollRequest. Use the scroll_id returned in the SecurityEventResponse to fetch the next batch of security events\nand one can continue this process till the scroll_id returned is \"\" which indicates no more events to scroll.",
-        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery_post_post_post",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1109,7 +1144,7 @@
       "get": {
         "summary": "Security Incidents Scroll Query",
         "description": "Scroll request is used to fetch large number of security incidents in multiple batches with each SecurityIncidentsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSecurityIncidentsScrollRequest. Use the scroll_id returned in the SecurityIncidentsResponse to fetch the next batch\nof security incidents and one can continue this process till the scroll_id returned is \"\" which indicates no more\nevents to scroll.",
-        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1234,7 +1269,7 @@
       "post": {
         "summary": "Security Incidents Scroll Query",
         "description": "Scroll request is used to fetch large number of security incidents in multiple batches with each SecurityIncidentsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSecurityIncidentsScrollRequest. Use the scroll_id returned in the SecurityIncidentsResponse to fetch the next batch\nof security incidents and one can continue this process till the scroll_id returned is \"\" which indicates no more\nevents to scroll.",
-        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery_post_post_post",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityIncidentsScrollQuery_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1600,7 +1635,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securitySearchLoadBalancersRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securitySearchLoadBalancersRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -1876,8 +1918,8 @@
     "/api/data/namespaces/{namespace}/app_security/suspicious_user_logs/scroll": {
       "get": {
         "summary": "Suspicious User Logs Scroll Query",
-        "description": "Scroll request is used to fetch large number of suspicious user logs in multiple batches with each SuspiciousUserLogsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSuspiciousUserLogsScrollRequest. Use the scroll_id returned in the SuspiciousUserLogsResponse to fetch the next batch of logs \nand one can continue this process till the scroll_id returned is \"\" which indicates no more logs to scroll.",
-        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery",
+        "description": "Scroll request is used to fetch large number of suspicious user logs in multiple batches with each SuspiciousUserLogsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSuspiciousUserLogsScrollRequest. Use the scroll_id returned in the SuspiciousUserLogsResponse to fetch the next batch of logs\nand one can continue this process till the scroll_id returned is \"\" which indicates no more logs to scroll.",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2001,8 +2043,8 @@
       },
       "post": {
         "summary": "Suspicious User Logs Scroll Query",
-        "description": "Scroll request is used to fetch large number of suspicious user logs in multiple batches with each SuspiciousUserLogsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSuspiciousUserLogsScrollRequest. Use the scroll_id returned in the SuspiciousUserLogsResponse to fetch the next batch of logs \nand one can continue this process till the scroll_id returned is \"\" which indicates no more logs to scroll.",
-        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery_post_post_post",
+        "description": "Scroll request is used to fetch large number of suspicious user logs in multiple batches with each SuspiciousUserLogsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSuspiciousUserLogsScrollRequest. Use the scroll_id returned in the SuspiciousUserLogsResponse to fetch the next batch of logs\nand one can continue this process till the scroll_id returned is \"\" which indicates no more logs to scroll.",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SuspiciousUserLogsScrollQuery_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2248,7 +2290,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securityGetSuggestedBlockClientRuleReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securityGetSuggestedBlockClientRuleReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -2381,7 +2430,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securityGetSuggestedDDoSMitigtionRuleReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securityGetSuggestedDDoSMitigtionRuleReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -2514,7 +2570,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securityGetSuggestedTrustClientRuleReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securityGetSuggestedTrustClientRuleReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -2647,7 +2710,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securityGetSuggestedWAFExclusionRuleReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securityGetSuggestedWAFExclusionRuleReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -2795,7 +2865,8 @@
         },
         "x-ves-deprecated": "Use GetSuggestedAPIEndpointProtectionRule in RuleSuggestionAPI",
         "x-ves-proto-rpc": "ves.io.schema.app_security.APIEndpointProtectionRuleSuggestionAPI.GetSuggestedAPIEndpointProtectionRule",
-        "tags": ["config"]
+        "tags": ["config"],
+        "deprecated": true
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.APIEndpointProtectionRuleSuggestionAPI",
@@ -2921,7 +2992,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securityGetSuggestedBlockClientRuleReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securityGetSuggestedBlockClientRuleReq"
+              }
+            }
+          },
+          "required": true
         },
         "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedBlockClientRule",
         "tags": ["config"]
@@ -3065,7 +3143,8 @@
         },
         "x-ves-deprecated": "Use GetSuggestedSensitiveDataRule in RuleSuggestionAPI",
         "x-ves-proto-rpc": "ves.io.schema.app_security.APISensitiveDataRuleSuggestionAPI.GetSuggestedSensitiveDataRule",
-        "tags": ["config"]
+        "tags": ["config"],
+        "deprecated": true
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.APISensitiveDataRuleSuggestionAPI",
@@ -3191,7 +3270,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securityGetSuggestedDDoSMitigtionRuleReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securityGetSuggestedDDoSMitigtionRuleReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -3339,7 +3425,8 @@
         },
         "x-ves-deprecated": "Use GetSuggestedOasValidationRule in RuleSuggestionAPI",
         "x-ves-proto-rpc": "ves.io.schema.app_security.OasValidationSuggestionAPI.GetSuggestedOasValidationRule",
-        "tags": ["config"]
+        "tags": ["config"],
+        "deprecated": true
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.OasValidationSuggestionAPI",
@@ -3480,7 +3567,8 @@
         },
         "x-ves-deprecated": "Use GetSuggestedRateLimitRule in RuleSuggestionAPI",
         "x-ves-proto-rpc": "ves.io.schema.app_security.APIRateLimitRuleSuggestionAPI.GetSuggestedRateLimitRule",
-        "tags": ["config"]
+        "tags": ["config"],
+        "deprecated": true
       },
       "x-displayname": "Application Security Monitoring APIs",
       "x-ves-proto-service": "ves.io.schema.app_security.APIRateLimitRuleSuggestionAPI",
@@ -3606,7 +3694,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securityGetSuggestedTrustClientRuleReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securityGetSuggestedTrustClientRuleReq"
+              }
+            }
+          },
+          "required": true
         },
         "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityClientRuleAPI.GetSuggestedTrustClientRule",
         "tags": ["config"]
@@ -3735,7 +3830,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_securityGetSuggestedWAFExclusionRuleReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securityGetSuggestedWAFExclusionRuleReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -3872,78 +3974,6 @@
   "x-displayname": "Application Security Monitoring APIs",
   "x-ves-proto-package": "ves.io.schema.app_security",
   "components": {
-    "requestBodies": {
-      "app_securityGetSuggestedTrustClientRuleReq": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/app_securityGetSuggestedTrustClientRuleReq"
-            }
-          }
-        },
-        "required": true
-      },
-      "app_securitySearchLoadBalancersRequest": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/app_securitySearchLoadBalancersRequest"
-            }
-          }
-        },
-        "required": true
-      },
-      "app_securityGetSuggestedBlockClientRuleReq": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/app_securityGetSuggestedBlockClientRuleReq"
-            }
-          }
-        },
-        "required": true
-      },
-      "app_securitySecurityEventsRequest": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/app_securitySecurityEventsRequest"
-            }
-          }
-        },
-        "required": true
-      },
-      "app_securitySecurityEventsAggregationRequest": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/app_securitySecurityEventsAggregationRequest"
-            }
-          }
-        },
-        "required": true
-      },
-      "app_securityGetSuggestedDDoSMitigtionRuleReq": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/app_securityGetSuggestedDDoSMitigtionRuleReq"
-            }
-          }
-        },
-        "required": true
-      },
-      "app_securityGetSuggestedWAFExclusionRuleReq": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/app_securityGetSuggestedWAFExclusionRuleReq"
-            }
-          }
-        },
-        "required": true
-      }
-    },
     "schemas": {
       "app_firewallAppFirewallViolationType": {
         "type": "string",
@@ -4034,7 +4064,7 @@
       },
       "app_securityApiEndpoint": {
         "type": "object",
-        "description": "API Endpoint indentified by collapsed_url and method",
+        "description": "API Endpoint identified by collapsed_url and method",
         "title": "API Endpoint",
         "x-displayname": "API Endpoint",
         "x-ves-proto-message": "ves.io.schema.app_security.ApiEndpoint",
@@ -4426,7 +4456,7 @@
           },
           "path": {
             "type": "string",
-            "description": " Path to apply the senstive data to\n\nExample: ` \"/example\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 1024\n  ves.io.schema.rules.string.templated_http_path: true\n",
+            "description": " Path to apply the sensitive data to\n\nExample: ` \"/example\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 1024\n  ves.io.schema.rules.string.templated_http_path: true\n",
             "title": "Path",
             "maxLength": 1024,
             "x-displayname": "Request Path",
@@ -4760,7 +4790,7 @@
           "max_time": {
             "type": "string",
             "description": " Maximum time at which request ID was found.\n\nExample: ` \"01-01-1970T00:00:00Z\"`",
-            "title": "Maximun Time",
+            "title": "Maximum Time",
             "format": "date-time",
             "x-displayname": "Maximum time",
             "x-ves-example": "01-01-1970T00:00:00Z"
@@ -4772,6 +4802,29 @@
             "format": "date-time",
             "x-displayname": "Minimum time",
             "x-ves-example": "01-01-1970T00:00:00Z"
+          }
+        }
+      },
+      "app_securitySearchAfterSortValues": {
+        "type": "object",
+        "description": "These are timestamp and doc_id values returned by elastic search in the search request.\nClient is expected to set these values in a subsequent request to get the next page of results.",
+        "title": "SearchAfterSortValues",
+        "x-displayname": "Search After Sort Values",
+        "x-ves-proto-message": "ves.io.schema.app_security.SearchAfterSortValues",
+        "properties": {
+          "last_doc_id": {
+            "type": "string",
+            "description": " This is a unique uuid generated by elastic search\n\nExample: ` \"-8881051689166072872\"`",
+            "title": "last_doc_id",
+            "x-displayname": "Last Doc ID",
+            "x-ves-example": "-8881051689166072872"
+          },
+          "last_timestamp": {
+            "type": "number",
+            "description": "\n\nExample: ` 1745695692759`",
+            "title": "last timestamp",
+            "format": "double",
+            "x-displayname": "Last Timestamp"
           }
         }
       },
@@ -4808,7 +4861,7 @@
         "type": "string",
         "description": "List of Virtual Hosts will be returned matching the following labels.\n",
         "title": "Search Label for VH list API",
-        "enum": ["REQUEST_ID", "SOURCE_IP"],
+        "enum": ["REQUEST_ID", "SOURCE_IP", "DOMAIN_NAME"],
         "default": "REQUEST_ID",
         "x-displayname": "Search Label for VH List API",
         "x-ves-proto-enum": "ves.io.schema.app_security.SearchLabel"
@@ -4824,7 +4877,7 @@
       },
       "app_securitySearchLoadBalancersRequest": {
         "type": "object",
-        "description": "Get a list of virtual hosts in all the namespaces matching filter provided in the request. \nThe filter can be a) Request ID b) Source IP",
+        "description": "Get a list of virtual hosts in all the namespaces matching filter provided in the request.\nThe filter can be a) Request ID b) Source IP",
         "title": "SearchLoadBalancersRequest",
         "x-displayname": "Search Load Balancers Request",
         "x-ves-proto-message": "ves.io.schema.app_security.SearchLoadBalancersRequest",
@@ -5063,21 +5116,21 @@
         "properties": {
           "count": {
             "type": "string",
-            "description": " the number of security events for virtual host in the given namespace \n\nExample: ` 15`",
+            "description": " the number of security events for virtual host in the given namespace\n\nExample: ` 15`",
             "format": "uint64",
             "x-displayname": "Count"
           },
           "max_time": {
             "type": "string",
             "description": " Maximum start time at which security event was found.\n\nExample: ` \"01-01-1970T00:00:00Z\"`",
-            "title": "Maximun Time",
+            "title": "Maximum Time",
             "format": "date-time",
             "x-displayname": "Maximum time",
             "x-ves-example": "01-01-1970T00:00:00Z"
           },
           "min_time": {
             "type": "string",
-            "description": " Minimum time at which the secuirty event was found.\n\nExample: ` \"01-01-1970T00:00:00Z\"`",
+            "description": " Minimum time at which the security event was found.\n\nExample: ` \"01-01-1970T00:00:00Z\"`",
             "title": "Minimum Time",
             "format": "date-time",
             "x-displayname": "Minimum time",
@@ -5138,6 +5191,14 @@
             "x-displayname": "Scroll",
             "x-ves-example": "true"
           },
+          "search_after": {
+            "type": "boolean",
+            "description": " Search After is used to retrieve large number of log messages (or all log messages) that matches the query.\n If search_after is set to true, the sort_values in the response can be used in the API to fetch the next\n batch of logs. The number of messages in each batch is determined by the limit field.\n Note: Search After is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
+            "title": "search after",
+            "format": "boolean",
+            "x-displayname": "Search After",
+            "x-ves-example": "true"
+          },
           "sort": {
             "$ref": "#/components/schemas/schemaSortOrder"
           },
@@ -5146,6 +5207,9 @@
             "description": " Optional: default is sort by last_event_time",
             "title": "sort by",
             "x-displayname": "Sort By"
+          },
+          "sort_values": {
+            "$ref": "#/components/schemas/app_securitySearchAfterSortValues"
           },
           "start_time": {
             "type": "string",
@@ -5181,6 +5245,9 @@
             },
             "x-displayname": "Events",
             "x-ves-example": "value"
+          },
+          "last_sort_values": {
+            "$ref": "#/components/schemas/app_securitySearchAfterSortValues"
           },
           "scroll_id": {
             "type": "string",
@@ -5347,6 +5414,14 @@
             "x-displayname": "Scroll",
             "x-ves-example": "true"
           },
+          "search_after": {
+            "type": "boolean",
+            "description": " Search After is used to retrieve large number of log messages (or all log messages) that matches the query.\n If search_after is set to true, the sort_values in the response can be used in the API to fetch the next\n batch of logs. The number of messages in each batch is determined by the limit field.\n Note: Search After is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
+            "title": "search after",
+            "format": "boolean",
+            "x-displayname": "Search After",
+            "x-ves-example": "true"
+          },
           "sort": {
             "$ref": "#/components/schemas/schemaSortOrder"
           },
@@ -5355,6 +5430,9 @@
             "description": " Optional: default is sort by last_event_time",
             "title": "sort by",
             "x-displayname": "Sort By"
+          },
+          "sort_values": {
+            "$ref": "#/components/schemas/app_securitySearchAfterSortValues"
           },
           "start_time": {
             "type": "string",
@@ -5390,6 +5468,9 @@
             },
             "x-displayname": "Incidents",
             "x-ves-example": "value"
+          },
+          "last_sort_values": {
+            "$ref": "#/components/schemas/app_securitySearchAfterSortValues"
           },
           "scroll_id": {
             "type": "string",
@@ -5556,6 +5637,14 @@
             "x-displayname": "Scroll",
             "x-ves-example": "true"
           },
+          "search_after": {
+            "type": "boolean",
+            "description": " Search After is used to retrieve large number of log messages (or all log messages) that matches the query.\n If search_after is set to true, the sort_values in the response can be used in the API to fetch the next\n batch of logs. The number of messages in each batch is determined by the limit field.\n Note: Search After is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
+            "title": "search after",
+            "format": "boolean",
+            "x-displayname": "Search After",
+            "x-ves-example": "true"
+          },
           "sort": {
             "$ref": "#/components/schemas/schemaSortOrder"
           },
@@ -5564,6 +5653,9 @@
             "description": " Optional: default is sort by last_event_time",
             "title": "sort by",
             "x-displayname": "Sort By"
+          },
+          "sort_values": {
+            "$ref": "#/components/schemas/app_securitySearchAfterSortValues"
           },
           "start_time": {
             "type": "string",
@@ -5590,6 +5682,9 @@
             "title": "aggregations",
             "x-displayname": "Aggregations"
           },
+          "last_sort_values": {
+            "$ref": "#/components/schemas/app_securitySearchAfterSortValues"
+          },
           "logs": {
             "type": "array",
             "description": " list of log messages that matched the query. Contains no more than 500 messages.\n\nExample: ` \"value\"`",
@@ -5602,7 +5697,7 @@
           },
           "scroll_id": {
             "type": "string",
-            "description": " Long Base-64 encoded string which can be used to retrieve the next batch of suspicous user logs using the scroll request.\n Empty scroll_id indicates no more messages to scroll (EOF).\n Note: scroll_id is valid only for 2 minutes. i.e., If one intend to retrieve next batch of the result, then the\n       scroll request should be sent within 2 minutes upon receiving the SuspiciousUserLogsResponse.\n\nExample: ` \"DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAD4WYm9laVYtZndUQlNsdDcwakFMNjU1QQ==\"`",
+            "description": " Long Base-64 encoded string which can be used to retrieve the next batch of suspicious user logs using the scroll request.\n Empty scroll_id indicates no more messages to scroll (EOF).\n Note: scroll_id is valid only for 2 minutes. i.e., If one intend to retrieve next batch of the result, then the\n       scroll request should be sent within 2 minutes upon receiving the SuspiciousUserLogsResponse.\n\nExample: ` \"DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAD4WYm9laVYtZndUQlNsdDcwakFMNjU1QQ==\"`",
             "title": "scroll id",
             "x-displayname": "Scroll id",
             "x-ves-example": "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAD4WYm9laVYtZndUQlNsdDcwakFMNjU1QQ=="
@@ -5619,7 +5714,7 @@
       },
       "app_securitySuspiciousUserLogsScrollRequest": {
         "type": "object",
-        "description": "Scroll request is used to fetch large number of suspicious user logs in multiple batches with each SuspiciousUserLogsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSuspiciousUserLogsScrollRequest. Use the scroll_id returned in the SuspiciousUserLogsResponse to fetch the next batch of logs \nand one can continue this process till the scroll_id returned is \"\" which indicates no more logs to scroll.",
+        "description": "Scroll request is used to fetch large number of suspicious user logs in multiple batches with each SuspiciousUserLogsResponse\ncontaining no more than 500 messages. To scroll through more than 500 or all messages, one can use the\nSuspiciousUserLogsScrollRequest. Use the scroll_id returned in the SuspiciousUserLogsResponse to fetch the next batch of logs\nand one can continue this process till the scroll_id returned is \"\" which indicates no more logs to scroll.",
         "title": "Suspicious User Logs Scroll Request",
         "x-displayname": "Suspicious User Logs Scroll Request",
         "x-ves-proto-message": "ves.io.schema.app_security.SuspiciousUserLogsScrollRequest",
@@ -5749,219 +5844,6 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
             }
-          }
-        }
-      },
-      "app_securityincidentsCardinalityAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Cardinality Aggregation\"\nGet approximate count of distinct values for the field in the incident.",
-        "title": "Cardinality Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/app_securityincidentsKeyField"
-          }
-        }
-      },
-      "app_securityincidentsDateAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date Aggregation\"\nAggregate incidents based on timestamp in the log",
-        "title": "Date Aggregation",
-        "properties": {
-          "step": {
-            "type": "string",
-            "description": "x-displayName: \"Step\"\nx-required\nx-example: \"5m\"\n\nstep is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\nThe timestamps in the response will be t1=start_time, t2=t1+step, ... tn=tn-1+step, where tn <= end_time.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
-            "title": "step"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nThis option provides sub-aggregation for each date bucket",
-            "title": "sub aggregation"
-          }
-        }
-      },
-      "app_securityincidentsFieldAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Field Aggregation\"\nAggregate incidents based on the key fields in the security event.",
-        "title": "Field Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/app_securityincidentsKeyField"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsMetricsAggregation"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nThis option provides sub-aggregation for each field aggregation bucket.",
-            "title": "sub aggregation"
-          },
-          "topk": {
-            "type": "integer",
-            "description": "x-displayName: \"TopK\"\nx-example: \"10\"\n\nNumber of top field values to be returned in the response.",
-            "title": "topk",
-            "format": "int64"
-          }
-        }
-      },
-      "app_securityincidentsKeyField": {
-        "type": "string",
-        "description": "x-displayName: \"Key Field\"\nSecurity events can be aggregated based on these fields.\n\n - CITY: x-displayName: \"City\"\n - COUNTRY: x-displayName: \"Country\"\n - ASN: x-displayName: \"ASN\"\n - INCIDENT_TYPE: x-displayName: \"Incident Type\"\n - INTENT: x-displayName: \"Intent\"\n - VH_NAME: x-displayName: \"Virtual Host Name\"\n - USER_ID: x-displayName: \"User ID\"\n - SRC_IP: x-displayName: \"Source IP\"\n - TLS_FINGERPRINT: x-displayName: \"JA3 TLS Fingerprint\"\n - LAST_STATUS: x-displayName: \"Last Status\"\n - INCIDENT_ID: x-displayName: \"Incident ID\"",
-        "title": "Key Field",
-        "enum": [
-          "CITY",
-          "COUNTRY",
-          "ASN",
-          "INCIDENT_TYPE",
-          "INTENT",
-          "VH_NAME",
-          "USER_ID",
-          "SRC_IP",
-          "TLS_FINGERPRINT",
-          "LAST_STATUS",
-          "INCIDENT_ID"
-        ],
-        "default": "CITY"
-      },
-      "app_securityincidentsMetricField": {
-        "type": "string",
-        "description": "x-displayName: \"Metric Field\"\nMetrics can be computed based on these fields.\n\n - EVENTS: x-displayName: \"Events\"",
-        "title": "Metric Field",
-        "enum": ["EVENTS"],
-        "default": "EVENTS"
-      },
-      "app_securityincidentsMetricsAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Metrics Aggregation\"\nComputes metrics based on values for the field in the incident.",
-        "title": "Metrics Aggregation",
-        "properties": {
-          "percentile": {
-            "$ref": "#/components/schemas/app_securityincidentsPercentileAggregation"
-          }
-        }
-      },
-      "app_securityincidentsMultiFieldAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Multi-Field Aggregation\"\nAggregate incidents based on the multiple fields in the incident.",
-        "title": "Multi-Field Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/app_securityincidentsMultiKeyField"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/app_securityincidentsMetricsAggregation"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nThis option provides sub-aggregation for each field aggregation bucket.",
-            "title": "sub aggregation"
-          },
-          "topk": {
-            "type": "integer",
-            "description": "x-displayName: \"TopK\"\nx-example: \"10\"\n\nNumber of top field values to be returned in the response.",
-            "title": "topk",
-            "format": "int64"
-          }
-        }
-      },
-      "app_securityincidentsMultiKeyField": {
-        "type": "string",
-        "description": "x-displayName: \"Multi-Key Field\"\nSecurity events can be aggregated based on these multiple key fields\n\n - SRC_IP_TLS_FINGERPRINT: x-displayName: \"Source IP, JA3 TLS Fingerprint\"\nAggregated by (KeyField.SRC_IP, KeyField.TLS_FINGERPRINT)",
-        "title": "Multi-Key Field",
-        "enum": ["SRC_IP_TLS_FINGERPRINT"],
-        "default": "SRC_IP_TLS_FINGERPRINT"
-      },
-      "app_securityincidentsPercentileAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Percentile Aggregation\"\nCalculates percentile over numeric values for a field.",
-        "title": "Percentile Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/app_securityincidentsMetricField"
-          },
-          "percent": {
-            "type": "number",
-            "description": "x-displayName: \"Percent\"\nx-example: \"[99.0]\"\nx-required\n\nPercentile for which value is calculated.",
-            "title": "percent",
-            "format": "double"
-          }
-        }
-      },
-      "app_securitysuspicious_user_logCardinalityAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Cardinality Aggregation\"\nGet approximate count of distinct values for the field in the suspicious user log.",
-        "title": "Cardinality Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/app_securitysuspicious_user_logKeyField"
-          }
-        }
-      },
-      "app_securitysuspicious_user_logDateAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date Aggregation\"\nAggregate suspicious user logs based on timestamp in the log",
-        "title": "Date Aggregation",
-        "properties": {
-          "step": {
-            "type": "string",
-            "description": "x-displayName: \"Step\"\nx-required\nx-example: \"5m\"\n\nstep is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\nThe timestamps in the response will be t1=start_time, t2=t1+step, ... tn=tn-1+step, where tn <= end_time.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
-            "title": "step"
-          }
-        }
-      },
-      "app_securitysuspicious_user_logFieldAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Field Aggregation\"\nAggregate incidents based on the key fields in the suspicious user log.",
-        "title": "Field Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/app_securitysuspicious_user_logKeyField"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/app_securitysuspicious_user_logMetricsAggregation"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nThis option provides sub-aggregation for each field aggregation bucket.",
-            "title": "sub aggregation"
-          },
-          "topk": {
-            "type": "integer",
-            "description": "x-displayName: \"TopK\"\nx-example: \"10\"\n\nNumber of top field values to be returned in the response.",
-            "title": "topk",
-            "format": "int64"
-          }
-        }
-      },
-      "app_securitysuspicious_user_logKeyField": {
-        "type": "string",
-        "description": "x-displayName: \"Key Field\"\nSecurity events can be aggregated based on these fields.\n\n - CITY: x-displayName: \"City\"\n - COUNTRY: x-displayName: \"Country\"\n - ASN: x-displayName: \"ASN\"\n - USER: x-displayName: \"User\"\n - THREAT_LEVEL: x-displayName: \"Threat Level\"\n - VH_NAME: x-displayName: \"Virtual Host Name\"\n - SRC_IP: x-displayName: \"Source IP\"\n - SUSPICION_LOG_TYPE: x-displayName: \"Suspicion Log Type\"",
-        "title": "Key Field",
-        "enum": ["CITY", "COUNTRY", "ASN", "USER", "THREAT_LEVEL", "VH_NAME", "SRC_IP", "SUSPICION_LOG_TYPE"],
-        "default": "CITY"
-      },
-      "app_securitysuspicious_user_logMetricsAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Metrics Aggregation\"\nComputes metrics based on values for the field in the suspicious user log.",
-        "title": "Metrics Aggregation",
-        "properties": {
-          "percentile": {
-            "$ref": "#/components/schemas/app_securitysuspicious_user_logPercentileAggregation"
-          }
-        }
-      },
-      "app_securitysuspicious_user_logPercentileAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Percentile Aggregation\"\nCalculates percentile over numeric values for a field.",
-        "title": "Percentile Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/suspicious_user_logNumKeyField"
-          },
-          "percent": {
-            "type": "number",
-            "description": "x-displayName: \"Percent\"\nx-example: \"[99.0]\"\nx-required\n\nPercentile for which value is calculated.",
-            "title": "percent",
-            "format": "double"
           }
         }
       },
@@ -6564,15 +6446,17 @@
         "properties": {
           "actions": {
             "type": "array",
-            "description": " Actions that should be taken when client identifier matches the rule\n\nValidation Rules:\n  ves.io.schema.rules.enum.defined_only: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " Actions that should be taken when client identifier matches the rule\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.enum.defined_only: true\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "actions",
             "maxItems": 10,
             "items": {
               "$ref": "#/components/schemas/common_wafClientSrcRuleAction"
             },
             "x-displayname": "Actions",
+            "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.enum.defined_only": "true",
+              "ves.io.schema.rules.message.required": "true",
               "ves.io.schema.rules.repeated.max_items": "10",
               "ves.io.schema.rules.repeated.unique": "true"
             }
@@ -6837,346 +6721,6 @@
             "title": "uid",
             "x-displayname": "UID",
             "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
-          }
-        }
-      },
-      "logAvgAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Avg Aggregation Data\"\nAverage Aggregation data",
-        "title": "AvgAggregationData",
-        "properties": {
-          "value": {
-            "type": "number",
-            "description": "x-displayName: \"Value\"\nx-example: 985.0\n\nvalue corresponding to the average value of field",
-            "title": "value",
-            "format": "double"
-          }
-        }
-      },
-      "logCardinalityAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Cardinality Aggregation Data\"\nApproximate count of distinct values of the log field specified in the request.",
-        "title": "CardinalityAggregationData",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 100\nCount of distinct values of a log field",
-            "title": "count",
-            "format": "uint64"
-          },
-          "trend_value": {
-            "$ref": "#/components/schemas/schemaTrendValue"
-          }
-        }
-      },
-      "logDateAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Date Aggregation Bucket\"\nDate histogram bucket containing the timestamp and the number of logs in that bucket.",
-        "title": "DateAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the date bucket",
-            "title": "sub aggregation"
-          },
-          "time": {
-            "type": "string",
-            "description": "x-displayName: \"Time\"\nx-example: 1578710280000\n\nunix timestamp",
-            "title": "time",
-            "format": "uint64"
-          },
-          "trend_value": {
-            "$ref": "#/components/schemas/schemaTrendValue"
-          }
-        }
-      },
-      "logDateAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Date Aggregation Data\"\nDate aggregation data",
-        "title": "DateAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing timestamp and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logDateAggregationBucket"
-            }
-          },
-          "step": {
-            "type": "string",
-            "description": "x-displayName: \"Step\"\nx-example: \"30m\"\nActual step size in the response. It could be higher than the requested step depending on the query duration and/or the log rollups.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
-            "title": "step"
-          }
-        }
-      },
-      "logFieldAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Field Aggregation Bucket\"\nField aggregation bucket containing field value and the number of logs.",
-        "title": "FieldAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"US\"",
-            "title": "key"
-          },
-          "order_by": {
-            "$ref": "#/components/schemas/logOrderByData"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the field aggregation bucket",
-            "title": "sub aggregation"
-          },
-          "trend_value": {
-            "$ref": "#/components/schemas/schemaTrendValue"
-          }
-        }
-      },
-      "logFieldAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field Aggregation Data\"\nField Aggregation data",
-        "title": "FieldAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldAggregationBucket"
-            }
-          }
-        }
-      },
-      "logFieldSubAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Field Sub Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
-        "title": "FieldSubAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nKey contain the name/value pair that identifies the unique key fields\nx-example: \"HIT, MISS, REVALIDATED\"",
-            "title": "keys"
-          },
-          "order_by": {
-            "$ref": "#/components/schemas/logOrderByData"
-          }
-        }
-      },
-      "logFieldSubFieldAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Field Sub Field Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
-        "title": "FieldSubFieldAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nKey contain the name/value pair that identifies the unique key fields\nx-example: \"HIT, MISS, REVALIDATED\"",
-            "title": "keys"
-          }
-        }
-      },
-      "logFilterAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Filter Aggregation Data\"\nFilter Aggregation Data",
-        "title": "FilterAggregationData",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
-            "title": "sub aggregation"
-          }
-        }
-      },
-      "logFilterSubFieldAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Filter Sub Field Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
-        "title": "FilterSubFieldAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nKey contain the name/value pair that identifies the unique key fields\nx-example: \"HIT, MISS, REVALIDATED\"",
-            "title": "keys"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
-            "title": "sub aggregation"
-          }
-        }
-      },
-      "logMaxAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Max Aggregation Data\"\nMax Aggregation data",
-        "title": "MaxAggregationData",
-        "properties": {
-          "value": {
-            "type": "number",
-            "description": "x-displayName: \"Value\"\nx-example: 985.0\n\nvalue corresponding to the maximum value of field",
-            "title": "value",
-            "format": "double"
-          }
-        }
-      },
-      "logMetricsAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Metrics Aggregation\"\nMetrics aggregation data",
-        "title": "MetricsAggregationData",
-        "properties": {
-          "percentile": {
-            "$ref": "#/components/schemas/logPercentileAggregationData"
-          }
-        }
-      },
-      "logMinAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Min Aggregation Data\"\nMin Aggregation data",
-        "title": "MinAggregationData",
-        "properties": {
-          "value": {
-            "type": "number",
-            "description": "x-displayName: \"Value\"\nx-example: 985.0\n\nvalue corresponding to the minimum value of field",
-            "title": "value",
-            "format": "double"
-          }
-        }
-      },
-      "logMultiFieldAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Multi-Field Aggregation Bucket\"\nMulti-Field aggregation bucket containing field values and the number of logs.",
-        "title": "MultiFieldAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "keys": {
-            "type": "object",
-            "description": "x-displayName: \"Keys\"\nKeys contain the name/value pair that identifies the unique combination of multiple key fields\nx-example: \"{\"SRC_IP\": \"10.10.10.1\", \"COUNTRY\": \"US\"}\"",
-            "title": "keys"
-          },
-          "order_by": {
-            "$ref": "#/components/schemas/logOrderByData"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the multi field aggregation bucket",
-            "title": "sub aggregation"
-          }
-        }
-      },
-      "logMultiFieldAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Multi-Field Aggregation Data\"\nMulti-Field Aggregation data",
-        "title": "MultiFieldAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field values and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logMultiFieldAggregationBucket"
-            }
-          }
-        }
-      },
-      "logMultiFilterAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Multi Filter Aggregation Data\"\nMulti Filter Aggregation data",
-        "title": "MultiFilterAggregationData",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          }
-        }
-      },
-      "logOrderByData": {
-        "type": "object",
-        "description": "x-displayName: \"Order by Data\"\nOrder by data",
-        "title": "OrderByData",
-        "properties": {
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/logMetricsAggregationData"
-          }
-        }
-      },
-      "logPercentileAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Percentile Aggregation Data\"\nPercentile Aggregation data",
-        "title": "PercentileAggregationData",
-        "properties": {
-          "key": {
-            "type": "number",
-            "description": "x-displayName: \"Key\"\nx-example: 99.0",
-            "title": "key",
-            "format": "double"
-          },
-          "value": {
-            "type": "number",
-            "description": "x-displayName: \"Value\"\nx-example: 985.0\n\nvalue corresponding to the key percent",
-            "title": "value",
-            "format": "double"
-          }
-        }
-      },
-      "logTopHitsAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"TopHits Aggregation Data\"\nTop Hits Aggregation Data.",
-        "title": "TopHitsAggregationData",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 100\nCount of top hit values",
-            "title": "count",
-            "format": "uint64"
-          },
-          "documents": {
-            "type": "array",
-            "description": "x-displayName: \"Documents\"\ndocument values",
-            "title": "documents",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -8328,7 +7872,7 @@
       },
       "policyTlsFingerprintMatcherType": {
         "type": "object",
-        "description": "A TLS fingerprint matcher specifies multiple criteria for matching a TLS fingerprint. The set of supported positve match criteria includes a list of known\nclasses of TLS fingerprints and a list of exact values. The match is considered successful if either of these positive criteria are satisfied and the input\nfingerprint is not one of the excluded values.",
+        "description": "A TLS fingerprint matcher specifies multiple criteria for matching a TLS fingerprint. The set of supported positive match criteria includes a list of known\nclasses of TLS fingerprints and a list of exact values. The match is considered successful if either of these positive criteria are satisfied and the input\nfingerprint is not one of the excluded values.",
         "title": "TlsFingerprintMatcherType",
         "x-displayname": "TLS Fingerprint Matcher",
         "x-ves-proto-message": "ves.io.schema.policy.TlsFingerprintMatcherType",
@@ -8426,7 +7970,7 @@
       },
       "schemaLabelSelectorType": {
         "type": "object",
-        "description": "This type can be used to establish a 'selector reference' from one object(called selector) to\na set of other objects(called selectees) based on the value of expresssions.\nA label selector is a label query over a set of resources. An empty label selector matches all objects.\nA null label selector matches no objects. Label selector is immutable.\nexpressions is a list of strings of label selection expression.\nEach string has \",\" separated values which are \"AND\" and all strings are logically \"OR\".\nBNF for expression string\n<selector-syntax>         ::= <requirement> | <requirement> \",\" <selector-syntax>\n<requirement>             ::= [!] KEY [ <set-based-restriction> | <exact-match-restriction> ]\n<set-based-restriction>   ::= \"\" | <inclusion-exclusion> <value-set>\n<inclusion-exclusion>     ::= <inclusion> | <exclusion>\n<exclusion>               ::= \"notin\"\n<inclusion>               ::= \"in\"\n<value-set>               ::= \"(\" <values> \")\"\n<values>                  ::= VALUE | VALUE \",\" <values>\n<exact-match-restriction> ::= [\"=\"|\"==\"|\"!=\"] VALUE",
+        "description": "This type can be used to establish a 'selector reference' from one object(called selector) to\na set of other objects(called selectees) based on the value of expressions.\nA label selector is a label query over a set of resources. An empty label selector matches all objects.\nA null label selector matches no objects. Label selector is immutable.\nexpressions is a list of strings of label selection expression.\nEach string has \",\" separated values which are \"AND\" and all strings are logically \"OR\".\nBNF for expression string\n<selector-syntax>         ::= <requirement> | <requirement> \",\" <selector-syntax>\n<requirement>             ::= [!] KEY [ <set-based-restriction> | <exact-match-restriction> ]\n<set-based-restriction>   ::= \"\" | <inclusion-exclusion> <value-set>\n<inclusion-exclusion>     ::= <inclusion> | <exclusion>\n<exclusion>               ::= \"notin\"\n<inclusion>               ::= \"in\"\n<value-set>               ::= \"(\" <values> \")\"\n<values>                  ::= VALUE | VALUE \",\" <values>\n<exact-match-restriction> ::= [\"=\"|\"==\"|\"!=\"] VALUE",
         "title": "LabelSelectorType",
         "x-displayname": "Label Selector",
         "x-ves-proto-message": "ves.io.schema.LabelSelectorType",
@@ -8514,237 +8058,6 @@
         "default": "DESCENDING",
         "x-displayname": "Sort Order",
         "x-ves-proto-enum": "ves.io.schema.SortOrder"
-      },
-      "schemaTrendSentiment": {
-        "type": "string",
-        "description": "x-displayName: \"Trend Sentiment\"\ntrend sentiment\n\n - TREND_SENTIMENT_NONE: x-displayName: \"None\"\n - TREND_SENTIMENT_POSITIVE: x-displayName: \"Positive\"\nIndicates trend sentiment is positive\n - TREND_SENTIMENT_NEGATIVE: x-displayName: \"Negative\"\nIndicates trend sentiment is negative.",
-        "title": "Trend Sentiment",
-        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
-        "default": "TREND_SENTIMENT_NONE"
-      },
-      "schemaTrendValue": {
-        "type": "object",
-        "description": "x-displayName: \"Trend Value\"\nTrend value contains trend value, trend sentiment and trend calculation description and window size.",
-        "title": "Trend Value",
-        "properties": {
-          "description": {
-            "type": "string",
-            "description": "x-displayName: \"Description\"\nx-example: \"Trend was calculated by comparing the avg of window size intervals of end-start Time and last window time interval\"\ndescription of the method used to calculate trend.",
-            "title": "Description"
-          },
-          "previous_value": {
-            "type": "string",
-            "description": "x-displayName: \"Previous Value\"\nx-example: \"200.00\"",
-            "title": "Previous Value"
-          },
-          "sentiment": {
-            "$ref": "#/components/schemas/schemaTrendSentiment"
-          },
-          "value": {
-            "type": "string",
-            "description": "x-displayName: \"Value\"\nx-example: \"-15\"",
-            "title": "Value"
-          }
-        }
-      },
-      "schemaapp_securityCardinalityAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Cardinality Aggregation\"\nGet approximate count of distinct values for the field in the security event.",
-        "title": "Cardinality Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/schemaapp_securityKeyField"
-          }
-        }
-      },
-      "schemaapp_securityDateAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date Aggregation\"\nAggregate security events based on timestamp in the security event",
-        "title": "Date Aggregation",
-        "properties": {
-          "step": {
-            "type": "string",
-            "description": "x-displayName: \"Step\"\nx-required\nx-example: \"5m\"\n\nstep is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\nThe timestamps in the response will be t1=start_time, t2=t1+step, ... tn=tn-1+step, where tn <= end_time.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
-            "title": "step"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nThis option provides sub-aggregation for each date bucket",
-            "title": "sub aggregation"
-          }
-        }
-      },
-      "schemaapp_securityFieldAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Field Aggregation\"\nAggregate security events based on the key fields in the security event.",
-        "title": "Field Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/schemaapp_securityKeyField"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityMetricsAggregation"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nThis option provides sub-aggregation for each field aggregation bucket.",
-            "title": "sub aggregation"
-          },
-          "topk": {
-            "type": "integer",
-            "description": "x-displayName: \"TopK\"\nx-example: \"10\"\n\nNumber of top field values to be returned in the response.",
-            "title": "topk",
-            "format": "int64"
-          }
-        }
-      },
-      "schemaapp_securityKeyField": {
-        "type": "string",
-        "description": "x-displayName: \"Key Field\"\nSecurity events can be aggregated based on these fields.\n\n - CITY: x-displayName: \"City\"\n - COUNTRY: x-displayName: \"Country\"\n - SEC_EVENT_TYPE: x-displayName: \"Security Event Type\"\n - SRC_SITE: x-displayName: \"Source Site\"\n - VH_NAME: x-displayName: \"Virtual Host Name\"\n - VH_TYPE: x-displayName: \"Virtual Host Type\"\n - USER: x-displayName: \"User\"\n - SUSPICIOUS_USER_COUNTRY: x-displayName: \"Suspicious User Country\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more countries.\n - SUSPICIOUS_USER_REGION: x-displayName: \"Suspicious User Region\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more regions.\n - SUSPICIOUS_USER_ASN: x-displayName: \"Suspicious User ASN\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more ASNs.\n - SUSPICIOUS_USER_SRC_IP: x-displayName: \"Suspicious User Source IP\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more source IP address.\n - SUSPICIOUS_USER_SRC_SITE: x-displayName: \"Suspicious User Source Site\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating from one or more sites.\n - SUSPICIOUS_USER_TLS_FINGERPRINT: x-displayName: \"Suspicious User JA3 TLS Fingerprint\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating with one or more JA3 TLS fingerprints.\n - VIOLATION: x-displayName: \"Violation\"\nMapped to violations.name\n - ATTACK_TYPE: x-displayName: \"Attack Type\"\nMapped to attack_types.name\n - SIGNATURE: x-displayName: \"Signature\"\nMapped to signatures.id_name\n - THREAT_CAMPAIGN: x-displayName: \"Threat Campaign\"\nMapped to threat_campaigns.id_name\n - URI: x-displayName: \"URI\"\nMapped to req_path\n - BOT_CLASSIFICATION: x-displayName: \"BOT Classification\"\nMapped to bot_info.classification\n - AUTOMATION_TYPE: x-displayName: \"BOT Defense Automation type\"\nMapped to bot_defense.automation_type\n - DOMAIN: x-displayName: \"DOMAIN\"\n - BOT_TYPE: x-displayName: \"BOT_TYPE\"\nMapped to bot_info.type\n - BOT_NAME: x-displayName: \"BOT_NAME\"\nMapped to bot_info.name\n - SRC_IP: x-displayName: \"SRC_IP\"\n - TLS_FINGERPRINT: x-displayName: \"JA3 TLS Fingerprint\"\n - ASN: x-displayName: \"ASN\"\n - API_EP: x-displayName: \"API_EP\"\nMapped to api_endpoint\n - BROWSER_TYPE: x-displayName: \"BROWSER_TYPE\"\n - DEVICE_TYPE: x-displayName: \"DEVICE_TYPE\"\n - METHOD: x-displayName: \"METHOD\"\n - RESP_CODE: x-displayName: \"RESP_CODE\"\nMapped to rsp_code\n - RESP_CODE_DETAILS: x-displayName: \"RESP_CODE_DETAILS\"\nMapped to rsp_code_details\n - SEC_EVENT_NAME: x-displayName: \"SEC_EVENT_NAME\"\n - WAF_MODE: x-displayName: \"WAF_MODE\"\n - SIGNATURE_NAME: x-displayName: \"SIGNATURE_NAME\"\nMapped to signatures.name\n - SIGNATURE_ID: x-displayName: \"SIGNATURE_ID\"\nMapped to signatures.id\n - SIGNATURE_STATE: x-displayName: \"SIGNATURE_STATE\"\nMapped to signatures.state\n - SIGNATURE_ACCURACY: x-displayName: \"SIGNATURE_ACCURACY\"\nMapped to signatures.accuracy\n - VIOLATION_STATE: x-displayName: \"VIOLATION_STATE\"\nMapped to violations.state\n - THREAT_CAMPAIGN_NAME: x-displayName: \"THREAT_CAMPAIGN_NAME\"\nMapped to threat_campaigns.name\n - THREAT_CAMPAIGN_ID: x-displayName: \"THREAT_CAMPAIGN_ID\"\nMapped to threat_campaigns.id\n - THREAT_CAMPAIGN_STATE: x-displayName: \"THREAT_CAMPAIGN_STATE\"\nMapped to threat_campaigns.state\n - VIOLATION_RATING: x-displayName: \"VIOLATION_RATING\"\n - SERVICE_POLICY: x-displayName: \"Service Policy\"\nMapped to policy_hits.policy_hits.policy\n - TLS_CIPHER_SUITE: x-displayName: \"TLS Cipher Suite\"\n - TLS_VERSION: x-displayName: \"TLS version\"\n - BOT_DEFENSE_INSIGHT: x-displayName: \"Bot Defense Insight\"\nMapped to bot_defense.insight\n - BOT_DEFENSE_RECOMMENDATION: x-displayName: \"Bot Defense Recommendation\"\nMapped to bot_defense.recommendation\n - BOT_ANOMALY: x-displayName: \"Bot Anomaly\"\nMapped to bot_info.anomaly\n - SERVICE_POLICY_RESULT: x-displayName: \"Service Policy Result\"\nMapped to policy_hits.policy_hits.result\n - SIGNATURE_CONTEXT: x-displayName: \"Signature Context\"\nMapped to signatures.context\n - ACTION: x-displayName: \"Action\"\n - NAMESPACE: example-namespace\"Namespace\"\n - REQ_RISK: x-displayName: \"Request Risk\"\n - REQ_RISK_REASON: x-displayName: \"Request Risk Reason\"\n - JA4_TLS_FINGERPRINT: x-displayName: \"JA4 TLS Fingerprint\"\n - SUSPICIOUS_USER_JA4_TLS_FINGERPRINT: x-displayName: \"Suspicious User JA4 TLS Fingerprint\"\nThis field is applicable only for DDoS security events, where a ddos event\nmay be detected based on requests originating with one or more JA4 TLS fingerprints.\n - MALWARE_NAME: x-displayName: \"Malware Name\"\nMapped to malware_info.name\n - MALWARE_TYPE: x-displayName: \"Malware Type\"\nMapped to malware_info.type\n - MALWARE_SCAN_RESULT: x-displayName: \"Malware Scan Result\"\nMapped to malware_info.scan_result\n - MALWARE_RECOMMENDED_ACTION: x-displayName: \"Malware Recommended Action\"\nMapped to malware_info.recommended_action",
-        "title": "Key Field",
-        "enum": [
-          "CITY",
-          "COUNTRY",
-          "SEC_EVENT_TYPE",
-          "SRC_SITE",
-          "VH_NAME",
-          "VH_TYPE",
-          "USER",
-          "SUSPICIOUS_USER_COUNTRY",
-          "SUSPICIOUS_USER_REGION",
-          "SUSPICIOUS_USER_ASN",
-          "SUSPICIOUS_USER_SRC_IP",
-          "SUSPICIOUS_USER_SRC_SITE",
-          "SUSPICIOUS_USER_TLS_FINGERPRINT",
-          "VIOLATION",
-          "ATTACK_TYPE",
-          "SIGNATURE",
-          "THREAT_CAMPAIGN",
-          "URI",
-          "BOT_CLASSIFICATION",
-          "AUTOMATION_TYPE",
-          "DOMAIN",
-          "BOT_TYPE",
-          "BOT_NAME",
-          "SRC_IP",
-          "TLS_FINGERPRINT",
-          "ASN",
-          "API_EP",
-          "BROWSER_TYPE",
-          "DEVICE_TYPE",
-          "METHOD",
-          "RESP_CODE",
-          "RESP_CODE_DETAILS",
-          "SEC_EVENT_NAME",
-          "WAF_MODE",
-          "SIGNATURE_NAME",
-          "SIGNATURE_ID",
-          "SIGNATURE_STATE",
-          "SIGNATURE_ACCURACY",
-          "VIOLATION_STATE",
-          "THREAT_CAMPAIGN_NAME",
-          "THREAT_CAMPAIGN_ID",
-          "THREAT_CAMPAIGN_STATE",
-          "VIOLATION_RATING",
-          "SERVICE_POLICY",
-          "TLS_CIPHER_SUITE",
-          "TLS_VERSION",
-          "BOT_DEFENSE_INSIGHT",
-          "BOT_DEFENSE_RECOMMENDATION",
-          "BOT_ANOMALY",
-          "SERVICE_POLICY_RESULT",
-          "SIGNATURE_CONTEXT",
-          "ACTION",
-          "NAMESPACE",
-          "REQ_RISK",
-          "REQ_RISK_REASON",
-          "JA4_TLS_FINGERPRINT",
-          "SUSPICIOUS_USER_JA4_TLS_FINGERPRINT",
-          "MALWARE_NAME",
-          "MALWARE_TYPE",
-          "MALWARE_SCAN_RESULT",
-          "MALWARE_RECOMMENDED_ACTION"
-        ],
-        "default": "CITY"
-      },
-      "schemaapp_securityMetricField": {
-        "type": "string",
-        "description": "x-displayName: \"Metric Field\"\nMetrics can be computed based on these fields.\n\n - SUSPICION_SCORE: x-displayName: \"Suspicion Score\"",
-        "title": "Metric Field",
-        "enum": ["SUSPICION_SCORE"],
-        "default": "SUSPICION_SCORE"
-      },
-      "schemaapp_securityMetricsAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Metrics Aggregation\"\nComputes metrics based on values for the field in the security event.",
-        "title": "Metrics Aggregation",
-        "properties": {
-          "percentile": {
-            "$ref": "#/components/schemas/schemaapp_securityPercentileAggregation"
-          }
-        }
-      },
-      "schemaapp_securityMultiFieldAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Multi-Field Aggregation\"\nAggregate security events based on the multiple fields in the security event.",
-        "title": "Multi-Field Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/schemaapp_securityMultiKeyField"
-          },
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/schemaapp_securityMetricsAggregation"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nThis option provides sub-aggregation for each field aggregation bucket.",
-            "title": "sub aggregation"
-          },
-          "topk": {
-            "type": "integer",
-            "description": "x-displayName: \"TopK\"\nx-example: \"10\"\n\nNumber of top field values to be returned in the response.",
-            "title": "topk",
-            "format": "int64"
-          }
-        }
-      },
-      "schemaapp_securityMultiKeyField": {
-        "type": "string",
-        "description": "x-displayName: \"Multi-Key Field\"\nSecurity events can be aggregated based on these multiple key fields\n\n - ASN_COUNTRY: x-displayName: \"ASN, Country\"\nAggregated by (KeyField.ASN, KeyField.COUNTRY)\n - DOMAIN_METHOD_API_EP: x-displayName: \"Domain, Method, API Endpoint\"\nAggregated by (KeyField.DOMAIN, KeyField.Method, KeyField.APIEP)\n - SRC_IP_COUNTRY: x-displayName: \"Source IP, Country\"\nAggregated by (KeyField.SRC_IP, KeyField.COUNTRY)\n - TLS_FINGERPRINT_COUNTRY: x-displayName: \"TLS Fingerprint, Country\"\nAggregated by (KeyField.TLS_FINGERPRINT, KeyField.COUNTRY)\n - SEC_EVENT_TYPE_ACTION: x-displayName: \"SEC_EVENT_TYPE, ACTION\"\nAggregated by (KeyField.SEC_EVENT_TYPE, KeyField.ACTION)\n - DOMAIN_METHOD_REQ_PATH: x-displayName: \"Domain, Method, Request Path\"\nAggregated by (KeyField.DOMAIN, KeyField.Method, KeyField.REQ_PATH)\n - VH_NAME_SRC_IP_THREAT_CAMPAIGN: x-displayName: \"Virtual Host, Source IP, Threat Campaign\"\nAggregated by (KeyField.VH_NAME, KeyField.SRC_IP, KeyField.THREAT_CAMPAIGN_NAME, KeyField.THREAT_CAMPAIGN_ID)\n - VH_NAME_USER_THREAT_CAMPAIGN: x-displayName: \"Virtual Host, User, Threat Campaign\"\nAggregated by (KeyField.VH_NAME, KeyField.USER, KeyField.THREAT_CAMPAIGN_NAME, KeyField.THREAT_CAMPAIGN_ID)\n - VH_NAME_COUNTRY_THREAT_CAMPAIGN: x-displayName: \"Virtual Host, Country, Threat Campaign\"\nAggregated by (KeyField.VH_NAME, KeyField.COUNTRY, KeyField.THREAT_CAMPAIGN_NAME, KeyField.THREAT_CAMPAIGN_ID)\n - ACTION_THREAT_CAMPAIGN: x-displayName: \"Action, Threat Campaign\"\nAggregated by (KeyField.ACTION, KeyField.THREAT_CAMPAIGN_NAME, KeyField.THREAT_CAMPAIGN_ID)\n - USER_SRC_IP_COUNTRY_CITY_REGION_ASN: x-displayName: \"User, Source IP, Country, City, Region, ASN\"\nAggregated by (KeyField.USER, KeyField.SRC_IP, KeyField.COUNTRY, KeyField.CITY, KeyField.REGION, KeyField.ASN)\n - VH_NAME_NAMESPACE: x-displayName: \"VH Name, Namespace\"\nAggregated by (KeyField.VH_NAME, KeyField.NAMESPACE)\n - API_ENDPOINT_METHOD: x-displayName: \"api_endpoint, method\"\nAggregated by (KeyField.API_ENDPOINT, KeyField.METHOD)\n - JA4_TLS_FINGERPRINT_COUNTRY: x-displayName: \"JA4 TLS Fingerprint, Country\"\nAggregated by (KeyField.JA4_TLS_FINGERPRINT, KeyField.COUNTRY)",
-        "title": "Multi-Key Field",
-        "enum": [
-          "ASN_COUNTRY",
-          "DOMAIN_METHOD_API_EP",
-          "SRC_IP_COUNTRY",
-          "TLS_FINGERPRINT_COUNTRY",
-          "SEC_EVENT_TYPE_ACTION",
-          "DOMAIN_METHOD_REQ_PATH",
-          "VH_NAME_SRC_IP_THREAT_CAMPAIGN",
-          "VH_NAME_USER_THREAT_CAMPAIGN",
-          "VH_NAME_COUNTRY_THREAT_CAMPAIGN",
-          "ACTION_THREAT_CAMPAIGN",
-          "USER_SRC_IP_COUNTRY_CITY_REGION_ASN",
-          "VH_NAME_NAMESPACE",
-          "API_ENDPOINT_METHOD",
-          "JA4_TLS_FINGERPRINT_COUNTRY"
-        ],
-        "default": "ASN_COUNTRY"
-      },
-      "schemaapp_securityPercentileAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Percentile Aggregation\"\nCalculates percentile over numeric values for a field.",
-        "title": "Percentile Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/schemaapp_securityMetricField"
-          },
-          "percent": {
-            "type": "number",
-            "description": "x-displayName: \"Percent\"\nx-example: \"[99.0]\"\nx-required\n\nPercentile for which value is calculated.",
-            "title": "percent",
-            "format": "double"
-          }
-        }
       },
       "schemapolicyHeaderMatcherType": {
         "type": "object",
@@ -8897,59 +8210,6 @@
             }
           }
         }
-      },
-      "suspicious_user_logAvgAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Avg aggregation\"\nGet the average value of the numeric values extracted from the field in the suspicious user log.",
-        "title": "Average aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/suspicious_user_logNumKeyField"
-          }
-        }
-      },
-      "suspicious_user_logMaxAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Max aggregation\"\nGet the maximum value among the numeric values extracted from the field in the suspicious user log.",
-        "title": "Max aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/suspicious_user_logNumKeyField"
-          }
-        }
-      },
-      "suspicious_user_logMinAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Min aggregation\"\nGet the minimum value among the numeric values extracted from the field in the suspicious user log.",
-        "title": "Min aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/suspicious_user_logNumKeyField"
-          }
-        }
-      },
-      "suspicious_user_logNumKeyField": {
-        "type": "string",
-        "description": "x-displayName: \"Num-Key Field\"\nsuspicious user log can be aggregated based on these numeric fields.\n\n - SUSPICION_SCORE: x-displayName: \"SUSPICION SCORE\"\n - BEHAVIOR_ANOMALY_SCORE: x-displayName: \"BEHAVIOR ANOMALY SCORE\"\n - BOT_DEFENSE_SEC_EVENT_COUNT: x-displayName: \"BOT DEFENSE SEC EVENT COUNT\"\n - BOT_DEFENSE_SUSPICION_SCORE: x-displayName: \"BOT DEFENSE SUSPICION SCORE\"\n - ERR_COUNT: x-displayName: \"ERR COUNT\"\n - FAILED_LOGIN_COUNT: x-displayName: \"FAILED LOGIN COUNT\"\n - FAILED_LOGIN_SUSPICION_SCORE: x-displayName: \"FAILED LOGIN SUSPICION SCORE\"\n - FORBIDDEN_ACCESS_COUNT: x-displayName: \"FORBIDDEN ACCESS COUNT\"\n - FORBIDDEN_ACCESS_SUSPICION_SCORE: x-displayName: \"FORBIDDEN ACCESS SUSPICION SCORE\"\n - IP_REPUTATION_SUSPICION_SCORE: x-displayName: \"IP REPUTATION SUSPICION SCORE\"\n - PAGE_NOT_FOUND_COUNT: x-displayName: \"PAGE NOT FOUND COUNT\"\n - RATE_LIMIT_SUSPICION_SCORE: x-displayName: \"RATE LIMIT SUSPICION SCORE\"\n - RATE_LIMITING_COUNT: x-displayName: \"RATE LIMITING COUNT\"\n - WAF_SEC_EVENT_COUNT: x-displayName: \"WAF SEC EVENT COUNT\"\n - WAF_SUSPICION_SCORE: x-displayName: \"WAF SUSPICION SCORE\"",
-        "title": "Numeric-Key Field",
-        "enum": [
-          "SUSPICION_SCORE",
-          "BEHAVIOR_ANOMALY_SCORE",
-          "BOT_DEFENSE_SEC_EVENT_COUNT",
-          "BOT_DEFENSE_SUSPICION_SCORE",
-          "ERR_COUNT",
-          "FAILED_LOGIN_COUNT",
-          "FAILED_LOGIN_SUSPICION_SCORE",
-          "FORBIDDEN_ACCESS_COUNT",
-          "FORBIDDEN_ACCESS_SUSPICION_SCORE",
-          "IP_REPUTATION_SUSPICION_SCORE",
-          "PAGE_NOT_FOUND_COUNT",
-          "RATE_LIMIT_SUSPICION_SCORE",
-          "RATE_LIMITING_COUNT",
-          "WAF_SEC_EVENT_COUNT",
-          "WAF_SUSPICION_SCORE"
-        ],
-        "default": "SUSPICION_SCORE"
       }
     },
     "securitySchemes": {
@@ -8961,21 +8221,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

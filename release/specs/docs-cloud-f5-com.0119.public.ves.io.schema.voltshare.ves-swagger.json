@@ -1,0 +1,1608 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.voltshare",
+    "description": "F5XC VoltShare service serves APIs for users to securing the secrets to share it with each other.",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
+  },
+  "paths": {
+    "/api/secret_management/namespaces/system/voltshare/decrypt_secret": {
+      "post": {
+        "summary": "DecryptSecret",
+        "description": "DecryptSecret API takes blinded encrypted secret and policy and responds with blinded decrypted secret if user is allowed by the policy",
+        "operationId": "ves.io.schema.voltshare.CustomAPI.DecryptSecret",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voltshareDecryptSecretResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/voltshareDecryptSecretRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-customapi-decryptsecret"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.CustomAPI.DecryptSecret",
+        "tags": ["secret_management"]
+      },
+      "x-displayname": "F5XC VoltShare",
+      "x-ves-proto-service": "ves.io.schema.voltshare.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/secret_management/namespaces/system/voltshare/process_policy_information": {
+      "post": {
+        "summary": "ProcessPolicyInformation",
+        "description": "ProcessPolicyInformation API takes policy and secret name as input and returns a document containing .",
+        "operationId": "ves.io.schema.voltshare.CustomAPI.ProcessPolicyInformation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voltshareProcessPolicyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/voltshareProcessPolicyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-customapi-processpolicyinformation"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.CustomAPI.ProcessPolicyInformation",
+        "tags": ["secret_management"]
+      },
+      "x-displayname": "F5XC VoltShare",
+      "x-ves-proto-service": "ves.io.schema.voltshare.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/secret_management/namespaces/{namespace}/voltshare/access_count": {
+      "post": {
+        "summary": "VoltShare Access Count Query",
+        "description": "Request to get number of VoltShare API calls aggregated across multiple dimensions like OPERATION, COUNTRY, RESULT, USER_TENANT",
+        "operationId": "ves.io.schema.voltshare.MonitoringAPI.VoltShareAccessCountQuery",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voltshareVoltShareAccessCountResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"blogging-app-namespace-1\"\nnamespace is used to scope the security events for the given namespace.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/voltshareVoltShareAccessCountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-voltshareaccesscountquery"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.VoltShareAccessCountQuery",
+        "tags": ["secret_management"]
+      },
+      "x-displayname": "F5XC VoltShare",
+      "x-ves-proto-service": "ves.io.schema.voltshare.MonitoringAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/secret_management/namespaces/{namespace}/voltshare/audit_logs": {
+      "post": {
+        "summary": "Audit Log Query",
+        "description": "Request to get voltshare audit logs that matches the criteria in request.\nIf no match conditions are specified in the request, then the response contains all\nCRUD operations performed.",
+        "operationId": "ves.io.schema.voltshare.MonitoringAPI.AuditLogQuery",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voltshareAuditLogResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"value\"\nfetch the log messages scoped by namespace",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/voltshareAuditLogRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogquery"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogQuery",
+        "tags": ["secret_management"]
+      },
+      "x-displayname": "F5XC VoltShare",
+      "x-ves-proto-service": "ves.io.schema.voltshare.MonitoringAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/secret_management/namespaces/{namespace}/voltshare/audit_logs/aggregation": {
+      "post": {
+        "summary": "Audit Log Aggregation Query",
+        "description": "Request to get summary/analytics data for the audit logs that matches the criteria in request.",
+        "operationId": "ves.io.schema.voltshare.MonitoringAPI.AuditLogAggregationQuery",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voltshareAuditLogAggregationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"value\"\nfetch aggregation data scoped by namespace",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/voltshareAuditLogAggregationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogaggregationquery"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogAggregationQuery",
+        "tags": ["secret_management"]
+      },
+      "x-displayname": "F5XC VoltShare",
+      "x-ves-proto-service": "ves.io.schema.voltshare.MonitoringAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/secret_management/namespaces/{namespace}/voltshare/audit_logs/scroll": {
+      "get": {
+        "summary": "Audit Log Scroll Query",
+        "description": "The response for audit log query contain no more than 500 messages.\nOne can use scroll request to scroll through more than 500 messages or all messages\nin multiple batches. empty scroll_id in the response indicates no more messages to fetch (EOF).",
+        "operationId": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery_get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voltshareAuditLogResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"value\"\nfetch the log messages scoped by namespace",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scroll_id",
+            "description": "x-example: \"Vm9sdGVycmEgRWRnZSBQbGF0Zm9ybQ==\"\nLong Base-64 encoded string which can be used to retrieve next batch of log messages.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Scroll ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogscrollquery"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery",
+        "tags": ["secret_management"]
+      },
+      "post": {
+        "summary": "Audit Log Scroll Query",
+        "description": "The response for audit log query contain no more than 500 messages.\nOne can use scroll request to scroll through more than 500 messages or all messages\nin multiple batches. empty scroll_id in the response indicates no more messages to fetch (EOF).",
+        "operationId": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery_post",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voltshareAuditLogResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"value\"\nfetch the log messages scoped by namespace",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/voltshareAuditLogScrollRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogscrollquery"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.voltshare.MonitoringAPI.AuditLogScrollQuery",
+        "tags": ["secret_management"]
+      },
+      "x-displayname": "F5XC VoltShare",
+      "x-ves-proto-service": "ves.io.schema.voltshare.MonitoringAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "F5XC VoltShare",
+  "x-ves-proto-package": "ves.io.schema.voltshare",
+  "components": {
+    "schemas": {
+      "metricsVoltShareAccessCounter": {
+        "type": "object",
+        "description": "VoltShareAccessCounter contains the access count for each unique combination of group_by label in the request.",
+        "title": "VoltShare Access Counter",
+        "x-displayname": "VoltShare Access Counter",
+        "x-ves-proto-message": "ves.io.schema.voltshare.metrics.VoltShareAccessCounter",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/metricsVoltShareAccessId"
+          },
+          "metric": {
+            "type": "array",
+            "description": " List of metric values",
+            "title": "Metric Values",
+            "items": {
+              "$ref": "#/components/schemas/metricsVoltShareMetricValue"
+            },
+            "x-displayname": "Metric Values"
+          }
+        }
+      },
+      "metricsVoltShareAccessId": {
+        "type": "object",
+        "description": "VoltShareAccessId uniquely identifies an entry in the response.\nVoltShare access count is aggregated based on the MetricLabel specified in the group_by field in the request.\nTherefore, only the fields that corresponds to the MetricLabel in the group_by will have non-empty\nvalue in the response.",
+        "title": "VoltShareAccessId",
+        "x-displayname": "VoltShare Access Id",
+        "x-ves-proto-message": "ves.io.schema.voltshare.metrics.VoltShareAccessId",
+        "properties": {
+          "country": {
+            "type": "string",
+            "description": " Country from where the API call was made\n\nExample: ` \"US\"`",
+            "title": "Country",
+            "x-displayname": "Country",
+            "x-ves-example": "US"
+          },
+          "operation": {
+            "type": "string",
+            "description": " Encrypt/Decrypt operation\n\nExample: ` \"Encrypt\"`",
+            "title": "Operation",
+            "x-displayname": "Operation",
+            "x-ves-example": "Encrypt"
+          },
+          "result": {
+            "type": "string",
+            "description": " Result of the VoltShare operation\n\nExample: ` \"Success\"`",
+            "title": "Result",
+            "x-displayname": "Result",
+            "x-ves-example": "Success"
+          },
+          "user_tenant": {
+            "type": "string",
+            "description": " Tenant that made the VoltShare API call\n\nExample: ` \"customer1\"`",
+            "title": "User Tenant",
+            "x-displayname": "User Tenant",
+            "x-ves-example": "customer1"
+          }
+        }
+      },
+      "metricsVoltShareMetricLabel": {
+        "type": "string",
+        "description": "VoltShare Access metric can be sliced and diced based\non one or more labels listed below.\n",
+        "title": "MetricLabel",
+        "enum": ["OPERATION", "RESULT", "USER_TENANT", "COUNTRY"],
+        "default": "OPERATION",
+        "x-displayname": "VoltShare Access Metric Labels",
+        "x-ves-proto-enum": "ves.io.schema.voltshare.metrics.VoltShareMetricLabel"
+      },
+      "metricsVoltShareMetricLabelFilter": {
+        "type": "object",
+        "description": "VoltShare Access metric is tagged with labels mentioned in MetricLabel.\nMetric label filter can be specified to query/aggregate specific timeseries based on label match",
+        "title": "MetricLabelFilter",
+        "x-displayname": "VoltShare Access Metric Label Filter",
+        "x-ves-proto-message": "ves.io.schema.voltshare.metrics.VoltShareMetricLabelFilter",
+        "properties": {
+          "label": {
+            "$ref": "#/components/schemas/metricsVoltShareMetricLabel"
+          },
+          "op": {
+            "$ref": "#/components/schemas/metricsVoltShareMetricLabelOp"
+          },
+          "value": {
+            "type": "string",
+            "description": " Value to be compared with\n\nExample: ` \"ENCRYPT\"`",
+            "title": "Value",
+            "x-displayname": "Value",
+            "x-ves-example": "ENCRYPT"
+          }
+        }
+      },
+      "metricsVoltShareMetricLabelOp": {
+        "type": "string",
+        "description": "The operator to use when querying VoltShare Access metrics with labels.\n",
+        "title": "MetricLabelOp",
+        "enum": ["EQ", "NEQ"],
+        "default": "EQ",
+        "x-displayname": "VoltShare Access Metric Label Operator",
+        "x-ves-proto-enum": "ves.io.schema.voltshare.metrics.VoltShareMetricLabelOp"
+      },
+      "metricsVoltShareMetricValue": {
+        "type": "object",
+        "description": "Value returned for a VoltShare Access Metrics query",
+        "title": "Metric Value",
+        "x-displayname": "Metric Value",
+        "x-ves-proto-message": "ves.io.schema.voltshare.metrics.VoltShareMetricValue",
+        "properties": {
+          "timestamp": {
+            "type": "number",
+            "description": " timestamp\n\nExample: ` \"1570007981\"`",
+            "title": "Timestamp",
+            "format": "double",
+            "x-displayname": "Timestamp",
+            "x-ves-example": "1570007981"
+          },
+          "value": {
+            "type": "string",
+            "description": " number of accesses\n\nExample: ` \"15\"`",
+            "title": "Value",
+            "x-displayname": "Value",
+            "x-ves-example": "15"
+          }
+        }
+      },
+      "schemaSortOrder": {
+        "type": "string",
+        "description": "Sort algorithm\n\nSort in descending order\nSort in ascending order",
+        "title": "SortOrder",
+        "enum": ["DESCENDING", "ASCENDING"],
+        "default": "DESCENDING",
+        "x-displayname": "Sort Order",
+        "x-ves-proto-enum": "ves.io.schema.SortOrder"
+      },
+      "voltshareAuditLogAggregationRequest": {
+        "type": "object",
+        "description": "Request to get only aggregation data for audit logs",
+        "title": "AuditLogAggregationRequest",
+        "x-displayname": "Audit Log Aggregation Request",
+        "x-ves-proto-message": "ves.io.schema.voltshare.AuditLogAggregationRequest",
+        "properties": {
+          "aggs": {
+            "type": "object",
+            "description": " Aggregations provide summary/analytics data over the log response. If the number of logs that matched the query\n is large and cannot be returned in a single response message, user can get helpful insights/summary using aggregations.\n The aggregations are keyed by user-defined aggregation name. The response will be keyed with the same name.\n Optional",
+            "title": "aggregations",
+            "x-displayname": "Aggregations"
+          },
+          "end_time": {
+            "type": "string",
+            "description": " fetch audit logs whose timestamp <= end_time\n format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"2019-09-24T12:30:11.733Z\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "end time",
+            "x-displayname": "End Time",
+            "x-ves-example": "2019-09-24T12:30:11.733Z",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " fetch aggregation data scoped by namespace\n\nExample: ` \"value\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "value"
+          },
+          "query": {
+            "type": "string",
+            "description": " query is used to specify the list of matchers\n syntax for query := {[<matcher>]}\n <matcher> := <field_name><operator>\"<value>\"\n <field_name> := string\n  One or more of the following fields in audit log may be specified in the query.\n   user - user name\n   src_ip - source ip address\n   secret_name - secret name\n   author_tenant - tenant name of the secret creator\n   operation - Encrypt/Decrypt\n   result - Success/Fail\n   country - Country name\n <value> := string\n <operator> := [\"=\"|\"!=\"|\"=~\"|\"!~\"]\n   = : equal to\n   != : not equal to\n When more than one matcher is specified in the query, then audit logs matching ALL the matchers will be returned in the response.\n\n Optional: If not specified, all the audit logs matching the given tenant will be considered for aggregation\n\nExample: ` \"{user=\\\"dana@example.com\\\"}\"`",
+            "title": "query",
+            "x-displayname": "Query",
+            "x-ves-example": "{user=\\\"dana@example.com\\\"}"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " fetch audit logs whose timestamp >= start_time\n format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"2019-09-23T12:30:11.733Z\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "start time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "2019-09-23T12:30:11.733Z",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "voltshareAuditLogAggregationResponse": {
+        "type": "object",
+        "description": "Response message for AuditLogAggregationRequest",
+        "title": "AuditLogAggregationResponse",
+        "x-displayname": "Audit Log Aggregation Response",
+        "x-ves-proto-message": "ves.io.schema.voltshare.AuditLogAggregationResponse",
+        "properties": {
+          "aggs": {
+            "type": "object",
+            "description": " Aggregations provide summary/analytics data over the log response. If the number of logs that matched the query\n is large and cannot be returned in a single response message, user can get helpful insights/summary using aggregations.\n The aggregation data is keyed with the aggregation name specified in the request.",
+            "title": "aggregations",
+            "x-displayname": "Aggregations"
+          },
+          "total_hits": {
+            "type": "string",
+            "description": " total number of log messages that matched the query.\n\nExample: ` \"0\"`",
+            "title": "total hits",
+            "format": "uint64",
+            "x-displayname": "Total Hits",
+            "x-ves-example": "0"
+          }
+        }
+      },
+      "voltshareAuditLogRequest": {
+        "type": "object",
+        "description": "Request to fetch voltshare audit logs",
+        "title": "AuditLogRequest",
+        "x-displayname": "Audit Log Request",
+        "x-ves-proto-message": "ves.io.schema.voltshare.AuditLogRequest",
+        "properties": {
+          "aggs": {
+            "type": "object",
+            "description": " Aggregations provide summary/analytics data over the log response. If the number of logs that matched the query\n is large and cannot be returned in a single response message, user can get helpful insights/summary using aggregations.\n The aggregations are keyed by user-defined aggregation name. The response will be keyed with the same name.\n Optional",
+            "title": "aggregations",
+            "x-displayname": "Aggregations"
+          },
+          "end_time": {
+            "type": "string",
+            "description": " fetch audit logs whose timestamp <= end_time\n format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"2019-09-24T12:30:11.733Z\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "end time",
+            "x-displayname": "End Time",
+            "x-ves-example": "2019-09-24T12:30:11.733Z",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "limit": {
+            "type": "integer",
+            "description": " limits the number of logs returned in the response\n Optional: If not specified, first or last 500 log messages that matches the query (depending on the sort order) will be returned in the response.\n           The maximum value for limit is 500.\n\nExample: ` \"0\"`",
+            "title": "limit",
+            "format": "int32",
+            "x-displayname": "Limit",
+            "x-ves-example": "0"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " fetch the log messages scoped by namespace\n\nExample: ` \"value\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "value"
+          },
+          "query": {
+            "type": "string",
+            "description": " query is used to specify the list of matchers\n syntax for query := {[<matcher>]}\n <matcher> := <field_name><operator>\"<value>\"\n <field_name> := string\n  One or more of the following fields in audit log may be specified in the query.\n   user - user name\n   src_ip - source ip address\n   secret_name - secret name\n   author_tenant - tenant name of the secret creator\n   operation - Encrypt/Decrypt\n   result - Success/Fail\n   country - Country name\n <value> := string\n <operator> := [\"=\"|\"!=\"|\"=~\"|\"!~\"]\n   = : equal to\n   != : not equal to\n   =~ : regex match\n   !~ : not regex match\n When more than one matcher is specified in the query, then audit logs matching ALL the matchers will be returned in the response.\n\n Optional: If not specified, all the audit logs matching the given tenant will be returned.\n\nExample: ` \"{user=\\\"dana@example.com\\\"}\"`",
+            "title": "query",
+            "x-displayname": "Query",
+            "x-ves-example": "{user=\\\"dana@example.com\\\"}"
+          },
+          "scroll": {
+            "type": "boolean",
+            "description": " Scroll is used to retrieve large number of log messages (or all log messages) that matches the query.\n If scroll is set to true, the scroll_id in the response can be used in the scroll API to fetch the next\n batch of logs until there are no more logs left to return. The number of messages in each batch is determined\n by the limit field.\n Note: Scroll is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
+            "title": "scroll",
+            "format": "boolean",
+            "x-displayname": "Scroll",
+            "x-ves-example": "true"
+          },
+          "search_after": {
+            "type": "boolean",
+            "description": " Search After is used to retrieve large number of log messages (or all log messages) that matches the query.\n If search_after is set to true, the sort_values in the response can be used in the API to fetch the next\n batch of logs. The number of messages in each batch is determined by the limit field.\n Note: Search After is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
+            "title": "search after",
+            "format": "boolean",
+            "x-displayname": "Search After",
+            "x-ves-example": "true"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/schemaSortOrder"
+          },
+          "sort_values": {
+            "$ref": "#/components/schemas/voltshareSearchAfterSortValues"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " fetch audit logs whose timestamp >= start_time\n format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"2019-09-23T12:30:11.733Z\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "start time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "2019-09-23T12:30:11.733Z",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "voltshareAuditLogResponse": {
+        "type": "object",
+        "description": "Response message for AuditLogRequest/LogScrollRequest",
+        "title": "AuditLogResponse",
+        "x-displayname": "Audit Log Response",
+        "x-ves-proto-message": "ves.io.schema.voltshare.AuditLogResponse",
+        "properties": {
+          "aggs": {
+            "type": "object",
+            "description": " Aggregations provide summary/analytics data over the log response. If the number of logs that matched the query\n is large and cannot be returned in a single response message, user can get helpful insights/summary using aggregations.\n The aggregation data is keyed with the aggregation name specified in the request.",
+            "title": "aggregations",
+            "x-displayname": "Aggregations"
+          },
+          "last_sort_values": {
+            "$ref": "#/components/schemas/voltshareSearchAfterSortValues"
+          },
+          "logs": {
+            "type": "array",
+            "description": " list of log messages that matched the query. Not all log messages that matched the query are returned in the response.\n\nExample: ` \"value\"`",
+            "title": "logs",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Logs",
+            "x-ves-example": "value"
+          },
+          "scroll_id": {
+            "type": "string",
+            "description": " Long Base-64 encoded string which can be used to retrieve next batch of log messages using the scroll request.\n Empty scroll_id indicates no more messages to scroll (EOF).\n Note: scroll_id is valid only for 2 minutes. i.e., If one intend to retrieve next batch of the result, then the\n       scroll request should be sent within 2 minutes upon receiving the AuditLogResponse.\n\nExample: ` \"Vm9sdGVycmEgRWRnZSBQbGF0Zm9ybQ==\"`",
+            "title": "scroll id",
+            "x-displayname": "Scroll ID",
+            "x-ves-example": "Vm9sdGVycmEgRWRnZSBQbGF0Zm9ybQ=="
+          },
+          "total_hits": {
+            "type": "string",
+            "description": " total number of log messages that matched the query.\n\nExample: ` \"0\"`",
+            "title": "total hits",
+            "format": "uint64",
+            "x-displayname": "Total Hits",
+            "x-ves-example": "0"
+          }
+        }
+      },
+      "voltshareAuditLogScrollRequest": {
+        "type": "object",
+        "description": "Scroll request is used to fetch large number of log messages in multiple batches with each LogResponse\ncontaining no more than 500 (max value for limit in the request) log messages. To scroll through more than 500 or\nall log messages, one can use the LogScrollRequest. Use the scroll_id returned in the LogResponse to fetch the next\nbatch of log messages and one can continue this process till the scroll_id returned in the LogResponse is \"\" which\nindicates no more log messages to scroll.",
+        "title": "AuditLogScrollRequest",
+        "x-displayname": "Audit Log Scroll Request",
+        "x-ves-proto-message": "ves.io.schema.voltshare.AuditLogScrollRequest",
+        "properties": {
+          "namespace": {
+            "type": "string",
+            "description": " fetch the log messages scoped by namespace\n\nExample: ` \"value\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "value"
+          },
+          "scroll_id": {
+            "type": "string",
+            "description": " Long Base-64 encoded string which can be used to retrieve next batch of log messages.\n\nExample: ` \"Vm9sdGVycmEgRWRnZSBQbGF0Zm9ybQ==\"`",
+            "title": "scroll id",
+            "x-displayname": "Scroll ID",
+            "x-ves-example": "Vm9sdGVycmEgRWRnZSBQbGF0Zm9ybQ=="
+          }
+        }
+      },
+      "voltshareDecryptSecretRequest": {
+        "type": "object",
+        "description": "DecryptSecretRequest contains parameters for DecryptSecret API",
+        "title": "DecryptSecret Request",
+        "x-displayname": "DecryptSecret Request",
+        "x-ves-proto-message": "ves.io.schema.voltshare.DecryptSecretRequest",
+        "properties": {
+          "blinded_encrypted_key_base64": {
+            "type": "string",
+            "description": " Blinded Encrypted Key in base64 format\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "blinded_encrypted_key",
+            "x-displayname": "Blinded Encrypted Key",
+            "x-ves-example": "value",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "policy_document": {
+            "$ref": "#/components/schemas/voltsharePolicyInformationType"
+          },
+          "policy_document_hmac_base64": {
+            "type": "string",
+            "description": " Base64 encoded HMAC of the policy document\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "policy_document_hmac",
+            "x-displayname": "Policy Document HMAC",
+            "x-ves-example": "value",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "voltshareDecryptSecretResponse": {
+        "type": "object",
+        "description": "DecryptSecretResponse contains the response of DecryptSecret API",
+        "title": "DecryptSecret Response",
+        "x-displayname": "DecryptSecret Response",
+        "x-ves-proto-message": "ves.io.schema.voltshare.DecryptSecretResponse",
+        "properties": {
+          "blinded_key_base64": {
+            "type": "string",
+            "description": " Blinded Key in base64 format\n\nExample: ` \"value\"`",
+            "title": "blinded_key",
+            "x-displayname": "Blinded Key",
+            "x-ves-example": "value"
+          }
+        }
+      },
+      "voltsharePolicyInformationType": {
+        "type": "object",
+        "description": "PolicyInformation contains user defined policy and metadata added by the backend server.",
+        "title": "Policy Information",
+        "x-displayname": "Policy Information",
+        "x-ves-proto-message": "ves.io.schema.voltshare.PolicyInformationType",
+        "properties": {
+          "author": {
+            "$ref": "#/components/schemas/voltshareUserRecordType"
+          },
+          "blindfold_key_version": {
+            "type": "integer",
+            "description": " Version of BlindfoldKey that will be used for encryption\n\nExample: ` \"0\"`",
+            "title": "blindfold_key_version",
+            "format": "int64",
+            "x-displayname": "Blindfold KeyVersion",
+            "x-ves-example": "0"
+          },
+          "creation_time": {
+            "type": "string",
+            "description": " Creation time for this policy document",
+            "title": "creation_time",
+            "format": "date-time",
+            "x-displayname": "Creation Time"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/voltsharePolicyType"
+          },
+          "policy_id": {
+            "type": "string",
+            "description": " A unique 31 bit number assigned to this policy.\n\nExample: ` \"0\"`",
+            "title": "policy_id",
+            "format": "uint64",
+            "x-displayname": "PolicyID",
+            "x-ves-example": "0"
+          },
+          "secret_name": {
+            "type": "string",
+            "description": " Name of the secret\n\nExample: ` \"value\"`",
+            "title": "secret_name",
+            "x-displayname": "Secret Name",
+            "x-ves-example": "value"
+          }
+        }
+      },
+      "voltsharePolicyType": {
+        "type": "object",
+        "description": "Policy contains user defined policy. It contains list of allowed users and expiry time",
+        "title": "Policy",
+        "x-displayname": "Policy",
+        "x-ves-proto-message": "ves.io.schema.voltshare.PolicyType",
+        "properties": {
+          "allowed_users": {
+            "type": "array",
+            "description": " List of Users allowed to decrypt the secret\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 256\n",
+            "title": "allowed_users",
+            "maxItems": 256,
+            "items": {
+              "$ref": "#/components/schemas/voltshareUserRecordType"
+            },
+            "x-displayname": "Allowed Users",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "256"
+            }
+          },
+          "expiration_timestamp": {
+            "type": "string",
+            "description": " Until when this policy is valid. After expiration only author can decrypt the secret.",
+            "title": "expiration_timestamp",
+            "format": "date-time",
+            "x-displayname": "Expiration Time"
+          }
+        }
+      },
+      "voltshareProcessPolicyRequest": {
+        "type": "object",
+        "description": "ProcessPolicyRequest contains parameters ProcessPolicyInformation API",
+        "title": "ProcessPolicyRequest",
+        "x-displayname": "ProcessPolicy Request",
+        "x-ves-proto-message": "ves.io.schema.voltshare.ProcessPolicyRequest",
+        "properties": {
+          "policy": {
+            "$ref": "#/components/schemas/voltsharePolicyType"
+          },
+          "secret_name": {
+            "type": "string",
+            "description": " Name of the secret\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_bytes: 256\n  ves.io.schema.rules.string.min_bytes: 1\n",
+            "title": "secret_name",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "Secret Name",
+            "x-ves-example": "value",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_bytes": "256",
+              "ves.io.schema.rules.string.min_bytes": "1"
+            }
+          }
+        }
+      },
+      "voltshareProcessPolicyResponse": {
+        "type": "object",
+        "description": "Response of the ProcessPolicyInformation API. It contains Processed Policy, HMAC of the policy and PublicKey to be used for encryption",
+        "title": "ProcessPolicyResponse",
+        "x-displayname": "ProcessPolicy Response",
+        "x-ves-proto-message": "ves.io.schema.voltshare.ProcessPolicyResponse",
+        "properties": {
+          "policy_document": {
+            "$ref": "#/components/schemas/voltsharePolicyInformationType"
+          },
+          "policy_document_hmac_base64": {
+            "type": "string",
+            "description": " Base64 encoded HMAC of the policy document\n\nExample: ` \"value\"`",
+            "title": "policy_document_hmac",
+            "x-displayname": "Policy Document HMAC",
+            "x-ves-example": "value"
+          },
+          "public_key": {
+            "type": "string",
+            "description": " PublicKey Document contains information about PublicKey used to encrypt symmetric encryption key. Private part of this key is ONLY with F5XC Secret Management service.\n Value of this field is a base64 string. When decoded, it unmarshal to PublicKeyDocumentType structure.\n\nExample: ` \"value\"`",
+            "title": "Public Key Document",
+            "x-displayname": "Public Key Document",
+            "x-ves-example": "value"
+          }
+        }
+      },
+      "voltshareSearchAfterSortValues": {
+        "type": "object",
+        "description": "These are timestamp and doc_id values returned by elastic search in the search request.\nClient is expected to set these values in a subsequent request to get the next page of results.",
+        "title": "SearchAfterSortValues",
+        "x-displayname": "Search After Sort Values",
+        "x-ves-proto-message": "ves.io.schema.voltshare.SearchAfterSortValues",
+        "properties": {
+          "last_doc_id": {
+            "type": "string",
+            "description": " This is a unique uuid generated by elastic search\n\nExample: ` \"-8881051689166072872\"`",
+            "title": "last_doc_id",
+            "x-displayname": "Last Doc ID",
+            "x-ves-example": "-8881051689166072872"
+          },
+          "last_timestamp": {
+            "type": "number",
+            "description": "\n\nExample: ` 1745695692759`",
+            "title": "last timestamp",
+            "format": "double",
+            "x-displayname": "Last Timestamp"
+          }
+        }
+      },
+      "voltshareUserRecordType": {
+        "type": "object",
+        "description": "UserRecordType contains information about a user",
+        "title": "User Record",
+        "x-displayname": "User Record",
+        "x-ves-proto-message": "ves.io.schema.voltshare.UserRecordType",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": " email id of the user\n\nExample: ` \"value\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.email: true\n  ves.io.schema.rules.string.max_bytes: 256\n  ves.io.schema.rules.string.min_bytes: 1\n",
+            "title": "email",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "Email",
+            "x-ves-example": "value",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.email": "true",
+              "ves.io.schema.rules.string.max_bytes": "256",
+              "ves.io.schema.rules.string.min_bytes": "1"
+            }
+          },
+          "tenant": {
+            "type": "string",
+            "description": " Tenant of the user\n\nExample: ` \"value\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 256\n  ves.io.schema.rules.string.min_bytes: 1\n",
+            "title": "tenant",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "Tenant",
+            "x-ves-example": "value",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_bytes": "256",
+              "ves.io.schema.rules.string.min_bytes": "1"
+            }
+          }
+        }
+      },
+      "voltshareVoltShareAccessCountRequest": {
+        "type": "object",
+        "description": "Request to get number of VoltShare API calls aggregated across multiple dimensions like OPERATION, COUNTRY, RESULT, USER_TENANT",
+        "title": "VoltShareAccessCountRequest",
+        "x-displayname": "VoltShare Access Count Request",
+        "x-ves-proto-message": "ves.io.schema.voltshare.VoltShareAccessCountRequest",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " end time of metric collection from which data will be considered.\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570007981\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "x-displayname": "End Time",
+            "x-ves-example": "1570007981",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "group_by": {
+            "type": "array",
+            "description": " Aggregate data by one or more labels listed here.\n OPERATION, RESULT, USER_TENANT, COUNTRY.\n\n Optional: If not specified, then the metric is aggregated across all the labels",
+            "title": "Group by",
+            "items": {
+              "$ref": "#/components/schemas/metricsVoltShareMetricLabel"
+            },
+            "x-displayname": "Group By"
+          },
+          "label_filter": {
+            "type": "array",
+            "description": " List of label filter expressions of the form \"label\" Op \"value\".\n Response will only contain data that matches all the conditions specified in the label_filter.\n One or more of the following labels can be specified in the label_filter.\n OPERATION, RESULT, USER_TENANT, COUNTRY.\n\n Optional: If not specified, then the metrics will be filtered only based on the namespace in the request.",
+            "title": "Label Filter",
+            "items": {
+              "$ref": "#/components/schemas/metricsVoltShareMetricLabelFilter"
+            },
+            "x-displayname": "Label Filter"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " namespace is used to scope the security events for the given namespace.\n\nExample: ` \"blogging-app-namespace-1\"`",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "blogging-app-namespace-1"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " start time of metric collection from which data will be considered.\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"1570007981\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "1570007981",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "step": {
+            "type": "string",
+            "description": " step is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\n The timestamps in the response will be t1=start_time, t2=t1+step, ... tn=tn-1+step, where tn <= end_time.\n Format: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\n Optional: If not specified, then step size is evaluated to <end_time - start_time>\n\nExample: ` \"15m\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_step: true\n",
+            "title": "Step",
+            "x-displayname": "Step",
+            "x-ves-example": "15m",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_step": "true"
+            }
+          }
+        }
+      },
+      "voltshareVoltShareAccessCountResponse": {
+        "type": "object",
+        "description": "VoltShare access count for each unique combination of group_by labels in the VoltShareAccessCountRequest.",
+        "title": "VoltShareAccessCountResponse",
+        "x-displayname": "VoltShare Access Count Response",
+        "x-ves-proto-message": "ves.io.schema.voltshare.VoltShareAccessCountResponse",
+        "properties": {
+          "data": {
+            "type": "array",
+            "description": " List of VoltShare Access count data for each unique combination of group_by labels",
+            "title": "Security events counter data",
+            "items": {
+              "$ref": "#/components/schemas/metricsVoltShareAccessCounter"
+            },
+            "x-displayname": "VoltShare Access Count"
+          },
+          "step": {
+            "type": "string",
+            "description": " Actual step size used in the response. It could be higher than the requested step due to metric rollups and the query duration.\n Format: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\nExample: ` \"30m\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.time_interval: true\n",
+            "title": "step",
+            "x-displayname": "Step",
+            "x-ves-example": "30m",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.time_interval": "true"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "secret_management"
+    }
+  ]
+}

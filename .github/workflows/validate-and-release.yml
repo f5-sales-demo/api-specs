@@ -343,6 +343,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
 
+      - name: Discard committed specs before extracting the artifact
+        run: |
+          # release/specs is committed but is a build product. Upstream
+          # filenames embed a sequence index that shifts when F5 adds or
+          # removes a domain, so checked-out specs the current run does not
+          # overwrite would otherwise be packaged into the release.
+          rm -rf release/specs
+          mkdir -p release/specs
+
       - name: Download reconciled specs
         uses: actions/download-artifact@v8
         with:

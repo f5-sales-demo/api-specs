@@ -1,0 +1,1463 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.ui.dashboard_layout",
+    "description": "stores information about the dashboard layout Components in key-value pair",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
+  },
+  "paths": {
+    "/api/web/custom/namespaces/system/dashboards/{dashboard_id}/current_layout": {
+      "get": {
+        "summary": "Get Current Default Dashboard Layout",
+        "description": "GetCurrentDashboard retrieves the default dashboard layout selected by the user. If no default is set, an empty response is returned.",
+        "operationId": "ves.io.schema.ui.dashboard_layout.CustomAPI.GetCurrentDashboard",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dashboard_layoutObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "description": "DashboardId\n\nx-required\nDashboardId is the unique id for each dashboard types, the preset unique Id is defined in stellar code",
+            "in": "path",
+            "required": true,
+            "x-displayname": "DashboardId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ui-dashboard_layout-customapi-getcurrentdashboard"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.ui.dashboard_layout.CustomAPI.GetCurrentDashboard",
+        "tags": ["web"]
+      },
+      "x-displayname": "Dashboard Layout Component",
+      "x-ves-proto-service": "ves.io.schema.ui.dashboard_layout.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/web/custom/namespaces/system/dashboards/{dashboard_id}/layouts": {
+      "get": {
+        "summary": "List Dashboard Layouts",
+        "description": "List returns all dashboard layouts created by the user.",
+        "operationId": "ves.io.schema.ui.dashboard_layout.CustomAPI.List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dashboard_layoutListDashboardLayoutResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "description": "DashboardId\n\nx-required\nDashboardId is the unique id for each dashboard types, the preset unique Id is defined in stellar code",
+            "in": "path",
+            "required": true,
+            "x-displayname": "DashboardId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ui-dashboard_layout-customapi-list"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.ui.dashboard_layout.CustomAPI.List",
+        "tags": ["web"]
+      },
+      "post": {
+        "summary": "Create Dashboard Layout",
+        "description": "Create creates a new dashboard layout with the details specified in the request.",
+        "operationId": "ves.io.schema.ui.dashboard_layout.CustomAPI.Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dashboard_layoutObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "description": "DashboardId\n\nx-required\nDashboardId is the unique id for each dashboard types, the preset unique Id is defined in stellar code",
+            "in": "path",
+            "required": true,
+            "x-displayname": "DashboardId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dashboard_layoutCreateDashboardLayoutRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ui-dashboard_layout-customapi-create"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.ui.dashboard_layout.CustomAPI.Create",
+        "tags": ["web"]
+      },
+      "x-displayname": "Dashboard Layout Component",
+      "x-ves-proto-service": "ves.io.schema.ui.dashboard_layout.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/web/custom/namespaces/system/dashboards/{dashboard_id}/layouts/{layout_name}": {
+      "get": {
+        "summary": "Get Dashboard Layout",
+        "description": "Get fetches a specific dashboard layout based on the `dashboard_id` and 'layout_name' provided in the request.",
+        "operationId": "ves.io.schema.ui.dashboard_layout.CustomAPI.Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dashboard_layoutObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "description": "DashboardId\n\nx-required\nDashboardId is the unique id for each dashboard types, the preset unique Id is defined in stellar code",
+            "in": "path",
+            "required": true,
+            "x-displayname": "DashboardId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layout_name",
+            "description": "LayoutName\n\nx-required\nLayoutName is the name of the dashboard layout",
+            "in": "path",
+            "required": true,
+            "x-displayname": "LayoutName",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ui-dashboard_layout-customapi-get"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.ui.dashboard_layout.CustomAPI.Get",
+        "tags": ["web"]
+      },
+      "delete": {
+        "summary": "Delete Dashboard Layout",
+        "description": "Delete deletes a specific dashboard layout based on the `dashboard_id` and 'layout_name' provided in the request.",
+        "operationId": "ves.io.schema.ui.dashboard_layout.CustomAPI.Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/uidashboard_layoutEmpty"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "description": "DashboardId\n\nx-required\nDashboardId is the unique id for each dashboard types, the preset unique Id is defined in stellar code",
+            "in": "path",
+            "required": true,
+            "x-displayname": "DashboardId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layout_name",
+            "description": "LayoutName\n\nx-required\nLayoutName is the name of the dashboard layout",
+            "in": "path",
+            "required": true,
+            "x-displayname": "LayoutName",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ui-dashboard_layout-customapi-delete"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.ui.dashboard_layout.CustomAPI.Delete",
+        "tags": ["web"]
+      },
+      "put": {
+        "summary": "Update Dashboard Layout",
+        "description": "Update updates an existing dashboard layout identified by `dashboard_id` and 'layout_name' with the new details provided in the request.",
+        "operationId": "ves.io.schema.ui.dashboard_layout.CustomAPI.Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dashboard_layoutObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "description": "DashboardId\n\nx-required\nDashboardId is the unique id for each dashboard types, the preset unique Id is defined in stellar code",
+            "in": "path",
+            "required": true,
+            "x-displayname": "DashboardId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layout_name",
+            "description": "LayoutName\n\nx-required\nLayoutName is the name of the dashboard layout",
+            "in": "path",
+            "required": true,
+            "x-displayname": "LayoutName",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dashboard_layoutUpdateDashboardLayoutRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ui-dashboard_layout-customapi-update"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.ui.dashboard_layout.CustomAPI.Update",
+        "tags": ["web"]
+      },
+      "x-displayname": "Dashboard Layout Component",
+      "x-ves-proto-service": "ves.io.schema.ui.dashboard_layout.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Dashboard Layout Component",
+  "x-ves-proto-package": "ves.io.schema.ui.dashboard_layout",
+  "components": {
+    "schemas": {
+      "dashboard_layoutCreateDashboardLayoutRequest": {
+        "type": "object",
+        "description": "CreateDashboardLayoutRequest contains details to create or update a dashboard layout",
+        "title": "CreateDashboardLayoutRequest",
+        "x-displayname": "CreateDashboardLayoutRequest",
+        "x-ves-proto-message": "ves.io.schema.ui.dashboard_layout.CreateDashboardLayoutRequest",
+        "properties": {
+          "dashboard_id": {
+            "type": "string",
+            "description": " DashboardId is the unique id for each dashboard types, the preset unique Id is defined in stellar code\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "DashboardId",
+            "x-displayname": "DashboardId",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": " Description describes the dashboard layout",
+            "title": "Description",
+            "x-displayname": "Description"
+          },
+          "is_selected": {
+            "type": "boolean",
+            "description": " IsSelected indicates whether the current layout is the default selected by the user",
+            "title": "IsSelected",
+            "format": "boolean",
+            "x-displayname": "IsSelected"
+          },
+          "is_shared": {
+            "type": "boolean",
+            "description": " IsShared is a boolean flag when set to true users in the tenant can utilize the same dashboard layout.",
+            "title": "IsShared",
+            "format": "boolean",
+            "x-displayname": "IsShared"
+          },
+          "layout_data": {
+            "type": "object",
+            "description": " LayoutData holds the layout structure encoded as a JSON",
+            "title": "LayoutData",
+            "x-displayname": "LayoutData"
+          },
+          "layout_name": {
+            "type": "string",
+            "description": " LayoutName is the name of the dashboard layout\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "LayoutName",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "LayoutName",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "256",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          }
+        }
+      },
+      "dashboard_layoutGlobalSpecType": {
+        "type": "object",
+        "description": "GlobalSpecType stores information about a dashboard layout",
+        "title": "GlobalSpecType",
+        "x-displayname": "GlobalSpecType",
+        "x-ves-proto-message": "ves.io.schema.ui.dashboard_layout.GlobalSpecType",
+        "properties": {
+          "dashboard_id": {
+            "type": "string",
+            "description": " DashboardId is the unique id for each dashboard layout type, the preset unique Id is defined in stellar code\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "DashboardId",
+            "x-displayname": "DashboardId",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": " Description describes the dashboard layout",
+            "title": "Description",
+            "x-displayname": "Description"
+          },
+          "is_selected": {
+            "type": "boolean",
+            "description": " IsSelected indicates whether the current layout is the default selected by the user",
+            "title": "IsSelected",
+            "format": "boolean",
+            "x-displayname": "IsSelected"
+          },
+          "is_shared": {
+            "type": "boolean",
+            "description": " IsShared is a boolean flag when set to true users in the tenant can utilize the same dashboard layout.",
+            "title": "IsShared",
+            "format": "boolean",
+            "x-displayname": "IsShared"
+          },
+          "layout_data": {
+            "type": "object",
+            "description": " LayoutData holds the layout structure encoded as a JSON",
+            "title": "LayoutData",
+            "x-displayname": "LayoutData"
+          },
+          "name": {
+            "type": "string",
+            "description": " Name is the name of the dashboard layout\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Name",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "Name",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "256",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          }
+        }
+      },
+      "dashboard_layoutLayoutListItem": {
+        "type": "object",
+        "description": "LayoutListItem contains the name, description, and selection status of the dashboard layout",
+        "title": "LayoutListItem",
+        "x-displayname": "LayoutListItem",
+        "x-ves-proto-message": "ves.io.schema.ui.dashboard_layout.LayoutListItem",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": " Description describes the dashboard layout\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Description",
+            "x-displayname": "Description",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "is_selected": {
+            "type": "boolean",
+            "description": " IsSelected indicates whether the current layout is the default selected by the user\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "IsSelected",
+            "format": "boolean",
+            "x-displayname": "IsSelected",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "layout_name": {
+            "type": "string",
+            "description": " LayoutName is the name of the dashboard layout\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "LayoutName",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "LayoutName",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "256",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          }
+        }
+      },
+      "dashboard_layoutListDashboardLayoutResponse": {
+        "type": "object",
+        "description": "ListDashboardLayoutResponse returns the name and description of the dashboard layouts created by the user",
+        "title": "ListDashboardLayoutResponse",
+        "x-displayname": "ListDashboardLayoutResponse",
+        "x-ves-proto-message": "ves.io.schema.ui.dashboard_layout.ListDashboardLayoutResponse",
+        "properties": {
+          "layout_list": {
+            "type": "array",
+            "description": " LayoutList lists information about dashboards created by the user\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "LayoutList",
+            "items": {
+              "$ref": "#/components/schemas/dashboard_layoutLayoutListItem"
+            },
+            "x-displayname": "LayoutList",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "dashboard_layoutObject": {
+        "type": "object",
+        "description": "Dashboard Layout component object",
+        "title": "Dashboard Layout component",
+        "x-displayname": "Dashboard Layout component",
+        "x-ves-proto-message": "ves.io.schema.ui.dashboard_layout.Object",
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectMetaType"
+          },
+          "spec": {
+            "$ref": "#/components/schemas/dashboard_layoutSpecType"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectMetaType"
+          }
+        }
+      },
+      "dashboard_layoutSpecType": {
+        "type": "object",
+        "description": "Dashboard Layout specification",
+        "title": "SpecType",
+        "x-displayname": "Specification",
+        "x-ves-proto-message": "ves.io.schema.ui.dashboard_layout.SpecType",
+        "properties": {
+          "gc_spec": {
+            "$ref": "#/components/schemas/dashboard_layoutGlobalSpecType"
+          }
+        }
+      },
+      "dashboard_layoutUpdateDashboardLayoutRequest": {
+        "type": "object",
+        "description": "UpdateDashboardLayoutRequest contains details to update a dashboard layout",
+        "title": "UpdateDashboardLayoutRequest",
+        "x-displayname": "UpdateDashboardLayoutRequestt",
+        "x-ves-proto-message": "ves.io.schema.ui.dashboard_layout.UpdateDashboardLayoutRequest",
+        "properties": {
+          "dashboard_id": {
+            "type": "string",
+            "description": " DashboardId is the unique id for each dashboard types, the preset unique Id is defined in stellar code\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "DashboardId",
+            "x-displayname": "DashboardId",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": " Description describes the dashboard layout",
+            "title": "Description",
+            "x-displayname": "Description"
+          },
+          "is_selected": {
+            "type": "boolean",
+            "description": " IsSelected indicates whether the current layout is the default selected by the user",
+            "title": "IsSelected",
+            "format": "boolean",
+            "x-displayname": "IsSelected"
+          },
+          "is_shared": {
+            "type": "boolean",
+            "description": " IsShared is true if the layout is shared",
+            "title": "IsShared",
+            "format": "boolean",
+            "x-displayname": "IsShared"
+          },
+          "layout_data": {
+            "type": "object",
+            "description": " LayoutData holds the layout structure encoded as a JSON",
+            "title": "LayoutData",
+            "x-displayname": "LayoutData"
+          },
+          "layout_name": {
+            "type": "string",
+            "description": " LayoutName is the name of the dashboard layout\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "LayoutName",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "LayoutName",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "256",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "new_layout_name": {
+            "type": "string",
+            "description": " NewLayoutName is the new name of the dashboard layout",
+            "title": "NewLayoutName",
+            "x-displayname": "NewLayoutName"
+          }
+        }
+      },
+      "schemaInitializerType": {
+        "type": "object",
+        "description": "Initializer is information about an initializer that has not yet completed.",
+        "title": "InitializerType",
+        "x-displayname": "Initializer",
+        "x-ves-proto-message": "ves.io.schema.InitializerType",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": " name of the service that is responsible for initializing this object.",
+            "title": "name",
+            "x-displayname": "Name"
+          }
+        }
+      },
+      "schemaInitializersType": {
+        "type": "object",
+        "description": "Initializers tracks the progress of initialization of a configuration object",
+        "title": "InitializersType",
+        "x-displayname": "Initializers",
+        "x-ves-proto-message": "ves.io.schema.InitializersType",
+        "properties": {
+          "pending": {
+            "type": "array",
+            "description": " Pending is a list of initializers that must execute in order before this object is initialized.\n When the last pending initializer is removed, and no failing result is set, the initializers\n struct will be set to nil and the object is considered as initialized and visible to all\n clients.",
+            "title": "pending",
+            "items": {
+              "$ref": "#/components/schemas/schemaInitializerType"
+            },
+            "x-displayname": "Pending"
+          },
+          "result": {
+            "$ref": "#/components/schemas/schemaStatusType"
+          }
+        }
+      },
+      "schemaObjectMetaType": {
+        "type": "object",
+        "description": "ObjectMetaType is metadata(common attributes) of an object that all configuration objects will have.\nThe information in this type can be specified by user during create and replace APIs.",
+        "title": "ObjectMetaType",
+        "x-displayname": "Metadata",
+        "x-ves-proto-message": "ves.io.schema.ObjectMetaType",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "description": " Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n  ves.io.schema.rules.map.keys.string.max_len: 64\n  ves.io.schema.rules.map.keys.string.min_len: 1\n  ves.io.schema.rules.map.values.string.max_len: 1024\n  ves.io.schema.rules.map.values.string.min_len: 1\n",
+            "title": "annotations",
+            "x-displayname": "Annotations",
+            "x-ves-example": "value",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.map.keys.string.max_len": "64",
+              "ves.io.schema.rules.map.keys.string.min_len": "1",
+              "ves.io.schema.rules.map.values.string.max_len": "1024",
+              "ves.io.schema.rules.map.values.string.min_len": "1"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
+            "title": "description",
+            "maxLength": 1200,
+            "x-displayname": "Description",
+            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_bytes": "1200"
+            }
+          },
+          "disable": {
+            "type": "boolean",
+            "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "title": "disable",
+            "format": "boolean",
+            "x-displayname": "Disable",
+            "x-ves-example": "true"
+          },
+          "labels": {
+            "type": "object",
+            "description": " Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "title": "labels",
+            "x-displayname": "Labels",
+            "x-ves-example": "value"
+          },
+          "name": {
+            "type": "string",
+            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "acmecorp-web",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "staging"
+          },
+          "uid": {
+            "type": "string",
+            "description": " uid is the unique in time and space value for this object. Object create will fail if\n provided by the client and the value exists in the system. Typically generated by the\n server on successful creation of an object and is not allowed to change once populated.\n Shadowed by SystemObjectMeta's uid field.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+          }
+        }
+      },
+      "schemaObjectRefType": {
+        "type": "object",
+        "description": "This type establishes a 'direct reference' from one object(the referrer) to another(the referred).\nSuch a reference is in form of tenant/namespace/name for public API and Uid for private API\nThis type of reference is called direct because the relation is explicit and concrete (as opposed\nto selector reference which builds a group based on labels of selectee objects)",
+        "title": "ObjectRefType",
+        "x-displayname": "Object reference",
+        "x-ves-proto-message": "ves.io.schema.ObjectRefType",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then kind will hold the referred object's kind (e.g. \"route\")\n\nExample: ` \"virtual_site\"`",
+            "title": "kind",
+            "x-displayname": "Kind",
+            "x-ves-example": "virtual_site"
+          },
+          "name": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. route's) name.\n\nExample: ` \"contactus-route\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "contactus-route"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. route's) namespace.\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          },
+          "tenant": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"acmecorp\"`",
+            "title": "tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "acmecorp"
+          },
+          "uid": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+          }
+        }
+      },
+      "schemaStatusType": {
+        "type": "object",
+        "description": "Status is a return value for calls that don't return other objects.",
+        "title": "StatusType",
+        "x-displayname": "Status",
+        "x-ves-proto-message": "ves.io.schema.StatusType",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": " Suggested HTTP return code for this status, 0 if not set.\n\nExample: ` \"0\"`",
+            "title": "code",
+            "format": "int32",
+            "x-displayname": "Code",
+            "x-ves-example": "0"
+          },
+          "reason": {
+            "type": "string",
+            "description": " A human-readable description of why this operation is in the\n \"Failure\" status. If this value is empty there\n is no information available.\n\nExample: ` \"value\"`",
+            "title": "reason",
+            "x-displayname": "Reason",
+            "x-ves-example": "value"
+          },
+          "status": {
+            "type": "string",
+            "description": " Status of the operation.\n One of: \"Success\" or \"Failure\".\n\nExample: ` \"value\"`",
+            "title": "status",
+            "x-displayname": "Status",
+            "x-ves-example": "value"
+          }
+        }
+      },
+      "schemaSystemObjectMetaType": {
+        "type": "object",
+        "description": "SystemObjectMetaType is metadata generated or populated by the system for all persisted objects and\ncannot be updated directly by users.",
+        "title": "SystemObjectMetaType",
+        "x-displayname": "System Metadata",
+        "x-ves-proto-message": "ves.io.schema.SystemObjectMetaType",
+        "properties": {
+          "creation_timestamp": {
+            "type": "string",
+            "description": " CreationTimestamp is a timestamp representing the server time when this object was\n created. It is not guaranteed to be set in happens-before order across separate operations.\n Clients may not set this value. It is represented in RFC3339 form and is in UTC.",
+            "title": "creation_timestamp",
+            "format": "date-time",
+            "x-displayname": "Creation Timestamp"
+          },
+          "creator_class": {
+            "type": "string",
+            "description": " A value identifying the class of the user or service which created this configuration object.\n\nExample: ` \"value\"`",
+            "title": "creator_class",
+            "x-displayname": "Creator Class",
+            "x-ves-example": "value"
+          },
+          "creator_cookie": {
+            "type": "string",
+            "description": " This can used by the creator of the object for later audit for e.g. by storing the\n version identifying information of the object so at future it can be determined if\n version present at remote end is current or stale.\n\nExample: ` \"value\"`",
+            "title": "creator_cookie",
+            "x-displayname": "Creator Cookie",
+            "x-ves-example": "value"
+          },
+          "creator_id": {
+            "type": "string",
+            "description": " A value identifying the exact user or service that created this configuration object\n\nExample: ` \"value\"`",
+            "title": "creator_id",
+            "x-displayname": "Creator ID",
+            "x-ves-example": "value"
+          },
+          "deletion_timestamp": {
+            "type": "string",
+            "description": " DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This\n field is set by the server when a graceful deletion is requested by the user, and is not\n directly settable by a client. The resource is expected to be deleted (no longer visible\n from resource lists, and not reachable by name) after the time in this field, once the\n finalizers list is empty. As long as the finalizers list contains items, deletion is blocked.\n Once the deletionTimestamp is set, this value may not be unset or be set further into the\n future, although it may be shortened or the resource may be deleted prior to this time.\n For example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react\n by sending a graceful termination signal to the containers in the pod. After that 30 seconds,\n the Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup,\n remove the pod from the API. In the presence of network partitions, this object may still\n exist after this timestamp, until an administrator or automated process can determine the\n resource is fully terminated.\n If not set, graceful deletion of the object has not been requested.\n\n Populated by the system when a graceful deletion is requested.\n Read-only.",
+            "title": "deletion_timestamp",
+            "format": "date-time",
+            "x-displayname": "Deletion Timestamp"
+          },
+          "direct_ref_hash": {
+            "type": "string",
+            "description": " A hash of the UIDs of  direct references on this object. This can be used to determine if\n this object hash has had references become resolved/unresolved",
+            "title": "direct_ref_hash",
+            "x-displayname": "Direct Reference Hash"
+          },
+          "finalizers": {
+            "type": "array",
+            "description": " Must be empty before the object is deleted from the registry. Each entry\n is an identifier for the responsible component that will remove the entry\n from the list. If the deletionTimestamp of the object is non-nil, entries\n in this list can only be removed.\n\nExample: ` \"value\"`",
+            "title": "finalizers",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Finalizers",
+            "x-ves-example": "value"
+          },
+          "initializers": {
+            "$ref": "#/components/schemas/schemaInitializersType"
+          },
+          "labels": {
+            "type": "object",
+            "description": " Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the operator or software. Values here can be interpreted\n by software(backend or frontend) to enable certain behavior e.g. things marked as soft-deleted(restorable).\n\nExample: ` \"'ves.io/soft-deleted''true'\"`",
+            "title": "labels",
+            "x-displayname": "Labels",
+            "x-ves-example": "'ves.io/soft-deleted': 'true'"
+          },
+          "modification_timestamp": {
+            "type": "string",
+            "description": " ModificationTimestamp is a timestamp representing the server time when this object was\n last modified.",
+            "title": "modification_timestamp",
+            "format": "date-time",
+            "x-displayname": "Modification Timestamp"
+          },
+          "namespace": {
+            "type": "array",
+            "description": " The namespace this object belongs to. This is populated by the service based on the\n metadata.namespace field when an object is created.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1\n",
+            "title": "namespace",
+            "maxItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/schemaObjectRefType"
+            },
+            "x-displayname": "Namespace Reference",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "1"
+            }
+          },
+          "object_index": {
+            "type": "integer",
+            "description": " Unique index for the object. Some objects need a unique integer index to be allocated\n for each object type. This field will be populated for all objects that need it and will\n be zero otherwise.\n\nExample: ` \"0\"`",
+            "title": "object_index",
+            "format": "int64",
+            "x-displayname": "Object Index",
+            "x-ves-example": "0"
+          },
+          "owner_view": {
+            "$ref": "#/components/schemas/schemaViewRefType"
+          },
+          "revision": {
+            "type": "string",
+            "description": " A revision number which always increases with each modification of the object in storage\n This doesn't necessarily increase sequentially, but should always increase.\n This will be 0 when first created, and before any modifications.",
+            "title": "revision",
+            "format": "int64",
+            "x-displayname": "Revision"
+          },
+          "sre_disable": {
+            "type": "boolean",
+            "description": " This should be set to true If VES/SRE operator wants to suppress an object from being\n presented to business-logic of a daemon(e.g. due to bad-form/issue-causing Object).\n This is meant only to be used in temporary situations for operational continuity till\n a fix is rolled out in business-logic.\n\nExample: ` \"true\"`",
+            "title": "sre_disable",
+            "format": "boolean",
+            "x-displayname": "SRE Disable",
+            "x-ves-example": "true"
+          },
+          "tenant": {
+            "type": "string",
+            "description": " Tenant to which this configuration object belongs to. The value for this is found from\n presented credentials.\n\nExample: ` \"acmecorp\"`",
+            "title": "tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "acmecorp"
+          },
+          "trace_info": {
+            "type": "string",
+            "description": " trace_info holds information(<trace-id>:<span-id>:<parent-span-id>) of the request doing\n the object modification. This can be used on the watch side to create subsequent spans.\n This information can be used to co-relate activities across services (modulo state compression)\n for a synchronous API.\n\nExample: ` \"value\"`",
+            "title": "trace_info",
+            "x-displayname": "Trace Info",
+            "x-ves-example": "value"
+          },
+          "uid": {
+            "type": "string",
+            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+          },
+          "vtrp_id": {
+            "type": "string",
+            "description": " Indicate origin of this object.",
+            "title": "vtrp_id",
+            "x-displayname": "VTRP ID"
+          },
+          "vtrp_stale": {
+            "type": "boolean",
+            "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
+            "title": "vtrp_stale",
+            "format": "boolean",
+            "x-displayname": "VTRP Stale"
+          }
+        }
+      },
+      "schemaViewRefType": {
+        "type": "object",
+        "description": "ViewRefType represents a reference to a view",
+        "title": "ViewRefType",
+        "x-displayname": "View Reference",
+        "x-ves-proto-message": "ves.io.schema.ViewRefType",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": " Kind of the view object\n\nExample: ` \"http_proxy\"`",
+            "title": "kind",
+            "x-displayname": "Kind",
+            "x-ves-example": "http_proxy"
+          },
+          "name": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. route's) name.\n\nExample: ` \"contactus-route\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "contactus-route"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. route's) namespace.\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          },
+          "uid": {
+            "type": "string",
+            "description": " UID of the view object\n\nExample: ` \"f3744323-1adf-4aaa-a5dc-0707c1d1bd82\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "f3744323-1adf-4aaa-a5dc-0707c1d1bd82"
+          }
+        }
+      },
+      "uidashboard_layoutEmpty": {
+        "type": "object",
+        "description": "Empty represents an empty response.",
+        "title": "Empty",
+        "x-displayname": "Empty",
+        "x-ves-proto-message": "ves.io.schema.ui.dashboard_layout.Empty"
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
+}

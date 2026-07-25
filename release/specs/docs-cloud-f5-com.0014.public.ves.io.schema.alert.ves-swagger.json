@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.alert",
-    "description": "Alert may be generated based on the metrics or based on severity level in the logs. All alerts are scoped by \ntenant and namespace and tagged with the following default labels that can be used to fetch\nthe desired alerts.\n\n\"alertname\" - Name of the alert. This uniquely identifies the alert rule/configuration that generated the alert.\n\"type\" - Type of the alert. Type is used to associate alert to a configuration object or any user visible entity.\n         For example, virtual host, virtual network, app_type, etc.\n\"identifier\" - Identifier of the alert. For virtual-network, this would be the name of the virtual-network.\n\"severity\" - Indicates the severity of the alert. Valid values are minor, major, critical.\n\nAlert may have additional labels associated depending on the labels associated with the metric used to configure the alert rule.\nAlerts can be queried by specifying one or more of the above labels in the match filter.\nIf the match filter is not specified, then all the alerts for the tenant and corresponding namespace in the request will be returned in the response.",
-    "version": "",
+    "description": "Alert may be generated based on the metrics or based on severity level in the logs. All alerts are scoped by\ntenant and namespace and tagged with the following default labels that can be used to fetch\nthe desired alerts.\n\n\"alertname\" - Name of the alert. This uniquely identifies the alert rule/configuration that generated the alert.\n\"type\" - Type of the alert. Type is used to associate alert to a configuration object or any user visible entity.\n         For example, virtual host, virtual network, app_type, etc.\n\"identifier\" - Identifier of the alert. For virtual-network, this would be the name of the virtual-network.\n\"severity\" - Indicates the severity of the alert. Valid values are minor, major, critical.\n\nAlert may have additional labels associated depending on the labels associated with the metric used to configure the alert rule.\nAlerts can be queried by specifying one or more of the above labels in the match filter.\nIf the match filter is not specified, then all the alerts for the tenant and corresponding namespace in the request will be returned in the response.",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -165,7 +165,7 @@
           },
           {
             "name": "filter",
-            "description": "x-example: \"{alertname=\\\"HighDiskUsage\\\", severity=\\\"critical\\\"}\"\nList of matchers to filter alerts by.\nFiltering via label matchers follows the same syntax and semantics as Prometheus.\nsyntax for filter := {[<matcher>]} \n<matcher> := <label_name><operator>\"<label_value>\"\n<label_name> := string\n  All alerts have the following default labels:\n    \"alertname\", \"identifier\", \"type\", \"severity\"\n<label_value> := string\n<operator> := [ same as label match operators supported by prometheus - Please refer https://prometheus.io/docs/prometheus/latest/querying/basics ]\nWhen more than one matcher is specified in the filter, then alerts matching ALL the matchers will be returned.\n\nOptional: If not specified, then all the alerts for the tenant and namespace specified in the request will be returned.",
+            "description": "x-example: \"{alertname=\\\"HighDiskUsage\\\", severity=\\\"critical\\\"}\"\nList of matchers to filter alerts by.\nFiltering via label matchers follows the same syntax and semantics as Prometheus.\nsyntax for filter := {[<matcher>]}\n<matcher> := <label_name><operator>\"<label_value>\"\n<label_name> := string\n  All alerts have the following default labels:\n    \"alertname\", \"identifier\", \"type\", \"severity\"\n<label_value> := string\n<operator> := [ same as label match operators supported by prometheus - Please refer https://prometheus.io/docs/prometheus/latest/querying/basics ]\nWhen more than one matcher is specified in the filter, then alerts matching ALL the matchers will be returned.\n\nOptional: If not specified, then all the alerts for the tenant and namespace specified in the request will be returned.",
             "in": "query",
             "required": false,
             "x-displayname": "Filter",
@@ -339,7 +339,7 @@
           },
           {
             "name": "filter",
-            "description": "x-example: \"{alertname=\\\"HighDiskUsage\\\", severity=\\\"critical\\\"}\"\nList of matchers to filter alerts by.\nFiltering via label matchers follows the same syntax and semantics as Prometheus.\nsyntax for filter := {[<matcher>]} \n<matcher> := <label_name><operator>\"<label_value>\"\n<label_name> := string\n  All alerts have the following default labels:\n    \"alertname\", \"identifier\", \"type\", \"severity\"\n<label_value> := string\n<operator> := [ same as label match operators supported by prometheus - Please refer https://prometheus.io/docs/prometheus/latest/querying/basics ]\nWhen more than one matcher is specified in the filter, then alerts matching ALL the matchers will be returned.\n\nOptional: If not specified, then all the alerts for the tenant and namespace specified in the request will be returned.",
+            "description": "x-example: \"{alertname=\\\"HighDiskUsage\\\", severity=\\\"critical\\\"}\"\nList of matchers to filter alerts by.\nFiltering via label matchers follows the same syntax and semantics as Prometheus.\nsyntax for filter := {[<matcher>]}\n<matcher> := <label_name><operator>\"<label_value>\"\n<label_name> := string\n  All alerts have the following default labels:\n    \"alertname\", \"identifier\", \"type\", \"severity\"\n<label_value> := string\n<operator> := [ same as label match operators supported by prometheus - Please refer https://prometheus.io/docs/prometheus/latest/querying/basics ]\nWhen more than one matcher is specified in the filter, then alerts matching ALL the matchers will be returned.\n\nOptional: If not specified, then all the alerts for the tenant and namespace specified in the request will be returned.",
             "in": "query",
             "required": false,
             "x-displayname": "Filter",
@@ -643,7 +643,7 @@
       "get": {
         "summary": "Alerts History Scroll",
         "description": "Scroll request is used to fetch large number of alert messages in multiple batches with each AlertsHistoryResponse\ncontaining no more than 500 alerts. To scroll through more than 500 or all alert messages, one can use the\nAlertsHistoryScrollRequest. Use the scroll_id returned in the AlertsHistoryResponse to fetch the next batch of alert messages and\none can continue this process till the scroll_id returned in the AlertsHistoryResponse is \"\" which indicates no more\nalert messages to scroll.",
-        "operationId": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll",
+        "operationId": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll_get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -768,7 +768,7 @@
       "post": {
         "summary": "Alerts History Scroll",
         "description": "Scroll request is used to fetch large number of alert messages in multiple batches with each AlertsHistoryResponse\ncontaining no more than 500 alerts. To scroll through more than 500 or all alert messages, one can use the\nAlertsHistoryScrollRequest. Use the scroll_id returned in the AlertsHistoryResponse to fetch the next batch of alert messages and\none can continue this process till the scroll_id returned in the AlertsHistoryResponse is \"\" which indicates no more\nalert messages to scroll.",
-        "operationId": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll_post_post_post",
+        "operationId": "ves.io.schema.alert.CustomAPI.AlertsHistoryScroll_post",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1028,82 +1028,6 @@
           }
         }
       },
-      "alertCardinalityAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Cardinality Aggregation\"\nGet approximate count of distinct values for the field in the alerts.",
-        "title": "Cardinality Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/alertKeyField"
-          }
-        }
-      },
-      "alertDateAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Date Aggregation\"\nAggregate alerts based on timestamp in the alert",
-        "title": "Date Aggregation",
-        "properties": {
-          "step": {
-            "type": "string",
-            "description": "x-displayName: \"Step\"\nx-required\nx-example: \"5m\"\n\nstep is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\nThe timestamps in the response will be t1=start_time, t2=t1+step, ... tn=tn-1+step, where tn <= end_time.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
-            "title": "step"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nThis option provides sub-aggregation for each date bucket",
-            "title": "sub aggregation"
-          }
-        }
-      },
-      "alertFieldAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Field Aggregation\"\nAggregate alerts based on the key fields in the alert.",
-        "title": "Field Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/alertKeyField"
-          },
-          "topk": {
-            "type": "integer",
-            "description": "x-displayName: \"TopK\"\nx-example: \"5\"\n\nNumber of top field values to be returned in the response.\nOptional: If not specified, top 5 values will be returned in the response.",
-            "title": "topk",
-            "format": "int64"
-          }
-        }
-      },
-      "alertKeyField": {
-        "type": "string",
-        "description": "x-displayName: \"Key Field\"\nAlerts can be aggregated based on these fields.\n\n - ALERTNAME: x-displayName: \"Alertname\"\n - IDENTIFIER: x-displayName: \"Identifier\"\n - GROUP: x-displayName: \"Group\"\n - SEVERITY: x-displayName: \"Severity\"\n - SITE: x-displayName: \"Site\"\n - STARTSAT: x-displayName: \"StartsAt\"\n - DESCRIPTION: x-displayName: \"Description\"",
-        "title": "Key Field",
-        "enum": ["ALERTNAME", "IDENTIFIER", "GROUP", "SEVERITY", "SITE", "STARTSAT", "DESCRIPTION"],
-        "default": "ALERTNAME"
-      },
-      "alertMultiFieldAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"MultiField Aggregation\"\nAggregate alerts based on the key fields in the alert.",
-        "title": "MultiField Aggregation",
-        "properties": {
-          "fields": {
-            "type": "array",
-            "description": "x-displayName: \"Field\"\nx-required\n\nField name by which the logs should be aggregated.",
-            "title": "field",
-            "items": {
-              "$ref": "#/components/schemas/alertKeyField"
-            }
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregations\"\nx-example: \"top hits sub aggregation\"\n\nThis option provides sub-aggregations for each field aggregation bucket.",
-            "title": "sub aggregations"
-          },
-          "topk": {
-            "type": "integer",
-            "description": "x-displayName: \"TopK\"\nx-example: \"5\"\n\nNumber of top field values to be returned in the response.\nOptional: If not specified, top 5 values will be returned in the response.",
-            "title": "topk",
-            "format": "int64"
-          }
-        }
-      },
       "alertResponse": {
         "type": "object",
         "description": "Returns list of alerts that matches the selection criteria in the request\nExample value:\n[\n {\n   \"annotations\": {\n     \"description\": \"string\",\n     \"additionalProp1\": \"string\",\n     \"additionalProp2\": \"string\"\n   },\n   \"receivers\": [\n     {\n       \"name\": \"string\"\n     }\n   ],\n   \"fingerprint\": \"string\",\n   \"startsAt\": \"2019-06-06T22:14:27.304Z\",\n   \"updatedAt\": \"2019-06-06T22:14:27.304Z\",\n   \"endsAt\": \"2019-06-06T22:14:27.304Z\",\n   \"status\": {\n     \"state\": \"unprocessed\",\n     \"silencedBy\": [\n      \"string\"\n    ],\n     \"inhibitedBy\": [\n       \"string\"\n     ]\n   },\n   \"labels\": {\n     \"alertname\": \"string\",\n     \"type\": \"string\",\n     \"identifier\": \"string\",\n     \"severity\": \"string\",\n     \"additionalLabel1\": \"string\",\n     \"additionalLabel2\": \"string\"\n   },\n   \"generatorURL\": \"string\"\n }\n]",
@@ -1119,400 +1043,6 @@
             "x-ves-example": "value"
           }
         }
-      },
-      "alertTopHitsAggregation": {
-        "type": "object",
-        "description": "x-displayName: \"Top Hits Aggregation\"\nGet the top hits for a given field, with a given sorted order",
-        "title": "Top Hits Aggregation",
-        "properties": {
-          "field": {
-            "$ref": "#/components/schemas/alertKeyField"
-          },
-          "sort_ascending_order": {
-            "type": "boolean",
-            "description": "x-displayName: \"Sort in Ascending Order\"\nx-example: true\n\nBoolean to decide the sorting order\nOptional: If not specified, descending order would be used",
-            "title": "sort_ascending_order",
-            "format": "boolean"
-          },
-          "topk": {
-            "type": "integer",
-            "description": "x-displayName: \"TopK\"\nx-example: \"5\"\n\nNumber of top field values to be returned in the response.\nOptional: If not specified, top 5 values will be returned in the response.",
-            "title": "topk",
-            "format": "int64"
-          }
-        }
-      },
-      "logAvgAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Avg Aggregation Data\"\nAverage Aggregation data",
-        "title": "AvgAggregationData",
-        "properties": {
-          "value": {
-            "type": "number",
-            "description": "x-displayName: \"Value\"\nx-example: 985.0\n\nvalue corresponding to the average value of field",
-            "title": "value",
-            "format": "double"
-          }
-        }
-      },
-      "logCardinalityAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Cardinality Aggregation Data\"\nApproximate count of distinct values of the log field specified in the request.",
-        "title": "CardinalityAggregationData",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 100\nCount of distinct values of a log field",
-            "title": "count",
-            "format": "uint64"
-          },
-          "trend_value": {
-            "$ref": "#/components/schemas/schemaTrendValue"
-          }
-        }
-      },
-      "logDateAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Date Aggregation Bucket\"\nDate histogram bucket containing the timestamp and the number of logs in that bucket.",
-        "title": "DateAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the date bucket",
-            "title": "sub aggregation"
-          },
-          "time": {
-            "type": "string",
-            "description": "x-displayName: \"Time\"\nx-example: 1578710280000\n\nunix timestamp",
-            "title": "time",
-            "format": "uint64"
-          },
-          "trend_value": {
-            "$ref": "#/components/schemas/schemaTrendValue"
-          }
-        }
-      },
-      "logDateAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Date Aggregation Data\"\nDate aggregation data",
-        "title": "DateAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing timestamp and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logDateAggregationBucket"
-            }
-          },
-          "step": {
-            "type": "string",
-            "description": "x-displayName: \"Step\"\nx-example: \"30m\"\nActual step size in the response. It could be higher than the requested step depending on the query duration and/or the log rollups.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days",
-            "title": "step"
-          }
-        }
-      },
-      "logFieldAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Field Aggregation Bucket\"\nField aggregation bucket containing field value and the number of logs.",
-        "title": "FieldAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nx-example: \"US\"",
-            "title": "key"
-          },
-          "order_by": {
-            "$ref": "#/components/schemas/logOrderByData"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the field aggregation bucket",
-            "title": "sub aggregation"
-          },
-          "trend_value": {
-            "$ref": "#/components/schemas/schemaTrendValue"
-          }
-        }
-      },
-      "logFieldAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Field Aggregation Data\"\nField Aggregation data",
-        "title": "FieldAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field value and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logFieldAggregationBucket"
-            }
-          }
-        }
-      },
-      "logFieldSubAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Field Sub Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
-        "title": "FieldSubAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nKey contain the name/value pair that identifies the unique key fields\nx-example: \"HIT, MISS, REVALIDATED\"",
-            "title": "keys"
-          },
-          "order_by": {
-            "$ref": "#/components/schemas/logOrderByData"
-          }
-        }
-      },
-      "logFieldSubFieldAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Field Sub Field Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
-        "title": "FieldSubFieldAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nKey contain the name/value pair that identifies the unique key fields\nx-example: \"HIT, MISS, REVALIDATED\"",
-            "title": "keys"
-          }
-        }
-      },
-      "logFilterAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Filter Aggregation Data\"\nFilter Aggregation Data",
-        "title": "FilterAggregationData",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
-            "title": "sub aggregation"
-          }
-        }
-      },
-      "logFilterSubFieldAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Filter Sub Field Aggregation Bucket\"\nField sub aggregation bucket containing field values and the number of logs.",
-        "title": "FilterSubFieldAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "key": {
-            "type": "string",
-            "description": "x-displayName: \"Key\"\nKey contain the name/value pair that identifies the unique key fields\nx-example: \"HIT, MISS, REVALIDATED\"",
-            "title": "keys"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the filter aggregation",
-            "title": "sub aggregation"
-          }
-        }
-      },
-      "logMaxAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Max Aggregation Data\"\nMax Aggregation data",
-        "title": "MaxAggregationData",
-        "properties": {
-          "value": {
-            "type": "number",
-            "description": "x-displayName: \"Value\"\nx-example: 985.0\n\nvalue corresponding to the maximum value of field",
-            "title": "value",
-            "format": "double"
-          }
-        }
-      },
-      "logMetricsAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Metrics Aggregation\"\nMetrics aggregation data",
-        "title": "MetricsAggregationData",
-        "properties": {
-          "percentile": {
-            "$ref": "#/components/schemas/logPercentileAggregationData"
-          }
-        }
-      },
-      "logMinAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Min Aggregation Data\"\nMin Aggregation data",
-        "title": "MinAggregationData",
-        "properties": {
-          "value": {
-            "type": "number",
-            "description": "x-displayName: \"Value\"\nx-example: 985.0\n\nvalue corresponding to the minimum value of field",
-            "title": "value",
-            "format": "double"
-          }
-        }
-      },
-      "logMultiFieldAggregationBucket": {
-        "type": "object",
-        "description": "x-displayName: \"Multi-Field Aggregation Bucket\"\nMulti-Field aggregation bucket containing field values and the number of logs.",
-        "title": "MultiFieldAggregationBucket",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          },
-          "keys": {
-            "type": "object",
-            "description": "x-displayName: \"Keys\"\nKeys contain the name/value pair that identifies the unique combination of multiple key fields\nx-example: \"{\"SRC_IP\": \"10.10.10.1\", \"COUNTRY\": \"US\"}\"",
-            "title": "keys"
-          },
-          "order_by": {
-            "$ref": "#/components/schemas/logOrderByData"
-          },
-          "sub_aggs": {
-            "type": "object",
-            "description": "x-displayName: \"Sub Aggregation\"\nSub aggregation data for the multi field aggregation bucket",
-            "title": "sub aggregation"
-          }
-        }
-      },
-      "logMultiFieldAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Multi-Field Aggregation Data\"\nMulti-Field Aggregation data",
-        "title": "MultiFieldAggregationData",
-        "properties": {
-          "buckets": {
-            "type": "array",
-            "description": "x-displayName: \"Buckets\"\nLists of buckets containing field values and the corresponding log count",
-            "title": "buckets",
-            "items": {
-              "$ref": "#/components/schemas/logMultiFieldAggregationBucket"
-            }
-          }
-        }
-      },
-      "logMultiFilterAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Multi Filter Aggregation Data\"\nMulti Filter Aggregation data",
-        "title": "MultiFilterAggregationData",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 45\n\nnumber of logs in this bucket",
-            "title": "count",
-            "format": "uint64"
-          }
-        }
-      },
-      "logOrderByData": {
-        "type": "object",
-        "description": "x-displayName: \"Order by Data\"\nOrder by data",
-        "title": "OrderByData",
-        "properties": {
-          "metrics_aggregation": {
-            "$ref": "#/components/schemas/logMetricsAggregationData"
-          }
-        }
-      },
-      "logPercentileAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"Percentile Aggregation Data\"\nPercentile Aggregation data",
-        "title": "PercentileAggregationData",
-        "properties": {
-          "key": {
-            "type": "number",
-            "description": "x-displayName: \"Key\"\nx-example: 99.0",
-            "title": "key",
-            "format": "double"
-          },
-          "value": {
-            "type": "number",
-            "description": "x-displayName: \"Value\"\nx-example: 985.0\n\nvalue corresponding to the key percent",
-            "title": "value",
-            "format": "double"
-          }
-        }
-      },
-      "logTopHitsAggregationData": {
-        "type": "object",
-        "description": "x-displayName: \"TopHits Aggregation Data\"\nTop Hits Aggregation Data.",
-        "title": "TopHitsAggregationData",
-        "properties": {
-          "count": {
-            "type": "string",
-            "description": "x-displayName: \"Count\"\nx-example: 100\nCount of top hit values",
-            "title": "count",
-            "format": "uint64"
-          },
-          "documents": {
-            "type": "array",
-            "description": "x-displayName: \"Documents\"\ndocument values",
-            "title": "documents",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "schemaTrendSentiment": {
-        "type": "string",
-        "description": "x-displayName: \"Trend Sentiment\"\ntrend sentiment\n\n - TREND_SENTIMENT_NONE: x-displayName: \"None\"\n - TREND_SENTIMENT_POSITIVE: x-displayName: \"Positive\"\nIndicates trend sentiment is positive\n - TREND_SENTIMENT_NEGATIVE: x-displayName: \"Negative\"\nIndicates trend sentiment is negative.",
-        "title": "Trend Sentiment",
-        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
-        "default": "TREND_SENTIMENT_NONE"
-      },
-      "schemaTrendValue": {
-        "type": "object",
-        "description": "x-displayName: \"Trend Value\"\nTrend value contains trend value, trend sentiment and trend calculation description and window size.",
-        "title": "Trend Value",
-        "properties": {
-          "description": {
-            "type": "string",
-            "description": "x-displayName: \"Description\"\nx-example: \"Trend was calculated by comparing the avg of window size intervals of end-start Time and last window time interval\"\ndescription of the method used to calculate trend.",
-            "title": "Description"
-          },
-          "previous_value": {
-            "type": "string",
-            "description": "x-displayName: \"Previous Value\"\nx-example: \"200.00\"",
-            "title": "Previous Value"
-          },
-          "sentiment": {
-            "$ref": "#/components/schemas/schemaTrendSentiment"
-          },
-          "value": {
-            "type": "string",
-            "description": "x-displayName: \"Value\"\nx-example: \"-15\"",
-            "title": "Value"
-          }
-        }
       }
     },
     "securitySchemes": {
@@ -1524,21 +1054,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

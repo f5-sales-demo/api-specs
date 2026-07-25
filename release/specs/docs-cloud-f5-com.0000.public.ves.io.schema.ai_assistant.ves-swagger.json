@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.ai_assistant",
     "description": "Custom handler for ai assistant related microservice",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -121,7 +121,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/ai_assistantAIAssistantQueryRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ai_assistantAIAssistantQueryRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -244,7 +251,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/ai_assistantAIAssistantQueryFeedbackRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ai_assistantAIAssistantQueryFeedbackRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -367,7 +381,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/ai_assistantAIAssistantQueryRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ai_assistantAIAssistantQueryRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -490,7 +511,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/ai_assistantAIAssistantQueryFeedbackRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ai_assistantAIAssistantQueryFeedbackRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -507,28 +535,6 @@
   "x-displayname": "AI Assistant APIs",
   "x-ves-proto-package": "ves.io.schema.ai_assistant",
   "components": {
-    "requestBodies": {
-      "ai_assistantAIAssistantQueryFeedbackRequest": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ai_assistantAIAssistantQueryFeedbackRequest"
-            }
-          }
-        },
-        "required": true
-      },
-      "ai_assistantAIAssistantQueryRequest": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ai_assistantAIAssistantQueryRequest"
-            }
-          }
-        },
-        "required": true
-      }
-    },
     "schemas": {
       "ai_assistantAIAssistantQueryFeedbackRequest": {
         "type": "object",
@@ -964,7 +970,7 @@
           },
           "summary": {
             "type": "string",
-            "description": " \n\nExample: ` \"Query not supported\"`",
+            "description": "\n\nExample: ` \"Query not supported\"`",
             "title": "Summary",
             "x-displayname": "Summary",
             "x-ves-example": "Query not supported"
@@ -1881,21 +1887,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

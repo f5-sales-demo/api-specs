@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_type",
     "description": "App Type object defines a application profile type from an advanced monitoring/security point of view.\nAn App type is a set of (micro) services that interact with one another and function as an application.\nServices can be made members of a particular AppType set by adding label ves.io/app_type=app_type.metadata.name to services.\nApp type object is the profile for one such application label. One can define various AI/ML features that can\nbe enabled for a given application in this object. All services in a given namespace that are labeled with\nsame ves.io/app_type label are assumed to be a single application. In a different namespace as two different\ninstances of same application.\napp_type object is recommended per tenant and present only in shared namespace.\nThis way AI/ML modeled developed for a given application can be shared across namespaces or deployments.\napp_setting object can be used to enable a app_type monitoring profile in a given namespace.",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -134,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.API.Create",
+        "tags": ["config"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.API",
@@ -273,7 +274,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_type-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_type.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.app_type.API.Replace",
+        "tags": ["config"]
       },
       "x-displayname": "App Type",
       "x-ves-proto-service": "ves.io.schema.app_type.API",
@@ -1828,7 +1830,7 @@
           },
           {
             "name": "response_format",
-            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
             "in": "query",
             "required": false,
             "x-displayname": "Broken Referred Objects",
@@ -2020,7 +2022,7 @@
       },
       "app_typeAPIEPCategory": {
         "type": "string",
-        "description": "The category of an API endpoint.\n\nDiscovered API Endpoint.\nThe API Endpoint is imported from user swagger.\nThe API Endpoint is present at the API Inventory.\nThe API Endpoint is considered as part of Shadow API.\nDeprecated API Endpoint.\nNon-API Endpoint.",
+        "description": "The category of an API endpoint.\n\nDiscovered API Endpoint.\nThe API Endpoint is imported from user swagger.\nThe API Endpoint is present at the API Inventory.\nThe API Endpoint is considered as part of Shadow API.\nDeprecated API Endpoint.\nNon-API Endpoint.\n - APIEP_CATEGORY_DISCOVERY_POLICY: x-displayName: Policy\nUser-Defined Discovery Policy",
         "title": "APIEP Category",
         "enum": [
           "APIEP_CATEGORY_DISCOVERED",
@@ -2028,7 +2030,8 @@
           "APIEP_CATEGORY_INVENTORY",
           "APIEP_CATEGORY_SHADOW",
           "APIEP_CATEGORY_DEPRECATED",
-          "APIEP_CATEGORY_NON_API"
+          "APIEP_CATEGORY_NON_API",
+          "APIEP_CATEGORY_DISCOVERY_POLICY"
         ],
         "default": "APIEP_CATEGORY_DISCOVERED",
         "x-displayname": "Category of the API Endpoint",
@@ -2209,6 +2212,15 @@
             "title": "HTTP method",
             "x-displayname": "HTTP Method",
             "x-ves-example": "GET"
+          },
+          "owasp_categories": {
+            "type": "array",
+            "description": " Categories of the vulnerability as per the OWASP API Top 10",
+            "title": "owasp_categories",
+            "items": {
+              "$ref": "#/components/schemas/schemaOwaspCategory"
+            },
+            "x-displayname": "OWASP Categories"
           },
           "pdf_info": {
             "$ref": "#/components/schemas/app_typeAPIEPPDFInfo"
@@ -2416,26 +2428,6 @@
         "x-displayname": "API Endpoint Security Risk",
         "x-ves-proto-enum": "ves.io.schema.app_type.APIEPSecurityRisk"
       },
-      "app_typeAPIEndpoint": {
-        "type": "object",
-        "description": "x-required\nx-displayName: \"API Endpoint\"\nThe rule is applied only for the specified api endpoints.",
-        "title": "api endpoint",
-        "properties": {
-          "api_endpoint_path": {
-            "type": "string",
-            "description": "x-required\nx-example: \"/endpoint1\"\nx-displayName: \"API Endpoint\"\nThe rule is applied only for the specified api endpoints.",
-            "title": "api endpoint path"
-          },
-          "methods": {
-            "type": "array",
-            "description": "x-displayName: \"Methods\"\nList of methods values to match against.\nx-required\nx-example: \"['GET', 'POST', 'DELETE']\"",
-            "title": "methods",
-            "items": {
-              "$ref": "#/components/schemas/schemaHttpMethod"
-            }
-          }
-        }
-      },
       "app_typeAPIEndpointLearntSchemaReq": {
         "type": "object",
         "description": "shape of request to get learnt schema request for a given API endpoint.",
@@ -2503,7 +2495,7 @@
           },
           "inventory_openapi_spec": {
             "type": "string",
-            "description": " Inventory OpenAPI spec for request API endpoint.\n\nExample: ` \"{\\\"info\\\":{\\\"description\\\":\\\"\\\",\\\"title\\\":\\\"\\\",\\\"version\\\":\\\"\\\"},\\\"paths\\\":{\\\"\\/api\\/Addresss\\\":{\\\"get\\\":{\\\"consumes\\\":[\\\"application\\/json\\\"],\\\"description\\\":\\\"Swagger auto-generated from learnt schema\\\",\\\"parameters\\\":[{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test\\\",\\\"type\\\":\\\"string\\\"},{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test1\\\",\\\"type\\\":\\\"string\\\"}],\\\"responses\\\":{\\\"200\\\":{\\\"description\\\":\\\"\\\"}}}}},\\\"schemes\\\":[\\\"https\\\",\\\"http\\\"],\\\"swagger\\\":\\\"2.0\\\"}\"`",
+            "description": " Inventory OpenAPI spec for request API endpoint.\n\nExample: ` \"{\\\"info\\\":{\\\"description\\\":\\\"\\\",\\\"title\\\":\\\"\\\",\\\"version\\\":\\\"\\\"},\\\"paths\\\":{\\\"\\/api\\/Address\\\":{\\\"get\\\":{\\\"consumes\\\":[\\\"application\\/json\\\"],\\\"description\\\":\\\"Swagger auto-generated from learnt schema\\\",\\\"parameters\\\":[{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test\\\",\\\"type\\\":\\\"string\\\"},{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test1\\\",\\\"type\\\":\\\"string\\\"}],\\\"responses\\\":{\\\"200\\\":{\\\"description\\\":\\\"\\\"}}}}},\\\"schemes\\\":[\\\"https\\\",\\\"http\\\"],\\\"swagger\\\":\\\"2.0\\\"}\"`",
             "title": "Inventory OpenAPI Spec",
             "x-displayname": "Inventory OpenAPI Spec",
             "x-ves-example": "{\\\"info\\\":{\\\"description\\\":\\\"\\\",\\\"title\\\":\\\"\\\",\\\"version\\\":\\\"\\\"},\\\"paths\\\":{\\\"\\/api\\/Addresss\\\":{\\\"get\\\":{\\\"consumes\\\":[\\\"application\\/json\\\"],\\\"description\\\":\\\"Swagger auto-generated from learnt schema\\\",\\\"parameters\\\":[{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test\\\",\\\"type\\\":\\\"string\\\"},{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test1\\\",\\\"type\\\":\\\"string\\\"}],\\\"responses\\\":{\\\"200\\\":{\\\"description\\\":\\\"\\\"}}}}},\\\"schemes\\\":[\\\"https\\\",\\\"http\\\"],\\\"swagger\\\":\\\"2.0\\\"}"
@@ -2630,18 +2622,6 @@
           }
         }
       },
-      "app_typeBuiltInSensitiveDataType": {
-        "type": "object",
-        "description": "x-displayName: \"Built-In Sensitive Data Type\"\nx-example: \"[EMAIL, CC]\"\nMessage wrapper for built-in sensitive data type.",
-        "title": "BuiltInSensitiveDataType",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-example: \"[EMAIL, CC]\"\nx-required\nBuilt-in rule for sensitive data detection.",
-            "title": "name"
-          }
-        }
-      },
       "app_typeBusinessLogicMarkupSetting": {
         "type": "object",
         "description": "Settings specifying how API Discovery will be performed",
@@ -2712,101 +2692,6 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.unique": "true"
             }
-          }
-        }
-      },
-      "app_typeCustomDataDetectionConfig": {
-        "type": "object",
-        "description": "x-displayName: \"Custom Data Detection Config\"\nThe custom data detection config specifies targets, scopes & the pattern to be detected.",
-        "title": "CustomDataDetectionConfig",
-        "properties": {
-          "all_request_sections": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "all_response_sections": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "all_sections": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "any_domain": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "any_target": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
-          },
-          "api_endpoint_target": {
-            "$ref": "#/components/schemas/app_typeAPIEndpoint"
-          },
-          "api_group": {
-            "type": "string",
-            "description": "x-displayName: \"API Group\"\nx-example: \"oas-all-operations\"\nThe rule is applied on the APIs that belong to specified api_group.\nAPI groups derived from API Definition swaggers.\nFor example oas-all-operations including all paths and methods from the swaggers, oas-base-urls covering all requests under base-paths from the swaggers.\nCustom groups can be created if user tags paths or operations with \"x-volterra-api-group\" extensions inside swaggers.",
-            "title": "api_group"
-          },
-          "base_path": {
-            "type": "string",
-            "description": "x-example: \"/v1\"\nx-displayName: \"Base Path\"\nThe rule is applied only for the requests matching the specified base path.",
-            "title": "base path"
-          },
-          "custom_sections": {
-            "$ref": "#/components/schemas/app_typeCustomSections"
-          },
-          "key_pattern": {
-            "$ref": "#/components/schemas/app_typeKeyPattern"
-          },
-          "key_value_pattern": {
-            "$ref": "#/components/schemas/app_typeKeyValuePattern"
-          },
-          "specific_domain": {
-            "type": "string",
-            "description": "x-displayName: \"Specific Domain\"\nx-example: \"api.example.com\"\nThe rule will apply for a specific domain.\nFor example: api.example.com",
-            "title": "domain"
-          },
-          "value_pattern": {
-            "$ref": "#/components/schemas/app_typeValuePattern"
-          }
-        }
-      },
-      "app_typeCustomSections": {
-        "type": "object",
-        "description": "x-displayName: \"Custom Sections\"\nRequest & Response Sections.",
-        "title": "CustomSections",
-        "properties": {
-          "custom_sections": {
-            "type": "array",
-            "description": "x-displayName: \"Custom Sections\"\nx-required\nRequest & Response Sections.",
-            "title": "custom_sections",
-            "items": {
-              "$ref": "#/components/schemas/schemaHttpSections"
-            }
-          }
-        }
-      },
-      "app_typeCustomSensitiveDataDetectionRule": {
-        "type": "object",
-        "description": "x-displayName: \"Custom Sensitive Data Detection Rule\"\nCustom Sensitive Data Rule Definition.",
-        "title": "CustomSensitiveDataRule",
-        "properties": {
-          "metadata": {
-            "$ref": "#/components/schemas/schemaMessageMetaType"
-          },
-          "sensitive_data_detection_config": {
-            "$ref": "#/components/schemas/app_typeCustomDataDetectionConfig"
-          },
-          "sensitive_data_type": {
-            "$ref": "#/components/schemas/app_typeCustomSensitiveDataType"
-          }
-        }
-      },
-      "app_typeCustomSensitiveDataType": {
-        "type": "object",
-        "description": "x-displayName: \"Custom Sensitive Data Type\"\nThe type/category of the sensitive data this rule detects. e.g. Email, Credit Card etc.",
-        "title": "CustomSensitiveDataType",
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "x-required\nx-displayName: \"Type\"\nx-example: \"EMAIL\"\nThe request is labeled as specified sensitive data type.",
-            "title": "sensitive data type"
           }
         }
       },
@@ -2996,36 +2881,6 @@
           }
         }
       },
-      "app_typeKeyPattern": {
-        "type": "object",
-        "description": "x-displayName: \"Key Pattern\"\nPattern to detect. Could be exact match or regex match.",
-        "title": "Key Pattern",
-        "properties": {
-          "exact_value": {
-            "type": "string",
-            "description": "x-displayName: \"Exact Value\"\nx-example: \"x-volt-header\"\nSearch for values with exact match.",
-            "title": "exact value"
-          },
-          "regex_value": {
-            "type": "string",
-            "description": "x-displayName: \"Regex Value\"\nx-example: \"'^new.*$', 'san f.*', '.* del .*'\"\nSearch for values matching this regular expression.",
-            "title": "regex value"
-          }
-        }
-      },
-      "app_typeKeyValuePattern": {
-        "type": "object",
-        "description": "x-displayName: \"Key & Value Pattern\"\nSearch for specific key & value patterns in the specified sections.",
-        "title": "Key-Value Pattern",
-        "properties": {
-          "key_pattern": {
-            "$ref": "#/components/schemas/app_typeKeyPattern"
-          },
-          "value_pattern": {
-            "$ref": "#/components/schemas/app_typeValuePattern"
-          }
-        }
-      },
       "app_typeListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -3192,7 +3047,7 @@
         "properties": {
           "status": {
             "type": "boolean",
-            "description": " Status of the add operation (sucess or fail)\n\nExample: ` \"true\"`",
+            "description": " Status of the add operation (success or fail)\n\nExample: ` \"true\"`",
             "title": "Status",
             "format": "boolean",
             "x-displayname": "Status",
@@ -3242,7 +3097,7 @@
         "properties": {
           "status": {
             "type": "boolean",
-            "description": " Status of the add operation (sucess or fail)\n\nExample: ` \"true\"`",
+            "description": " Status of the add operation (success or fail)\n\nExample: ` \"true\"`",
             "title": "Status",
             "format": "boolean",
             "x-displayname": "Status",
@@ -3628,23 +3483,6 @@
           }
         }
       },
-      "app_typeValuePattern": {
-        "type": "object",
-        "description": "x-displayName: \"Value Pattern\"\nPattern to detect. Could be exact match or regex match.",
-        "title": "Value Pattern",
-        "properties": {
-          "exact_value": {
-            "type": "string",
-            "description": "x-displayName: \"Exact Value\"\nx-example: \"x-volt-header\"\nPattern value to be detected.",
-            "title": "exact value"
-          },
-          "regex_value": {
-            "type": "string",
-            "description": "x-displayName: \"Regex Value\"\nx-example: \"'^new.*$', 'san f.*', '.* del .*'\"\nRegular expression for this pattern.",
-            "title": "regex value"
-          }
-        }
-      },
       "ioschemaEmpty": {
         "type": "object",
         "description": "This can be used for messages where no values are needed",
@@ -3689,10 +3527,10 @@
           },
           "reason": {
             "type": "string",
-            "description": " x-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": " A human readable string explaining the reason for reaching this condition\n\nExample: ` \"Insufficient memory in data plane\"`",
             "title": "reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Insufficient memory in data plane"
           },
           "service_name": {
             "type": "string",
@@ -3702,7 +3540,7 @@
           },
           "status": {
             "type": "string",
-            "description": " Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
+            "description": " Status of the condition\n \"Success\" Validation has succeeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
             "title": "status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
@@ -3763,27 +3601,6 @@
           }
         }
       },
-      "schemaHttpMethod": {
-        "type": "string",
-        "description": "x-displayName: \"HTTP Method\"\nSpecifies the HTTP method used to access a resource.\n\n - ANY: x-displayName: \"ANY\"\nAny HTTP Method\n - GET: x-displayName: \"GET\"\n - HEAD: x-displayName: \"HEAD\"\n - POST: x-displayName: \"POST\"\n - PUT: x-displayName: \"PUT\"\n - DELETE: x-displayName: \"DELETE\"\n - CONNECT: x-displayName: \"CONNECT\"\n - OPTIONS: x-displayName: \"OPTIONS\"\n - TRACE: x-displayName: \"TRACE\"\n - PATCH: x-displayName: \"PATCH\"\n - COPY: x-displayName: \"COPY\"",
-        "title": "HttpMethod",
-        "enum": ["ANY", "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH", "COPY"],
-        "default": "ANY"
-      },
-      "schemaHttpSections": {
-        "type": "string",
-        "description": "x-displayName: \"HTTP Sections\"\nRequest & Response Sections.\n\n - HTTP_SECTION_NONE: None\n\nALL_SECTIONS\nx-displayName: \"None\"\n - HTTP_SECTION_QUERY_PARAMS: QUERY_PARAMS\n\nx-displayName: \"Request Query Params\"\n - HTTP_SECTION_REQ_HEADERS: REQ_HEADERS\n\nx-displayName: \"Request Headers\"\n - HTTP_SECTION_RSP_HEADERS: RSP_HEADERS\n\nx-displayName: \"Response Headers\"\n - HTTP_SECTION_REQ_BODY: REQ_BODY\n\nx-displayName: \"Request Body\"\n - HTTP_SECTION_RSP_BODY: RSP_BODY\n\nx-displayName: \"Response Body\"",
-        "title": "HTTPSections",
-        "enum": [
-          "HTTP_SECTION_NONE",
-          "HTTP_SECTION_QUERY_PARAMS",
-          "HTTP_SECTION_REQ_HEADERS",
-          "HTTP_SECTION_RSP_HEADERS",
-          "HTTP_SECTION_REQ_BODY",
-          "HTTP_SECTION_RSP_BODY"
-        ],
-        "default": "HTTP_SECTION_NONE"
-      },
       "schemaInitializerType": {
         "type": "object",
         "description": "Initializer is information about an initializer that has not yet completed.",
@@ -3817,29 +3634,6 @@
           },
           "result": {
             "$ref": "#/components/schemas/schemaStatusType"
-          }
-        }
-      },
-      "schemaMessageMetaType": {
-        "type": "object",
-        "description": "x-displayName: \"Message Metadata\"\nMessageMetaType is metadata (common attributes) of a message that only certain messages\nhave. This information is propagated to the metadata of a child object that gets created\nfrom the containing message during view processing.\nThe information in this type can be specified by user during create and replace APIs.",
-        "title": "MessageMetaType",
-        "properties": {
-          "description": {
-            "type": "string",
-            "description": "x-displayName: \"Description\"\nx-example: \"Virtual Host for acmecorp website\"\nHuman readable description.",
-            "title": "description"
-          },
-          "disable": {
-            "type": "boolean",
-            "description": "x-displayName: \"Disable\"\nx-example: \"true\"\nA value of true will administratively disable the object that corresponds to the containing message.",
-            "title": "disable",
-            "format": "boolean"
-          },
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-example: \"acmecorp-web\"\nx-required\nThis is the name of the message.\nThe value of name has to follow DNS-1035 format.",
-            "title": "name"
           }
         }
       },
@@ -4080,6 +3874,29 @@
           }
         }
       },
+      "schemaOwaspCategory": {
+        "type": "object",
+        "description": "Represents a category of vulnerability as defined in the OWASP API Top 10",
+        "title": "OWASP Category",
+        "x-displayname": "OWASP Category",
+        "x-ves-proto-message": "ves.io.schema.OwaspCategory",
+        "properties": {
+          "link_to_owasp": {
+            "type": "string",
+            "description": " Link to the OWASP documentation for this category\n\nExample: ` \"https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/\"`",
+            "title": "OWASP reference link",
+            "x-displayname": "OWASP Reference Link",
+            "x-ves-example": "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
+          },
+          "name": {
+            "type": "string",
+            "description": " The name of the OWASP API security category\n\nExample: ` \"API1:2023\"`",
+            "title": "Category name",
+            "x-displayname": "Category Name",
+            "x-ves-example": "API1:2023"
+          }
+        }
+      },
       "schemaStatusMetaType": {
         "type": "object",
         "description": "StatusMetaType is metadata that all status must have.",
@@ -4315,21 +4132,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

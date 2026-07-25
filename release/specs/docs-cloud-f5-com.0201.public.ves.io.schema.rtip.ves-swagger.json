@@ -1,0 +1,592 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.rtip",
+    "description": "Public custom APIs for Real-time Incident Procedures (RTIP)",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
+  },
+  "paths": {
+    "/api/web/namespaces/system/customer_data": {
+      "get": {
+        "summary": "Get customer data",
+        "description": "Retrieve customer-facing Real-time Incident Procedures\nAccessible by customers and internal support.",
+        "operationId": "ves.io.schema.rtip.CustomAPI.GetCustomerData",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rtipGetCustomerDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-rtip-customapi-getcustomerdata"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.rtip.CustomAPI.GetCustomerData",
+        "tags": ["web"]
+      },
+      "put": {
+        "summary": "Update customer data",
+        "description": "Update customer-facing Real-time Incident Procedures\nAccessible by customers and internal support",
+        "operationId": "ves.io.schema.rtip.CustomAPI.UpdateCustomerData",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rtipUpdateCustomerDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rtipUpdateCustomerDataRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-rtip-customapi-updatecustomerdata"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.rtip.CustomAPI.UpdateCustomerData",
+        "tags": ["web"]
+      },
+      "x-displayname": "RTIP",
+      "x-ves-proto-service": "ves.io.schema.rtip.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/web/namespaces/system/rtip_internal": {
+      "get": {
+        "summary": "Get RTIP internal instructions",
+        "description": "Retrieve Real-time Incident Procedures internal instructions and labels for the tenant.\nThis API is accessible by F5 support team via support tenant.",
+        "operationId": "ves.io.schema.rtip.CustomAPI.GetRTIPInternal",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rtipGetRTIPInternalResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-rtip-customapi-getrtipinternal"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.rtip.CustomAPI.GetRTIPInternal",
+        "tags": ["web"]
+      },
+      "put": {
+        "summary": "Update RTIP internal instructions",
+        "description": "Update Real-time Incident Procedures internal instructions and labels for the tenant.\nThis API is accessible by F5 support team via support tenant.",
+        "operationId": "ves.io.schema.rtip.CustomAPI.UpdateRTIPInternal",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rtipUpdateRTIPInternalResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rtipUpdateRTIPInternalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-rtip-customapi-updatertipinternal"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.rtip.CustomAPI.UpdateRTIPInternal",
+        "tags": ["web"]
+      },
+      "x-displayname": "RTIP",
+      "x-ves-proto-service": "ves.io.schema.rtip.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "RTIP",
+  "x-ves-proto-package": "ves.io.schema.rtip",
+  "components": {
+    "schemas": {
+      "rtipGetCustomerDataResponse": {
+        "type": "object",
+        "description": "Response message containing customer-facing RTIP details.",
+        "title": "GetCustomerDataResponse",
+        "x-displayname": "Get RTIP Response",
+        "x-ves-proto-message": "ves.io.schema.rtip.GetCustomerDataResponse",
+        "properties": {
+          "customer_notes": {
+            "type": "string",
+            "description": " Public instructions or handling notes meant for customers.\n\nExample: ` \"If incident occurs, follow Tier 1 support guidelines and escalate after 30 minutes.\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 10000\n  ves.io.schema.rules.string.min_len: 1\n  ves.io.schema.rules.string.pattern: ^\\\\S.*\\\\S$|^\\\\S$\n",
+            "title": "Customer Notes",
+            "minLength": 1,
+            "maxLength": 10000,
+            "x-displayname": "Customer Notes",
+            "x-ves-example": "If incident occurs, follow Tier 1 support guidelines and escalate after 30 minutes.",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "10000",
+              "ves.io.schema.rules.string.min_len": "1",
+              "ves.io.schema.rules.string.pattern": "^\\\\S.*\\\\S$|^\\\\S$"
+            }
+          }
+        }
+      },
+      "rtipGetRTIPInternalResponse": {
+        "type": "object",
+        "description": "Response message containing internal RTIP details including support-only instructions and labels.",
+        "title": "GetRTIPInternalResponse",
+        "x-displayname": "Get Internal RTIP Response",
+        "x-ves-proto-message": "ves.io.schema.rtip.GetRTIPInternalResponse",
+        "properties": {
+          "internal_notes": {
+            "type": "string",
+            "description": " Internal notes or special handling procedures meant exclusively for F5 Support Groups.\n\nExample: ` \"Escalate to Tier 3 if primary contact unreachable within 15 minutes.\"`",
+            "title": "Internal Notes",
+            "x-displayname": "Internal Notes",
+            "x-ves-example": "Escalate to Tier 3 if primary contact unreachable within 15 minutes."
+          }
+        }
+      },
+      "rtipUpdateCustomerDataRequest": {
+        "type": "object",
+        "description": "x-example: { \"customer_notes\": \"Follow Tier 1 support guidelines, escalate after 30 minutes.\" }\nRequest message for updating customer-facing RTIP instructions and labels.",
+        "title": "UpdateCustomerDataRequest",
+        "x-displayname": "Update Customer Data Request",
+        "x-ves-proto-message": "ves.io.schema.rtip.UpdateCustomerDataRequest",
+        "properties": {
+          "customer_notes": {
+            "type": "string",
+            "description": " Public instructions or handling notes meant for customers.\n\nExample: ` \"Follow Tier 1 support guidelines and escalate after 30 minutes.\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 10000\n  ves.io.schema.rules.string.min_len: 1\n  ves.io.schema.rules.string.pattern: ^\\\\S.*\\\\S$|^\\\\S$\n",
+            "title": "Customer Notes",
+            "minLength": 1,
+            "maxLength": 10000,
+            "x-displayname": "Customer Notes",
+            "x-ves-example": "Follow Tier 1 support guidelines and escalate after 30 minutes.",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "10000",
+              "ves.io.schema.rules.string.min_len": "1",
+              "ves.io.schema.rules.string.pattern": "^\\\\S.*\\\\S$|^\\\\S$"
+            }
+          }
+        }
+      },
+      "rtipUpdateCustomerDataResponse": {
+        "type": "object",
+        "description": "Response returned after updating the customer-facing RTIP Procedures",
+        "title": "UpdateCustomerDataResponse",
+        "x-displayname": "Update Customer Data Response",
+        "x-ves-proto-message": "ves.io.schema.rtip.UpdateCustomerDataResponse"
+      },
+      "rtipUpdateRTIPInternalRequest": {
+        "type": "object",
+        "description": "Request message for updating internal RTIP instructions and labels.\nAccessible only to F5 Support groups.",
+        "title": "UpdateRTIPInternalRequest",
+        "x-displayname": "Update Internal RTIP request",
+        "x-ves-proto-message": "ves.io.schema.rtip.UpdateRTIPInternalRequest",
+        "properties": {
+          "internal_notes": {
+            "type": "string",
+            "description": " Internal text notes or handling guidelines meant only for F5 Support groups.\n\nExample: ` \"If this tenant is impacted, escalate to SecOps Tier 2 immediately.\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 10000\n  ves.io.schema.rules.string.min_len: 1\n  ves.io.schema.rules.string.pattern: ^\\\\S.*\\\\S$|^\\\\S$\n",
+            "title": "Internal Instructions",
+            "minLength": 1,
+            "maxLength": 10000,
+            "x-displayname": "Internal Incident Handling Instructions",
+            "x-ves-example": "If this tenant is impacted, escalate to SecOps Tier 2 immediately.",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "10000",
+              "ves.io.schema.rules.string.min_len": "1",
+              "ves.io.schema.rules.string.pattern": "^\\\\S.*\\\\S$|^\\\\S$"
+            }
+          }
+        }
+      },
+      "rtipUpdateRTIPInternalResponse": {
+        "type": "object",
+        "description": "Represents the response returned after updating the internal RTIP, including operation result and audit details.",
+        "title": "UpdateRTIPInternalResponse",
+        "x-displayname": "Update RTIP Internal Response",
+        "x-ves-proto-message": "ves.io.schema.rtip.UpdateRTIPInternalResponse"
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
+}

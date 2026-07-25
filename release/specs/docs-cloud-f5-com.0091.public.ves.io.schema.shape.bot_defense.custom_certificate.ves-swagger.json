@@ -1,0 +1,2115 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.custom_certificate",
+    "description": "Public Custom API definition for custom certificate operations",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
+  },
+  "paths": {
+    "/api/shape/bot/namespaces/{namespace}/certificate/add-to-csr": {
+      "post": {
+        "summary": "Add Certificate to CSR",
+        "description": "Add a certificate to an existing CSR",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.AddCertificateToCsr",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateAddCertificateToCsrResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nx-example: \"default\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/custom_certificateAddCertificateToCsrRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-addcertificatetocsr"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.AddCertificateToCsr",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Custom Certificate",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/namespaces/{namespace}/certificate/add-with-private-key": {
+      "post": {
+        "summary": "Add Certificate with Private Key",
+        "description": "Add a new certificate with private key",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.AddCertificateWithPrivateKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateAddCertificateWithPrivateKeyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nx-example: \"default\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/custom_certificateAddCertificateWithPrivateKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-addcertificatewithprivatekey"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.AddCertificateWithPrivateKey",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Custom Certificate",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/namespaces/{namespace}/certificate/csr/{csr_id}": {
+      "get": {
+        "summary": "Get CSR By ID",
+        "description": "Get CSR details by CSR ID",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.GetCSRByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateGetCSRByIDResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nx-example: \"default\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "csr_id",
+            "description": "CSR ID\n\nx-required\nx-example: \"65b72ff6a44742000137f378\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "CSR ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-getcsrbyid"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.GetCSRByID",
+        "tags": ["shape"]
+      },
+      "delete": {
+        "summary": "Delete CSR By ID",
+        "description": "Delete a CSR by its ID",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.DeleteCSRByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateDeleteCSRByIDResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nx-example: \"default\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "csr_id",
+            "description": "CSR ID\n\nx-required\nx-example: \"65b72ff6a44742000137f378\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "CSR ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-deletecsrbyid"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.DeleteCSRByID",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Custom Certificate",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/namespaces/{namespace}/certificate/generate-csr": {
+      "post": {
+        "summary": "Generate CSR",
+        "description": "Generate a new CSR",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.GenerateCSR",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateGenerateCSRResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nx-example: \"default\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/custom_certificateGenerateCSRRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-generatecsr"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.GenerateCSR",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Custom Certificate",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/namespaces/{namespace}/certificate/list-certificate": {
+      "get": {
+        "summary": "List Certificates",
+        "description": "List all certificates for the enterprise",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.ListCertificates",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateListCertificatesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nx-example: \"default\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-listcertificates"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.ListCertificates",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Custom Certificate",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/namespaces/{namespace}/certificate/list-csr": {
+      "get": {
+        "summary": "List CSR",
+        "description": "List all CSRs for the enterprise",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.ListCSR",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateListCSRResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nx-example: \"default\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-listcsr"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.ListCSR",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Custom Certificate",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/namespaces/{namespace}/certificate/{cert_id}": {
+      "get": {
+        "summary": "Get Certificate By ID",
+        "description": "Get certificate details by certificate ID",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.GetCertificateByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateGetCertificateByIDResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nx-example: \"default\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cert_id",
+            "description": "Certificate ID\n\nx-required\nx-example: \"65b73012a44742000137f379\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Certificate ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-getcertificatebyid"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.GetCertificateByID",
+        "tags": ["shape"]
+      },
+      "delete": {
+        "summary": "Delete Certificate By ID",
+        "description": "Delete a certificate by its ID",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.DeleteCertificateByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateDeleteCertificateByIDResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"system\"\nx-required",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cert_id",
+            "description": "Certificate ID\n\nx-required\nx-example: \"65b73012a44742000137f379\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Certificate ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-deletecertificatebyid"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.DeleteCertificateByID",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Custom Certificate",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/namespaces/{namespace}/certificate/{cert_id}/archive": {
+      "put": {
+        "summary": "Archive Certificate By ID",
+        "description": "Archive a certificate by its ID",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.ArchiveCertificateByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateArchiveCertificateByIDResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"system\"\nx-required",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cert_id",
+            "description": "Certificate ID\n\nx-required\nx-example: \"65b73012a44742000137f379\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Certificate ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/custom_certificateArchiveCertificateByIDRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-archivecertificatebyid"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.ArchiveCertificateByID",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Custom Certificate",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/namespaces/{namespace}/certificate/{cert_id}/unarchive": {
+      "put": {
+        "summary": "Unarchive Certificate By ID",
+        "description": "Unarchive a certificate by its ID",
+        "operationId": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.UnarchiveCertificateByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/custom_certificateUnarchiveCertificateByIDResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"system\"\nx-required",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cert_id",
+            "description": "Certificate ID\n\nx-required\nx-example: \"65b73012a44742000137f379\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Certificate ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/custom_certificateUnarchiveCertificateByIDRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-custom_certificate-customapi-unarchivecertificatebyid"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI.UnarchiveCertificateByID",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Custom Certificate",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.custom_certificate.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Custom Certificate",
+  "x-ves-proto-package": "ves.io.schema.shape.bot_defense.custom_certificate",
+  "components": {
+    "schemas": {
+      "custom_certificateAddCertificateToCsrRequest": {
+        "type": "object",
+        "description": "Request to add a certificate to an existing CSR",
+        "title": "AddCertificateToCsrRequest",
+        "x-displayname": "Add Certificate to CSR Request",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.AddCertificateToCsrRequest",
+        "properties": {
+          "certificate_content": {
+            "$ref": "#/components/schemas/custom_certificateCertificateContentForCsr"
+          },
+          "name": {
+            "type": "string",
+            "description": "\nExample: ` \"test-certificate\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Certificate Name",
+            "minLength": 1,
+            "x-displayname": "Certificate Name",
+            "x-ves-example": "test-certificate",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": "\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "custom_certificateAddCertificateToCsrResponse": {
+        "type": "object",
+        "description": "Detailed certificate response after adding to CSR",
+        "title": "AddCertificateToCsrResponse",
+        "x-displayname": "Add Certificate to CSR Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.AddCertificateToCsrResponse",
+        "properties": {
+          "certificate_detail": {
+            "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+          }
+        }
+      },
+      "custom_certificateAddCertificateWithPrivateKeyRequest": {
+        "type": "object",
+        "description": "Request to add a certificate with private key",
+        "title": "AddCertificateWithPrivateKeyRequest",
+        "x-displayname": "Add Certificate with Private Key Request",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.AddCertificateWithPrivateKeyRequest",
+        "properties": {
+          "certificate_content": {
+            "$ref": "#/components/schemas/custom_certificateCertificateContentWithPrivateKey"
+          },
+          "name": {
+            "type": "string",
+            "description": "\nExample: ` \"test-certificate\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Certificate Name",
+            "minLength": 1,
+            "x-displayname": "Certificate Name",
+            "x-ves-example": "test-certificate",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": "\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "custom_certificateAddCertificateWithPrivateKeyResponse": {
+        "type": "object",
+        "description": "Detailed certificate response after adding with private key",
+        "title": "AddCertificateWithPrivateKeyResponse",
+        "x-displayname": "Add Certificate with Private Key Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.AddCertificateWithPrivateKeyResponse",
+        "properties": {
+          "certificate_detail": {
+            "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+          }
+        }
+      },
+      "custom_certificateArchiveCertificateByIDRequest": {
+        "type": "object",
+        "description": "Request to archive certificate by ID",
+        "title": "ArchiveCertificateByIDRequest",
+        "x-displayname": "Archive Certificate By ID Request",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.ArchiveCertificateByIDRequest",
+        "properties": {
+          "cert_id": {
+            "type": "string",
+            "description": "\nExample: ` \"65b73012a44742000137f379\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Certificate ID",
+            "x-displayname": "Certificate ID",
+            "x-ves-example": "65b73012a44742000137f379",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": "\nExample: ` \"system\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "system",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "custom_certificateArchiveCertificateByIDResponse": {
+        "type": "object",
+        "description": "Detailed certificate response after archive",
+        "title": "ArchiveCertificateByIDResponse",
+        "x-displayname": "Archive Certificate By ID Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.ArchiveCertificateByIDResponse",
+        "properties": {
+          "certificate_detail": {
+            "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+          }
+        }
+      },
+      "custom_certificateCertificateContent": {
+        "type": "object",
+        "description": "Certificate and CSR content payload",
+        "title": "CertificateContent",
+        "x-displayname": "Certificate Content",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.CertificateContent",
+        "properties": {
+          "cert": {
+            "type": "string",
+            "title": "Certificate",
+            "x-displayname": "Certificate"
+          },
+          "csr": {
+            "type": "string",
+            "title": "CSR",
+            "x-displayname": "CSR"
+          },
+          "id": {
+            "type": "string",
+            "title": "ID",
+            "x-displayname": "ID"
+          },
+          "pkey": {
+            "type": "string",
+            "title": "Private Key",
+            "x-displayname": "Private Key"
+          }
+        }
+      },
+      "custom_certificateCertificateContentForCsr": {
+        "type": "object",
+        "description": "Certificate content to add to an existing CSR",
+        "title": "CertificateContentForCsr",
+        "x-displayname": "Certificate Content for CSR",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.CertificateContentForCsr",
+        "properties": {
+          "cert": {
+            "type": "string",
+            "description": " Certificate in PEM format\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Certificate",
+            "minLength": 1,
+            "x-displayname": "Certificate",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "csr_id": {
+            "type": "string",
+            "description": "\nExample: ` \"65b72ff6a44742000137f378\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "CSR ID",
+            "minLength": 1,
+            "x-displayname": "CSR ID",
+            "x-ves-example": "65b72ff6a44742000137f378",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          }
+        }
+      },
+      "custom_certificateCertificateContentWithPrivateKey": {
+        "type": "object",
+        "description": "Certificate content with private key",
+        "title": "CertificateContentWithPrivateKey",
+        "x-displayname": "Certificate Content with Private Key",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.CertificateContentWithPrivateKey",
+        "properties": {
+          "cert": {
+            "type": "string",
+            "description": " Certificate in PEM format\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Certificate",
+            "minLength": 1,
+            "x-displayname": "Certificate",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "pkey": {
+            "type": "string",
+            "description": " Private key in PEM format\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Private Key",
+            "minLength": 1,
+            "x-displayname": "Private Key",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          }
+        }
+      },
+      "custom_certificateCertificateDetailResponse": {
+        "type": "object",
+        "description": "Detailed certificate or CSR response including content",
+        "title": "CertificateDetailResponse",
+        "x-displayname": "Certificate Detail Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.CertificateDetailResponse",
+        "properties": {
+          "certificate_added": {
+            "type": "boolean",
+            "title": "Certificate Added",
+            "format": "boolean",
+            "x-displayname": "Certificate Added"
+          },
+          "certificate_added_date": {
+            "type": "string",
+            "title": "Certificate Added Date",
+            "format": "date-time",
+            "x-displayname": "Certificate Added Date"
+          },
+          "certificate_content": {
+            "$ref": "#/components/schemas/custom_certificateCertificateContent"
+          },
+          "common_name": {
+            "type": "string",
+            "title": "Common Name",
+            "x-displayname": "Common Name"
+          },
+          "country_name": {
+            "type": "string",
+            "title": "Country Name",
+            "x-displayname": "Country Name"
+          },
+          "created_by_user": {
+            "type": "string",
+            "title": "Created By User",
+            "x-displayname": "Created By User"
+          },
+          "creation_time": {
+            "type": "string",
+            "title": "Creation Time",
+            "format": "date-time",
+            "x-displayname": "Creation Time"
+          },
+          "csr_name": {
+            "type": "string",
+            "title": "CSR Name",
+            "x-displayname": "CSR Name"
+          },
+          "email": {
+            "type": "string",
+            "description": "\n\nExample: ` \"dana@example.com\"`",
+            "title": "Email",
+            "x-displayname": "Email",
+            "x-ves-example": "dana@example.com"
+          },
+          "enterprise_id": {
+            "type": "string",
+            "title": "Enterprise ID",
+            "x-displayname": "Enterprise ID"
+          },
+          "expiration_date": {
+            "type": "string",
+            "title": "Expiration Date",
+            "format": "date-time",
+            "x-displayname": "Expiration Date"
+          },
+          "id": {
+            "type": "string",
+            "title": "ID",
+            "x-displayname": "ID"
+          },
+          "issuer": {
+            "type": "string",
+            "title": "Issuer",
+            "x-displayname": "Issuer"
+          },
+          "last_update_time": {
+            "type": "string",
+            "title": "Last Update Time",
+            "format": "date-time",
+            "x-displayname": "Last Update Time"
+          },
+          "last_updated_by_user": {
+            "type": "string",
+            "title": "Last Updated By User",
+            "x-displayname": "Last Updated By User"
+          },
+          "locality": {
+            "type": "string",
+            "title": "Locality",
+            "x-displayname": "Locality"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "x-displayname": "Name"
+          },
+          "organization_name": {
+            "type": "string",
+            "title": "Organization Name",
+            "x-displayname": "Organization Name"
+          },
+          "organization_unit_name": {
+            "type": "string",
+            "title": "Organization Unit Name",
+            "x-displayname": "Organization Unit Name"
+          },
+          "retired": {
+            "type": "boolean",
+            "title": "Retired",
+            "format": "boolean",
+            "x-displayname": "Retired"
+          },
+          "san": {
+            "type": "array",
+            "title": "SAN",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "SAN"
+          },
+          "state": {
+            "type": "string",
+            "title": "State",
+            "x-displayname": "State"
+          },
+          "used_by": {
+            "type": "object",
+            "title": "Used By",
+            "x-displayname": "Used By"
+          }
+        }
+      },
+      "custom_certificateDeleteCSRByIDResponse": {
+        "type": "object",
+        "description": "Detailed CSR response after delete",
+        "title": "DeleteCSRByIDResponse",
+        "x-displayname": "Delete CSR By ID Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.DeleteCSRByIDResponse",
+        "properties": {
+          "csr_detail": {
+            "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+          }
+        }
+      },
+      "custom_certificateDeleteCertificateByIDResponse": {
+        "type": "object",
+        "description": "Detailed certificate response after delete",
+        "title": "DeleteCertificateByIDResponse",
+        "x-displayname": "Delete Certificate By ID Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.DeleteCertificateByIDResponse",
+        "properties": {
+          "certificate_detail": {
+            "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+          }
+        }
+      },
+      "custom_certificateGenerateCSRRequest": {
+        "type": "object",
+        "description": "Request to generate CSR",
+        "title": "GenerateCSRRequest",
+        "x-displayname": "Generate CSR Request",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.GenerateCSRRequest",
+        "properties": {
+          "common_name": {
+            "type": "string",
+            "description": "\nExample: ` \"example.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Common Name",
+            "minLength": 1,
+            "x-displayname": "Common Name",
+            "x-ves-example": "example.com",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "country_name": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Country Name",
+            "minLength": 1,
+            "x-displayname": "Country Name",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "csr_name": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "CSR Name",
+            "minLength": 1,
+            "x-displayname": "CSR Name",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "email": {
+            "type": "string",
+            "description": "\nExample: ` \"dana@example.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.email: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Email",
+            "minLength": 1,
+            "x-displayname": "Email",
+            "x-ves-example": "dana@example.com",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.email": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "locality": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Locality",
+            "minLength": 1,
+            "x-displayname": "Locality",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": "\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "organization_name": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Organization Name",
+            "minLength": 1,
+            "x-displayname": "Organization Name",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "organization_unit_name": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Organization Unit Name",
+            "minLength": 1,
+            "x-displayname": "Organization Unit Name",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "san_main": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "SAN Main",
+            "minLength": 1,
+            "x-displayname": "SAN Main",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "san_sub": {
+            "type": "array",
+            "title": "SAN Sub",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "SAN Sub"
+          },
+          "state": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "State",
+            "minLength": 1,
+            "x-displayname": "State",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          }
+        }
+      },
+      "custom_certificateGenerateCSRResponse": {
+        "type": "object",
+        "description": "Generated CSR content",
+        "title": "GenerateCSRResponse",
+        "x-displayname": "Generate CSR Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.GenerateCSRResponse",
+        "properties": {
+          "certificate_content": {
+            "$ref": "#/components/schemas/custom_certificateCertificateContent"
+          }
+        }
+      },
+      "custom_certificateGetCSRByIDResponse": {
+        "type": "object",
+        "description": "Detailed CSR response",
+        "title": "GetCSRByIDResponse",
+        "x-displayname": "Get CSR By ID Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.GetCSRByIDResponse",
+        "properties": {
+          "csr_detail": {
+            "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+          }
+        }
+      },
+      "custom_certificateGetCertificateByIDResponse": {
+        "type": "object",
+        "description": "Detailed certificate response",
+        "title": "GetCertificateByIDResponse",
+        "x-displayname": "Get Certificate By ID Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.GetCertificateByIDResponse",
+        "properties": {
+          "certificate_detail": {
+            "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+          }
+        }
+      },
+      "custom_certificateListCSRResponse": {
+        "type": "object",
+        "description": "Response containing CSRs for enterprise",
+        "title": "ListCSRResponse",
+        "x-displayname": "List CSR Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.ListCSRResponse",
+        "properties": {
+          "csr": {
+            "type": "array",
+            "title": "CSRs",
+            "items": {
+              "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+            },
+            "x-displayname": "List of CSRs"
+          }
+        }
+      },
+      "custom_certificateListCertificatesResponse": {
+        "type": "object",
+        "description": "Response containing certificates for enterprise",
+        "title": "ListCertificatesResponse",
+        "x-displayname": "List Certificates Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.ListCertificatesResponse",
+        "properties": {
+          "certificate": {
+            "type": "array",
+            "title": "Certificates",
+            "items": {
+              "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+            },
+            "x-displayname": "List of Certificates"
+          }
+        }
+      },
+      "custom_certificateUnarchiveCertificateByIDRequest": {
+        "type": "object",
+        "description": "Request to unarchive certificate by ID",
+        "title": "UnarchiveCertificateByIDRequest",
+        "x-displayname": "Unarchive Certificate By ID Request",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.UnarchiveCertificateByIDRequest",
+        "properties": {
+          "cert_id": {
+            "type": "string",
+            "description": "\nExample: ` \"65b73012a44742000137f379\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Certificate ID",
+            "x-displayname": "Certificate ID",
+            "x-ves-example": "65b73012a44742000137f379",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": "\nExample: ` \"system\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "system",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "custom_certificateUnarchiveCertificateByIDResponse": {
+        "type": "object",
+        "description": "Detailed certificate response after unarchive",
+        "title": "UnarchiveCertificateByIDResponse",
+        "x-displayname": "Unarchive Certificate By ID Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.custom_certificate.UnarchiveCertificateByIDResponse",
+        "properties": {
+          "certificate_detail": {
+            "$ref": "#/components/schemas/custom_certificateCertificateDetailResponse"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
+}

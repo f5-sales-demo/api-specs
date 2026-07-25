@@ -1,0 +1,243 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.uztna.application.discovered",
+    "description": "Discovered CM Application Object. It contains info about\na Discovered App Managed by a BIP-IP Central Manager (CM).",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
+  },
+  "paths": {
+    "/api/bigipconnector/namespaces/{namespace}/uztna/applications/discovered": {
+      "get": {
+        "summary": "List",
+        "description": "List the set of Discovered UZTNA Apps in Namespace",
+        "operationId": "ves.io.schema.uztna.application.discovered.CustomAPI.List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/discoveredListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nNamespace to scope the listing of Discovered UZTNA Apps",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "label_filter",
+            "description": "x-example: \"site-name in (cm01-eastern-us, cm01-western-us)\"\nA LabelSelectorType expression that every item in list response will satisfy",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Label Filter",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-uztna-application-discovered-customapi-list"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.uztna.application.discovered.CustomAPI.List",
+        "tags": ["bigipconnector"]
+      },
+      "x-displayname": "Discovered CM Application",
+      "x-ves-proto-service": "ves.io.schema.uztna.application.discovered.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Discovered CM Application",
+  "x-ves-proto-package": "ves.io.schema.uztna.application.discovered",
+  "components": {
+    "schemas": {
+      "discoveredGetSpecType": {
+        "type": "object",
+        "description": "Get Discovered CM Application. This will return App data\nof a Discovered CM Application",
+        "title": "Get Discovered CM Application",
+        "x-displayname": "Get Discovered CM Application",
+        "x-ves-proto-message": "ves.io.schema.uztna.application.discovered.GetSpecType",
+        "properties": {
+          "application": {
+            "type": "string",
+            "description": " CM-assigned name of the Application\n\nExample: ` \"MyApp1\"`",
+            "title": "application",
+            "x-displayname": "Application",
+            "x-ves-example": "MyApp1"
+          },
+          "instance": {
+            "type": "string",
+            "description": " BIG-IP Next Instance on which the Virtual Server is deployed\n\nExample: ` \"BIGIP-NX-MUM04\"`",
+            "title": "instance",
+            "x-displayname": "BIG-IP Next Instance",
+            "x-ves-example": "BIGIP-NX-MUM04"
+          },
+          "private_ip": {
+            "type": "string",
+            "description": " VIP serving the App on a BIG-IP Next Instance\n\nExample: ` \"192.168.1.2\"`",
+            "title": "private_ip",
+            "x-displayname": "Private IP",
+            "x-ves-example": "192.168.1.2"
+          },
+          "site": {
+            "type": "string",
+            "description": " BIG-IP Next CE Site on which the App is running\n\nExample: ` \"CE-Mumbai\"`",
+            "title": "site",
+            "x-displayname": "Site",
+            "x-ves-example": "CE-Mumbai"
+          },
+          "virtual_server": {
+            "type": "string",
+            "description": " Name of the Virtual Server front-ending the Application\n\nExample: ` \"App Portal\"`",
+            "title": "virtual_server",
+            "x-displayname": "Virtual Server",
+            "x-ves-example": "App Portal"
+          }
+        }
+      },
+      "discoveredListResponse": {
+        "type": "object",
+        "description": "This is the output message of 'List' RPC.",
+        "title": "ListResponse is the collection of Discovered UZTNA Apps",
+        "x-displayname": "List Response",
+        "x-ves-proto-message": "ves.io.schema.uztna.application.discovered.ListResponse",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": " items represents the collection in response",
+            "title": "items",
+            "items": {
+              "$ref": "#/components/schemas/discoveredGetSpecType"
+            },
+            "x-displayname": "Items"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "bigipconnector"
+    }
+  ]
+}

@@ -1,0 +1,2651 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_proxy",
+    "description": "DNS Proxy view defines the required parameters that can be used in CRUD, to create and manage DNS Proxy.\nIt can be used to create DNS Proxy.\n\nView will create the following child objects.\n\n* Virtual-host\n* default route\n* clusters\n* endpoints\n* advertise policy",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "dana@example.com"
+    }
+  },
+  "paths": {
+    "/api/config/namespaces/{metadata.namespace}/dns_proxys": {
+      "post": {
+        "summary": "Create DNS Proxy",
+        "description": "Create DNS Proxy in a given namespace. If one already exists it will give an error.",
+        "operationId": "ves.io.schema.dns_proxy.API.Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dns_proxyCreateResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "metadata.namespace",
+            "description": "namespace\n\nx-example: \"staging\"\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dns_proxyCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_proxy-api-create"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.dns_proxy.API.Create",
+        "tags": ["config"]
+      },
+      "x-displayname": "Configure DNS Proxy",
+      "x-ves-proto-service": "ves.io.schema.dns_proxy.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    },
+    "/api/config/namespaces/{metadata.namespace}/dns_proxys/{metadata.name}": {
+      "put": {
+        "summary": "Replace DNS Proxy",
+        "description": "Replace DNS Proxy in a given namespace.",
+        "operationId": "ves.io.schema.dns_proxy.API.Replace",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dns_proxyReplaceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "metadata.namespace",
+            "description": "namespace\n\nx-example: \"staging\"\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metadata.name",
+            "description": "name\n\nx-example: \"acmecorp-web\"\nThe configuration object to be replaced will be looked up by name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dns_proxyReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_proxy-api-replace"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.dns_proxy.API.Replace",
+        "tags": ["config"]
+      },
+      "x-displayname": "Configure DNS Proxy",
+      "x-ves-proto-service": "ves.io.schema.dns_proxy.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    },
+    "/api/config/namespaces/{namespace}/dns_proxys": {
+      "get": {
+        "summary": "List Configure DNS Proxy",
+        "description": "List the set of dns_proxy in a namespace",
+        "operationId": "ves.io.schema.dns_proxy.API.List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dns_proxyListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nNamespace to scope the listing of dns_proxy",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "label_filter",
+            "description": "x-example: \"env in (staging, testing), tier in (web, db)\"\nA LabelSelectorType expression that every item in list response will satisfy",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Label Filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "report_fields",
+            "description": "x-example: \"\"\nExtra fields to return along with summary fields",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Report Fields",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "report_status_fields",
+            "description": "x-example: \"\"\nExtra status fields to return along with summary fields",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Report Status Fields",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_proxy-api-list"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.dns_proxy.API.List",
+        "tags": ["config"]
+      },
+      "x-displayname": "Configure DNS Proxy",
+      "x-ves-proto-service": "ves.io.schema.dns_proxy.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    },
+    "/api/config/namespaces/{namespace}/dns_proxys/{name}": {
+      "get": {
+        "summary": "Get DNS Proxy",
+        "description": "Get DNS Proxy details.",
+        "operationId": "ves.io.schema.dns_proxy.API.Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dns_proxyGetResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nThe namespace in which the configuration object is present",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "description": "name\n\nx-example: \"name\"\nThe name of the configuration object to be fetched",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "response_format",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Broken Referred Objects",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "GET_RSP_FORMAT_DEFAULT",
+                "GET_RSP_FORMAT_FOR_CREATE",
+                "GET_RSP_FORMAT_FOR_REPLACE",
+                "GET_RSP_FORMAT_STATUS",
+                "GET_RSP_FORMAT_READ",
+                "GET_RSP_FORMAT_REFERRING_OBJECTS",
+                "GET_RSP_FORMAT_BROKEN_REFERENCES"
+              ],
+              "default": "GET_RSP_FORMAT_DEFAULT"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_proxy-api-get"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.dns_proxy.API.Get",
+        "tags": ["config"]
+      },
+      "delete": {
+        "summary": "Delete Configure DNS Proxy",
+        "description": "Delete the specified dns_proxy",
+        "operationId": "ves.io.schema.dns_proxy.API.Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nNamespace in which the configuration object is present",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "description": "name\n\nx-example: \"name\"\nName of the configuration object",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dns_proxyDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_proxy-api-delete"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.dns_proxy.API.Delete",
+        "tags": ["config"]
+      },
+      "x-displayname": "Configure DNS Proxy",
+      "x-ves-proto-service": "ves.io.schema.dns_proxy.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    }
+  },
+  "x-displayname": "Configure DNS Proxy",
+  "x-ves-proto-package": "ves.io.schema.dns_proxy",
+  "components": {
+    "schemas": {
+      "dns_proxyCreateRequest": {
+        "type": "object",
+        "description": "This is the input message of the 'Create' RPC",
+        "title": "CreateRequest is used to create an instance of dns_proxy",
+        "x-displayname": "Create Request",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.CreateRequest",
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectCreateMetaType"
+          },
+          "spec": {
+            "$ref": "#/components/schemas/schemadns_proxyCreateSpecType"
+          }
+        }
+      },
+      "dns_proxyCreateResponse": {
+        "type": "object",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.CreateResponse",
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+          },
+          "spec": {
+            "$ref": "#/components/schemas/schemadns_proxyGetSpecType"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+          }
+        }
+      },
+      "dns_proxyDNSProxyDeploymentStatus": {
+        "type": "string",
+        "description": "Deployment Status of DNS Proxy\n\nDNS Proxy is successfully deployed and active\nDeployment of DNS Proxy is pending\nDNS Proxy has been disabled.\nDNS Proxy deployment encountered an error.",
+        "title": "DNS PROXY Deployment Status",
+        "enum": [
+          "DNS_PROXY_CONFIG_ACTIVE",
+          "DNS_PROXY_CONFIG_PENDING",
+          "DNS_PROXY_CONFIG_DISABLED",
+          "DNS_PROXY_CONFIG_FAILED"
+        ],
+        "default": "DNS_PROXY_CONFIG_ACTIVE",
+        "x-displayname": "DNS Proxy Deployment Status",
+        "x-ves-proto-enum": "ves.io.schema.dns_proxy.DNSProxyDeploymentStatus"
+      },
+      "dns_proxyDNSProxyStatus": {
+        "type": "object",
+        "description": "Status DNS Proxy",
+        "title": "DNS Proxy Status",
+        "x-displayname": "DNS Proxy Status",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.DNSProxyStatus",
+        "properties": {
+          "deployment_status": {
+            "$ref": "#/components/schemas/dns_proxyDNSProxyDeploymentStatus"
+          }
+        }
+      },
+      "dns_proxyDeleteRequest": {
+        "type": "object",
+        "description": "This is the input message of the 'Delete' RPC.",
+        "title": "DeleteRequest is used to delete a dns_proxy",
+        "x-displayname": "Delete Request",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.DeleteRequest",
+        "properties": {
+          "fail_if_referred": {
+            "type": "boolean",
+            "description": " Fail the delete operation if this object is being referred by other objects",
+            "title": "fail_if_referred",
+            "format": "boolean",
+            "x-displayname": "Fail-If-Referred"
+          },
+          "name": {
+            "type": "string",
+            "description": " Name of the configuration object\n\nExample: ` \"name\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "name"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace in which the configuration object is present\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          }
+        }
+      },
+      "dns_proxyGetResponse": {
+        "type": "object",
+        "description": "This is the output message of the 'Get' RPC",
+        "title": "GetResponse is the shape of a read dns_proxy",
+        "x-displayname": "Get Response",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.GetResponse",
+        "properties": {
+          "create_form": {
+            "$ref": "#/components/schemas/dns_proxyCreateRequest"
+          },
+          "deleted_referred_objects": {
+            "type": "array",
+            "description": "The set of deleted objects that are referred by this object",
+            "title": "deleted_referred_objects",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Deleted Referred Objects"
+          },
+          "disabled_referred_objects": {
+            "type": "array",
+            "description": "The set of deleted objects that are referred by this object",
+            "title": "disabled_referred_objects",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Disabled Referred Objects"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+          },
+          "referring_objects": {
+            "type": "array",
+            "description": "The set of objects that are referring to this object in their spec",
+            "title": "referring_objects",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Referring Objects"
+          },
+          "replace_form": {
+            "$ref": "#/components/schemas/dns_proxyReplaceRequest"
+          },
+          "spec": {
+            "$ref": "#/components/schemas/schemadns_proxyGetSpecType"
+          },
+          "status": {
+            "type": "array",
+            "description": "The status reported by different services for this configuration object",
+            "title": "status",
+            "items": {
+              "$ref": "#/components/schemas/dns_proxyStatusObject"
+            },
+            "x-displayname": "Status"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+          }
+        }
+      },
+      "dns_proxyHealthCheckType": {
+        "type": "object",
+        "description": "Server Health Check",
+        "title": "Server Health Check",
+        "x-displayname": "Server Health Check",
+        "x-ves-oneof-field-choice": "[\"dns_health_check\",\"icmp_health_check\",\"tcp_health_check\"]",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.HealthCheckType",
+        "properties": {
+          "dns_health_check": {
+            "$ref": "#/components/schemas/healthcheckDnsHealthCheck"
+          },
+          "icmp_health_check": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "tcp_health_check": {
+            "$ref": "#/components/schemas/healthcheckDnsProxyTcpHealthCheck"
+          }
+        }
+      },
+      "dns_proxyHealthChecks": {
+        "type": "object",
+        "description": "Origin Server Health Checks",
+        "title": "Origin Server Health Checks",
+        "x-displayname": "Health Checks",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.HealthChecks",
+        "properties": {
+          "health_check": {
+            "type": "array",
+            "description": " List of Health Checks\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 4\n  ves.io.schema.rules.repeated.min_items: 0\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "List of Health Checks",
+            "maxItems": 4,
+            "items": {
+              "$ref": "#/components/schemas/dns_proxyHealthCheckType"
+            },
+            "x-displayname": "List of Health Checks",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.repeated.max_items": "4",
+              "ves.io.schema.rules.repeated.min_items": "0",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          },
+          "healthy_threshold": {
+            "type": "integer",
+            "description": " Number of successful responses before declaring healthy. In other words, this is\n the number of healthy health checks required before a host is marked\n healthy. Note that during startup, only a single successful health check is\n required to mark a host healthy.\n\nExample: ` \"2\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.uint32.gte: 1\n  ves.io.schema.rules.uint32.lte: 16\n",
+            "title": "healthy threshold",
+            "format": "int64",
+            "x-displayname": "Healthy Threshold",
+            "x-ves-example": "2",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.uint32.gte": "1",
+              "ves.io.schema.rules.uint32.lte": "16"
+            }
+          },
+          "interval": {
+            "type": "integer",
+            "description": " Time interval in seconds between two healthcheck requests.\n\nExample: ` \"10\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.uint32.gte: 1\n  ves.io.schema.rules.uint32.lte: 600\n",
+            "title": "interval",
+            "format": "int64",
+            "x-displayname": "Interval",
+            "x-ves-example": "10",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.uint32.gte": "1",
+              "ves.io.schema.rules.uint32.lte": "600"
+            }
+          },
+          "timeout": {
+            "type": "integer",
+            "description": " Timeout in seconds to wait for successful response. In other words, it is\n the time to wait for a health check response. If the timeout is reached the\n health check attempt will be considered a failure.\n\nExample: ` \"1\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.uint32.gte: 1\n  ves.io.schema.rules.uint32.lte: 600\n",
+            "title": "timeout",
+            "format": "int64",
+            "x-displayname": "Timeout",
+            "x-ves-example": "1",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.uint32.gte": "1",
+              "ves.io.schema.rules.uint32.lte": "600"
+            }
+          },
+          "unhealthy_threshold": {
+            "type": "integer",
+            "description": " Number of failed responses before declaring unhealthy. In other words, this is\n the number of unhealthy health checks required before a host is marked\n unhealthy. Note that for http health checking if a host responds with 503\n this threshold is ignored and the host is considered unhealthy immediately.\n\nExample: ` \"5\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.uint32.gte: 1\n  ves.io.schema.rules.uint32.lte: 16\n",
+            "title": "unhealthy threshold",
+            "format": "int64",
+            "x-displayname": "Unhealthy Threshold",
+            "x-ves-example": "5",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.uint32.gte": "1",
+              "ves.io.schema.rules.uint32.lte": "16"
+            }
+          }
+        }
+      },
+      "dns_proxyLBAlgorithmType": {
+        "type": "object",
+        "description": "Load Balancing Algorithm Type",
+        "title": "Load Balancing Algorithm Type",
+        "x-displayname": "Load Balancing Algorithm Type",
+        "x-ves-oneof-field-lb_algorithm_choice": "[\"round_robin\"]",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.LBAlgorithmType",
+        "properties": {
+          "round_robin": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          }
+        }
+      },
+      "dns_proxyListResponse": {
+        "type": "object",
+        "description": "This is the output message of 'List' RPC.",
+        "title": "ListResponse is the collection of dns_proxy",
+        "x-displayname": "List Response",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.ListResponse",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": " Errors(if any) while listing items from collection",
+            "title": "errors",
+            "items": {
+              "$ref": "#/components/schemas/schemaErrorType"
+            },
+            "x-displayname": "Errors"
+          },
+          "items": {
+            "type": "array",
+            "description": " items represents the collection in response",
+            "title": "items",
+            "items": {
+              "$ref": "#/components/schemas/dns_proxyListResponseItem"
+            },
+            "x-displayname": "Items"
+          }
+        }
+      },
+      "dns_proxyListResponseItem": {
+        "type": "object",
+        "description": "By default a summary of dns_proxy is returned in 'List'. By setting\n'report_fields' in the ListRequest more details of each item can be got.",
+        "title": "ListResponseItem is an individual item in a collection of dns_proxy",
+        "x-displayname": "List Item",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.ListResponseItem",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "description": " The set of annotations present on this dns_proxy",
+            "title": "annotations",
+            "x-displayname": "Annotations"
+          },
+          "description": {
+            "type": "string",
+            "description": " The description set for this dns_proxy",
+            "title": "description",
+            "x-displayname": "Description"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": " A value of true indicates dns_proxy is administratively disabled",
+            "title": "disabled",
+            "format": "boolean",
+            "x-displayname": "Disabled"
+          },
+          "get_spec": {
+            "$ref": "#/components/schemas/schemadns_proxyGetSpecType"
+          },
+          "labels": {
+            "type": "object",
+            "description": " The set of labels present on this dns_proxy",
+            "title": "labels",
+            "x-displayname": "Labels"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+          },
+          "name": {
+            "type": "string",
+            "description": " The name of this dns_proxy\n\nExample: ` \"name\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "name"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " The namespace this item belongs to\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          },
+          "owner_view": {
+            "$ref": "#/components/schemas/schemaViewRefType"
+          },
+          "status_set": {
+            "type": "array",
+            "description": " The status reported by different services for this configuration object",
+            "title": "status",
+            "items": {
+              "$ref": "#/components/schemas/dns_proxyStatusObject"
+            },
+            "x-displayname": "Status"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+          },
+          "tenant": {
+            "type": "string",
+            "description": " The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
+            "title": "tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "acmecorp"
+          },
+          "uid": {
+            "type": "string",
+            "description": " The unique uid of this dns_proxy\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "d27938ba-967e-40a7-9709-57b8627f9f75"
+          }
+        }
+      },
+      "dns_proxyOriginServers": {
+        "type": "object",
+        "description": "List of origin Servers for the DNS proxy",
+        "title": "OriginServers",
+        "x-displayname": "Origin Servers",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.OriginServers",
+        "properties": {
+          "health_checks": {
+            "$ref": "#/components/schemas/dns_proxyHealthChecks"
+          },
+          "origin_servers": {
+            "type": "array",
+            "description": " List of origin servers for Proxy\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 8\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "List of Origin Servers",
+            "minItems": 1,
+            "maxItems": 8,
+            "items": {
+              "$ref": "#/components/schemas/schemadns_proxyOriginServerType"
+            },
+            "x-displayname": "List Of Origin Servers",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.repeated.max_items": "8",
+              "ves.io.schema.rules.repeated.min_items": "1",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          }
+        }
+      },
+      "dns_proxyProxyAdvertisementType": {
+        "type": "object",
+        "description": "Proxy Advertisement Type",
+        "title": "Proxy Advertisement Type",
+        "x-displayname": "Proxy Advertisement Type",
+        "x-ves-oneof-field-advertise_choice": "[\"advertise_custom\",\"advertise_on_public\",\"advertise_on_public_default_vip\",\"do_not_advertise\"]",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.ProxyAdvertisementType",
+        "properties": {
+          "advertise_custom": {
+            "$ref": "#/components/schemas/viewsAdvertiseCustom"
+          },
+          "advertise_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
+          "advertise_on_public_default_vip": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "do_not_advertise": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          }
+        }
+      },
+      "dns_proxyReplaceRequest": {
+        "type": "object",
+        "description": "This is the input message of the 'Replace' RPC",
+        "title": "ReplaceRequest is used to replace contents of a dns_proxy",
+        "x-displayname": "Replace Request",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.ReplaceRequest",
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectReplaceMetaType"
+          },
+          "spec": {
+            "$ref": "#/components/schemas/schemadns_proxyReplaceSpecType"
+          }
+        }
+      },
+      "dns_proxyReplaceResponse": {
+        "type": "object",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.ReplaceResponse"
+      },
+      "dns_proxyStatusObject": {
+        "type": "object",
+        "description": "Most recently observed status of object",
+        "title": "Status of DNS PROXY",
+        "x-displayname": "Status",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.StatusObject",
+        "properties": {
+          "conditions": {
+            "type": "array",
+            "description": " Conditions reported by various component of the system",
+            "title": "conditions",
+            "items": {
+              "$ref": "#/components/schemas/schemaConditionType"
+            },
+            "x-displayname": "Conditions"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaStatusMetaType"
+          },
+          "object_refs": {
+            "type": "array",
+            "description": " Reference to object for current status",
+            "title": "object_refs",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Config Object"
+          },
+          "verification_status": {
+            "$ref": "#/components/schemas/dns_proxyDNSProxyStatus"
+          }
+        }
+      },
+      "dns_proxyTransportType": {
+        "type": "string",
+        "description": "Transport Type\n\n - UDP: UDP\n\n - TCP: TCP\n\n - BothTCPAndUDP: Both TCP and UDP\n",
+        "title": "Transport Type",
+        "enum": ["UDP", "TCP", "BothTCPAndUDP"],
+        "default": "UDP",
+        "x-displayname": "Transport Type",
+        "x-ves-proto-enum": "ves.io.schema.dns_proxy.TransportType"
+      },
+      "healthcheckDNSQueryType": {
+        "type": "string",
+        "description": "DNS Query Type\n\n - DNS_QTYPE_A: Query Type A\n\n - DNS_QTYPE_AAAA: Query Type AAAA\n",
+        "title": "DNS Query Type",
+        "enum": ["DNS_QTYPE_A", "DNS_QTYPE_AAAA"],
+        "default": "DNS_QTYPE_A",
+        "x-displayname": "DNS Query Type",
+        "x-ves-proto-enum": "ves.io.schema.healthcheck.DNSQueryType"
+      },
+      "healthcheckDNSResponseRcodeType": {
+        "type": "string",
+        "description": "Expected DNS Response Rcode Type\n\n - DNS_RES_RCODE_NOERROR: Rcode NOERROR\n\n - DNS_RES_RCODE_ANY: RCODE ANY\n",
+        "title": "Expected DNS Response Rcode Type",
+        "enum": ["DNS_RES_RCODE_NOERROR", "DNS_RES_RCODE_ANY"],
+        "default": "DNS_RES_RCODE_NOERROR",
+        "x-displayname": "DNS Response Rcode Type",
+        "x-ves-proto-enum": "ves.io.schema.healthcheck.DNSResponseRcodeType"
+      },
+      "healthcheckDNSResponseRecordType": {
+        "type": "string",
+        "description": "DNS Response Record Type\n\n - DNS_REQUESTED_QUERY_TYPE: Requested Query Type\n\n - DNS_RES_RECORD_TYPE_ANY: Any Record Type\n",
+        "title": "DNS Response Record Type",
+        "enum": ["DNS_REQUESTED_QUERY_TYPE", "DNS_RES_RECORD_TYPE_ANY"],
+        "default": "DNS_REQUESTED_QUERY_TYPE",
+        "x-displayname": "DNS Response Record Type",
+        "x-ves-proto-enum": "ves.io.schema.healthcheck.DNSResponseRecordType"
+      },
+      "healthcheckDnsHealthCheck": {
+        "type": "object",
+        "description": "DNS health check reports healthy if DNS query is successful and response header and answer matches the given value",
+        "title": "DNS Health Check",
+        "x-displayname": "DNS Health Check",
+        "x-ves-displayorder": "2,3,4,5,6,7",
+        "x-ves-proto-message": "ves.io.schema.healthcheck.DnsHealthCheck",
+        "properties": {
+          "expected_rcode": {
+            "$ref": "#/components/schemas/healthcheckDNSResponseRcodeType"
+          },
+          "expected_record_type": {
+            "$ref": "#/components/schemas/healthcheckDNSResponseRecordType"
+          },
+          "expected_response": {
+            "type": "string",
+            "description": " Specifies an IPv4 or IPv6 address in the answer section of DNS Response\n\nExample: ` \"10.0.0.1\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 1024\n",
+            "title": "Expected Response Content",
+            "maxLength": 1024,
+            "x-displayname": "Expected Response Content",
+            "x-ves-example": "10.0.0.1",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "1024"
+            }
+          },
+          "query_name": {
+            "type": "string",
+            "description": " The query name that the monitor sends a DNS query for.\n\nExample: ` \"www.example.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 255\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Query Name",
+            "minLength": 1,
+            "maxLength": 255,
+            "x-displayname": "Query Name",
+            "x-ves-example": "www.example.com",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "255",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "query_type": {
+            "$ref": "#/components/schemas/healthcheckDNSQueryType"
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": " Enable the monitor operation in reverse mode.\n When the monitor is in reverse mode, a successful receive\n string match marks the monitored object down instead of up.\n\nExample: ` false`",
+            "title": "Use Reverse mode",
+            "format": "boolean",
+            "x-displayname": "Use Reverse mode"
+          }
+        }
+      },
+      "healthcheckDnsProxyTcpHealthCheck": {
+        "type": "object",
+        "description": "Monitor reports healthy status if UDP connection is successful and response payload matches expected response pattern",
+        "title": "DnsProxyTcpHealthCheck",
+        "x-displayname": "TCP Health Check",
+        "x-ves-proto-message": "ves.io.schema.healthcheck.DnsProxyTcpHealthCheck",
+        "properties": {
+          "expected_response": {
+            "type": "string",
+            "description": " Specifies a regular expression pattern which will be matched against response payload\n\nExample: ` \".*\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 2048\n",
+            "title": "expected response",
+            "maxLength": 2048,
+            "x-displayname": "Expected Response pattern",
+            "x-ves-example": ".*",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "2048"
+            }
+          },
+          "send_payload": {
+            "type": "string",
+            "description": " Text string sent in the request\n\nExample: ` \"\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 2048\n",
+            "title": "send string",
+            "maxLength": 2048,
+            "x-displayname": "Send string",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "2048"
+            }
+          }
+        }
+      },
+      "ioschemaEmpty": {
+        "type": "object",
+        "description": "This can be used for messages where no values are needed",
+        "title": "Empty",
+        "x-displayname": "Empty",
+        "x-ves-proto-message": "ves.io.schema.Empty"
+      },
+      "ioschemaObjectRefType": {
+        "type": "object",
+        "description": "This type establishes a 'direct reference' from one object(the referrer) to another(the referred).\nSuch a reference is in form of tenant/namespace/name for public API and Uid for private API\nThis type of reference is called direct because the relation is explicit and concrete (as opposed\nto selector reference which builds a group based on labels of selectee objects)",
+        "title": "ObjectRefType",
+        "x-displayname": "Object reference",
+        "x-ves-proto-message": "ves.io.schema.ObjectRefType",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then kind will hold the referred object's kind (e.g. \"route\")\n\nExample: ` \"virtual_site\"`",
+            "title": "kind",
+            "x-displayname": "Kind",
+            "x-ves-example": "virtual_site"
+          },
+          "name": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. route's) name.\n\nExample: ` \"contactus-route\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "contactus-route"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. route's) namespace.\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          },
+          "tenant": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"acmecorp\"`",
+            "title": "tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "acmecorp"
+          },
+          "uid": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+          }
+        }
+      },
+      "origin_poolOriginServerK8SService": {
+        "type": "object",
+        "description": "Specify origin server with K8s service name and site information",
+        "title": "OriginServerK8SService",
+        "x-displayname": "K8s Service Name on given Sites",
+        "x-ves-displayorder": "10,12,2,3",
+        "x-ves-oneof-field-network_choice": "[\"inside_network\",\"outside_network\",\"vk8s_networks\"]",
+        "x-ves-oneof-field-service_info": "[\"service_name\"]",
+        "x-ves-proto-message": "ves.io.schema.views.origin_pool.OriginServerK8SService",
+        "properties": {
+          "inside_network": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "outside_network": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "protocol": {
+            "$ref": "#/components/schemas/origin_poolProtocolType"
+          },
+          "service_name": {
+            "type": "string",
+            "description": "Exclusive with []\n K8s service name of the origin server will be listed, including the namespace and cluster-id.\n For vK8s services, you need to enter a string with the format servicename.namespace:example-namespace\"frontend\",\n namespace is \"speedtest\" and cluster-id is \"prod\", then you will enter \"frontend.speedtest:prod\".\n Both namespace and cluster-id are optional.\n\nExample: ` \"matching.default:production\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ves_service_namespace_name: true\n",
+            "title": "Service Name",
+            "x-displayname": "Service Name",
+            "x-ves-example": "matching.default:production",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.ves_service_namespace_name": "true"
+            }
+          },
+          "site_locator": {
+            "$ref": "#/components/schemas/viewsSiteLocator"
+          },
+          "snat_pool": {
+            "$ref": "#/components/schemas/viewsSnatPoolConfiguration"
+          },
+          "vk8s_networks": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          }
+        }
+      },
+      "origin_poolOriginServerPublicIP": {
+        "type": "object",
+        "description": "Specify origin server with public IP address",
+        "title": "OriginServerPublicIP",
+        "x-displayname": "Public IP",
+        "x-ves-displayorder": "2",
+        "x-ves-oneof-field-public_ip_choice": "[\"ip\"]",
+        "x-ves-proto-message": "ves.io.schema.views.origin_pool.OriginServerPublicIP",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "Exclusive with []\n Public IPV4 address\n\nExample: ` \"8.8.8.8\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "title": "IP",
+            "x-displayname": "Public IPV4",
+            "x-ves-example": "8.8.8.8",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.ipv4": "true"
+            }
+          }
+        }
+      },
+      "origin_poolOriginServerPublicName": {
+        "type": "object",
+        "description": "Specify origin server with public DNS name",
+        "title": "OriginServerPublicName",
+        "x-displayname": "Public DNS Name",
+        "x-ves-displayorder": "1,2",
+        "x-ves-proto-message": "ves.io.schema.views.origin_pool.OriginServerPublicName",
+        "properties": {
+          "dns_name": {
+            "type": "string",
+            "description": " DNS Name\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.hostname: true\n  ves.io.schema.rules.string.max_len: 256\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "DNS name",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "DNS Name",
+            "x-ves-example": "value",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.hostname": "true",
+              "ves.io.schema.rules.string.max_len": "256",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "refresh_interval": {
+            "type": "integer",
+            "description": " Interval for DNS refresh in seconds.\n Max value is 7 days as per https://datatracker.ietf.org/doc/html/rfc8767\n\nExample: ` \"20\"`\n\nValidation Rules:\n  ves.io.schema.rules.uint32.ranges: 0,10-604800\n",
+            "title": "refresh_interval",
+            "format": "int64",
+            "x-displayname": "DNS Refresh Interval",
+            "x-ves-example": "20",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.uint32.ranges": "0,10-604800"
+            }
+          }
+        }
+      },
+      "origin_poolProtocolType": {
+        "type": "string",
+        "description": "Type of protocol\n\n - PROTOCOL_TCP: TCP\n\n - PROTOCOL_UDP: UDP\n",
+        "title": "Protocol Type",
+        "enum": ["PROTOCOL_TCP", "PROTOCOL_UDP"],
+        "default": "PROTOCOL_TCP",
+        "x-displayname": "Protocol Type",
+        "x-ves-proto-enum": "ves.io.schema.views.origin_pool.ProtocolType"
+      },
+      "protobufAny": {
+        "type": "object",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
+        "properties": {
+          "type_url": {
+            "type": "string",
+            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          },
+          "value": {
+            "type": "string",
+            "description": "Must be a valid serialized protocol buffer of the above specified type.",
+            "format": "byte"
+          }
+        }
+      },
+      "schemaConditionType": {
+        "type": "object",
+        "description": "Conditions are used in the object status to describe the current state of the\nobject, e.g. Ready, Succeeded, etc.",
+        "title": "ConditionType",
+        "x-displayname": "Status Condition",
+        "x-ves-proto-message": "ves.io.schema.ConditionType",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "description": " Hostname of the instance of the site that sent the status",
+            "title": "hostname",
+            "x-displayname": "Hostname"
+          },
+          "last_update_time": {
+            "type": "string",
+            "description": " Last time the condition was updated",
+            "title": "last_update_time",
+            "format": "date-time",
+            "x-displayname": "Last Updated"
+          },
+          "reason": {
+            "type": "string",
+            "description": " A human readable string explaining the reason for reaching this condition\n\nExample: ` \"Insufficient memory in data plane\"`",
+            "title": "reason",
+            "x-displayname": "Reason",
+            "x-ves-example": "Insufficient memory in data plane"
+          },
+          "service_name": {
+            "type": "string",
+            "description": " Name of the service that sent the status",
+            "title": "service name",
+            "x-displayname": "Service Name"
+          },
+          "status": {
+            "type": "string",
+            "description": " Status of the condition\n \"Success\" Validation has succeeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
+            "title": "status",
+            "x-displayname": "Status",
+            "x-ves-example": "Failed",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.in": "[\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]"
+            }
+          },
+          "type": {
+            "type": "string",
+            "description": " Type of the condition\n \"Validation\" represents validation user given configuration object\n \"Operational\" represents operational status of a given configuration object\n\nExample: ` \"Operational\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Validation\\\",\\\"Operational\\\"]\n",
+            "title": "type",
+            "x-displayname": "Type",
+            "x-ves-example": "Operational",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.in": "[\\\"Validation\\\",\\\"Operational\\\"]"
+            }
+          }
+        }
+      },
+      "schemaErrorCode": {
+        "type": "string",
+        "description": "Union of all possible error-codes from system\n\n - EOK: No error\n - EPERMS: Permissions error\n - EBADINPUT: Input is not correct\n - ENOTFOUND: Not found\n - EEXISTS: Already exists\n - EUNKNOWN: Unknown/catchall error\n - ESERIALIZE: Error in serializing/de-serializing\n - EINTERNAL: Server error\n - EPARTIAL: Partial error",
+        "title": "ErrorCode",
+        "enum": [
+          "EOK",
+          "EPERMS",
+          "EBADINPUT",
+          "ENOTFOUND",
+          "EEXISTS",
+          "EUNKNOWN",
+          "ESERIALIZE",
+          "EINTERNAL",
+          "EPARTIAL"
+        ],
+        "default": "EOK",
+        "x-displayname": "Error Code",
+        "x-ves-proto-enum": "ves.io.schema.ErrorCode"
+      },
+      "schemaErrorType": {
+        "type": "object",
+        "description": "Information about a error in API operation",
+        "title": "ErrorType",
+        "x-displayname": "Error Type",
+        "x-ves-proto-message": "ves.io.schema.ErrorType",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/schemaErrorCode"
+          },
+          "error_obj": {
+            "$ref": "#/components/schemas/protobufAny"
+          },
+          "message": {
+            "type": "string",
+            "description": " A human readable string of the error\n\nExample: ` \"value\"`",
+            "title": "message",
+            "x-displayname": "Message",
+            "x-ves-example": "value"
+          }
+        }
+      },
+      "schemaInitializerType": {
+        "type": "object",
+        "description": "Initializer is information about an initializer that has not yet completed.",
+        "title": "InitializerType",
+        "x-displayname": "Initializer",
+        "x-ves-proto-message": "ves.io.schema.InitializerType",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": " name of the service that is responsible for initializing this object.",
+            "title": "name",
+            "x-displayname": "Name"
+          }
+        }
+      },
+      "schemaInitializersType": {
+        "type": "object",
+        "description": "Initializers tracks the progress of initialization of a configuration object",
+        "title": "InitializersType",
+        "x-displayname": "Initializers",
+        "x-ves-proto-message": "ves.io.schema.InitializersType",
+        "properties": {
+          "pending": {
+            "type": "array",
+            "description": " Pending is a list of initializers that must execute in order before this object is initialized.\n When the last pending initializer is removed, and no failing result is set, the initializers\n struct will be set to nil and the object is considered as initialized and visible to all\n clients.",
+            "title": "pending",
+            "items": {
+              "$ref": "#/components/schemas/schemaInitializerType"
+            },
+            "x-displayname": "Pending"
+          },
+          "result": {
+            "$ref": "#/components/schemas/schemaStatusType"
+          }
+        }
+      },
+      "schemaObjectCreateMetaType": {
+        "type": "object",
+        "description": "ObjectCreateMetaType is metadata that can be specified in Create request of an object.",
+        "title": "ObjectCreateMetaType",
+        "x-displayname": "Create Metadata",
+        "x-ves-proto-message": "ves.io.schema.ObjectCreateMetaType",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "description": " Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n  ves.io.schema.rules.map.keys.string.max_len: 64\n  ves.io.schema.rules.map.keys.string.min_len: 1\n  ves.io.schema.rules.map.values.string.max_len: 1024\n  ves.io.schema.rules.map.values.string.min_len: 1\n",
+            "title": "annotations",
+            "x-displayname": "Annotation",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.map.keys.string.max_len": "64",
+              "ves.io.schema.rules.map.keys.string.min_len": "1",
+              "ves.io.schema.rules.map.values.string.max_len": "1024",
+              "ves.io.schema.rules.map.values.string.min_len": "1"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
+            "title": "description",
+            "maxLength": 1200,
+            "x-displayname": "Description",
+            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_bytes": "1200"
+            }
+          },
+          "disable": {
+            "type": "boolean",
+            "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "title": "disable",
+            "format": "boolean",
+            "x-displayname": "Disable"
+          },
+          "labels": {
+            "type": "object",
+            "description": " Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "title": "labels",
+            "x-displayname": "Labels"
+          },
+          "name": {
+            "type": "string",
+            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "acmecorp-web",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "staging"
+          }
+        }
+      },
+      "schemaObjectGetMetaType": {
+        "type": "object",
+        "description": "ObjectGetMetaType is metadata that can be specified in Get/Create response of an object.",
+        "title": "ObjectGetMetaType",
+        "x-displayname": "Get Metadata",
+        "x-ves-proto-message": "ves.io.schema.ObjectGetMetaType",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "description": " Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n  ves.io.schema.rules.map.keys.string.max_len: 64\n  ves.io.schema.rules.map.keys.string.min_len: 1\n  ves.io.schema.rules.map.values.string.max_len: 1024\n  ves.io.schema.rules.map.values.string.min_len: 1\n",
+            "title": "annotations",
+            "x-displayname": "Annotation",
+            "x-ves-example": "value",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.map.keys.string.max_len": "64",
+              "ves.io.schema.rules.map.keys.string.min_len": "1",
+              "ves.io.schema.rules.map.values.string.max_len": "1024",
+              "ves.io.schema.rules.map.values.string.min_len": "1"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
+            "title": "description",
+            "maxLength": 1200,
+            "x-displayname": "Description",
+            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_bytes": "1200"
+            }
+          },
+          "disable": {
+            "type": "boolean",
+            "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "title": "disable",
+            "format": "boolean",
+            "x-displayname": "Disable",
+            "x-ves-example": "true"
+          },
+          "labels": {
+            "type": "object",
+            "description": " Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "title": "labels",
+            "x-displayname": "Labels",
+            "x-ves-example": "value"
+          },
+          "name": {
+            "type": "string",
+            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "acmecorp-web",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "staging"
+          }
+        }
+      },
+      "schemaObjectReplaceMetaType": {
+        "type": "object",
+        "description": "ObjectReplaceMetaType is metadata that can be specified in Replace request of an object.",
+        "title": "ObjectReplaceMetaType",
+        "x-displayname": "Replace Metadata",
+        "x-ves-proto-message": "ves.io.schema.ObjectReplaceMetaType",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "description": " Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n  ves.io.schema.rules.map.keys.string.max_len: 64\n  ves.io.schema.rules.map.keys.string.min_len: 1\n  ves.io.schema.rules.map.values.string.max_len: 1024\n  ves.io.schema.rules.map.values.string.min_len: 1\n",
+            "title": "annotations",
+            "x-displayname": "Annotations",
+            "x-ves-example": "value",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.map.keys.string.max_len": "64",
+              "ves.io.schema.rules.map.keys.string.min_len": "1",
+              "ves.io.schema.rules.map.values.string.max_len": "1024",
+              "ves.io.schema.rules.map.values.string.min_len": "1"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
+            "title": "description",
+            "maxLength": 1200,
+            "x-displayname": "Description",
+            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_bytes": "1200"
+            }
+          },
+          "disable": {
+            "type": "boolean",
+            "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "title": "disable",
+            "format": "boolean",
+            "x-displayname": "Disable"
+          },
+          "labels": {
+            "type": "object",
+            "description": " Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "title": "labels",
+            "x-displayname": "Labels",
+            "x-ves-example": "value"
+          },
+          "name": {
+            "type": "string",
+            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "acmecorp-web",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "staging"
+          }
+        }
+      },
+      "schemaStatusMetaType": {
+        "type": "object",
+        "description": "StatusMetaType is metadata that all status must have.",
+        "title": "StatusMetaType",
+        "x-displayname": "Metadata",
+        "x-ves-proto-message": "ves.io.schema.StatusMetaType",
+        "properties": {
+          "creation_timestamp": {
+            "type": "string",
+            "description": " creation_timestamp is when the status object was created. It is used to find/tie-break\n for latest status object from same origin",
+            "title": "creation_timestamp",
+            "format": "date-time",
+            "x-displayname": "Creation Timestamp"
+          },
+          "creator_class": {
+            "type": "string",
+            "description": " Class of creator which created this StatusObject. This will be service's DNS FQDN.\n This will be set by the system based on client certificate information.\n\nExample: ` \"ver.re1.int.ves.io\"`",
+            "title": "creator_class",
+            "x-displayname": "Creator Class",
+            "x-ves-example": "ver.re1.int.ves.io"
+          },
+          "creator_id": {
+            "type": "string",
+            "description": " ID of creator which created this StatusObject. This will be a concrete identifier for service (e.g.\n identifying the environment also). This will be set by the system based on client certificate\n information\n\nExample: ` \"ver-instance-1\"`",
+            "title": "creator_id",
+            "x-displayname": "Creator ID",
+            "x-ves-example": "ver-instance-1"
+          },
+          "publish": {
+            "$ref": "#/components/schemas/schemaStatusPublishType"
+          },
+          "status_id": {
+            "type": "string",
+            "description": " status_id is a field used by the generator to distinguish (if necessary) between two status\n objects for the same config object from the same site and same service and potentially same\n daemon(creator-id)",
+            "title": "status_id",
+            "x-displayname": "Status ID"
+          },
+          "uid": {
+            "type": "string",
+            "description": " uid is the unique in time and space value for a StatusObject.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+          },
+          "vtrp_id": {
+            "type": "string",
+            "description": " Origin of this status exchanged by VTRP.",
+            "title": "vtrp_id",
+            "x-displayname": "VTRP ID"
+          },
+          "vtrp_stale": {
+            "type": "boolean",
+            "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
+            "title": "vtrp_stale",
+            "format": "boolean",
+            "x-displayname": "VTRP Stale"
+          }
+        }
+      },
+      "schemaStatusPublishType": {
+        "type": "string",
+        "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable",
+        "title": "StatusPublishType",
+        "enum": ["STATUS_DO_NOT_PUBLISH", "STATUS_PUBLISH"],
+        "default": "STATUS_DO_NOT_PUBLISH",
+        "x-displayname": "Status Publish Type",
+        "x-ves-proto-enum": "ves.io.schema.StatusPublishType"
+      },
+      "schemaStatusType": {
+        "type": "object",
+        "description": "Status is a return value for calls that don't return other objects.",
+        "title": "StatusType",
+        "x-displayname": "Status",
+        "x-ves-proto-message": "ves.io.schema.StatusType",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": " Suggested HTTP return code for this status, 0 if not set.\n\nExample: ` \"0\"`",
+            "title": "code",
+            "format": "int32",
+            "x-displayname": "Code",
+            "x-ves-example": "0"
+          },
+          "reason": {
+            "type": "string",
+            "description": " A human-readable description of why this operation is in the\n \"Failure\" status. If this value is empty there\n is no information available.\n\nExample: ` \"value\"`",
+            "title": "reason",
+            "x-displayname": "Reason",
+            "x-ves-example": "value"
+          },
+          "status": {
+            "type": "string",
+            "description": " Status of the operation.\n One of: \"Success\" or \"Failure\".\n\nExample: ` \"value\"`",
+            "title": "status",
+            "x-displayname": "Status",
+            "x-ves-example": "value"
+          }
+        }
+      },
+      "schemaSystemObjectGetMetaType": {
+        "type": "object",
+        "description": "SystemObjectGetMetaType is metadata generated or populated by the system for all persisted objects and\ncannot be updated directly by users.",
+        "title": "SystemObjectGetMetaType",
+        "x-displayname": "System Metadata",
+        "x-ves-proto-message": "ves.io.schema.SystemObjectGetMetaType",
+        "properties": {
+          "creation_timestamp": {
+            "type": "string",
+            "description": " CreationTimestamp is a timestamp representing the server time when this object was\n created. It is not guaranteed to be set in happens-before order across separate operations.\n Clients may not set this value. It is represented in RFC3339 form and is in UTC.",
+            "title": "creation_timestamp",
+            "format": "date-time",
+            "x-displayname": "Creation Timestamp"
+          },
+          "creator_class": {
+            "type": "string",
+            "description": " A value identifying the class of the user or service which created this configuration object.\n\nExample: ` \"value\"`",
+            "title": "creator_class",
+            "x-displayname": "Creator Class",
+            "x-ves-example": "prism"
+          },
+          "creator_id": {
+            "type": "string",
+            "description": " A value identifying the exact user or service that created this configuration object\n\nExample: ` \"value\"`",
+            "title": "creator_id",
+            "x-displayname": "Creator ID",
+            "x-ves-example": "dana@example.com"
+          },
+          "deletion_timestamp": {
+            "type": "string",
+            "description": " DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This\n field is set by the server when a graceful deletion is requested by the user, and is not\n directly settable by a client. The resource is expected to be deleted (no longer visible\n from resource lists, and not reachable by name) after the time in this field, once the\n finalizers list is empty. As long as the finalizers list contains items, deletion is blocked.\n Once the deletionTimestamp is set, this value may not be unset or be set further into the\n future, although it may be shortened or the resource may be deleted prior to this time.\n For example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react\n by sending a graceful termination signal to the containers in the pod. After that 30 seconds,\n the Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup,\n remove the pod from the API. In the presence of network partitions, this object may still\n exist after this timestamp, until an administrator or automated process can determine the\n resource is fully terminated.\n If not set, graceful deletion of the object has not been requested.\n\n Populated by the system when a graceful deletion is requested.\n Read-only.",
+            "title": "deletion_timestamp",
+            "format": "date-time",
+            "x-displayname": "Deletion Timestamp"
+          },
+          "finalizers": {
+            "type": "array",
+            "description": " Must be empty before the object is deleted from the registry. Each entry\n is an identifier for the responsible component that will remove the entry\n from the list. If the deletionTimestamp of the object is non-nil, entries\n in this list can only be removed.\n\nExample: ` \"value\"`",
+            "title": "finalizers",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Finalizers",
+            "x-ves-example": "value"
+          },
+          "initializers": {
+            "$ref": "#/components/schemas/schemaInitializersType"
+          },
+          "labels": {
+            "type": "object",
+            "description": " Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the operator or software. Values here can be interpreted\n by software(backend or frontend) to enable certain behavior e.g. things marked as soft-deleted(restorable).\n\nExample: ` \"'ves.io/soft-deleted''true'\"`",
+            "title": "labels",
+            "x-displayname": "Labels",
+            "x-ves-example": "'ves.io/soft-deleted': 'true'"
+          },
+          "modification_timestamp": {
+            "type": "string",
+            "description": " ModificationTimestamp is a timestamp representing the server time when this object was\n last modified.",
+            "title": "modification_timestamp",
+            "format": "date-time",
+            "x-displayname": "Modification Timestamp"
+          },
+          "object_index": {
+            "type": "integer",
+            "description": " Unique index for the object. Some objects need a unique integer index to be allocated\n for each object type. This field will be populated for all objects that need it and will\n be zero otherwise.\n\nExample: ` \"0\"`",
+            "title": "object_index",
+            "format": "int64",
+            "x-displayname": "Object Index",
+            "x-ves-example": "0"
+          },
+          "owner_view": {
+            "$ref": "#/components/schemas/schemaViewRefType"
+          },
+          "tenant": {
+            "type": "string",
+            "description": " Tenant to which this configuration object belongs to. The value for this is found from\n presented credentials.\n\nExample: ` \"acmecorp\"`",
+            "title": "tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "acmecorp"
+          },
+          "uid": {
+            "type": "string",
+            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+          }
+        }
+      },
+      "schemaViewRefType": {
+        "type": "object",
+        "description": "ViewRefType represents a reference to a view",
+        "title": "ViewRefType",
+        "x-displayname": "View Reference",
+        "x-ves-proto-message": "ves.io.schema.ViewRefType",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": " Kind of the view object\n\nExample: ` \"http_proxy\"`",
+            "title": "kind",
+            "x-displayname": "Kind",
+            "x-ves-example": "http_proxy"
+          },
+          "name": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. route's) name.\n\nExample: ` \"contactus-route\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "contactus-route"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. route's) namespace.\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          },
+          "uid": {
+            "type": "string",
+            "description": " UID of the view object\n\nExample: ` \"f3744323-1adf-4aaa-a5dc-0707c1d1bd82\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "f3744323-1adf-4aaa-a5dc-0707c1d1bd82"
+          }
+        }
+      },
+      "schemadns_proxyCreateSpecType": {
+        "type": "object",
+        "description": "Create DNS Proxy in a given namespace. If one already exists it will give an error.",
+        "title": "Create DNS Proxy",
+        "x-displayname": "Create DNS Proxy",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.CreateSpecType",
+        "properties": {
+          "cache_profile": {
+            "$ref": "#/components/schemas/virtual_hostDNSCacheProfile"
+          },
+          "ddos_profile": {
+            "$ref": "#/components/schemas/virtual_hostDNSDDoSProfile"
+          },
+          "irules": {
+            "type": "array",
+            "description": " Options for attaching iRules to dns proxy\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 16\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 16,
+            "items": {
+              "$ref": "#/components/schemas/schemaviewsObjectRefType"
+            },
+            "x-displayname": "iRules Ref",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "16",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          },
+          "lb_algorithm": {
+            "$ref": "#/components/schemas/dns_proxyLBAlgorithmType"
+          },
+          "origin_servers": {
+            "$ref": "#/components/schemas/dns_proxyOriginServers"
+          },
+          "protocol_inspection": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          },
+          "proxy_advertisement": {
+            "$ref": "#/components/schemas/dns_proxyProxyAdvertisementType"
+          },
+          "transport_type": {
+            "$ref": "#/components/schemas/dns_proxyTransportType"
+          }
+        }
+      },
+      "schemadns_proxyGetSpecType": {
+        "type": "object",
+        "description": "Get DNS Proxy details.",
+        "title": "Get DNS Proxy",
+        "x-displayname": "Get DNS Proxy",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.GetSpecType",
+        "properties": {
+          "cache_profile": {
+            "$ref": "#/components/schemas/virtual_hostDNSCacheProfile"
+          },
+          "ddos_profile": {
+            "$ref": "#/components/schemas/virtual_hostDNSDDoSProfile"
+          },
+          "irules": {
+            "type": "array",
+            "description": " Options for attaching iRules to dns proxy\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 16\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 16,
+            "items": {
+              "$ref": "#/components/schemas/schemaviewsObjectRefType"
+            },
+            "x-displayname": "iRules Ref",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "16",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          },
+          "lb_algorithm": {
+            "$ref": "#/components/schemas/dns_proxyLBAlgorithmType"
+          },
+          "origin_servers": {
+            "$ref": "#/components/schemas/dns_proxyOriginServers"
+          },
+          "protocol_inspection": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          },
+          "proxy_advertisement": {
+            "$ref": "#/components/schemas/dns_proxyProxyAdvertisementType"
+          },
+          "transport_type": {
+            "$ref": "#/components/schemas/dns_proxyTransportType"
+          }
+        }
+      },
+      "schemadns_proxyOriginServerType": {
+        "type": "object",
+        "description": "Origin Server",
+        "title": "Origin Server",
+        "x-displayname": "Origin Server",
+        "x-ves-oneof-field-choice": "[\"k8s_service\",\"public_ip\",\"public_name\"]",
+        "x-ves-oneof-field-proximity_choice": "[\"no_preference\",\"site_preferences\"]",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.OriginServerType",
+        "properties": {
+          "k8s_service": {
+            "$ref": "#/components/schemas/origin_poolOriginServerK8SService"
+          },
+          "no_preference": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "public_ip": {
+            "$ref": "#/components/schemas/origin_poolOriginServerPublicIP"
+          },
+          "public_name": {
+            "$ref": "#/components/schemas/origin_poolOriginServerPublicName"
+          },
+          "site_preferences": {
+            "$ref": "#/components/schemas/schemaviewsSiteReferenceListType"
+          }
+        }
+      },
+      "schemadns_proxyReplaceSpecType": {
+        "type": "object",
+        "description": "Replace DNS Proxy in a given namespace.",
+        "title": "Replace DNS Proxy",
+        "x-displayname": "Replace DNS Proxy",
+        "x-ves-proto-message": "ves.io.schema.dns_proxy.ReplaceSpecType",
+        "properties": {
+          "cache_profile": {
+            "$ref": "#/components/schemas/virtual_hostDNSCacheProfile"
+          },
+          "ddos_profile": {
+            "$ref": "#/components/schemas/virtual_hostDNSDDoSProfile"
+          },
+          "irules": {
+            "type": "array",
+            "description": " Options for attaching iRules to dns proxy\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 16\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 16,
+            "items": {
+              "$ref": "#/components/schemas/schemaviewsObjectRefType"
+            },
+            "x-displayname": "iRules Ref",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "16",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          },
+          "lb_algorithm": {
+            "$ref": "#/components/schemas/dns_proxyLBAlgorithmType"
+          },
+          "origin_servers": {
+            "$ref": "#/components/schemas/dns_proxyOriginServers"
+          },
+          "protocol_inspection": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          },
+          "proxy_advertisement": {
+            "$ref": "#/components/schemas/dns_proxyProxyAdvertisementType"
+          },
+          "transport_type": {
+            "$ref": "#/components/schemas/dns_proxyTransportType"
+          }
+        }
+      },
+      "schemaviewsObjectRefType": {
+        "type": "object",
+        "description": "This type establishes a direct reference from one object(the referrer) to another(the referred).\nSuch a reference is in form of tenant/namespace/name",
+        "title": "ObjectRefType",
+        "x-displayname": "Object reference",
+        "x-ves-proto-message": "ves.io.schema.views.ObjectRefType",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. route's) name.\n\nExample: ` \"contacts-route\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_bytes: 128\n  ves.io.schema.rules.string.min_bytes: 1\n",
+            "title": "name",
+            "minLength": 1,
+            "maxLength": 128,
+            "x-displayname": "Name",
+            "x-ves-example": "contacts-route",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_bytes": "128",
+              "ves.io.schema.rules.string.min_bytes": "1"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. route's) namespace.\n\nExample: ` \"ns1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 64\n",
+            "title": "namespace",
+            "maxLength": 64,
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_bytes": "64"
+            }
+          },
+          "tenant": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"acmecorp\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 64\n",
+            "title": "tenant",
+            "maxLength": 64,
+            "x-displayname": "Tenant",
+            "x-ves-example": "acmecorp",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_bytes": "64"
+            }
+          }
+        }
+      },
+      "schemaviewsSiteReferenceListType": {
+        "type": "object",
+        "description": "Carries the references to one or more sites",
+        "title": "SiteReferenceListType",
+        "x-displayname": "List of sites",
+        "x-ves-proto-message": "ves.io.schema.views.SiteReferenceListType",
+        "properties": {
+          "refs": {
+            "type": "array",
+            "description": " Reference to one or more sites\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 64\n",
+            "title": "Site References",
+            "maxItems": 64,
+            "items": {
+              "$ref": "#/components/schemas/schemaviewsObjectRefType"
+            },
+            "x-displayname": "Site References",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "64"
+            }
+          }
+        }
+      },
+      "viewsAdvertiseCustom": {
+        "type": "object",
+        "description": "This defines a way to advertise a VIP on specific sites",
+        "title": "AdvertiseWhere",
+        "x-displayname": "Advertise Custom",
+        "x-ves-proto-message": "ves.io.schema.views.AdvertiseCustom",
+        "properties": {
+          "advertise_where": {
+            "type": "array",
+            "description": " Where should this load balancer be available\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 32\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "Advertise Where",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "$ref": "#/components/schemas/viewsWhereType"
+            },
+            "x-displayname": "List of Sites to Advertise",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.repeated.max_items": "32",
+              "ves.io.schema.rules.repeated.min_items": "1",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          }
+        }
+      },
+      "viewsAdvertisePublic": {
+        "type": "object",
+        "description": "This defines a way to advertise a load balancer on public. If optional public_ip is provided, it will only be advertised on RE sites where that public_ip is available",
+        "title": "AdvertisePublic",
+        "x-displayname": "Advertise Public",
+        "x-ves-proto-message": "ves.io.schema.views.AdvertisePublic",
+        "properties": {
+          "public_ip": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          }
+        }
+      },
+      "viewsPrefixStringListType": {
+        "type": "object",
+        "description": "x-example: \"192.168.20.0/24\"\nList of IPv4 prefixes that represent an endpoint",
+        "title": "ipv4 prefix list",
+        "x-displayname": "IPv4 Prefix List",
+        "x-ves-proto-message": "ves.io.schema.views.PrefixStringListType",
+        "properties": {
+          "prefixes": {
+            "type": "array",
+            "description": " List of IPv4 prefixes that represent an endpoint\n\nExample: ` \"192.168.20.0/24\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.ipv4_prefix: true\n  ves.io.schema.rules.repeated.max_items: 128\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "ipv4 prefix list",
+            "maxItems": 128,
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "IPv4 Prefix List",
+            "x-ves-example": "192.168.20.0/24",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.items.string.ipv4_prefix": "true",
+              "ves.io.schema.rules.repeated.max_items": "128",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          }
+        }
+      },
+      "viewsSiteLocator": {
+        "type": "object",
+        "description": "This message defines a reference to a site or virtual site object",
+        "title": "SiteLocator",
+        "x-displayname": "Site or Virtual Site",
+        "x-ves-oneof-field-choice": "[\"site\",\"virtual_site\"]",
+        "x-ves-proto-message": "ves.io.schema.views.SiteLocator",
+        "properties": {
+          "site": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          },
+          "virtual_site": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          }
+        }
+      },
+      "viewsSiteNetwork": {
+        "type": "string",
+        "description": "This defines network types to be used on site\n\nAll inside and outside networks.\nAll inside and outside networks with internet VIP support.\nAll inside networks.\nAll outside networks.\nAll outside networks with internet VIP support.\nvK8s service network.\n - SITE_NETWORK_IP_FABRIC: VER IP Fabric network for the site\n\nThis Virtual network type is used for exposing virtual host on IP Fabric network on the VER site or\nfor endpoint in IP Fabric network",
+        "title": "SiteNetwork",
+        "enum": [
+          "SITE_NETWORK_INSIDE_AND_OUTSIDE",
+          "SITE_NETWORK_INSIDE",
+          "SITE_NETWORK_OUTSIDE",
+          "SITE_NETWORK_SERVICE",
+          "SITE_NETWORK_OUTSIDE_WITH_INTERNET_VIP",
+          "SITE_NETWORK_INSIDE_AND_OUTSIDE_WITH_INTERNET_VIP",
+          "SITE_NETWORK_IP_FABRIC"
+        ],
+        "default": "SITE_NETWORK_INSIDE_AND_OUTSIDE",
+        "x-displayname": "Site Network",
+        "x-ves-proto-enum": "ves.io.schema.views.SiteNetwork"
+      },
+      "viewsSiteNetworkSpecifiedVIP": {
+        "type": "string",
+        "description": "This defines network types to be used on virtual-site with specified VIP\n\nAll outside networks.\nAll inside networks.",
+        "title": "SiteNetworkSpecifiedVIP",
+        "enum": ["SITE_NETWORK_SPECIFIED_VIP_OUTSIDE", "SITE_NETWORK_SPECIFIED_VIP_INSIDE"],
+        "default": "SITE_NETWORK_SPECIFIED_VIP_OUTSIDE",
+        "x-displayname": "Site Network",
+        "x-ves-proto-enum": "ves.io.schema.views.SiteNetworkSpecifiedVIP"
+      },
+      "viewsSnatPoolConfiguration": {
+        "type": "object",
+        "description": "Snat Pool configuration",
+        "title": "SnatPoolConfiguration",
+        "x-displayname": "Snat Pool",
+        "x-ves-oneof-field-snat_pool_choice": "[\"no_snat_pool\",\"snat_pool\"]",
+        "x-ves-proto-message": "ves.io.schema.views.SnatPoolConfiguration",
+        "properties": {
+          "no_snat_pool": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "snat_pool": {
+            "$ref": "#/components/schemas/viewsPrefixStringListType"
+          }
+        }
+      },
+      "viewsWhereSite": {
+        "type": "object",
+        "description": "This defines a reference to a CE site along with network type and an optional ip address where a load balancer could be advertised",
+        "title": "WhereSite",
+        "x-displayname": "Site",
+        "x-ves-displayorder": "1,2,3",
+        "x-ves-proto-message": "ves.io.schema.views.WhereSite",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": " Use given IP address as VIP on the site\n\nExample: ` \"8.8.8.8\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "title": "IP address on the site",
+            "x-displayname": "IP Address",
+            "x-ves-example": "8.8.8.8",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.ipv4": "true"
+            }
+          },
+          "network": {
+            "$ref": "#/components/schemas/viewsSiteNetwork"
+          },
+          "site": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          }
+        }
+      },
+      "viewsWhereType": {
+        "type": "object",
+        "description": "This defines various options where a Loadbalancer could be advertised",
+        "title": "WhereType",
+        "x-displayname": "Select Where to Advertise",
+        "x-ves-displayorder": "4,5",
+        "x-ves-oneof-field-choice": "[\"advertise_on_public\",\"cloud_edge_segment\",\"segment\",\"site\",\"site_segment\",\"virtual_network\",\"virtual_site\",\"virtual_site_segment\",\"virtual_site_with_vip\",\"vk8s_service\"]",
+        "x-ves-oneof-field-port_choice": "[\"port\",\"port_ranges\",\"use_default_port\"]",
+        "x-ves-proto-message": "ves.io.schema.views.WhereType",
+        "properties": {
+          "advertise_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
+          "port": {
+            "type": "integer",
+            "description": "Exclusive with [port_ranges use_default_port]\n Port to Listen.\n\nValidation Rules:\n  ves.io.schema.rules.uint32.gte: 1\n  ves.io.schema.rules.uint32.lte: 65535\n",
+            "title": "Port to listen",
+            "format": "int64",
+            "x-displayname": "Listen Port",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.uint32.gte": "1",
+              "ves.io.schema.rules.uint32.lte": "65535"
+            }
+          },
+          "port_ranges": {
+            "type": "string",
+            "description": "Exclusive with [port use_default_port]\n A string containing a comma separated list of port ranges.\n Each port range consists of a single port or two ports separated by \"-\".\n\nExample: ` \"80,443,8080-8191,9080\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 512\n  ves.io.schema.rules.string.max_ports: 64\n  ves.io.schema.rules.string.min_len: 1\n  ves.io.schema.rules.string.unique_port_range_list: true\n",
+            "title": "Port ranges to listen",
+            "minLength": 1,
+            "maxLength": 512,
+            "x-displayname": "Listen Port Ranges",
+            "x-ves-example": "80,443,8080-8191,9080",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "512",
+              "ves.io.schema.rules.string.max_ports": "64",
+              "ves.io.schema.rules.string.min_len": "1",
+              "ves.io.schema.rules.string.unique_port_range_list": "true"
+            }
+          },
+          "site": {
+            "$ref": "#/components/schemas/viewsWhereSite"
+          },
+          "use_default_port": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "virtual_network": {
+            "$ref": "#/components/schemas/viewsWhereVirtualNetwork"
+          },
+          "virtual_site": {
+            "$ref": "#/components/schemas/viewsWhereVirtualSite"
+          },
+          "virtual_site_with_vip": {
+            "$ref": "#/components/schemas/viewsWhereVirtualSiteSpecifiedVIP"
+          },
+          "vk8s_service": {
+            "$ref": "#/components/schemas/viewsWhereVK8SService"
+          }
+        }
+      },
+      "viewsWhereVK8SService": {
+        "type": "object",
+        "description": "This defines a reference to a RE site or virtual site where a load balancer could be advertised in the vK8s service network",
+        "title": "WhereVK8SService",
+        "x-displayname": "vK8s Services on RE",
+        "x-ves-displayorder": "3",
+        "x-ves-oneof-field-choice": "[\"site\",\"virtual_site\"]",
+        "x-ves-proto-message": "ves.io.schema.views.WhereVK8SService",
+        "properties": {
+          "site": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          },
+          "virtual_site": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          }
+        }
+      },
+      "viewsWhereVirtualNetwork": {
+        "type": "object",
+        "description": "Parameters to advertise on a given virtual network",
+        "title": "WhereVirtualNetwork",
+        "x-displayname": "Virtual Network",
+        "x-ves-displayorder": "1,2,10",
+        "x-ves-oneof-field-v6_vip_choice": "[\"default_v6_vip\",\"specific_v6_vip\"]",
+        "x-ves-oneof-field-vip_choice": "[\"default_vip\",\"specific_vip\"]",
+        "x-ves-proto-message": "ves.io.schema.views.WhereVirtualNetwork",
+        "properties": {
+          "default_v6_vip": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "default_vip": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "specific_v6_vip": {
+            "type": "string",
+            "description": "Exclusive with [default_v6_vip]\n Use given IPV6 address as VIP on virtual Network\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv6: true\n",
+            "title": "Specific V6 VIP",
+            "x-displayname": "Specific V6 VIP",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.ipv6": "true"
+            }
+          },
+          "specific_vip": {
+            "type": "string",
+            "description": "Exclusive with [default_vip]\n Use given IPV4 address as VIP on virtual Network\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "title": "Specific VIP",
+            "x-displayname": "Specific V4 VIP",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.ipv4": "true"
+            }
+          },
+          "virtual_network": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          }
+        }
+      },
+      "viewsWhereVirtualSite": {
+        "type": "object",
+        "description": "This defines a reference to a customer site virtual site along with network type where a load balancer could be advertised",
+        "title": "WhereVirtualSite",
+        "x-displayname": "Virtual Site",
+        "x-ves-displayorder": "1,2",
+        "x-ves-proto-message": "ves.io.schema.views.WhereVirtualSite",
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/viewsSiteNetwork"
+          },
+          "virtual_site": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          }
+        }
+      },
+      "viewsWhereVirtualSiteSpecifiedVIP": {
+        "type": "object",
+        "description": "This defines a reference to a customer site virtual site along with network type and IP where a load balancer could be advertised",
+        "title": "WhereVirtualSiteSpecifiedVIP",
+        "x-displayname": "Virtual Site with Specified VIP",
+        "x-ves-proto-message": "ves.io.schema.views.WhereVirtualSiteSpecifiedVIP",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": " Use given IP address as VIP on the site\n\nExample: ` \"8.8.8.8\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "title": "IP address on the site",
+            "x-displayname": "IP Address",
+            "x-ves-example": "8.8.8.8",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.ipv4": "true"
+            }
+          },
+          "network": {
+            "$ref": "#/components/schemas/viewsSiteNetworkSpecifiedVIP"
+          },
+          "virtual_site": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          }
+        }
+      },
+      "virtual_hostDNSCacheProfile": {
+        "type": "object",
+        "description": "DNS Cache specifies cache configuration",
+        "title": "DNS Cache",
+        "x-displayname": "DNS Cache",
+        "x-ves-oneof-field-cache_profile_choice": "[\"cache_size\",\"disable_cache_profile\"]",
+        "x-ves-proto-message": "ves.io.schema.virtual_host.DNSCacheProfile",
+        "properties": {
+          "cache_size": {
+            "type": "integer",
+            "description": "Exclusive with [disable_cache_profile]\n cache size\n\nExample: ` \"1000\"`\n\nValidation Rules:\n  ves.io.schema.rules.uint32.gte: 1\n  ves.io.schema.rules.uint32.lte: 10240\n",
+            "title": "Cache size",
+            "format": "int64",
+            "x-displayname": "cache size",
+            "x-ves-example": "1000",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.uint32.gte": "1",
+              "ves.io.schema.rules.uint32.lte": "10240"
+            }
+          },
+          "disable_cache_profile": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          }
+        }
+      },
+      "virtual_hostDNSDDoSProfile": {
+        "type": "object",
+        "description": "DDoS Protection Rule for DNS",
+        "title": "DDoS Protection",
+        "x-displayname": "DDoS Protection",
+        "x-ves-oneof-field-ddos_mitigation_choice": "[\"disable_ddos_mitigation\",\"enable_ddos_mitigation\"]",
+        "x-ves-proto-message": "ves.io.schema.virtual_host.DNSDDoSProfile",
+        "properties": {
+          "disable_ddos_mitigation": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "enable_ddos_mitigation": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "config"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tenant_management.allowed_tenant",
     "description": "\nAllowed tenant object will allow tenant in the name field to manage tenant in which its created.\nAdmin can create allowed_tenant configuration if the tenant needs to be managed by tenant in allowed_tenant\nconfiguration - by \"allow\"ing access to manage.\nAdmin can precisely limit access of allowed tenant via selecting required groups (`user_groups`) which underlying\nhas the namespace and roles configured.\n\nTenant which is creating allowed_tenant configuration is called `Managed Tenant` or `MT` and tenant ID specified\nin the spec configuration is called as `Original Tenant` or `OT`.\n\nAdmin of OT can create a corresponding managed_tenant configuration in their tenant which can be treated as an\nintent to manage and creation of this allowed_tenant configuration in MT grants access for OT into MT.\nBoth configuration - allowed_tenant in MT and managed_tenant in OT, need to exist for managed tenant access to work.\n\nDepending on a tenant's current plan, certain tenant may already have default allowed tenant configurations to provide\naccess for Support Team which can be precisely managed via additional APIs.",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -355,7 +355,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-allowed_tenant-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.Create",
+        "tags": ["web"]
       },
       "x-displayname": "Allowed Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.allowed_tenant.API",
@@ -494,7 +495,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tenant_management-allowed_tenant-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.tenant_management.allowed_tenant.API.Replace",
+        "tags": ["web"]
       },
       "x-displayname": "Allowed Tenant",
       "x-ves-proto-service": "ves.io.schema.tenant_management.allowed_tenant.API",
@@ -778,7 +780,7 @@
           },
           {
             "name": "response_format",
-            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
             "in": "query",
             "required": false,
             "x-displayname": "Broken Referred Objects",
@@ -948,7 +950,7 @@
     "schemas": {
       "allowed_tenantAllowedAccessConfig": {
         "type": "object",
-        "description": "Shape for storing access config for a tenant.\ndefault field options - disable, read-only, read_write provided for easy acccess controls\nand underlying allowed groups corresponding to each usecase will be updated accordingly.\nmainly used for storing state for support related tenant access.",
+        "description": "Shape for storing access config for a tenant.\ndefault field options - disable, read-only, read_write provided for easy access controls\nand underlying allowed groups corresponding to each usecase will be updated accordingly.\nmainly used for storing state for support related tenant access.",
         "title": "AccessConfig",
         "x-displayname": "Access Config",
         "x-ves-displayorder": "2,1",
@@ -1211,10 +1213,10 @@
           },
           "reason": {
             "type": "string",
-            "description": " x-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": " A human readable string explaining the reason for reaching this condition\n\nExample: ` \"Insufficient memory in data plane\"`",
             "title": "reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Insufficient memory in data plane"
           },
           "service_name": {
             "type": "string",
@@ -1224,7 +1226,7 @@
           },
           "status": {
             "type": "string",
-            "description": " Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
+            "description": " Status of the condition\n \"Success\" Validation has succeeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
             "title": "status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
@@ -2113,21 +2115,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

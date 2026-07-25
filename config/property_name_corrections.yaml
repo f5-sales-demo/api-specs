@@ -16,6 +16,13 @@
 # If the API returns the misspelled key, the spec is
 # correct and the fix must happen upstream.
 #
+# never_apply: true marks a correction that must never be
+# applied, because the live API requires the misspelled
+# key and silently ignores the corrected one. The
+# fix_property_names transform skips such rules
+# unconditionally, and verify_property_names refuses to
+# promote them to verified: true.
+#
 # Last verified: 2026-06-09
 # Tenant: example-tenant
 
@@ -81,17 +88,32 @@ corrections:
       'private_advertisement'. Inconsistent upstream typo.
       9 occurrences across HTTP/TCP/UDP LB types.
 
+  # --- NEVER APPLY: the misspelling is the wire contract ---
+
   - schema: fleetBlockedServicesListType
     old_key: blocked_sevice
     new_key: blocked_service
     verified: false
-    api_status: upstream_typo
+    never_apply: true
+    api_status: upstream_typo_permanent
     probe_endpoint: >-
       /api/config/namespaces/system/azure_vnet_sites
-    probe_method: GET
+    probe_method: PUT
     notes: >-
-      API accepts and returns 'blocked_sevice'.
-      Verified via Azure VNET site creation.
+      NEVER APPLY THIS RENAME. 'blocked_sevice' is the live wire key.
+      Proven against the live API: a PUT whose body uses 'blocked_sevice'
+      returns HTTP 200 and the value round-trips on the subsequent GET,
+      while the correctly spelled 'blocked_service' is accepted by the
+      request parser but silently ignored -- the setting is never applied
+      and never returned. Renaming the property in the spec therefore
+      breaks every downstream consumer generated from it: the request
+      would carry a key the server drops on the floor, with no error.
+      A blind text replacement downstream did exactly this and broke the
+      field on the wire -- see terraform-provider-xcsh#1257. The rename
+      stays unapplied permanently; the typo must be fixed by F5 upstream,
+      with a server-side alias, before the spec can follow.
+      'never_apply: true' is enforced in code by the fix_property_names
+      transform and by verify_property_names, not by convention alone.
 
   # --- Unverifiable on staging tenant ---
 

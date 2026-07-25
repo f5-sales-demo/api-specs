@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.device_id",
     "description": "Use this API to interact with Application Traffic Insights endpoitns\nAll calls allow a blob as the payload and return a blob as the return parameter",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -1770,7 +1770,7 @@
     },
     "/api/shape/dip/namespaces/system/provision/regions": {
       "get": {
-        "summary": "Get avaialable Regions for Application Traffic Insights",
+        "summary": "Get available Regions for Application Traffic Insights",
         "description": "Returns Application Traffic Insights regions information for the tenant",
         "operationId": "ves.io.schema.shape.device_id.CustomAPI.GetRegions",
         "responses": {
@@ -2735,21 +2735,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

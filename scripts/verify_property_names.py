@@ -82,9 +82,7 @@ def _probe_correction(
 
         if has_new and not has_old:
             result["status"] = "fix_spec"
-            result["recommendation"] = (
-                f"API uses '{new_key}' — spec should be corrected"
-            )
+            result["recommendation"] = f"API uses '{new_key}' — spec should be corrected"
         elif has_old and not has_new:
             result["status"] = "upstream_typo"
             result["recommendation"] = (
@@ -92,9 +90,7 @@ def _probe_correction(
             )
         elif has_old and has_new:
             result["status"] = "both_present"
-            result["recommendation"] = (
-                "API returns both key forms — needs manual investigation"
-            )
+            result["recommendation"] = "API returns both key forms — needs manual investigation"
         else:
             result["status"] = "neither_found"
             result["recommendation"] = (
@@ -116,6 +112,9 @@ def _update_config(corrections: list[dict], results: list[dict]) -> bool:
         if result["status"] != "fix_spec":
             continue
         for correction in corrections:
+            if correction.get("never_apply", False):
+                # Wire contract depends on the misspelled key -- never promote.
+                continue
             if (
                 correction["schema"] == result["schema"]
                 and correction["old_key"] == result["old_key"]
@@ -165,17 +164,13 @@ def main() -> int:
         auth = load_auth_from_config(val_config)
     except ValueError as e:
         console.print(f"[red]{e}[/red]")
-        console.print(
-            "[yellow]Set F5XC_API_URL and F5XC_API_TOKEN to probe the API[/yellow]"
-        )
+        console.print("[yellow]Set F5XC_API_URL and F5XC_API_TOKEN to probe the API[/yellow]")
         return 1
 
     results = []
     with auth:
         for correction in corrections:
-            console.print(
-                f"  Probing {correction['schema']}.{correction['old_key']}..."
-            )
+            console.print(f"  Probing {correction['schema']}.{correction['old_key']}...")
             result = _probe_correction(auth, correction)
             results.append(result)
 

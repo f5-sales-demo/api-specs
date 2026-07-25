@@ -1,0 +1,10 @@
+# The repository-root .gitignore excludes any directory named "specs" so the
+# pipeline's scratch directories (specs/original, specs/transformed) stay out
+# of git. That pattern is unanchored, so it also matched release/specs -- the
+# published artifact this repository exists to ship. Newly generated spec
+# files were therefore invisible to `git add`, and the committed artifact
+# silently froze while the transform pipeline kept improving.
+#
+# The root .gitignore is a governance-managed file (see .claude/governance.json)
+# and is re-synced from docs-control, so the exclusion is undone here instead.
+!specs/

@@ -450,6 +450,51 @@ jobs:
             echo "**Content Hash**: ${CONTENT_HASH}"
           } >> "${GITHUB_STEP_SUMMARY}"
 
+  notify-downstream:
+    name: Notify api-specs-enriched
+    needs: [check-release-needed, release]
+    # Fire only on a release that actually published. `release` is skipped
+    # whenever `check-release-needed` says there is nothing to publish, and it
+    # fails if `gh release create` fails; `== 'success'` is false in both
+    # cases, so a skipped or failed release never dispatches. This job is
+    # deliberately separate from `release` rather than a step inside it: the
+    # dispatch needs no repository write at all, and keeping it out of the
+    # `contents: write` job keeps that scope on the steps that earn it.
+    if: needs.release.result == 'success'
+    runs-on: ubuntu-latest
+    # The cross-repo dispatch authenticates with REPO_ADMIN_TOKEN, not
+    # GITHUB_TOKEN (a repository's own GITHUB_TOKEN cannot dispatch to another
+    # repository), so nothing here needs a GITHUB_TOKEN write scope.
+    permissions:
+      contents: read
+
+    steps:
+      # Mirrors the next hop in the chain: api-specs-enriched notifies its own
+      # downstream repos with peter-evans/repository-dispatch and a PAT. The
+      # payload is passed as an action input, never interpolated into a `run:`
+      # body.
+      - name: Dispatch upstream-specs-released to api-specs-enriched
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.REPO_ADMIN_TOKEN }}
+          repository: f5-sales-demo/api-specs-enriched
+          event-type: upstream-specs-released
+          # yamllint disable-line rule:line-length
+          client-payload: '{"version":"${{ needs.check-release-needed.outputs.version }}","release_tag":"v${{ needs.check-release-needed.outputs.version }}","release_url":"${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ needs.check-release-needed.outputs.version }}","trigger_source":"${{ github.repository }}","run_id":"${{ github.run_id }}"}'
+
+      - name: Summary
+        env:
+          VERSION: ${{ needs.check-release-needed.outputs.version }}
+        run: |
+          echo "::notice::Dispatched 'upstream-specs-released' (v${VERSION}) to f5-sales-demo/api-specs-enriched"
+          {
+            echo "### Downstream Notified 📣"
+            echo ""
+            echo "**Event**: \`upstream-specs-released\`"
+            echo "**Target**: \`f5-sales-demo/api-specs-enriched\`"
+            echo "**Version**: v${VERSION}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
   skip-release:
     name: Skip Release (No Changes)
     needs: [validate, check-release-needed]
@@ -476,10 +521,13 @@ jobs:
 
   failure-tracker:
     name: Failure Tracker
-    needs: [validate, check-release-needed, release]
+    needs: [validate, check-release-needed, release, notify-downstream]
     # Runs on success too, so the tracker it opens is also the thing that
-    # closes it. `release` is skipped when there is nothing to publish, which
-    # is not a failure.
+    # closes it. `release` and `notify-downstream` are skipped when there is
+    # nothing to publish, which is not a failure. A dispatch that fails after
+    # a successful release is tracked here: it leaves the published correction
+    # unconsumed downstream, which is exactly the silent stall this job exists
+    # to make loud.
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     # Opens, updates or closes the single pipeline-failure tracking issue.
@@ -495,6 +543,7 @@ jobs:
           VALIDATE_RESULT: ${{ needs.validate.result }}
           CHECK_RESULT: ${{ needs.check-release-needed.result }}
           RELEASE_RESULT: ${{ needs.release.result }}
+          NOTIFY_RESULT: ${{ needs.notify-downstream.result }}
         with:
           script: |
             // One tracker, not one issue per run. The previous version opened
@@ -547,6 +596,7 @@ jobs:
               `| Validate | ${process.env.VALIDATE_RESULT} |`,
               `| Check Release | ${process.env.CHECK_RESULT} |`,
               `| Release | ${process.env.RELEASE_RESULT} |`,
+              `| Notify Downstream | ${process.env.NOTIFY_RESULT} |`,
               '',
               'The failing step names the cause in its own log; the full',
               'Spectral gate report is in the `validation-reports` artifact.',

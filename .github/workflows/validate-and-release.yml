@@ -23,9 +23,10 @@ on:
         type: boolean
         default: false
 
-# Read-only default; jobs that write declare their own scope. Only `notify` needs
-# issues: write (it opens a failure issue) and `release` needs contents: write
-# (it creates the tag and release).
+# Read-only default; jobs that write declare their own scope: `validate` needs
+# issues: write (it syncs discrepancy issues), `failure-tracker` needs
+# issues: write (it opens, updates and closes the pipeline-failure issue), and
+# `release` needs contents: write (it creates the tag and release).
 permissions:
   contents: read
 
@@ -210,6 +211,10 @@ jobs:
           echo "hash=${HASH}" >> "${GITHUB_OUTPUT}"
 
       - name: Upload validation reports
+        # Always: the Spectral gate above is the step most likely to fail, and
+        # its report is the only place the offending rule and file are
+        # recorded in full.
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: validation-reports
@@ -469,50 +474,112 @@ jobs:
             echo "**Content Hash**: ${CONTENT_HASH}"
           } >> "${GITHUB_STEP_SUMMARY}"
 
-  notify:
-    name: Notify on Failure
+  failure-tracker:
+    name: Failure Tracker
     needs: [validate, check-release-needed, release]
-    if: failure()
+    # Runs on success too, so the tracker it opens is also the thing that
+    # closes it. `release` is skipped when there is nothing to publish, which
+    # is not a failure.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
-    # Opens the pipeline-failure issue.
+    # Opens, updates or closes the single pipeline-failure tracking issue.
     permissions:
       contents: read
       issues: write
 
     steps:
-      - name: Create issue on failure
+      - name: Reconcile the failure tracker with this run
         uses: actions/github-script@v8
+        env:
+          PIPELINE_FAILED: ${{ contains(needs.*.result, 'failure') }}
+          VALIDATE_RESULT: ${{ needs.validate.result }}
+          CHECK_RESULT: ${{ needs.check-release-needed.result }}
+          RELEASE_RESULT: ${{ needs.release.result }}
         with:
           script: |
-            const date = new Date().toISOString().split('T')[0];
-            const title = `Validation Pipeline Failed - ${date}`;
-            const body = `
-            ## Validation Pipeline Failure
+            // One tracker, not one issue per run. The previous version opened
+            // a dated issue on every failure: thirteen consecutive runs
+            // produced thirteen near-identical issues, none of which named a
+            // cause, so a two-week outage read as routine noise. A single
+            // issue that accumulates occurrences -- and closes itself when a
+            // run succeeds -- is the signal.
+            const marker = '<!-- validate-and-release-failure-tracker -->';
+            const failed = process.env.PIPELINE_FAILED === 'true';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/` +
+              `${context.repo.repo}/actions/runs/${context.runId}`;
 
-            **Run ID**: ${{ github.run_id }}
-            **Date**: ${date}
-            **Trigger**: ${{ github.event_name }}
-
-            ### Job Results
-            - Validate: ${{ needs.validate.result }}
-            - Check Release: ${{ needs.check-release-needed.result }}
-            - Release: ${{ needs.release.result }}
-
-            ### Actions
-            1. Check the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            2. Review validation reports in artifacts
-            3. Fix any issues and re-run the pipeline
-
-            /cc @${{ github.repository_owner }}
-            `;
-
-            await github.rest.issues.create({
+            const open = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: title,
-              body: body,
-              labels: ['automation', 'bug']
+              state: 'open',
+              labels: 'automation',
+              per_page: 100,
             });
+            const tracker = open.find((issue) => (issue.body || '').includes(marker));
+
+            if (!failed) {
+              if (tracker) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: tracker.number,
+                  body: `Recovered: ${runUrl}`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: tracker.number,
+                  state: 'closed',
+                  state_reason: 'completed',
+                });
+                core.notice(`Pipeline recovered; closed #${tracker.number}`);
+              }
+              return;
+            }
+
+            const occurrence = [
+              `**Run**: ${runUrl}`,
+              `**Trigger**: ${context.eventName}`,
+              `**Date**: ${new Date().toISOString().split('T')[0]}`,
+              '',
+              '| Job | Result |',
+              '| --- | --- |',
+              `| Validate | ${process.env.VALIDATE_RESULT} |`,
+              `| Check Release | ${process.env.CHECK_RESULT} |`,
+              `| Release | ${process.env.RELEASE_RESULT} |`,
+              '',
+              'The failing step names the cause in its own log; the full',
+              'Spectral gate report is in the `validation-reports` artifact.',
+            ].join('\n');
+
+            if (tracker) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: tracker.number,
+                body: `Still failing.\n\n${occurrence}`,
+              });
+              core.notice(`Still failing; see #${tracker.number}`);
+              return;
+            }
+
+            const created = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Validate and Release is failing',
+              body: [
+                marker,
+                '## Validate and Release is failing',
+                '',
+                'No release artifact publishes while this is red, which',
+                'strands every downstream consumer. This issue collects each',
+                'further occurrence and closes itself when a run succeeds.',
+                '',
+                occurrence,
+              ].join('\n'),
+              labels: ['automation', 'bug'],
+            });
+            core.notice(`Pipeline failed; opened #${created.data.number}`);
 
   update-docs:
     name: Update Documentation

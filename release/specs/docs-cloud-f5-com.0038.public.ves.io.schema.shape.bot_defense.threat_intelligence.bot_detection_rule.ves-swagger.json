@@ -2701,6 +2701,14 @@
             "x-ves-example": "1"
           }
         }
+      },
+      "threat_intelligenceK8sClusterDeliveryStatus": {
+        "type": "object",
+        "title": "K8sClusterDeliveryStatus",
+        "description": "Delivery status of a bot detection rule for a single Kubernetes cluster. Upstream references this message but does not publish its schema, so the shape of the value is unspecified.",
+        "x-displayname": "Kubernetes Cluster Delivery Status",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.K8sClusterDeliveryStatus",
+        "x-f5xc-upstream-defect": "Stub for a message F5 references but never emits. See https://github.com/f5-sales-demo/api-specs/issues/680"
       }
     },
     "securitySchemes": {

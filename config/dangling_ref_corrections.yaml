@@ -1,0 +1,72 @@
+---
+# Corrections for dangling `$ref` targets in the upstream F5 XC OpenAPI specs.
+# Applied by the fix_dangling_refs transform during `make transform`.
+#
+# A dangling `$ref` points at a component schema that no spec defines. It is
+# not a cosmetic defect: Spectral reports it as an `invalid-ref` error, the
+# release gate allows zero errors, and the whole publish stops -- so a single
+# missing message upstream strands every downstream consumer.
+#
+# SCOPE -- upstream defects only.
+# Every entry here exists because F5 ships a reference without its target. A
+# correction is only ever a repair of that specific breakage; it must never
+# invent API surface. Before adding one, confirm the target is genuinely
+# absent from the whole corpus rather than renamed:
+#
+#   python - <<'PY'
+#   import glob, json, re
+#   for path in sorted(glob.glob("specs/original/*.json")):
+#       spec = json.load(open(path))
+#       schemas = spec.get("components", {}).get("schemas", {})
+#       print(*(k for k in schemas if "<fragment>" in k), sep="\n")
+#   PY
+#
+# If the target exists under a different name, the fix is a rename in
+# `reconciliation.schema_renames` (config/validation.yaml), not a stub here.
+#
+# remedy: stub
+#   Adds an untyped object schema so the reference resolves. This is the
+#   honest repair when the target is absent everywhere: the member exists on
+#   the wire, only its shape is unpublished, and an untyped object is exactly
+#   how upstream itself models the neighbouring per-cluster status maps (see
+#   `bot_detection_ruleK8sClusterRuleConfig.sync_status_per_k8s_cluster`).
+#   A stub is never applied when upstream ships a real definition, and never
+#   injected into a spec that does not reference it, so the entry becomes
+#   inert -- not wrong -- the day F5 fixes the generator.
+#
+# Guarded by tests/test_dangling_refs.py, which fails on any dangling `$ref`
+# left in the published artifact and on any entry missing its rationale.
+
+corrections:
+  - schema: threat_intelligenceK8sClusterDeliveryStatus
+    file_pattern: shape.bot_defense.threat_intelligence.bot_detection_rule
+    referenced_by:
+      - threat_intelligenceBotInfraDeploymentDetails.properties.k8s_cluster_status
+    api_status: upstream_defect
+    remedy: stub
+    issue: https://github.com/f5-sales-demo/api-specs/issues/680
+    definition:
+      type: object
+      title: K8sClusterDeliveryStatus
+      description: >-
+        Delivery status of a bot detection rule for a single Kubernetes
+        cluster. Upstream references this message but does not publish its
+        schema, so the shape of the value is unspecified.
+      x-displayname: Kubernetes Cluster Delivery Status
+      x-ves-proto-message: >-
+        ves.io.schema.shape.bot_defense.threat_intelligence.K8sClusterDeliveryStatus
+      x-f5xc-upstream-defect: >-
+        Stub for a message F5 references but never emits. See
+        https://github.com/f5-sales-demo/api-specs/issues/680
+    notes: >-
+      BotInfraDeploymentDetails declares a three-arm oneof
+      ("bot_infra_status", "k8s_cluster_status", "region_status") and F5's
+      generator emits the schemas for two of the three arms. The message
+      ves.io.schema.shape.bot_defense.threat_intelligence.K8sClusterDeliveryStatus
+      appears nowhere in the 283-file corpus under any name, so there is
+      nothing to point the reference at. Dropping the member instead would
+      delete a live oneof arm from the API surface and desynchronise it from
+      the x-ves-oneof-field-status marker that still lists it, which misleads
+      consumers more than an unspecified value does. The reference first
+      reached the gate on 2026-07-13; every daily release failed from then
+      until this correction landed.

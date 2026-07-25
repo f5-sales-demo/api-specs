@@ -34,6 +34,14 @@ UNUSED_RULES = frozenset(
     }
 )
 
+# Spectral severity codes.
+ERROR_SEVERITY = 0
+WARNING_SEVERITY = 1
+
+# Cap on the violations listed when the gate fails, so a rule that fires on
+# every spec cannot bury the log.
+MAX_REPORTED_OFFENDERS = 25
+
 
 def map_violation_to_discrepancy(violation: dict[str, Any]) -> Discrepancy:
     """Convert a Spectral JSON violation to a Discrepancy object."""
@@ -133,6 +141,36 @@ class SpectralAdapter:
             f"[green]Spectral report: {output_path} ({len(discrepancies)} issues)[/green]"
         )
 
+    @staticmethod
+    def _report_offenders(
+        violations: list[dict[str, Any]],
+        severity: int,
+    ) -> None:
+        """Print the violations that breached the gate.
+
+        The counts alone say nothing actionable: a dangling ``$ref`` reported
+        as ``1 errors exceeds max 0`` went undiagnosed through thirteen
+        consecutive daily runs because the cause lived only in an uploaded
+        artifact. Printing the rule, the file, the location and the message
+        makes the log itself sufficient.
+        """
+        offenders = [v for v in violations if v.get("severity") == severity]
+        label = "error" if severity == ERROR_SEVERITY else "warning"
+        console.print(f"[red]Offending {label}s ({len(offenders)}):[/red]")
+
+        for violation in offenders[:MAX_REPORTED_OFFENDERS]:
+            source = violation.get("source", "")
+            filename = Path(source).name if source else "<unknown file>"
+            location = ".".join(str(p) for p in violation.get("path", []))
+            console.print(
+                f"  [red]{violation.get('code', '<unknown rule>')}[/red] "
+                f"{filename} {location}: {violation.get('message', '')}"
+            )
+
+        remaining = len(offenders) - MAX_REPORTED_OFFENDERS
+        if remaining > 0:
+            console.print(f"  [dim]... and {remaining} more[/dim]")
+
     def check_gate(
         self,
         violations: list[dict[str, Any]],
@@ -143,19 +181,17 @@ class SpectralAdapter:
         error_count = sum(1 for v in violations if v.get("severity") == 0)
         warn_count = sum(1 for v in violations if v.get("severity") == 1)
 
-        console.print(
-            f"[dim]Gate check: {error_count} errors, {warn_count} warnings[/dim]"
-        )
+        console.print(f"[dim]Gate check: {error_count} errors, {warn_count} warnings[/dim]")
 
         if max_errors is not None and error_count > max_errors:
-            console.print(
-                f"[red]Gate FAILED: {error_count} errors exceeds max {max_errors}[/red]"
-            )
+            console.print(f"[red]Gate FAILED: {error_count} errors exceeds max {max_errors}[/red]")
+            self._report_offenders(violations, ERROR_SEVERITY)
             return False
         if max_warnings is not None and warn_count > max_warnings:
             console.print(
                 f"[red]Gate FAILED: {warn_count} warnings exceeds max {max_warnings}[/red]"
             )
+            self._report_offenders(violations, WARNING_SEVERITY)
             return False
 
         console.print("[green]Gate PASSED[/green]")
@@ -214,9 +250,7 @@ def main() -> int:
         violations = adapter.run_lint(spec_dir)
         adapter.write_report(violations, output)
 
-        console.print(
-            f"[bold]Spectral discover: {len(violations)} violations found[/bold]"
-        )
+        console.print(f"[bold]Spectral discover: {len(violations)} violations found[/bold]")
         return 0
 
     # gate mode

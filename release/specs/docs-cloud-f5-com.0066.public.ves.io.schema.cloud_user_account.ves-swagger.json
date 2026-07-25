@@ -1,0 +1,473 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.cloud_user_account",
+    "description": "Cloud User Account represents an account from a specified cloud provider.",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@f5.com"
+    }
+  },
+  "paths": {
+    "/api/cloud-data/namespaces/system/cloud_user_accounts/{cloud_user_account_name}/onboarded_networks": {
+      "get": {
+        "summary": "Get Onboarded Cloud Networks",
+        "description": "API to get onboarded cloud networks for given cloud user account",
+        "operationId": "ves.io.schema.cloud_user_account.CustomAPI.GetOnboardedCloudNetworks",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cloud_user_accountGetOnboardedCloudNetworksResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "cloud_user_account_name",
+            "description": "Cloud User Account Name\n\nx-required\nCloud User Account name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Cloud User Account Name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_user_account-customapi-getonboardedcloudnetworks"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.cloud_user_account.CustomAPI.GetOnboardedCloudNetworks",
+        "tags": ["cloud-data"]
+      },
+      "x-displayname": "Cloud User Account",
+      "x-ves-proto-service": "ves.io.schema.cloud_user_account.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/cloud-data/namespaces/system/cloud_user_accounts/{cloud_user_account_name}/validate": {
+      "get": {
+        "summary": "Validates Cloud User Account",
+        "description": "API to validate cloud user account",
+        "operationId": "ves.io.schema.cloud_user_account.CustomAPI.ValidateCloudUserAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cloud_user_accountValidateCloudUserAccountResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "cloud_user_account_name",
+            "description": "Cloud User Account Name\n\nx-required\nCloud User Account Name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Cloud User Account Name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cloud_user_account-customapi-validateclouduseraccount"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.cloud_user_account.CustomAPI.ValidateCloudUserAccount",
+        "tags": ["cloud-data"]
+      },
+      "x-displayname": "Cloud User Account",
+      "x-ves-proto-service": "ves.io.schema.cloud_user_account.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Cloud User Account",
+  "x-ves-proto-package": "ves.io.schema.cloud_user_account",
+  "components": {
+    "schemas": {
+      "cloud_user_accountGetOnboardedCloudNetworksResponse": {
+        "type": "object",
+        "description": "Response to get onboarded cloud networks for given cloud user account",
+        "title": "GetOnboardedCloudNetworksResponse",
+        "x-displayname": "Get Onboarded Cloud Network Response",
+        "x-ves-proto-message": "ves.io.schema.cloud_user_account.GetOnboardedCloudNetworksResponse",
+        "properties": {
+          "onboarded_network": {
+            "type": "array",
+            "description": " Onboarded networks",
+            "title": "Onboarded Networks",
+            "items": {
+              "$ref": "#/components/schemas/cloud_user_accountNetworkInfoType"
+            },
+            "x-displayname": "Onboarded Networks"
+          }
+        }
+      },
+      "cloud_user_accountNetworkInfoType": {
+        "type": "object",
+        "description": "Network Info type",
+        "title": "Network Info Type",
+        "x-displayname": "Network Info Type",
+        "x-ves-proto-message": "ves.io.schema.cloud_user_account.NetworkInfoType",
+        "properties": {
+          "network_id": {
+            "type": "string",
+            "description": " Network ID",
+            "title": "Network ID",
+            "x-displayname": "Network ID"
+          },
+          "network_management_type": {
+            "$ref": "#/components/schemas/cloud_user_accountNetworkManagementType"
+          },
+          "network_name": {
+            "type": "string",
+            "description": " Network Name",
+            "title": "Network Name",
+            "x-displayname": "Network Name"
+          },
+          "region": {
+            "type": "string",
+            "description": " Network Region",
+            "title": "Network Region",
+            "x-displayname": "Network Region"
+          },
+          "used_for_cloud_connects": {
+            "type": "array",
+            "description": " Refers list of cloud connects using this network.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 10\n",
+            "title": "Used For Cloud Connects",
+            "maxItems": 10,
+            "items": {
+              "$ref": "#/components/schemas/schemaObjectRefType"
+            },
+            "x-displayname": "Network used for Cloud Connects",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "10"
+            }
+          },
+          "used_for_securemesh_sites": {
+            "type": "array",
+            "description": " Refers list of securemesh sites using this network.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 10\n",
+            "title": "Used For Securemesh Sites",
+            "maxItems": 10,
+            "items": {
+              "$ref": "#/components/schemas/schemaObjectRefType"
+            },
+            "x-displayname": "Network used for Securemesh Sites",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "10"
+            }
+          }
+        }
+      },
+      "cloud_user_accountNetworkManagementType": {
+        "type": "string",
+        "description": "Network Management Type defines the type for each network.\n\nUnknown Network Management Type\nCustomer Managed Network\nF5 Managed Network",
+        "title": "Network Type",
+        "enum": ["NETWORK_MANAGEMENT_TYPE_NONE", "CUSTOMER_MANAGED", "F5_MANAGED"],
+        "default": "NETWORK_MANAGEMENT_TYPE_NONE",
+        "x-displayname": "Network Management Type",
+        "x-ves-proto-enum": "ves.io.schema.cloud_user_account.NetworkManagementType"
+      },
+      "cloud_user_accountValidateCloudUserAccountResponse": {
+        "type": "object",
+        "description": "Response to validate cloud user account",
+        "title": "ValidateCloudUserAccountResponse",
+        "x-displayname": "Validate Cloud User Account Response",
+        "x-ves-proto-message": "ves.io.schema.cloud_user_account.ValidateCloudUserAccountResponse",
+        "properties": {
+          "is_valid": {
+            "type": "boolean",
+            "description": " Indicates whether the cloud user account is valid",
+            "title": "Is Valid",
+            "format": "boolean",
+            "x-displayname": "Is Valid"
+          },
+          "validated_at": {
+            "type": "string",
+            "description": " Timestamp when the validation was performed",
+            "title": "Validated At",
+            "format": "date-time",
+            "x-displayname": "Validated At"
+          },
+          "validation_errors": {
+            "type": "array",
+            "description": " List of validation errors encountered during validation",
+            "title": "Validation Errors",
+            "items": {
+              "$ref": "#/components/schemas/cloud_user_accountValidationError"
+            },
+            "x-displayname": "Validation Errors"
+          }
+        }
+      },
+      "cloud_user_accountValidationError": {
+        "type": "object",
+        "description": "Validation Error",
+        "title": "Validation Error",
+        "x-displayname": "Validation Error",
+        "x-ves-proto-message": "ves.io.schema.cloud_user_account.ValidationError",
+        "properties": {
+          "error_description": {
+            "type": "string",
+            "description": " Error Description\n\nExample: ` \"invalid credentials\"`",
+            "title": "Error Description",
+            "x-displayname": "Error Description",
+            "x-ves-example": "invalid credentials"
+          },
+          "suggested_action": {
+            "type": "string",
+            "description": " Suggested Action\n\nExample: ` \"update account credentials\"`",
+            "title": "Suggested Action",
+            "x-displayname": "Suggested Action",
+            "x-ves-example": "update account credentials"
+          }
+        }
+      },
+      "schemaObjectRefType": {
+        "type": "object",
+        "description": "This type establishes a 'direct reference' from one object(the referrer) to another(the referred).\nSuch a reference is in form of tenant/namespace/name for public API and Uid for private API\nThis type of reference is called direct because the relation is explicit and concrete (as opposed\nto selector reference which builds a group based on labels of selectee objects)",
+        "title": "ObjectRefType",
+        "x-displayname": "Object reference",
+        "x-ves-proto-message": "ves.io.schema.ObjectRefType",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then kind will hold the referred object's kind (e.g. \"route\")\n\nExample: ` \"virtual_site\"`",
+            "title": "kind",
+            "x-displayname": "Kind",
+            "x-ves-example": "virtual_site"
+          },
+          "name": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. route's) name.\n\nExample: ` \"contactus-route\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "contactus-route"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. route's) namespace.\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          },
+          "tenant": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"acmecorp\"`",
+            "title": "tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "acmecorp"
+          },
+          "uid": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "cloud-data"
+    }
+  ]
+}

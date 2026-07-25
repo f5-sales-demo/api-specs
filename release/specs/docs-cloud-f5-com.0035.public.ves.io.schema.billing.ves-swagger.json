@@ -1,0 +1,723 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.billing",
+    "description": "Billing data has the following 3 public APIs:\n1. Usage Summary (grouped by Service+Usage Type = SKU ID)\n   Eg: Service = DNS + Usage Type = Public Load Balancers maps to F5-XC-O-ADN-DNS-LB\n2. Usage Details (grouped by Usage Type(SKU ID), Namespace, Object Name(Feature ID))\n3. Hourly Usage Details (grouped by Object Name)\n   Note: Object Name's default value is Aggregated, which means a further breakdown is not available.enum\n   Eg: For public load balancers, breakdown by load balancers is possible.\n       However, for CDN distributions, this breakdown is not yet available.",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@f5.com"
+    }
+  },
+  "paths": {
+    "/api/data/namespaces/system/billing/usage_details": {
+      "post": {
+        "summary": "Telemetry Data Metrics",
+        "description": "Get the billing usage details for each feature over the specified duration",
+        "operationId": "ves.io.schema.billing.CustomPublicAPI.BillingUsageDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/billingBillingUsageDetailsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/billingBillingUsageDetailsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-billing-custompublicapi-billingusagedetails"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.billing.CustomPublicAPI.BillingUsageDetails",
+        "tags": ["data"]
+      },
+      "x-displayname": "Billing",
+      "x-ves-proto-service": "ves.io.schema.billing.CustomPublicAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/data/namespaces/system/billing/usage_summary": {
+      "post": {
+        "summary": "Billing Usage Summary",
+        "description": "Get the aggregated billing usage data for each feature/SKU over the specified duration.",
+        "operationId": "ves.io.schema.billing.CustomPublicAPI.BillingUsageSummary",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/billingBillingUsageSummaryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/billingBillingUsageSummaryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-billing-custompublicapi-billingusagesummary"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.billing.CustomPublicAPI.BillingUsageSummary",
+        "tags": ["data"]
+      },
+      "x-displayname": "Billing",
+      "x-ves-proto-service": "ves.io.schema.billing.CustomPublicAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Billing",
+  "x-ves-proto-package": "ves.io.schema.billing",
+  "components": {
+    "schemas": {
+      "billingBillingMetricData": {
+        "type": "object",
+        "description": "Billing Metric Data represents billing metric metadata like unit as well as converted metric value",
+        "title": "Billing Metric Data",
+        "x-displayname": "Billing Metric Data",
+        "x-ves-proto-message": "ves.io.schema.billing.BillingMetricData",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "\n\nExample: ` \"VIPs\"`",
+            "title": "Unit",
+            "x-displayname": "Unit",
+            "x-ves-example": "VIPs"
+          },
+          "value": {
+            "type": "string",
+            "description": " Value is derived using division_factor. For eg. if the metric usage is\n 20 hours over a time duration of 1 day/24h, then division_factor will be 24 hrs,\n so the billing metric value can be calculated it by dividing the usage value by\n this factor: 20/24 = 0.83 or if the division_factor is static like 1e12 like in\n case of bytes, then billing metric value is 100/1e12 (assuming that raw usage is\n 100 bytes and billing unit is in TB)\n\nExample: ` \"0.83\"`",
+            "title": "Value",
+            "x-displayname": "Value",
+            "x-ves-example": "0.83"
+          }
+        }
+      },
+      "billingBillingUsageDetailsRequest": {
+        "type": "object",
+        "description": "Request to get billing usage details for the given tenant",
+        "title": "Billing Usage Details Request",
+        "x-displayname": "Billing Usage Details Request",
+        "x-ves-proto-message": "ves.io.schema.billing.BillingUsageDetailsRequest",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " end time of metric collection from which data will be considered to build graph.\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+1h\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570197600\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "x-displayname": "End Time",
+            "x-ves-example": "1570197600",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "filters": {
+            "type": "array",
+            "description": " List of usage_type queries and the corresponding object/namespace filters\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Name",
+            "items": {
+              "$ref": "#/components/schemas/billingUsageDataFilter"
+            },
+            "x-displayname": "Usage Data Filter",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "start_time": {
+            "type": "string",
+            "description": "\n start time of metric collection from which data will be considered to build graph.\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-1h\n           If end_time is not specified, then the start_time will be evaluated to <current time>-1h\n\nExample: ` \"1570194000\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "1570194000",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "step": {
+            "type": "string",
+            "description": " step is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\n The timestamps in the response will be t1=start_time, t2=t1+step, ... tn=tn-1+step, where tn <= end_time.\n Format: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\n Optional: If not specified, then step size is evaluated to <end_time - start_time>\n\nExample: ` \"5m\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_step: true\n",
+            "title": "Step",
+            "x-displayname": "Step",
+            "x-ves-example": "5m",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_step": "true"
+            }
+          }
+        }
+      },
+      "billingBillingUsageDetailsResponse": {
+        "type": "object",
+        "description": "Billing Usage Response",
+        "title": "Billing Usage Response",
+        "x-displayname": "Billing Usage Response",
+        "x-ves-proto-message": "ves.io.schema.billing.BillingUsageDetailsResponse",
+        "properties": {
+          "step": {
+            "type": "string",
+            "description": " Actual step size used in the response. It could be higher than the requested step due to metric rollups and the query duration.\n Format: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\nExample: ` \"30m\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.time_interval: true\n",
+            "title": "step",
+            "x-displayname": "Step",
+            "x-ves-example": "30m",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.time_interval": "true"
+            }
+          },
+          "usage_data": {
+            "type": "array",
+            "description": " Data contains time-series data for the billing usage",
+            "title": "Telemetry Data",
+            "items": {
+              "$ref": "#/components/schemas/billingUsageData"
+            },
+            "x-displayname": "Telemetry Data"
+          }
+        }
+      },
+      "billingBillingUsageSummaryRequest": {
+        "type": "object",
+        "description": "Time interval to get the billing usage summary.",
+        "title": "Billing Usage Summary Request",
+        "x-displayname": "Billing Usage Summary Request",
+        "x-ves-proto-message": "ves.io.schema.billing.BillingUsageSummaryRequest",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " fetch alerts whose timestamp <= end_time\n format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time + 6 hours\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"2019-09-24T12:30:11.733Z\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "end_time",
+            "x-displayname": "End Time",
+            "x-ves-example": "2019-09-24T12:30:11.733Z",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "start_time": {
+            "type": "string",
+            "description": " fetch billing usage summary for timestamp >= start_time\n format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time - 6 hours\n           If end_time is not specified, then the start_time will be evaluated to <current time> - 6 hours\n\nExample: ` \"2019-09-23T12:30:11.733Z\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "start_time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "2019-09-23T12:30:11.733Z",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "billingBillingUsageSummaryResponse": {
+        "type": "object",
+        "description": "Contains list of usage summary items",
+        "title": "Billing Usage Summary Response",
+        "x-displayname": "Billing Usage Summary Response",
+        "x-ves-proto-message": "ves.io.schema.billing.BillingUsageSummaryResponse",
+        "properties": {
+          "usage_summary_items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/billingUsageSummaryItem"
+            }
+          }
+        }
+      },
+      "billingLabelFilter": {
+        "type": "object",
+        "description": "x-example: {\"label\":LABEL_OBJECT_NAME,\"op\":EQ,\"value\":\"ce-01\"}\nMetrics used in the billing usage are tagged with labels listed in the enum Label.\nLabel Filter is used to filter the timeseries that match the specified label key/value\nand the operator.",
+        "title": "Label Filter",
+        "x-displayname": "Label Filter",
+        "x-ves-proto-message": "ves.io.schema.billing.LabelFilter",
+        "properties": {
+          "label": {
+            "$ref": "#/components/schemas/schemabillingLabel"
+          },
+          "op": {
+            "$ref": "#/components/schemas/ioschemaMetricLabelOp"
+          },
+          "value": {
+            "type": "string",
+            "description": " Value of the label\n\nExample: ` \"ce01\"`",
+            "title": "Value",
+            "x-displayname": "Value",
+            "x-ves-example": "ce01"
+          }
+        }
+      },
+      "billingUsageData": {
+        "type": "object",
+        "description": "Usage data contains the usage type and the corresponding metric values",
+        "title": "Usage Data",
+        "x-displayname": "Usage Data",
+        "x-ves-proto-message": "ves.io.schema.billing.UsageData",
+        "properties": {
+          "metric_values": {
+            "type": "array",
+            "description": " List of metric values.",
+            "title": "Value",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaMetricValue"
+            },
+            "x-displayname": "Value"
+          },
+          "name": {
+            "type": "string",
+            "title": "x-displayName: \"Name\"\nx-example: \"RE \u2013 Container \u2013 Large (1 vCPU) \u2013 Count\""
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Name of the data field",
+            "title": "x-displayName: \"Namespace\"\nx-example: \"{system, default\"}\"\nName of the data field",
+            "x-displayname": "Namespace",
+            "x-ves-example": "{system, default\"}"
+          },
+          "obj_name": {
+            "type": "string",
+            "description": " Name of the data field",
+            "title": "x-displayName: \"Object Name\"\nx-example: \"{site-1, vh-1\"}\"\nName of the data field",
+            "x-displayname": "Object Name",
+            "x-ves-example": "{site-1, vh-1\"}"
+          },
+          "unit": {
+            "type": "string",
+            "description": " Name of the quantity unit\n\nExample: ` \"MB\"`",
+            "title": "Unit",
+            "x-displayname": "Unit",
+            "x-ves-example": "MB"
+          },
+          "usage_type": {
+            "$ref": "#/components/schemas/schemabillingUsageType"
+          }
+        }
+      },
+      "billingUsageDataFilter": {
+        "type": "object",
+        "description": "Usage Data Filter represents the usage type query and the corresponding filters\nlike object, namespace.",
+        "title": "Usage Data Filter",
+        "x-displayname": "Usage Data Filter",
+        "x-ves-proto-message": "ves.io.schema.billing.UsageDataFilter",
+        "properties": {
+          "label_filters": {
+            "type": "array",
+            "description": "\n List of label filter expressions of the form \"label key\" QueryOp \"value\" related to the usage_type.\n Response will only contain data that matches all the conditions specified in the label_filter. Filters\n corresponding to objects with default names like \"CE Mesh Node - Medium\" will be ignored.\n\n Optional: If not specified, glr status data for all global log receiver objects will be returned in the response.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 100\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "label_filter",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/billingLabelFilter"
+            },
+            "x-displayname": "Label Filter",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "100",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          },
+          "usage_type": {
+            "$ref": "#/components/schemas/schemabillingUsageType"
+          }
+        }
+      },
+      "billingUsageMetricData": {
+        "type": "object",
+        "description": "Usage Metric Data represents usage metric metadata like unit and the corresponding actual metric value consumption",
+        "title": "Usage Metric Data",
+        "x-displayname": "Usage Metric Data",
+        "x-ves-proto-message": "ves.io.schema.billing.UsageMetricData",
+        "properties": {
+          "metric_value": {
+            "$ref": "#/components/schemas/ioschemaMetricValue"
+          },
+          "unit": {
+            "type": "string",
+            "description": "\n\nExample: ` \"hour\"`",
+            "title": "Unit",
+            "x-displayname": "Unit",
+            "x-ves-example": "hour"
+          }
+        }
+      },
+      "billingUsageSummaryItem": {
+        "type": "object",
+        "description": "Usage Summary Item represents the usage details for a usage type like Public Load Balancers,\nfor a given service like App Stack.",
+        "title": "Usage Summary Item",
+        "x-displayname": "Usage Summary Item",
+        "x-ves-proto-message": "ves.io.schema.billing.UsageSummaryItem",
+        "properties": {
+          "billing_metric_data": {
+            "$ref": "#/components/schemas/billingBillingMetricData"
+          },
+          "name": {
+            "type": "string",
+            "description": "\n\nExample: ` \"Anycast Public Virtual IP\"`",
+            "title": "Name",
+            "x-displayname": "Name",
+            "x-ves-example": "Anycast Public Virtual IP"
+          },
+          "service": {
+            "type": "string",
+            "description": " Service to which the usage summary item is associated\n\nExample: ` \"f5xc-securemesh-advanced\"`",
+            "title": "Service",
+            "x-displayname": "Service",
+            "x-ves-example": "f5xc-securemesh-advanced"
+          },
+          "usage_metric_data": {
+            "$ref": "#/components/schemas/billingUsageMetricData"
+          },
+          "usage_type": {
+            "$ref": "#/components/schemas/schemabillingUsageType"
+          }
+        }
+      },
+      "ioschemaMetricLabelOp": {
+        "type": "string",
+        "description": "The operator to use when filtering metrics based on label values.\n",
+        "title": "Metric Label Operator",
+        "enum": ["EQ", "NEQ"],
+        "default": "EQ",
+        "x-displayname": "Metric Label Operator",
+        "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
+      },
+      "ioschemaMetricValue": {
+        "type": "object",
+        "description": "Metric data contains timestamp and the value.",
+        "title": "Metric Value",
+        "x-displayname": "Metric Value",
+        "x-ves-proto-message": "ves.io.schema.MetricValue",
+        "properties": {
+          "timestamp": {
+            "type": "number",
+            "description": " timestamp\n\nExample: ` \"1570007981\"`",
+            "title": "Timestamp",
+            "format": "double",
+            "x-displayname": "Timestamp",
+            "x-ves-example": "1570007981"
+          },
+          "trend_value": {
+            "$ref": "#/components/schemas/schemaTrendValue"
+          },
+          "value": {
+            "type": "string",
+            "description": "\n\nExample: ` \"15\"`",
+            "title": "Value",
+            "x-displayname": "Value",
+            "x-ves-example": "15"
+          }
+        }
+      },
+      "schemaTrendSentiment": {
+        "type": "string",
+        "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
+        "title": "Trend Sentiment",
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
+        "default": "TREND_SENTIMENT_NONE",
+        "x-displayname": "Trend Sentiment",
+        "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
+      },
+      "schemaTrendValue": {
+        "type": "object",
+        "description": "Trend value contains trend value, trend sentiment and trend calculation description and window size.",
+        "title": "Trend Value",
+        "x-displayname": "Trend Value",
+        "x-ves-proto-message": "ves.io.schema.TrendValue",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": " description of the method used to calculate trend.\n\nExample: ` \"Trend was calculated by comparing the avg of window size intervals of end-start Time and last window time interval\"`",
+            "title": "Description",
+            "x-displayname": "Description",
+            "x-ves-example": "Trend was calculated by comparing the avg of window size intervals of end-start Time and last window time interval"
+          },
+          "previous_value": {
+            "type": "string",
+            "description": "\n\nExample: ` \"200.00\"`",
+            "title": "Previous Value",
+            "x-displayname": "Previous Value",
+            "x-ves-example": "200.00"
+          },
+          "sentiment": {
+            "$ref": "#/components/schemas/schemaTrendSentiment"
+          },
+          "value": {
+            "type": "string",
+            "description": "\n\nExample: ` \"-15\"`",
+            "title": "Value",
+            "x-displayname": "Value",
+            "x-ves-example": "-15"
+          }
+        }
+      },
+      "schemabillingLabel": {
+        "type": "string",
+        "description": "Metrics used to construct the billing usage are tagged with these labels and therefore\nthe metrics can be sliced and diced based on one or more labels.\n\nIndicates the field not being set\nIdentifies a object\nIdentifies a namespace",
+        "title": "Label",
+        "enum": ["LABEL_NONE", "LABEL_OBJECT_NAME", "LABEL_NAMESPACE"],
+        "default": "LABEL_NONE",
+        "x-displayname": "Label",
+        "x-ves-proto-enum": "ves.io.schema.billing.Label"
+      },
+      "schemabillingUsageType": {
+        "type": "string",
+        "description": "List of usage type\n\nTenant Info\nRE Container Flavor Large Usage\nRE Container Flavor Medium Usage\nRE Container Flavor Tiny Usage\nPublic IP Usage\nCE Mesh Node Small Usage\nCE Mesh Node Medium Usage\nCE Mesh Node Large Usage\nCE Stack Node Small Usage\nCE Stack Node Medium Usage\nCE Stack Node Large Usage\nDNS LoadBalancer Usage\nDNS LoadBalancer Healthcheck Usage\nDNS Zone Usage\nCE to RE traffic usage\nRE api sec good requests\nCE api sec good requests\nSynthetic monitor invocations usage\nPublic LoadBalancer usage\nRE app fw usage\nCE app fw usage\nTenant plan usage\nTenant logins count\nAPI Discovery LoadBalancer usage\nAPI protection good requests\nTenant object usage\nFast ACL IP prefix usage\nGood requests to origin usage\nTenant add on service info\nClient side defense transactions\nRE WAF requests\nLMA region usage\nGLR sent logs\nGLR sent log bytes\nRE rate limiting good requests\nPublic RE CDN data transfer usage North America\nPublic RE CDN data transfer usage Europe\nPublic RE CDN data transfer usage Asia\nPublic RE CDN data transfer usage South America\nPublic RE CDN request usage North America\nPublic RE CDN request usage Europe\nPublic RE CDN request usage Asia\nPublic RE CDN request usage South America\nDNSSEC Zone Usage\nAdvanced DNS LoadBalancer Usage\nDNS LoadBalancer CNAME pool health check usage\nDNS LoadBalancer CNAME pool priority algorithm usage",
+        "title": "UsageType",
+        "enum": [
+          "TENANT_INFO",
+          "RE_CONTAINER_FLAVOR_LARGE_USAGE",
+          "RE_CONTAINER_FLAVOR_MEDIUM_USAGE",
+          "RE_CONTAINER_FLAVOR_TINY_USAGE",
+          "PUBLIC_IP_USAGE",
+          "CE_MESH_NODE_SMALL_USAGE",
+          "CE_MESH_NODE_MEDIUM_USAGE",
+          "CE_MESH_NODE_LARGE_USAGE",
+          "CE_STACK_NODE_SMALL_USAGE",
+          "CE_STACK_NODE_MEDIUM_USAGE",
+          "CE_STACK_NODE_LARGE_USAGE",
+          "DNS_LOAD_BALANCER_USAGE",
+          "DNS_LOAD_BALANCER_HEALTHCHECK_USAGE",
+          "DNS_ZONE_USAGE",
+          "CE_TO_RE_TRAFFIC_USAGE",
+          "RE_API_SEC_GOOD_REQUESTS",
+          "CE_API_SEC_GOOD_REQUESTS",
+          "SYNTHETIC_MONITOR_INVOCATIONS_USAGE",
+          "PUBLIC_LOAD_BALANCER_USAGE",
+          "RE_APP_FW_USAGE",
+          "CE_APP_FW_USAGE",
+          "TENANT_PLAN_USAGE",
+          "TENANT_LOGINS_COUNT",
+          "API_DISCOVERY_LOAD_BALANCER_USAGE",
+          "API_PROTECTIONS_GOOD_REQUESTS",
+          "TENANT_OBJECT_USAGE",
+          "FAST_ACL_IP_PREFIX_USAGE",
+          "GOOD_REQUESTS_TO_ORIGIN_USAGE",
+          "TENANT_ADDON_SERVICE_INFO",
+          "CLIENT_SIDE_DEFENSE_TRANSACTIONS",
+          "RE_WAF_REQUESTS",
+          "LMA_REGION_USAGE",
+          "GLR_SENT_LOGS",
+          "GLR_SENT_LOGS_BYTES",
+          "RE_RLIM_GOOD_REQUESTS",
+          "PUBLIC_RE_CDN_DATA_TRANSFER_USAGE_NA",
+          "PUBLIC_RE_CDN_DATA_TRANSFER_USAGE_EU",
+          "PUBLIC_RE_CDN_DATA_TRANSFER_USAGE_AS",
+          "PUBLIC_RE_CDN_DATA_TRANSFER_USAGE_SA",
+          "PUBLIC_RE_CDN_REQUEST_USAGE_NA",
+          "PUBLIC_RE_CDN_REQUEST_USAGE_EU",
+          "PUBLIC_RE_CDN_REQUEST_USAGE_AS",
+          "PUBLIC_RE_CDN_REQUEST_USAGE_SA",
+          "DNSSEC_ZONE_USAGE",
+          "ADVANCED_DNS_LOAD_BALANCER_USAGE",
+          "DNS_LOAD_BALANCER_CNAME_POOL_HEALTH_CHECK_USAGE",
+          "DNS_LOAD_BALANCER_CNAME_POOL_PRIORITY_ALGORITHM_USAGE"
+        ],
+        "default": "TENANT_INFO",
+        "x-displayname": "UsageType",
+        "x-ves-proto-enum": "ves.io.schema.billing.UsageType"
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    }
+  ]
+}

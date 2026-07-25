@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.app_api_group",
     "description": "The app_api_group construct provides a mechanism to classify the universal set of request APIs into a much smaller number of logical groups in order\nto make it easier to author and maintain API level access control policies. The app_api_group holds api_group child object with the same content for\ninternal use by data path and other services.\n\nAn app_api_group object consists of an unordered list of api group elements. The method and path from the input request API are matched against all\nelements in an app_api_group to determine if the request API belongs to the api group in question. The request API belongs to an api group if it\nmatches at least one element in the api group.\n\nThe App API Group may be created using API Group Builder which defines path filter and label selectors to match\nAPI Endpoints from a referenced object, like HTTP Loadbalancer. For example, if there is a HTTP LB with API Discovery enabled\nthen all discovered API Endpoints serve as a base set and filters define which API Endpoints would be the group members.\n\n The view creates the following child objects:\n * api_group",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -134,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Create",
+        "tags": ["config"]
       },
       "x-displayname": "App API Group",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.API",
@@ -273,7 +274,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Replace",
+        "tags": ["config"]
       },
       "x-displayname": "App API Group",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.API",
@@ -817,7 +819,7 @@
           },
           {
             "name": "response_format",
-            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
             "in": "query",
             "required": false,
             "x-displayname": "Broken Referred Objects",
@@ -1545,10 +1547,10 @@
           },
           "reason": {
             "type": "string",
-            "description": " x-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": " A human readable string explaining the reason for reaching this condition\n\nExample: ` \"Insufficient memory in data plane\"`",
             "title": "reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Insufficient memory in data plane"
           },
           "service_name": {
             "type": "string",
@@ -1558,7 +1560,7 @@
           },
           "status": {
             "type": "string",
-            "description": " Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
+            "description": " Status of the condition\n \"Success\" Validation has succeeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
             "title": "status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
@@ -1661,44 +1663,6 @@
           },
           "result": {
             "$ref": "#/components/schemas/schemaStatusType"
-          }
-        }
-      },
-      "schemaLabelSelectorType": {
-        "type": "object",
-        "description": "x-displayName: \"Label Selector\"\nThis type can be used to establish a 'selector reference' from one object(called selector) to\na set of other objects(called selectees) based on the value of expresssions.\nA label selector is a label query over a set of resources. An empty label selector matches all objects.\nA null label selector matches no objects. Label selector is immutable.\nexpressions is a list of strings of label selection expression.\nEach string has \",\" separated values which are \"AND\" and all strings are logically \"OR\".\nBNF for expression string\n<selector-syntax>         ::= <requirement> | <requirement> \",\" <selector-syntax>\n<requirement>             ::= [!] KEY [ <set-based-restriction> | <exact-match-restriction> ]\n<set-based-restriction>   ::= \"\" | <inclusion-exclusion> <value-set>\n<inclusion-exclusion>     ::= <inclusion> | <exclusion>\n<exclusion>               ::= \"notin\"\n<inclusion>               ::= \"in\"\n<value-set>               ::= \"(\" <values> \")\"\n<values>                  ::= VALUE | VALUE \",\" <values>\n<exact-match-restriction> ::= [\"=\"|\"==\"|\"!=\"] VALUE",
-        "title": "LabelSelectorType",
-        "properties": {
-          "expressions": {
-            "type": "array",
-            "description": "x-displayName: \"Selector Expression\"\nx-required\nx-example: \"region in (us-west1, us-west2),tier in (staging)\"\nexpressions contains the kubernetes style label expression for selections.",
-            "title": "expressions",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "schemaMessageMetaType": {
-        "type": "object",
-        "description": "x-displayName: \"Message Metadata\"\nMessageMetaType is metadata (common attributes) of a message that only certain messages\nhave. This information is propagated to the metadata of a child object that gets created\nfrom the containing message during view processing.\nThe information in this type can be specified by user during create and replace APIs.",
-        "title": "MessageMetaType",
-        "properties": {
-          "description": {
-            "type": "string",
-            "description": "x-displayName: \"Description\"\nx-example: \"Virtual Host for acmecorp website\"\nHuman readable description.",
-            "title": "description"
-          },
-          "disable": {
-            "type": "boolean",
-            "description": "x-displayName: \"Disable\"\nx-example: \"true\"\nA value of true will administratively disable the object that corresponds to the containing message.",
-            "title": "disable",
-            "format": "boolean"
-          },
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-example: \"acmecorp-web\"\nx-required\nThis is the name of the message.\nThe value of name has to follow DNS-1035 format.",
-            "title": "name"
           }
         }
       },
@@ -2210,21 +2174,6 @@
           }
         }
       },
-      "viewsApiOperation": {
-        "type": "object",
-        "description": "x-displayName: \"API Operation\"\nAPI operation according to OpenAPI specification.",
-        "title": "ApiOperation",
-        "properties": {
-          "method": {
-            "$ref": "#/components/schemas/schemaHttpMethod"
-          },
-          "path": {
-            "type": "string",
-            "description": "x-displayName: \"Path\"\nx-required\nx-example: \"/api/users/{userid}\"\nAn endpoint path, as specified in OpenAPI, including parameters.\nThe path should comply with RFC 3986 and may have parameters according to OpenAPI specification",
-            "title": "path"
-          }
-        }
-      },
       "viewsapp_api_groupCreateSpecType": {
         "type": "object",
         "description": "Create app_api_group creates a new object in the storage backend for metadata.namespace.",
@@ -2383,21 +2332,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

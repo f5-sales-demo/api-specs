@@ -1,0 +1,216 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.threat_intelligence.ti_package",
+    "description": "Public Custom API definition for Bot Threat Intelligence",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@f5.com"
+    }
+  },
+  "paths": {
+    "/api/shape/bot/namespaces/{namespace}/ti_packages": {
+      "get": {
+        "summary": "List bot threat intelligence packages",
+        "operationId": "ves.io.schema.shape.bot_defense.threat_intelligence.ti_package.CustomAPI.ListBotThreatIntelligencePackages",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ti_packageListBotThreatIntelligencePackagesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"system\"\nx-required\nNamespace is used to scope the query",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-threat_intelligence-ti_package-customapi-listbotthreatintelligencepackages"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.threat_intelligence.ti_package.CustomAPI.ListBotThreatIntelligencePackages",
+        "tags": ["shape"],
+        "description": "ListBotThreatIntelligencePackages ti_packages."
+      },
+      "x-displayname": "Bot Threat Intelligence",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.threat_intelligence.ti_package.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Bot Threat Intelligence",
+  "x-ves-proto-package": "ves.io.schema.shape.bot_defense.threat_intelligence.ti_package",
+  "components": {
+    "schemas": {
+      "ti_packageBotThreatIntelligencePackage": {
+        "type": "object",
+        "description": "Metadata of Bot Threat Intelligence Package.",
+        "title": "BotThreatIntelligencePackage",
+        "x-displayname": "Bot Threat Intelligence Package",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.ti_package.BotThreatIntelligencePackage",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": " ID of the bot threat intelligence package.",
+            "title": "ID",
+            "x-displayname": "TI Package ID"
+          },
+          "package_name": {
+            "type": "string",
+            "description": " Name of the bot threat intelligence package",
+            "title": "Name",
+            "x-displayname": "TI Package Name"
+          },
+          "version": {
+            "type": "string",
+            "description": " Version of the bot threat intelligence package",
+            "title": "Version",
+            "x-displayname": "TI Package Version"
+          }
+        }
+      },
+      "ti_packageListBotThreatIntelligencePackagesResponse": {
+        "type": "object",
+        "description": "Response for list bot threat intelligence packages metadata",
+        "title": "ListBotThreatIntelligencePackagesResponse",
+        "x-displayname": "List bot threat intelligence packages metadata response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.ti_package.ListBotThreatIntelligencePackagesResponse",
+        "properties": {
+          "bot_threat_intelligence_packages": {
+            "type": "array",
+            "description": " Bot Threat Intelligence Package holds details of a threat intelligence package",
+            "title": "Bot Threat Intelligence Packages",
+            "items": {
+              "$ref": "#/components/schemas/ti_packageBotThreatIntelligencePackage"
+            },
+            "x-displayname": "Bot Threat Intelligence Packages"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
+}

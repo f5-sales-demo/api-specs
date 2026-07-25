@@ -40,6 +40,14 @@ DEFAULT_SPELLING_TEXT_FIELDS: tuple[str, ...] = (
     "x-displayname",
 )
 
+# Prefix of a local component-schema reference.
+SCHEMA_REF_PREFIX = "#/components/schemas/"
+
+# The only remedy ``fix_dangling_refs`` implements. Declared in
+# ``dangling_ref_corrections.yaml`` so a correction states its intent and an
+# unimplemented one fails loudly instead of silently doing nothing.
+STUB_REMEDY = "stub"
+
 # ---------------------------------------------------------------------------
 # Transform registry
 # ---------------------------------------------------------------------------
@@ -194,6 +202,36 @@ def _collect_refs(obj: Any) -> set[str]:
         for item in obj:
             refs.update(_collect_refs(item))
     return refs
+
+
+def find_dangling_refs(spec: dict) -> list[tuple[str, str]]:
+    """Return ``(path, schema name)`` for every local ``$ref`` with no definition.
+
+    Only ``#/components/schemas/`` references are considered: they are the only
+    ones this pipeline can resolve, and they are the ones Spectral rejects as
+    ``invalid-ref`` errors. *path* is the dotted location of the ``$ref`` key,
+    matching the ``property_name`` format the Spectral report uses, so a
+    finding can be quoted straight into a failure message.
+    """
+    schemas = (spec.get("components") or {}).get("schemas") or {}
+    dangling: list[tuple[str, str]] = []
+
+    def walk(node: Any, path: str) -> None:
+        if isinstance(node, dict):
+            for key, value in node.items():
+                child = f"{path}.{key}" if path else key
+                if key != "$ref" or not isinstance(value, str):
+                    walk(value, child)
+                elif value.startswith(SCHEMA_REF_PREFIX):
+                    name = value[len(SCHEMA_REF_PREFIX) :]
+                    if name not in schemas:
+                        dangling.append((child, name))
+        elif isinstance(node, list):
+            for index, item in enumerate(node):
+                walk(item, f"{path}.{index}")
+
+    walk(spec, "")
+    return dangling
 
 
 # ---------------------------------------------------------------------------
@@ -417,6 +455,59 @@ def mark_deprecated_operations(
     return spec
 
 
+@register_transform("fix_dangling_refs")
+def fix_dangling_refs(
+    spec: dict,
+    config: TransformConfig,
+    filename: str,
+) -> dict:
+    """Repair ``$ref`` targets that upstream references but never defines.
+
+    A dangling reference is an ``invalid-ref`` error to Spectral, and the
+    release gate allows zero errors, so one of them stops the publish for
+    every consumer. Each repair is declared in
+    ``config/dangling_ref_corrections.yaml`` -- see that file for the rules a
+    correction must satisfy.
+
+    Runs before :func:`remove_unused_schemas` so an injected stub takes part
+    in the reachability walk like any other schema.
+    """
+    corrections = config.metadata.get("dangling_ref_corrections", [])
+    if not corrections:
+        return spec
+
+    for rule in corrections:
+        schema_name = rule.get("schema", "<unnamed>")
+        remedy = rule.get("remedy")
+        if remedy != STUB_REMEDY:
+            msg = (
+                f"{schema_name}: unsupported dangling-ref remedy {remedy!r}; "
+                f"only {STUB_REMEDY!r} is implemented"
+            )
+            raise ValueError(msg)
+        if not rule.get("definition"):
+            msg = f"{schema_name}: {STUB_REMEDY} correction without a definition"
+            raise ValueError(msg)
+
+    # Names only: a stub resolves every reference to it at once.
+    dangling = {name for _, name in find_dangling_refs(spec)}
+    if not dangling:
+        return spec
+
+    for rule in corrections:
+        schema_name = rule["schema"]
+        file_pattern = rule.get("file_pattern")
+        if file_pattern and file_pattern not in filename:
+            continue
+        if schema_name not in dangling:
+            continue
+
+        schemas = spec.setdefault("components", {}).setdefault("schemas", {})
+        schemas[schema_name] = copy.deepcopy(rule["definition"])
+
+    return spec
+
+
 @register_transform("remove_unused_schemas")
 def remove_unused_schemas(
     spec: dict,
@@ -441,7 +532,7 @@ def remove_unused_schemas(
             external_refs.update(_collect_refs(top_value))
 
     # Seed: schemas referenced externally.
-    prefix = "#/components/schemas/"
+    prefix = SCHEMA_REF_PREFIX
     reachable: set[str] = set()
     frontier = [
         ref[len(prefix) :]
@@ -667,6 +758,12 @@ def load_config(config_path: str | Path) -> TransformConfig:
         with property_path.open() as fh:
             property_cfg = yaml.safe_load(fh) or {}
         metadata["property_name_corrections"] = property_cfg.get("corrections", [])
+
+    dangling_ref_path = config_path.parent / "dangling_ref_corrections.yaml"
+    if dangling_ref_path.exists():
+        with dangling_ref_path.open() as fh:
+            dangling_ref_cfg = yaml.safe_load(fh) or {}
+        metadata["dangling_ref_corrections"] = dangling_ref_cfg.get("corrections", [])
 
     return TransformConfig(
         input_dir=str(input_dir),

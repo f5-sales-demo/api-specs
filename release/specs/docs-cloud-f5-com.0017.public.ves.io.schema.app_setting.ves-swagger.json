@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_setting",
     "description": "\"App Setting\" controls advanced monitoring of applications defined by \"App type\". This configuration is per namespace.\nThere is only one App Setting per namespace. It has list of references to \"App type\" objects for which various\nanomaly detection algorithms can be enabled.",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -134,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_setting-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.Create",
+        "tags": ["config"]
       },
       "x-displayname": "App Setting",
       "x-ves-proto-service": "ves.io.schema.app_setting.API",
@@ -273,7 +274,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_setting-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.app_setting.API.Replace",
+        "tags": ["config"]
       },
       "x-displayname": "App Setting",
       "x-ves-proto-service": "ves.io.schema.app_setting.API",
@@ -557,7 +559,7 @@
           },
           {
             "name": "response_format",
-            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
             "in": "query",
             "required": false,
             "x-displayname": "Broken Referred Objects",
@@ -840,7 +842,7 @@
           },
           {
             "name": "query",
-            "description": "x-example: \"query={app_type=\"blogging_app\"}\"\nquery is used to specify the list of matchers\nsyntax for query := {[<matcher>]} \n<matcher> := <field_name><operator>\"<value>\"\n<field_name> := string\n  One or more of these fields in the security event may be specified in the query.\n    app_type - application type\n    vh_name - name of the virtual host\n<value> := string\n<operator> := [\"=\"|\"!=\"]\n  = : equal to \n  != : not equal to\nWhen more than one matcher is specified in the query, then security events matching ALL the matchers will be returned in the response.\nExample: query={country=\"United States\", city=\"California\"} will return all security events originating from California, United States.\n\nOptional: If not specified, all the security events matching the given tenant and namespace will be returned in the response.",
+            "description": "x-example: \"query={app_type=\"blogging_app\"}\"\nquery is used to specify the list of matchers\nsyntax for query := {[<matcher>]}\n<matcher> := <field_name><operator>\"<value>\"\n<field_name> := string\n  One or more of these fields in the security event may be specified in the query.\n    app_type - application type\n    vh_name - name of the virtual host\n<value> := string\n<operator> := [\"=\"|\"!=\"]\n  = : equal to\n  != : not equal to\nWhen more than one matcher is specified in the query, then security events matching ALL the matchers will be returned in the response.\nExample: query={country=\"United States\", city=\"California\"} will return all security events originating from California, United States.\n\nOptional: If not specified, all the security events matching the given tenant and namespace will be returned in the response.",
             "in": "query",
             "required": false,
             "x-displayname": "Query",
@@ -1237,7 +1239,7 @@
           },
           "cooling_off_period": {
             "type": "integer",
-            "description": "Exclusive with []\n Malicious user detection assigns a threat level to each user based on their activity.\n Once a threat level is assigned, the system continues tracking activity from this user\n and if no further malicious activity is seen, it gradually reduces the threat assesment to lower levels.\n This field specifies the time period, in minutes, used by the system to decay a user's threat level from\n a high to medium or medium to low or low to none.\n\nValidation Rules:\n  ves.io.schema.rules.uint32.gte: 5\n  ves.io.schema.rules.uint32.lte: 120\n",
+            "description": "Exclusive with []\n Malicious user detection assigns a threat level to each user based on their activity.\n Once a threat level is assigned, the system continues tracking activity from this user\n and if no further malicious activity is seen, it gradually reduces the threat assessment to lower levels.\n This field specifies the time period, in minutes, used by the system to decay a user's threat level from\n a high to medium or medium to low or low to none.\n\nValidation Rules:\n  ves.io.schema.rules.uint32.gte: 5\n  ves.io.schema.rules.uint32.lte: 120\n",
             "title": "Cooling Off Period",
             "format": "int64",
             "x-displayname": "Cooling off period",
@@ -1611,10 +1613,10 @@
           },
           "reason": {
             "type": "string",
-            "description": " x-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": " A human readable string explaining the reason for reaching this condition\n\nExample: ` \"Insufficient memory in data plane\"`",
             "title": "reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Insufficient memory in data plane"
           },
           "service_name": {
             "type": "string",
@@ -1624,7 +1626,7 @@
           },
           "status": {
             "type": "string",
-            "description": " Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
+            "description": " Status of the condition\n \"Success\" Validation has succeeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
             "title": "status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
@@ -2224,21 +2226,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.pbac.addon_service",
     "description": "Basic unit of logical representation of a F5XC service.\nAn addon service can be self serviced, partially managed or fully managed depending upon the activation requirement.\nA configuration object belong to exactly one addon service and every addon service will be linked to one or more navigation tile.\nBy default, API Groups consisting of APIs for read, write, admin read/write and subscription management capabality will be auto created.",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -649,7 +649,7 @@
           },
           {
             "name": "response_format",
-            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
             "in": "query",
             "required": false,
             "x-displayname": "Broken Referred Objects",
@@ -772,7 +772,7 @@
           },
           "display_name": {
             "type": "string",
-            "description": " Display Name of the addon service \n\nExample: ` \"addon service 1\"`",
+            "description": " Display Name of the addon service\n\nExample: ` \"addon service 1\"`",
             "title": "display_name",
             "x-displayname": "Display Name",
             "x-ves-example": "addon service 1"
@@ -1065,7 +1065,7 @@
       },
       "customer_supportSupportService": {
         "type": "string",
-        "description": "Indicates the list of support service\n\nUnknown Support Service\nAccount Protection Support Service\nAdministration Support Service\nApplication Traffic Insight Support Service\nAudit Logs & Alerts Support Service\nAuthentication Intelligence Support Service\nBilling Support Service\nClient Side Defense Support Service\nCloud & Edge Sites Support Service\ndeprecated: use SS_MULTI_CLOUD_NETWORK_CONNECT instead\nDDOS & Transit Support Service\nDeprecated: use SS_ROUTED_DDOS instead\nDistributed Apps Support Service\nDNS Management Support Service\nLoadBalancers Support Service\ndeprecated: use SS_MULTI_CLOUD_APP_CONNECT instead\nShared Configuration Support Service\nWeb App & API Protection Support Service\nOther Support Service\nBot Defense Support Service\nContent delivery network Support Service\nObservability Support Service\nDelegated Access Support Service\nNetworking & security across clouds, edge and on-premises\nConnect apps across clouds, edge and on-premises using Load Balancers\nBIG-IP Access Policy Manager (APM)\nData Intelligence Support Service\nNGINX One Support Service\nWeb App Scanning Support Service\nRouted DDoS Support Service\nMobile App Shield protects mobile apps from reverse engineering, tampering and malware",
+        "description": "Indicates the list of support service\n\nUnknown Support Service\nAccount Protection Support Service\nAdministration Support Service\nApplication Traffic Insight Support Service\nAudit Logs & Alerts Support Service\nAuthentication Intelligence Support Service\nBilling Support Service\nClient Side Defense Support Service\nCloud & Edge Sites Support Service\ndeprecated: use SS_MULTI_CLOUD_NETWORK_CONNECT instead\nDDOS & Transit Support Service\nDeprecated: use SS_ROUTED_DDOS instead\nDistributed Apps Support Service\nDNS Management Support Service\nLoadBalancers Support Service\ndeprecated: use SS_MULTI_CLOUD_APP_CONNECT instead\nShared Configuration Support Service\nWeb App & API Protection Support Service\nOther Support Service\nBot Defense Support Service\nContent delivery network Support Service\nObservability Support Service\nDelegated Access Support Service\nNetworking & security across clouds, edge and on-premises\nConnect apps across clouds, edge and on-premises using Load Balancers\nData Intelligence Support Service\nNGINX One Support Service\nWeb App Scanning Support Service\nRouted DDoS Support Service\nMobile App Shield protects mobile apps from reverse engineering, tampering and malware\nDefault for deprecated services\nAutomation Support Service for Terraform Provider",
         "title": "SupportService",
         "enum": [
           "SS_UNKNOWN",
@@ -1090,12 +1090,13 @@
           "SS_DELEGATED_ACCESS",
           "SS_MULTI_CLOUD_NETWORK_CONNECT",
           "SS_MULTI_CLOUD_APP_CONNECT",
-          "SS_BIG_IP_APM",
           "SS_DATA_INTELLIGENCE",
           "SS_NGINX_ONE",
           "SS_WEB_APP_SCANNING",
           "SS_ROUTED_DDOS",
-          "SS_MOBILE_APP_SHIELD"
+          "SS_MOBILE_APP_SHIELD",
+          "SS_DEPRECATED",
+          "SS_AUTOMATION"
         ],
         "default": "SS_UNKNOWN",
         "x-displayname": "Support Service",
@@ -1236,20 +1237,6 @@
           }
         }
       },
-      "schemaAddonServiceAccess": {
-        "type": "string",
-        "description": "x-displayName: \"Addon Service Access\"\nState of access into service\n\n - AS_AC_NONE: x-displayName: \"None\"\ndefault state\nThis can mean that addon service is not subscribed or is in pending subscription.\n - AS_AC_ALLOWED: x-displayName: \"Allow\"\naccess is allowed\n - AS_AC_PBAC_DENY: x-displayName: \"PBAC Deny\"\nAddon service is not allowed as part of current plan\n - AS_AC_PBAC_DENY_UPGRADE_PLAN: x-displayName: \"PBAC Deny - Upgrade plan\"\nAddon service is not allowed as part of current plan. To enable it, user is requested to uprade the plan\n - AS_AC_PBAC_DENY_CONTACT_SALES: x-displayName: \"PBAC Deny - Contact Sales\"\nAddon service is not allowed as part of current plan. To enable or to find out more, user is requested to contact sales\n - AS_AC_PBAC_DENY_AS_AC_EOL: x-displayName: \"PBAC Deny - End of  Life\"\nAddon service is not allowed as part of current plan as it is discontinued. User is requested to contact sales discuss alternatives",
-        "title": "AddonServiceAccess",
-        "enum": [
-          "AS_AC_NONE",
-          "AS_AC_ALLOWED",
-          "AS_AC_PBAC_DENY",
-          "AS_AC_PBAC_DENY_UPGRADE_PLAN",
-          "AS_AC_PBAC_DENY_CONTACT_SALES",
-          "AS_AC_PBAC_DENY_AS_AC_EOL"
-        ],
-        "default": "AS_AC_NONE"
-      },
       "schemaAddonServiceState": {
         "type": "string",
         "description": "State of a service\n\ndefault state\ninitiated subscription request and is pending to activate (requested).\nsuccessfully subscribed\nservice subscription request ended up in error state.",
@@ -1290,10 +1277,10 @@
           },
           "reason": {
             "type": "string",
-            "description": " x-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": " A human readable string explaining the reason for reaching this condition\n\nExample: ` \"Insufficient memory in data plane\"`",
             "title": "reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Insufficient memory in data plane"
           },
           "service_name": {
             "type": "string",
@@ -1303,7 +1290,7 @@
           },
           "status": {
             "type": "string",
-            "description": " Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
+            "description": " Status of the condition\n \"Success\" Validation has succeeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
             "title": "status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
@@ -1754,21 +1741,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

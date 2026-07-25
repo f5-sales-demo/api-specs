@@ -1,0 +1,232 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.pbac.catalog",
+    "description": "Custom API of services catalog.",
+    "version": "2026.07.24",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@f5.com"
+    }
+  },
+  "paths": {
+    "/api/web/namespaces/system/catalogs": {
+      "put": {
+        "summary": "List",
+        "description": "Retrieves service catalog tailor for the currently logged-in user.",
+        "operationId": "ves.io.schema.pbac.catalog.CustomAPI.List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/catalogListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/catalogListRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-pbac-catalog-customapi-list"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.pbac.catalog.CustomAPI.List",
+        "tags": ["web"]
+      },
+      "x-displayname": "Catalog Custom API",
+      "x-ves-proto-service": "ves.io.schema.pbac.catalog.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Catalog Custom API",
+  "x-ves-proto-package": "ves.io.schema.pbac.catalog",
+  "components": {
+    "schemas": {
+      "catalogListRequest": {
+        "type": "object",
+        "description": "List request message. Includes optional filter.",
+        "title": "ListRequest",
+        "x-displayname": "ListRequest",
+        "x-ves-oneof-field-filter": "[\"use_case_filter\",\"workspace_filter\"]",
+        "x-ves-proto-message": "ves.io.schema.pbac.catalog.ListRequest",
+        "properties": {
+          "use_case_filter": {
+            "type": "string",
+            "description": "Exclusive with [workspace_filter]\n Filter by use case name. If empty, all use cases are returned.\n\nExample: ` \"f5xc-base\"`",
+            "title": "Use case filter",
+            "x-displayname": "Use case Filter",
+            "x-ves-example": "f5xc-base"
+          },
+          "workspace_filter": {
+            "type": "string",
+            "description": "Exclusive with [use_case_filter]\n Filter by workspace name. If empty, all workspaces are returned.\n The use case response field will contain the use case of the workspace and no other use cases.\n\nExample: ` \"f5xc-base\"`",
+            "title": "Workspace Filter",
+            "x-displayname": "Workspace Filter",
+            "x-ves-example": "f5xc-base"
+          }
+        }
+      },
+      "catalogListResponse": {
+        "type": "object",
+        "description": "Response message for list request.",
+        "title": "ListResponse",
+        "x-displayname": "ListResponse",
+        "x-ves-proto-message": "ves.io.schema.pbac.catalog.ListResponse",
+        "properties": {
+          "addon_services": {
+            "type": "object",
+            "description": " List of Addon Services. The key is the addon service name.",
+            "title": "Addon Services",
+            "x-displayname": "Addon Services"
+          },
+          "services": {
+            "type": "object",
+            "description": " List of result services (addons). The key is the service name.",
+            "title": "Services",
+            "x-displayname": "Services"
+          },
+          "system_management": {
+            "type": "object",
+            "description": " List of system management tiles. The key is the workspace name.",
+            "title": "System Management",
+            "x-displayname": "System Management"
+          },
+          "use_cases": {
+            "type": "object",
+            "description": " List of result use cases. The key is the use case name.",
+            "title": "Use Cases",
+            "x-displayname": "Use Cases"
+          },
+          "workspaces": {
+            "type": "object",
+            "description": " List of result tiles (workspaces). The key is the workspace name.",
+            "title": "Workspaces",
+            "x-displayname": "Workspaces"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "web"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.api_sec.rule_suggestion",
     "description": "APIs to get rule suggestions from App Security Monitoring pages",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -1576,7 +1576,7 @@
       },
       "policyTlsFingerprintMatcherType": {
         "type": "object",
-        "description": "A TLS fingerprint matcher specifies multiple criteria for matching a TLS fingerprint. The set of supported positve match criteria includes a list of known\nclasses of TLS fingerprints and a list of exact values. The match is considered successful if either of these positive criteria are satisfied and the input\nfingerprint is not one of the excluded values.",
+        "description": "A TLS fingerprint matcher specifies multiple criteria for matching a TLS fingerprint. The set of supported positive match criteria includes a list of known\nclasses of TLS fingerprints and a list of exact values. The match is considered successful if either of these positive criteria are satisfied and the input\nfingerprint is not one of the excluded values.",
         "title": "TlsFingerprintMatcherType",
         "x-displayname": "TLS Fingerprint Matcher",
         "x-ves-proto-message": "ves.io.schema.policy.TlsFingerprintMatcherType",
@@ -1890,7 +1890,7 @@
           },
           "path": {
             "type": "string",
-            "description": " Path to apply the senstive data to\n\nExample: ` \"/example\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 1024\n  ves.io.schema.rules.string.templated_http_path: true\n",
+            "description": " Path to apply the sensitive data to\n\nExample: ` \"/example\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 1024\n  ves.io.schema.rules.string.templated_http_path: true\n",
             "title": "Path",
             "maxLength": 1024,
             "x-displayname": "Request Path",
@@ -1951,7 +1951,7 @@
       },
       "schemaLabelSelectorType": {
         "type": "object",
-        "description": "This type can be used to establish a 'selector reference' from one object(called selector) to\na set of other objects(called selectees) based on the value of expresssions.\nA label selector is a label query over a set of resources. An empty label selector matches all objects.\nA null label selector matches no objects. Label selector is immutable.\nexpressions is a list of strings of label selection expression.\nEach string has \",\" separated values which are \"AND\" and all strings are logically \"OR\".\nBNF for expression string\n<selector-syntax>         ::= <requirement> | <requirement> \",\" <selector-syntax>\n<requirement>             ::= [!] KEY [ <set-based-restriction> | <exact-match-restriction> ]\n<set-based-restriction>   ::= \"\" | <inclusion-exclusion> <value-set>\n<inclusion-exclusion>     ::= <inclusion> | <exclusion>\n<exclusion>               ::= \"notin\"\n<inclusion>               ::= \"in\"\n<value-set>               ::= \"(\" <values> \")\"\n<values>                  ::= VALUE | VALUE \",\" <values>\n<exact-match-restriction> ::= [\"=\"|\"==\"|\"!=\"] VALUE",
+        "description": "This type can be used to establish a 'selector reference' from one object(called selector) to\na set of other objects(called selectees) based on the value of expressions.\nA label selector is a label query over a set of resources. An empty label selector matches all objects.\nA null label selector matches no objects. Label selector is immutable.\nexpressions is a list of strings of label selection expression.\nEach string has \",\" separated values which are \"AND\" and all strings are logically \"OR\".\nBNF for expression string\n<selector-syntax>         ::= <requirement> | <requirement> \",\" <selector-syntax>\n<requirement>             ::= [!] KEY [ <set-based-restriction> | <exact-match-restriction> ]\n<set-based-restriction>   ::= \"\" | <inclusion-exclusion> <value-set>\n<inclusion-exclusion>     ::= <inclusion> | <exclusion>\n<exclusion>               ::= \"notin\"\n<inclusion>               ::= \"in\"\n<value-set>               ::= \"(\" <values> \")\"\n<values>                  ::= VALUE | VALUE \",\" <values>\n<exact-match-restriction> ::= [\"=\"|\"==\"|\"!=\"] VALUE",
         "title": "LabelSelectorType",
         "x-displayname": "Label Selector",
         "x-ves-proto-message": "ves.io.schema.LabelSelectorType",
@@ -2185,7 +2185,7 @@
       },
       "virtual_hostVirtualHostType": {
         "type": "string",
-        "description": "VirtualHostType tells the type of virtual_host. Functionally, all types are same,\nthis is mainly used for categorizing metrics.\n\n - VIRTUAL_SERVICE: VirtualService\n\nVirtual Host used Virtual Service\n - HTTP_LOAD_BALANCER: HTTP LoadBalancer\n\nVirtual Host used as Load Balancer\n - API_GATEWAY: APIGateway\n\nVirtual Host used API Gateway\n - TCP_LOAD_BALANCER: TCP LoadBalancer\n\nVirtual Host used as Load Balancer\n - PROXY: Proxy\n\nVirtual Host used as Proxy\n - LOCAL_K8S_API_GATEWAY: LOCAL_K8S_API_GATEWAY\n\nInternal use only, used for k8s cluster api gateway on the site.\n - CDN_LOAD_BALANCER: CDN LoadBalancer\n\n Virtual Host used as Load Balancer\n - NGINX_SERVER: NGINX Server\n\nVirtual Host representing an NGINX Server block\n - BIGIP_VIRTUAL_SERVER: BIG-IP Virtual Server\n\nVirtual Host representing a BIG-IP Virtual Server\n - UDP_LOAD_BALANCER: UDP LoadBalancer\n\nVirtual Host used as Load Balancer\n - THIRD_PARTY_APPLICATION: THIRD PARTY Virtual Server\n\nVirtual Host representing a Third Party Application",
+        "description": "VirtualHostType tells the type of virtual_host. Functionally, all types are same,\nthis is mainly used for categorizing metrics.\n\n - VIRTUAL_SERVICE: VirtualService\n\nVirtual Host used Virtual Service\n - HTTP_LOAD_BALANCER: HTTP LoadBalancer\n\nVirtual Host used as Load Balancer\n - API_GATEWAY: APIGateway\n\nVirtual Host used API Gateway\n - TCP_LOAD_BALANCER: TCP LoadBalancer\n\nVirtual Host used as Load Balancer\n - PROXY: Proxy\n\nVirtual Host used as Proxy\n - LOCAL_K8S_API_GATEWAY: LOCAL_K8S_API_GATEWAY\n\nInternal use only, used for k8s cluster api gateway on the site.\n - CDN_LOAD_BALANCER: CDN LoadBalancer\n\n Virtual Host used as Load Balancer\n - NGINX_SERVER: NGINX Server\n\nVirtual Host representing an NGINX Server block\n - BIGIP_VIRTUAL_SERVER: BIG-IP Virtual Server\n\nVirtual Host representing a BIG-IP Virtual Server\n - UDP_LOAD_BALANCER: UDP LoadBalancer\n\nVirtual Host used as Load Balancer\n - TMM_PROXY: TMM Proxy\n\nVirtual Host for TMM Proxy\n - THIRD_PARTY_APPLICATION: THIRD PARTY Virtual Server\n\nVirtual Host representing a Third Party Application",
         "title": "VirtualHostType",
         "enum": [
           "VIRTUAL_SERVICE",
@@ -2211,21 +2211,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

@@ -21,7 +21,9 @@ Downloads official specs, validates them against the live API, reconciles discre
 - `scripts/` -- Python pipeline scripts (download, validate, reconcile, release)
 - `scripts/utils/` -- Shared utilities (auth, constraint_validator, report_generator, etc.)
 - `config/` -- Pipeline configuration (endpoints.yaml, validation.yaml)
-- `release/specs/` -- Released OpenAPI spec files (268 specs)
+- `release/specs/` -- Released OpenAPI spec files, one per upstream domain
+  (283 as of the 2026-07-24 drop). A build product that is also committed:
+  regenerate it with the pipeline, never by hand.
 - `tests/` -- Test suite
 - `docs/` -- MDX documentation (Starlight format)
 

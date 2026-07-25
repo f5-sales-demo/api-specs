@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.alert_policy",
     "description": "Alert Policy is used to specify a set of routes to match the incoming alert and the set of receivers to\nsend the alert notification if there is a match.\nAn Alert policy object defines a node in the Alert policy routing tree. An incoming alert matches the\nroutes defined in the alert policy in order till a match is found. If the action defined in the matching route is send,\nthen the alert is sent to all the receivers associated with the alert policy, else the alert is not sent\nto any receiver.",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -134,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-alert_policy-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.alert_policy.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.alert_policy.API.Create",
+        "tags": ["config"]
       },
       "x-displayname": "Alert Policy",
       "x-ves-proto-service": "ves.io.schema.alert_policy.API",
@@ -273,7 +274,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-alert_policy-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.alert_policy.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.alert_policy.API.Replace",
+        "tags": ["config"]
       },
       "x-displayname": "Alert Policy",
       "x-ves-proto-service": "ves.io.schema.alert_policy.API",
@@ -687,7 +689,7 @@
           },
           {
             "name": "response_format",
-            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
             "in": "query",
             "required": false,
             "x-displayname": "Broken Referred Objects",
@@ -857,7 +859,7 @@
     "schemas": {
       "alert_policyAlertName": {
         "type": "string",
-        "description": "List of Alert Names\n\nCustomer tunnel interface down\nPhysical Interface down\nTunnel Interfaces to Customer Site Down\nVirutal Host server error\nVirtual Host client error\nService Health Low\nService Unavailable\nVirtual Host server error\nVirtual Host client error\nEndpoint Healthcheck failure\nSynthetic monitor health critical\nMalicious user detected\nVirtual Host WAF security events detected\nVirtual Host API security events detected\nVirtual Host Service Policy security events detected\nVirtual Host Many Malicious Bots based WAF security events detected\nVirtual Host Many Malicious Bots based Bot Defense security events detected\nVirtual Host Many Threat campaign based WAF security events detected\nSuspicious domain identified by Client-Side Defense service\nClient-Side Defense has identified a suspicious script that is reading sensitive form field\nError rate anomaly detected\nRequest rate anomaly detected\nRequest throughput anomaly detected\nResponse latency anomaly detected\nResponse throughput anomaly detected\nTLS Automatic Certificate renewal is failing\nTLS Automatic Certificate renewal is still failing after multiple retries\nTLS Automatic Certificate has expired\nTLS Custom Certificate will expire in less than 28 days\nTLS Custom Certificate will expire in less than 15 days\nTLS Custom Certificate has expired\nDDoS security event detected\nDNS Zone Ignored a Duplicate Record Create Request\nUnused APIs Detected\nShadow APIs Detected\nEndpoints With Sensitive Data In Response Detected\nHigh Risk Score Endpoints Detected\nA routed DDoS traffic anomaly has been detected\nA routed DDoS mitigation has been implemented to block malicious traffic",
+        "description": "List of Alert Names\n\nCustomer tunnel interface down\nPhysical Interface down\nTunnel Interfaces to Customer Site Down\nVirtual Host server error\nVirtual Host client error\nService Health Low\nService Unavailable\nVirtual Host server error\nVirtual Host client error\nEndpoint Healthcheck failure\nSynthetic monitor health critical\nMalicious user detected\nVirtual Host WAF security events detected\nVirtual Host API security events detected\nVirtual Host Service Policy security events detected\nVirtual Host Many Malicious Bots based WAF security events detected\nVirtual Host Many Malicious Bots based Bot Defense security events detected\nVirtual Host Many Threat campaign based WAF security events detected\nSuspicious domain identified by Client-Side Defense service\nClient-Side Defense has identified a suspicious script that is reading sensitive form field\nTLS Automatic Certificate renewal is failing\nTLS Automatic Certificate renewal is still failing after multiple retries\nTLS Automatic Certificate has expired\nTLS Custom Certificate will expire in less than 28 days\nTLS Custom Certificate will expire in less than 15 days\nTLS Custom Certificate has expired\nDDoS security event detected\nDNS Zone Ignored a Duplicate Record Create Request\nUnused APIs Detected\nShadow APIs Detected\nEndpoints With Sensitive Data In Response Detected\nHigh Risk Score Endpoints Detected\nA routed DDoS traffic anomaly has been detected\nA routed DDoS mitigation has been implemented to block malicious traffic\nA routed DDoS tunnel status has been changed",
         "title": "AlertName",
         "enum": [
           "SITE_CUSTOMER_TUNNEL_INTERFACE_DOWN",
@@ -880,11 +882,6 @@
           "THREAT_CAMPAIGN",
           "VES_CLIENT_SIDE_DEFENSE_SUSPICIOUS_DOMAIN",
           "VES_CLIENT_SIDE_DEFENSE_SENSITIVE_FIELD_READ",
-          "ERROR_RATE_ANOMALY",
-          "REQUEST_RATE_ANOMALY",
-          "REQUEST_THROUGHPUT_ANOMALY",
-          "RESPONSE_LATENCY_ANOMALY",
-          "RESPONSE_THROUGHPUT_ANOMALY",
           "TLS_AUTOMATIC_CERTIFICATE_RENEWAL_FAILURE",
           "TLS_AUTOMATIC_CERTIFICATE_RENEWAL_STILL_FAILING",
           "TLS_AUTOMATIC_CERTIFICATE_EXPIRED",
@@ -898,7 +895,8 @@
           "API_SECURITY_SENSITIVE_DATA_IN_RESPONSE_DETECTED",
           "API_SECURITY_RISK_SCORE_HIGH_DETECTED",
           "ROUTED_DDOS_ALERT_NOTIFICATION",
-          "ROUTED_DDOS_MITIGATION_NOTIFICATION"
+          "ROUTED_DDOS_MITIGATION_NOTIFICATION",
+          "ROUTED_DDOS_TUNNEL_STATUS_UPDATE_NOTIFICATION"
         ],
         "default": "SITE_CUSTOMER_TUNNEL_INTERFACE_DOWN",
         "x-displayname": "AlertName",
@@ -1675,10 +1673,10 @@
           },
           "reason": {
             "type": "string",
-            "description": " x-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": " A human readable string explaining the reason for reaching this condition\n\nExample: ` \"Insufficient memory in data plane\"`",
             "title": "reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Insufficient memory in data plane"
           },
           "service_name": {
             "type": "string",
@@ -1688,7 +1686,7 @@
           },
           "status": {
             "type": "string",
-            "description": " Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
+            "description": " Status of the condition\n \"Success\" Validation has succeeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
             "title": "status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
@@ -2257,29 +2255,29 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
     }
   ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
   "tags": [
     {
-      "name": "alert"
+      "name": "config"
     },
     {
-      "name": "config"
+      "name": "alert"
     }
   ]
 }

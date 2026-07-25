@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.api_definition",
     "description": "The api_definition construct provides a mechanism to create api_groups based on referred OpenAPI specs.\nDefault api_groups, which are built automatically, include a group containing all the operations specified in swaggers; a group defining all possible requests for the given base urls.\nIn addition, we create default api-groups by a predefined OpenAPI extension, for example  x-volterra-apigroup. http_loadbalancer can refer api_definition object and create access policy rules based on its api-groups.",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -134,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-api_definition-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.api_definition.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.api_definition.API.Create",
+        "tags": ["config"]
       },
       "x-displayname": "API Definition",
       "x-ves-proto-service": "ves.io.schema.views.api_definition.API",
@@ -273,7 +274,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-api_definition-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.api_definition.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.api_definition.API.Replace",
+        "tags": ["config"]
       },
       "x-displayname": "API Definition",
       "x-ves-proto-service": "ves.io.schema.views.api_definition.API",
@@ -557,7 +559,7 @@
           },
           {
             "name": "response_format",
-            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
             "in": "query",
             "required": false,
             "x-displayname": "Broken Referred Objects",
@@ -719,137 +721,6 @@
       "x-displayname": "API Definition",
       "x-ves-proto-service": "ves.io.schema.views.api_definition.API",
       "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
-    },
-    "/api/config/namespaces/{namespace}/api_definitions/{name}/http_loadbalancers": {
-      "get": {
-        "summary": "Get Referencing HTTP Loadbalancers",
-        "description": "List Loadbalancer objects referenced by the API Definition (backrefrences).\nDEPRECATED. use GetReferencingLoadBalancers",
-        "operationId": "ves.io.schema.views.api_definition.PublicConfigCustomAPI.GetReferencingHttpLoadbalancers",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/api_definitionGetReferencingLoadbalancersResp"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Returned when operation is not authorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Returned when there is no permission to access resource",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Returned when resource is not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Returned when operation on resource is conflicting with current value",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Returned when operation has been rejected as it is happening too frequently",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Returned when server encountered an error in processing API",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Returned when service is unavailable temporarily",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Returned when server timed out processing request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "description": "Namespace\n\nx-example: \"shared\"\nThe namespace of the API Definition for the current request",
-            "in": "path",
-            "required": true,
-            "x-displayname": "Namespace",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "name",
-            "description": "Name\n\nx-example: \"name\"\nThe name of the API Definition for the current request",
-            "in": "path",
-            "required": true,
-            "x-displayname": "Name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "externalDocs": {
-          "description": "Examples of this operation",
-          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-api_definition-publicconfigcustomapi-getreferencinghttploadbalancers"
-        },
-        "x-ves-deprecated": "Use GetReferencingLoadbalancers",
-        "x-ves-proto-rpc": "ves.io.schema.views.api_definition.PublicConfigCustomAPI.GetReferencingHttpLoadbalancers",
-        "tags": ["config"]
-      },
-      "x-displayname": "API Definition",
-      "x-ves-proto-service": "ves.io.schema.views.api_definition.PublicConfigCustomAPI",
-      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
     },
     "/api/config/namespaces/{namespace}/api_definitions/{name}/loadbalancers": {
       "get": {
@@ -1101,7 +972,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/api_definitionAPInventoryReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_definitionAPInventoryReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -1234,7 +1112,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/api_definitionAPInventoryReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_definitionAPInventoryReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -1367,7 +1252,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/api_definitionAPInventoryReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_definitionAPInventoryReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -1500,7 +1392,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/api_definitionAPInventoryReq"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_definitionAPInventoryReq"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -1637,18 +1536,6 @@
   "x-displayname": "API Definition",
   "x-ves-proto-package": "ves.io.schema.views.api_definition",
   "components": {
-    "requestBodies": {
-      "api_definitionAPInventoryReq": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/api_definitionAPInventoryReq"
-            }
-          }
-        },
-        "required": true
-      }
-    },
     "schemas": {
       "api_definitionAPInventoryReq": {
         "type": "object",
@@ -1816,24 +1703,6 @@
               "$ref": "#/components/schemas/schemaviewsObjectRefType"
             },
             "x-displayname": "Loadbalancers"
-          }
-        }
-      },
-      "api_definitionGetReferencingLoadbalancersResp": {
-        "type": "object",
-        "description": "Response shape for Get API Endpoints With Newly Discovered Schema",
-        "title": "Get API Endpoints Schema Response",
-        "x-displayname": "Get API Endpoints Schema Response",
-        "x-ves-proto-message": "ves.io.schema.views.api_definition.GetReferencingLoadbalancersResp",
-        "properties": {
-          "http_loadbalancers": {
-            "type": "array",
-            "description": " HTTP Loadbalancers referencing the API Definition.",
-            "title": "HTTP Loadbalancers",
-            "items": {
-              "$ref": "#/components/schemas/schemaviewsObjectRefType"
-            },
-            "x-displayname": "HTTP Loadbalancers"
           }
         }
       },
@@ -2158,10 +2027,10 @@
           },
           "reason": {
             "type": "string",
-            "description": " x-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": " A human readable string explaining the reason for reaching this condition\n\nExample: ` \"Insufficient memory in data plane\"`",
             "title": "reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Insufficient memory in data plane"
           },
           "service_name": {
             "type": "string",
@@ -2171,7 +2040,7 @@
           },
           "status": {
             "type": "string",
-            "description": " Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
+            "description": " Status of the condition\n \"Success\" Validation has succeeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
             "title": "status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
@@ -2274,44 +2143,6 @@
           },
           "result": {
             "$ref": "#/components/schemas/schemaStatusType"
-          }
-        }
-      },
-      "schemaLabelSelectorType": {
-        "type": "object",
-        "description": "x-displayName: \"Label Selector\"\nThis type can be used to establish a 'selector reference' from one object(called selector) to\na set of other objects(called selectees) based on the value of expresssions.\nA label selector is a label query over a set of resources. An empty label selector matches all objects.\nA null label selector matches no objects. Label selector is immutable.\nexpressions is a list of strings of label selection expression.\nEach string has \",\" separated values which are \"AND\" and all strings are logically \"OR\".\nBNF for expression string\n<selector-syntax>         ::= <requirement> | <requirement> \",\" <selector-syntax>\n<requirement>             ::= [!] KEY [ <set-based-restriction> | <exact-match-restriction> ]\n<set-based-restriction>   ::= \"\" | <inclusion-exclusion> <value-set>\n<inclusion-exclusion>     ::= <inclusion> | <exclusion>\n<exclusion>               ::= \"notin\"\n<inclusion>               ::= \"in\"\n<value-set>               ::= \"(\" <values> \")\"\n<values>                  ::= VALUE | VALUE \",\" <values>\n<exact-match-restriction> ::= [\"=\"|\"==\"|\"!=\"] VALUE",
-        "title": "LabelSelectorType",
-        "properties": {
-          "expressions": {
-            "type": "array",
-            "description": "x-displayName: \"Selector Expression\"\nx-required\nx-example: \"region in (us-west1, us-west2),tier in (staging)\"\nexpressions contains the kubernetes style label expression for selections.",
-            "title": "expressions",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "schemaMessageMetaType": {
-        "type": "object",
-        "description": "x-displayName: \"Message Metadata\"\nMessageMetaType is metadata (common attributes) of a message that only certain messages\nhave. This information is propagated to the metadata of a child object that gets created\nfrom the containing message during view processing.\nThe information in this type can be specified by user during create and replace APIs.",
-        "title": "MessageMetaType",
-        "properties": {
-          "description": {
-            "type": "string",
-            "description": "x-displayName: \"Description\"\nx-example: \"Virtual Host for acmecorp website\"\nHuman readable description.",
-            "title": "description"
-          },
-          "disable": {
-            "type": "boolean",
-            "description": "x-displayName: \"Disable\"\nx-example: \"true\"\nA value of true will administratively disable the object that corresponds to the containing message.",
-            "title": "disable",
-            "format": "boolean"
-          },
-          "name": {
-            "type": "string",
-            "description": "x-displayName: \"Name\"\nx-example: \"acmecorp-web\"\nx-required\nThis is the name of the message.\nThe value of name has to follow DNS-1035 format.",
-            "title": "name"
           }
         }
       },
@@ -2861,27 +2692,27 @@
         "properties": {
           "api_inventory_exclusion_list": {
             "type": "array",
-            "description": " List of API Endpoints excluded from the API Inventory.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1000\n  ves.io.schema.rules.repeated.unique: true\n",
-            "maxItems": 1000,
+            "description": " List of API Endpoints excluded from the API Inventory.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 5000\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 5000,
             "items": {
               "$ref": "#/components/schemas/viewsApiOperation"
             },
             "x-displayname": "API Inventory Exclusion List",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.max_items": "1000",
+              "ves.io.schema.rules.repeated.max_items": "5000",
               "ves.io.schema.rules.repeated.unique": "true"
             }
           },
           "api_inventory_inclusion_list": {
             "type": "array",
-            "description": " List of API Endpoints included in the API Inventory.\n Typically, discovered API endpoints are added to the API Inventory using this list.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1000\n  ves.io.schema.rules.repeated.unique: true\n",
-            "maxItems": 1000,
+            "description": " List of API Endpoints included in the API Inventory.\n Typically, discovered API endpoints are added to the API Inventory using this list.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 5000\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 5000,
             "items": {
               "$ref": "#/components/schemas/viewsApiOperation"
             },
             "x-displayname": "API Inventory Inclusion List",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.max_items": "1000",
+              "ves.io.schema.rules.repeated.max_items": "5000",
               "ves.io.schema.rules.repeated.unique": "true"
             }
           },
@@ -2890,14 +2721,14 @@
           },
           "non_api_endpoints": {
             "type": "array",
-            "description": " List of Non-API Endpoints.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1000\n  ves.io.schema.rules.repeated.unique: true\n",
-            "maxItems": 1000,
+            "description": " List of Non-API Endpoints.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 5000\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 5000,
             "items": {
               "$ref": "#/components/schemas/viewsApiOperation"
             },
             "x-displayname": "API Discovery Exclusion List",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.max_items": "1000",
+              "ves.io.schema.rules.repeated.max_items": "5000",
               "ves.io.schema.rules.repeated.unique": "true"
             }
           },
@@ -2941,27 +2772,27 @@
           },
           "api_inventory_exclusion_list": {
             "type": "array",
-            "description": " List of API Endpoints excluded from the API Inventory.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1000\n  ves.io.schema.rules.repeated.unique: true\n",
-            "maxItems": 1000,
+            "description": " List of API Endpoints excluded from the API Inventory.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 5000\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 5000,
             "items": {
               "$ref": "#/components/schemas/viewsApiOperation"
             },
             "x-displayname": "API Inventory Exclusion List",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.max_items": "1000",
+              "ves.io.schema.rules.repeated.max_items": "5000",
               "ves.io.schema.rules.repeated.unique": "true"
             }
           },
           "api_inventory_inclusion_list": {
             "type": "array",
-            "description": " List of API Endpoints included in the API Inventory.\n Typically, discovered API endpoints are added to the API Inventory using this list.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1000\n  ves.io.schema.rules.repeated.unique: true\n",
-            "maxItems": 1000,
+            "description": " List of API Endpoints included in the API Inventory.\n Typically, discovered API endpoints are added to the API Inventory using this list.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 5000\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 5000,
             "items": {
               "$ref": "#/components/schemas/viewsApiOperation"
             },
             "x-displayname": "API Inventory Inclusion List",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.max_items": "1000",
+              "ves.io.schema.rules.repeated.max_items": "5000",
               "ves.io.schema.rules.repeated.unique": "true"
             }
           },
@@ -2970,14 +2801,14 @@
           },
           "non_api_endpoints": {
             "type": "array",
-            "description": " List of Non-API Endpoints.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1000\n  ves.io.schema.rules.repeated.unique: true\n",
-            "maxItems": 1000,
+            "description": " List of Non-API Endpoints.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 5000\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 5000,
             "items": {
               "$ref": "#/components/schemas/viewsApiOperation"
             },
             "x-displayname": "API Discovery Exclusion List",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.max_items": "1000",
+              "ves.io.schema.rules.repeated.max_items": "5000",
               "ves.io.schema.rules.repeated.unique": "true"
             }
           },
@@ -3013,27 +2844,27 @@
         "properties": {
           "api_inventory_exclusion_list": {
             "type": "array",
-            "description": " List of API Endpoints excluded from the API Inventory.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1000\n  ves.io.schema.rules.repeated.unique: true\n",
-            "maxItems": 1000,
+            "description": " List of API Endpoints excluded from the API Inventory.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 5000\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 5000,
             "items": {
               "$ref": "#/components/schemas/viewsApiOperation"
             },
             "x-displayname": "API Inventory Exclusion List",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.max_items": "1000",
+              "ves.io.schema.rules.repeated.max_items": "5000",
               "ves.io.schema.rules.repeated.unique": "true"
             }
           },
           "api_inventory_inclusion_list": {
             "type": "array",
-            "description": " List of API Endpoints included in the API Inventory.\n Typically, discovered API endpoints are added to the API Inventory using this list.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1000\n  ves.io.schema.rules.repeated.unique: true\n",
-            "maxItems": 1000,
+            "description": " List of API Endpoints included in the API Inventory.\n Typically, discovered API endpoints are added to the API Inventory using this list.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 5000\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 5000,
             "items": {
               "$ref": "#/components/schemas/viewsApiOperation"
             },
             "x-displayname": "API Inventory Inclusion List",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.max_items": "1000",
+              "ves.io.schema.rules.repeated.max_items": "5000",
               "ves.io.schema.rules.repeated.unique": "true"
             }
           },
@@ -3042,14 +2873,14 @@
           },
           "non_api_endpoints": {
             "type": "array",
-            "description": " List of Non-API Endpoints.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 1000\n  ves.io.schema.rules.repeated.unique: true\n",
-            "maxItems": 1000,
+            "description": " List of Non-API Endpoints.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 5000\n  ves.io.schema.rules.repeated.unique: true\n",
+            "maxItems": 5000,
             "items": {
               "$ref": "#/components/schemas/viewsApiOperation"
             },
             "x-displayname": "API Discovery Exclusion List",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.max_items": "1000",
+              "ves.io.schema.rules.repeated.max_items": "5000",
               "ves.io.schema.rules.repeated.unique": "true"
             }
           },
@@ -3085,21 +2916,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

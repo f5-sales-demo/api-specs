@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_firewall",
     "description": "WAF Configuration",
-    "version": "",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -109,7 +109,14 @@
           }
         },
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_firewallMetricsRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_firewallMetricsRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -245,7 +252,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_firewall-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_firewall.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.app_firewall.API.Create",
+        "tags": ["config"]
       },
       "x-displayname": "Application Firewall",
       "x-ves-proto-service": "ves.io.schema.app_firewall.API",
@@ -384,7 +392,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_firewall-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.app_firewall.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.app_firewall.API.Replace",
+        "tags": ["config"]
       },
       "x-displayname": "Application Firewall",
       "x-ves-proto-service": "ves.io.schema.app_firewall.API",
@@ -500,7 +509,14 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/app_firewallMetricsRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_firewallMetricsRequest"
+              }
+            }
+          },
+          "required": true
         },
         "externalDocs": {
           "description": "Examples of this operation",
@@ -791,7 +807,7 @@
           },
           {
             "name": "response_format",
-            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
             "in": "query",
             "required": false,
             "x-displayname": "Broken Referred Objects",
@@ -958,34 +974,20 @@
   "x-displayname": "Application Firewall",
   "x-ves-proto-package": "ves.io.schema.app_firewall",
   "components": {
-    "requestBodies": {
-      "app_firewallMetricsRequest": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/app_firewallMetricsRequest"
-            }
-          }
-        },
-        "required": true
-      }
-    },
     "schemas": {
-      "app_firewallAiRiskBasedBlocking": {
+      "app_firewallAIEnhancementsConfig": {
         "type": "object",
-        "description": "All Attack Types, including high, medium, and low accuracy signatures, automatic Attack Signature tuning,\nThreat Campaigns, and all Violations will be enabled. AI and ML algorithms will assess request risk, and\nonly high-risk requests will be blocked by default. This feature is in preview mode.",
-        "title": "AI Risk Based Blocking",
-        "x-displayname": "Risk-Based Blocking (Powered by AI) - Preview",
-        "x-ves-proto-message": "ves.io.schema.app_firewall.AiRiskBasedBlocking",
+        "description": "Actions complimented by the additional intelligence of the F5 AI Powered Risk-based analysis",
+        "title": "AI Enhancements Config",
+        "x-displayname": "AI Enhancements Config",
+        "x-ves-oneof-field-risk_score_action_choice": "[\"mitigate_high_medium_risk_action\",\"mitigate_high_risk_action\"]",
+        "x-ves-proto-message": "ves.io.schema.app_firewall.AIEnhancementsConfig",
         "properties": {
-          "high_risk_action": {
-            "$ref": "#/components/schemas/app_firewallRiskBasedBlockingAction"
+          "mitigate_high_medium_risk_action": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
           },
-          "low_risk_action": {
-            "$ref": "#/components/schemas/app_firewallRiskBasedBlockingAction"
-          },
-          "medium_risk_action": {
-            "$ref": "#/components/schemas/app_firewallRiskBasedBlockingAction"
+          "mitigate_high_risk_action": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
           }
         }
       },
@@ -1073,7 +1075,7 @@
         "properties": {
           "cookie_name": {
             "type": "string",
-            "description": " Masks the cookie value. The setting does not mask the cookie name.\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n",
+            "description": " Masks the cookie value. The setting does not mask the cookie name.\n Wildcard matching can be used by prefixing or suffixing the cookie name\n with a wildcard asterisk (*), or by using only an asterisk to match any cookie name.\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n",
             "title": "cookie_name",
             "maxLength": 256,
             "x-displayname": "Cookie Name",
@@ -1095,7 +1097,7 @@
         "properties": {
           "header_name": {
             "type": "string",
-            "description": " Masks the HTTP header value. The setting does not mask the HTTP header name.\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.http_header_field: true\n",
+            "description": " Masks the HTTP header value. The setting does not mask the HTTP header name.\n Wildcard matching can be used by prefixing or suffixing the HTTP header name\n with a wildcard asterisk (*), or by using only an asterisk to match any HTTP header name.\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.http_header_field: true\n",
             "title": "header_name",
             "x-displayname": "Header Name",
             "x-ves-example": "value",
@@ -1116,7 +1118,7 @@
         "properties": {
           "query_param_name": {
             "type": "string",
-            "description": " Masks the query parameter value. The setting does not mask the query parameter name.\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n",
+            "description": " Masks the query parameter value. The setting does not mask the query parameter name.\n Wildcard matching can be used by prefixing or suffixing the query parameter name\n with a wildcard asterisk (*), or by using only an asterisk to match any query parameter name.\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n",
             "title": "query_param_name",
             "maxLength": 256,
             "x-displayname": "Query Parameter Name",
@@ -1307,13 +1309,11 @@
         "x-ves-oneof-field-anonymization_setting": "[\"custom_anonymization\",\"default_anonymization\",\"disable_anonymization\"]",
         "x-ves-oneof-field-blocking_page_choice": "[\"blocking_page\",\"use_default_blocking_page\"]",
         "x-ves-oneof-field-bot_protection_choice": "[\"bot_protection_setting\",\"default_bot_setting\"]",
-        "x-ves-oneof-field-detection_setting_choice": "[\"ai_risk_based_blocking\",\"default_detection_settings\",\"detection_settings\"]",
+        "x-ves-oneof-field-detection_setting_choice": "[\"default_detection_settings\",\"detection_settings\"]",
         "x-ves-oneof-field-enforcement_mode_choice": "[\"blocking\",\"monitoring\"]",
+        "x-ves-oneof-field-enhance_with_ai_choice": "[\"disable_ai_enhancements\",\"enable_ai_enhancements\"]",
         "x-ves-proto-message": "ves.io.schema.app_firewall.CreateSpecType",
         "properties": {
-          "ai_risk_based_blocking": {
-            "$ref": "#/components/schemas/app_firewallAiRiskBasedBlocking"
-          },
           "allow_all_response_codes": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           },
@@ -1344,8 +1344,14 @@
           "detection_settings": {
             "$ref": "#/components/schemas/app_firewallDetectionSetting"
           },
+          "disable_ai_enhancements": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
           "disable_anonymization": {
             "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "enable_ai_enhancements": {
+            "$ref": "#/components/schemas/app_firewallAIEnhancementsConfig"
           },
           "monitoring": {
             "$ref": "#/components/schemas/ioschemaEmpty"
@@ -1458,6 +1464,19 @@
           },
           "violation_settings": {
             "$ref": "#/components/schemas/app_firewallViolationSettings"
+          },
+          "violations_view": {
+            "type": "array",
+            "description": " List of violation checks that are performed on HTTP request to ensure the requests are properly formatted, detection of evasion techniques and other violations.\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Violations configuration settings for view only",
+            "items": {
+              "$ref": "#/components/schemas/app_firewallViolationConfigView"
+            },
+            "x-displayname": "Violations",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
           }
         }
       },
@@ -1530,13 +1549,11 @@
         "x-ves-oneof-field-anonymization_setting": "[\"custom_anonymization\",\"default_anonymization\",\"disable_anonymization\"]",
         "x-ves-oneof-field-blocking_page_choice": "[\"blocking_page\",\"use_default_blocking_page\"]",
         "x-ves-oneof-field-bot_protection_choice": "[\"bot_protection_setting\",\"default_bot_setting\"]",
-        "x-ves-oneof-field-detection_setting_choice": "[\"ai_risk_based_blocking\",\"default_detection_settings\",\"detection_settings\"]",
+        "x-ves-oneof-field-detection_setting_choice": "[\"default_detection_settings\",\"detection_settings\"]",
         "x-ves-oneof-field-enforcement_mode_choice": "[\"blocking\",\"monitoring\"]",
+        "x-ves-oneof-field-enhance_with_ai_choice": "[\"disable_ai_enhancements\",\"enable_ai_enhancements\"]",
         "x-ves-proto-message": "ves.io.schema.app_firewall.GetSpecType",
         "properties": {
-          "ai_risk_based_blocking": {
-            "$ref": "#/components/schemas/app_firewallAiRiskBasedBlocking"
-          },
           "allow_all_response_codes": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           },
@@ -1567,8 +1584,14 @@
           "detection_settings": {
             "$ref": "#/components/schemas/app_firewallDetectionSetting"
           },
+          "disable_ai_enhancements": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
           "disable_anonymization": {
             "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "enable_ai_enhancements": {
+            "$ref": "#/components/schemas/app_firewallAIEnhancementsConfig"
           },
           "monitoring": {
             "$ref": "#/components/schemas/ioschemaEmpty"
@@ -1697,7 +1720,7 @@
         "properties": {
           "data": {
             "type": "array",
-            "description": " List of metric data ",
+            "description": " List of metric data",
             "title": "Data",
             "items": {
               "$ref": "#/components/schemas/schemaapp_firewallMetricTypeData"
@@ -1757,7 +1780,7 @@
           },
           "filter": {
             "type": "string",
-            "description": " filter is used to specify the list of matchers\n syntax for filter := {[<matcher>]}\n <matcher> := <label><operator>\"<value>\"\n   <label> := string\n   <value> := string\n   <operator> := [\"=\"|\"!=\"|\"=~\"|\"!~\"]\n     =  : equal to\n     != : not equal to\n     =~ : regex match\n     !~ : not regex match\n\n Optional: If not specified, metric will be aggregated based on the group_by labels. \n\nExample: ` \"{NAMESPACE=\\\"book-info\\\"}\"`",
+            "description": " filter is used to specify the list of matchers\n syntax for filter := {[<matcher>]}\n <matcher> := <label><operator>\"<value>\"\n   <label> := string\n   <value> := string\n   <operator> := [\"=\"|\"!=\"|\"=~\"|\"!~\"]\n     =  : equal to\n     != : not equal to\n     =~ : regex match\n     !~ : not regex match\n\n Optional: If not specified, metric will be aggregated based on the group_by labels.\n\nExample: ` \"{NAMESPACE=\\\"book-info\\\"}\"`",
             "title": "Label Filter",
             "x-displayname": "Filter",
             "x-ves-example": "{NAMESPACE=\\\"book-info\\\"}"
@@ -1873,13 +1896,11 @@
         "x-ves-oneof-field-anonymization_setting": "[\"custom_anonymization\",\"default_anonymization\",\"disable_anonymization\"]",
         "x-ves-oneof-field-blocking_page_choice": "[\"blocking_page\",\"use_default_blocking_page\"]",
         "x-ves-oneof-field-bot_protection_choice": "[\"bot_protection_setting\",\"default_bot_setting\"]",
-        "x-ves-oneof-field-detection_setting_choice": "[\"ai_risk_based_blocking\",\"default_detection_settings\",\"detection_settings\"]",
+        "x-ves-oneof-field-detection_setting_choice": "[\"default_detection_settings\",\"detection_settings\"]",
         "x-ves-oneof-field-enforcement_mode_choice": "[\"blocking\",\"monitoring\"]",
+        "x-ves-oneof-field-enhance_with_ai_choice": "[\"disable_ai_enhancements\",\"enable_ai_enhancements\"]",
         "x-ves-proto-message": "ves.io.schema.app_firewall.ReplaceSpecType",
         "properties": {
-          "ai_risk_based_blocking": {
-            "$ref": "#/components/schemas/app_firewallAiRiskBasedBlocking"
-          },
           "allow_all_response_codes": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           },
@@ -1910,8 +1931,14 @@
           "detection_settings": {
             "$ref": "#/components/schemas/app_firewallDetectionSetting"
           },
+          "disable_ai_enhancements": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
           "disable_anonymization": {
             "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "enable_ai_enhancements": {
+            "$ref": "#/components/schemas/app_firewallAIEnhancementsConfig"
           },
           "monitoring": {
             "$ref": "#/components/schemas/ioschemaEmpty"
@@ -1920,15 +1947,6 @@
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
         }
-      },
-      "app_firewallRiskBasedBlockingAction": {
-        "type": "string",
-        "description": "Action to be performed on the request\n\nLog and block\nLog only",
-        "title": "Risk Based Blocking Action",
-        "enum": ["AI_BLOCK", "AI_REPORT"],
-        "default": "AI_BLOCK",
-        "x-displayname": "Risk Based Blocking Action",
-        "x-ves-proto-enum": "ves.io.schema.app_firewall.RiskBasedBlockingAction"
       },
       "app_firewallSignatureSelectionSetting": {
         "type": "object",
@@ -2010,6 +2028,42 @@
           }
         }
       },
+      "app_firewallViolationConfigView": {
+        "type": "object",
+        "description": "Custom configuration for a violation",
+        "title": "Violation Config will be used by UI for view only",
+        "x-displayname": "Violation Configuration",
+        "x-ves-proto-message": "ves.io.schema.app_firewall.ViolationConfigView",
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "description",
+            "x-displayname": "Description"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "user customised state",
+            "format": "boolean",
+            "x-displayname": "State"
+          },
+          "enabled_by_default": {
+            "type": "string",
+            "description": " Violations that are enabled by default by F5 are advisable to leave enabled",
+            "title": "enabled_by_default",
+            "x-displayname": "Enabled by Default"
+          },
+          "name": {
+            "type": "string",
+            "title": "code",
+            "x-displayname": "Name"
+          },
+          "title": {
+            "type": "string",
+            "title": "name",
+            "x-displayname": "Title"
+          }
+        }
+      },
       "app_firewallViolationSettings": {
         "type": "object",
         "description": "Specifies violation settings to be used by WAF",
@@ -2079,10 +2133,10 @@
           },
           "reason": {
             "type": "string",
-            "description": " x-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": " A human readable string explaining the reason for reaching this condition\n\nExample: ` \"Insufficient memory in data plane\"`",
             "title": "reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Insufficient memory in data plane"
           },
           "service_name": {
             "type": "string",
@@ -2092,7 +2146,7 @@
           },
           "status": {
             "type": "string",
-            "description": " Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
+            "description": " Status of the condition\n \"Success\" Validation has succeeded. Requested operation was successful.\n \"Failed\"  Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. e.g. down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]\n",
             "title": "status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
@@ -2867,21 +2921,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

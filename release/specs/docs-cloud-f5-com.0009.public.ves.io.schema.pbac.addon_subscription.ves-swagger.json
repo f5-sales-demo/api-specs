@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.pbac.addon_subscription",
-    "description": "\nRepresents addon subscription \nEywa will create the schema.pbac.addon_subscription object (SUBSCRIPTION_PENDING)\nSRE/Support team member via f5xc-support tenant changes the status of the addon_subscription object (SUBSCRIPTION_ENABLE)",
-    "version": "",
+    "description": "\nRepresents addon subscription\nEywa will create the schema.pbac.addon_subscription object (SUBSCRIPTION_PENDING)\nSRE/Support team member via f5xc-support tenant changes the status of the addon_subscription object (SUBSCRIPTION_ENABLE)",
+    "version": "2026.07.24",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -134,7 +134,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-pbac-addon_subscription-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_subscription.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_subscription.API.Create",
+        "tags": ["web"]
       },
       "x-displayname": "Addon Subscrption",
       "x-ves-proto-service": "ves.io.schema.pbac.addon_subscription.API",
@@ -273,7 +274,8 @@
           "description": "Examples of this operation",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-pbac-addon_subscription-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_subscription.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.pbac.addon_subscription.API.Replace",
+        "tags": ["web"]
       },
       "x-displayname": "Addon Subscrption",
       "x-ves-proto-service": "ves.io.schema.pbac.addon_subscription.API",
@@ -439,8 +441,8 @@
     },
     "/api/web/namespaces/{namespace}/addon_subscriptions/{name}": {
       "get": {
-        "summary": "Get Addon Subsciption",
-        "description": "Get Addon Subsciption reads a given object from storage backend for metadata.namespace.",
+        "summary": "Get Addon Subscription",
+        "description": "Get Addon Subscription reads a given object from storage backend for metadata.namespace.",
         "operationId": "ves.io.schema.pbac.addon_subscription.API.Get",
         "responses": {
           "200": {
@@ -557,7 +559,7 @@
           },
           {
             "name": "response_format",
-            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in CreateRequest format\nResponse should be in ReplaceRequest format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
             "in": "query",
             "required": false,
             "x-displayname": "Broken Referred Objects",
@@ -870,9 +872,9 @@
       },
       "addon_subscriptionGetSpecType": {
         "type": "object",
-        "description": "Get Addon Subsciption reads a given object from storage backend for metadata.namespace.",
-        "title": "Get Addon Subsciption",
-        "x-displayname": "Get Addon Subsciption",
+        "description": "Get Addon Subscription reads a given object from storage backend for metadata.namespace.",
+        "title": "Get Addon Subscription",
+        "x-displayname": "Get Addon Subscription",
         "x-ves-displayorder": "1,2,3",
         "x-ves-proto-message": "ves.io.schema.pbac.addon_subscription.GetSpecType",
         "properties": {
@@ -1629,21 +1631,21 @@
       }
     }
   },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ],
   "servers": [
     {
       "url": "https://{tenant}.console.ves.volterra.io",
       "description": "F5 Distributed Cloud API",
       "variables": {
         "tenant": {
-          "default": "f5-amer-ent",
+          "default": "example-tenant",
           "description": "Your F5 XC tenant name"
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
     }
   ],
   "tags": [

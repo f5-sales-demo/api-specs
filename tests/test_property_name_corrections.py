@@ -111,6 +111,41 @@ def _corrected_schemas(new_key: str, specs: list[tuple[str, dict, dict]]) -> lis
     ]
 
 
+def _annotated_objects(obj: Any, path: str = "") -> list[tuple[str, dict]]:
+    """Return ``(dotted path, object)`` for every object carrying the annotation.
+
+    Walks the whole document, not just ``components.schemas``: a guard that
+    only looked where the transform writes today would stop holding the moment
+    it writes somewhere else.
+    """
+    found: list[tuple[str, dict]] = []
+    if isinstance(obj, dict):
+        if WIRE_NAME_EXTENSION in obj:
+            found.append((path, obj))
+        for key, value in obj.items():
+            found.extend(_annotated_objects(value, f"{path}.{key}" if path else key))
+    elif isinstance(obj, list):
+        for index, item in enumerate(obj):
+            found.extend(_annotated_objects(item, f"{path}.{index}"))
+    return found
+
+
+def _ref_values(obj: Any, path: str = "") -> list[tuple[str, str]]:
+    """Return ``(dotted path, target)`` for every ``$ref`` reachable in *obj*."""
+    found: list[tuple[str, str]] = []
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            child = f"{path}.{key}" if path else key
+            if key == "$ref" and isinstance(value, str):
+                found.append((child, value))
+            else:
+                found.extend(_ref_values(value, child))
+    elif isinstance(obj, list):
+        for index, item in enumerate(obj):
+            found.extend(_ref_values(item, f"{path}.{index}"))
+    return found
+
+
 def _string_values(obj: Any) -> list[str]:
     """Collect every string value reachable in *obj*."""
     if isinstance(obj, dict):
@@ -220,6 +255,60 @@ class TestReleasedSpecsAreCorrected:
                         assert f'"{old_key}"' not in value, (
                             f"{name}/{schema_name}/{key} still names {old_key}"
                         )
+
+
+class TestAnnotationIsLegalOAS3:
+    """The annotation must never make the artifact illegal OpenAPI 3.0.
+
+    A ``$ref`` *replaces* the object holding it, so OAS3 forbids siblings:
+    every resolver discards them and Spectral reports ``no-$ref-siblings`` as
+    an **error**, which the release gate caps at zero.  Annotating a property
+    that is a ``$ref`` therefore has to wrap it in ``allOf`` rather than sit
+    beside it.  Without this guard the first ``$ref``-shaped correction blocks
+    every release for every consumer -- which is exactly what happened (#698).
+
+    Data-driven over the real config and the real specs, so a correction added
+    later is covered the day it lands.
+    """
+
+    def test_no_wire_annotation_is_a_ref_sibling(self, transformed_specs):
+        """The guard: not one annotation anywhere may share an object with ``$ref``."""
+        offenders = [
+            f"{name}: {path or '<root>'}"
+            for name, _original, transformed in transformed_specs
+            for path, obj in _annotated_objects(transformed)
+            if "$ref" in obj
+        ]
+        assert not offenders, (
+            f"{len(offenders)} {WIRE_NAME_EXTENSION} annotation(s) sit next to a $ref, "
+            "which Spectral rejects as no-$ref-siblings and the release gate "
+            f"caps at zero errors: {offenders}"
+        )
+
+    def test_the_guard_is_not_vacuous(self, transformed_specs):
+        """A guard that never sees an annotation cannot catch a bad one."""
+        annotated = [
+            path
+            for _n, _o, transformed in transformed_specs
+            for path, _ in _annotated_objects(transformed)
+        ]
+        assert annotated, "the transform emitted no annotation at all"
+
+    def test_a_wrapped_property_still_references_the_same_schema(self, transformed_specs):
+        """Wrapping may move the ``$ref``; it may never change its target."""
+        renames = {c["old_key"]: c["new_key"] for c in CORRECTIONS}
+        for name, original, transformed in transformed_specs:
+            after = _schemas(transformed)
+            for schema_name, schema in _schemas(original).items():
+                for prop_name, prop in schema.get("properties", {}).items():
+                    if not isinstance(prop, dict) or "$ref" not in prop:
+                        continue
+                    corrected = renames.get(prop_name, prop_name)
+                    now = after[schema_name]["properties"][corrected]
+                    refs = sorted(ref for _p, ref in _ref_values(now))
+                    assert refs == [prop["$ref"]], (
+                        f"{name}/{schema_name}/{prop_name}: $ref target changed"
+                    )
 
 
 class TestNothingElseMoves:

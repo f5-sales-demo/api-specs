@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 
 import pytest
@@ -836,3 +837,83 @@ class TestFixPropertyNames:
         props = result["components"]["schemas"]["WidgetSpec"]["properties"]
         assert props[FIXED_KEY][WIRE_NAME_EXTENSION] == TYPO_KEY
         assert WIRE_NAME_EXTENSION not in props[OTHER_FIXED_KEY]
+
+
+class TestWireNameAnnotationShape:
+    """Where the annotation lands, so the artifact stays legal OpenAPI 3.0.
+
+    A ``$ref`` replaces the object holding it, so OAS3 forbids siblings and
+    Spectral reports ``no-$ref-siblings`` -- an error the release gate caps at
+    zero.  The annotation therefore has to wrap a ``$ref`` property in
+    ``allOf`` instead of sitting beside it, and has to leave every other shape
+    alone (#698).
+    """
+
+    def test_ref_property_is_wrapped_rather_than_given_a_sibling(self):
+        """OAS3 forbids ``$ref`` siblings, so the reference moves into ``allOf``."""
+        spec = _widget_spec()
+        spec["components"]["schemas"]["WidgetSpec"]["properties"][TYPO_KEY] = {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+        }
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        prop = result["components"]["schemas"]["WidgetSpec"]["properties"][FIXED_KEY]
+        assert "$ref" not in prop
+        assert prop["allOf"] == [{"$ref": "#/components/schemas/ioschemaEmpty"}]
+        assert prop[WIRE_NAME_EXTENSION] == TYPO_KEY
+
+    def test_ref_property_is_left_bare_when_no_wire_name_is_recorded(self):
+        """A verified ``fix_spec`` adds nothing, so there is nothing to wrap."""
+        spec = _widget_spec()
+        spec["components"]["schemas"]["WidgetSpec"]["properties"][TYPO_KEY] = {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+        }
+        result = fix_property_names(spec, _corrections_config(_fix_spec_rule()), "test.json")
+        prop = result["components"]["schemas"]["WidgetSpec"]["properties"][FIXED_KEY]
+        assert prop == {"$ref": "#/components/schemas/ioschemaEmpty"}
+
+    def test_plain_object_property_is_annotated_without_an_allof_wrapper(self):
+        """Wrapping a property that needs no wrapper would churn the artifact."""
+        result = fix_property_names(
+            _widget_spec(), _corrections_config(_wire_preserving_rule()), "test.json"
+        )
+        prop = result["components"]["schemas"]["WidgetSpec"]["properties"][FIXED_KEY]
+        assert "allOf" not in prop
+        assert prop["type"] == "string"
+
+    def test_existing_allof_gains_the_annotation_beside_it(self):
+        """An ``allOf`` already there is composition, not a wrapper to nest in."""
+        composed = {"allOf": [{"$ref": "#/components/schemas/Base"}], "description": "d"}
+        spec = _widget_spec()
+        spec["components"]["schemas"]["WidgetSpec"]["properties"][TYPO_KEY] = copy.deepcopy(
+            composed
+        )
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        prop = result["components"]["schemas"]["WidgetSpec"]["properties"][FIXED_KEY]
+        assert prop["allOf"] == composed["allOf"]
+        assert prop[WIRE_NAME_EXTENSION] == TYPO_KEY
+
+    def test_ref_with_siblings_keeps_them_beside_the_wrapper(self):
+        """Keywords already beside the ``$ref`` survive, legally, next to ``allOf``."""
+        spec = _widget_spec()
+        spec["components"]["schemas"]["WidgetSpec"]["properties"][TYPO_KEY] = {
+            "$ref": "#/components/schemas/Base",
+            "description": "d",
+        }
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        prop = result["components"]["schemas"]["WidgetSpec"]["properties"][FIXED_KEY]
+        assert prop == {
+            "description": "d",
+            "allOf": [{"$ref": "#/components/schemas/Base"}],
+            WIRE_NAME_EXTENSION: TYPO_KEY,
+        }
+
+    def test_wrapping_a_ref_property_is_idempotent(self):
+        """A second pass must not nest the wrapper inside another wrapper."""
+        spec = _widget_spec()
+        spec["components"]["schemas"]["WidgetSpec"]["properties"][TYPO_KEY] = {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+        }
+        config = _corrections_config(_wire_preserving_rule())
+        once = fix_property_names(spec, config, "test.json")
+        twice = fix_property_names(copy.deepcopy(once), config, "test.json")
+        assert twice == once

@@ -221,6 +221,30 @@ def _preserves_wire_key(rule: dict) -> bool:
     return not (rule.get("verified", False) and rule.get("api_status") == FIX_SPEC_STATUS)
 
 
+def _annotate_wire_name(prop: dict, wire_name: str) -> None:
+    """Record *wire_name* on *prop* without ever giving a ``$ref`` a sibling.
+
+    A ``$ref`` *replaces* the object holding it, so OpenAPI 3.0 forbids keys
+    beside one: resolvers discard them and Spectral reports
+    ``no-$ref-siblings``, an error the release gate caps at zero.  A property
+    that is a ``$ref`` is therefore moved inside ``allOf`` first -- the OAS3
+    way to carry keywords alongside a reference -- and the annotation becomes
+    a sibling of the wrapper instead.
+
+    The wrap is applied only when a ``$ref`` is present.  A plain object
+    property (the common case) is annotated in place, because wrapping one
+    that needs no wrapper would rewrite the shape of the whole artifact for
+    nothing.  A property that already composes with ``allOf`` gains the
+    annotation beside that ``allOf`` rather than a second nested one.
+    """
+    if "$ref" in prop:
+        wrapped = {"$ref": prop.pop("$ref")}
+        composed = prop.get("allOf")
+        prop["allOf"] = [wrapped, *composed] if isinstance(composed, list) else [wrapped]
+
+    prop[WIRE_NAME_EXTENSION] = wire_name
+
+
 def _rename_key_in_place(mapping: dict, old_key: str, new_key: str) -> dict:
     """Return a copy of *mapping* with *old_key* renamed, keeping its position."""
     return {(new_key if key == old_key else key): value for key, value in mapping.items()}
@@ -236,8 +260,10 @@ def _rename_schema_property(
 
     Covers the ``properties`` key itself, any mention in ``required``, and any
     ``x-ves-oneof-field-*`` group that lists the property by name.  When
-    *wire_name* is given it is recorded on the renamed property so downstream
-    consumers can present the corrected name while marshalling the original.
+    *wire_name* is given it is recorded on the renamed property by
+    :func:`_annotate_wire_name`, so downstream consumers can present the
+    corrected name while marshalling the original and the result stays legal
+    OpenAPI 3.0.
 
     Returns ``True`` when the schema declared *old_key* and was rewritten.  A
     schema that already declares *new_key* is left alone: the two keys are
@@ -255,7 +281,7 @@ def _rename_schema_property(
             if prop.get(label_key) == old_key:
                 prop[label_key] = new_key
         if wire_name is not None:
-            prop[WIRE_NAME_EXTENSION] = wire_name
+            _annotate_wire_name(prop, wire_name)
 
     required = schema_def.get("required")
     if isinstance(required, list):

@@ -462,25 +462,47 @@ jobs:
     # `contents: write` job keeps that scope on the steps that earn it.
     if: needs.release.result == 'success'
     runs-on: ubuntu-latest
-    # The cross-repo dispatch authenticates with REPO_ADMIN_TOKEN, not
-    # GITHUB_TOKEN (a repository's own GITHUB_TOKEN cannot dispatch to another
-    # repository), so nothing here needs a GITHUB_TOKEN write scope.
+    # The cross-repo dispatch authenticates with a PAT, not GITHUB_TOKEN (a
+    # repository's own GITHUB_TOKEN cannot dispatch to another repository), so
+    # nothing here needs a GITHUB_TOKEN write scope.
     permissions:
       contents: read
 
     steps:
-      # Mirrors the next hop in the chain: api-specs-enriched notifies its own
-      # downstream repos with peter-evans/repository-dispatch and a PAT. The
-      # payload is passed as an action input, never interpolated into a `run:`
-      # body.
       - name: Dispatch upstream-specs-released to api-specs-enriched
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.REPO_ADMIN_TOKEN }}
-          repository: f5-sales-demo/api-specs-enriched
-          event-type: upstream-specs-released
-          # yamllint disable-line rule:line-length
-          client-payload: '{"version":"${{ needs.check-release-needed.outputs.version }}","release_tag":"v${{ needs.check-release-needed.outputs.version }}","release_url":"${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ needs.check-release-needed.outputs.version }}","trigger_source":"${{ github.repository }}","run_id":"${{ github.run_id }}"}'
+        env:
+          # POST /repos/{owner}/{repo}/dispatches needs Contents: write on the
+          # target and nothing else. REPO_SYNC_TOKEN is the fine-grained fleet
+          # PAT holding Contents R/W, Issues R/W, Pull Requests R/W and
+          # Metadata Read -- the narrowest secret this repository already
+          # carries that can do this. Deliberately NOT REPO_ADMIN_TOKEN, whose
+          # administration rights would turn a leak of this step into a
+          # repository takeover rather than a write. REPO_SETTINGS_TOKEN is not
+          # a candidate either: Administration R/W but Contents *Read* only, so
+          # it is broader in the wrong axis and insufficient in the right one.
+          GH_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
+          VERSION: ${{ needs.check-release-needed.outputs.version }}
+          SOURCE_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          # Plain `gh api` rather than a third-party action. A
+          # repository_dispatch is a single API call, so depending on an
+          # external action would hand a privileged token to code sitting
+          # behind a mutable tag -- and `zizmor.yaml` disables `unpinned-uses`,
+          # so nothing here would flag it. `gh` is preinstalled on
+          # GitHub-hosted runners, so this removes a dependency rather than
+          # trading one for another.
+          #
+          # Every value crosses into the shell through env: above and is
+          # referenced as a quoted variable; nothing is interpolated into this
+          # body.
+          gh api "repos/f5-sales-demo/api-specs-enriched/dispatches" \
+            -f "event_type=upstream-specs-released" \
+            -f "client_payload[version]=${VERSION}" \
+            -f "client_payload[release_tag]=v${VERSION}" \
+            -f "client_payload[release_url]=${GITHUB_SERVER_URL}/${SOURCE_REPO}/releases/tag/v${VERSION}" \
+            -f "client_payload[trigger_source]=${SOURCE_REPO}" \
+            -f "client_payload[run_id]=${RUN_ID}"
 
       - name: Summary
         env:

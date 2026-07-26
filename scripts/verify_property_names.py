@@ -25,6 +25,19 @@ VALIDATION_CONFIG_PATH = Path("config/validation.yaml")
 
 HTTP_OK = 200
 
+# Probe outcomes that are a real observation of the live API, and so may be
+# written back to the config as `verified`.  Anything else (an HTTP error, a
+# response carrying neither key, both keys at once) leaves the entry alone.
+OBSERVED_STATUSES = frozenset({"fix_spec", "upstream_typo"})
+
+# `upstream_typo_permanent` is a stronger claim than a read probe can make or
+# unmake: it records that the corrected key is *silently ignored on write*, a
+# fact only a round-tripped PUT establishes.  It is therefore sticky -- no
+# probe outcome may overwrite it, in either direction.  Promoting such an
+# entry to `fix_spec` would move the wire key onto a name the platform drops
+# on the floor without erroring (see terraform-provider-xcsh#1257).
+PERMANENT_TYPO_STATUS = "upstream_typo_permanent"
+
 
 def _search_keys(obj: Any, target_key: str) -> bool:
     """Recursively search for a key name anywhere in a JSON structure."""
@@ -48,7 +61,7 @@ def _probe_correction(
     """
     old_key = correction["old_key"]
     new_key = correction["new_key"]
-    endpoint = correction["probe_endpoint"]
+    endpoint = correction["probe_endpoint"].replace("{namespace}", auth.namespace)
     method = correction.get("probe_method", "GET")
 
     result = {
@@ -105,23 +118,43 @@ def _probe_correction(
     return result
 
 
+def _observed_status(correction: dict, probe_status: str) -> str:
+    """Return the ``api_status`` to record for *correction* after a probe.
+
+    ``upstream_typo_permanent`` is sticky: a read probe cannot establish or
+    overturn "the corrected key is silently ignored on write", so it must
+    neither downgrade the entry to a plain ``upstream_typo`` nor promote it to
+    ``fix_spec``.
+    """
+    if correction.get("api_status") == PERMANENT_TYPO_STATUS:
+        return PERMANENT_TYPO_STATUS
+    return probe_status
+
+
 def _update_config(corrections: list[dict], results: list[dict]) -> bool:
-    """Update the corrections config file with verification results."""
+    """Record what each probe observed on the matching correction entries.
+
+    Both outcomes are worth recording: ``fix_spec`` unlocks an outright
+    rename, and ``upstream_typo`` proves the wire key must be preserved.  An
+    entry left ``verified: false`` therefore means the API could not be
+    observed at all, never that nobody looked.
+    """
     changed = False
     for result in results:
-        if result["status"] != "fix_spec":
+        if result["status"] not in OBSERVED_STATUSES:
             continue
         for correction in corrections:
-            if correction.get("never_apply", False):
-                # Wire contract depends on the misspelled key -- never promote.
-                continue
             if (
-                correction["schema"] == result["schema"]
-                and correction["old_key"] == result["old_key"]
-                and not correction.get("verified", False)
+                correction["schema"] != result["schema"]
+                or correction["old_key"] != result["old_key"]
             ):
-                correction["verified"] = True
-                changed = True
+                continue
+            status = _observed_status(correction, result["status"])
+            if correction.get("verified", False) and correction.get("api_status") == status:
+                continue
+            correction["verified"] = True
+            correction["api_status"] = status
+            changed = True
     return changed
 
 

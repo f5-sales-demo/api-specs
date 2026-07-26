@@ -48,6 +48,25 @@ SCHEMA_REF_PREFIX = "#/components/schemas/"
 # unimplemented one fails loudly instead of silently doing nothing.
 STUB_REMEDY = "stub"
 
+# Extension that records the JSON key F5's live API accepts on the wire.
+# Emitted whenever a misspelled property is renamed for presentation but the
+# platform still requires the original key in requests and responses.
+WIRE_NAME_EXTENSION = "x-f5xc-wire-name"
+
+# ``api_status`` value meaning the live API itself uses the corrected key, so
+# renaming changes the wire too and no wire-name annotation is needed.
+FIX_SPEC_STATUS = "fix_spec"
+
+# Prefix of the schema-level extensions whose value enumerates the member
+# property names of a ``oneof`` group.  F5 emits the list as a JSON-encoded
+# string (``"[\"a\",\"b\"]"``), so a renamed member has to be rewritten there
+# too or the group stops naming a property that exists.
+ONEOF_FIELD_PREFIX = "x-ves-oneof-field-"
+
+# Presentation strings that mirror the property key verbatim in some F5
+# schemas; they follow the rename so the typo does not resurface in docs.
+_MIRRORED_LABEL_KEYS = ("title", "x-displayname")
+
 # ---------------------------------------------------------------------------
 # Transform registry
 # ---------------------------------------------------------------------------
@@ -188,6 +207,69 @@ def _rewrite_refs(obj: Any, old_ref: str, new_ref: str) -> int:
         for item in obj:
             count += _rewrite_refs(item, old_ref, new_ref)
     return count
+
+
+def _preserves_wire_key(rule: dict) -> bool:
+    """Return ``True`` when F5's API still requires the misspelled key.
+
+    Only a correction that has been verified against the live API *and* found
+    to use the corrected key (``api_status: fix_spec``) may change the wire.
+    Everything else -- an upstream platform typo, or a correction nobody has
+    been able to probe -- keeps the original key so requests stay byte
+    identical to what the platform accepts today.
+    """
+    return not (rule.get("verified", False) and rule.get("api_status") == FIX_SPEC_STATUS)
+
+
+def _rename_key_in_place(mapping: dict, old_key: str, new_key: str) -> dict:
+    """Return a copy of *mapping* with *old_key* renamed, keeping its position."""
+    return {(new_key if key == old_key else key): value for key, value in mapping.items()}
+
+
+def _rename_schema_property(
+    schema_def: dict,
+    old_key: str,
+    new_key: str,
+    wire_name: str | None,
+) -> bool:
+    """Rename one misspelled property everywhere *schema_def* names it.
+
+    Covers the ``properties`` key itself, any mention in ``required``, and any
+    ``x-ves-oneof-field-*`` group that lists the property by name.  When
+    *wire_name* is given it is recorded on the renamed property so downstream
+    consumers can present the corrected name while marshalling the original.
+
+    Returns ``True`` when the schema declared *old_key* and was rewritten.  A
+    schema that already declares *new_key* is left alone: the two keys are
+    distinct fields and renaming would silently destroy one of them.
+    """
+    props = schema_def.get("properties")
+    if not isinstance(props, dict) or old_key not in props or new_key in props:
+        return False
+
+    schema_def["properties"] = _rename_key_in_place(props, old_key, new_key)
+
+    prop = schema_def["properties"][new_key]
+    if isinstance(prop, dict):
+        for label_key in _MIRRORED_LABEL_KEYS:
+            if prop.get(label_key) == old_key:
+                prop[label_key] = new_key
+        if wire_name is not None:
+            prop[WIRE_NAME_EXTENSION] = wire_name
+
+    required = schema_def.get("required")
+    if isinstance(required, list):
+        schema_def["required"] = [new_key if entry == old_key else entry for entry in required]
+
+    for ext_key, ext_value in list(schema_def.items()):
+        if not ext_key.startswith(ONEOF_FIELD_PREFIX):
+            continue
+        if isinstance(ext_value, str):
+            schema_def[ext_key] = ext_value.replace(f'"{old_key}"', f'"{new_key}"')
+        elif isinstance(ext_value, list):
+            schema_def[ext_key] = [new_key if entry == old_key else entry for entry in ext_value]
+
+    return True
 
 
 def _collect_refs(obj: Any) -> set[str]:
@@ -569,11 +651,25 @@ def fix_property_names(
     config: TransformConfig,
     _filename: str,
 ) -> dict:
-    """Rename misspelled JSON property keys in component schemas.
+    """Correct misspelled JSON property names in component schemas.
 
-    Only applies corrections marked ``verified: true`` in the config. A rule
-    flagged ``never_apply: true`` is skipped unconditionally: the live API
-    requires the misspelled key, so renaming it would break the wire contract.
+    Every tracked correction fixes the *presented* name -- the Terraform
+    attribute, MCP field and documentation label that consumers see.  Where
+    F5's platform still requires the misspelling on the wire, the renamed
+    property carries ``x-f5xc-wire-name`` holding the original key verbatim,
+    so no consumer has to hard-code the typo and no request changes shape.
+
+    The ``schema`` recorded on each correction names the schema the typo was
+    probed against; the rename is applied to every schema that declares the
+    key, because F5 repeats the same misspelled field across sibling schemas
+    and files.
+
+    This supersedes the ``never_apply`` flag.  ``never_apply`` protected the
+    wire key by refusing to rename at all, which also meant the typo stayed
+    in every generated consumer.  The wire key is now protected structurally
+    instead: ``api_status`` decides whether the rename reaches the wire, and
+    anything short of a verified ``fix_spec`` keeps the original key in
+    ``x-f5xc-wire-name``.
     """
     corrections = config.metadata.get("property_name_corrections", [])
     if not corrections:
@@ -581,27 +677,13 @@ def fix_property_names(
 
     schemas = spec.get("components", {}).get("schemas", {})
     for rule in corrections:
-        if rule.get("never_apply", False):
-            continue
-        if not rule.get("verified", False):
-            continue
-        schema_name = rule["schema"]
         old_key = rule["old_key"]
         new_key = rule["new_key"]
+        wire_name = old_key if _preserves_wire_key(rule) else None
 
-        schema_def = schemas.get(schema_name)
-        if schema_def is None:
-            continue
-
-        props = schema_def.get("properties", {})
-        if old_key not in props:
-            continue
-
-        props[new_key] = props.pop(old_key)
-
-        required = schema_def.get("required", [])
-        if old_key in required:
-            required[required.index(old_key)] = new_key
+        for schema_def in schemas.values():
+            if isinstance(schema_def, dict):
+                _rename_schema_property(schema_def, old_key, new_key, wire_name)
 
     return spec
 

@@ -27,6 +27,7 @@ import yaml
 
 from scripts.transform import (
     DEFAULT_SPELLING_TEXT_FIELDS,
+    WIRE_NAME_EXTENSION,
     TransformConfig,
     _build_spelling_patterns,
     fix_property_names,
@@ -145,6 +146,21 @@ def _property_names(obj: Any) -> set[str]:
     return names
 
 
+def _wire_name_annotations(obj: Any) -> set[str]:
+    """Return every wire key pinned by an ``x-f5xc-wire-name`` annotation."""
+    keys: set[str] = set()
+    if isinstance(obj, dict):
+        pinned = obj.get(WIRE_NAME_EXTENSION)
+        if isinstance(pinned, str):
+            keys.add(pinned)
+        for value in obj.values():
+            keys.update(_wire_name_annotations(value))
+    elif isinstance(obj, list):
+        for item in obj:
+            keys.update(_wire_name_annotations(item))
+    return keys
+
+
 # ---------------------------------------------------------------------------
 # Invariant 1 -- the published artifact matches the configuration
 # ---------------------------------------------------------------------------
@@ -241,20 +257,35 @@ def test_corrections_never_match_an_identifier(
 def test_wire_contract_property_names_are_preserved(
     released_specs: list[tuple[str, dict]],
 ) -> None:
-    """``blocked_sevice`` and ``checkin`` still exist as property names."""
-    names: set[str] = set()
+    """``blocked_sevice`` and ``checkin`` survive as wire keys.
+
+    A wire key is carried either by the property name itself or, once
+    ``fix_property_names`` has corrected the presented name, by the
+    ``x-f5xc-wire-name`` annotation on the renamed property. Both count; the
+    invariant is that the key F5's platform requires is still expressed
+    somewhere the marshaller can find it.
+    """
+    keys: set[str] = set()
     for _filename, spec in released_specs:
-        names.update(_property_names(spec))
+        keys.update(_property_names(spec))
+        keys.update(_wire_name_annotations(spec))
 
     for wire_key in WIRE_CONTRACT_PROPERTY_NAMES:
-        assert wire_key in names, (
-            f"{wire_key!r} disappeared from the published specs. The live API "
-            f"requires this exact spelling; renaming it breaks the wire contract."
+        assert wire_key in keys, (
+            f"{wire_key!r} disappeared from the published specs, as a property "
+            f"name and as an {WIRE_NAME_EXTENSION} value. The live API requires "
+            f"this exact spelling; losing it breaks the wire contract."
         )
 
 
-def test_blocked_sevice_rename_is_marked_never_apply() -> None:
-    """The rename that breaks the wire contract stays permanently unapplied."""
+def test_permanent_wire_typo_is_recorded_as_such() -> None:
+    """The rename that must never reach the wire is flagged in the config.
+
+    ``blocked_service`` is accepted by the request parser and then silently
+    dropped, so this entry may only ever be *presented* under the corrected
+    name. ``upstream_typo_permanent`` is what pins that, and
+    ``verify_property_names`` treats it as sticky so no probe can promote it.
+    """
     with PROPERTY_CONFIG.open() as fh:
         cfg = yaml.safe_load(fh) or {}
 
@@ -262,14 +293,12 @@ def test_blocked_sevice_rename_is_marked_never_apply() -> None:
     assert len(rules) == 1, "expected exactly one blocked_sevice rule"
     rule = rules[0]
 
-    assert rule["never_apply"] is True
-    assert rule["verified"] is False
     assert rule["api_status"] == "upstream_typo_permanent"
-    assert "NEVER APPLY" in rule["notes"]
+    assert "never" in rule["notes"].lower()
 
 
-def test_never_apply_overrides_verified() -> None:
-    """``never_apply`` wins even if a rule is somehow marked verified."""
+def test_a_permanent_wire_typo_is_renamed_but_keeps_its_wire_key() -> None:
+    """The presented name is corrected; the wire key is pinned, not moved."""
     spec = {
         "components": {
             "schemas": {
@@ -288,7 +317,7 @@ def test_never_apply_overrides_verified() -> None:
                     "old_key": "blocked_sevice",
                     "new_key": "blocked_service",
                     "verified": True,
-                    "never_apply": True,
+                    "api_status": "upstream_typo_permanent",
                 }
             ]
         }
@@ -296,9 +325,10 @@ def test_never_apply_overrides_verified() -> None:
 
     result = fix_property_names(spec, config, "test.json")
     schema = result["components"]["schemas"]["fleetBlockedServicesListType"]
-    assert "blocked_sevice" in schema["properties"]
-    assert "blocked_service" not in schema["properties"]
-    assert schema["required"] == ["blocked_sevice"]
+
+    assert "blocked_sevice" not in schema["properties"]
+    assert schema["required"] == ["blocked_service"]
+    assert schema["properties"]["blocked_service"][WIRE_NAME_EXTENSION] == "blocked_sevice"
 
 
 # ---------------------------------------------------------------------------

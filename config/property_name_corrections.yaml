@@ -2,32 +2,49 @@
 # Property name corrections for misspelled JSON keys in
 # OpenAPI spec schemas.
 #
-# Property names are STRUCTURAL — changing them alters
-# the API contract. Each correction must be verified
-# against the live F5 XC API before applying.
+# The presented name and the wire key are two different
+# things. `fix_property_names` always corrects the
+# presented name; `api_status` decides what happens to
+# the wire key:
+#
+#   fix_spec  (with verified: true)
+#     The live API itself uses the corrected key. Rename
+#     outright — the wire key changes with the name.
+#
+#   upstream_typo / upstream_typo_permanent / unverifiable
+#     The API requires (or is not proven not to require)
+#     F5's misspelling. Rename the property AND emit
+#     `x-f5xc-wire-name: <old_key>` on it, so downstream
+#     consumers present the corrected name and marshal
+#     the original key. The bytes on the wire do not move.
+#
+# Fields:
+#   schema     Representative schema the typo was probed
+#              against. The rename is applied to EVERY
+#              schema declaring `old_key`, because F5
+#              repeats the same field across siblings.
+#   verified   Whether the live API was actually observed.
+#              `false` means unverifiable, never unchecked.
+#   api_status What was observed (see above).
 #
 # Workflow:
 #   1. Add suspected typos with verified: false
-#   2. Run `make verify-property-names` to probe the API
-#   3. Script marks verified: true where the API uses the
-#      corrected name (not the misspelled one)
-#   4. `make transform` applies only verified corrections
+#   2. Run `make verify-property-names` with --apply to
+#      probe the live API and record verified/api_status
+#   3. `make transform` corrects every presented name and
+#      preserves every wire key that is not `fix_spec`
 #
-# If the API returns the misspelled key, the spec is
-# correct and the fix must happen upstream.
+# The retired `never_apply: true` flag protected a wire key
+# by declining the rename outright, which left F5's typo in
+# every generated consumer. `upstream_typo_permanent` now
+# carries that knowledge instead, and the wire key is held
+# by `x-f5xc-wire-name` rather than by not renaming.
 #
-# never_apply: true marks a correction that must never be
-# applied, because the live API requires the misspelled
-# key and silently ignores the corrected one. The
-# fix_property_names transform skips such rules
-# unconditionally, and verify_property_names refuses to
-# promote them to verified: true.
-#
-# Last verified: 2026-06-09
+# Last verified: 2026-07-25
 # Tenant: example-tenant
 
 corrections:
-  # --- Verified: safe to fix ---
+  # --- Verified: API uses the corrected key, safe to rename outright ---
 
   - schema: fleetFlashBladeEndpoint
     old_key: lables
@@ -37,107 +54,132 @@ corrections:
     probe_endpoint: /api/config/namespaces/system/fleets
     probe_method: GET
     notes: >-
-      API returns 'labels'.
-      Spec should be corrected. 2 files.
+      Re-probed 2026-07-25: HTTP 200, response carries
+      'labels' and never 'lables'. Spec-only typo.
+      2 occurrences.
 
-  # --- Verified: upstream platform typos ---
+  # --- Verified upstream platform typos: wire key preserved ---
 
   - schema: schemasiteGetSpecType
     old_key: volterra_software_overide
     new_key: volterra_software_override
-    verified: false
+    verified: true
     api_status: upstream_typo
     probe_endpoint: /api/config/namespaces/system/sites
     probe_method: GET
     notes: >-
-      API returns the misspelled key.
-      Typo is in the platform.
+      Re-probed 2026-07-25: HTTP 200, response carries
+      'volterra_software_overide'. Typo is in the
+      platform. Also in schemasiteReplaceSpecType.
 
-  - schema: clusterGetSpecType
+  - schema: origin_poolOriginPoolAdvancedOptions
     old_key: disable_lb_source_ip_persistance
     new_key: disable_lb_source_ip_persistence
-    verified: false
+    verified: true
     api_status: upstream_typo
-    probe_endpoint: /api/config/namespaces/system/clusters
+    probe_endpoint: /api/config/namespaces/{namespace}/origin_pools
     probe_method: GET
     notes: >-
-      API returns the misspelled key.
-      Typo is in the platform.
+      Re-probed 2026-07-25: HTTP 200 across 285 namespaces,
+      31 of them return 'disable_lb_source_ip_persistance'
+      and none the corrected spelling. Also in
+      clusterGetSpecType. Named by the sibling
+      x-ves-oneof-field-lb_source_ip_persistance_choice.
 
-  - schema: clusterGetSpecType
+  - schema: origin_poolOriginPoolAdvancedOptions
     old_key: enable_lb_source_ip_persistance
     new_key: enable_lb_source_ip_persistence
-    verified: false
+    verified: true
     api_status: upstream_typo
-    probe_endpoint: /api/config/namespaces/system/clusters
+    probe_endpoint: /api/config/namespaces/{namespace}/origin_pools
     probe_method: GET
     notes: >-
-      Paired with disable_ variant.
-      Same upstream platform typo.
+      Paired with the disable_ variant, same upstream
+      platform typo, same 2026-07-25 probe. Also in
+      clusterGetSpecType.
 
   - schema: namespaceHTTPLoadbalancerInventoryFilterType
     old_key: public_advertisment
     new_key: public_advertisement
-    verified: false
+    verified: true
     api_status: upstream_typo
-    probe_endpoint: >-
-      /api/config/namespaces/{namespace}/application_inventory
+    probe_endpoint: /api/config/namespaces/system/all_application_inventory
     probe_method: POST
     notes: >-
-      API returns 'public_advertisment' alongside correct
+      Re-probed 2026-07-25: HTTP 200, response carries
+      'public_advertisment' alongside the correctly spelled
       'private_advertisement'. Inconsistent upstream typo.
-      9 occurrences across HTTP/TCP/UDP LB types.
+      8 occurrences across HTTP/TCP/UDP LB types.
 
-  # --- NEVER APPLY: the misspelling is the wire contract ---
+  - schema: namespaceHTTPLoadbalancerResultType
+    old_key: public_advertisment_enabled
+    new_key: public_advertisement_enabled
+    verified: true
+    api_status: upstream_typo
+    probe_endpoint: /api/config/namespaces/system/all_application_inventory
+    probe_method: POST
+    notes: >-
+      Sibling of public_advertisment on the result type.
+      Re-probed 2026-07-25: HTTP 200, response carries
+      'public_advertisment_enabled' next to
+      'private_advertisement_enabled'.
+
+  # --- Permanent wire contract: the wire key can never move ---
 
   - schema: fleetBlockedServicesListType
     old_key: blocked_sevice
     new_key: blocked_service
-    verified: false
-    never_apply: true
+    verified: true
     api_status: upstream_typo_permanent
-    probe_endpoint: >-
-      /api/config/namespaces/system/azure_vnet_sites
-    probe_method: PUT
+    probe_endpoint: /api/config/namespaces/system/securemesh_site_v2s
+    probe_method: GET
     notes: >-
-      NEVER APPLY THIS RENAME. 'blocked_sevice' is the live wire key.
-      Proven against the live API: a PUT whose body uses 'blocked_sevice'
-      returns HTTP 200 and the value round-trips on the subsequent GET,
-      while the correctly spelled 'blocked_service' is accepted by the
-      request parser but silently ignored -- the setting is never applied
-      and never returned. Renaming the property in the spec therefore
-      breaks every downstream consumer generated from it: the request
-      would carry a key the server drops on the floor, with no error.
-      A blind text replacement downstream did exactly this and broke the
-      field on the wire -- see terraform-provider-xcsh#1257. The rename
-      stays unapplied permanently; the typo must be fixed by F5 upstream,
-      with a server-side alias, before the spec can follow.
-      'never_apply: true' is enforced in code by the fix_property_names
-      transform and by verify_property_names, not by convention alone.
+      Re-probed 2026-07-25: HTTP 200, response carries
+      'blocked_sevice'. 7 occurrences.
+      THE WIRE KEY CAN NEVER MOVE. A PUT whose body uses
+      'blocked_sevice' returns HTTP 200 and round-trips on
+      the subsequent GET, while the correctly spelled
+      'blocked_service' is accepted by the request parser
+      and then silently ignored -- never applied, never
+      returned. A blind text replacement downstream did
+      exactly this and broke the field on the wire, see
+      terraform-provider-xcsh#1257. This entry may only
+      ever be presented under the corrected name with
+      x-f5xc-wire-name pinning 'blocked_sevice'; it must
+      never be promoted to fix_spec until F5 ships a
+      server-side alias upstream.
 
-  # --- Unverifiable on staging tenant ---
+  - schema: reportingTrafficOverviewData
+    old_key: previous_reqeust_count
+    new_key: previous_request_count
+    verified: true
+    api_status: upstream_typo
+    probe_endpoint: >-
+      /api/shape/bot/namespaces/{namespace}/v3/reporting/traffic/overview
+    probe_method: POST
+    notes: >-
+      Verified 2026-07-25 (was unverifiable on the staging
+      tenant): HTTP 200, traffic_type_data[] carries
+      'previous_reqeust_count'. Also in
+      reportingAutomationTypeData, whose probe
+      (top/type/malicious/dimension/automation) returned
+      HTTP 200 with an empty result set.
+
+  # --- Unverifiable: addon not provisioned on any reachable tenant ---
 
   - schema: recognizeRescueItem
     old_key: OBSOLOTE_upperBound
     new_key: OBSOLETE_upperBound
     verified: false
     api_status: unverifiable
-    probe_endpoint: >-
-      /api/shape/recognize/namespaces/system/
-      recognize/addon/dashboard/rescue
-    probe_method: POST
-    notes: >-
-      Shape API returned HTTP 403.
-      Needs Shape/Bot Defense entitlement.
-
-  - schema: reportingAutomationTypeData
-    old_key: previous_reqeust_count
-    new_key: previous_request_count
-    verified: false
-    api_status: unverifiable
-    probe_endpoint: >-
-      /api/data/namespaces/system/bot_defense_overview
+    probe_endpoint: /api/shape/recognize/namespaces/system/recognize/addon/state
     probe_method: GET
     notes: >-
-      Bot Defense reporting returned HTTP 404.
-      Needs Shape/Bot Defense entitlement.
+      Re-probed 2026-07-25 on f5-amer-ent: every Shape
+      Recognize operation returns HTTP 503 (addon/state,
+      addon/provision, dashboard/health, dashboard/rescue,
+      dashboard/lift). 'shape-recognize' is listed by
+      GET /api/web/namespaces/system/addon_services but is
+      not provisioned, and addon_subscriptions returns
+      HTTP 403, so entitlement cannot even be read. The
+      wire key is preserved, so this costs nothing.

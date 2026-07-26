@@ -9,10 +9,12 @@ import pytest
 from scripts.transform import (
     HTTP_METHODS,
     TRANSFORM_REGISTRY,
+    WIRE_NAME_EXTENSION,
     SpecTransformer,
     TransformConfig,
     deduplicate_operation_ids,
     fix_invalid_examples,
+    fix_property_names,
     inject_contact,
     inject_info_version,
     inject_operation_descriptions,
@@ -206,12 +208,8 @@ class TestInjectServers:
 
 
 class TestInjectSecuritySchemes:
-    def test_adds_security_scheme_and_global_security(
-        self, minimal_spec, config_with_metadata
-    ):
-        result = inject_security_schemes(
-            minimal_spec, config_with_metadata, "test.json"
-        )
+    def test_adds_security_scheme_and_global_security(self, minimal_spec, config_with_metadata):
+        result = inject_security_schemes(minimal_spec, config_with_metadata, "test.json")
         assert "components" in result
         assert "securitySchemes" in result["components"]
         assert "apiKeyAuth" in result["components"]["securitySchemes"]
@@ -295,9 +293,7 @@ class TestDeduplicateOperationIds:
         assert post_id == "getResource_post"
         assert del_id == "getResource_delete"
 
-    def test_same_method_duplicates_across_paths_get_index_suffix(
-        self, config_with_metadata
-    ):
+    def test_same_method_duplicates_across_paths_get_index_suffix(self, config_with_metadata):
         spec = {
             "openapi": "3.0.0",
             "info": {"title": "Test", "version": "1.0.0"},
@@ -327,12 +323,8 @@ class TestDeduplicateOperationIds:
             },
         }
         result = deduplicate_operation_ids(spec, config_with_metadata, "test.json")
-        assert (
-            result["paths"]["/api/resources"]["get"]["operationId"] == "listResources"
-        )
-        assert (
-            result["paths"]["/api/resources"]["post"]["operationId"] == "createResource"
-        )
+        assert result["paths"]["/api/resources"]["get"]["operationId"] == "listResources"
+        assert result["paths"]["/api/resources"]["post"]["operationId"] == "createResource"
 
 
 class TestStripScriptTags:
@@ -364,19 +356,14 @@ class TestStripScriptTags:
                 "/test": {
                     "get": {
                         "description": "<script>bad</script>OK",
-                        "responses": {
-                            "200": {"description": "Success <script>x</script>"}
-                        },
+                        "responses": {"200": {"description": "Success <script>x</script>"}},
                     }
                 }
             },
         }
         result = strip_script_tags(spec, config_with_metadata, "test.json")
         assert "<script>" not in result["paths"]["/test"]["get"]["description"]
-        assert (
-            "<script>"
-            not in result["paths"]["/test"]["get"]["responses"]["200"]["description"]
-        )
+        assert "<script>" not in result["paths"]["/test"]["get"]["responses"]["200"]["description"]
 
 
 class TestFixInvalidExamples:
@@ -435,9 +422,7 @@ class TestRenameCollidingSchemas:
                 }
             },
         }
-        result = rename_colliding_schemas(
-            spec, config_with_renames, "foo.operate.route.json"
-        )
+        result = rename_colliding_schemas(spec, config_with_renames, "foo.operate.route.json")
         assert "operateRouteRouteType" in result["components"]["schemas"]
         assert "routeRouteType" not in result["components"]["schemas"]
         ref = result["components"]["schemas"]["Other"]["properties"]["rt"]["$ref"]
@@ -454,9 +439,7 @@ class TestRenameCollidingSchemas:
                 }
             },
         }
-        result = rename_colliding_schemas(
-            spec, config_with_renames, "foo.schema.route.json"
-        )
+        result = rename_colliding_schemas(spec, config_with_renames, "foo.schema.route.json")
         assert "routeRouteType" in result["components"]["schemas"]
         assert "operateRouteRouteType" not in result["components"]["schemas"]
 
@@ -532,9 +515,7 @@ class TestRemoveUnusedSchemas:
                                 "description": "OK",
                                 "content": {
                                     "application/json": {
-                                        "schema": {
-                                            "$ref": "#/components/schemas/UsedSchema"
-                                        }
+                                        "schema": {"$ref": "#/components/schemas/UsedSchema"}
                                     }
                                 },
                             }
@@ -566,9 +547,7 @@ class TestRemoveUnusedSchemas:
                                 "description": "OK",
                                 "content": {
                                     "application/json": {
-                                        "schema": {
-                                            "$ref": "#/components/schemas/Parent"
-                                        }
+                                        "schema": {"$ref": "#/components/schemas/Parent"}
                                     }
                                 },
                             }
@@ -603,9 +582,7 @@ class TestRemoveUnusedSchemas:
 
     def test_no_schemas_is_noop(self, minimal_spec, config_with_metadata):
         result = remove_unused_schemas(minimal_spec, config_with_metadata, "test.json")
-        assert "components" not in result or "schemas" not in result.get(
-            "components", {}
-        )
+        assert "components" not in result or "schemas" not in result.get("components", {})
 
 
 class TestInjectOperationDescriptions:
@@ -637,13 +614,225 @@ class TestInjectOperationDescriptions:
             },
         }
         result = inject_operation_descriptions(spec, config_with_metadata, "test.json")
-        assert (
-            result["paths"]["/api/test"]["get"]["description"]
-            == "Existing description."
-        )
+        assert result["paths"]["/api/test"]["get"]["description"] == "Existing description."
 
 
 class TestHTTPMethodsConstant:
     def test_http_methods_includes_all_standard_methods(self):
         expected = {"get", "post", "put", "delete", "patch", "options", "head", "trace"}
         assert expected == HTTP_METHODS
+
+
+# ---------------------------------------------------------------------------
+# fix_property_names
+#
+# Misspelled property names are never spelled out in this module: they are
+# read from ``config/property_name_corrections.yaml``, which is the single
+# source of truth (and which the spell checker skips).  Unit tests use
+# invented typos instead.
+# ---------------------------------------------------------------------------
+
+TYPO_KEY = "widget_naem"
+FIXED_KEY = "widget_name"
+OTHER_TYPO_KEY = "gadget_kolor"
+OTHER_FIXED_KEY = "gadget_color"
+
+
+def _corrections_config(*corrections: dict) -> TransformConfig:
+    return TransformConfig(
+        metadata={"property_name_corrections": list(corrections)},
+    )
+
+
+def _wire_preserving_rule() -> dict:
+    return {
+        "schema": "WidgetSpec",
+        "old_key": TYPO_KEY,
+        "new_key": FIXED_KEY,
+        "verified": True,
+        "api_status": "upstream_typo",
+    }
+
+
+def _fix_spec_rule() -> dict:
+    return {
+        "schema": "WidgetSpec",
+        "old_key": TYPO_KEY,
+        "new_key": FIXED_KEY,
+        "verified": True,
+        "api_status": "fix_spec",
+    }
+
+
+def _widget_spec(**schema_extras) -> dict:
+    schema = {
+        "type": "object",
+        "properties": {
+            "alpha": {"type": "string"},
+            TYPO_KEY: {"type": "string", "title": TYPO_KEY, "x-displayname": TYPO_KEY},
+            "omega": {"type": "string"},
+        },
+    }
+    schema.update(schema_extras)
+    return {"components": {"schemas": {"WidgetSpec": schema}}}
+
+
+class TestFixPropertyNames:
+    def test_no_corrections_is_a_no_op(self):
+        spec = _widget_spec()
+        result = fix_property_names(spec, TransformConfig(), "test.json")
+        assert TYPO_KEY in result["components"]["schemas"]["WidgetSpec"]["properties"]
+
+    def test_fix_spec_correction_renames_without_a_wire_name(self):
+        result = fix_property_names(
+            _widget_spec(), _corrections_config(_fix_spec_rule()), "test.json"
+        )
+        props = result["components"]["schemas"]["WidgetSpec"]["properties"]
+        assert TYPO_KEY not in props
+        assert FIXED_KEY in props
+        assert WIRE_NAME_EXTENSION not in props[FIXED_KEY]
+
+    def test_upstream_typo_renames_and_records_the_wire_name(self):
+        result = fix_property_names(
+            _widget_spec(), _corrections_config(_wire_preserving_rule()), "test.json"
+        )
+        props = result["components"]["schemas"]["WidgetSpec"]["properties"]
+        assert TYPO_KEY not in props
+        assert props[FIXED_KEY][WIRE_NAME_EXTENSION] == TYPO_KEY
+
+    @pytest.mark.parametrize(
+        "api_status", ["upstream_typo", "upstream_typo_permanent", "unverifiable"]
+    )
+    def test_every_wire_preserving_status_records_the_wire_name(self, api_status):
+        rule = _wire_preserving_rule()
+        rule["api_status"] = api_status
+        result = fix_property_names(_widget_spec(), _corrections_config(rule), "test.json")
+        props = result["components"]["schemas"]["WidgetSpec"]["properties"]
+        assert props[FIXED_KEY][WIRE_NAME_EXTENSION] == TYPO_KEY
+
+    def test_unverified_fix_spec_still_preserves_the_wire_key(self):
+        rule = _fix_spec_rule()
+        rule["verified"] = False
+        result = fix_property_names(_widget_spec(), _corrections_config(rule), "test.json")
+        props = result["components"]["schemas"]["WidgetSpec"]["properties"]
+        assert props[FIXED_KEY][WIRE_NAME_EXTENSION] == TYPO_KEY
+
+    def test_required_entry_is_renamed(self):
+        spec = _widget_spec(required=["alpha", TYPO_KEY])
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        assert result["components"]["schemas"]["WidgetSpec"]["required"] == [
+            "alpha",
+            FIXED_KEY,
+        ]
+
+    def test_oneof_field_json_string_list_is_rewritten(self):
+        spec = _widget_spec(**{"x-ves-oneof-field-widget_choice": f'["{TYPO_KEY}","other"]'})
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        schema = result["components"]["schemas"]["WidgetSpec"]
+        assert schema["x-ves-oneof-field-widget_choice"] == f'["{FIXED_KEY}","other"]'
+
+    def test_oneof_field_array_is_rewritten(self):
+        spec = _widget_spec(**{"x-ves-oneof-field-widget_choice": [TYPO_KEY, "other"]})
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        schema = result["components"]["schemas"]["WidgetSpec"]
+        assert schema["x-ves-oneof-field-widget_choice"] == [FIXED_KEY, "other"]
+
+    def test_property_keeps_its_position(self):
+        result = fix_property_names(
+            _widget_spec(), _corrections_config(_wire_preserving_rule()), "test.json"
+        )
+        props = result["components"]["schemas"]["WidgetSpec"]["properties"]
+        assert list(props) == ["alpha", FIXED_KEY, "omega"]
+
+    def test_mirrored_title_and_displayname_follow_the_rename(self):
+        result = fix_property_names(
+            _widget_spec(), _corrections_config(_wire_preserving_rule()), "test.json"
+        )
+        prop = result["components"]["schemas"]["WidgetSpec"]["properties"][FIXED_KEY]
+        assert prop["title"] == FIXED_KEY
+        assert prop["x-displayname"] == FIXED_KEY
+
+    def test_unrelated_title_text_is_left_alone(self):
+        spec = _widget_spec()
+        spec["components"]["schemas"]["WidgetSpec"]["properties"][TYPO_KEY]["title"] = (
+            "Some Human Title"
+        )
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        prop = result["components"]["schemas"]["WidgetSpec"]["properties"][FIXED_KEY]
+        assert prop["title"] == "Some Human Title"
+
+    def test_every_schema_declaring_the_property_is_renamed(self):
+        spec = _widget_spec()
+        spec["components"]["schemas"]["SiblingSpec"] = {
+            "type": "object",
+            "properties": {TYPO_KEY: {"type": "string"}},
+        }
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        sibling = result["components"]["schemas"]["SiblingSpec"]["properties"]
+        assert sibling[FIXED_KEY][WIRE_NAME_EXTENSION] == TYPO_KEY
+
+    def test_existing_corrected_key_is_never_clobbered(self):
+        spec = _widget_spec()
+        spec["components"]["schemas"]["WidgetSpec"]["properties"][FIXED_KEY] = {"type": "integer"}
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        props = result["components"]["schemas"]["WidgetSpec"]["properties"]
+        assert props[TYPO_KEY] == {
+            "type": "string",
+            "title": TYPO_KEY,
+            "x-displayname": TYPO_KEY,
+        }
+        assert props[FIXED_KEY] == {"type": "integer"}
+
+    def test_enum_values_paths_operation_ids_and_refs_are_untouched(self):
+        spec = _widget_spec()
+        spec["paths"] = {
+            f"/api/{TYPO_KEY}": {
+                "get": {
+                    "operationId": f"ves.io.schema.Get{TYPO_KEY}",
+                    "responses": {
+                        "200": {
+                            "description": "ok",
+                            "content": {
+                                "application/json": {
+                                    "schema": {"$ref": f"#/components/schemas/{TYPO_KEY}"}
+                                }
+                            },
+                        }
+                    },
+                }
+            }
+        }
+        spec["components"]["schemas"]["WidgetSpec"]["properties"]["alpha"]["enum"] = [
+            TYPO_KEY,
+            "other",
+        ]
+        result = fix_property_names(spec, _corrections_config(_wire_preserving_rule()), "test.json")
+        operation = result["paths"][f"/api/{TYPO_KEY}"]["get"]
+        assert operation["operationId"] == f"ves.io.schema.Get{TYPO_KEY}"
+        assert (
+            operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"]
+            == f"#/components/schemas/{TYPO_KEY}"
+        )
+        props = result["components"]["schemas"]["WidgetSpec"]["properties"]
+        assert props["alpha"]["enum"] == [TYPO_KEY, "other"]
+
+    def test_multiple_corrections_apply_independently(self):
+        spec = _widget_spec()
+        spec["components"]["schemas"]["WidgetSpec"]["properties"][OTHER_TYPO_KEY] = {
+            "type": "string"
+        }
+        other = {
+            "schema": "WidgetSpec",
+            "old_key": OTHER_TYPO_KEY,
+            "new_key": OTHER_FIXED_KEY,
+            "verified": True,
+            "api_status": "fix_spec",
+        }
+        result = fix_property_names(
+            spec,
+            _corrections_config(_wire_preserving_rule(), other),
+            "test.json",
+        )
+        props = result["components"]["schemas"]["WidgetSpec"]["properties"]
+        assert props[FIXED_KEY][WIRE_NAME_EXTENSION] == TYPO_KEY
+        assert WIRE_NAME_EXTENSION not in props[OTHER_FIXED_KEY]

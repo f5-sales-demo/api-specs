@@ -18,6 +18,31 @@ updates:
           - "minor"
           - "patch"
 
+  # --- npm ---
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore(deps):"
+    labels:
+      - "dependencies"
+    open-pull-requests-limit: 10
+    groups:
+      # First-party @f5-sales-demo/* packages: track latest daily, all update types
+      # (auto-merged once CI is green) so internal deps never drift behind.
+      f5-internal:
+        patterns:
+          - "@f5-sales-demo/*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+      npm-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
   # --- pip ---
   - package-ecosystem: "pip"
     directory: "/"

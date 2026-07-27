@@ -167,6 +167,10 @@ transform:
     remove_deprecated_paths: true
     mark_deprecated_operations: true
     fix_property_names: true
+    # Corrects the group name in the oneof extension's key; fix_property_names rewrites the
+    # variant list in its value (#690). Ordering comes from TRANSFORM_REGISTRY (source order in
+    # scripts/transform.py), not from this list -- these keys only toggle transforms on and off.
+    fix_oneof_group_names: true
     fix_spelling: true
     fix_dangling_refs: true
     remove_unused_schemas: true

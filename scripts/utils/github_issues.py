@@ -80,9 +80,7 @@ class GitHubIssues:
         )
         r.raise_for_status()
 
-    def search_by_label(
-        self, label: str, *, state: str = "open"
-    ) -> list[dict[str, Any]]:
+    def search_by_label(self, label: str, *, state: str = "open") -> list[dict[str, Any]]:
         """Return the list of issues carrying ``label`` in the given ``state``."""
         r = self._client.get(
             f"/repos/{self._repo}/issues",

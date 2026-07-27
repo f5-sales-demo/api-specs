@@ -195,24 +195,18 @@ class TestSchemaRename:
                 "schemas": {
                     "routeRouteType": {"type": "string", "enum": ["A"]},
                     "other": {
-                        "properties": {
-                            "rt": {"$ref": "#/components/schemas/routeRouteType"}
-                        }
+                        "properties": {"rt": {"$ref": "#/components/schemas/routeRouteType"}}
                     },
                 },
             },
         }
-        result = rename_colliding_schemas(
-            spec, spectral_config, "foo.operate.route.json"
-        )
+        result = rename_colliding_schemas(spec, spectral_config, "foo.operate.route.json")
         assert "operateRouteRouteType" in result["components"]["schemas"]
         assert "routeRouteType" not in result["components"]["schemas"]
 
     def test_rename_skipped_for_non_matching_file(self, spectral_config):
         spec = {"components": {"schemas": {"routeRouteType": {"type": "object"}}}}
-        result = rename_colliding_schemas(
-            spec, spectral_config, "foo.schema.route.json"
-        )
+        result = rename_colliding_schemas(spec, spectral_config, "foo.schema.route.json")
         assert "routeRouteType" in result["components"]["schemas"]
 
 

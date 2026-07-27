@@ -2,9 +2,7 @@ from scripts.utils.constraint_validator import Discrepancy, DiscrepancyType
 from scripts.utils.discrepancy_fingerprint import fingerprint, short_form
 
 
-def _make(
-    path="/a", prop="foo", ctype="minLength", dtype=DiscrepancyType.SPEC_STRICTER
-):
+def _make(path="/a", prop="foo", ctype="minLength", dtype=DiscrepancyType.SPEC_STRICTER):
     return Discrepancy(
         path=path,
         property_name=prop,
@@ -23,9 +21,7 @@ def test_fingerprint_is_40_hex_chars():
 
 def test_fingerprint_is_stable_across_calls():
     d = _make()
-    assert fingerprint(d, "origin_pool", "POST") == fingerprint(
-        d, "origin_pool", "POST"
-    )
+    assert fingerprint(d, "origin_pool", "POST") == fingerprint(d, "origin_pool", "POST")
 
 
 def test_fingerprint_changes_with_any_input():
@@ -35,10 +31,7 @@ def test_fingerprint_changes_with_any_input():
     assert fingerprint(base, "app_firewall", "POST") != baseline
     assert fingerprint(_make(path="/b"), "origin_pool", "POST") != baseline
     assert fingerprint(_make(prop="bar"), "origin_pool", "POST") != baseline
-    assert (
-        fingerprint(_make(dtype=DiscrepancyType.SPEC_LOOSER), "origin_pool", "POST")
-        != baseline
-    )
+    assert fingerprint(_make(dtype=DiscrepancyType.SPEC_LOOSER), "origin_pool", "POST") != baseline
 
 
 def test_short_form_is_first_8_chars():
@@ -87,6 +80,4 @@ def test_fingerprint_tolerates_pipe_in_payload_fields():
         spec_value=1,
         api_behavior={},
     )
-    assert fingerprint(a, "origin_pool", "POST") != fingerprint(
-        b, "origin_pool", "POST"
-    )
+    assert fingerprint(a, "origin_pool", "POST") != fingerprint(b, "origin_pool", "POST")

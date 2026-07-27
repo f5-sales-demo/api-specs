@@ -12,6 +12,7 @@ silently drop the newline again and quietly turn the local gate red for everyone
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 from scripts.download import save_metadata
@@ -68,3 +69,56 @@ class TestSpecMetadataEndsWithNewline:
     def test_the_committed_metadata_conforms(self):
         committed = (REPO_ROOT / "release" / "specs" / ".spec_metadata.json").read_text()
         assert committed.endswith("\n") and not committed.endswith("\n\n")
+
+
+class TestUnsyncedConfigsEndWithNewline:
+    """Repo-local configs the fleet sync deliberately skips must be correct here (#732).
+
+    ``.claude/governance.json`` lists these under ``skip_files`` for this repository, so
+    docs-control never writes them and never repairs them -- this repo owns them outright. They
+    are still checked by the managed ``.editorconfig``, which requires a final newline, so a
+    missing one fails ``pre-commit`` on an untouched ``main`` with nobody upstream to fix it.
+
+    Derived from ``skip_files`` rather than hardcoded, so a config added to the opt-out later is
+    covered automatically.
+    """
+
+    @staticmethod
+    def _repo_name() -> str:
+        """Repo name from the git remote, matching how the protection hook resolves it.
+
+        Not the directory name: inside a git worktree that is the worktree's name, which
+        matches no ``skip_files`` key and would silently make this guard inspect nothing.
+        """
+        url = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+        return url.rstrip("/").rsplit("/", 1)[-1].removesuffix(".git")
+
+    @classmethod
+    def _skipped_files(cls) -> list[Path]:
+        governance = json.loads((REPO_ROOT / ".claude" / "governance.json").read_text())
+        skipped = governance.get("skip_files", {}).get(cls._repo_name(), [])
+        return [REPO_ROOT / name for name in skipped]
+
+    def test_the_optout_list_is_not_empty(self):
+        """A vacuous guard would pass forever."""
+        assert self._skipped_files(), "no skip_files entries found for this repo"
+
+    def test_each_unsynced_config_ends_with_exactly_one_newline(self):
+        offenders = []
+        for path in self._skipped_files():
+            if not path.exists():
+                continue
+            text = path.read_text()
+            if not text.endswith("\n") or text.endswith("\n\n"):
+                offenders.append(path.name)
+
+        assert not offenders, (
+            "these repo-local configs must end with exactly one newline "
+            f"(.editorconfig requires it, and the fleet sync skips them): {offenders}"
+        )

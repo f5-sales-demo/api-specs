@@ -466,6 +466,16 @@ class SpecReconciler:
             "changes_by_file": {r.filename: r.changes for r in modified},
         }
 
+    @staticmethod
+    def _as_document(lines: list[str]) -> str:
+        """Join *lines* into a document body with exactly one trailing newline.
+
+        ``CHANGELOG.md`` is checked by markdownlint MD047. Every exit from
+        :meth:`generate_changelog` goes through here so a newly added branch cannot
+        reintroduce the missing newline that had the hook failing on an untouched main (#716).
+        """
+        return "\n".join(lines).rstrip("\n") + "\n"
+
     def generate_changelog(self) -> str:
         """Generate changelog of all modifications."""
         lines = [
@@ -479,7 +489,7 @@ class SpecReconciler:
 
         if not modified:
             lines.append("*No modifications were required.*")
-            return "\n".join(lines)
+            return self._as_document(lines)
 
         for result in modified:
             lines.extend(
@@ -525,7 +535,7 @@ class SpecReconciler:
 
             lines.append("")
 
-        return "\n".join(lines)
+        return self._as_document(lines)
 
 
 def load_discrepancies(report_path: Path) -> list[Discrepancy]:

@@ -86,7 +86,10 @@ def save_metadata(
     }
 
     with metadata_path.open("w") as f:
+        # json.dump emits no trailing newline, which fails editorconfig-checker on the
+        # committed copy in release/specs (#716).
         json.dump(metadata, f, indent=2)
+        f.write("\n")
 
     console.print(f"[dim]Metadata saved: {metadata_path}[/dim]")
     if spec_date:

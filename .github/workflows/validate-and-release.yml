@@ -714,13 +714,35 @@ jobs:
             echo "No docs changes"
             exit 0
           fi
-          BRANCH="docs/update-validation-report-$(date +%s)"
-          git checkout -b "${BRANCH}"
+          # One stable branch, force-updated, rather than a new timestamped branch per run.
+          #
+          # The old `docs/update-validation-report-$(date +%s)` orphaned any run whose PR was
+          # wedged on a transient check: the next run opened a different PR on a different
+          # branch and nothing ever revisited the stuck one. Twelve accumulated between
+          # 2026-06-12 and 2026-07-05 (#723). With a fixed branch a wedged run is repaired by
+          # the next one instead of abandoned, and at most one report PR is ever open.
+          #
+          # Same shape as docs-control's sync-managed-files, which uses the fixed
+          # `governance/sync-managed-files` branch for exactly this reason.
+          #
+          # The name still starts with `docs/update-`, which both gates require: it is in
+          # docs-control's EXCLUDE_BRANCHES for require-linked-issue, and in both branch lists
+          # in code-review.yml.
+          BRANCH="docs/update-validation-report"
+          # -B, not -b: the branch may already exist locally on a re-run, and -b would abort.
+          git checkout -B "${BRANCH}"
           git commit -m "docs: update validation report"
-          git push origin "${BRANCH}"
-          gh pr create --title "docs: update validation report" \
-            --body "Auto-generated from validation pipeline run."
-          gh pr merge --auto --squash
+          git push --force origin "${BRANCH}"
+
+          # Reuse the open PR if there is one; --force above has already updated its head.
+          if [ -z "$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[].number')" ]; then
+            gh pr create --title "docs: update validation report" \
+              --body "Auto-generated from validation pipeline run." \
+              --head "${BRANCH}"
+          else
+            echo "Refreshed the existing PR for ${BRANCH}."
+          fi
+          gh pr merge --auto --squash "${BRANCH}"
 
   commit-release-specs:
     name: Publish Regenerated Specs

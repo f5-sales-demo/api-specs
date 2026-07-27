@@ -4601,12 +4601,13 @@
             "format": "boolean",
             "x-displayname": "Private Advertisement"
           },
-          "public_advertisment": {
+          "public_advertisement": {
             "type": "boolean",
             "description": " Filter results with HTTP loadbalancers advertised publicly",
             "title": "Public Advertisement",
             "format": "boolean",
-            "x-displayname": "Public Advertisement"
+            "x-displayname": "Public Advertisement",
+            "x-f5xc-wire-name": "public_advertisment"
           },
           "routes": {
             "type": "boolean",
@@ -4761,12 +4762,13 @@
             "format": "int64",
             "x-displayname": "Private Advertisement"
           },
-          "public_advertisment": {
+          "public_advertisement": {
             "type": "integer",
             "description": " Number of HTTP loadbalancers advertised publicly",
             "title": "Public Advertisement",
             "format": "int64",
-            "x-displayname": "Public Advertisement"
+            "x-displayname": "Public Advertisement",
+            "x-f5xc-wire-name": "public_advertisment"
           },
           "service_policy": {
             "type": "integer",
@@ -4932,8 +4934,13 @@
           "private_advertisement_enabled": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           },
-          "public_advertisment_enabled": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
+          "public_advertisement_enabled": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ioschemaEmpty"
+              }
+            ],
+            "x-f5xc-wire-name": "public_advertisment_enabled"
           },
           "rate_limit": {
             "$ref": "#/components/schemas/ioschemaEmpty"
@@ -5661,12 +5668,13 @@
             "format": "boolean",
             "x-displayname": "Private Advertisement"
           },
-          "public_advertisment": {
+          "public_advertisement": {
             "type": "boolean",
             "description": " Filter results with TCP loadbalancers advertised publicly",
             "title": "Public Advertisement",
             "format": "boolean",
-            "x-displayname": "Public Advertisement"
+            "x-displayname": "Public Advertisement",
+            "x-f5xc-wire-name": "public_advertisment"
           },
           "service_policy": {
             "type": "boolean",
@@ -5705,12 +5713,13 @@
             "format": "int64",
             "x-displayname": "Private Advertisement"
           },
-          "public_advertisment": {
+          "public_advertisement": {
             "type": "integer",
             "description": " Number of TCP loadbalancers advertised publicly",
             "title": "Public Advertisement",
             "format": "int64",
-            "x-displayname": "Public Advertisement"
+            "x-displayname": "Public Advertisement",
+            "x-f5xc-wire-name": "public_advertisment"
           },
           "service_policy": {
             "type": "integer",
@@ -5762,8 +5771,13 @@
           "private_advertisement": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           },
-          "public_advertisment": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
+          "public_advertisement": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ioschemaEmpty"
+              }
+            ],
+            "x-f5xc-wire-name": "public_advertisment"
           },
           "rate_limit": {
             "$ref": "#/components/schemas/ioschemaEmpty"
@@ -5856,12 +5870,13 @@
             "format": "boolean",
             "x-displayname": "Private Advertisement"
           },
-          "public_advertisment": {
+          "public_advertisement": {
             "type": "boolean",
             "description": " Filter results with UDP loadbalancers advertised publicly",
             "title": "Public Advertisement",
             "format": "boolean",
-            "x-displayname": "Public Advertisement"
+            "x-displayname": "Public Advertisement",
+            "x-f5xc-wire-name": "public_advertisment"
           },
           "service_policy": {
             "type": "boolean",
@@ -5893,12 +5908,13 @@
             "format": "int64",
             "x-displayname": "Private Advertisement"
           },
-          "public_advertisment": {
+          "public_advertisement": {
             "type": "integer",
             "description": " Number of UDP loadbalancers advertised publicly",
             "title": "Public Advertisement",
             "format": "int64",
-            "x-displayname": "Public Advertisement"
+            "x-displayname": "Public Advertisement",
+            "x-f5xc-wire-name": "public_advertisment"
           },
           "service_policy": {
             "type": "integer",
@@ -5943,8 +5959,13 @@
           "private_advertisement": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           },
-          "public_advertisment": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
+          "public_advertisement": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ioschemaEmpty"
+              }
+            ],
+            "x-f5xc-wire-name": "public_advertisment"
           },
           "service_policy": {
             "$ref": "#/components/schemas/ioschemaEmpty"

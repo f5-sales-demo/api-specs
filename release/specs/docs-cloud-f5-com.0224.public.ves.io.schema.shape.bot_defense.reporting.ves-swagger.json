@@ -15262,13 +15262,14 @@
             "x-displayname": "Malicious Bot Automation Type",
             "x-ves-example": "Token Expired"
           },
-          "previous_reqeust_count": {
+          "previous_request_count": {
             "type": "string",
             "description": " Previous Request Count\n\nExample: ` \"2000\"`",
             "title": "Previous Request Count",
             "format": "uint64",
             "x-displayname": "Previous Request Count",
-            "x-ves-example": "2000"
+            "x-ves-example": "2000",
+            "x-f5xc-wire-name": "previous_reqeust_count"
           },
           "request_count": {
             "type": "string",
@@ -20153,13 +20154,14 @@
         "x-displayname": "Traffic Overview Data",
         "x-ves-proto-message": "ves.io.schema.shape.bot_defense.reporting.TrafficOverviewData",
         "properties": {
-          "previous_reqeust_count": {
+          "previous_request_count": {
             "type": "string",
             "description": " Previous Request Count\n\nExample: ` \"2000\"`",
             "title": "Previous Request Count",
             "format": "uint64",
             "x-displayname": "Previous Request Count",
-            "x-ves-example": "2000"
+            "x-ves-example": "2000",
+            "x-f5xc-wire-name": "previous_reqeust_count"
           },
           "request_count": {
             "type": "string",

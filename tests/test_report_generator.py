@@ -52,8 +52,7 @@ def test_domain_from_filename_extracts_slug() -> None:
     )
     assert (
         _domain_from_filename(
-            "docs-cloud-f5-com.0001.public.ves.io.schema.api_sec.api_crawler."
-            "ves-swagger.json"
+            "docs-cloud-f5-com.0001.public.ves.io.schema.api_sec.api_crawler.ves-swagger.json"
         )
         == "api_sec.api_crawler"
     )

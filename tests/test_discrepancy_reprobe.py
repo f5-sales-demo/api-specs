@@ -66,9 +66,7 @@ def test_spec_stricter_still_present_when_api_still_accepts():
     def handler(_req):
         return httpx.Response(201, json={"id": "abc"})
 
-    evidence = reprobe_discrepancy(
-        _stricter_disc(), "origin_pool", "POST", client=_client(handler)
-    )
+    evidence = reprobe_discrepancy(_stricter_disc(), "origin_pool", "POST", client=_client(handler))
     assert evidence.discrepancy_still_present is True
 
 
@@ -78,9 +76,7 @@ def test_spec_stricter_resolved_when_api_now_rejects():
     def handler(_req):
         return httpx.Response(400, json={"error": "value too small"})
 
-    evidence = reprobe_discrepancy(
-        _stricter_disc(), "origin_pool", "POST", client=_client(handler)
-    )
+    evidence = reprobe_discrepancy(_stricter_disc(), "origin_pool", "POST", client=_client(handler))
     assert evidence.discrepancy_still_present is False
 
 
@@ -90,9 +86,7 @@ def test_spec_looser_still_present_when_api_still_rejects():
     def handler(_req):
         return httpx.Response(400, json={"error": "name required"})
 
-    evidence = reprobe_discrepancy(
-        _looser_disc(), "origin_pool", "POST", client=_client(handler)
-    )
+    evidence = reprobe_discrepancy(_looser_disc(), "origin_pool", "POST", client=_client(handler))
     assert evidence.discrepancy_still_present is True
 
 
@@ -102,9 +96,7 @@ def test_spec_looser_resolved_when_api_now_accepts():
     def handler(_req):
         return httpx.Response(201, json={"id": "abc"})
 
-    evidence = reprobe_discrepancy(
-        _looser_disc(), "origin_pool", "POST", client=_client(handler)
-    )
+    evidence = reprobe_discrepancy(_looser_disc(), "origin_pool", "POST", client=_client(handler))
     assert evidence.discrepancy_still_present is False
 
 

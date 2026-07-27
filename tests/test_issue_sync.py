@@ -22,9 +22,7 @@ def _issue(num, fp, state="open"):
 
 def test_plan_creates_for_new_fingerprint():
     existing: list[dict] = []
-    current: dict[str, dict] = {
-        "abcd1234ffffffffffffffffffffffffffffffff": {"fake": "disc"}
-    }
+    current: dict[str, dict] = {"abcd1234ffffffffffffffffffffffffffffffff": {"fake": "disc"}}
     plan = compute_plan(existing, current)
     assert isinstance(plan, SyncPlan)
     assert plan.to_create == ["abcd1234ffffffffffffffffffffffffffffffff"]

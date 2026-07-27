@@ -184,11 +184,7 @@ class SchemathesisRunner:
             if endpoint_filter:
                 operations = [op for op in operations if endpoint_filter in op.path]
             if method_filter:
-                operations = [
-                    op
-                    for op in operations
-                    if op.method.upper() == method_filter.upper()
-                ]
+                operations = [op for op in operations if op.method.upper() == method_filter.upper()]
 
             task = progress.add_task(
                 f"Testing {len(operations)} operations...",
@@ -291,9 +287,7 @@ class SchemathesisRunner:
                 case = test_func.example()
                 yield case
         except Exception as e:  # pylint: disable=broad-exception-caught
-            console.print(
-                f"[yellow]Failed to generate cases for {operation.path}: {e}[/yellow]"
-            )
+            console.print(f"[yellow]Failed to generate cases for {operation.path}: {e}[/yellow]")
 
     def _execute_case(self, case: Case) -> Any:
         """Execute a test case against the API."""
@@ -316,9 +310,7 @@ class SchemathesisRunner:
 
         return self.auth.request(method, path, **kwargs)
 
-    def _make_schema_discrepancy(
-        self, case: Case, validation_error: BaseException
-    ) -> Discrepancy:
+    def _make_schema_discrepancy(self, case: Case, validation_error: BaseException) -> Discrepancy:
         """Create a schema validation discrepancy from a validation error."""
         return Discrepancy(
             path=case.path,
@@ -449,19 +441,13 @@ class SchemathesisRunner:
                     continue
 
         # Debug logging
-        console.print(
-            f"[cyan]DEBUG: Collected {len(results)} results from stateful tests[/cyan]"
-        )
-        console.print(
-            f"[cyan]DEBUG: self.results before extend: {len(self.results)}[/cyan]"
-        )
+        console.print(f"[cyan]DEBUG: Collected {len(results)} results from stateful tests[/cyan]")
+        console.print(f"[cyan]DEBUG: self.results before extend: {len(self.results)}[/cyan]")
 
         # Update self.results for get_summary()
         self.results.extend(results)
 
-        console.print(
-            f"[cyan]DEBUG: self.results after extend: {len(self.results)}[/cyan]"
-        )
+        console.print(f"[cyan]DEBUG: self.results after extend: {len(self.results)}[/cyan]")
         return results
 
     def _matches_crud_operation(

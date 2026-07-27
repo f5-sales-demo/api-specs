@@ -23,9 +23,7 @@ description: F5 XC API spec validation and fix report
 def load_json_report(report_path: Path, report_type: str = "report") -> dict | None:
     """Load a JSON report file."""
     if not report_path.exists():
-        console.print(
-            f"[yellow]{report_type.capitalize()} not found: {report_path}[/yellow]"
-        )
+        console.print(f"[yellow]{report_type.capitalize()} not found: {report_path}[/yellow]")
         return None
 
     try:
@@ -291,9 +289,7 @@ def _generate_discrepancies_section(report: dict) -> list[str]:
             api_str = _format_value(api_val)
             dtype_badge = _get_type_badge(dtype)
 
-            lines.append(
-                f"| `{prop}` | `{constraint}` | {dtype_badge} | {spec_str} | {api_str} |"
-            )
+            lines.append(f"| `{prop}` | `{constraint}` | {dtype_badge} | {spec_str} | {api_str} |")
 
         lines.append("")
 

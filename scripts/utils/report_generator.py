@@ -74,9 +74,7 @@ class ReportGenerator:
         methods = self._align_parallel_list(discrepancy_methods, len(discrepancies))
 
         # Create summary
-        summary = self._create_summary(
-            results, discrepancies, modified_files, unmodified_files
-        )
+        summary = self._create_summary(results, discrepancies, modified_files, unmodified_files)
 
         output_files = {}
 
@@ -86,13 +84,9 @@ class ReportGenerator:
                     summary, results, discrepancies, domains, methods
                 )
             elif fmt == "html":
-                output_files["html"] = self._generate_html(
-                    summary, results, discrepancies
-                )
+                output_files["html"] = self._generate_html(summary, results, discrepancies)
             elif fmt == "markdown":
-                output_files["markdown"] = self._generate_markdown(
-                    summary, results, discrepancies
-                )
+                output_files["markdown"] = self._generate_markdown(summary, results, discrepancies)
 
         return output_files
 
@@ -173,9 +167,7 @@ class ReportGenerator:
         """Generate HTML report."""
         output_path = self.config.output_dir / "validation_report.html"
 
-        template = Environment(loader=BaseLoader(), autoescape=True).from_string(
-            HTML_TEMPLATE
-        )
+        template = Environment(loader=BaseLoader(), autoescape=True).from_string(HTML_TEMPLATE)
 
         html = template.render(
             summary=summary,
@@ -219,8 +211,7 @@ class ReportGenerator:
         ]
 
         lines.extend(
-            f"- {dtype}: {count}"
-            for dtype, count in summary.discrepancies_by_type.items()
+            f"- {dtype}: {count}" for dtype, count in summary.discrepancies_by_type.items()
         )
 
         lines.extend(
@@ -334,9 +325,7 @@ class ReportGenerator:
             "discrepancy_type": discrepancy.discrepancy_type.value,
             "spec_value": discrepancy.spec_value,
             "api_behavior": discrepancy.api_behavior,
-            "test_values": discrepancy.test_values[
-                : self.config.max_examples_per_issue
-            ],
+            "test_values": discrepancy.test_values[: self.config.max_examples_per_issue],
             "recommendation": discrepancy.recommendation,
             "domain": domain,
             "method": method,

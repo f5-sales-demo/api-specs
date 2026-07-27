@@ -139,9 +139,7 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
         console.print("[bold blue]F5 XC API Spec Validation[/bold blue]")
 
         if self.dry_run:
-            console.print(
-                "[yellow]Running in dry-run mode (no live API calls)[/yellow]"
-            )
+            console.print("[yellow]Running in dry-run mode (no live API calls)[/yellow]")
 
         # Step 1: Load and validate specs
         console.print("\n[bold]Step 1: Loading OpenAPI Specs[/bold]")
@@ -229,14 +227,10 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
                 f"{sum(len(s.constraints) for s in schemas.values())} constraints[/dim]"
             )
 
-        console.print(
-            f"[green]Total: {len(all_constraints)} schemas with constraints[/green]"
-        )
+        console.print(f"[green]Total: {len(all_constraints)} schemas with constraints[/green]")
         return all_constraints
 
-    def _generate_test_cases(
-        self, constraints: dict
-    ) -> dict[str, list[ValidationTestCase]]:
+    def _generate_test_cases(self, constraints: dict) -> dict[str, list[ValidationTestCase]]:
         """Generate test cases for all constraints."""
         all_test_cases = {}
         total_tests = 0
@@ -313,12 +307,8 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
                     # so the JSON report can surface them per entry).
                     for result in results:
                         self.discrepancies.extend(result.discrepancies)
-                        self.discrepancy_domains.extend(
-                            [domain_slug] * len(result.discrepancies)
-                        )
-                        self.discrepancy_methods.extend(
-                            [result.method] * len(result.discrepancies)
-                        )
+                        self.discrepancy_domains.extend([domain_slug] * len(result.discrepancies))
+                        self.discrepancy_methods.extend([result.method] * len(result.discrepancies))
 
                 except Exception as e:  # pylint: disable=broad-exception-caught
                     console.print(f"  [red]Error testing {resource}: {e}[/red]")
@@ -330,9 +320,7 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
     ) -> None:
         """Run constraint validation tests against live API."""
         if not self.auth:
-            console.print(
-                "[yellow]No auth configured, skipping constraint tests[/yellow]"
-            )
+            console.print("[yellow]No auth configured, skipping constraint tests[/yellow]")
             return
 
         endpoints_config = self.endpoints_config.get("endpoints", {})
@@ -430,9 +418,7 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
 
 def main() -> int:
     """Main entry point for validation command."""
-    parser = argparse.ArgumentParser(
-        description="Validate F5 XC OpenAPI specs against live API"
-    )
+    parser = argparse.ArgumentParser(description="Validate F5 XC OpenAPI specs against live API")
     parser.add_argument(
         "--config",
         type=Path,

@@ -36,9 +36,7 @@ def sample_openapi_spec() -> dict:
                             "description": "Success",
                             "content": {
                                 "application/json": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/TestResponse"
-                                    }
+                                    "schema": {"$ref": "#/components/schemas/TestResponse"}
                                 }
                             },
                         }

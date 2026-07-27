@@ -177,9 +177,7 @@ def get_version_from_metadata(specs_dir: Path, patch: int | None = None) -> str:
             console.print(f"[dim]Using upstream spec date: {base_date}[/dim]")
         else:
             base_date = datetime.now(UTC).strftime("%Y.%m.%d")
-            console.print(
-                "[yellow]No spec date in metadata, using current date[/yellow]"
-            )
+            console.print("[yellow]No spec date in metadata, using current date[/yellow]")
     else:
         # Fallback to current date if no metadata
         base_date = datetime.now(UTC).strftime("%Y.%m.%d")
@@ -359,9 +357,7 @@ class ReleaseBuilder:
         with (staging_dir / "openapi.yaml").open("w") as f:
             yaml.safe_dump(merged, f, default_flow_style=False, sort_keys=False)
 
-        console.print(
-            f"  [dim]Created: openapi.json ({len(merged['paths'])} paths)[/dim]"
-        )
+        console.print(f"  [dim]Created: openapi.json ({len(merged['paths'])} paths)[/dim]")
         console.print("  [dim]Created: openapi.yaml[/dim]")
 
     def _copy_changelog(self, staging_dir: Path) -> None:
@@ -414,9 +410,7 @@ Release date: {datetime.now(UTC).strftime("%Y-%m-%d")}
                 issue_mapping if issue_mapping.exists() else None,
             )
             (staging_dir / "VALIDATION_REPORT.md").write_text(report_content)
-            console.print(
-                "  [dim]Generated: VALIDATION_REPORT.md (with issue tracking)[/dim]"
-            )
+            console.print("  [dim]Generated: VALIDATION_REPORT.md (with issue tracking)[/dim]")
             return
 
         if validation_md.exists():
@@ -518,9 +512,7 @@ See full validation details in the repository.
 
 def main() -> int:
     """Main entry point for release command."""
-    parser = argparse.ArgumentParser(
-        description="Build release package for F5 XC fixed specs"
-    )
+    parser = argparse.ArgumentParser(description="Build release package for F5 XC fixed specs")
     parser.add_argument(
         "--config",
         type=Path,

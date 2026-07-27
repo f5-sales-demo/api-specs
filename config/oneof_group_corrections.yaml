@@ -1,0 +1,64 @@
+---
+# Corrections for misspelled `x-ves-oneof-field-*` group
+# names in OpenAPI spec schemas.
+#
+# F5 groups mutually-exclusive properties with a vendor
+# extension whose KEY carries the group name:
+#
+#   "x-ves-oneof-field-<group>": "[\"variant_a\",\"variant_b\"]"
+#
+# `fix_property_names` corrects the property names listed
+# in the extension's VALUE, but the group name lives in
+# the KEY, which that transform does not touch. This
+# config covers the key.
+#
+# WIRE SAFETY
+#   Unlike a property rename, this cannot move bytes on
+#   the wire. `x-ves-oneof-*` is metadata describing a
+#   schema; it is never a field the API accepts or
+#   returns. The wire contract is the properties, and
+#   `fix_oneof_group_names` does not touch them --
+#   enforced by a test. So there is no `x-f5xc-wire-name`
+#   equivalent here and none is needed.
+#
+# WHY IT IS NOT COSMETIC
+#   `api-specs-enriched`'s `compile_catalog.py` turns the
+#   group name into a JSON object key in the published
+#   `api-catalog.json`, and `xcsh` renders it verbatim in
+#   the "OneOf Groups" table a user reads
+#   (`api-catalog-resolve.ts`). The provider parses these
+#   groups too, but only to derive mutual-exclusion
+#   metadata, and never surfaces the name.
+#
+# Fields:
+#   old_group  Group name as F5 publishes it, without the
+#              `x-ves-oneof-field-` prefix.
+#   new_group  Corrected group name.
+#   reason     Why the rename is correct and safe.
+#
+# AUDIT (#690 scope item 3)
+#   All 682 distinct `x-ves-oneof-field-*` keys in the
+#   published artifact were checked two ways: codespell
+#   against its own dictionary, and a cross-check against
+#   every misspelled token in
+#   `property_name_corrections.yaml`. Both found exactly
+#   one offender, the entry below.
+#   `tests/test_oneof_group_corrections.py` keeps that
+#   audit running, so a new upstream typo of an
+#   already-known word fails rather than ships.
+
+corrections:
+  - old_group: lb_source_ip_persistance_choice
+    new_group: lb_source_ip_persistence_choice
+    reason: >-
+      The group name misspells "persistence". The sibling properties
+      disable_lb_source_ip_persistance / enable_lb_source_ip_persistance are
+      corrected by property_name_corrections.yaml, which also rewrites this
+      extension's value list -- so before this rename the key read
+      lb_source_ip_persistance_choice while its own value already read
+      ..._persistence, contradicting itself. Appears in 3 specs:
+      cluster (clusterGetSpecType), and
+      http_loadbalancer plus origin_pool (origin_poolOriginPoolAdvancedOptions).
+      api-specs-enriched already expects the corrected spelling in
+      config/validation_schema.yaml and in part of config/discovered_defaults.yaml,
+      so this aligns the artifact with what the layer below already assumes.

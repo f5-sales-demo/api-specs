@@ -714,6 +714,46 @@ def fix_property_names(
     return spec
 
 
+@register_transform("fix_oneof_group_names")
+def fix_oneof_group_names(
+    spec: dict,
+    config: TransformConfig,
+    _filename: str,
+) -> dict:
+    """Correct misspelled ``x-ves-oneof-field-*`` group names (#690).
+
+    :func:`fix_property_names` corrects the member names in the extension's *value*; the group
+    name lives in its *key*, which that transform leaves alone. Runs after it, so key and value
+    agree once this returns. See ``config/oneof_group_corrections.yaml``.
+
+    Cannot move the wire: ``x-ves-oneof-*`` is schema metadata, never a field the API accepts,
+    so there is no wire key to preserve. ``properties`` is untouched, which
+    ``test_oneof_group_corrections.py::test_properties_are_never_touched`` enforces.
+    """
+    corrections = config.metadata.get("oneof_group_corrections", [])
+    if not corrections:
+        return spec
+
+    renames = {
+        f"{ONEOF_FIELD_PREFIX}{rule['old_group']}": f"{ONEOF_FIELD_PREFIX}{rule['new_group']}"
+        for rule in corrections
+    }
+
+    schemas = spec.get("components", {}).get("schemas", {})
+    for schema_def in schemas.values():
+        if not isinstance(schema_def, dict):
+            continue
+        for old_key, new_key in renames.items():
+            if old_key in schema_def:
+                # Rebuild rather than pop-and-set so the corrected key keeps the original's
+                # position; a moved key would show up as spurious churn in the artifact diff.
+                rebuilt = {(new_key if k == old_key else k): v for k, v in schema_def.items()}
+                schema_def.clear()
+                schema_def.update(rebuilt)
+
+    return spec
+
+
 @register_transform("fix_spelling")
 def fix_spelling(
     spec: dict,
@@ -875,17 +915,16 @@ def load_config(config_path: str | Path) -> TransformConfig:
             spelling_cfg.get("text_fields") or DEFAULT_SPELLING_TEXT_FIELDS
         )
 
-    property_path = config_path.parent / "property_name_corrections.yaml"
-    if property_path.exists():
-        with property_path.open() as fh:
-            property_cfg = yaml.safe_load(fh) or {}
-        metadata["property_name_corrections"] = property_cfg.get("corrections", [])
-
-    dangling_ref_path = config_path.parent / "dangling_ref_corrections.yaml"
-    if dangling_ref_path.exists():
-        with dangling_ref_path.open() as fh:
-            dangling_ref_cfg = yaml.safe_load(fh) or {}
-        metadata["dangling_ref_corrections"] = dangling_ref_cfg.get("corrections", [])
+    # Each of these is a `corrections:` list in its own file, loaded the same way.
+    for key in (
+        "property_name_corrections",
+        "oneof_group_corrections",
+        "dangling_ref_corrections",
+    ):
+        path = config_path.parent / f"{key}.yaml"
+        if path.exists():
+            with path.open() as fh:
+                metadata[key] = (yaml.safe_load(fh) or {}).get("corrections", [])
 
     return TransformConfig(
         input_dir=str(input_dir),

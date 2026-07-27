@@ -8125,7 +8125,7 @@
         "x-displayname": "Origin Pool Advanced Options",
         "x-ves-oneof-field-circuit_breaker_choice": "[\"circuit_breaker\",\"default_circuit_breaker\",\"disable_circuit_breaker\"]",
         "x-ves-oneof-field-http_protocol_type": "[\"auto_http_config\",\"http1_config\",\"http2_options\"]",
-        "x-ves-oneof-field-lb_source_ip_persistance_choice": "[\"disable_lb_source_ip_persistance\",\"enable_lb_source_ip_persistance\"]",
+        "x-ves-oneof-field-lb_source_ip_persistance_choice": "[\"disable_lb_source_ip_persistence\",\"enable_lb_source_ip_persistence\"]",
         "x-ves-oneof-field-max_requests_per_connection_choice": "[\"max_requests_per_connection\",\"no_request_limit_per_connection\"]",
         "x-ves-oneof-field-outlier_detection_choice": "[\"disable_outlier_detection\",\"outlier_detection\"]",
         "x-ves-oneof-field-panic_threshold_type": "[\"no_panic_threshold\",\"panic_threshold\"]",
@@ -8156,8 +8156,13 @@
           "disable_circuit_breaker": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           },
-          "disable_lb_source_ip_persistance": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
+          "disable_lb_source_ip_persistence": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ioschemaEmpty"
+              }
+            ],
+            "x-f5xc-wire-name": "disable_lb_source_ip_persistance"
           },
           "disable_outlier_detection": {
             "$ref": "#/components/schemas/ioschemaEmpty"
@@ -8168,8 +8173,13 @@
           "disable_subsets": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           },
-          "enable_lb_source_ip_persistance": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
+          "enable_lb_source_ip_persistence": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ioschemaEmpty"
+              }
+            ],
+            "x-f5xc-wire-name": "enable_lb_source_ip_persistance"
           },
           "enable_subsets": {
             "$ref": "#/components/schemas/origin_poolOriginPoolSubsets"

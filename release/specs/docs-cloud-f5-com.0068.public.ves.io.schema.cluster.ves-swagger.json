@@ -1086,7 +1086,7 @@
         "title": "Get cluster",
         "x-displayname": "Get Cluster",
         "x-ves-oneof-field-http_protocol_type": "[\"auto_http_config\",\"http1_config\",\"http2_options\"]",
-        "x-ves-oneof-field-lb_source_ip_persistance_choice": "[\"disable_lb_source_ip_persistance\",\"enable_lb_source_ip_persistance\"]",
+        "x-ves-oneof-field-lb_source_ip_persistance_choice": "[\"disable_lb_source_ip_persistence\",\"enable_lb_source_ip_persistence\"]",
         "x-ves-oneof-field-max_requests_per_connection_choice": "[\"max_requests_per_connection\",\"no_request_limit_per_connection\"]",
         "x-ves-oneof-field-panic_threshold_type": "[\"no_panic_threshold\",\"panic_threshold\"]",
         "x-ves-oneof-field-proxy_protocol_type": "[\"disable_proxy_protocol\",\"proxy_protocol_v1\",\"proxy_protocol_v2\"]",
@@ -1117,14 +1117,24 @@
               "ves.io.schema.rules.map.max_pairs": "32"
             }
           },
-          "disable_lb_source_ip_persistance": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
+          "disable_lb_source_ip_persistence": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ioschemaEmpty"
+              }
+            ],
+            "x-f5xc-wire-name": "disable_lb_source_ip_persistance"
           },
           "disable_proxy_protocol": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           },
-          "enable_lb_source_ip_persistance": {
-            "$ref": "#/components/schemas/ioschemaEmpty"
+          "enable_lb_source_ip_persistence": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ioschemaEmpty"
+              }
+            ],
+            "x-f5xc-wire-name": "enable_lb_source_ip_persistance"
           },
           "endpoint_selection": {
             "$ref": "#/components/schemas/clusterEndpointSelectionPolicy"

@@ -20,6 +20,7 @@ no token is present, and ``CHANGELOG.md`` ordering from an unsorted glob.
 
 from __future__ import annotations
 
+import difflib
 import json
 from pathlib import Path
 
@@ -174,8 +175,6 @@ def test_release_specs_matches_a_fresh_transform(drift):
 
 def _first_differing_lines(committed: str, regenerated: str, limit: int) -> list[tuple[str, str]]:
     """Return up to *limit* ``(marker, line)`` pairs showing where the two texts diverge."""
-    import difflib
-
     diff = difflib.unified_diff(committed.splitlines(), regenerated.splitlines(), lineterm="", n=0)
     out: list[tuple[str, str]] = []
     for line in diff:

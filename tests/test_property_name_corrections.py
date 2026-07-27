@@ -86,6 +86,27 @@ def _wire_keys(schema_def: dict) -> set[str]:
     return keys
 
 
+def _pinned_schemas(old_key: str, specs: list[tuple[str, dict, dict]]) -> list[tuple[str, str]]:
+    """Return ``(filename, schema_name)`` for every schema already pinning *old_key* as a wire name.
+
+    Companion to :func:`_corrected_schemas`, for the wire-*preserving* corrections. Once the
+    published artifact is regenerated (#681), a correction that keeps the wire key no longer
+    declares ``old_key`` as a property -- it declares ``new_key`` carrying
+    ``x-f5xc-wire-name: old_key``. That is the correction having landed, not the typo having
+    vanished, and the two must not be confused: the first is success, the second would be the
+    wire-breaking regression of terraform-provider-xcsh#1257.
+    """
+    return [
+        (name, schema_name)
+        for name, original, _ in specs
+        for schema_name, schema in _schemas(original).items()
+        if any(
+            isinstance(prop, dict) and prop.get(WIRE_NAME_EXTENSION) == old_key
+            for prop in schema.get("properties", {}).values()
+        )
+    ]
+
+
 def _declaring_schemas(old_key: str, specs: list[tuple[str, dict, dict]]) -> list[tuple[str, str]]:
     """Return ``(filename, schema_name)`` for every schema declaring *old_key*."""
     return [
@@ -211,10 +232,26 @@ class TestReleasedSpecsAreCorrected:
         old_key, new_key = correction["old_key"], correction["new_key"]
         declaring = _declaring_schemas(old_key, transformed_specs)
         if not declaring:
-            # The typo is gone from the published artifact, so the wire key
-            # already moved. Only a verified ``fix_spec`` may do that; for any
-            # other status this is the regression that broke the field on the
-            # wire downstream (terraform-provider-xcsh#1257).
+            pinned = _pinned_schemas(old_key, transformed_specs)
+            if pinned:
+                # The correction has already reached the published artifact: it presents
+                # ``new_key`` and pins the wire key to ``old_key``. That is the intended end
+                # state, so verify the pin rather than treating the absent typo as a wire move.
+                for name, schema_name in pinned:
+                    prop = next(
+                        _schemas(t)[schema_name]["properties"][new_key]
+                        for filename, _o, t in transformed_specs
+                        if filename == name
+                    )
+                    assert prop[WIRE_NAME_EXTENSION] == old_key, (
+                        f"{name}/{schema_name}: wire key moved off {old_key}"
+                    )
+                return
+
+            # The typo is gone from the published artifact and nothing pins it, so the wire key
+            # really did move. Only a verified ``fix_spec`` may do that; for any other status
+            # this is the regression that broke the field on the wire downstream
+            # (terraform-provider-xcsh#1257).
             assert _changes_the_wire(correction), (
                 f"{old_key} is absent from the published specs but its status "
                 f"is {correction['api_status']!r} -- the wire key moved off a "
@@ -323,7 +360,11 @@ class TestNothingElseMoves:
         for name, original, transformed in transformed_specs:
             after = _schemas(transformed)
             for schema_name, schema in _schemas(original).items():
-                expected = {wire_renames.get(key, key) for key in schema.get("properties", {})}
+                # Compare wire keys on both sides. Raw property names would be wrong now that the
+                # published artifact is itself pipeline output (#681): a corrected property is
+                # named ``new_key`` while still putting ``old_key`` on the wire via its pin, so
+                # reading names here would report a wire change where none happened.
+                expected = {wire_renames.get(key, key) for key in _wire_keys(schema)}
                 assert _wire_keys(after[schema_name]) == expected, (
                     f"{name}/{schema_name}: wire keys changed"
                 )

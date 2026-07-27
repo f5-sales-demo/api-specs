@@ -1,4 +1,4 @@
-.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update spectral-lint spectral-gate transform spell-check-specs verify-property-names
+.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update spectral-lint spectral-gate transform regenerate-specs spell-check-specs verify-property-names
 
 PYTHON := python3
 VENV := .venv
@@ -75,6 +75,20 @@ spectral-gate:
 
 transform:
 	$(BIN)/python -m scripts.transform
+
+# Bring the committed release/specs artifact back in step with config/.
+#
+# A correction only has value once it reaches the published artifact, so a PR that changes
+# config/ must also commit the regenerated specs -- tests/test_release_specs_current.py
+# enforces that. This is the one command that satisfies it.
+#
+# Reads and writes release/specs in place: transform_all() loads every spec before
+# save_results() writes any, so the round trip is safe. Provenance comes from
+# release/specs/.spec_metadata.json, so info.version reflects the drop the artifact was built
+# from rather than whatever was last downloaded locally. Requires no network and no
+# F5XC_API_TOKEN, and is idempotent -- a second run produces no diff.
+regenerate-specs:
+	$(BIN)/python -m scripts.transform --input-dir release/specs --output-dir release/specs
 
 spell-check-specs:
 	$(BIN)/python -m scripts.spell_check_specs

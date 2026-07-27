@@ -829,6 +829,24 @@ class SpecTransformer:
 # ---------------------------------------------------------------------------
 
 
+def load_spec_metadata(specs_dir: str | Path) -> dict[str, Any]:
+    """Return the provenance metadata recorded alongside the specs in *specs_dir*.
+
+    ``inject_info_version`` stamps ``info.version`` from ``spec_date``, so this must describe the
+    drop the specs in *specs_dir* actually came from. Reading it from anywhere else -- most
+    obviously from ``specs/original`` while transforming ``release/specs`` -- stamps an unrelated
+    local download's date into every published spec.
+
+    Returns an empty dict when the file is absent, which leaves ``info.version`` unset rather than
+    guessing.
+    """
+    metadata_path = Path(specs_dir) / ".spec_metadata.json"
+    if not metadata_path.exists():
+        return {}
+    with metadata_path.open() as fh:
+        return json.load(fh)
+
+
 def load_config(config_path: str | Path) -> TransformConfig:
     """Build a ``TransformConfig`` from *config_path* (``validation.yaml``)."""
     config_path = Path(config_path)
@@ -846,11 +864,7 @@ def load_config(config_path: str | Path) -> TransformConfig:
     input_dir = Path(download_cfg.get("output_dir", "specs/original"))
     output_dir = Path(transform_cfg.get("output_dir", "specs/transformed"))
 
-    metadata: dict[str, Any] = {}
-    metadata_path = input_dir / ".spec_metadata.json"
-    if metadata_path.exists():
-        with metadata_path.open() as fh:
-            metadata = json.load(fh)
+    metadata: dict[str, Any] = load_spec_metadata(input_dir)
 
     spelling_path = config_path.parent / "spelling_corrections.yaml"
     if spelling_path.exists():
@@ -917,6 +931,11 @@ def main() -> int:
     config = load_config(args.config)
     if args.input_dir:
         config.input_dir = args.input_dir
+        # Provenance follows the specs. Without this the run would keep the metadata
+        # load_config read from the configured input dir (specs/original) and stamp that
+        # download's date into specs taken from somewhere else -- e.g. regenerating
+        # release/specs would rewrite info.version to whatever was last downloaded locally.
+        config.metadata.update(load_spec_metadata(args.input_dir))
     if args.output_dir:
         config.output_dir = args.output_dir
 

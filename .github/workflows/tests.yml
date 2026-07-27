@@ -1,0 +1,60 @@
+---
+name: Tests
+
+# Nothing ran the Python suite in CI before this workflow (#681). That is why a stale
+# release/specs could sit on main for three weeks with every check green: the tests that
+# would have noticed were only ever run locally, if at all.
+#
+# The suite is offline by design -- no network, no F5XC_API_TOKEN. The single live-API test
+# skips itself when the token is absent, so this is safe on forks and on the schedule.
+#
+# NOTE: this context is not yet in branch protection's required checks. Those are applied by
+# docs-control's enforce-repo-settings.yml via repo_overrides[<repo>].additional_contexts, so
+# making it blocking is a change in that repository, not this one. Until that lands this
+# workflow reports but cannot block.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  pytest:
+    name: Python test suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+
+      - name: Run tests
+        run: pytest -q

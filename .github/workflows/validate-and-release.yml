@@ -64,9 +64,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          # Now that a lockfile exists, setup-node can key the npm cache off it.
+          cache: npm
 
       - name: Install Spectral
-        run: npm install -g @stoplight/spectral-cli
+        # From the lockfile, not an ad-hoc global install. A floating `npm install -g` made the
+        # Spectral gate's verdict depend on whatever npm resolved that morning, so an upstream
+        # rule change could turn the pipeline red with no commit behind it -- and it is what
+        # zizmor's adhoc-packages audit flags, which had the pre-commit hook failing on an
+        # untouched main.
+        #
+        # --ignore-scripts because Spectral needs no build step, and the tree pulls in
+        # @scarf/scarf, whose postinstall phones home. scripts/spectral_lint.py resolves the
+        # binary with shutil.which("spectral"), so node_modules/.bin must be on PATH.
+        run: |
+          npm ci --ignore-scripts
+          echo "${GITHUB_WORKSPACE}/node_modules/.bin" >> "${GITHUB_PATH}"
 
       - name: Cache pip packages
         uses: actions/cache@v4
@@ -707,4 +720,98 @@ jobs:
           git push origin "${BRANCH}"
           gh pr create --title "docs: update validation report" \
             --body "Auto-generated from validation pipeline run."
+          gh pr merge --auto --squash
+
+  commit-release-specs:
+    name: Publish Regenerated Specs
+    needs: [validate]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    # The other half of #681. A human PR carries its own regeneration (the drift gate in
+    # tests.yml enforces that), which covers corrections. It cannot cover the case where F5
+    # publishes a new drop: new, renumbered or deleted specs arrive with no PR behind them.
+    # This job absorbs those.
+
+    steps:
+      # REPO_SYNC_TOKEN, deliberately not REPO_ADMIN_TOKEN, for the reason already documented
+      # on the downstream-dispatch step above: it is the narrowest secret this repository
+      # carries that can push and open a PR, and admin rights would turn a leak of this step
+      # into a repository takeover. GITHUB_TOKEN is not a candidate either -- pushes made with
+      # it do not trigger pull_request workflows, so tests.yml would never run on the PR.
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REPO_SYNC_TOKEN }}
+
+      - name: Fail fast if the sync token is absent
+        env:
+          SYNC_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
+        run: |
+          if [ -z "${SYNC_TOKEN}" ]; then
+            echo "::error::REPO_SYNC_TOKEN is not set. Refusing to fall back to a broader" \
+                 "token or to GITHUB_TOKEN, which would not trigger tests.yml on the PR."
+            exit 1
+          fi
+
+      # Recreate rather than overlay. Upstream filenames embed a sequence index that shifts
+      # when F5 adds or removes a domain, so specs the current run does not write would
+      # otherwise survive and be republished. The release job does the same, for the same
+      # reason.
+      - name: Reset the artifact directory
+        run: |
+          rm -rf release/specs
+          mkdir -p release/specs
+
+      - name: Download reconciled specs
+        uses: actions/download-artifact@v8
+        with:
+          name: reconciled-specs
+          path: release/specs/
+
+      # A separate artifact because `reconciled-specs` is uploaded without
+      # `include-hidden-files`, so the dot-prefixed provenance record is absent from it. The
+      # artifact must carry it: the drift gate reads spec_date from here to pin info.version.
+      - name: Download spec metadata
+        uses: actions/download-artifact@v8
+        with:
+          name: spec-metadata
+          path: release/specs/
+
+      - name: Open a PR if the published specs changed
+        env:
+          GH_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # -A so deletions are staged; a removed upstream domain must leave the artifact.
+          git add -A release/specs
+
+          # Only the specs decide whether to publish. .spec_metadata.json carries
+          # download_date and a microsecond download_timestamp that every non-304 download
+          # rewrites, so keying off the whole directory would open a timestamp-only PR every
+          # single day.
+          if git diff --cached --quiet -- 'release/specs/*.json'; then
+            echo "No spec changes; discarding any metadata-only churn."
+            git reset --quiet
+            git checkout -- release/specs || true
+            exit 0
+          fi
+
+          # sync/ clears both gates without a governance change: it is in docs-control's
+          # EXCLUDE_BRANCHES for require-linked-issue, and in both branch lists in
+          # code-review.yml. Prefixes like governance/ are in the latter but not the former
+          # and would deadlock.
+          BRANCH="sync/regenerate-release-specs-$(date +%s)"
+          git checkout -b "${BRANCH}"
+          git commit -m "chore: publish regenerated release/specs"
+          git push origin "${BRANCH}"
+
+          gh pr create \
+            --title "chore: publish regenerated release/specs" \
+            --body "Auto-generated: the pipeline produced a \`release/specs\` that differs from the committed artifact. See #681." \
+            --head "${BRANCH}"
           gh pr merge --auto --squash

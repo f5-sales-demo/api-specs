@@ -2846,12 +2846,13 @@
             "format": "int32",
             "x-displayname": "OBSOLETE2_upperBound"
           },
-          "OBSOLOTE_upperBound": {
+          "OBSOLETE_upperBound": {
             "type": "string",
             "description": " The upperBound data\n\nExample: ` 0`",
-            "title": "OBSOLOTE_upperBound",
+            "title": "OBSOLETE_upperBound",
             "format": "int64",
-            "x-displayname": "OBSOLOTE_upperBound"
+            "x-displayname": "OBSOLETE_upperBound",
+            "x-f5xc-wire-name": "OBSOLOTE_upperBound"
           },
           "upperBound": {
             "type": "number",

@@ -2983,7 +2983,7 @@
         "x-displayname": "Disable Node Local Services",
         "x-ves-proto-message": "ves.io.schema.fleet.BlockedServicesListType",
         "properties": {
-          "blocked_sevice": {
+          "blocked_service": {
             "type": "array",
             "description": "\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "Disable Node Local Services",
@@ -2993,7 +2993,8 @@
             "x-displayname": "Disable Node Local Services",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.unique": "true"
-            }
+            },
+            "x-f5xc-wire-name": "blocked_sevice"
           }
         }
       },

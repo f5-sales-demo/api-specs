@@ -1204,6 +1204,20 @@
           "api_token": {
             "$ref": "#/components/schemas/schemaSecretType"
           },
+          "labels": {
+            "type": "object",
+            "description": " The labels are optional, and can be any key-value pair for use with the PSO \"fleet\" provisioner.\n\nExample: ` \"{\"rack\"\"22\"}\"`\n\nValidation Rules:\n  ves.io.schema.rules.map.keys.string.max_len: 128\n  ves.io.schema.rules.map.keys.string.min_len: 1\n  ves.io.schema.rules.map.max_pairs: 20\n  ves.io.schema.rules.map.values.string.max_len: 128\n  ves.io.schema.rules.map.values.string.min_len: 1\n",
+            "title": "Labels",
+            "x-displayname": "Labels",
+            "x-ves-example": "{\"rack\": \"22\"}",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.map.keys.string.max_len": "128",
+              "ves.io.schema.rules.map.keys.string.min_len": "1",
+              "ves.io.schema.rules.map.max_pairs": "20",
+              "ves.io.schema.rules.map.values.string.max_len": "128",
+              "ves.io.schema.rules.map.values.string.min_len": "1"
+            }
+          },
           "mgmt_dns_name": {
             "type": "string",
             "description": "Exclusive with [mgmt_ip]\n Management Endpoint's ip address is discovered using DNS name resolution. The name given here is fully qualified domain name.\n\nExample: ` \"storage.local\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.hostname: true\n  ves.io.schema.rules.string.max_len: 256\n",
@@ -1246,20 +1260,6 @@
             "x-ves-example": "10.5.2.4",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
-            }
-          },
-          "labels": {
-            "type": "object",
-            "description": " The labels are optional, and can be any key-value pair for use with the PSO \"fleet\" provisioner.\n\nExample: ` \"{\"rack\"\"22\"}\"`\n\nValidation Rules:\n  ves.io.schema.rules.map.keys.string.max_len: 128\n  ves.io.schema.rules.map.keys.string.min_len: 1\n  ves.io.schema.rules.map.max_pairs: 20\n  ves.io.schema.rules.map.values.string.max_len: 128\n  ves.io.schema.rules.map.values.string.min_len: 1\n",
-            "title": "Labels",
-            "x-displayname": "Labels",
-            "x-ves-example": "{\"rack\": \"22\"}",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.map.keys.string.max_len": "128",
-              "ves.io.schema.rules.map.keys.string.min_len": "1",
-              "ves.io.schema.rules.map.max_pairs": "20",
-              "ves.io.schema.rules.map.values.string.max_len": "128",
-              "ves.io.schema.rules.map.values.string.min_len": "1"
             }
           }
         }

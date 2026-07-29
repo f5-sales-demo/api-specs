@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.enhanced_firewall_policy",
     "description": "Enhanced Firewall Policy defined firewall rules applied in the site\nEnhanced Firewall Policy defines rules in the form or 5 tuple,\n<source, source-port, destination, destination-port, protocol>\n\nWhere,\nsource : source can be specified in the form of\n  - ip-address or ip-subnet to be matched with source-ip in packet\n  - labels associated with the source of packet\n  - tags associated with the source vpc, from where the packet originates\n  - vpc-id for the source address\nsource attributes are matched before any NAT processing of the packet\n\nsource-port: matches the source-port in the packet\n\ndestination: destination can be specified in the form of\n  - ip-address or ip-subnet to be matched with destination-ip in packet\n  - labels associated with the destination of packet\n  - tags associated with the destination vpc, to where the packet is sent\n  - vpc for the source address\n\ndestination-port: matches the destination-port in the packet\n\nprotocol: protocol of the IP packet\n\nThe Enhanced Firewall Policies are applied as part of route processing\nThe policies are always applied before any NAT processing so that source\nmatching always happens on the original packet",
-    "version": "2026.07.24",
+    "version": "2026.07.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.forwarding_class",
     "description": "In Policy Based Routing(forwarding) (PBR) PBR policy can select Forwarding Class object as action\nWhen match condition is satisfied(true).\nForwarding class determines three things:\n\n  Ordered list of interface priorities. All matching interfaces of given priority are treated as ECMP.\n\n  Outgoing Queue on selected interface and value of TOS bits on the packet\n\n  Optional policer for all traffic matching this class",
-    "version": "2026.07.24",
+    "version": "2026.07.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.protocol_inspection",
     "description": "Protocol Inspection view defines the required parameters that can be used in CRUD, to create and manage Protocol Inspection.\nIt can be used to create Protocol Inspection.\n\nView will create the following child objects.\n\n* DNS Compliance Checks",
-    "version": "2026.07.24",
+    "version": "2026.07.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

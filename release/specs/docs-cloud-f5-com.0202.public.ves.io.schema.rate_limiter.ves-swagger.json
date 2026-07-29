@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.rate_limiter",
     "description": "A rate_limiter specifies a list of rate limit unit periods and the corresponding value of the total number of requests to be allowed in that period. It\nalso contains an optional reference to a user_identification object which determines how the user identifier for rate limiting is obtained from the input\nfields extracted from the request.",
-    "version": "2026.07.24",
+    "version": "2026.07.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

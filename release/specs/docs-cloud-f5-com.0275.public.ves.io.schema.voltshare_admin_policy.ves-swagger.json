@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.voltshare_admin_policy",
     "description": "VoltShare Admin Policy object is an admin level policy object that restricts all secrets encrypted by author's team/tenant shared via F5XC VoltShare.\nThere can be a maximum of *ONE* VoltShare Admin Policy per team/tenant.\nVoltShare Admin Policy contains rules for maximum validity duration for any secret, allowed users who can/cannot author secrets, and per team/tenant list of users who can/cannot decrypt secrets.\nWhen a client calls for decryption, following steps are taken -\n1   Look for the restrictions for the caller's team/tenant within the VoltShare Admin Policy of the author's team/tenant\n2   If caller's team/tenant exist in user_restrictions\n2.1 If caller is NOT IN allow_list, decryption is rejected\n2.2 If caller is IN deny_list, decryption is rejected\n3   If caller's team/tenant does not exist in user_restrictions and there is record for * team/tenant in user_restrictions, steps 2.1 and 2.2 are followed\n4   If author's VoltShare Admin Policy allows, then secret's VoltShare Policy will be evaluated to check if caller is allowed to decrypt the secret.",
-    "version": "2026.07.24",
+    "version": "2026.07.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

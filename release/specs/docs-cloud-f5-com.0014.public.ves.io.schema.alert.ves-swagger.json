@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.alert",
     "description": "Alert may be generated based on the metrics or based on severity level in the logs. All alerts are scoped by\ntenant and namespace and tagged with the following default labels that can be used to fetch\nthe desired alerts.\n\n\"alertname\" - Name of the alert. This uniquely identifies the alert rule/configuration that generated the alert.\n\"type\" - Type of the alert. Type is used to associate alert to a configuration object or any user visible entity.\n         For example, virtual host, virtual network, app_type, etc.\n\"identifier\" - Identifier of the alert. For virtual-network, this would be the name of the virtual-network.\n\"severity\" - Indicates the severity of the alert. Valid values are minor, major, critical.\n\nAlert may have additional labels associated depending on the labels associated with the metric used to configure the alert rule.\nAlerts can be queried by specifying one or more of the above labels in the match filter.\nIf the match filter is not specified, then all the alerts for the tenant and corresponding namespace in the request will be returned in the response.",
-    "version": "2026.07.24",
+    "version": "2026.07.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

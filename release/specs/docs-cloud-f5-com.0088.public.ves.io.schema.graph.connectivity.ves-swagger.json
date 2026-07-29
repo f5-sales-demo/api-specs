@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.graph.connectivity",
     "description": "Connectivity graph APIs are used to get the connectivity data between sites.\nResponse includes all the tenant's Customer Sites (CEs) and the Regional Sites (REs)\nto which the CEs are connected. Connectivity graph includes reachability between the sites\nand its corresponding latency and other information like tunnel throughput, CPU, memory and\ndisk utilization. It is always scoped by system namespace.",
-    "version": "2026.07.24",
+    "version": "2026.07.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

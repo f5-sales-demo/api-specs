@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.app_api_group",
     "description": "The app_api_group construct provides a mechanism to classify the universal set of request APIs into a much smaller number of logical groups in order\nto make it easier to author and maintain API level access control policies. The app_api_group holds api_group child object with the same content for\ninternal use by data path and other services.\n\nAn app_api_group object consists of an unordered list of api group elements. The method and path from the input request API are matched against all\nelements in an app_api_group to determine if the request API belongs to the api group in question. The request API belongs to an api group if it\nmatches at least one element in the api group.\n\nThe App API Group may be created using API Group Builder which defines path filter and label selectors to match\nAPI Endpoints from a referenced object, like HTTP Loadbalancer. For example, if there is a HTTP LB with API Discovery enabled\nthen all discovered API Endpoints serve as a base set and filters define which API Endpoints would be the group members.\n\n The view creates the following child objects:\n * api_group",
-    "version": "2026.07.24",
+    "version": "2026.07.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

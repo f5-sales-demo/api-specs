@@ -85,6 +85,11 @@ full_name: Dana R.
 tenant: example-corp
 namespace: demo-app
 account_id: 123456789012
+project_id: example-project
+subscription_name: example-plan
+customer_id: 0
+project: agent
+subscription: 000000
 client_ip: 192.0.2.10
 origin_ip: 198.51.100.20
 service_ip: 203.0.113.30
@@ -146,6 +151,12 @@ printf 'tenant: real-customer\n' >"${repo}/fixture.yaml"
 git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm tenant
 assert_violation "literal customer tenant" "$repo" --scope head --mode enforce
+
+repo=$(new_repo suffixed-customer-identifiers)
+printf 'project_id: customer-project\nsubscription_name: customer-plan\n' >"${repo}/fixture.yaml"
+git -C "$repo" add fixture.yaml
+git -C "$repo" commit -qm identifiers
+assert_violation "suffixed project and subscription identifiers" "$repo" --scope head --mode enforce
 
 repo=$(new_repo code-expressions)
 cat >"${repo}/fixture.ts" <<'EOF'

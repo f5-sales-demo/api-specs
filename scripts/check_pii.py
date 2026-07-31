@@ -97,7 +97,7 @@ PERSON_FIELD_RE = re.compile(
 IDENTITY_FIELD_RE = re.compile(
     r"(?i)(?:^|[,{\s])['\"]?"
     r"(?P<key>tenant(?:_name|_id)?|customer(?:_name|_id)?|account(?:_name|_id)?|"
-    r"subscription(?:_name|_id)?|project(?:_name|_id)?|namespace)"
+    r"subscription(?:_name|_id)|project(?:_name|_id)|namespace)"
     r"['\"]?\s*[:=]\s*(?P<quote>['\"`]?)"
     r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
 )
@@ -168,6 +168,7 @@ SAFE_PERSON_NAMES = {
     "rosario l.",
 }
 SCHEMA_SENTINELS = {
+    "0",
     "any",
     "boolean",
     "integer",
@@ -264,6 +265,8 @@ def placeholder_value(value: str) -> bool:
         return True
     lower = value.lower()
     if lower in SCHEMA_SENTINELS or lower in SAFE_IDENTITY_VALUES_LOWER:
+        return True
+    if re.fullmatch(r"example(?:[-_.][a-z0-9]+)*", lower):
         return True
     if lower in SAFE_PERSON_NAMES:
         return True

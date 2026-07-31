@@ -117,6 +117,12 @@ git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm name
 assert_violation "literal structured person name" "$repo" --scope head --mode enforce
 
+repo=$(new_repo numeric-person-fields)
+printf 'first_name: 101\nlast_name: "202"\n' >"${repo}/fixture.yaml"
+git -C "$repo" add fixture.yaml
+git -C "$repo" commit -qm numeric-name
+assert_clean "numeric person fields are not names" "$repo" --scope head --mode enforce
+
 repo=$(new_repo home-path)
 printf 'cache=/Users/realperson/.cache/tool\n' >"${repo}/config.ini"
 git -C "$repo" add config.ini

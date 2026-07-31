@@ -148,6 +148,9 @@ const context = {
   namespace: String(input.namespace),
   full_name: user.displayName,
 };
+const typed: { tenant: string | null } = context;
+const fallback = { namespace: status.activeNamespace ?? "default" };
+const indexed = { tenant: tenants["active"] };
 EOF
 cat >"${repo}/fixture.cpp" <<'EOF'
 auto namespace = context->namespace;
@@ -158,7 +161,10 @@ git -C "$repo" commit -qm expressions
 assert_clean "code types and expressions are not literal identity values" "$repo" --scope head --mode enforce
 
 repo=$(new_repo code-string-literal)
-printf 'const context = { tenant: "real-customer", full_name: "Jane Doe" };\n' >"${repo}/fixture.ts"
+cat >"${repo}/fixture.ts" <<'EOF'
+const context = { tenant: "real-customer", full_name: "Jane Doe" };
+const raw = { namespace: `real-customer` };
+EOF
 git -C "$repo" add fixture.ts
 git -C "$repo" commit -qm literal
 assert_violation "quoted identity literals in code" "$repo" --scope head --mode enforce

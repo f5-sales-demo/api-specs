@@ -122,12 +122,11 @@ PROVENANCE_TRAILER_RE = re.compile(
     r"^(?:Co-authored-by|Signed-off-by|Reviewed-by|Acked-by|Tested-by):",
     re.IGNORECASE,
 )
-CODE_EXPRESSION_RE = re.compile(
-    r"[A-Za-z_$][A-Za-z0-9_$#]*"
-    r"(?:(?:\??\.|->|::)[A-Za-z_$#][A-Za-z0-9_$#]*|\[[^\]]+\])*"
-    r"(?:\([^;]*\))?"
-    r"(?:\s+(?:\?\?|&&|\|\||[+*/?:-])\s+.+)?"
-    r";?"
+NUMERIC_LITERAL_RE = re.compile(
+    r"[+-]?(?:"
+    r"0[xX][0-9A-Fa-f_]+|0[bB][01_]+|0[oO][0-7_]+|"
+    r"[0-9][0-9_]*(?:\.[0-9_]+)?"
+    r");?"
 )
 
 SAFE_EMAIL_DOMAINS = {"example.com", "example.net", "example.org"}
@@ -277,7 +276,8 @@ def is_nonliteral_code_expression(path: str, match: re.Match[str]) -> bool:
         return False
     if match.group("quote"):
         return False
-    return bool(CODE_EXPRESSION_RE.fullmatch(normalized_value(match.group("value"))))
+    value = normalized_value(match.group("value"))
+    return not bool(NUMERIC_LITERAL_RE.fullmatch(value))
 
 
 def safe_phone(value: str) -> bool:

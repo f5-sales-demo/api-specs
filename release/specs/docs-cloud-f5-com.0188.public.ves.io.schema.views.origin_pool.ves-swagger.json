@@ -251,7 +251,7 @@
           },
           {
             "name": "metadata.name",
-            "description": "name\n\nx-example: \"acmecorp-web\"\nThe configuration object to be replaced will be looked up by name",
+            "description": "name\n\nx-example: \"example-corp-web\"\nThe configuration object to be replaced will be looked up by name",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
@@ -957,10 +957,10 @@
           },
           "tenant": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"acmecorp\"`",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"example-corp\"`",
             "title": "tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "example-corp"
           },
           "uid": {
             "type": "string",
@@ -1169,10 +1169,10 @@
           },
           "tenant": {
             "type": "string",
-            "description": " The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
+            "description": " The tenant this item belongs to\n\nExample: ` \"example-corp\"`",
             "title": "tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "example-corp"
           },
           "uid": {
             "type": "string",
@@ -2092,11 +2092,11 @@
           },
           "description": {
             "type": "string",
-            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
+            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for Example Corp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
             "title": "description",
             "maxLength": 1200,
             "x-displayname": "Description",
-            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-example": "Virtual Host for Example Corp website",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
             }
@@ -2116,10 +2116,10 @@
           },
           "name": {
             "type": "string",
-            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"example-corp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "name",
             "x-displayname": "Name",
-            "x-ves-example": "acmecorp-web",
+            "x-ves-example": "example-corp-web",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -2156,11 +2156,11 @@
           },
           "description": {
             "type": "string",
-            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
+            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for Example Corp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
             "title": "description",
             "maxLength": 1200,
             "x-displayname": "Description",
-            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-example": "Virtual Host for Example Corp website",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
             }
@@ -2182,10 +2182,10 @@
           },
           "name": {
             "type": "string",
-            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"example-corp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "name",
             "x-displayname": "Name",
-            "x-ves-example": "acmecorp-web",
+            "x-ves-example": "example-corp-web",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -2222,11 +2222,11 @@
           },
           "description": {
             "type": "string",
-            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
+            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for Example Corp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
             "title": "description",
             "maxLength": 1200,
             "x-displayname": "Description",
-            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-example": "Virtual Host for Example Corp website",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
             }
@@ -2247,10 +2247,10 @@
           },
           "name": {
             "type": "string",
-            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"example-corp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "name",
             "x-displayname": "Name",
-            "x-ves-example": "acmecorp-web",
+            "x-ves-example": "example-corp-web",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
             }
@@ -2346,7 +2346,7 @@
             "description": " A value identifying the exact user or service that created this configuration object\n\nExample: ` \"value\"`",
             "title": "creator_id",
             "x-displayname": "Creator ID",
-            "x-ves-example": "admin@acmecorp.com"
+            "x-ves-example": "admin@example.com"
           },
           "deletion_timestamp": {
             "type": "string",
@@ -2395,10 +2395,10 @@
           },
           "tenant": {
             "type": "string",
-            "description": " Tenant to which this configuration object belongs to. The value for this is found from\n presented credentials.\n\nExample: ` \"acmecorp\"`",
+            "description": " Tenant to which this configuration object belongs to. The value for this is found from\n presented credentials.\n\nExample: ` \"example-corp\"`",
             "title": "tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "example-corp"
           },
           "uid": {
             "type": "string",
@@ -2551,11 +2551,11 @@
           },
           "tenant": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"acmecorp\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 64\n",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"example-corp\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 64\n",
             "title": "tenant",
             "maxLength": 64,
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp",
+            "x-ves-example": "example-corp",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "64"
             }

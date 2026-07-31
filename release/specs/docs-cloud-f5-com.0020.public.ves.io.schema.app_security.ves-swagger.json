@@ -6710,10 +6710,10 @@
           },
           "tenant": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"acmecorp\"`",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"example-corp\"`",
             "title": "tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "example-corp"
           },
           "uid": {
             "type": "string",
@@ -8007,22 +8007,22 @@
         "properties": {
           "description": {
             "type": "string",
-            "description": " Human readable description.\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 256\n",
+            "description": " Human readable description.\n\nExample: ` \"Virtual Host for Example Corp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 256\n",
             "title": "description",
             "maxLength": 256,
             "x-displayname": "Description",
-            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-example": "Virtual Host for Example Corp website",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "256"
             }
           },
           "name": {
             "type": "string",
-            "description": " This is the name of the message.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n  ves.io.schema.rules.string.ves_object_name: true\n",
+            "description": " This is the name of the message.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"example-corp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n  ves.io.schema.rules.string.ves_object_name: true\n",
             "title": "name",
             "minLength": 1,
             "x-displayname": "Name",
-            "x-ves-example": "acmecorp-web",
+            "x-ves-example": "example-corp-web",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -8200,11 +8200,11 @@
           },
           "tenant": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"acmecorp\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 64\n",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"example-corp\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 64\n",
             "title": "tenant",
             "maxLength": 64,
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp",
+            "x-ves-example": "example-corp",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "64"
             }

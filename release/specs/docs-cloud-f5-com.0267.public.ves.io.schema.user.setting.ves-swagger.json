@@ -2523,10 +2523,10 @@
         "properties": {
           "user_email": {
             "type": "string",
-            "description": "\n\nExample: ` \"joe.doe@acme.com\"`",
+            "description": "\n\nExample: ` \"dana@example.com\"`",
             "title": "Email",
             "x-displayname": "Email",
-            "x-ves-example": "joe.doe@acme.com"
+            "x-ves-example": "dana@example.com"
           }
         }
       },

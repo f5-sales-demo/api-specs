@@ -347,9 +347,12 @@ def scan_contacts(
                     message="email address does not use a documentation-reserved domain",
                 )
         for match in PERSON_FIELD_RE.finditer(line):
+            value = normalized_value(match.group("value"))
+            if NUMERIC_LITERAL_RE.fullmatch(value):
+                continue
             if is_nonliteral_code_expression(path, match):
                 continue
-            if not placeholder_value(match.group("value")):
+            if not placeholder_value(value):
                 add_finding(
                     findings,
                     path=path,

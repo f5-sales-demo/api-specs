@@ -50,6 +50,27 @@ MEDIA_SUFFIXES = {
     ".webm",
     ".webp",
 }
+SOURCE_CODE_SUFFIXES = {
+    ".c",
+    ".cc",
+    ".cpp",
+    ".cs",
+    ".go",
+    ".java",
+    ".js",
+    ".jsx",
+    ".kt",
+    ".kts",
+    ".m",
+    ".mm",
+    ".php",
+    ".py",
+    ".rb",
+    ".rs",
+    ".swift",
+    ".ts",
+    ".tsx",
+}
 
 EMAIL_RE = re.compile(
     r"(?<![A-Za-z0-9._%+\-])"
@@ -68,19 +89,22 @@ PHONE_FIELD_RE = re.compile(
 PERSON_FIELD_RE = re.compile(
     r"(?i)(?:^|[,{\s])['\"]?"
     r"(?P<key>full_name|first_name|last_name|given_name|family_name|display_name)"
-    r"['\"]?\s*[:=]\s*['\"]?(?P<value>[^'\"#,\r\n}\]]+)"
+    r"['\"]?\s*[:=]\s*(?P<quote>['\"`]?)"
+    r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
 )
 IDENTITY_FIELD_RE = re.compile(
     r"(?i)(?:^|[,{\s])['\"]?"
     r"(?P<key>tenant(?:_name|_id)?|customer(?:_name|_id)?|account(?:_name|_id)?|"
     r"subscription(?:_name|_id)?|project(?:_name|_id)?|namespace)"
-    r"['\"]?\s*[:=]\s*['\"]?(?P<value>[^'\"#,\r\n}\]]+)"
+    r"['\"]?\s*[:=]\s*(?P<quote>['\"`]?)"
+    r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
 )
 ADDRESS_FIELD_RE = re.compile(
     r"(?i)(?:^|[,{\s])['\"]?"
     r"(?P<key>street_address|postal_address|postal_code|zip_code|date_of_birth|dob|"
     r"social_security_number|ssn)"
-    r"['\"]?\s*[:=]\s*['\"]?(?P<value>[^'\"#,\r\n}\]]+)"
+    r"['\"]?\s*[:=]\s*(?P<quote>['\"`]?)"
+    r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
 )
 QUERY_RE = re.compile(
     r"(?i)[?&](?P<key>email|phone|mobile|full_name|first_name|last_name|address|dob|ssn)="
@@ -97,6 +121,13 @@ SENSITIVE_MEDIA_TAG_RE = re.compile(
 PROVENANCE_TRAILER_RE = re.compile(
     r"^(?:Co-authored-by|Signed-off-by|Reviewed-by|Acked-by|Tested-by):",
     re.IGNORECASE,
+)
+CODE_EXPRESSION_RE = re.compile(
+    r"[A-Za-z_$][A-Za-z0-9_$#]*"
+    r"(?:(?:\??\.|->|::)[A-Za-z_$#][A-Za-z0-9_$#]*|\[[^\]]+\])*"
+    r"(?:\([^;]*\))?"
+    r"(?:\s+(?:\?\?|&&|\|\||[+*/?:-])\s+.+)?"
+    r";?"
 )
 
 SAFE_EMAIL_DOMAINS = {"example.com", "example.net", "example.org"}
@@ -146,12 +177,16 @@ SCHEMA_SENTINELS = {
     "required",
     "string",
     "unknown",
+    "value",
 }
 SAFE_IDENTITY_VALUES = {
     "123456789012",
+    "default",
+    "demo",
     "demo-app",
     "example-corp",
     "shared",
+    "staging",
     "system",
 }
 DOCUMENTATION_NETWORKS = (
@@ -236,6 +271,15 @@ def placeholder_value(value: str) -> bool:
     return bool(re.fullmatch(r"[A-Z][A-Z0-9_]*", value))
 
 
+def is_nonliteral_code_expression(path: str, match: re.Match[str]) -> bool:
+    """Return whether a structured field is executable or type syntax, not data."""
+    if PurePosixPath(path).suffix.lower() not in SOURCE_CODE_SUFFIXES:
+        return False
+    if match.group("quote"):
+        return False
+    return bool(CODE_EXPRESSION_RE.fullmatch(normalized_value(match.group("value"))))
+
+
 def safe_phone(value: str) -> bool:
     """Return whether a phone number is in NANP's fictional 0100-0199 range."""
     digits = re.sub(r"\D", "", value)
@@ -301,6 +345,8 @@ def scan_contacts(
                     message="email address does not use a documentation-reserved domain",
                 )
         for match in PERSON_FIELD_RE.finditer(line):
+            if is_nonliteral_code_expression(path, match):
+                continue
             if not placeholder_value(match.group("value")):
                 add_finding(
                     findings,
@@ -337,6 +383,8 @@ def scan_structured_identity(
 ) -> None:
     """Scan structured fields for customer identifiers and personal records."""
     for match in IDENTITY_FIELD_RE.finditer(line):
+        if is_nonliteral_code_expression(path, match):
+            continue
         if not placeholder_value(match.group("value")):
             add_finding(
                 findings,
@@ -347,6 +395,8 @@ def scan_structured_identity(
             )
 
     for match in ADDRESS_FIELD_RE.finditer(line):
+        if is_nonliteral_code_expression(path, match):
+            continue
         if not placeholder_value(match.group("value")):
             add_finding(
                 findings,

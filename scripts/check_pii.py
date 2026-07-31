@@ -73,10 +73,10 @@ SOURCE_CODE_SUFFIXES = {
 }
 
 EMAIL_RE = re.compile(
-    r"(?<![A-Za-z0-9._%+\-])"
-    r"[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@"
+    r"(?<![-A-Za-z0-9._%+/])"
+    r"[A-Za-z0-9][-A-Za-z0-9.!#$%&'*+=?^_`{|}~]*[A-Za-z0-9]@"
     r"(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+"
-    r"[A-Za-z](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?"
+    r"[A-Za-z]{2,63}"
 )
 HOME_RE = re.compile(
     r"(?<![A-Za-z0-9_.-])(?:"
@@ -124,6 +124,10 @@ PROVENANCE_TRAILER_RE = re.compile(
     r"^(?:Co-authored-by|Signed-off-by|Reviewed-by|Acked-by|Tested-by):",
     re.IGNORECASE,
 )
+URI_USERINFO_PREFIX_RE = re.compile(
+    r"(?i)\b(?P<scheme>[a-z][a-z0-9+.-]*):(?://)?[^\s/]*$",
+)
+PRINTABLE_ASCII_RE = re.compile(rb"[\x20-\x7e]{4,}")
 NUMERIC_LITERAL_RE = re.compile(
     r"[+-]?(?:"
     r"0[xX][0-9A-Fa-f_]+|0[bB][01_]+|0[oO][0-7_]+|"
@@ -187,6 +191,8 @@ SAFE_IDENTITY_VALUES = {
     "demo",
     "demo-app",
     "example-corp",
+    "library",
+    "production",
     "shared",
     "staging",
     "system",
@@ -246,6 +252,12 @@ def safe_email(value: str) -> bool:
     )
 
 
+def is_uri_userinfo(line: str, match: re.Match[str]) -> bool:
+    """Return whether an address-shaped value belongs to URI authority userinfo."""
+    prefix = URI_USERINFO_PREFIX_RE.search(line[: match.start()])
+    return bool(prefix and prefix.group("scheme").lower() != "mailto")
+
+
 def safe_home_user(user: str) -> bool:
     """Return whether a home path uses a documented portable placeholder."""
     if user.isdigit() or user in SAFE_HOME_USERS:
@@ -268,11 +280,21 @@ def placeholder_value(value: str) -> bool:
         return True
     if re.fullmatch(r"example(?:[-_.][a-z0-9]+)*", lower):
         return True
-    if lower in SAFE_PERSON_NAMES:
-        return True
-    if value.startswith(("$", "{", "<", "{{", "[%", "*", "&")):
-        return True
-    return bool(re.fullmatch(r"[A-Z][A-Z0-9_]*", value))
+    first, separator, second = value.partition("|")
+    safe_composite = bool(
+        first
+        and separator
+        and second
+        and "|" not in second
+        and placeholder_value(first)
+        and placeholder_value(second)
+    )
+    return (
+        safe_composite
+        or lower in SAFE_PERSON_NAMES
+        or value.startswith(("$", "{", "<", "{{", "[%", "*", "&"))
+        or bool(re.fullmatch(r"[A-Z][A-Z0-9_]*", value))
+    )
 
 
 def is_nonliteral_code_expression(path: str, match: re.Match[str]) -> bool:
@@ -341,7 +363,7 @@ def scan_contacts(
     """Scan one line for contact details, home paths, and person names."""
     if not legal_path and not provenance_trailer:
         for match in EMAIL_RE.finditer(line):
-            if not safe_email(match.group(0)):
+            if not safe_email(match.group(0)) and not is_uri_userinfo(line, match):
                 add_finding(
                     findings,
                     path=path,
@@ -490,9 +512,11 @@ def looks_binary(data: bytes) -> bool:
 
 def scan_binary(path: str, data: bytes, findings: set[Finding]) -> None:
     """Inspect ASCII-compatible binary metadata without rendering the file."""
-    # Latin-1 preserves every byte, allowing high-confidence ASCII metadata to
-    # be found without loading or rendering an untrusted media file.
-    text = data.decode("latin-1")
+    # Keep only printable metadata runs. Treating every byte as Latin-1 lets
+    # compression noise masquerade as contact syntax across arbitrary bytes.
+    text = "\n".join(
+        (match.group(0).decode("ascii") for match in PRINTABLE_ASCII_RE.finditer(data)),
+    )
     scan_text(path, text, findings)
     if SENSITIVE_MEDIA_TAG_RE.search(text):
         add_finding(

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.proxy",
     "description": "Proxy view defines a required parameters that can be used in CRUD, to create and manage a Proxy.\n\nView will create following child objects.\n\n* virtual_host\n* advertise_policy\n* service_policy_set",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

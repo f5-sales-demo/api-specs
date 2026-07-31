@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_type",
     "description": "App Type object defines a application profile type from an advanced monitoring/security point of view.\nAn App type is a set of (micro) services that interact with one another and function as an application.\nServices can be made members of a particular AppType set by adding label ves.io/app_type=app_type.metadata.name to services.\nApp type object is the profile for one such application label. One can define various AI/ML features that can\nbe enabled for a given application in this object. All services in a given namespace that are labeled with\nsame ves.io/app_type label are assumed to be a single application. In a different namespace as two different\ninstances of same application.\napp_type object is recommended per tenant and present only in shared namespace.\nThis way AI/ML modeled developed for a given application can be shared across namespaces or deployments.\napp_setting object can be used to enable a app_type monitoring profile in a given namespace.",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

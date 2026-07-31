@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dc_cluster_group",
     "description": "A DC Cluster Group represents a collection of sites that\ncan directly communicate with each other using the underlay network.",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

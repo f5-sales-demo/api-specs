@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.usb_policy",
     "description": "USB policy is used to specify list of USB devices allowed to be attached to node.",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

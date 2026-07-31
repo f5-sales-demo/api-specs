@@ -129,6 +129,12 @@ git -C "$repo" add config.ini
 git -C "$repo" commit -qm paths
 assert_clean "placeholder, CI, and variable home paths" "$repo" --scope head --mode enforce
 
+repo=$(new_repo embedded-home-tokens)
+printf 'keys=Shift+page/home/end route=service/Users/list windows=prefixC:\\Users\\record\n' >"${repo}/config.ini"
+git -C "$repo" add config.ini
+git -C "$repo" commit -qm tokens
+assert_clean "embedded home-like tokens are not absolute paths" "$repo" --scope head --mode enforce
+
 repo=$(new_repo tenant)
 printf 'tenant: real-customer\n' >"${repo}/fixture.yaml"
 git -C "$repo" add fixture.yaml

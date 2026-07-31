@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.known_label_key",
     "description": "Known label key serves two purposes\n\n   It lets users declare label keys so that they can be consistently used across their namespaces. Declared label keys can be used by the Web UI in drop down. Description field in the label lets everyone know what this label key means.\n   System allocates unique integer (ID) values for known label keys. These ID(s) along with the IDs allocated for known labels are used in Network Policy or Service Policy enforcement. Hence only Known labels and known label keys can be used in Network Policy or L7 Policy.",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.pbac.navigation_tile",
     "description": "\nStarting point of access to addon service from VoltConsole home page.\nAddon service is referenced to a navigation tile and a navigation tile can host one or more addon services.",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

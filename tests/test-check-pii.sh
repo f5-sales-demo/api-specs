@@ -135,6 +135,57 @@ git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm tenant
 assert_violation "literal customer tenant" "$repo" --scope head --mode enforce
 
+repo=$(new_repo code-expressions)
+cat >"${repo}/fixture.ts" <<'EOF'
+interface Context {
+  tenant: string;
+  namespace?: string;
+  full_name: string;
+}
+const namespace = namespaceOverride ?? defaults.namespace;
+const context = {
+  tenant: status.activeTenant,
+  namespace: String(input.namespace),
+  full_name: user.displayName,
+};
+EOF
+cat >"${repo}/fixture.cpp" <<'EOF'
+auto namespace = context->namespace;
+auto tenant = Context::resolve(input);
+EOF
+git -C "$repo" add fixture.ts fixture.cpp
+git -C "$repo" commit -qm expressions
+assert_clean "code types and expressions are not literal identity values" "$repo" --scope head --mode enforce
+
+repo=$(new_repo code-string-literal)
+printf 'const context = { tenant: "real-customer", full_name: "Jane Doe" };\n' >"${repo}/fixture.ts"
+git -C "$repo" add fixture.ts
+git -C "$repo" commit -qm literal
+assert_violation "quoted identity literals in code" "$repo" --scope head --mode enforce
+
+repo=$(new_repo code-numeric-literal)
+printf 'const context = { account_id: 987654321 };\n' >"${repo}/fixture.ts"
+git -C "$repo" add fixture.ts
+git -C "$repo" commit -qm numeric
+assert_violation "numeric identity literals in code" "$repo" --scope head --mode enforce
+
+repo=$(new_repo embedded-serialized-schema)
+printf 'export const schema = "params:\\n  namespace:\\n    required: true\\n";\n' >"${repo}/fixture.ts"
+git -C "$repo" add fixture.ts
+git -C "$repo" commit -qm schema
+assert_clean "escaped serialized key headings are not field values" "$repo" --scope head --mode enforce
+
+repo=$(new_repo schematic-identities)
+cat >"${repo}/fixture.yaml" <<'EOF'
+tenant: staging
+namespace: default
+project: demo
+account: value
+EOF
+git -C "$repo" add fixture.yaml
+git -C "$repo" commit -qm schematic
+assert_clean "generic environment and schema identities" "$repo" --scope head --mode enforce
+
 repo=$(new_repo sensitive-query)
 printf 'redirect=/done?email=person%%40customer.local\n' >"${repo}/config.ini"
 git -C "$repo" add config.ini

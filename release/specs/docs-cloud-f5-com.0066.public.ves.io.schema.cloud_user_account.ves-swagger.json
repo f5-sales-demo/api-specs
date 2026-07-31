@@ -424,10 +424,10 @@
           },
           "tenant": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"acmecorp\"`",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"example-corp\"`",
             "title": "tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "example-corp"
           },
           "uid": {
             "type": "string",

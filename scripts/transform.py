@@ -15,9 +15,15 @@ import yaml
 from rich.console import Console
 
 from .utils.spec_loader import save_spec_to_file
+from .utils.text_replacements import (
+    DEFAULT_EXAMPLE_PLACEHOLDER_FIELDS,
+    DEFAULT_SPELLING_TEXT_FIELDS,
+    build_replacement_patterns,
+    replace_text_fields_recursive,
+)
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Sequence
+    from collections.abc import Callable
 
 console = Console()
 
@@ -29,16 +35,6 @@ HTTP_METHODS: frozenset[str] = frozenset(
 # Index of the path segment used to derive an operation tag.
 # For ``/api/config/namespaces/...`` the tag is ``config`` (index 1).
 _TAG_SEGMENT_INDEX = 1
-
-# Fallback prose fields for :func:`fix_spelling` when ``spelling_corrections.yaml``
-# does not declare ``text_fields``. Data-bearing fields such as ``x-ves-example``
-# are deliberately absent: their values are wire values, not prose.
-DEFAULT_SPELLING_TEXT_FIELDS: tuple[str, ...] = (
-    "description",
-    "summary",
-    "title",
-    "x-displayname",
-)
 
 # Prefix of a local component-schema reference.
 SCHEMA_REF_PREFIX = "#/components/schemas/"
@@ -151,47 +147,6 @@ def _fix_examples_recursive(obj: Any) -> None:
     elif isinstance(obj, list):
         for item in obj:
             _fix_examples_recursive(item)
-
-
-def _build_spelling_patterns(
-    corrections: dict[str, str],
-) -> list[tuple[re.Pattern[str], str]]:
-    """Pre-compile word-boundary regex patterns for each correction.
-
-    Longer typos are matched first to prevent shorter substrings from
-    clobbering partial matches.
-    """
-    patterns = []
-    for typo in sorted(corrections, key=len, reverse=True):
-        fix = corrections[typo]
-        pattern = re.compile(r"(?<!\w)" + re.escape(typo) + r"(?!\w)")
-        patterns.append((pattern, fix))
-    return patterns
-
-
-def _fix_spelling_recursive(
-    obj: Any,
-    patterns: list[tuple[re.Pattern[str], str]],
-    text_fields: Sequence[str] = DEFAULT_SPELLING_TEXT_FIELDS,
-) -> None:
-    """Walk *obj* in-place and fix known spelling errors in prose fields.
-
-    Only values stored under a key in *text_fields* are rewritten. Dict keys
-    (property names) and data fields are never touched, so a correction can
-    never rename an API property or alter an enum value.
-    """
-    if isinstance(obj, dict):
-        for key in text_fields:
-            if key in obj and isinstance(obj[key], str):
-                text = obj[key]
-                for pattern, fix in patterns:
-                    text = pattern.sub(fix, text)
-                obj[key] = text
-        for value in obj.values():
-            _fix_spelling_recursive(value, patterns, text_fields)
-    elif isinstance(obj, list):
-        for item in obj:
-            _fix_spelling_recursive(item, patterns, text_fields)
 
 
 def _rewrite_refs(obj: Any, old_ref: str, new_ref: str) -> int:
@@ -765,8 +720,26 @@ def fix_spelling(
     if not corrections:
         return spec
     text_fields = config.metadata.get("spelling_text_fields", DEFAULT_SPELLING_TEXT_FIELDS)
-    patterns = _build_spelling_patterns(corrections)
-    _fix_spelling_recursive(spec, patterns, text_fields)
+    patterns = build_replacement_patterns(corrections)
+    replace_text_fields_recursive(spec, patterns, text_fields)
+    return spec
+
+
+@register_transform("sanitize_example_placeholders")
+def sanitize_example_placeholders(
+    spec: dict,
+    config: TransformConfig,
+    _filename: str,
+) -> dict:
+    """Replace configured unsafe placeholders in documentation-bearing fields."""
+    corrections = config.metadata.get("example_placeholder_corrections", {})
+    if not corrections:
+        return spec
+    text_fields = config.metadata.get(
+        "example_placeholder_fields", DEFAULT_EXAMPLE_PLACEHOLDER_FIELDS
+    )
+    patterns = build_replacement_patterns(corrections)
+    replace_text_fields_recursive(spec, patterns, text_fields)
     return spec
 
 
@@ -913,6 +886,15 @@ def load_config(config_path: str | Path) -> TransformConfig:
         metadata["spelling_corrections"] = spelling_cfg.get("corrections", {})
         metadata["spelling_text_fields"] = tuple(
             spelling_cfg.get("text_fields") or DEFAULT_SPELLING_TEXT_FIELDS
+        )
+
+    placeholders_path = config_path.parent / "example_placeholder_corrections.yaml"
+    if placeholders_path.exists():
+        with placeholders_path.open() as fh:
+            placeholders_cfg = yaml.safe_load(fh) or {}
+        metadata["example_placeholder_corrections"] = placeholders_cfg.get("corrections", {})
+        metadata["example_placeholder_fields"] = tuple(
+            placeholders_cfg.get("text_fields") or DEFAULT_EXAMPLE_PLACEHOLDER_FIELDS
         )
 
     # Each of these is a `corrections:` list in its own file, loaded the same way.

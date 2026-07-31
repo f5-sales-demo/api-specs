@@ -1968,10 +1968,10 @@
           },
           "tenant": {
             "type": "string",
-            "description": " Tenant to which this object belongs.\n\nExample: ` \"acmecorp\"`",
+            "description": " Tenant to which this object belongs.\n\nExample: ` \"example-corp\"`",
             "title": "tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "example-corp"
           },
           "versions": {
             "type": "array",

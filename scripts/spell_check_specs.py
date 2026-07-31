@@ -12,7 +12,7 @@ from typing import Any
 import yaml
 from rich.console import Console
 
-from scripts.transform import DEFAULT_SPELLING_TEXT_FIELDS
+from scripts.utils.text_replacements import DEFAULT_SPELLING_TEXT_FIELDS
 
 console = Console()
 

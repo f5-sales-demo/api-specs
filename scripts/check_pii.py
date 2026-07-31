@@ -79,8 +79,10 @@ EMAIL_RE = re.compile(
     r"[A-Za-z](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?"
 )
 HOME_RE = re.compile(
+    r"(?<![A-Za-z0-9_.-])(?:"
     r"(?P<prefix>/Users/|/home/)(?P<user>[A-Za-z0-9._${}<>-]+)"
     r"|(?P<winprefix>[A-Za-z]:\\+(?:Users)\\+)(?P<winuser>[A-Za-z0-9._${}<>-]+)"
+    r")"
 )
 PHONE_FIELD_RE = re.compile(
     r"(?i)(?:^|[,{\s])['\"]?(?:phone(?:_number)?|mobile|telephone|fax)['\"]?"

@@ -104,6 +104,18 @@ git -C "$repo" add workflow.yaml
 git -C "$repo" commit -qm action
 assert_clean "GitHub action references are not emails" "$repo" --scope head --mode enforce
 
+repo=$(new_repo non-contact-at-syntax)
+cat >"${repo}/fixture.txt" <<'EOF'
+clone=https://x-access-token:${TOKEN}@github.com/example/repository.git
+credential=https://user:secret@github.com/example/repository.git
+ssh=ssh://git@gitlab.com/example/repository.git
+patch=owner/repository@1.2.3.patch
+anchor=`@line.chunk.path
+EOF
+git -C "$repo" add fixture.txt
+git -C "$repo" commit -qm syntax
+assert_clean "URI, package, and anchor syntax are not contact emails" "$repo" --scope head --mode enforce
+
 repo=$(new_repo email)
 printf 'email: person@customer.local\n' >"${repo}/fixture.yaml"
 git -C "$repo" add fixture.yaml
@@ -215,6 +227,25 @@ git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm schematic
 assert_clean "generic environment and schema identities" "$repo" --scope head --mode enforce
 
+repo=$(new_repo composite-schematic-identities)
+cat >"${repo}/fixture.yaml" <<'EOF'
+tenant: example-corp|staging
+account_name: example-partners|production
+namespace: library
+EOF
+git -C "$repo" add fixture.yaml
+git -C "$repo" commit -qm composite-schematic
+assert_clean "composite and public schema identities" "$repo" --scope head --mode enforce
+
+repo=$(new_repo composite-customer-identifiers)
+cat >"${repo}/fixture.yaml" <<'EOF'
+tenant: real-customer|staging
+account_name: example-corp|real-customer
+EOF
+git -C "$repo" add fixture.yaml
+git -C "$repo" commit -qm composite-customer
+assert_violation "composite literal customer identifiers" "$repo" --scope head --mode enforce
+
 repo=$(new_repo sensitive-query)
 printf 'redirect=/done?email=person%%40customer.local\n' >"${repo}/config.ini"
 git -C "$repo" add config.ini
@@ -281,6 +312,18 @@ printf '\x89PNG\r\n\x1a\nAuthor\x00person@customer.local\x00' >"${repo}/screen.p
 git -C "$repo" add screen.png
 git -C "$repo" commit -qm metadata
 assert_violation "PII-shaped binary metadata" "$repo" --scope head --mode enforce
+
+repo=$(new_repo binary-package-syntax)
+printf '\x89PNG\r\n\x1a\nowner/repository@1.2.3.patch\x00' >"${repo}/screen.png"
+git -C "$repo" add screen.png
+git -C "$repo" commit -qm metadata
+assert_clean "email-like binary package syntax is not contact metadata" "$repo" --scope head --mode enforce
+
+repo=$(new_repo binary-compression-token)
+printf '\x89PNG\r\n\x1a\nA@b.Co\x00' >"${repo}/screen.png"
+git -C "$repo" add screen.png
+git -C "$repo" commit -qm metadata
+assert_clean "short binary compression token is not contact metadata" "$repo" --scope head --mode enforce
 
 repo=$(new_repo odd-filename)
 printf 'email: person@customer.local\n' >"${repo}/- odd name.yaml"

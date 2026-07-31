@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.address_allocator",
     "description": "Address Allocator object is used to allocate an address or a subnet from a given address pool.\nMode of the allocator object determines if the allocation is limited to VERs within the local\nsite / cluster (local) or if the allocation is across different sites (global). Currently,\nonly local mode of allocation is supported. The allocator carves out a subnet based on the\ndefined allocation scheme. For example, allocation scheme might define prefix length of the\nsubnet to be allocated.",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

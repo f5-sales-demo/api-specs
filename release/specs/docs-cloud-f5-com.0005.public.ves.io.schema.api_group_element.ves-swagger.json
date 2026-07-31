@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.api_group_element",
     "description": "A api_group_element object consists of an unordered list of HTTP methods and a path regular expression. The method and path from the input request API are\nmatched against all elements in an api_group to determine if the request API belongs to the api group in question. The match of an input request API against\nan element is considered to be successful if the input method belongs to the list of HTTP methods in the element and the input path matches the path regex in\nthe element. The request API belongs to an api group if it matches at least one element in the api group.\n\nAn api group element object can only be created in the 'shared' namespace of a tenant or in the 'shared' namespace of the ves-io tenant. Note that any given\nelement can belong to one or more api groups. Input request APIs from a tenant are matched against all api groups in that tenant and in the ves-io tenant to\ndetermine the set of api groups for that request. The names of the api groups to which a given request API belongs are subsequently used as input to to check\nthe api group predicate in a service policy or service policy rule.",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

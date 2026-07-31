@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.external_connector",
     "description": "External Connector configuration mainly includes the following:\n1. Tunnel connfiguration between F5 CE and external (3rd party) device\n2. Tunnel specific parameters (IPSec, GRE)",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

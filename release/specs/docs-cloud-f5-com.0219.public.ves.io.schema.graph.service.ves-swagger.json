@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.graph.service",
     "description": "graph/service api is query used to get monitoring information for service mesh of given application type. Service mesh is defined when ves.io/app_type label\nis added to group of services or virtual_host. It returns graph which is set of nodes and edges. Each node represents service and\nedge is access between services. Edges are directed from client to server. Two edges can be present for a given pair of service.\nOnly method post is supported. Query parameters are present in the request body. It is always scoped by namespace.",
-    "version": "2026.07.28",
+    "version": "2026.07.30",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

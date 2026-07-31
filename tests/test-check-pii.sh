@@ -98,6 +98,28 @@ git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm synthetic
 assert_clean "reserved synthetic values" "$repo" --scope head --mode enforce
 
+repo=$(new_repo public-ip-contexts)
+cat >"${repo}/fixture.txt" <<'EOF'
+rfc6598=100.64.0.1/10
+mdns=224.0.0.251
+browser=Mozilla/5.0 Chrome/136.0.0.0 Safari/537.36
+terminal={ TERM_PROGRAM_VERSION: "1.22.103.0" }
+EOF
+svg_coordinate="4.254."
+svg_coordinate+="141.138"
+printf '<svg><path d="M0 0 %s Z"/></svg>\n' "$svg_coordinate" >>"${repo}/fixture.txt"
+git -C "$repo" add fixture.txt
+git -C "$repo" commit -qm contexts
+assert_clean "protocol, version, and SVG coordinate syntax is not a public IP" "$repo" --scope head --mode audit
+
+repo=$(new_repo public-ip)
+public_ip="8.8."
+public_ip+="4.4"
+printf 'version=1; origin_ip=%s\n' "$public_ip" >"${repo}/fixture.txt"
+git -C "$repo" add fixture.txt
+git -C "$repo" commit -qm public-ip
+assert_violation "globally routable unicast address" "$repo" --scope head --mode audit
+
 repo=$(new_repo action-reference)
 printf 'uses: f5-sales-demo/docs-control@main\nremote: git@github.com:f5-sales-demo/docs-control.git\n' >"${repo}/workflow.yaml"
 git -C "$repo" add workflow.yaml

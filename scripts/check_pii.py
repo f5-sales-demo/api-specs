@@ -113,6 +113,14 @@ QUERY_RE = re.compile(
     r"(?P<value>[^&#\s]+)"
 )
 IPV4_RE = re.compile(r"(?<![A-Za-z0-9.])(?:[0-9]{1,3}\.){3}[0-9]{1,3}(?![A-Za-z0-9.])")
+DOTTED_VERSION_PREFIX_RE = re.compile(
+    r"(?i)(?:"
+    r"(?:chrome|headlesschrome|chromium|firefox|safari|edg|edge|opera)/\s*$"
+    r"|[A-Za-z0-9_.-]*version[A-Za-z0-9_.-]*\s*[:=]\s*['\"`]?\s*$"
+    r"|version[A-Za-z0-9_.-]*\)?\.to(?:be|equal)\(\s*['\"`]?\s*$"
+    r")"
+)
+SVG_PATH_ATTRIBUTE_RE = re.compile(r"(?:^|\s)d\s*=\s*(?P<quote>['\"])", re.IGNORECASE)
 PDF_AUTHOR_RE = re.compile(
     r"/(?:Author|Subject)\s*\((?P<value>[^)]{2,})\)",
     re.IGNORECASE,
@@ -465,15 +473,26 @@ def scan_public_ips(
     line: str,
     findings: set[Finding],
 ) -> None:
-    """Report public IPv4 values outside documentation-reserved networks."""
+    """Report globally routable unicast IPv4 values outside documentation ranges."""
     for match in IPV4_RE.finditer(line):
         try:
             address = ipaddress.ip_address(match.group(0))
         except ValueError:
             continue
-        if address.is_private or address.is_loopback or address.is_link_local:
+        if not address.is_global or address.is_multicast:
             continue
         if any(address in network for network in DOCUMENTATION_NETWORKS):
+            continue
+        prefix = line[max(0, match.start() - 96) : match.start()]
+        if DOTTED_VERSION_PREFIX_RE.search(prefix):
+            continue
+        for attribute in SVG_PATH_ATTRIBUTE_RE.finditer(line, 0, match.start()):
+            value = line[attribute.end() : match.start()]
+            if attribute.group("quote") not in value:
+                break
+        else:
+            attribute = None
+        if attribute is not None:
             continue
         add_finding(
             findings,
@@ -481,7 +500,7 @@ def scan_public_ips(
             line=line_number,
             category="public-ip-review",
             severity="review",
-            message="public IPv4 address is outside documentation-reserved ranges",
+            message="globally routable unicast IPv4 address is outside documentation ranges",
         )
 
 

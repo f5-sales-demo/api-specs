@@ -172,6 +172,7 @@ transform:
     # scripts/transform.py), not from this list -- these keys only toggle transforms on and off.
     fix_oneof_group_names: true
     fix_spelling: true
+    sanitize_example_placeholders: true
     fix_dangling_refs: true
     remove_unused_schemas: true
     inject_operation_descriptions: true

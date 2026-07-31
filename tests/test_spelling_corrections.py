@@ -26,12 +26,14 @@ import pytest
 import yaml
 
 from scripts.transform import (
-    DEFAULT_SPELLING_TEXT_FIELDS,
     WIRE_NAME_EXTENSION,
     TransformConfig,
-    _build_spelling_patterns,
     fix_property_names,
     fix_spelling,
+)
+from scripts.utils.text_replacements import (
+    DEFAULT_SPELLING_TEXT_FIELDS,
+    build_replacement_patterns,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -70,7 +72,7 @@ def text_fields(spelling_config: dict) -> tuple[str, ...]:
 
 @pytest.fixture(scope="module")
 def patterns(corrections: dict[str, str]) -> list[tuple[re.Pattern[str], str]]:
-    return _build_spelling_patterns(corrections)
+    return build_replacement_patterns(corrections)
 
 
 @pytest.fixture(scope="module")

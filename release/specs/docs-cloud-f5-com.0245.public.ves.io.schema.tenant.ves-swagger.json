@@ -3176,10 +3176,10 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": " assign domain owner to user with this email\n\nExample: ` \"joe.doe@acme.com\"`",
+            "description": " assign domain owner to user with this email\n\nExample: ` \"dana@example.com\"`",
             "title": "Email",
             "x-displayname": "Email",
-            "x-ves-example": "joe.doe@acme.com"
+            "x-ves-example": "dana@example.com"
           }
         }
       },
@@ -3569,10 +3569,10 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": " remove domain owner privilege from user with this email\n\nExample: ` \"joe.doe@acme.com\"`",
+            "description": " remove domain owner privilege from user with this email\n\nExample: ` \"dana@example.com\"`",
             "title": "Email",
             "x-displayname": "Email",
-            "x-ves-example": "joe.doe@acme.com"
+            "x-ves-example": "dana@example.com"
           }
         }
       },
@@ -3670,10 +3670,10 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": " user's email\n\nExample: ` \"joe.doe@acme.com\"`",
+            "description": " user's email\n\nExample: ` \"dana@example.com\"`",
             "title": "email",
             "x-displayname": "Email",
-            "x-ves-example": "joe.doe@acme.com"
+            "x-ves-example": "dana@example.com"
           }
         }
       },

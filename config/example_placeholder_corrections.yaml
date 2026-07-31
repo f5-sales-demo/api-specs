@@ -1,0 +1,35 @@
+---
+# Exact documentation-example replacements applied by the
+# sanitize_example_placeholders transform. Longer values are replaced first.
+#
+# The source name is unsafe as a fictitious organization and is overloaded by
+# the RFC 8555 certificate-management protocol. Keep protocol terms, including
+# _acme-challenge DNS records, out of this manifest so they remain unchanged.
+#
+# SAFETY -- documentation fields only, never identifiers. These replacements
+# may update prose and x-ves-example values, but must not alter schema keys,
+# paths, enum values, operation IDs, or any other wire contract.
+
+text_fields:
+  - description
+  - summary
+  - title
+  - x-displayname
+  - x-ves-example
+
+corrections:
+  "Virtual Host for acmecorp website": "Virtual Host for Example Corp website"
+  "ves-io-cdn-cdn-acmecorp-com.demo1.ac.vh.volterra.us": "ves-io-cdn-cdn-example-com.demo1.ac.vh.volterra.us"
+  "admin\u0040acmecorp.com": "admin@example.com"
+  "joe.doe\u0040acme.com": "dana@example.com"
+  "api.acme.com:4430": "api.example.com:4430"
+  "cdn.acmecorp.com": "cdn.example.com"
+  "k8s.acme.com": "k8s.example.com"
+  "server.acme.com": "server.example.com"
+  "acmecorp-web": "example-corp-web"
+  "ACME Ltd.": "Example Corp"
+  "Acme Ltd.": "Example Corp"
+  "acme-key-foo": "example-key-foo"
+  "acme-key-bar": "example-key-bar"
+  "acme-ce01": "example-ce01"
+  "acmecorp": "example-corp"

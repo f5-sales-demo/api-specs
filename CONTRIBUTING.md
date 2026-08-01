@@ -552,6 +552,10 @@ either result green. Fix operational and example data at the source. A legally r
 authoritative upstream attribution must stay in its original context and must never be copied into a
 fixture or example.
 
+The `pii-guard` check requires zero enforcement findings; there is no accepted-findings baseline.
+Run `bun run pii:gate` against tracked `HEAD`, or `bun run pii:gate -- --scope staged` before a commit
+to scan the index. Empty, malformed, or failed scanner output is an operational error, never a pass.
+
 ### Clean branches
 
 - A branch is for trial-and-error: guess, probe, refactor, and learn freely while you

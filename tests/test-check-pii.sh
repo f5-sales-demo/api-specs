@@ -81,6 +81,8 @@ repo=$(new_repo reserved-values)
 cat >"${repo}/fixture.yaml" <<'EOF'
 email: dana@example.com
 phone: 800-555-0107
+mobile: +1-555-0100
+telephone: +1 212-555-0199
 full_name: Dana R.
 tenant: example-corp
 namespace: demo-app
@@ -346,6 +348,12 @@ printf '\x89PNG\r\n\x1a\nA@b.Co\x00' >"${repo}/screen.png"
 git -C "$repo" add screen.png
 git -C "$repo" commit -qm metadata
 assert_clean "short binary compression token is not contact metadata" "$repo" --scope head --mode enforce
+
+repo=$(new_repo media-compression-email)
+printf 'RIFFfixture@bytes.invalidWEBP' >"${repo}/screen.webp"
+git -C "$repo" add screen.webp
+git -C "$repo" commit -qm media
+assert_clean "email-shaped media bytes without a metadata key are ignored" "$repo" --scope head --mode enforce
 
 repo=$(new_repo odd-filename)
 printf 'email: person@customer.local\n' >"${repo}/- odd name.yaml"

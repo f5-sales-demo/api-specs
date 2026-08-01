@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Detect PII-shaped values in tracked Git content without reading the worktree.
 
 The scanner deliberately has two modes:
@@ -335,7 +334,6 @@ def add_finding(
     path: str,
     line: int,
     category: str,
-    severity: str = "high",
     message: str,
 ) -> None:
     """Add one redacted and deduplicated finding."""
@@ -344,7 +342,27 @@ def add_finding(
             path=redact_path(path),
             line=line,
             category=category,
-            severity=severity,
+            severity="high",
+            message=message,
+        )
+    )
+
+
+def add_review_finding(
+    findings: set[Finding],
+    *,
+    path: str,
+    line: int,
+    category: str,
+    message: str,
+) -> None:
+    """Add one redacted and deduplicated manual-review finding."""
+    findings.add(
+        Finding(
+            path=redact_path(path),
+            line=line,
+            category=category,
+            severity="review",
             message=message,
         )
     )
@@ -370,12 +388,11 @@ def scan_contacts(
     path: str,
     line_number: int,
     line: str,
-    legal_path: bool,
-    provenance_trailer: bool,
+    attribution_context: bool,
     findings: set[Finding],
 ) -> None:
     """Scan one line for contact details, home paths, and person names."""
-    if not legal_path and not provenance_trailer:
+    if not attribution_context:
         for match in EMAIL_RE.finditer(line):
             if not safe_email(match.group(0)) and not is_uri_userinfo(line, match):
                 add_finding(
@@ -500,12 +517,11 @@ def scan_public_ips(
             attribute = None
         if attribute is not None:
             continue
-        add_finding(
+        add_review_finding(
             findings,
             path=path,
             line=line_number,
             category="public-ip-review",
-            severity="review",
             message="globally routable unicast IPv4 address is outside documentation ranges",
         )
 
@@ -521,8 +537,7 @@ def scan_text(path: str, text: str, findings: set[Finding]) -> None:
             path,
             line_number,
             line,
-            legal_path,
-            provenance_trailer,
+            legal_path or provenance_trailer,
             findings,
         )
         scan_structured_identity(path, line_number, line, findings)
@@ -591,12 +606,11 @@ def scan_blob(path: str, data: bytes, findings: set[Finding]) -> None:
         return
     suffix = PurePosixPath(path).suffix.lower()
     if suffix in MEDIA_SUFFIXES:
-        add_finding(
+        add_review_finding(
             findings,
             path=path,
             line=0,
             category="media-review",
-            severity="review",
             message="media requires metadata, OCR, and visual review",
         )
     if suffix in MEDIA_SUFFIXES - TEXT_MEDIA_SUFFIXES:

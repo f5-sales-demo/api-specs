@@ -6,11 +6,26 @@ set -euo pipefail
 
 REPO_ROOT=$(cd "$(dirname "$0")/.." && pwd)
 SCANNER="${REPO_ROOT}/scripts/check-pii.sh"
+PYTHON_SCANNER="${REPO_ROOT}/scripts/check_pii.py"
 
 FAIL=0
 WORK=$(mktemp -d)
 cleanup() { rm -rf "$WORK"; }
 trap cleanup EXIT
+
+if [ -x "$PYTHON_SCANNER" ]; then
+  echo "[FAIL] Python scanner is executable — invoke it through the shell wrapper"
+  FAIL=1
+else
+  echo "[OK] Python scanner is a non-executable module"
+fi
+
+if head -n 1 "$PYTHON_SCANNER" | grep -q '^#!'; then
+  echo "[FAIL] Python scanner has a shebang — invoke it through the shell wrapper"
+  FAIL=1
+else
+  echo "[OK] Python scanner has no executable shebang"
+fi
 
 new_repo() {
   local dir="${WORK}/$1"

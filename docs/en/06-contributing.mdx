@@ -76,7 +76,7 @@ make pre-commit           # Run all hooks manually
 
 ## Project Structure
 
-```
+```text
 scripts/
   download.py           # Stage 1: Fetch specs from F5
   validate.py           # Stage 2: Live API testing
@@ -112,6 +112,7 @@ To add a new Spectral auto-fix to the reconciler:
 1. **Add the rule** to `.spectral.yaml` with the desired severity.
 
 2. **Enable auto-fix** in `config/validation.yaml` under `spectral.auto_fix`:
+
    ```yaml
    spectral:
      auto_fix:
@@ -119,6 +120,7 @@ To add a new Spectral auto-fix to the reconciler:
    ```
 
 3. **Add the fixer method** to `SpecReconciler` in `scripts/reconcile.py`:
+
    ```python
    def _fix_your_rule(self, spec: dict, discrepancy: Discrepancy) -> dict | None:
        """Fix description."""
@@ -128,6 +130,7 @@ To add a new Spectral auto-fix to the reconciler:
    ```
 
 4. **Register it** in the `_apply_spectral_fix` dispatcher:
+
    ```python
    spectral_fixers = {
        # ... existing fixers ...
@@ -144,6 +147,7 @@ To add a custom Spectral rule with a JavaScript function:
 1. Create the function in `spectral/functions/your-rule.js`. Export a default function that receives `(targetVal, options, context)` and returns an array of `{message, path}` objects.
 
 2. Register it in `spectral-pipeline.yaml`:
+
    ```yaml
    functions:
      - f5-path-params

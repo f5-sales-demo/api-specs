@@ -10,7 +10,7 @@ The reconciler (`scripts/reconcile.py`) applies four categories of fixes to upst
 These fixes adjust OpenAPI schema constraints so the spec matches what the live API actually enforces. Each fix is driven by a `Discrepancy` object produced during [validation](/api-specs/en/02-pipeline/#2-validate).
 
 | Strategy | Trigger | What It Does | Contract Change |
-|----------|---------|--------------|-----------------|
+| ---------- | --------- | -------------- | ----------------- |
 | **Relax** | `SPEC_STRICTER` | Spec rejects values the API accepts. Lowers `minLength`/`minimum`, raises `maxLength`/`maximum`, adds missing enum values. | Yes -- widens accepted values |
 | **Tighten** | `SPEC_LOOSER` | Spec accepts values the API rejects. Raises `minLength`/`minimum`, lowers `maxLength`/`maximum`, restricts enums to observed values. | Yes -- narrows accepted values |
 | **Add** | `MISSING_CONSTRAINT` | API enforces a constraint not documented in the spec. Adds the constraint to the schema. | Yes -- adds new constraint |

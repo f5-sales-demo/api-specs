@@ -1,5 +1,6 @@
 """Structural guards for immutable release publication."""
 
+import re
 from pathlib import Path
 
 import yaml
@@ -41,6 +42,7 @@ def test_release_is_verified_after_publication():
     assert '--expected-asset "api-specs-v${VERSION}.zip"' in command
     assert '--local-asset "release/api-specs-v${VERSION}.zip"' in command
     assert '--expected-commit "${GITHUB_SHA}"' in command
+    assert '--receipt-output "$RUNNER_TEMP/api-specs-release-receipt.json"' in command
     assert 'gh release verify "v${VERSION}"' in command
     assert 'gh release verify-asset "v${VERSION}"' in command
     assert "attestation_verified" in command
@@ -51,6 +53,28 @@ def test_downstream_dispatch_requires_the_verified_release_job_to_succeed():
 
     assert "release" in notify["needs"]
     assert "needs.release.result == 'success'" in notify["if"]
+
+    release = _jobs()["release"]
+    assert release["outputs"]["release_receipt"] == (
+        "${{ steps.verify_release.outputs.release_receipt }}"
+    )
+    dispatch = next(
+        step
+        for step in notify["steps"]
+        if step["name"] == "Dispatch upstream-specs-released to api-specs-enriched"
+    )
+    assert dispatch["env"]["RELEASE_RECEIPT"] == "${{ needs.release.outputs.release_receipt }}"
+    command = dispatch["run"]
+    assert '--argjson receipt "$RELEASE_RECEIPT"' in command
+    assert "release_receipt: $receipt" in command
+    assert '--input "$RUNNER_TEMP/downstream-dispatch.json"' in command
+    for legacy in (
+        "client_payload[version]",
+        "client_payload[release_tag]",
+        "client_payload[release_url]",
+        "client_payload[run_id]",
+    ):
+        assert legacy not in command
 
 
 def test_live_validation_cannot_fall_back_or_ignore_failure():
@@ -84,3 +108,10 @@ def test_failure_tracker_cannot_close_when_publication_recovery_was_skipped():
 
     assert "publicationRecoverySkipped" in script
     assert "keeping the tracker open" in script
+
+
+def test_every_direct_action_in_release_workflow_is_commit_pinned():
+    action_refs = re.findall(r"^\s*uses:\s+([^\s@]+)@([^\s#]+)", WORKFLOW.read_text(), re.MULTILINE)
+    assert action_refs
+    for action, ref in action_refs:
+        assert re.fullmatch(r"[0-9a-f]{40}", ref), f"{action}@{ref} is mutable"

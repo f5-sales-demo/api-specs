@@ -13,6 +13,7 @@ import pytest
 import requests
 
 from scripts.verify_release import (
+    ExpectedRelease,
     ReleaseVerificationError,
     ReleaseVerificationRetry,
     validate_release_metadata,
@@ -37,6 +38,13 @@ def _zip_bytes() -> bytes:
 ASSET_BYTES = _zip_bytes()
 ASSET_DIGEST = f"sha256:{hashlib.sha256(ASSET_BYTES).hexdigest()}"
 EXPECTED_COMMIT = "a" * 40
+EXPECTED_RELEASE = ExpectedRelease(
+    repository=REPOSITORY,
+    tag=TAG,
+    asset_name=ASSET_NAME,
+    asset_digest=ASSET_DIGEST,
+    commit=EXPECTED_COMMIT,
+)
 
 
 @pytest.mark.parametrize(
@@ -120,6 +128,7 @@ def test_rejects_any_asset_count_other_than_one(assets):
         ({"state": "new"}, "uploaded"),
         ({"content_type": "application/octet-stream"}, "content type"),
         ({"size": 0}, "size"),
+        ({"size": True}, "size"),
         ({"digest": None}, "SHA-256 digest"),
         ({"digest": "sha256:not-a-digest"}, "SHA-256 digest"),
         ({"browser_download_url": "https://example.com/wrong.zip"}, "download URL"),
@@ -232,11 +241,7 @@ def test_network_verification_retries_the_complete_contract_after_download_failu
     monkeypatch.setattr("scripts.verify_release.time.sleep", sleeps.append)
 
     digest = verify_published_release(
-        REPOSITORY,
-        TAG,
-        ASSET_NAME,
-        ASSET_DIGEST,
-        EXPECTED_COMMIT,
+        EXPECTED_RELEASE,
         retry=ReleaseVerificationRetry(attempts=2, interval_seconds=0.25),
     )
 
@@ -259,11 +264,7 @@ def test_verified_download_writes_exact_downstream_receipt(monkeypatch, tmp_path
     output = tmp_path / "receipt.json"
 
     verify_published_release(
-        REPOSITORY,
-        TAG,
-        ASSET_NAME,
-        ASSET_DIGEST,
-        EXPECTED_COMMIT,
+        EXPECTED_RELEASE,
         retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
         receipt_output=output,
     )
@@ -299,11 +300,7 @@ def test_verified_download_rejects_release_metadata_size_that_does_not_match_byt
 
     with pytest.raises(ReleaseVerificationError, match="size"):
         verify_published_release(
-            REPOSITORY,
-            TAG,
-            ASSET_NAME,
-            ASSET_DIGEST,
-            EXPECTED_COMMIT,
+            EXPECTED_RELEASE,
             retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
             receipt_output=output,
         )
@@ -329,10 +326,6 @@ def test_network_verification_fails_closed_after_bounded_retries(monkeypatch):
 
     with pytest.raises(ReleaseVerificationError, match="not immutable"):
         verify_published_release(
-            REPOSITORY,
-            TAG,
-            ASSET_NAME,
-            ASSET_DIGEST,
-            EXPECTED_COMMIT,
+            EXPECTED_RELEASE,
             retry=ReleaseVerificationRetry(attempts=2, interval_seconds=0),
         )

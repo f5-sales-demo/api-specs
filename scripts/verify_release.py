@@ -45,14 +45,31 @@ class ReleaseVerificationRetry:
             raise ValueError("interval_seconds cannot be negative")
 
 
-def validate_release_metadata(
-    release: dict[str, Any],
-    repository: str,
-    tag: str,
-    expected_asset_name: str,
-    expected_digest: str,
-) -> dict[str, Any]:
-    """Validate GitHub's release response and return its sole asset."""
+@dataclass(frozen=True)
+class ExpectedRelease:
+    """One immutable publication identity expected from GitHub."""
+
+    repository: str
+    tag: str
+    asset_name: str
+    asset_digest: str
+    commit: str
+
+    def __post_init__(self) -> None:
+        if re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", self.repository) is None:
+            raise ValueError("repository must be an owner/name pair")
+        if not self.tag.startswith("v") or len(self.tag) == 1:
+            raise ValueError("tag must be a v-prefixed release tag")
+        if self.asset_name != f"api-specs-{self.tag}.zip":
+            raise ValueError("asset_name must match the release tag")
+        if SHA256_DIGEST.fullmatch(self.asset_digest) is None:
+            raise ValueError("asset_digest must be a SHA-256 digest")
+        if re.fullmatch(r"[0-9a-f]{40}", self.commit) is None:
+            raise ValueError("commit must be a full Git commit SHA")
+
+
+def _validate_release_state(release: dict[str, Any], tag: str) -> None:
+    """Require one final immutable release at the expected tag."""
     if release.get("tag_name") != tag:
         raise ReleaseVerificationError("release tag does not match the requested tag")
     if release.get("draft") is not False:
@@ -72,6 +89,9 @@ def validate_release_metadata(
     ):
         raise ReleaseVerificationError("release has no valid publication timestamp")
 
+
+def _sole_release_asset(release: dict[str, Any]) -> dict[str, Any]:
+    """Return the release's only asset."""
     assets = release.get("assets")
     if not isinstance(assets, list) or len(assets) != 1:
         count = len(assets) if isinstance(assets, list) else 0
@@ -82,13 +102,24 @@ def validate_release_metadata(
     asset = assets[0]
     if not isinstance(asset, dict):
         raise ReleaseVerificationError("release asset metadata is not an object")
+    return asset
+
+
+def _validate_release_asset(
+    asset: dict[str, Any],
+    expected_asset_name: str,
+    expected_digest: str,
+    expected_url: str,
+) -> None:
+    """Require exact uploaded ZIP metadata for one release asset."""
     if asset.get("name") != expected_asset_name:
         raise ReleaseVerificationError("release asset name does not match the expected ZIP")
     if asset.get("state") != "uploaded":
         raise ReleaseVerificationError("release asset is not in the uploaded state")
     if asset.get("content_type") != "application/zip":
         raise ReleaseVerificationError("release asset content type is not application/zip")
-    if type(asset.get("size")) is not int or asset["size"] <= 0:
+    size = asset.get("size")
+    if isinstance(size, bool) or not isinstance(size, int) or size <= 0:
         raise ReleaseVerificationError("release asset size is not a positive integer")
 
     digest = asset.get("digest")
@@ -99,9 +130,22 @@ def validate_release_metadata(
             "GitHub release digest does not match the locally built asset"
         )
 
-    expected_url = f"https://github.com/{repository}/releases/download/{tag}/{expected_asset_name}"
     if asset.get("browser_download_url") != expected_url:
         raise ReleaseVerificationError("release asset download URL does not match the release")
+
+
+def validate_release_metadata(
+    release: dict[str, Any],
+    repository: str,
+    tag: str,
+    expected_asset_name: str,
+    expected_digest: str,
+) -> dict[str, Any]:
+    """Validate GitHub's release response and return its sole asset."""
+    _validate_release_state(release, tag)
+    asset = _sole_release_asset(release)
+    expected_url = f"https://github.com/{repository}/releases/download/{tag}/{expected_asset_name}"
+    _validate_release_asset(asset, expected_asset_name, expected_digest, expected_url)
 
     return asset
 
@@ -164,7 +208,8 @@ def local_asset_digest(path: Path, expected_name: str) -> str:
     return digest
 
 
-def _headers(token: str | None = None) -> dict[str, str]:
+def github_headers(token: str | None = None) -> dict[str, str]:
+    """Return pinned-version GitHub API headers with optional authentication."""
     headers = {
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": GITHUB_API_VERSION,
@@ -175,7 +220,7 @@ def _headers(token: str | None = None) -> dict[str, str]:
 
 
 def _fetch_json(url: str, token: str | None, description: str) -> dict[str, Any]:
-    response = requests.get(url, headers=_headers(token), timeout=30)
+    response = requests.get(url, headers=github_headers(token), timeout=30)
     try:
         response.raise_for_status()
     except requests.HTTPError as error:
@@ -193,11 +238,7 @@ def _fetch_json(url: str, token: str | None, description: str) -> dict[str, Any]
 
 
 def verify_published_release(
-    repository: str,
-    tag: str,
-    expected_asset_name: str,
-    expected_digest: str,
-    expected_commit: str,
+    expected: ExpectedRelease,
     *,
     token: str | None = None,
     retry: ReleaseVerificationRetry | None = None,
@@ -205,31 +246,27 @@ def verify_published_release(
 ) -> str:
     """Poll until tag, release metadata, and public bytes satisfy one identity."""
     retry_policy = retry or ReleaseVerificationRetry()
-    if SHA256_DIGEST.fullmatch(expected_digest) is None:
-        raise ValueError("expected_digest must be a SHA-256 digest")
-    if re.fullmatch(r"[0-9a-f]{40}", expected_commit) is None:
-        raise ValueError("expected_commit must be a full Git commit SHA")
 
     last_error: ReleaseVerificationError | None = None
     for attempt in range(1, retry_policy.attempts + 1):
         try:
             tag_ref = _fetch_json(
-                f"https://api.github.com/repos/{repository}/git/ref/tags/{tag}",
+                f"https://api.github.com/repos/{expected.repository}/git/ref/tags/{expected.tag}",
                 token,
                 "GitHub tag lookup",
             )
-            validate_tag_ref(tag_ref, tag, expected_commit)
+            validate_tag_ref(tag_ref, expected.tag, expected.commit)
             release = _fetch_json(
-                f"https://api.github.com/repos/{repository}/releases/tags/{tag}",
+                f"https://api.github.com/repos/{expected.repository}/releases/tags/{expected.tag}",
                 token,
                 "GitHub release lookup",
             )
             asset = validate_release_metadata(
                 release,
-                repository,
-                tag,
-                expected_asset_name,
-                expected_digest,
+                expected.repository,
+                expected.tag,
+                expected.asset_name,
+                expected.asset_digest,
             )
             download = requests.get(asset["browser_download_url"], timeout=120)
             try:
@@ -242,7 +279,7 @@ def verify_published_release(
                 raise ReleaseVerificationError(
                     "downloaded asset size does not match GitHub release metadata"
                 )
-            verify_asset_bytes(download.content, expected_digest)
+            verify_asset_bytes(download.content, expected.asset_digest)
             if receipt_output is not None:
                 try:
                     receipt_output.parent.mkdir(parents=True, exist_ok=True)
@@ -253,7 +290,7 @@ def verify_published_release(
                     raise ReleaseVerificationError(
                         "verified release receipt could not be written"
                     ) from error
-            return expected_digest
+            return expected.asset_digest
         except (ReleaseVerificationError, requests.RequestException) as error:
             last_error = (
                 error
@@ -289,11 +326,13 @@ def main() -> int:
     try:
         digest = local_asset_digest(args.local_asset, args.expected_asset)
         digest = verify_published_release(
-            args.repository,
-            args.tag,
-            args.expected_asset,
-            digest,
-            args.expected_commit,
+            ExpectedRelease(
+                repository=args.repository,
+                tag=args.tag,
+                asset_name=args.expected_asset,
+                asset_digest=digest,
+                commit=args.expected_commit,
+            ),
             token=token,
             retry=ReleaseVerificationRetry(
                 attempts=args.attempts,

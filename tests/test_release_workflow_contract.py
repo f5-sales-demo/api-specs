@@ -33,7 +33,6 @@ def test_release_is_verified_after_publication():
     assert "immutable-releases" in setting_command
     assert ".enabled == true" in setting_command
     create_command = release_steps[create_index]["run"]
-    assert 'gh release view "v${VERSION}"' in create_command
     assert '--target "${GITHUB_SHA}"' in create_command
     command = release_steps[verify_index]["run"]
     assert "python -m scripts.verify_release" in command
@@ -75,6 +74,86 @@ def test_downstream_dispatch_requires_the_verified_release_job_to_succeed():
         "client_payload[run_id]",
     ):
         assert legacy not in command
+
+
+def test_semantic_decision_builds_and_compares_the_exact_release_candidate():
+    workflow = yaml.safe_load(WORKFLOW.read_text())
+    assert "force_release" not in workflow[True]["workflow_dispatch"].get("inputs", {})
+
+    check = _jobs()["check-release-needed"]
+    steps = check["steps"]
+    build_index = next(
+        index for index, step in enumerate(steps) if step["name"] == "Build release candidate"
+    )
+    compare_index = next(
+        index for index, step in enumerate(steps) if step["name"] == "Compare semantic release"
+    )
+    upload_index = next(
+        index for index, step in enumerate(steps) if step["name"] == "Upload release candidate"
+    )
+    assert build_index < compare_index < upload_index
+
+    compare = steps[compare_index]
+    assert "python -m scripts.semantic_release compare" in compare["run"]
+    assert "--current-archive" in compare["run"]
+    assert "--candidate-version" in compare["run"]
+    assert '--source-commit "${GITHUB_SHA}"' in compare["run"]
+    assert "--recovery-directory release" in compare["run"]
+    assert "force" not in compare["run"].lower()
+
+    upload = steps[upload_index]
+    assert upload["if"] == "steps.check.outputs.should_publish == 'true'"
+    assert upload["with"]["path"] == "release/${{ steps.check.outputs.release_asset }}"
+
+    release_steps = _jobs()["release"]["steps"]
+    assert any(step["name"] == "Download release candidate" for step in release_steps)
+    assert not any(step["name"] == "Build release package" for step in release_steps)
+
+
+def test_release_recovery_verifies_and_dispatches_without_creating_a_new_release():
+    workflow = yaml.safe_load(WORKFLOW.read_text())
+    check = _jobs()["check-release-needed"]
+    assert check["outputs"]["should_publish"] == "${{ steps.check.outputs.should_publish }}"
+    assert check["outputs"]["resume_publication"] == (
+        "${{ steps.check.outputs.resume_publication }}"
+    )
+
+    release = _jobs()["release"]
+    assert release["if"] == "needs.check-release-needed.outputs.should_publish == 'true'"
+    steps = release["steps"]
+    create = next(step for step in steps if step["name"] == "Create GitHub Release")
+    verify = next(step for step in steps if step["name"] == "Verify immutable GitHub release")
+    notes = next(step for step in steps if step["name"] == "Generate release notes")
+    assert create["if"] == "needs.check-release-needed.outputs.semantic_changed == 'true'"
+    assert notes["if"] == "needs.check-release-needed.outputs.semantic_changed == 'true'"
+    assert "gh release view" not in create["run"]
+    assert "if" not in verify
+
+    notify = _jobs()["notify-downstream"]
+    assert notify["if"] == "needs.release.result == 'success'"
+
+
+def test_release_build_clock_comes_only_from_spec_timestamp():
+    steps = _jobs()["check-release-needed"]["steps"]
+    version = next(step for step in steps if step["name"] == "Determine version from metadata")
+    build = next(step for step in steps if step["name"] == "Build release candidate")
+
+    assert 'document.get("spec_timestamp")' in version["run"]
+    assert "download_timestamp" not in version["run"]
+    assert "build_timestamp=${BUILD_TIMESTAMP}" in version["run"]
+    assert build["env"]["BUILD_TIMESTAMP"] == ("${{ steps.version.outputs.build_timestamp }}")
+    assert '--build-timestamp "${BUILD_TIMESTAMP}"' in build["run"]
+
+
+def test_release_notes_render_the_measured_semantic_decision():
+    release_steps = _jobs()["release"]["steps"]
+    notes = next(step for step in release_steps if step["name"] == "Generate release notes")
+    command = notes["run"]
+
+    assert "python -m scripts.semantic_release notes" in command
+    assert "semantic-release-decision.json" in command
+    assert "Code changes resulted in updated output" not in command
+    assert "Upstream F5 XC specs updated" not in command
 
 
 def test_live_validation_cannot_fall_back_or_ignore_failure():

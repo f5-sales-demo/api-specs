@@ -77,7 +77,6 @@ ignore = [
     "SIM118",   # Use key in dict (style preference)
     "F841",     # Local variable assigned but never used (intentional in some cases)
     "B007",     # Loop control variable not used (intentional)
-    "UP038",    # Use X | Y in isinstance (Python 3.9 compat preference)
 ]
 
 [tool.pytest.ini_options]

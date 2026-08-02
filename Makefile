@@ -89,7 +89,9 @@ verify-property-names:
 	$(BIN)/python -m scripts.verify_property_names
 
 release:
-	$(BIN)/python -m scripts.release
+	@: "$${VERSION:?set VERSION to the exact release version}"
+	@: "$${BUILD_TIMESTAMP:?set BUILD_TIMESTAMP to specs/original/.spec_metadata.json spec_timestamp}"
+	$(BIN)/python -m scripts.release --version "$$VERSION" --build-timestamp "$$BUILD_TIMESTAMP"
 
 test:
 	$(BIN)/pytest tests/ -v --cov=scripts --cov-report=term-missing

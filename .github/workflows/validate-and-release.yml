@@ -140,9 +140,11 @@ jobs:
         env:
           F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
           F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
+          F5XC_NAMESPACE: ${{ secrets.F5XC_NAMESPACE }}
         run: |
           : "${F5XC_API_URL:?F5XC_API_URL is required for live validation}"
           : "${F5XC_API_TOKEN:?F5XC_API_TOKEN is required for live validation}"
+          : "${F5XC_NAMESPACE:?F5XC_NAMESPACE is required for live validation}"
           python -m scripts.validate
 
       - name: Run Spectral OAS3 linting

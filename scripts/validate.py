@@ -4,22 +4,20 @@ from __future__ import annotations
 
 import argparse
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from .utils.auth import F5XCAuth, load_auth_from_config
-from .utils.constraint_validator import (
-    ConstraintValidator,
-    Discrepancy,
-    ValidationTestCase,
-)
+from .utils.constraint_validator import Discrepancy
 from .utils.report_generator import create_report_generator
 from .utils.schemathesis_runner import (
+    OperationResolutionError,
     SchemathesisResult,
     SchemathesisRunner,
+    TestStatus,
     create_runner,
 )
 from .utils.spec_loader import SpecLoader
@@ -33,6 +31,21 @@ console = Console()
 # (or the final stem if the pattern doesn't match).
 _DOMAIN_FILENAME_PREFIX = "public.ves.io.schema."
 _DOMAIN_FILENAME_SUFFIX = ".ves-swagger"
+_HTTP_METHODS = frozenset({"GET", "POST", "PUT", "PATCH", "DELETE"})
+
+
+class LiveValidationError(RuntimeError):
+    """Raised when a live validation run cannot prove its test contract."""
+
+
+@dataclass(frozen=True)
+class ValidationTarget:
+    """One semantically resolved spec and its exact live operations."""
+
+    endpoint_name: str
+    domain: str
+    filename: str
+    operations: tuple[tuple[str, str], ...]
 
 
 def _domain_from_filename(filename: str) -> str:
@@ -81,6 +94,127 @@ def load_endpoints_config(config_path: Path) -> dict:
         return result
 
 
+def _parse_operation(endpoint_name: str, operation_name: str, value: object) -> tuple[str, str]:
+    """Parse a configured ``METHOD /path`` declaration."""
+    if not isinstance(value, str):
+        raise LiveValidationError(
+            f"endpoint '{endpoint_name}' operation '{operation_name}' must be METHOD /path"
+        )
+    method, separator, path = value.partition(" ")
+    method = method.upper()
+    if not separator or method not in _HTTP_METHODS or not path.startswith("/") or " " in path:
+        raise LiveValidationError(
+            f"endpoint '{endpoint_name}' operation '{operation_name}' must be METHOD /path"
+        )
+    return method, path
+
+
+def resolve_validation_targets(
+    specs: dict[str, dict],
+    endpoints_config: dict,
+) -> tuple[ValidationTarget, ...]:
+    """Bind semantic domain identifiers to exact downloaded spec operations.
+
+    Numeric filename prefixes are publication ordering metadata and change on
+    each upstream drop.  Configuration therefore owns the stable domain slug
+    between ``schema.`` and ``.ves-swagger`` and must resolve it uniquely.
+    """
+    endpoint_map = endpoints_config.get("endpoints")
+    if not isinstance(endpoint_map, dict) or not endpoint_map:
+        raise LiveValidationError("endpoints configuration must declare at least one endpoint")
+
+    test_order = endpoints_config.get("test_order")
+    if (
+        not isinstance(test_order, list)
+        or any(not isinstance(name, str) for name in test_order)
+        or len(test_order) != len(set(test_order))
+        or set(test_order) != set(endpoint_map)
+    ):
+        raise LiveValidationError("test_order must name every configured endpoint exactly once")
+
+    files_by_domain: dict[str, list[str]] = {}
+    for filename in specs:
+        files_by_domain.setdefault(_domain_from_filename(filename), []).append(filename)
+
+    targets: list[ValidationTarget] = []
+    for endpoint_name in test_order:
+        endpoint = endpoint_map[endpoint_name]
+        if not isinstance(endpoint, dict):
+            raise LiveValidationError(f"endpoint '{endpoint_name}' configuration must be a mapping")
+
+        domain = endpoint.get("domain")
+        if not isinstance(domain, str) or not domain:
+            raise LiveValidationError(f"endpoint '{endpoint_name}' must declare semantic domain")
+
+        matching_files = sorted(files_by_domain.get(domain, []))
+        if len(matching_files) != 1:
+            raise LiveValidationError(
+                f"endpoint '{endpoint_name}' domain '{domain}' resolved to "
+                f"{len(matching_files)} files"
+            )
+        filename = matching_files[0]
+        spec = specs[filename]
+
+        configured_operations = endpoint.get("operations")
+        if not isinstance(configured_operations, dict) or not configured_operations:
+            raise LiveValidationError(
+                f"endpoint '{endpoint_name}' must declare at least one operation"
+            )
+
+        operations: list[tuple[str, str]] = []
+        for operation_name, value in configured_operations.items():
+            method, path = _parse_operation(endpoint_name, str(operation_name), value)
+            path_item = spec.get("paths", {}).get(path)
+            if not isinstance(path_item, dict) or method.lower() not in path_item:
+                raise LiveValidationError(
+                    f"endpoint '{endpoint_name}' configured operation does not exist in "
+                    f"domain '{domain}': {method} {path}"
+                )
+            operations.append((method, path))
+
+        if len(operations) != len(set(operations)):
+            raise LiveValidationError(
+                f"endpoint '{endpoint_name}' declares a duplicate method/path operation"
+            )
+        targets.append(
+            ValidationTarget(
+                endpoint_name=endpoint_name,
+                domain=domain,
+                filename=filename,
+                operations=tuple(operations),
+            )
+        )
+
+    return tuple(targets)
+
+
+def validate_live_results(
+    target: ValidationTarget,
+    expected_operations: tuple[tuple[str, str], ...],
+    results: list[SchemathesisResult],
+) -> None:
+    """Require execution evidence for every configured operation."""
+    if len(results) != len(expected_operations):
+        raise LiveValidationError(
+            f"endpoint '{target.endpoint_name}' executed {len(results)} of "
+            f"{len(expected_operations)} configured operations"
+        )
+
+    expected = set(expected_operations)
+    actual = {(result.method.upper(), result.endpoint) for result in results}
+    if len(actual) != len(results) or actual != expected:
+        raise LiveValidationError(
+            f"endpoint '{target.endpoint_name}' execution identities do not match configuration"
+        )
+
+    for result in results:
+        identity = f"{result.method.upper()} {result.endpoint}"
+        if result.examples_tested <= 0:
+            raise LiveValidationError(f"configured operation {identity} executed zero examples")
+        if result.status in {TestStatus.ERROR, TestStatus.SKIPPED} or result.errors:
+            raise LiveValidationError(f"configured operation {identity} finished with error status")
+
+
 class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
     """Orchestrate validation of F5 XC API specs.
 
@@ -94,29 +228,21 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
         self,
         config: dict,
         endpoints_config: dict,
-        auth: F5XCAuth | None = None,
-        dry_run: bool = False,
+        auth: F5XCAuth,
     ) -> None:
         """Initialize ValidationOrchestrator with config and auth."""
         self.config = config
         self.endpoints_config = endpoints_config
-        self.dry_run = dry_run
 
         # Initialize components
         self.spec_loader = SpecLoader(
-            Path(config.get("download", {}).get("output_dir", "specs/original"))
+            Path(config.get("validation", {}).get("input_dir", "specs/transformed"))
         )
-        self.constraint_validator = ConstraintValidator()
-
-        # Auth and Schemathesis only if not dry run
         self.auth = auth
-        self.schemathesis_runner: SchemathesisRunner | None = None
-
-        if not dry_run and auth:
-            self.schemathesis_runner = create_runner(
-                auth,
-                config.get("schemathesis", {}),
-            )
+        self.schemathesis_runner: SchemathesisRunner = create_runner(
+            auth,
+            config.get("schemathesis", {}),
+        )
 
         # Report generator
         self.report_generator = create_report_generator(config.get("reports", {}))
@@ -133,13 +259,9 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
     def run(
         self,
         endpoint_filter: str | None = None,
-        schemathesis_only: bool = False,
     ) -> int:
         """Run the full validation pipeline."""
         console.print("[bold blue]F5 XC API Spec Validation[/bold blue]")
-
-        if self.dry_run:
-            console.print("[yellow]Running in dry-run mode (no live API calls)[/yellow]")
 
         # Step 1: Load and validate specs
         console.print("\n[bold]Step 1: Loading OpenAPI Specs[/bold]")
@@ -151,42 +273,54 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
 
         # Step 2: Validate spec structure
         console.print("\n[bold]Step 2: Validating Spec Structure[/bold]")
-        self._validate_spec_structure(specs)
+        structure_errors = self._validate_spec_structure(specs)
+        if structure_errors:
+            console.print(f"[red]Validation stopped: {len(structure_errors)} invalid specs[/red]")
+            return 1
 
-        # Step 3: Extract constraints
-        console.print("\n[bold]Step 3: Extracting Constraints[/bold]")
-        constraints = self._extract_constraints(specs)
+        # Step 3: Resolve every semantic domain and exact operation before
+        # making requests. A stale config must fail rather than test nothing.
+        console.print("\n[bold]Step 3: Resolving Validation Contract[/bold]")
+        try:
+            targets = resolve_validation_targets(specs, self.endpoints_config)
+        except LiveValidationError as error:
+            console.print(f"[red]Validation contract error: {error}[/red]")
+            return 1
 
-        # Step 4: Generate test cases
-        console.print("\n[bold]Step 4: Generating Test Cases[/bold]")
-        test_cases = self._generate_test_cases(constraints)
+        if endpoint_filter:
+            targets = tuple(target for target in targets if target.endpoint_name == endpoint_filter)
+            if not targets:
+                console.print(
+                    f"[red]Validation contract error: unknown endpoint '{endpoint_filter}'[/red]"
+                )
+                return 1
 
-        if not self.dry_run:
-            # Step 5: Run Schemathesis tests
-            if self.schemathesis_runner:
-                console.print("\n[bold]Step 5: Running Schemathesis Tests[/bold]")
-                self._run_schemathesis_tests(specs, endpoint_filter)
+        # Step 4: Execute exact configured operations and retain all evidence,
+        # even when one target fails, so the report explains the failed gate.
+        console.print("\n[bold]Step 4: Running Authenticated Schemathesis Tests[/bold]")
+        execution_errors = self._run_schemathesis_tests(specs, targets)
 
-            # Step 6: Run constraint validation tests
-            if not schemathesis_only:
-                console.print("\n[bold]Step 6: Running Constraint Validation[/bold]")
-                self._run_constraint_tests(test_cases, endpoint_filter)
-        else:
-            console.print("\n[yellow]Skipping live API tests (dry run)[/yellow]")
-
-        # Step 7: Generate reports
-        console.print("\n[bold]Step 7: Generating Reports[/bold]")
+        # Step 5: Generate reports
+        console.print("\n[bold]Step 5: Generating Reports[/bold]")
         self._generate_reports()
 
         # Print summary
         self._print_summary()
+
+        if execution_errors:
+            console.print("\n[bold red]Live validation contract failures:[/bold red]")
+            for execution_error in execution_errors:
+                console.print(f"  [red]- {execution_error}[/red]")
+            return 1
 
         return 0 if not self.discrepancies else 1
 
     def _load_specs(self) -> dict[str, dict]:
         """Load all OpenAPI specs."""
         try:
-            return self.spec_loader.load_all_domain_files()
+            specs = self.spec_loader.load_all_domain_files()
+            console.print(f"[green]Loaded {len(specs)} domain specs[/green]")
+            return specs
         except Exception as e:  # pylint: disable=broad-exception-caught
             console.print(f"[red]Failed to load specs: {e}[/red]")
             return {}
@@ -202,166 +336,39 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
                 console.print(f"[red]Invalid spec: {filename}[/red]")
                 for error in spec_errors[:3]:
                     console.print(f"  [dim]{error}[/dim]")
-            else:
-                console.print(f"[green]Valid: {filename}[/green]")
+
+        if not errors:
+            console.print(f"[green]Validated {len(specs)} OpenAPI specs[/green]")
 
         return errors
-
-    def _extract_constraints(self, specs: dict[str, dict]) -> dict:
-        """Extract constraints from all specs."""
-        all_constraints = {}
-
-        for filename, spec in specs.items():
-            schemas = self.spec_loader.extract_schemas(spec)
-
-            for schema_name, schema_info in schemas.items():
-                if schema_info.constraints:
-                    key = f"{filename}:{schema_name}"
-                    all_constraints[key] = {
-                        "schema": schema_info,
-                        "constraints": schema_info.constraints,
-                    }
-
-            console.print(
-                f"[dim]{filename}: {len(schemas)} schemas, "
-                f"{sum(len(s.constraints) for s in schemas.values())} constraints[/dim]"
-            )
-
-        console.print(f"[green]Total: {len(all_constraints)} schemas with constraints[/green]")
-        return all_constraints
-
-    def _generate_test_cases(self, constraints: dict) -> dict[str, list[ValidationTestCase]]:
-        """Generate test cases for all constraints."""
-        all_test_cases = {}
-        total_tests = 0
-
-        for key, data in constraints.items():
-            test_cases = []
-            for constraint_type, constraint_value in data["constraints"].items():
-                # Skip nested property constraints for now
-                if "." in constraint_type:
-                    continue
-
-                cases = self.constraint_validator.generate_test_cases(
-                    constraint_type,
-                    constraint_value,
-                    data["schema"].schema,
-                )
-                test_cases.extend(cases)
-
-            if test_cases:
-                all_test_cases[key] = test_cases
-                total_tests += len(test_cases)
-
-        console.print(f"[green]Generated {total_tests} test cases[/green]")
-        return all_test_cases
 
     def _run_schemathesis_tests(
         self,
         specs: dict[str, dict],
-        endpoint_filter: str | None = None,
-    ) -> None:
-        """Run Schemathesis property-based tests."""
-        if not self.schemathesis_runner:
-            return
+        targets: tuple[ValidationTarget, ...],
+    ) -> list[str]:
+        """Run exact configured operations and return contract failures."""
+        errors: list[str] = []
+        for target in targets:
+            console.print(f"\n[cyan]Testing {target.endpoint_name} ({target.domain})[/cyan]")
+            try:
+                schema = self.schemathesis_runner.load_schema(specs[target.filename])
+                results = self.schemathesis_runner.run_configured_operations(
+                    schema,
+                    target.operations,
+                )
+                self.test_results.extend(results)
 
-        # Get target endpoints from config
-        endpoints_config = self.endpoints_config.get("endpoints", {})
-
-        # Group specs by domain file
-        domain_endpoints: dict[str, list] = {}
-        for endpoint_config in endpoints_config.values():
-            domain_file = endpoint_config.get("domain_file")
-            if domain_file not in domain_endpoints:
-                domain_endpoints[domain_file] = []
-            domain_endpoints[domain_file].append(endpoint_config)
-
-        # Run tests for each domain
-        for domain_file, endpoints in domain_endpoints.items():
-            if domain_file not in specs:
-                console.print(f"[yellow]Domain file not found: {domain_file}[/yellow]")
-                continue
-
-            console.print(f"\n[cyan]Testing {domain_file}[/cyan]")
-
-            spec = specs[domain_file]
-            schema = self.schemathesis_runner.load_schema(spec)
-            domain_slug = _domain_from_filename(domain_file)
-
-            for endpoint_config in endpoints:
-                resource = endpoint_config.get("resource")
-
-                if endpoint_filter and endpoint_filter not in resource:
-                    continue
-
-                console.print(f"  [dim]Testing: {resource}[/dim]")
-
-                try:
-                    results = self.schemathesis_runner.run_stateful_tests(
-                        schema,
-                        resource,
-                    )
-                    self.test_results.extend(results)
-
-                    # Collect discrepancies (and parallel domain/method lists
-                    # so the JSON report can surface them per entry).
-                    for result in results:
-                        self.discrepancies.extend(result.discrepancies)
-                        self.discrepancy_domains.extend([domain_slug] * len(result.discrepancies))
-                        self.discrepancy_methods.extend([result.method] * len(result.discrepancies))
-
-                except Exception as e:  # pylint: disable=broad-exception-caught
-                    console.print(f"  [red]Error testing {resource}: {e}[/red]")
-
-    def _run_constraint_tests(
-        self,
-        test_cases: dict[str, list[ValidationTestCase]],
-        endpoint_filter: str | None = None,
-    ) -> None:
-        """Run constraint validation tests against live API."""
-        if not self.auth:
-            console.print("[yellow]No auth configured, skipping constraint tests[/yellow]")
-            return
-
-        endpoints_config = self.endpoints_config.get("endpoints", {})
-
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            console=console,
-        ) as progress:
-            task = progress.add_task(
-                "Running constraint tests...",
-                total=len(endpoints_config),
-            )
-
-            for endpoint_name, endpoint_config in endpoints_config.items():
-                if endpoint_filter and endpoint_filter not in endpoint_name:
-                    progress.update(task, advance=1)
-                    continue
-
-                crud_ops = endpoint_config.get("crud_operations", {})
-
-                # Test create operation
-                if "create" in crud_ops:
-                    self._test_endpoint_constraints(
-                        endpoint_name,
-                        crud_ops["create"],
-                        test_cases,
-                    )
-
-                progress.update(task, advance=1)
-
-    def _test_endpoint_constraints(
-        self,
-        endpoint_name: str,
-        create_path: str,
-        test_cases: dict[str, list[ValidationTestCase]],
-    ) -> None:
-        """Test constraints for a specific endpoint."""
-        # This would be implemented to actually test constraints
-        # For now, we just log what would be tested
-        console.print(f"  [dim]Would test constraints for: {endpoint_name}[/dim]")
+                for result in results:
+                    self.discrepancies.extend(result.discrepancies)
+                    self.discrepancy_domains.extend([target.domain] * len(result.discrepancies))
+                    self.discrepancy_methods.extend([result.method] * len(result.discrepancies))
+                validate_live_results(target, target.operations, results)
+            except (LiveValidationError, OperationResolutionError) as error:
+                errors.append(str(error))
+            except Exception as error:  # pylint: disable=broad-exception-caught
+                errors.append(f"endpoint '{target.endpoint_name}' could not execute: {error}")
+        return errors
 
     def _generate_reports(self) -> None:
         """Generate validation reports."""
@@ -432,16 +439,6 @@ def main() -> int:
         help="Endpoints configuration file",
     )
     parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Run without making API calls",
-    )
-    parser.add_argument(
-        "--schemathesis-only",
-        action="store_true",
-        help="Only run Schemathesis tests",
-    )
-    parser.add_argument(
         "--endpoint",
         type=str,
         default=None,
@@ -454,34 +451,25 @@ def main() -> int:
     config = load_config(args.config)
     endpoints_config = load_endpoints_config(args.endpoints)
 
-    # Initialize auth (skip in dry run)
-    auth = None
-    dry_run = args.dry_run
-    if not dry_run:
-        try:
-            auth = load_auth_from_config(config)
-            if not auth.test_connection():
-                console.print("[red]API connection failed[/red]")
-                console.print("[yellow]Falling back to dry-run mode[/yellow]")
-                dry_run = True
-                auth = None
-        except ValueError as e:
-            console.print(f"[red]Auth error: {e}[/red]")
-            console.print("[yellow]Falling back to dry-run mode[/yellow]")
-            dry_run = True
+    # Authenticated execution is the only validation mode. Static checks have
+    # separate commands and must never produce a live-validation success report.
+    try:
+        auth = load_auth_from_config(config)
+        if not auth.test_connection():
+            console.print("[red]API authentication/connection check failed[/red]")
+            return 1
+    except ValueError as error:
+        console.print(f"[red]Auth error: {error}[/red]")
+        return 1
 
     # Run validation
     orchestrator = ValidationOrchestrator(
         config=config,
         endpoints_config=endpoints_config,
         auth=auth,
-        dry_run=dry_run,
     )
 
-    return orchestrator.run(
-        endpoint_filter=args.endpoint,
-        schemathesis_only=args.schemathesis_only,
-    )
+    return orchestrator.run(endpoint_filter=args.endpoint)
 
 
 if __name__ == "__main__":

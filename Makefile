@@ -13,8 +13,6 @@ help:
 	@echo "  make docs-install  Install documentation dependencies"
 	@echo "  make download      Download OpenAPI specs from F5"
 	@echo "  make validate      Run validation against live API"
-	@echo "  make validate-dry  Dry run validation (no live API calls)"
-	@echo "  make schemathesis  Run Schemathesis property-based tests"
 	@echo "  make reconcile     Generate reconciled specs"
 	@echo "  make release       Build release package"
 	@echo "  make test          Run unit tests"
@@ -57,12 +55,6 @@ download:
 
 validate:
 	$(BIN)/python -m scripts.validate
-
-validate-dry:
-	$(BIN)/python -m scripts.validate --dry-run
-
-schemathesis:
-	$(BIN)/python -m scripts.validate --schemathesis-only
 
 reconcile:
 	$(BIN)/python -m scripts.reconcile --report reports/validation_report.json reports/spectral_report.json
@@ -111,7 +103,7 @@ format:
 	$(BIN)/ruff check --fix scripts/ tests/
 
 typecheck:
-	$(BIN)/mypy scripts/
+	$(BIN)/mypy --config-file .mypy.ini scripts/ tests/
 
 clean:
 	rm -rf specs/original/*

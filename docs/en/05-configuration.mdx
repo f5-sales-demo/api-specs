@@ -11,34 +11,25 @@ All pipeline behavior is controlled by two YAML files in `config/`.
 
 ```yaml
 api:
-  base_url: "https://example-tenant.console.ves.volterra.io"
-  tenant: "example-tenant"
-  namespace: "example-namespace"
   timeout: 30
   retries: 3
-  retry_delay: 2
 ```
 
 | Field | Description |
 |-------|-------------|
-| `base_url` | F5 XC console API base URL. Override with `F5XC_API_URL` env var. |
-| `tenant` | Tenant name used in API paths. |
-| `namespace` | Default namespace for CRUD operations. |
 | `timeout` | HTTP request timeout in seconds. |
 | `retries` | Number of retry attempts on failure. |
-| `retry_delay` | Seconds between retries. |
 
 :::caution
-The `base_url`, `tenant`, and `namespace` values in `validation.yaml` are generic placeholders. You **must** configure these for your environment via environment variables before running the pipeline:
+Live validation requires all three environment variables below. They have no
+source-controlled defaults, and authentication, connection, or namespace
+probe failure stops validation without generating a successful dry-run report.
 
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
-export F5XC_TENANT="example-tenant"
 export F5XC_NAMESPACE="example-namespace"
 export F5XC_API_TOKEN="your-api-token"
 ```
-
-Environment variables take precedence over the YAML defaults at runtime.
 :::
 
 ### Download Settings
@@ -55,6 +46,17 @@ download:
 | `url` | URL of the official F5 XC OpenAPI spec bundle (ZIP). |
 | `output_dir` | Where extracted specs are stored. |
 | `etag_cache` | File that stores the HTTP ETag for conditional downloads. |
+
+### Live Validation Input
+
+```yaml
+validation:
+  input_dir: "specs/transformed"
+```
+
+Live tests resolve their semantic domains from the corrected transform output.
+Raw files in `specs/original/` remain the immutable upstream landing bytes and
+are never presented as the corrected intermediate API contract.
 
 ### Validation Categories
 
@@ -85,26 +87,16 @@ validation_categories:
 
 ```yaml
 schemathesis:
-  enabled: true
-  max_examples: 100
-  hypothesis_phases:
-    - generate
-    - target
-  stateful_testing: true
-  base_url_override: null
-  auth_header: "Authorization"
-  auth_prefix: "APIToken"
+  examples_per_operation: 1
 ```
 
 | Field | Description |
 |-------|-------------|
-| `enabled` | Toggle Schemathesis testing. |
-| `max_examples` | Maximum number of generated test cases per operation. |
-| `hypothesis_phases` | Hypothesis phases to run (`generate`, `target`). |
-| `stateful_testing` | Enable stateful link-based testing across operations. |
-| `base_url_override` | Override the API base URL for tests. `null` uses `api.base_url`. |
-| `auth_header` | HTTP header name for authentication. |
-| `auth_prefix` | Token prefix format (requests are sent as `APIToken <token>`). |
+| `examples_per_operation` | Exact number of generated test cases per configured operation. |
+
+Generation is derandomized and uses only Hypothesis's generation phase, so an
+unchanged spec and configuration produce the same example sequence. Requests
+are sent to `F5XC_API_URL` with the `APIToken` authorization scheme.
 
 ### Reconciliation Settings
 

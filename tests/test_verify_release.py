@@ -6,12 +6,14 @@ import hashlib
 import io
 import zipfile
 from collections.abc import Callable
+from typing import Any
 
 import pytest
 import requests
 
 from scripts.verify_release import (
     ReleaseVerificationError,
+    ReleaseVerificationRetry,
     validate_release_metadata,
     validate_tag_ref,
     verify_asset_bytes,
@@ -34,6 +36,18 @@ def _zip_bytes() -> bytes:
 ASSET_BYTES = _zip_bytes()
 ASSET_DIGEST = f"sha256:{hashlib.sha256(ASSET_BYTES).hexdigest()}"
 EXPECTED_COMMIT = "a" * 40
+
+
+@pytest.mark.parametrize(
+    ("kwargs", "message"),
+    [
+        ({"attempts": 0}, "attempts must be at least one"),
+        ({"interval_seconds": -1}, "interval_seconds cannot be negative"),
+    ],
+)
+def test_retry_policy_rejects_unbounded_or_invalid_waits(kwargs, message):
+    with pytest.raises(ValueError, match=message):
+        ReleaseVerificationRetry(**kwargs)
 
 
 def _release(**overrides):
@@ -164,17 +178,18 @@ def test_rejects_non_zip_bytes_even_when_the_digest_matches():
         verify_asset_bytes(content, digest)
 
 
-class _Response:
+class _Response(requests.Response):
     def __init__(self, *, payload=None, content: bytes = b"", status_code: int = 200):
+        super().__init__()
         self._payload = payload
-        self.content = content
+        self._content = content
         self.status_code = status_code
 
     def raise_for_status(self):
         if self.status_code >= 400:
             raise requests.HTTPError(response=self)
 
-    def json(self):
+    def json(self, **_kwargs: Any) -> Any:
         return self._payload
 
 
@@ -210,7 +225,7 @@ def test_network_verification_retries_the_complete_contract_after_download_failu
             ]
         ),
     )
-    sleeps = []
+    sleeps: list[float] = []
     monkeypatch.setattr("scripts.verify_release.time.sleep", sleeps.append)
 
     digest = verify_published_release(
@@ -219,8 +234,7 @@ def test_network_verification_retries_the_complete_contract_after_download_failu
         ASSET_NAME,
         ASSET_DIGEST,
         EXPECTED_COMMIT,
-        attempts=2,
-        interval_seconds=0.25,
+        retry=ReleaseVerificationRetry(attempts=2, interval_seconds=0.25),
     )
 
     assert digest == ASSET_DIGEST
@@ -250,6 +264,5 @@ def test_network_verification_fails_closed_after_bounded_retries(monkeypatch):
             ASSET_NAME,
             ASSET_DIGEST,
             EXPECTED_COMMIT,
-            attempts=2,
-            interval_seconds=0,
+            retry=ReleaseVerificationRetry(attempts=2, interval_seconds=0),
         )

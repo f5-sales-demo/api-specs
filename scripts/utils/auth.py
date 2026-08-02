@@ -139,14 +139,10 @@ class RateLimiter:
 class F5XCAuth:
     """F5 XC API authentication handler with rate limiting."""
 
-    api_url: str = field(
-        default_factory=lambda: os.getenv(
-            "F5XC_API_URL", "https://example-tenant.console.ves.volterra.io"
-        )
-    )
+    api_url: str = field(default_factory=lambda: os.getenv("F5XC_API_URL", ""))
     api_token: str = field(default_factory=lambda: os.getenv("F5XC_API_TOKEN", ""))
-    namespace: str = field(default_factory=lambda: os.getenv("F5XC_NAMESPACE", "example-namespace"))
-    tenant: str = field(default_factory=lambda: os.getenv("F5XC_TENANT", "example-tenant"))
+    namespace: str = field(default_factory=lambda: os.getenv("F5XC_NAMESPACE", ""))
+    tenant: str = field(default_factory=lambda: os.getenv("F5XC_TENANT", ""))
     timeout: int = 30
     retries: int = 3
 
@@ -155,9 +151,17 @@ class F5XCAuth:
 
     def __post_init__(self) -> None:
         """Validate required fields after initialization."""
-        if not self.api_token:
-            msg = "F5XC_API_TOKEN environment variable not set. Please set it with your API token."
-            raise ValueError(msg)
+        missing = [
+            name
+            for name, value in (
+                ("F5XC_API_URL", self.api_url),
+                ("F5XC_API_TOKEN", self.api_token),
+                ("F5XC_NAMESPACE", self.namespace),
+            )
+            if not value
+        ]
+        if missing:
+            raise ValueError(f"required environment variables are missing: {', '.join(missing)}")
 
     @property
     def headers(self) -> dict[str, str]:
@@ -230,8 +234,10 @@ class F5XCAuth:
 
             except httpx.RequestError as e:
                 last_exception = e
+                redacted_error = str(e).replace(self.namespace, "<configured-namespace>")
                 console.print(
-                    f"[red]Request error: {e} (attempt {attempt + 1}/{self.retries})[/red]"
+                    f"[red]Request error: {redacted_error} "
+                    f"(attempt {attempt + 1}/{self.retries})[/red]"
                 )
                 time.sleep(self._rate_limiter.config.initial_backoff * (attempt + 1))
 
@@ -259,24 +265,21 @@ class F5XCAuth:
             # Use the web API namespaces endpoint to test
             response = self.get("/api/web/namespaces")
             if response.status_code == HTTP_OK:
-                # Verify our namespace exists
                 try:
                     data = response.json()
-                    namespaces = [item.get("name") for item in data.get("items", [])]
+                    namespaces = {
+                        item.get("name") for item in data.get("items", []) if isinstance(item, dict)
+                    }
                     if self.namespace in namespaces:
                         console.print(
-                            f"[green]API connection successful (namespace: {self.namespace})[/green]"
+                            "[green]API connection and namespace probe successful[/green]"
                         )
-                    else:
-                        console.print(
-                            f"[yellow]API connected but namespace '{self.namespace}' not found[/yellow]"
-                        )
-                        console.print(
-                            f"[yellow]Available namespaces: {', '.join(namespaces[:5])}...[/yellow]"
-                        )
+                        return True
+                    console.print("[red]Configured namespace is not available[/red]")
+                    return False
                 except (ValueError, KeyError, TypeError):
-                    console.print("[green]API connection successful[/green]")
-                return True
+                    console.print("[red]Namespace probe returned an invalid response[/red]")
+                    return False
             console.print(f"[red]API connection failed: {response.status_code}[/red]")
             return False  # noqa: TRY300
         except (httpx.RequestError, httpx.TimeoutException, RuntimeError) as e:
@@ -304,10 +307,10 @@ def load_auth_from_config(config: dict) -> F5XCAuth:
     """Create F5XCAuth from configuration dictionary."""
     api_config = config.get("api", {})
     return F5XCAuth(
-        api_url=api_config.get("base_url", os.getenv("F5XC_API_URL", "")),
+        api_url=os.getenv("F5XC_API_URL", ""),
         api_token=os.getenv("F5XC_API_TOKEN", ""),
-        namespace=api_config.get("namespace", os.getenv("F5XC_NAMESPACE", "")),
-        tenant=api_config.get("tenant", os.getenv("F5XC_TENANT", "")),
+        namespace=os.getenv("F5XC_NAMESPACE", ""),
+        tenant=os.getenv("F5XC_TENANT", ""),
         timeout=api_config.get("timeout", 30),
         retries=api_config.get("retries", 3),
     )

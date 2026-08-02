@@ -68,6 +68,9 @@ def test_live_validation_cannot_fall_back_or_ignore_failure():
     assert "--dry-run" not in command
     assert "|| true" not in command
     assert "${F5XC_API_TOKEN:?" in command
+    assert "${F5XC_API_URL:?" in command
+    assert "${F5XC_NAMESPACE:?" in command
+    assert live["env"]["F5XC_NAMESPACE"] == "${{ secrets.F5XC_NAMESPACE }}"
 
 
 def test_failure_tracker_cannot_close_when_publication_recovery_was_skipped():

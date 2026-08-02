@@ -16,6 +16,7 @@ import re
 import sys
 import time
 import zipfile
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +28,20 @@ SHA256_DIGEST = re.compile(r"sha256:[0-9a-f]{64}")
 
 class ReleaseVerificationError(RuntimeError):
     """Raised when a published release does not satisfy the release contract."""
+
+
+@dataclass(frozen=True)
+class ReleaseVerificationRetry:
+    """Bounded retry policy for one complete publication verification."""
+
+    attempts: int = 6
+    interval_seconds: float = 5.0
+
+    def __post_init__(self) -> None:
+        if self.attempts < 1:
+            raise ValueError("attempts must be at least one")
+        if self.interval_seconds < 0:
+            raise ValueError("interval_seconds cannot be negative")
 
 
 def validate_release_metadata(
@@ -167,19 +182,17 @@ def verify_published_release(
     expected_commit: str,
     *,
     token: str | None = None,
-    attempts: int = 6,
-    interval_seconds: float = 5.0,
+    retry: ReleaseVerificationRetry | None = None,
 ) -> str:
     """Poll until tag, release metadata, and public bytes satisfy one identity."""
-    if attempts < 1:
-        raise ValueError("attempts must be at least one")
+    retry_policy = retry or ReleaseVerificationRetry()
     if SHA256_DIGEST.fullmatch(expected_digest) is None:
         raise ValueError("expected_digest must be a SHA-256 digest")
     if re.fullmatch(r"[0-9a-f]{40}", expected_commit) is None:
         raise ValueError("expected_commit must be a full Git commit SHA")
 
     last_error: ReleaseVerificationError | None = None
-    for attempt in range(1, attempts + 1):
+    for attempt in range(1, retry_policy.attempts + 1):
         try:
             tag_ref = _fetch_json(
                 f"https://api.github.com/repos/{repository}/git/ref/tags/{tag}",
@@ -214,8 +227,8 @@ def verify_published_release(
                 if isinstance(error, ReleaseVerificationError)
                 else ReleaseVerificationError("GitHub release lookup failed")
             )
-            if attempt < attempts:
-                time.sleep(interval_seconds)
+            if attempt < retry_policy.attempts:
+                time.sleep(retry_policy.interval_seconds)
 
     if last_error is None:
         raise ReleaseVerificationError("release verification exhausted without a result")
@@ -244,8 +257,10 @@ def main() -> int:
             digest,
             args.expected_commit,
             token=token,
-            attempts=args.attempts,
-            interval_seconds=args.interval_seconds,
+            retry=ReleaseVerificationRetry(
+                attempts=args.attempts,
+                interval_seconds=args.interval_seconds,
+            ),
         )
     except (ReleaseVerificationError, ValueError) as error:
         print(f"Release verification failed: {error}", file=sys.stderr)

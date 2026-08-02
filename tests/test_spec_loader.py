@@ -39,6 +39,24 @@ class TestSpecLoader:
 
         assert spec1 is spec2  # Same object reference
 
+    def test_load_all_domain_files_excludes_metadata(
+        self, temp_dir: Path, sample_openapi_spec: dict
+    ):
+        (temp_dir / ".spec_metadata.json").write_text('{"version": "not-an-openapi-spec"}')
+        (temp_dir / "domain.json").write_text(json.dumps(sample_openapi_spec))
+        loader = SpecLoader(temp_dir)
+
+        specs = loader.load_all_domain_files()
+
+        assert set(specs) == {"domain.json"}
+
+    def test_load_all_domain_files_fails_on_malformed_domain(self, temp_dir: Path):
+        (temp_dir / "broken.json").write_text("{")
+        loader = SpecLoader(temp_dir)
+
+        with pytest.raises(json.JSONDecodeError):
+            loader.load_all_domain_files()
+
     def test_load_spec_not_found(self, loader: SpecLoader):
         """Test loading non-existent spec."""
         with pytest.raises(FileNotFoundError):

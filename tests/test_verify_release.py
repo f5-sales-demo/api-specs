@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import json
 import zipfile
 from collections.abc import Callable
 from typing import Any
@@ -62,6 +63,7 @@ def _release(**overrides):
                 "name": ASSET_NAME,
                 "state": "uploaded",
                 "content_type": "application/zip",
+                "size": len(ASSET_BYTES),
                 "digest": ASSET_DIGEST,
                 "browser_download_url": (
                     f"https://github.com/{REPOSITORY}/releases/download/{TAG}/{ASSET_NAME}"
@@ -117,6 +119,7 @@ def test_rejects_any_asset_count_other_than_one(assets):
         ({"name": "wrong.zip"}, "asset name"),
         ({"state": "new"}, "uploaded"),
         ({"content_type": "application/octet-stream"}, "content type"),
+        ({"size": 0}, "size"),
         ({"digest": None}, "SHA-256 digest"),
         ({"digest": "sha256:not-a-digest"}, "SHA-256 digest"),
         ({"browser_download_url": "https://example.com/wrong.zip"}, "download URL"),
@@ -239,6 +242,73 @@ def test_network_verification_retries_the_complete_contract_after_download_failu
 
     assert digest == ASSET_DIGEST
     assert sleeps == [0.25]
+
+
+def test_verified_download_writes_exact_downstream_receipt(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        requests,
+        "get",
+        _get_sequence(
+            [
+                _Response(payload=_tag_ref()),
+                _Response(payload=_release()),
+                _Response(content=ASSET_BYTES),
+            ]
+        ),
+    )
+    output = tmp_path / "receipt.json"
+
+    verify_published_release(
+        REPOSITORY,
+        TAG,
+        ASSET_NAME,
+        ASSET_DIGEST,
+        EXPECTED_COMMIT,
+        retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
+        receipt_output=output,
+    )
+
+    receipt = json.loads(output.read_text())
+    assert receipt == {
+        "version": TAG.removeprefix("v"),
+        "tag_name": TAG,
+        "published_at": "2026-08-01T12:00:00Z",
+        "asset_name": ASSET_NAME,
+        "asset_size": len(ASSET_BYTES),
+        "asset_digest": ASSET_DIGEST,
+    }
+
+
+def test_verified_download_rejects_release_metadata_size_that_does_not_match_bytes(
+    monkeypatch, tmp_path
+):
+    release = _release()
+    release["assets"][0]["size"] = len(ASSET_BYTES) + 1
+    monkeypatch.setattr(
+        requests,
+        "get",
+        _get_sequence(
+            [
+                _Response(payload=_tag_ref()),
+                _Response(payload=release),
+                _Response(content=ASSET_BYTES),
+            ]
+        ),
+    )
+    output = tmp_path / "receipt.json"
+
+    with pytest.raises(ReleaseVerificationError, match="size"):
+        verify_published_release(
+            REPOSITORY,
+            TAG,
+            ASSET_NAME,
+            ASSET_DIGEST,
+            EXPECTED_COMMIT,
+            retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
+            receipt_output=output,
+        )
+
+    assert not output.exists()
 
 
 def test_network_verification_fails_closed_after_bounded_retries(monkeypatch):

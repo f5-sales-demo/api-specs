@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import io
+import json
 import os
 import re
 import sys
@@ -87,6 +88,8 @@ def validate_release_metadata(
         raise ReleaseVerificationError("release asset is not in the uploaded state")
     if asset.get("content_type") != "application/zip":
         raise ReleaseVerificationError("release asset content type is not application/zip")
+    if type(asset.get("size")) is not int or asset["size"] <= 0:
+        raise ReleaseVerificationError("release asset size is not a positive integer")
 
     digest = asset.get("digest")
     if not isinstance(digest, str) or SHA256_DIGEST.fullmatch(digest) is None:
@@ -101,6 +104,21 @@ def validate_release_metadata(
         raise ReleaseVerificationError("release asset download URL does not match the release")
 
     return asset
+
+
+def release_receipt(release: dict[str, Any], asset: dict[str, Any]) -> dict[str, Any]:
+    """Return the exact six-field immutable identity consumed downstream."""
+    tag = release["tag_name"]
+    if not isinstance(tag, str) or not tag.startswith("v") or len(tag) == 1:
+        raise ReleaseVerificationError("release tag cannot form a downstream version")
+    return {
+        "version": tag.removeprefix("v"),
+        "tag_name": tag,
+        "published_at": release["published_at"],
+        "asset_name": asset["name"],
+        "asset_size": asset["size"],
+        "asset_digest": asset["digest"],
+    }
 
 
 def validate_tag_ref(tag_ref: dict[str, Any], tag: str, expected_commit: str) -> None:
@@ -183,6 +201,7 @@ def verify_published_release(
     *,
     token: str | None = None,
     retry: ReleaseVerificationRetry | None = None,
+    receipt_output: Path | None = None,
 ) -> str:
     """Poll until tag, release metadata, and public bytes satisfy one identity."""
     retry_policy = retry or ReleaseVerificationRetry()
@@ -219,7 +238,21 @@ def verify_published_release(
                 raise ReleaseVerificationError(
                     f"release asset download failed with HTTP {download.status_code}"
                 ) from error
+            if len(download.content) != asset["size"]:
+                raise ReleaseVerificationError(
+                    "downloaded asset size does not match GitHub release metadata"
+                )
             verify_asset_bytes(download.content, expected_digest)
+            if receipt_output is not None:
+                try:
+                    receipt_output.parent.mkdir(parents=True, exist_ok=True)
+                    receipt_output.write_text(
+                        json.dumps(release_receipt(release, asset), indent=2) + "\n"
+                    )
+                except OSError as error:
+                    raise ReleaseVerificationError(
+                        "verified release receipt could not be written"
+                    ) from error
             return expected_digest
         except (ReleaseVerificationError, requests.RequestException) as error:
             last_error = (
@@ -243,6 +276,11 @@ def main() -> int:
     parser.add_argument("--expected-asset", required=True, help="Exact ZIP asset name")
     parser.add_argument("--local-asset", type=Path, required=True, help="Locally built ZIP")
     parser.add_argument("--expected-commit", required=True, help="Exact source commit SHA")
+    parser.add_argument(
+        "--receipt-output",
+        type=Path,
+        help="Write the verified six-field downstream receipt to this path",
+    )
     parser.add_argument("--attempts", type=int, default=6)
     parser.add_argument("--interval-seconds", type=float, default=5.0)
     args = parser.parse_args()
@@ -261,6 +299,7 @@ def main() -> int:
                 attempts=args.attempts,
                 interval_seconds=args.interval_seconds,
             ),
+            receipt_output=args.receipt_output,
         )
     except (ReleaseVerificationError, ValueError) as error:
         print(f"Release verification failed: {error}", file=sys.stderr)

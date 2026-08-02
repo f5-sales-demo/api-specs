@@ -47,17 +47,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0  # Need full history for tags
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Set up Node.js (for Spectral)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '20'
           # Now that a lockfile exists, setup-node can key the npm cache off it.
@@ -78,7 +78,7 @@ jobs:
           echo "${GITHUB_WORKSPACE}/node_modules/.bin" >> "${GITHUB_PATH}"
 
       - name: Cache pip packages
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
@@ -92,7 +92,7 @@ jobs:
 
       - name: Get previous ETag from cache
         id: prev_etag
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: .etag_cache
           key: etag-${{ github.sha }}
@@ -192,7 +192,7 @@ jobs:
 
       - name: Upload issue mapping artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: issue-mapping
           path: reports/issue_mapping.json
@@ -217,21 +217,21 @@ jobs:
         # its report is the only place the offending rule and file are
         # recorded in full.
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: validation-reports
           path: reports/
           retention-days: 30
 
       - name: Upload reconciled specs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: reconciled-specs
           path: release/specs/
           retention-days: 7
 
       - name: Upload spec metadata
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: spec-metadata
           path: specs/original/.spec_metadata.json
@@ -251,12 +251,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
 
       - name: Download spec metadata
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: spec-metadata
           path: specs/original/
@@ -335,13 +335,15 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      release_receipt: ${{ steps.verify_release.outputs.release_receipt }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -360,19 +362,19 @@ jobs:
           mkdir -p release/specs
 
       - name: Download reconciled specs
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: reconciled-specs
           path: release/specs/
 
       - name: Download validation reports
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: validation-reports
           path: reports/
 
       - name: Download spec metadata
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: spec-metadata
           path: specs/original/
@@ -458,6 +460,7 @@ jobs:
           fi
 
       - name: Verify immutable GitHub release
+        id: verify_release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ needs.check-release-needed.outputs.version }}
@@ -467,7 +470,8 @@ jobs:
             --tag "v${VERSION}" \
             --expected-asset "api-specs-v${VERSION}.zip" \
             --local-asset "release/api-specs-v${VERSION}.zip" \
-            --expected-commit "${GITHUB_SHA}"
+            --expected-commit "${GITHUB_SHA}" \
+            --receipt-output "$RUNNER_TEMP/api-specs-release-receipt.json"
 
           attestation_verified=false
           for attempt in 1 2 3 4 5 6; do
@@ -486,6 +490,8 @@ jobs:
             echo "::error::GitHub release attestation did not verify"
             exit 1
           fi
+          receipt=$(jq -ce '.' "$RUNNER_TEMP/api-specs-release-receipt.json")
+          echo "release_receipt=$receipt" >> "$GITHUB_OUTPUT"
 
       - name: Summary
         env:
@@ -533,7 +539,7 @@ jobs:
           GH_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
           VERSION: ${{ needs.check-release-needed.outputs.version }}
           SOURCE_REPO: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
+          RELEASE_RECEIPT: ${{ needs.release.outputs.release_receipt }}
         run: |
           # Plain `gh api` rather than a third-party action. A
           # repository_dispatch is a single API call, so depending on an
@@ -546,13 +552,23 @@ jobs:
           # Every value crosses into the shell through env: above and is
           # referenced as a quoted variable; nothing is interpolated into this
           # body.
-          gh api "repos/f5-sales-demo/api-specs-enriched/dispatches" \
-            -f "event_type=upstream-specs-released" \
-            -f "client_payload[version]=${VERSION}" \
-            -f "client_payload[release_tag]=v${VERSION}" \
-            -f "client_payload[release_url]=${GITHUB_SERVER_URL}/${SOURCE_REPO}/releases/tag/v${VERSION}" \
-            -f "client_payload[trigger_source]=${SOURCE_REPO}" \
-            -f "client_payload[run_id]=${RUN_ID}"
+          jq -nce \
+            --arg source "$SOURCE_REPO" \
+            --argjson receipt "$RELEASE_RECEIPT" '
+              if ($receipt | keys | sort) !=
+                  (["asset_digest", "asset_name", "asset_size", "published_at", "tag_name", "version"] | sort)
+              then error("verified release receipt has an unexpected shape")
+              else {
+                event_type: "upstream-specs-released",
+                client_payload: {
+                  trigger_source: $source,
+                  release_receipt: $receipt
+                }
+              }
+              end
+            ' > "$RUNNER_TEMP/downstream-dispatch.json"
+          gh api --method POST "repos/f5-sales-demo/api-specs-enriched/dispatches" \
+            --input "$RUNNER_TEMP/downstream-dispatch.json"
 
       - name: Summary
         env:
@@ -609,7 +625,7 @@ jobs:
 
     steps:
       - name: Reconcile the failure tracker with this run
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           PIPELINE_FAILED: ${{ contains(needs.*.result, 'failure') }}
           VALIDATE_RESULT: ${{ needs.validate.result }}
@@ -723,12 +739,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           token: ${{ secrets.REPO_ADMIN_TOKEN }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -738,7 +754,7 @@ jobs:
           pip install -e .
 
       - name: Download validation reports
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: validation-reports
           path: reports/
@@ -811,7 +827,7 @@ jobs:
       # into a repository takeover. GITHUB_TOKEN is not a candidate either -- pushes made with
       # it do not trigger pull_request workflows, so tests.yml would never run on the PR.
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           token: ${{ secrets.REPO_SYNC_TOKEN }}
 
@@ -835,7 +851,7 @@ jobs:
           mkdir -p release/specs
 
       - name: Download reconciled specs
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: reconciled-specs
           path: release/specs/
@@ -844,7 +860,7 @@ jobs:
       # `include-hidden-files`, so the dot-prefixed provenance record is absent from it. The
       # artifact must carry it: the drift gate reads spec_date from here to pin info.version.
       - name: Download spec metadata
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: spec-metadata
           path: release/specs/

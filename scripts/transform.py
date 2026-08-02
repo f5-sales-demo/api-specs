@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any
 import yaml
 from rich.console import Console
 
+from .utils.nullable_response import apply_nullable_response_corrections
 from .utils.spec_loader import save_spec_to_file
 from .utils.text_replacements import (
     DEFAULT_EXAMPLE_PLACEHOLDER_FIELDS,
@@ -571,6 +572,20 @@ def fix_dangling_refs(
     return spec
 
 
+@register_transform("mark_nullable_response_fields")
+def mark_nullable_response_fields(
+    spec: dict,
+    config: TransformConfig,
+    filename: str,
+) -> dict:
+    """Apply fail-closed, measured response nullability corrections."""
+    return apply_nullable_response_corrections(
+        spec,
+        config.metadata.get("nullable_response_corrections", []),
+        filename,
+    )
+
+
 @register_transform("remove_unused_schemas")
 def remove_unused_schemas(
     spec: dict,
@@ -902,6 +917,7 @@ def load_config(config_path: str | Path) -> TransformConfig:
         "property_name_corrections",
         "oneof_group_corrections",
         "dangling_ref_corrections",
+        "nullable_response_corrections",
     ):
         path = config_path.parent / f"{key}.yaml"
         if path.exists():

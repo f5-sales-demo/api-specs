@@ -120,12 +120,10 @@ class SpecLoader:
         domain_files = {}
 
         for filepath in self.spec_dir.glob("*.json"):
-            try:
-                spec = self.load_spec(filepath.name)
-                domain_files[filepath.name] = spec
-                console.print(f"[green]Loaded: {filepath.name}[/green]")
-            except (json.JSONDecodeError, OSError, KeyError) as e:
-                console.print(f"[red]Failed to load {filepath.name}: {e}[/red]")
+            if filepath.name.startswith("."):
+                continue
+            spec = self.load_spec(filepath.name)
+            domain_files[filepath.name] = spec
 
         return domain_files
 

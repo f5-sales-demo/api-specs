@@ -1,177 +1,63 @@
 ---
-# F5 XC Target Endpoints for Baseline Validation
-
-# These 10 endpoints form the baseline for validation framework development
-# The framework should be extensible to all APIs in the OpenAPI spec
+# Authenticated F5 XC operations used as the live API-spec validation baseline.
+#
+# `domain` is the stable semantic segment between `schema.` and
+# `.ves-swagger.json`. Numeric filename prefixes are deliberately excluded
+# because every upstream publication can renumber them. Every configured
+# method/path must exist exactly in its resolved downloaded spec.
 
 endpoints:
-  # Virtual Domain
   healthcheck:
-    resource: healthchecks
-    domain_file: docs-cloud-f5-com.0124.public.ves.io.schema.healthcheck.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/healthchecks
-      read: GET /api/config/namespaces/{namespace}/healthchecks/{name}
+    domain: healthcheck
+    operations:
       list: GET /api/config/namespaces/{namespace}/healthchecks
-      update: PUT /api/config/namespaces/{namespace}/healthchecks/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/healthchecks/{name}
-    test_priority: high
-    description: "Health check configurations for origin monitoring"
 
   origin_pool:
-    resource: origin_pools
-    domain_file: docs-cloud-f5-com.0177.public.ves.io.schema.views.origin_pool.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/origin_pools
-      read: GET /api/config/namespaces/{namespace}/origin_pools/{name}
+    domain: views.origin_pool
+    operations:
       list: GET /api/config/namespaces/{namespace}/origin_pools
-      update: PUT /api/config/namespaces/{namespace}/origin_pools/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/origin_pools/{name}
-    test_priority: high
-    description: "Origin server pool definitions"
 
   app_firewall:
-    resource: app_firewalls
-    domain_file: docs-cloud-f5-com.0019.public.ves.io.schema.app_firewall.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/app_firewalls
-      read: GET /api/config/namespaces/{namespace}/app_firewalls/{name}
+    domain: app_firewall
+    operations:
       list: GET /api/config/namespaces/{namespace}/app_firewalls
-      update: PUT /api/config/namespaces/{namespace}/app_firewalls/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/app_firewalls/{name}
-    test_priority: high
-    description: "Web Application Firewall configurations"
 
   service_policy:
-    resource: service_policys
-    domain_file: docs-cloud-f5-com.0208.public.ves.io.schema.service_policy.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/service_policys
-      read: GET /api/config/namespaces/{namespace}/service_policys/{name}
+    domain: service_policy
+    operations:
       list: GET /api/config/namespaces/{namespace}/service_policys
-      update: PUT /api/config/namespaces/{namespace}/service_policys/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/service_policys/{name}
-    test_priority: medium
-    description: "Service-level security policies"
 
-  # API Domain
   api_definition:
-    resource: api_definitions
-    domain_file: docs-cloud-f5-com.0002.public.ves.io.schema.views.api_definition.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/api_definitions
-      read: GET /api/config/namespaces/{namespace}/api_definitions/{name}
+    domain: views.api_definition
+    operations:
       list: GET /api/config/namespaces/{namespace}/api_definitions
-      update: PUT /api/config/namespaces/{namespace}/api_definitions/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/api_definitions/{name}
-    test_priority: high
-    description: "API endpoint definitions for discovery and protection"
 
   api_discovery:
-    resource: api_discoverys
-    domain_file: docs-cloud-f5-com.0003.public.ves.io.schema.api_sec.api_discovery.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/api_discoverys
-      read: GET /api/config/namespaces/{namespace}/api_discoverys/{name}
+    domain: api_sec.api_discovery
+    operations:
       list: GET /api/config/namespaces/{namespace}/api_discoverys
-      update: PUT /api/config/namespaces/{namespace}/api_discoverys/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/api_discoverys/{name}
-    test_priority: medium
-    description: "API discovery configurations"
 
   api_groups:
-    resource: api_groups
-    domain_file: docs-cloud-f5-com.0004.public.ves.io.schema.api_group.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/api_groups
-      read: GET /api/config/namespaces/{namespace}/api_groups/{name}
-      list: GET /api/config/namespaces/{namespace}/api_groups
-      update: PUT /api/config/namespaces/{namespace}/api_groups/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/api_groups/{name}
-    test_priority: medium
-    description: "API grouping and categorization"
+    domain: api_group
+    operations:
+      list: GET /api/web/namespaces/{namespace}/api_groups
 
   code_base_integration:
-    resource: code_base_integrations
-    domain_file: docs-cloud-f5-com.0064.public.ves.io.schema.api_sec.code_base_integration.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/code_base_integrations
-      read: GET /api/config/namespaces/{namespace}/code_base_integrations/{name}
+    domain: api_sec.code_base_integration
+    operations:
       list: GET /api/config/namespaces/{namespace}/code_base_integrations
-      update: PUT /api/config/namespaces/{namespace}/code_base_integrations/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/code_base_integrations/{name}
-    test_priority: low
-    description: "Source code repository integrations"
 
-  # Data and Privacy Security Domain
   data_type:
-    resource: data_types
-    domain_file: docs-cloud-f5-com.0096.public.ves.io.schema.data_type.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/data_types
-      read: GET /api/config/namespaces/{namespace}/data_types/{name}
+    domain: data_type
+    operations:
       list: GET /api/config/namespaces/{namespace}/data_types
-      update: PUT /api/config/namespaces/{namespace}/data_types/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/data_types/{name}
-    test_priority: medium
-    description: "Sensitive data type definitions"
 
   sensitive_data_policy:
-    resource: sensitive_data_policys
-    domain_file: docs-cloud-f5-com.0206.public.ves.io.schema.sensitive_data_policy.ves-swagger.json
-    api_group: config
-    crud_operations:
-      create: POST /api/config/namespaces/{namespace}/sensitive_data_policys
-      read: GET /api/config/namespaces/{namespace}/sensitive_data_policys/{name}
+    domain: sensitive_data_policy
+    operations:
       list: GET /api/config/namespaces/{namespace}/sensitive_data_policys
-      update: PUT /api/config/namespaces/{namespace}/sensitive_data_policys/{name}
-      delete: DELETE /api/config/namespaces/{namespace}/sensitive_data_policys/{name}
-    test_priority: medium
-    description: "Sensitive data protection policies"
 
-# Domain file mappings
-domain_files:
-  docs-cloud-f5-com.0124.public.ves.io.schema.healthcheck.ves-swagger.json:
-    description: "Health check configurations"
-    priority: 1
-  docs-cloud-f5-com.0177.public.ves.io.schema.views.origin_pool.ves-swagger.json:
-    description: "Origin pool configurations"
-    priority: 1
-  docs-cloud-f5-com.0019.public.ves.io.schema.app_firewall.ves-swagger.json:
-    description: "Application firewall configurations"
-    priority: 1
-  docs-cloud-f5-com.0208.public.ves.io.schema.service_policy.ves-swagger.json:
-    description: "Service policy configurations"
-    priority: 2
-  docs-cloud-f5-com.0002.public.ves.io.schema.views.api_definition.ves-swagger.json:
-    description: "API definition configurations"
-    priority: 2
-  docs-cloud-f5-com.0003.public.ves.io.schema.api_sec.api_discovery.ves-swagger.json:
-    description: "API discovery configurations"
-    priority: 2
-  docs-cloud-f5-com.0004.public.ves.io.schema.api_group.ves-swagger.json:
-    description: "API group configurations"
-    priority: 2
-  docs-cloud-f5-com.0064.public.ves.io.schema.api_sec.code_base_integration.ves-swagger.json:
-    description: "Code base integration configurations"
-    priority: 3
-  docs-cloud-f5-com.0096.public.ves.io.schema.data_type.ves-swagger.json:
-    description: "Data type configurations"
-    priority: 3
-  docs-cloud-f5-com.0206.public.ves.io.schema.sensitive_data_policy.ves-swagger.json:
-    description: "Sensitive data policy configurations"
-    priority: 3
-
-# Test execution order (by priority)
+# Execution order is explicit and must name every endpoint exactly once.
 test_order:
   - healthcheck
   - origin_pool

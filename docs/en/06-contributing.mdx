@@ -24,9 +24,11 @@ Live API validation requires:
 ```bash
 export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
 export F5XC_API_TOKEN="your-api-token"
+export F5XC_NAMESPACE="example-namespace"
 ```
 
-Without these, `make validate` falls back to dry-run mode.
+If any value is missing, or the authenticated namespace probe fails,
+`make validate` exits nonzero. There is no dry-run validation fallback.
 
 ## Running the Pipeline
 
@@ -42,7 +44,6 @@ make all
 ```bash
 make download        # Fetch upstream specs
 make validate        # Run live API tests (requires API token)
-make validate-dry    # Dry run (no API calls)
 make spectral-lint   # Spectral discover mode on original specs
 make reconcile       # Apply fixes from both reports
 make spectral-gate   # Spectral quality gate on reconciled specs

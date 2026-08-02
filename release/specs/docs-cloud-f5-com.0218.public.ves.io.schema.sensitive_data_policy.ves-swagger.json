@@ -1774,7 +1774,12 @@
             "x-displayname": "Disabled"
           },
           "get_spec": {
-            "$ref": "#/components/schemas/schemasensitive_data_policyGetSpecType"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/schemasensitive_data_policyGetSpecType"
+              }
+            ]
           },
           "labels": {
             "type": "object",
@@ -1783,7 +1788,12 @@
             "x-displayname": "Labels"
           },
           "metadata": {
-            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/schemaObjectGetMetaType"
+              }
+            ]
           },
           "name": {
             "type": "string",
@@ -1800,7 +1810,12 @@
             "x-ves-example": "ns1"
           },
           "owner_view": {
-            "$ref": "#/components/schemas/schemaViewRefType"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/schemaViewRefType"
+              }
+            ]
           },
           "status_set": {
             "type": "array",
@@ -1812,7 +1827,12 @@
             "x-displayname": "Status"
           },
           "system_metadata": {
-            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+              }
+            ]
           },
           "tenant": {
             "type": "string",

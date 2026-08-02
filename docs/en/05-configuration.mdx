@@ -16,7 +16,7 @@ api:
 ```
 
 | Field | Description |
-|-------|-------------|
+| --- | --- |
 | `timeout` | HTTP request timeout in seconds. |
 | `retries` | Number of retry attempts on failure. |
 
@@ -30,6 +30,7 @@ export F5XC_API_URL="https://example-tenant.console.ves.volterra.io"
 export F5XC_NAMESPACE="example-namespace"
 export F5XC_API_TOKEN="your-api-token"
 ```
+
 :::
 
 ### Download Settings
@@ -42,7 +43,7 @@ download:
 ```
 
 | Field | Description |
-|-------|-------------|
+| ------- | ------------- |
 | `url` | URL of the official F5 XC OpenAPI spec bundle (ZIP). |
 | `output_dir` | Where extracted specs are stored. |
 | `etag_cache` | File that stores the HTTP ETag for conditional downloads. |
@@ -71,7 +72,7 @@ validation_categories:
 ```
 
 | Category | Keywords |
-|----------|----------|
+| ---------- | ---------- |
 | `string_length` | `minLength`, `maxLength` |
 | `pattern` | `pattern` |
 | `numeric_bounds` | `minimum`, `maximum`, `exclusiveMinimum`, `exclusiveMaximum` |
@@ -91,7 +92,7 @@ schemathesis:
 ```
 
 | Field | Description |
-|-------|-------------|
+| --- | --- |
 | `examples_per_operation` | Exact number of generated test cases per configured operation. |
 
 Generation is derandomized and uses only Hypothesis's generation phase, so an
@@ -114,7 +115,7 @@ reconciliation:
 ```
 
 | Field | Description |
-|-------|-------------|
+| --- | --- |
 | `priority` | Order of preference when multiple data sources disagree. |
 | `fix_strategies` | Maps each discrepancy type to its fix action. See [Fixes Applied](/api-specs/en/03-fixes-applied/). |
 
@@ -154,7 +155,7 @@ spectral:
 ```
 
 | Field | Description |
-|-------|-------------|
+| ------- | ------------- |
 | `enabled` | Toggle Spectral linting entirely. |
 | `ruleset` | Which Spectral config file to use (pipeline uses `spectral-pipeline.yaml`). |
 | `auto_fix` | Map of rule name to boolean. `true` means the reconciler will fix violations. |
@@ -188,7 +189,7 @@ release:
 ```
 
 | Field | Description |
-|-------|-------------|
+| ------- | ------------- |
 | `output_dir` | Directory for release artifacts. |
 | `include_changelog` | Include `CHANGELOG.md` in the release package. |
 | `include_validation_report` | Include the validation report in the release package. |
@@ -217,7 +218,7 @@ endpoints:
 ```
 
 | Field | Description |
-|-------|-------------|
+| ------- | ------------- |
 | `resource` | API resource name (used in URL paths). |
 | `domain_file` | Filename of the OpenAPI spec in `specs/original/`. |
 | `api_group` | API group prefix (`config`, `web`, etc.). |
@@ -230,7 +231,7 @@ endpoints:
 10 endpoints across three domains:
 
 | Endpoint | Domain | Priority |
-|----------|--------|----------|
+| ---------- | -------- | ---------- |
 | `healthcheck` | Virtual | high |
 | `origin_pool` | Virtual | high |
 | `app_firewall` | Virtual | high |

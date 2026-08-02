@@ -1,0 +1,53 @@
+---
+# Response fields observed as JSON null during authenticated live validation.
+# Rules are deliberately exact: filename domain, component schema, and property
+# names must all resolve or the transform fails.
+corrections:
+  - file_pattern: .schema.api_group.ves-swagger.json
+    schema: api_groupListResponseItem
+    properties:
+      - get_spec
+      - metadata
+      - owner_view
+      - system_metadata
+    measured: 2026-08-02
+    evidence: >-
+      Authenticated list response returned 233 items; the first item carried
+      JSON null for all four fields. Schemathesis reported four response-schema
+      violations because their referenced object schemas rejected null.
+
+  - file_pattern: .schema.app_firewall.ves-swagger.json
+    schema: app_firewallListResponseItem
+    properties: &nullable_summary_fields
+      - get_spec
+      - metadata
+      - owner_view
+      - system_metadata
+    measured: 2026-08-02
+    evidence: >-
+      Authenticated list response returned one item whose four summary object
+      fields were JSON null; Schemathesis measured four schema violations.
+
+  - file_pattern: .schema.service_policy.ves-swagger.json
+    schema: service_policyListResponseItem
+    properties: *nullable_summary_fields
+    measured: 2026-08-02
+    evidence: >-
+      Authenticated list response returned two items; the first item's four
+      summary object fields were JSON null and produced four schema violations.
+
+  - file_pattern: .schema.data_type.ves-swagger.json
+    schema: data_typeListResponseItem
+    properties: *nullable_summary_fields
+    measured: 2026-08-02
+    evidence: >-
+      Authenticated list response returned 48 items; the first item's four
+      summary object fields were JSON null and produced four schema violations.
+
+  - file_pattern: .schema.sensitive_data_policy.ves-swagger.json
+    schema: sensitive_data_policyListResponseItem
+    properties: *nullable_summary_fields
+    measured: 2026-08-02
+    evidence: >-
+      Authenticated list response returned one item whose four summary object
+      fields were JSON null; Schemathesis measured four schema violations.

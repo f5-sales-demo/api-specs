@@ -119,6 +119,7 @@ def sample_config() -> dict:
             "output_dir": "specs/original",
             "etag_cache": ".etag_cache",
         },
+        "validation": {"input_dir": "specs/transformed"},
         "validation_categories": {
             "string_length": {"enabled": True},
             "pattern": {"enabled": True},
@@ -127,8 +128,7 @@ def sample_config() -> dict:
             "enum_values": {"enabled": True},
         },
         "schemathesis": {
-            "enabled": True,
-            "max_examples": 10,
+            "examples_per_operation": 1,
         },
         "reports": {
             "output_dir": "reports",
@@ -152,10 +152,8 @@ def sample_endpoints_config() -> dict:
     return {
         "endpoints": {
             "healthcheck": {
-                "resource": "healthchecks",
-                "domain_file": "virtual.json",
-                "api_group": "config",
-                "crud_operations": {
+                "domain": "healthcheck",
+                "operations": {
                     "create": "POST /api/config/namespaces/{namespace}/healthchecks",
                     "read": "GET /api/config/namespaces/{namespace}/healthchecks/{name}",
                     "list": "GET /api/config/namespaces/{namespace}/healthchecks",

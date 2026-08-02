@@ -3,7 +3,7 @@ title: Pipeline Overview
 description: Six-stage automated pipeline that downloads, validates, lints, reconciles, gates, and releases F5 XC OpenAPI specs
 ---
 
-The pipeline runs daily at 6 AM UTC via GitHub Actions (`validate-and-release.yml`) and on every push to `main` that touches `scripts/`, `config/`, or `pyproject.toml`. It can also be triggered manually with options to force a release or skip live API tests.
+The pipeline runs daily at 6 AM UTC via GitHub Actions (`validate-and-release.yml`) and on every push to `main` that touches `scripts/`, `config/`, or `pyproject.toml`. It can also be triggered manually to force a release. Live API tests cannot be skipped by a release run.
 
 ## Pipeline Stages
 
@@ -33,10 +33,20 @@ The pipeline runs daily at 6 AM UTC via GitHub Actions (`validate-and-release.ym
 
 ### 2. Validate
 
-`scripts/validate.py` orchestrates two kinds of testing against the live F5 XC API:
+`scripts/validate.py` resolves each stable semantic domain in
+`config/endpoints.yaml` to exactly one downloaded spec, proves that every
+configured method/path exists, and then uses Schemathesis to generate and
+execute authenticated read/list response examples against the live F5 XC API.
+The configured namespace is injected into generated path parameters. Mutation
+testing is not part of this release gate because generic fuzzed CRUD calls do
+not provide a safe create/cleanup lifecycle. Missing domains or
+operations, invalid OpenAPI operations, zero executed examples, authentication
+failure, and test errors all fail the pipeline.
 
-- **Schemathesis** -- property-based testing that generates random valid/invalid payloads per the spec and checks whether the API agrees with the spec's constraints.
-- **Constraint validation** -- targeted tests for all 10 OpenAPI constraint categories (string length, pattern, numeric bounds, required fields, enums, array bounds, object structure, composition, dependencies, data types).
+Each generated case is sent exactly once. Schemathesis runs a closed set of
+passive status, content type, header, server-error, and response-schema checks;
+active checks that issue additional authentication probes are excluded so the
+same case cannot gain nondeterministic network observations during validation.
 
 Discrepancies are written to `reports/validation_report.json`.
 
@@ -54,15 +64,13 @@ Violations are converted to `Discrepancy` objects and written to `reports/spectr
 - **Spectral fixes** enrich specs with servers, contact info, tags, security metadata, and remove dead components.
 - **Security metadata** is always injected if the `security_scheme` config is present, even when Spectral did not flag it.
 
-Fixed specs are written to `release/specs/` and validated with `openapi-spec-validator` before saving. If a fixed spec fails validation, the original is used as a fallback.
+Fixed specs are written to `release/specs/` and validated with `openapi-spec-validator` before saving. An invalid transformed spec fails the pipeline.
 
 ### 5. Spectral Gate
 
 `scripts/spectral_lint.py --mode gate` re-runs Spectral against the reconciled specs in `release/specs/`. The gate checks error and warning counts against configurable thresholds (`spectral.gate.max_errors` and `spectral.gate.max_warnings` in `validation.yaml`).
 
-:::note
-Phase 1 (current): thresholds are `null` (warn-only). Set `max_errors: 0` to enforce a zero-error gate.
-:::
+The current gate requires zero errors (`max_errors: 0`).
 
 ### 6. Release
 

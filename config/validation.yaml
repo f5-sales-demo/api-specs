@@ -3,9 +3,8 @@
 
 # API Configuration
 api:
-  base_url: "https://example-tenant.console.ves.volterra.io"
-  tenant: "example-tenant"
-  namespace: "example-namespace"
+  # F5XC_API_URL, F5XC_API_TOKEN, and F5XC_NAMESPACE are required environment
+  # variables. Credentials and deployment identifiers never belong in source.
   timeout: 30
   retries: 3
   retry_delay: 2
@@ -15,6 +14,11 @@ download:
   url: "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
   output_dir: "specs/original"
   etag_cache: ".etag_cache"
+
+# Live validation operates on the corrected intermediate specs produced by the
+# transform stage, not the uncorrected upstream landing bytes.
+validation:
+  input_dir: "specs/transformed"
 
 # Validation Categories (all 10 from OpenAPI spec)
 validation_categories:
@@ -70,15 +74,7 @@ validation_categories:
 
 # Schemathesis Configuration
 schemathesis:
-  enabled: true
-  max_examples: 100
-  hypothesis_phases:
-    - generate
-    - target
-  stateful_testing: true
-  base_url_override: null  # Use API base_url if null
-  auth_header: "Authorization"
-  auth_prefix: "APIToken"
+  examples_per_operation: 1
 
 # Reconciliation Settings
 reconciliation:
@@ -163,6 +159,7 @@ transform:
     deduplicate_operation_ids: true
     strip_script_tags: true
     fix_invalid_examples: true
+    mark_nullable_response_fields: true
     rename_colliding_schemas: true
     remove_deprecated_paths: true
     mark_deprecated_operations: true

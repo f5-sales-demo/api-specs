@@ -41,7 +41,6 @@
 # by `x-f5xc-wire-name` rather than by not renaming.
 #
 # Last verified: 2026-07-25
-# Tenant: example-tenant
 
 corrections:
   # --- Verified: API uses the corrected key, safe to rename outright ---

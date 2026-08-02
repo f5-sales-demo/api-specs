@@ -6,16 +6,20 @@ import json
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 if TYPE_CHECKING:
     from collections.abc import Generator
 
 import schemathesis
-from hypothesis import HealthCheck, Phase, Verbosity, settings
+from hypothesis import Phase, given, settings
+from requests.structures import CaseInsensitiveDict
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from schemathesis import Case
+from schemathesis.checks import CHECKS, CheckFunction, FailureGroup, load_all_checks
+from schemathesis.config import ProjectConfig, ProjectsConfig
+from schemathesis.config import SchemathesisConfig as LibrarySchemathesisConfig
 
 from .auth import F5XCAuth, RateLimiter
 from .constraint_validator import Discrepancy, DiscrepancyType
@@ -25,6 +29,33 @@ console = Console()
 # HTTP status code thresholds
 HTTP_SERVER_ERROR = 500
 HTTP_CLIENT_ERROR = 400
+
+# Schemathesis' default validation set includes active checks such as
+# ``ignored_auth`` that issue another HTTP request.  Live validation has already
+# executed the configured case exactly once; its result must depend only on that
+# response.  Resolve a closed, pinned set of passive response checks up front so
+# repository or library configuration cannot silently add network activity.
+RESPONSE_ONLY_CHECK_NAMES = (
+    "not_a_server_error",
+    "status_code_conformance",
+    "content_type_conformance",
+    "response_headers_conformance",
+    "response_schema_conformance",
+)
+load_all_checks()
+RESPONSE_ONLY_CHECKS = cast(
+    list[CheckFunction],
+    CHECKS.get_by_names(RESPONSE_ONLY_CHECK_NAMES),
+)
+
+
+def _invoke_hypothesis_wrapper(test: Any) -> None:
+    """Call a ``@given`` wrapper whose generated arguments are runtime-owned."""
+    test()
+
+
+class OperationResolutionError(RuntimeError):
+    """Raised when the OpenAPI operation graph cannot satisfy the test contract."""
 
 
 class TestStatus(Enum):
@@ -53,14 +84,16 @@ class SchemathesisResult:
 class SchemathesisConfig:
     """Configuration for Schemathesis testing."""
 
-    max_examples: int = 100
-    hypothesis_phases: list[str] = field(default_factory=lambda: ["generate", "target"])
-    stateful_testing: bool = True
-    timeout_per_test: int = 60
-    suppress_health_check: list[str] = field(
-        default_factory=list
-    )  # List of health checks to suppress
-    verbosity: str = "normal"
+    examples_per_operation: int = 1
+
+    def __post_init__(self) -> None:
+        """Reject configurations that could produce vacuous operation results."""
+        if (
+            not isinstance(self.examples_per_operation, int)
+            or isinstance(self.examples_per_operation, bool)
+            or self.examples_per_operation <= 0
+        ):
+            raise ValueError("schemathesis.examples_per_operation must be a positive integer")
 
 
 class SchemathesisRunner:
@@ -77,47 +110,21 @@ class SchemathesisRunner:
         self.results: list[SchemathesisResult] = []
         self._rate_limiter = RateLimiter()
 
-        # Configure hypothesis settings
-        # Map verbosity string to valid Verbosity enum
-        verbosity_map = {
-            "quiet": Verbosity.quiet,
-            "normal": Verbosity.normal,
-            "verbose": Verbosity.verbose,
-            "debug": Verbosity.debug,
-        }
-        verbosity = verbosity_map.get(self.config.verbosity.lower(), Verbosity.normal)
-
-        # Build suppress_health_check tuple if needed
-        suppress_hc: tuple[HealthCheck, ...] = (
-            tuple(HealthCheck[hc] for hc in self.config.suppress_health_check)
-            if self.config.suppress_health_check
-            else ()
-        )
-
-        self._hypothesis_settings = settings(
-            max_examples=self.config.max_examples,
-            phases=[
-                Phase[phase.upper()]
-                for phase in self.config.hypothesis_phases
-                if hasattr(Phase, phase.upper())
-            ],
-            deadline=self.config.timeout_per_test * 1000,  # ms
-            suppress_health_check=suppress_hc,
-            verbosity=verbosity,
-        )
-
     def load_schema(self, spec: dict, base_url: str | None = None) -> Any:
         """Load OpenAPI schema for Schemathesis."""
         base_url = base_url or self.auth.api_url
 
-        # In schemathesis 4.x, base_url must be in the spec's servers field
-        # Make a copy to avoid modifying the original
+        # In Schemathesis 4.x, the concrete base URL must be in the schema used
+        # to build cases. Published specs intentionally carry a tenant template;
+        # the authenticated validation copy replaces it without mutating input.
         spec_copy = spec.copy()
-        if base_url and "servers" not in spec_copy:
+        if base_url:
             spec_copy["servers"] = [{"url": base_url}]
 
-        # Create schema from dictionary (schemathesis 4.x API)
-        return schemathesis.openapi.from_dict(spec_copy)
+        library_config = LibrarySchemathesisConfig(
+            projects=ProjectsConfig(default=ProjectConfig(base_url=base_url))
+        )
+        return schemathesis.openapi.from_dict(spec_copy, config=library_config)
 
     def load_schema_from_file(
         self,
@@ -132,12 +139,14 @@ class SchemathesisRunner:
         with filepath.open() as f:
             spec = json.load(f)
 
-        # Add base_url to servers field if not present
-        if base_url and "servers" not in spec:
+        # Replace the published tenant template in this validation-only copy.
+        if base_url:
             spec["servers"] = [{"url": base_url}]
 
-        # Load schema from dictionary (schemathesis 4.x API)
-        return schemathesis.openapi.from_dict(spec)
+        library_config = LibrarySchemathesisConfig(
+            projects=ProjectsConfig(default=ProjectConfig(base_url=base_url))
+        )
+        return schemathesis.openapi.from_dict(spec, config=library_config)
 
     def run_tests(
         self,
@@ -153,31 +162,7 @@ class SchemathesisRunner:
             TextColumn("[progress.description]{task.description}"),
             console=console,
         ) as progress:
-            # Get all operations and unwrap Result objects
-            all_operations = []
-            for op_result in schema.get_all_operations():
-                try:
-                    # Check if this is a Result object with .ok() method
-                    if hasattr(op_result, "ok") and callable(op_result.ok):
-                        # Try to unwrap - this will raise if it's an Err result
-                        op = op_result.ok()
-                    else:
-                        # Not a Result object, use as-is
-                        op = op_result
-                except Exception:  # noqa: S112  # pylint: disable=broad-exception-caught
-                    # Skip Err results
-                    continue
-
-                # Check if the unwrapped result is an Err object
-                # Err objects only have an 'err' attribute, not 'path' or 'method'
-                if (
-                    type(op).__name__ == "Err"
-                    or not hasattr(op, "path")
-                    or not hasattr(op, "method")
-                ):
-                    continue
-
-                all_operations.append(op)
+            all_operations = list(self._collect_operations(schema).values())
 
             # Filter endpoints if specified
             operations = all_operations
@@ -209,7 +194,12 @@ class SchemathesisRunner:
 
         try:
             # Generate test cases
-            test_cases = list(self._generate_test_cases(operation))
+            test_cases = list(
+                self._generate_test_cases(
+                    operation,
+                    max_cases=self.config.examples_per_operation,
+                )
+            )
             result.examples_tested = len(test_cases)
 
             for case in test_cases:
@@ -225,7 +215,6 @@ class SchemathesisRunner:
                         result.errors.append(
                             {
                                 "status_code": response.status_code,
-                                "body": self._safe_json(response),
                                 "case": self._case_to_dict(case),
                             }
                         )
@@ -233,28 +222,39 @@ class SchemathesisRunner:
 
                     # Validate response against schema using Schemathesis
                     try:
-                        # Schemathesis 4.x validation
-                        case.validate_response(response)
-                    except BaseExceptionGroup as eg:
-                        # Schemathesis 4.x raises FailureGroup (exception group) for validation failures
-                        # Extract individual validation failures and create discrepancies
-                        for validation_error in eg.exceptions:  # pylint: disable=not-an-iterable
+                        case.validate_response(
+                            response,
+                            checks=RESPONSE_ONLY_CHECKS,
+                        )
+                    except FailureGroup as failure_group:
+                        # A Schemathesis failure is measured contract evidence.
+                        # Keep it distinct from unexpected validator failures,
+                        # which mean the validation mechanism itself errored.
+                        validation_errors: tuple[BaseException, ...] = tuple(
+                            failure_group.exceptions
+                        )
+                        for validation_error in validation_errors:
                             result.discrepancies.append(
                                 self._make_schema_discrepancy(case, validation_error)
                             )
-                        result.status = TestStatus.FAILED
+                        if result.status is not TestStatus.ERROR:
+                            result.status = TestStatus.FAILED
                     except Exception as validation_error:  # pylint: disable=broad-exception-caught
-                        # Fallback for non-group exceptions
-                        result.discrepancies.append(
-                            self._make_schema_discrepancy(case, validation_error)
+                        result.errors.append(
+                            {
+                                "error": self._redact_namespace(str(validation_error)),
+                                "stage": "response_validation",
+                                "case": self._case_to_dict(case),
+                            }
                         )
-                        result.status = TestStatus.FAILED
+                        result.status = TestStatus.ERROR
 
                     # Additional validation checks
                     response_discrepancy = self._check_response(case, response)
                     if response_discrepancy:
                         result.discrepancies.append(response_discrepancy)
-                        result.status = TestStatus.FAILED
+                        if result.status is not TestStatus.ERROR:
+                            result.status = TestStatus.FAILED
 
                     self._rate_limiter.record_success()
 
@@ -278,19 +278,32 @@ class SchemathesisRunner:
         operation: Any,
         max_cases: int = 10,
     ) -> Generator[Case]:
-        """Generate test cases for an operation using Hypothesis."""
-        try:
-            # In schemathesis 4.x, we use as_strategy() to get a strategy
-            # and call .example() multiple times to generate different cases
-            test_func = operation.as_strategy()
-            for _ in range(max_cases):
-                case = test_func.example()
-                yield case
-        except Exception as e:  # pylint: disable=broad-exception-caught
-            console.print(f"[yellow]Failed to generate cases for {operation.path}: {e}[/yellow]")
+        """Generate test cases for an operation using Hypothesis.
+
+        Generation errors deliberately propagate to :meth:`_test_operation`,
+        which records an ERROR result.  Returning an empty generator here used
+        to turn an untestable operation into a false pass with zero examples.
+        """
+        generated: list[Case] = []
+
+        @settings(
+            max_examples=max_cases,
+            derandomize=True,
+            database=None,
+            deadline=None,
+            phases=(Phase.generate,),
+        )
+        @given(case=operation.as_strategy())
+        def collect(case: Case) -> None:
+            generated.append(case)
+
+        _invoke_hypothesis_wrapper(collect)
+        yield from generated
 
     def _execute_case(self, case: Case) -> Any:
         """Execute a test case against the API."""
+        self._bind_validation_scope(case)
+
         # Build request with authentication
         kwargs = case.as_transport_kwargs()
 
@@ -310,17 +323,40 @@ class SchemathesisRunner:
 
         return self.auth.request(method, path, **kwargs)
 
+    def _bind_validation_scope(self, case: Case) -> None:
+        """Force a safe, authenticated, deterministic read request."""
+        parameters = case.path_parameters
+        if parameters:
+            for name in parameters:
+                if name == "namespace" or name.endswith(".namespace"):
+                    parameters[name] = self.auth.namespace
+
+        headers = CaseInsensitiveDict(case.headers or {})
+        headers.update(self.auth.headers)
+        case.headers = headers
+
+        # The production gate intentionally owns only read/list response
+        # contracts. Optional fuzzed query combinations produced server errors
+        # and made the same committed contract depend on generated input.
+        if case.method.upper() == "GET":
+            case.query = {}
+
+    def _redact_namespace(self, value: str) -> str:
+        """Remove the infrastructure namespace from persisted evidence."""
+        return value.replace(self.auth.namespace, "<configured-namespace>")
+
     def _make_schema_discrepancy(self, case: Case, validation_error: BaseException) -> Discrepancy:
         """Create a schema validation discrepancy from a validation error."""
+        redacted_error = self._redact_namespace(str(validation_error))
         return Discrepancy(
             path=case.path,
             property_name="response_schema",
             constraint_type="schema_validation",
             discrepancy_type=DiscrepancyType.CONSTRAINT_MISMATCH,
             spec_value="Valid per OpenAPI schema",
-            api_behavior=str(validation_error),
+            api_behavior=redacted_error,
             test_values=[self._case_to_dict(case)],
-            recommendation=f"Update schema or fix API response: {validation_error}",
+            recommendation=f"Update schema or fix API response: {redacted_error}",
         )
 
     def _check_response(
@@ -368,110 +404,99 @@ class SchemathesisRunner:
 
     def _case_to_dict(self, case: Case) -> dict:
         """Convert a Schemathesis case to a dictionary for logging."""
+        path_parameters = {
+            name: (
+                "<configured-namespace>"
+                if name == "namespace" or name.endswith(".namespace")
+                else value
+            )
+            for name, value in (case.path_parameters or {}).items()
+        }
         return {
             "path": case.path,
             "method": case.method,
-            "path_parameters": case.path_parameters,
+            "path_parameters": path_parameters,
             "query": case.query,
-            "body": case.body,
+            "body": None if type(case.body).__name__ == "NotSet" else case.body,
         }
 
-    def _safe_json(self, response: Any) -> Any:
-        """Safely extract JSON from response."""
-        try:
-            return response.json()
-        except (ValueError, TypeError, AttributeError):
-            return response.text[:500] if hasattr(response, "text") else str(response)
-
-    def run_stateful_tests(
+    def _collect_operations(
         self,
         schema: Any,
-        resource: str,
-    ) -> list[SchemathesisResult]:
-        """Run stateful CRUD workflow tests."""
-        results = []
+        required: set[tuple[str, str]] | None = None,
+    ) -> dict[tuple[str, str], Any]:
+        """Return every valid schema operation indexed by exact method/path.
 
-        # Define CRUD workflow
-        crud_operations = ["create", "read", "update", "delete"]
+        Schemathesis exposes parse failures as ``Err`` result objects. Exact
+        configured operations fail on their corresponding error; unrelated
+        mutation operations are outside the read-only gate and are not loaded.
+        """
+        operations: dict[tuple[str, str], Any] = {}
+        for operation_result in schema.get_all_operations():
+            error_getter = getattr(operation_result, "err", None)
+            if callable(error_getter):
+                error = error_getter()
+                error_path = getattr(error, "path", None)
+                error_method = getattr(error, "method", None)
+                identity = (
+                    (str(error_method).upper(), str(error_path))
+                    if error_method and error_path
+                    else None
+                )
+                if required is None or identity is None or identity in required:
+                    cause = f": {error.__cause__}" if error.__cause__ else ""
+                    raise OperationResolutionError(
+                        f"invalid OpenAPI operation {identity or '<unknown>'}: {error}{cause}"
+                    )
+                continue
 
-        console.print(f"[blue]Running stateful tests for {resource}[/blue]")
+            try:
+                operation = (
+                    operation_result.ok()
+                    if hasattr(operation_result, "ok") and callable(operation_result.ok)
+                    else operation_result
+                )
+            except Exception as error:
+                raise OperationResolutionError(f"invalid OpenAPI operation: {error}") from error
 
-        for operation in crud_operations:
-            # Find matching endpoint
-            # In schemathesis 4.x, get_all_operations() returns Result objects
-            for op_result in schema.get_all_operations():
-                # Try to unwrap the result - schemathesis 4.x uses Result types
-                try:
-                    # Check if this is a Result object with .ok() method
-                    if hasattr(op_result, "ok") and callable(op_result.ok):
-                        # Try to unwrap - this will raise if it's an Err result
-                        op = op_result.ok()
-                    else:
-                        # Not a Result object, use as-is
-                        op = op_result
-                except Exception:  # noqa: S112  # pylint: disable=broad-exception-caught
-                    # This is an Err result or unwrapping failed - skip it
-                    continue
+            if not hasattr(operation, "path") or not hasattr(operation, "method"):
+                raise OperationResolutionError("OpenAPI operation has no method/path identity")
 
-                # Check if the unwrapped result is an Err object
-                # Err objects only have an 'err' attribute, not 'path' or 'method'
-                if type(op).__name__ == "Err" or not hasattr(op, "path"):
-                    continue
+            key = (str(operation.method).upper(), str(operation.path))
+            if key in operations:
+                raise OperationResolutionError(
+                    f"OpenAPI operation is duplicated: {key[0]} {key[1]}"
+                )
+            operations[key] = operation
 
-                # Verify we have a valid operation with required attributes
-                if not hasattr(op, "method"):
-                    continue
+        if not operations:
+            raise OperationResolutionError("OpenAPI schema resolved to zero operations")
+        return operations
 
-                # Check if this operation matches our resource
-                try:
-                    if resource in op.path:
-                        method = op.method.upper()
-                        if self._matches_crud_operation(method, op.path, operation):
-                            console.print(
-                                f"[green]DEBUG: Matched {operation} operation: {method} {op.path}[/green]"
-                            )
-                            result = self._test_operation(op)
-                            results.append(result)
-                            console.print(
-                                f"[green]DEBUG: Added result, total results: {len(results)}[/green]"
-                            )
-                            break
-                except Exception as e:  # pylint: disable=broad-exception-caught
-                    console.print(f"[yellow]Error checking operation: {e}[/yellow]")
-                    continue
-
-        # Debug logging
-        console.print(f"[cyan]DEBUG: Collected {len(results)} results from stateful tests[/cyan]")
-        console.print(f"[cyan]DEBUG: self.results before extend: {len(self.results)}[/cyan]")
-
-        # Update self.results for get_summary()
-        self.results.extend(results)
-
-        console.print(f"[cyan]DEBUG: self.results after extend: {len(self.results)}[/cyan]")
-        return results
-
-    def _matches_crud_operation(
+    def run_configured_operations(
         self,
-        method: str,
-        path: str,
-        operation: str,
-    ) -> bool:
-        """Check if method/path matches expected CRUD operation."""
-        crud_map = {
-            "create": ("POST", False),  # POST without {name}
-            "read": ("GET", True),  # GET with {name}
-            "list": ("GET", False),  # GET without {name}
-            "update": ("PUT", True),  # PUT with {name}
-            "delete": ("DELETE", True),  # DELETE with {name}
-        }
+        schema: Any,
+        configured_operations: tuple[tuple[str, str], ...],
+    ) -> list[SchemathesisResult]:
+        """Execute only the exact operations declared by validation config."""
+        if not configured_operations:
+            raise OperationResolutionError("validation target declared zero operations")
 
-        if operation not in crud_map:
-            return False
+        required = {(method.upper(), path) for method, path in configured_operations}
+        available = self._collect_operations(schema, required=required)
+        selected = []
+        for method, path in configured_operations:
+            key = (method.upper(), path)
+            operation = available.get(key)
+            if operation is None:
+                raise OperationResolutionError(
+                    f"configured OpenAPI operation was not resolved: {key[0]} {key[1]}"
+                )
+            selected.append(operation)
 
-        expected_method, needs_name = crud_map[operation]
-        has_name = "{name}" in path
-
-        return method == expected_method and has_name == needs_name
+        results = [self._test_operation(operation) for operation in selected]
+        self.results.extend(results)
+        return results
 
     def get_summary(self) -> dict:
         """Get summary of test results."""
@@ -502,9 +527,7 @@ def create_runner(
     schemathesis_config = None
     if config:
         schemathesis_config = SchemathesisConfig(
-            max_examples=config.get("max_examples", 100),
-            hypothesis_phases=config.get("hypothesis_phases", ["generate", "target"]),
-            stateful_testing=config.get("stateful_testing", True),
+            examples_per_operation=config.get("examples_per_operation", 1),
         )
 
     return SchemathesisRunner(auth, schemathesis_config)

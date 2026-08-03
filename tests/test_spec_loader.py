@@ -54,7 +54,7 @@ class TestSpecLoader:
         (temp_dir / "broken.json").write_text("{")
         loader = SpecLoader(temp_dir)
 
-        with pytest.raises(json.JSONDecodeError):
+        with pytest.raises(ValueError, match="broken.json"):
             loader.load_all_domain_files()
 
     def test_load_spec_not_found(self, loader: SpecLoader):
@@ -134,6 +134,23 @@ class TestSpecLoader:
 
         assert "$ref" not in resolved
         assert resolved["type"] == "object"
+
+    def test_merge_specs_uses_the_lossless_aggregate_contract(
+        self,
+        loader: SpecLoader,
+        sample_openapi_spec: dict,
+    ) -> None:
+        first = json.loads(json.dumps(sample_openapi_spec))
+        second = json.loads(json.dumps(sample_openapi_spec))
+        first["components"]["schemas"]["Shared"] = {"type": "string"}
+        second["components"]["schemas"]["Shared"] = {"type": "integer"}
+        first["paths"] = {"/first": {"get": {"responses": {"200": {"description": "ok"}}}}}
+        second["paths"] = {"/second": {"get": {"responses": {"200": {"description": "ok"}}}}}
+
+        merged = loader.merge_specs({"first.json": first, "second.json": second})
+
+        assert set(merged["paths"]) == {"/first", "/second"}
+        assert "Shared" in merged["x-f5-component-variants"]["schemas"]
 
 
 class TestSchemaInfo:

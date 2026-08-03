@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -15,10 +16,6 @@ def fingerprint(d: Discrepancy, domain: str, method: str) -> str:
     Same inputs always yield the same fingerprint; any change to domain,
     method, path, property, or discrepancy type changes the fingerprint.
     """
-    # ASCII unit separator (\x1f) cannot appear in OpenAPI paths, property
-    # names, domain slugs, HTTP methods, or DiscrepancyType enum values, so
-    # this delimiter is collision-free. "|" would be ambiguous if any field
-    # ever contained a pipe character.
     parts = [
         domain,
         method.upper(),
@@ -26,7 +23,11 @@ def fingerprint(d: Discrepancy, domain: str, method: str) -> str:
         d.property_name,
         d.discrepancy_type.value,
     ]
-    payload = "\x1f".join(parts).encode("utf-8")
+    payload = json.dumps(
+        parts,
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
     return hashlib.sha1(payload, usedforsecurity=False).hexdigest()
 
 

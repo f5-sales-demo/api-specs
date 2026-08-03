@@ -8,10 +8,8 @@ on:
     types: [opened, synchronize, reopened]
 
 # Per-PR dedup: a new push cancels the superseded in-flight review for the SAME
-# PR, so two reviews of one PR never overlap and a stale commit's review does not
-# hold a machine-wide slot (see review-slot.sh). Concurrency groups are scoped per
-# repository, so this key needs no repo component (PR #5 in two repos never
-# collide). Same idiom as require-linked-issue.yml / super-linter.yml callers.
+# PR, so two reviews of one PR never overlap. Concurrency groups are scoped per
+# repository, so this key needs no repo component (PR #5 in two repos never collide).
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
@@ -22,7 +20,7 @@ jobs:
   review:
     # Real agentic review for HUMAN, same-repo PRs. Skipped for genuine automated
     # branches (handled by review-status-automated below) so fleet automation is
-    # not gated on the laptop runner. Skipping a reusable-workflow caller does NOT
+    # not gated on model inference. Skipping a reusable-workflow caller does NOT
     # satisfy a required `review / claude-review` context (the nested context is
     # never produced), so the skip set here MUST exactly mirror the automated set
     # below — anything skipped here must get its status posted there, or the PR
@@ -32,9 +30,9 @@ jobs:
     # (dependabot, release, openapi-sync, plugin-sync, deps, sync, docs/update-*)
     # plus governance/, auto-regenerate/, auto-generate/, autoresearch/ — so a
     # machine-generated PR is bypassed by BOTH gates consistently instead of
-    # burning a real Opus review on the laptop runner.
+    # burning a real Opus review.
     #
-    # dependabot/ requires actor == dependabot[bot]: a human naming a branch
+    # dependabot/ requires Dependabot's immutable actor ID: a human naming a branch
     # `dependabot/x` therefore gets the REAL review, not a free pass. The other
     # prefixes are created by sync/automation via a human-owned PAT
     # (REPO_SYNC_TOKEN), so github.actor is a human account and cannot distinguish
@@ -45,19 +43,7 @@ jobs:
     # dedicated bot/App identity for the automation or a branch-creation ruleset
     # restricting who may push those prefixes.
     #
-    # SUSPENDED: gated on the `REVIEWER_ENABLED` org variable, which is currently
-    # unset, so this job never runs and nothing dispatches to the self-hosted
-    # runner. The reviewer could not reliably reach model inference or the VPN, so
-    # the check frequently never went green while it was a required context — a
-    # merge backlog caused by infrastructure rather than by code quality. The
-    # `review / claude-review` context was removed from branch protection first
-    # (docs-control#833); skipping this job while it was still required would have
-    # deadlocked every open PR. To restore, see "Restoring the reviewer" in
-    # REVIEWER-SPEC.md — set the variable BEFORE re-adding the required context.
-    # `vars` is used rather than `env` because the `env` context is not available
-    # in a job-level `if:`. An unset variable evaluates false, so this fails safe.
     if: >-
-      vars.REVIEWER_ENABLED == 'true' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       !(startsWith(github.head_ref, 'governance/') ||
         startsWith(github.head_ref, 'sync/') ||
@@ -69,8 +55,8 @@ jobs:
         startsWith(github.head_ref, 'auto-regenerate/') ||
         startsWith(github.head_ref, 'auto-generate/') ||
         startsWith(github.head_ref, 'autoresearch/') ||
-        (startsWith(github.head_ref, 'dependabot/') && github.actor == 'dependabot[bot]'))
-    uses: f5-sales-demo/docs-control/.github/workflows/claude-review.yml@8eaaced5c8800da45934031b152c863ce8ee84c0
+        (startsWith(github.head_ref, 'dependabot/') && github.event.pull_request.user.id == 49699333))
+    uses: f5-sales-demo/docs-control/.github/workflows/claude-review.yml@94a0cb518b88f717e7b452a714fe7f97a00d0bbb
     permissions:
       contents: read # inspect the same-repository pull request
       pull-requests: write # publish the reusable review result
@@ -79,19 +65,15 @@ jobs:
       REPO_SETTINGS_TOKEN: ${{ secrets.REPO_SETTINGS_TOKEN }}
 
   # Genuine automated branches skip the reviewer above (never touching the
-  # self-hosted runner), so the required `review / claude-review` context would
+  # model reviewer), so the required `review / claude-review` context would
   # never post and the PR would deadlock. Post it as a passing commit status on
   # exactly those branches (same-repo only, so GITHUB_TOKEN can write and forks
   # are excluded). Condition MUST mirror the negated `review` condition above.
-  # Also gated on REVIEWER_ENABLED. While the reviewer is suspended the
-  # `review / claude-review` context is not required by any repo, so nothing needs
-  # this status — and posting a passing one would imply a review had happened when
-  # none did. Both jobs share the gate so the pair stays consistent: whichever way
-  # the variable is set, either both run or neither does.
+  # The status description explicitly records the exemption; it does not imply
+  # that a model review ran.
   review-status-automated:
     name: Mark Automated Review Exemption
     if: >-
-      vars.REVIEWER_ENABLED == 'true' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       (startsWith(github.head_ref, 'governance/') ||
        startsWith(github.head_ref, 'sync/') ||
@@ -103,7 +85,7 @@ jobs:
        startsWith(github.head_ref, 'auto-regenerate/') ||
        startsWith(github.head_ref, 'auto-generate/') ||
        startsWith(github.head_ref, 'autoresearch/') ||
-       (startsWith(github.head_ref, 'dependabot/') && github.actor == 'dependabot[bot]'))
+       (startsWith(github.head_ref, 'dependabot/') && github.event.pull_request.user.id == 49699333))
     runs-on: ubuntu-latest
     permissions:
       statuses: write # post the required review context for trusted automation

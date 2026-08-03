@@ -5,12 +5,18 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import os
 import zipfile
 from collections.abc import Callable
 
 import pytest
 
-from scripts.install_release import ReleaseInstallError, install_release_archive
+from scripts import install_release
+from scripts.install_release import (
+    ReleaseInstallError,
+    install_release_archive,
+    write_new_file_atomically,
+)
 from scripts.release_archive import ReleaseArchiveError, validate_release_archive_bytes
 
 VERSION = "2026.08.02-1"
@@ -149,9 +155,9 @@ def test_verified_archive_installs_exact_bytes_atomically(tmp_path) -> None:
     assert all(
         (path.stat().st_mode & 0o777) == 0o644 for path in target.rglob("*") if path.is_file()
     )
-    assert (target.stat().st_mode & 0o777) == 0o755
+    assert (target.stat().st_mode & 0o777) == 0o700
     assert all(
-        (path.stat().st_mode & 0o777) == 0o755 for path in target.rglob("*") if path.is_dir()
+        (path.stat().st_mode & 0o777) == 0o700 for path in target.rglob("*") if path.is_dir()
     )
 
 
@@ -185,6 +191,185 @@ def test_invalid_release_leaves_no_target_or_partial_install(tmp_path) -> None:
 
     assert not target.exists()
     assert list(tmp_path.iterdir()) == []
+
+
+def test_release_install_commit_cannot_replace_a_concurrent_empty_target(
+    tmp_path, monkeypatch
+) -> None:
+    target = tmp_path / "installed"
+    original_check = install_release._require_new_target
+    checks = 0
+    concurrent_inode = 0
+
+    def create_target_after_final_check(path) -> None:
+        nonlocal checks, concurrent_inode
+        original_check(path)
+        checks += 1
+        if checks == 3:
+            target.mkdir()
+            concurrent_inode = target.stat().st_ino
+
+    monkeypatch.setattr(install_release, "_require_new_target", create_target_after_final_check)
+
+    with pytest.raises(ReleaseInstallError, match="already exists"):
+        install_release_archive(
+            _archive(),
+            target,
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+    assert target.stat().st_ino == concurrent_inode
+    assert list(target.iterdir()) == []
+
+
+def test_release_install_rejects_a_symlink_anywhere_in_target_ancestry(tmp_path) -> None:
+    real_parent = tmp_path / "real"
+    nested = real_parent / "nested"
+    nested.mkdir(parents=True)
+    linked_parent = tmp_path / "linked"
+    linked_parent.symlink_to(real_parent, target_is_directory=True)
+
+    with pytest.raises(ReleaseInstallError, match="symlink"):
+        install_release_archive(
+            _archive(),
+            linked_parent / "nested" / "installed",
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+    assert not (nested / "installed").exists()
+
+
+def test_release_install_normalizes_private_directory_creation_failure(
+    tmp_path, monkeypatch
+) -> None:
+    def deny_creation(*_args, **_kwargs):
+        raise PermissionError("denied")
+
+    monkeypatch.setattr(install_release, "_create_private_install_directory", deny_creation)
+
+    with pytest.raises(ReleaseInstallError, match="temporary directory"):
+        install_release_archive(
+            _archive(),
+            tmp_path / "installed",
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+
+def test_release_install_cleans_up_when_reserved_directory_cannot_be_opened(
+    tmp_path, monkeypatch
+) -> None:
+    original_open = install_release.os.open
+    denied = False
+
+    def deny_reserved_directory(path, flags, *args, dir_fd=None, **kwargs):
+        nonlocal denied
+        if not denied and isinstance(path, str) and path.startswith(".installed.install-"):
+            denied = True
+            raise PermissionError("denied")
+        return original_open(path, flags, *args, dir_fd=dir_fd, **kwargs)
+
+    monkeypatch.setattr(install_release.os, "open", deny_reserved_directory)
+
+    with pytest.raises(ReleaseInstallError, match="transaction failed"):
+        install_release_archive(
+            _archive(),
+            tmp_path / "installed",
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+    assert list(tmp_path.glob(".installed.install-*")) == []
+
+
+def test_release_install_opens_parent_ancestry_one_component_at_a_time(
+    tmp_path, monkeypatch
+) -> None:
+    target = tmp_path / "nested" / "installed"
+    target.parent.mkdir()
+    original_open = install_release.os.open
+    opens: list[tuple[str, int | None]] = []
+
+    def record_open(path, flags, *args, dir_fd=None, **kwargs):
+        opens.append((os.fspath(path), dir_fd))
+        return original_open(path, flags, *args, dir_fd=dir_fd, **kwargs)
+
+    monkeypatch.setattr(install_release.os, "open", record_open)
+
+    install_release_archive(
+        _archive(),
+        target,
+        expected_version=VERSION,
+        expected_commit=COMMIT,
+    )
+
+    assert (os.fspath(target.parent), None) not in opens
+    assert any(path == target.parent.name and dir_fd is not None for path, dir_fd in opens)
+
+
+def test_release_install_cleanup_failure_preserves_the_root_cause(tmp_path, monkeypatch) -> None:
+    def fail_write(*_args, **_kwargs):
+        raise ReleaseInstallError("measured write failure")
+
+    def fail_cleanup(*_args, **_kwargs):
+        raise PermissionError("cleanup denied")
+
+    monkeypatch.setattr(install_release, "_write_entries", fail_write)
+    monkeypatch.setattr(install_release.shutil, "rmtree", fail_cleanup)
+
+    with pytest.raises(
+        ReleaseInstallError,
+        match="measured write failure.*cleanup failed",
+    ):
+        install_release_archive(
+            _archive(),
+            tmp_path / "installed",
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+
+def test_release_install_rejects_unexpected_empty_directories(tmp_path, monkeypatch) -> None:
+    original_write = install_release._write_entries
+
+    def add_unexpected_directory(temporary_fd, entries) -> None:
+        original_write(temporary_fd, entries)
+        os.mkdir("unexpected", dir_fd=temporary_fd)
+
+    monkeypatch.setattr(install_release, "_write_entries", add_unexpected_directory)
+
+    with pytest.raises(ReleaseInstallError, match="unexpected directories"):
+        install_release_archive(
+            _archive(),
+            tmp_path / "installed",
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+
+def test_atomic_file_commit_cannot_replace_a_concurrent_target(tmp_path, monkeypatch) -> None:
+    target = tmp_path / "receipt.json"
+    original_check = install_release._require_new_target
+    checks = 0
+    concurrent_inode = 0
+
+    def create_target_after_final_check(path) -> None:
+        nonlocal checks, concurrent_inode
+        original_check(path)
+        checks += 1
+        if checks == 3:
+            target.write_bytes(b"owner-data")
+            concurrent_inode = target.stat().st_ino
+
+    monkeypatch.setattr(install_release, "_require_new_target", create_target_after_final_check)
+
+    with pytest.raises(ReleaseInstallError, match="already exists"):
+        write_new_file_atomically(b"receipt", target)
+
+    assert target.stat().st_ino == concurrent_inode
+    assert target.read_bytes() == b"owner-data"
 
 
 def test_release_zip_must_be_stored_and_in_canonical_member_order() -> None:

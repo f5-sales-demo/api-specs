@@ -395,6 +395,34 @@ def test_install_failure_is_not_retried_or_emitted_as_a_receipt(monkeypatch, tmp
     assert not receipt.exists()
 
 
+def test_receipt_output_never_follows_or_overwrites_a_symlink(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        requests,
+        "get",
+        _get_sequence(
+            [
+                _Response(payload=_tag_ref()),
+                _Response(payload=_release()),
+                _Response(content=ASSET_BYTES),
+            ]
+        ),
+    )
+    owner_data = tmp_path / "owner-data"
+    owner_data.write_text("preserve\n", encoding="utf-8")
+    receipt = tmp_path / "receipt.json"
+    receipt.symlink_to(owner_data)
+
+    with pytest.raises(ReleaseVerificationError, match="already exists|unsafe"):
+        verify_published_release(
+            EXPECTED_RELEASE,
+            retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
+            install_dir=tmp_path / "installed",
+            receipt_output=receipt,
+        )
+
+    assert owner_data.read_text(encoding="utf-8") == "preserve\n"
+
+
 def test_verified_download_rejects_release_metadata_size_that_does_not_match_bytes(
     monkeypatch, tmp_path
 ):

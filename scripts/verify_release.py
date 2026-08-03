@@ -21,7 +21,11 @@ from typing import Any
 
 import requests
 
-from scripts.install_release import ReleaseInstallError, install_release_archive
+from scripts.install_release import (
+    ReleaseInstallError,
+    install_release_archive,
+    write_new_file_atomically,
+)
 from scripts.release_archive import ReleaseArchiveError, validate_release_archive_bytes
 
 GITHUB_API_VERSION = "2022-11-28"
@@ -348,13 +352,15 @@ def verify_published_release(
         raise ReleaseVerificationError(str(error)) from error
     if receipt_output is not None:
         try:
-            receipt_output.parent.mkdir(parents=True, exist_ok=True)
-            receipt_output.write_text(
-                json.dumps(release_receipt(verified.release, verified.asset), indent=2) + "\n"
+            write_new_file_atomically(
+                (
+                    json.dumps(release_receipt(verified.release, verified.asset), indent=2) + "\n"
+                ).encode(),
+                receipt_output,
             )
-        except OSError as error:
+        except ReleaseInstallError as error:
             raise ReleaseVerificationError(
-                "verified release receipt could not be written"
+                f"verified release receipt could not be written: {error}"
             ) from error
     return expected.asset_digest
 

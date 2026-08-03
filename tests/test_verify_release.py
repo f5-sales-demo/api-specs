@@ -281,7 +281,9 @@ def _get_sequence(items: list[object]) -> Callable[..., _Response]:
     return fake_get
 
 
-def test_network_verification_retries_the_complete_contract_after_download_failure(monkeypatch):
+def test_network_verification_retries_the_complete_contract_after_download_failure(
+    monkeypatch, tmp_path
+):
     monkeypatch.setattr(
         requests,
         "get",
@@ -301,6 +303,7 @@ def test_network_verification_retries_the_complete_contract_after_download_failu
 
     digest = verify_published_release(
         EXPECTED_RELEASE,
+        install_dir=tmp_path / "installed",
         retry=ReleaseVerificationRetry(attempts=2, interval_seconds=0.25),
     )
 
@@ -324,6 +327,7 @@ def test_verified_download_writes_exact_downstream_receipt(monkeypatch, tmp_path
 
     verify_published_release(
         EXPECTED_RELEASE,
+        install_dir=tmp_path / "installed",
         retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
         receipt_output=output,
     )
@@ -337,6 +341,58 @@ def test_verified_download_writes_exact_downstream_receipt(monkeypatch, tmp_path
         "asset_size": len(ASSET_BYTES),
         "asset_digest": ASSET_DIGEST,
     }
+
+
+def test_verified_download_installs_the_exact_public_asset(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        requests,
+        "get",
+        _get_sequence(
+            [
+                _Response(payload=_tag_ref()),
+                _Response(payload=_release()),
+                _Response(content=ASSET_BYTES),
+            ]
+        ),
+    )
+    target = tmp_path / "installed"
+
+    verify_published_release(
+        EXPECTED_RELEASE,
+        retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
+        install_dir=target,
+    )
+
+    assert (target / "manifest.json").is_file()
+    assert (target / "openapi.json").is_file()
+    assert list((target / "domains").glob("*.json"))
+
+
+def test_install_failure_is_not_retried_or_emitted_as_a_receipt(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        requests,
+        "get",
+        _get_sequence(
+            [
+                _Response(payload=_tag_ref()),
+                _Response(payload=_release()),
+                _Response(content=ASSET_BYTES),
+            ]
+        ),
+    )
+    target = tmp_path / "installed"
+    target.mkdir()
+    receipt = tmp_path / "receipt.json"
+
+    with pytest.raises(ReleaseVerificationError, match="already exists"):
+        verify_published_release(
+            EXPECTED_RELEASE,
+            retry=ReleaseVerificationRetry(attempts=2, interval_seconds=0),
+            install_dir=target,
+            receipt_output=receipt,
+        )
+
+    assert not receipt.exists()
 
 
 def test_verified_download_rejects_release_metadata_size_that_does_not_match_bytes(
@@ -360,6 +416,7 @@ def test_verified_download_rejects_release_metadata_size_that_does_not_match_byt
     with pytest.raises(ReleaseVerificationError, match="size"):
         verify_published_release(
             EXPECTED_RELEASE,
+            install_dir=tmp_path / "installed",
             retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
             receipt_output=output,
         )
@@ -407,6 +464,7 @@ def test_verified_download_rejects_malformed_manifest_before_writing_receipt(
     with pytest.raises(ReleaseVerificationError, match="manifest|digest"):
         verify_published_release(
             expected,
+            install_dir=tmp_path / "installed",
             retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
             receipt_output=receipt,
         )
@@ -414,7 +472,7 @@ def test_verified_download_rejects_malformed_manifest_before_writing_receipt(
     assert not receipt.exists()
 
 
-def test_network_verification_fails_closed_after_bounded_retries(monkeypatch):
+def test_network_verification_fails_closed_after_bounded_retries(monkeypatch, tmp_path):
     mutable = _release(immutable=False)
     monkeypatch.setattr(
         requests,
@@ -433,5 +491,6 @@ def test_network_verification_fails_closed_after_bounded_retries(monkeypatch):
     with pytest.raises(ReleaseVerificationError, match="not immutable"):
         verify_published_release(
             EXPECTED_RELEASE,
+            install_dir=tmp_path / "installed",
             retry=ReleaseVerificationRetry(attempts=2, interval_seconds=0),
         )

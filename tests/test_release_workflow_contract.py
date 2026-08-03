@@ -44,6 +44,7 @@ def test_release_is_verified_after_publication():
     assert '--local-asset "release/api-specs-v${VERSION}.zip"' in command
     assert '--expected-commit "${RELEASE_COMMIT}"' in command
     assert '--receipt-output "$RUNNER_TEMP/api-specs-release-receipt.json"' in command
+    assert '--install-dir "$RUNNER_TEMP/api-specs-install-uat"' in command
     assert 'gh release verify "v${VERSION}"' in command
     assert 'gh release verify-asset "v${VERSION}"' in command
     assert "attestation_verified" in command

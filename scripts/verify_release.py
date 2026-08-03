@@ -21,6 +21,7 @@ from typing import Any
 
 import requests
 
+from scripts.install_release import ReleaseInstallError, install_release_archive
 from scripts.release_archive import ReleaseArchiveError, validate_release_archive_bytes
 
 GITHUB_API_VERSION = "2022-11-28"
@@ -66,6 +67,15 @@ class ExpectedRelease:
             raise ValueError("asset_digest must be a SHA-256 digest")
         if re.fullmatch(r"[0-9a-f]{40}", self.commit) is None:
             raise ValueError("commit must be a full Git commit SHA")
+
+
+@dataclass(frozen=True)
+class VerifiedReleaseDownload:
+    """Exact public release metadata and downloaded bytes from one successful poll."""
+
+    release: dict[str, Any]
+    asset: dict[str, Any]
+    content: bytes
 
 
 def _validate_release_state(release: dict[str, Any], tag: str) -> None:
@@ -254,9 +264,52 @@ def _fetch_json(url: str, token: str | None, description: str) -> dict[str, Any]
     return payload
 
 
+def _verify_public_release_once(
+    expected: ExpectedRelease,
+    token: str | None,
+) -> VerifiedReleaseDownload:
+    tag_ref = _fetch_json(
+        f"https://api.github.com/repos/{expected.repository}/git/ref/tags/{expected.tag}",
+        token,
+        "GitHub tag lookup",
+    )
+    validate_tag_ref(tag_ref, expected.tag, expected.commit)
+    release = _fetch_json(
+        f"https://api.github.com/repos/{expected.repository}/releases/tags/{expected.tag}",
+        token,
+        "GitHub release lookup",
+    )
+    asset = validate_release_metadata(
+        release,
+        expected.repository,
+        expected.tag,
+        expected.asset_name,
+        expected.asset_digest,
+    )
+    download = requests.get(asset["browser_download_url"], timeout=120)
+    try:
+        download.raise_for_status()
+    except requests.HTTPError as error:
+        raise ReleaseVerificationError(
+            f"release asset download failed with HTTP {download.status_code}"
+        ) from error
+    if len(download.content) != asset["size"]:
+        raise ReleaseVerificationError(
+            "downloaded asset size does not match GitHub release metadata"
+        )
+    verify_asset_bytes(
+        download.content,
+        expected.asset_digest,
+        expected_version=expected.tag.removeprefix("v"),
+        expected_commit=expected.commit,
+    )
+    return VerifiedReleaseDownload(release=release, asset=asset, content=download.content)
+
+
 def verify_published_release(
     expected: ExpectedRelease,
     *,
+    install_dir: Path,
     token: str | None = None,
     retry: ReleaseVerificationRetry | None = None,
     receipt_output: Path | None = None,
@@ -265,54 +318,11 @@ def verify_published_release(
     retry_policy = retry or ReleaseVerificationRetry()
 
     last_error: ReleaseVerificationError | None = None
+    verified: VerifiedReleaseDownload | None = None
     for attempt in range(1, retry_policy.attempts + 1):
         try:
-            tag_ref = _fetch_json(
-                f"https://api.github.com/repos/{expected.repository}/git/ref/tags/{expected.tag}",
-                token,
-                "GitHub tag lookup",
-            )
-            validate_tag_ref(tag_ref, expected.tag, expected.commit)
-            release = _fetch_json(
-                f"https://api.github.com/repos/{expected.repository}/releases/tags/{expected.tag}",
-                token,
-                "GitHub release lookup",
-            )
-            asset = validate_release_metadata(
-                release,
-                expected.repository,
-                expected.tag,
-                expected.asset_name,
-                expected.asset_digest,
-            )
-            download = requests.get(asset["browser_download_url"], timeout=120)
-            try:
-                download.raise_for_status()
-            except requests.HTTPError as error:
-                raise ReleaseVerificationError(
-                    f"release asset download failed with HTTP {download.status_code}"
-                ) from error
-            if len(download.content) != asset["size"]:
-                raise ReleaseVerificationError(
-                    "downloaded asset size does not match GitHub release metadata"
-                )
-            verify_asset_bytes(
-                download.content,
-                expected.asset_digest,
-                expected_version=expected.tag.removeprefix("v"),
-                expected_commit=expected.commit,
-            )
-            if receipt_output is not None:
-                try:
-                    receipt_output.parent.mkdir(parents=True, exist_ok=True)
-                    receipt_output.write_text(
-                        json.dumps(release_receipt(release, asset), indent=2) + "\n"
-                    )
-                except OSError as error:
-                    raise ReleaseVerificationError(
-                        "verified release receipt could not be written"
-                    ) from error
-            return expected.asset_digest
+            verified = _verify_public_release_once(expected, token)
+            break
         except (ReleaseVerificationError, requests.RequestException) as error:
             last_error = (
                 error
@@ -322,9 +332,31 @@ def verify_published_release(
             if attempt < retry_policy.attempts:
                 time.sleep(retry_policy.interval_seconds)
 
-    if last_error is None:
-        raise ReleaseVerificationError("release verification exhausted without a result")
-    raise last_error
+    if verified is None:
+        if last_error is None:
+            raise ReleaseVerificationError("release verification exhausted without a result")
+        raise last_error
+
+    try:
+        install_release_archive(
+            verified.content,
+            install_dir,
+            expected_version=expected.tag.removeprefix("v"),
+            expected_commit=expected.commit,
+        )
+    except ReleaseInstallError as error:
+        raise ReleaseVerificationError(str(error)) from error
+    if receipt_output is not None:
+        try:
+            receipt_output.parent.mkdir(parents=True, exist_ok=True)
+            receipt_output.write_text(
+                json.dumps(release_receipt(verified.release, verified.asset), indent=2) + "\n"
+            )
+        except OSError as error:
+            raise ReleaseVerificationError(
+                "verified release receipt could not be written"
+            ) from error
+    return expected.asset_digest
 
 
 def main() -> int:
@@ -339,6 +371,12 @@ def main() -> int:
         "--receipt-output",
         type=Path,
         help="Write the verified six-field downstream receipt to this path",
+    )
+    parser.add_argument(
+        "--install-dir",
+        type=Path,
+        required=True,
+        help="Install the verified public release into this new local directory",
     )
     parser.add_argument("--attempts", type=int, default=6)
     parser.add_argument("--interval-seconds", type=float, default=5.0)
@@ -360,6 +398,7 @@ def main() -> int:
                 asset_digest=digest,
                 commit=args.expected_commit,
             ),
+            install_dir=args.install_dir,
             token=token,
             retry=ReleaseVerificationRetry(
                 attempts=args.attempts,

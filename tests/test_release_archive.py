@@ -10,6 +10,7 @@ from collections.abc import Callable
 
 import pytest
 
+from scripts.install_release import ReleaseInstallError, install_release_archive
 from scripts.release_archive import ReleaseArchiveError, validate_release_archive_bytes
 
 VERSION = "2026.08.02-1"
@@ -121,6 +122,69 @@ def test_valid_manifest_proves_every_member_size_digest_and_provenance() -> None
 
     assert validated.manifest["version"] == VERSION
     assert set(validated.entries) == {*_content(), "manifest.json"}
+
+
+def test_verified_archive_installs_exact_bytes_atomically(tmp_path) -> None:
+    archive = _archive()
+    target = tmp_path / "installed"
+
+    installation = install_release_archive(
+        archive,
+        target,
+        expected_version=VERSION,
+        expected_commit=COMMIT,
+    )
+
+    with zipfile.ZipFile(io.BytesIO(archive)) as source:
+        expected = {name: source.read(name) for name in source.namelist()}
+    installed = {
+        path.relative_to(target).as_posix(): path.read_bytes()
+        for path in target.rglob("*")
+        if path.is_file()
+    }
+    assert installed == expected
+    assert installation.target == target
+    assert installation.file_count == len(expected)
+    assert installation.installed_bytes == sum(map(len, expected.values()))
+    assert all(
+        (path.stat().st_mode & 0o777) == 0o644 for path in target.rglob("*") if path.is_file()
+    )
+    assert (target.stat().st_mode & 0o777) == 0o755
+    assert all(
+        (path.stat().st_mode & 0o777) == 0o755 for path in target.rglob("*") if path.is_dir()
+    )
+
+
+def test_release_install_never_overwrites_an_existing_target(tmp_path) -> None:
+    target = tmp_path / "installed"
+    target.mkdir()
+    marker = target / "owner-data"
+    marker.write_text("preserve\n", encoding="utf-8")
+
+    with pytest.raises(ReleaseInstallError, match="already exists"):
+        install_release_archive(
+            _archive(),
+            target,
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+    assert marker.read_text(encoding="utf-8") == "preserve\n"
+
+
+def test_invalid_release_leaves_no_target_or_partial_install(tmp_path) -> None:
+    target = tmp_path / "installed"
+
+    with pytest.raises(ReleaseInstallError, match="manifest digest"):
+        install_release_archive(
+            _archive(mutate_manifest=lambda manifest: manifest["files"][0].update(sha256="0" * 64)),
+            target,
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+    assert not target.exists()
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_release_zip_must_be_stored_and_in_canonical_member_order() -> None:

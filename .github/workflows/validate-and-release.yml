@@ -564,7 +564,8 @@ jobs:
             --expected-asset "api-specs-v${VERSION}.zip" \
             --local-asset "release/api-specs-v${VERSION}.zip" \
             --expected-commit "${RELEASE_COMMIT}" \
-            --receipt-output "$RUNNER_TEMP/api-specs-release-receipt.json"
+            --receipt-output "$RUNNER_TEMP/api-specs-release-receipt.json" \
+            --install-dir "$RUNNER_TEMP/api-specs-install-uat"
 
           attestation_verified=false
           for attempt in 1 2 3 4 5 6; do

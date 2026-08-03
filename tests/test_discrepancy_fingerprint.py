@@ -81,3 +81,14 @@ def test_fingerprint_tolerates_pipe_in_payload_fields():
         api_behavior={},
     )
     assert fingerprint(a, "origin_pool", "POST") != fingerprint(b, "origin_pool", "POST")
+
+
+def test_fingerprint_is_unambiguous_when_fields_contain_control_characters():
+    a = _make(path="/a\x1fb", prop="c")
+    b = _make(path="/a", prop="b\x1fc")
+
+    assert fingerprint(a, "origin_pool", "POST") != fingerprint(
+        b,
+        "origin_pool",
+        "POST",
+    )

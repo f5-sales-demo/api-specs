@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -20,6 +21,8 @@ from rich.console import Console
 
 from scripts.utils.constraint_validator import Discrepancy, DiscrepancyType
 from scripts.utils.discrepancy_fingerprint import fingerprint
+from scripts.utils.openapi_aggregate import load_openapi_document, merge_openapi_documents
+from scripts.utils.strict_data import strict_json_loads
 
 console = Console()
 
@@ -31,7 +34,6 @@ VERSION_PATTERN = re.compile(r"^(?P<date>[0-9]{4}\.[0-9]{2}\.[0-9]{2})-(?P<patch
 ZIP_MINIMUM_YEAR = 1980
 ZIP_MAXIMUM_YEAR = 2107
 CANONICAL_FILE_MODE = 0o100644
-CANONICAL_COMPRESSION_LEVEL = 9
 
 
 def parse_build_timestamp(value: str) -> datetime:
@@ -85,16 +87,14 @@ def build_validation_report_md(
     Returns the markdown document as a string; the caller is responsible
     for writing it to disk.
     """
-    data = json.loads(Path(validation_report_json).read_text(encoding="utf-8"))
+    data = strict_json_loads(
+        Path(validation_report_json).read_text(encoding="utf-8"),
+        "validation report",
+    )
 
-    mapping: dict[str, dict[str, Any]] = {}
-    if issue_mapping_json is not None:
-        mapping_path = Path(issue_mapping_json)
-        if mapping_path.exists():
-            mapping = json.loads(mapping_path.read_text(encoding="utf-8"))
+    mapping = _load_issue_mapping(issue_mapping_json)
 
-    summary = data.get("summary", {}) or {}
-    discrepancies = data.get("discrepancies", []) or []
+    summary, discrepancies = _validated_report_data(data)
 
     lines: list[str] = [
         "# F5 XC API Validation Report",
@@ -128,25 +128,13 @@ def build_validation_report_md(
         ]
     )
 
-    for d in discrepancies:
-        try:
-            disc = Discrepancy(
-                path=d["path"],
-                property_name=d["property_name"],
-                constraint_type=d["constraint_type"],
-                discrepancy_type=DiscrepancyType(d["discrepancy_type"]),
-                spec_value=d.get("spec_value"),
-                api_behavior=d.get("api_behavior"),
-                test_values=d.get("test_values", []) or [],
-            )
-        except (KeyError, ValueError):
-            # Malformed entry — skip rather than abort the report.
-            continue
+    for index, d in enumerate(discrepancies):
+        disc = _validated_discrepancy(d, index)
 
         fp = fingerprint(
             disc,
-            d.get("domain", "unknown"),
-            d.get("method", "unknown"),
+            d["domain"],
+            d["method"],
         )
         entry = mapping.get(fp)
         if entry and entry.get("issue_number") and entry.get("issue_url"):
@@ -164,11 +152,88 @@ def build_validation_report_md(
     return "\n".join(lines)
 
 
+def _load_issue_mapping(path: Path | None) -> dict[str, dict[str, Any]]:
+    if path is None or not Path(path).exists():
+        return {}
+    loaded = strict_json_loads(
+        Path(path).read_text(encoding="utf-8"),
+        "issue mapping",
+    )
+    if not isinstance(loaded, dict):
+        raise ValueError("issue mapping must be an object")
+    return loaded
+
+
+def _validated_report_data(data: Any) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    if not isinstance(data, dict):
+        raise ValueError("validation report must be an object")
+    summary = data.get("summary", {})
+    discrepancies = data.get("discrepancies", [])
+    if not isinstance(summary, dict):
+        raise ValueError("validation report summary must be an object")
+    if not isinstance(discrepancies, list):
+        raise ValueError("validation report discrepancies must be an array")
+    if not all(isinstance(discrepancy, dict) for discrepancy in discrepancies):
+        raise ValueError("validation report discrepancies must contain objects")
+    measured_total = summary.get("total_discrepancies")
+    if measured_total is not None and (
+        isinstance(measured_total, bool)
+        or not isinstance(measured_total, int)
+        or measured_total != len(discrepancies)
+    ):
+        raise ValueError("validation report total_discrepancies does not match discrepancies")
+    return summary, discrepancies
+
+
+def _validated_discrepancy(entry: dict[str, Any], index: int) -> Discrepancy:
+    required = (
+        "path",
+        "property_name",
+        "constraint_type",
+        "discrepancy_type",
+        "domain",
+        "method",
+        "test_values",
+    )
+    for field in required:
+        if field not in entry:
+            raise ValueError(f"validation report discrepancies[{index}].{field} is required")
+    for field in (
+        "path",
+        "property_name",
+        "constraint_type",
+        "discrepancy_type",
+        "domain",
+        "method",
+    ):
+        value = entry[field]
+        if not isinstance(value, str) or not value:
+            raise ValueError(
+                f"validation report discrepancies[{index}].{field} must be a non-empty string"
+            )
+    if not isinstance(entry["test_values"], list):
+        raise ValueError(f"validation report discrepancies[{index}].test_values must be an array")
+    try:
+        return Discrepancy(
+            path=entry["path"],
+            property_name=entry["property_name"],
+            constraint_type=entry["constraint_type"],
+            discrepancy_type=DiscrepancyType(entry["discrepancy_type"]),
+            spec_value=entry.get("spec_value"),
+            api_behavior=entry.get("api_behavior"),
+            test_values=entry["test_values"],
+        )
+    except ValueError as error:
+        raise ValueError(
+            f"validation report discrepancies[{index}].discrepancy_type is invalid: {error}"
+        ) from error
+
+
 def get_git_sha() -> str:
     """Return the full source commit SHA, failing when provenance is unavailable."""
     try:
         result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],  # noqa: S607
+            ["git", "rev-parse", "HEAD"],
             capture_output=True,
             text=True,
             check=True,
@@ -238,23 +303,15 @@ class ReleaseBuilder:
         domains_dir.mkdir(parents=True)
 
         # Download metadata is provenance for the build clock, not a domain.
-        json_specs = sorted(
-            path for path in self.specs_dir.glob("*.json") if not path.name.startswith(".")
+        domain_specs = sorted(
+            path
+            for path in self.specs_dir.iterdir()
+            if path.suffix in {".json", ".yaml", ".yml"} and not path.name.startswith(".")
         )
-        if not json_specs:
-            raise FileNotFoundError(f"no JSON domain specs found in {self.specs_dir}")
+        if not domain_specs:
+            raise FileNotFoundError(f"no domain specs found in {self.specs_dir}")
 
-        for spec_file in json_specs:
-            if spec_file.is_symlink() or not spec_file.is_file():
-                raise ValueError(f"domain spec path is unsafe: {spec_file}")
-            dest = domains_dir / spec_file.name
-            shutil.copy2(spec_file, dest)
-            console.print(f"  [dim]Added: domains/{spec_file.name}[/dim]")
-
-        # Copy all YAML spec files
-        for spec_file in sorted(
-            path for path in self.specs_dir.glob("*.yaml") if not path.name.startswith(".")
-        ):
+        for spec_file in domain_specs:
             if spec_file.is_symlink() or not spec_file.is_file():
                 raise ValueError(f"domain spec path is unsafe: {spec_file}")
             dest = domains_dir / spec_file.name
@@ -266,47 +323,20 @@ class ReleaseBuilder:
 
     def _create_merged_spec(self, domains_dir: Path, staging_dir: Path) -> None:
         """Create a merged OpenAPI spec from all domain files."""
-        merged: dict[str, Any] = {
-            "openapi": "3.0.0",
-            "info": {
-                "title": "F5 Distributed Cloud API (Fixed)",
-                "version": self.version,
-                "description": "Reconciled F5 XC OpenAPI specification",
-            },
-            "servers": [
-                {
-                    "url": "https://{tenant}.console.ves.volterra.io",
-                    "variables": {
-                        "tenant": {
-                            "default": "example-tenant",
-                            "description": "F5 XC tenant name",
-                        }
-                    },
-                }
-            ],
-            "paths": {},
-            "components": {"schemas": {}},
-        }
-
-        for spec_file in sorted(domains_dir.glob("*.json")):
-            try:
-                with spec_file.open(encoding="utf-8") as f:
-                    spec = json.load(f)
-            except (json.JSONDecodeError, OSError) as error:
-                raise ValueError(f"domain spec cannot be read: {spec_file.name}") from error
-            if not isinstance(spec, dict):
-                raise ValueError(f"domain spec is not an object: {spec_file.name}")
-
-            paths = spec.get("paths", {})
-            components = spec.get("components", {})
-            if not isinstance(paths, dict) or not isinstance(components, dict):
-                raise ValueError(f"domain spec has invalid OpenAPI objects: {spec_file.name}")
-            schemas = components.get("schemas", {})
-            if not isinstance(schemas, dict):
-                raise ValueError(f"domain spec has invalid schemas: {spec_file.name}")
-
-            merged["paths"].update(paths)
-            merged["components"]["schemas"].update(schemas)
+        domain_paths = sorted(
+            path for path in domains_dir.iterdir() if path.suffix in {".json", ".yaml", ".yml"}
+        )
+        try:
+            documents = [
+                (spec_file.name, load_openapi_document(spec_file)) for spec_file in domain_paths
+            ]
+            merged = merge_openapi_documents(
+                documents,
+                title="F5 Distributed Cloud API (Fixed)",
+                version=self.version,
+            )
+        except ValueError as error:
+            raise ValueError(f"domain spec cannot be read or aggregated: {error}") from error
 
         # Save merged specs
         with (staging_dir / "openapi.json").open("w") as f:
@@ -359,6 +389,7 @@ class ReleaseBuilder:
     def _generate_manifest(self, staging_dir: Path) -> None:
         """Generate manifest file with release metadata."""
         manifest: dict[str, Any] = {
+            "schema_version": 1,
             "version": self.version,
             "generated_at": self.build_timestamp,
             "git_sha": get_git_sha(),
@@ -373,6 +404,7 @@ class ReleaseBuilder:
                     {
                         "path": rel_path.as_posix(),
                         "size": filepath.stat().st_size,
+                        "sha256": hashlib.sha256(filepath.read_bytes()).hexdigest(),
                     }
                 )
 
@@ -396,8 +428,7 @@ class ReleaseBuilder:
             with zipfile.ZipFile(
                 temporary_path,
                 "w",
-                compression=zipfile.ZIP_DEFLATED,
-                compresslevel=CANONICAL_COMPRESSION_LEVEL,
+                compression=zipfile.ZIP_STORED,
             ) as archive:
                 for filepath in sorted(staging_dir.rglob("*")):
                     if not filepath.is_file():
@@ -407,7 +438,7 @@ class ReleaseBuilder:
                         filename=arcname,
                         date_time=self.build_datetime.timetuple()[:6],
                     )
-                    member.compress_type = zipfile.ZIP_DEFLATED
+                    member.compress_type = zipfile.ZIP_STORED
                     member.create_system = 3
                     member.external_attr = CANONICAL_FILE_MODE << 16
                     member.internal_attr = 0
@@ -416,8 +447,7 @@ class ReleaseBuilder:
                     archive.writestr(
                         member,
                         filepath.read_bytes(),
-                        compress_type=zipfile.ZIP_DEFLATED,
-                        compresslevel=CANONICAL_COMPRESSION_LEVEL,
+                        compress_type=zipfile.ZIP_STORED,
                     )
             os.replace(temporary_path, zip_path)
         finally:

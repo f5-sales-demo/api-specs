@@ -4,13 +4,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import io
 import json
 import os
 import re
 import sys
 import tempfile
-import zipfile
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -19,9 +17,12 @@ from typing import Any
 import requests
 import yaml
 
+from scripts.dispatch_ack import DeliveryAckError, get_delivery_ack
+from scripts.release_archive import ReleaseArchiveError, validate_release_archive_bytes
 from scripts.verify_release import (
     ReleaseVerificationError,
     github_headers,
+    release_receipt,
     validate_release_metadata,
     verify_asset_bytes,
 )
@@ -32,8 +33,6 @@ DOMAIN_PREFIX = "public.ves.io.schema."
 DOMAIN_SUFFIX = ".ves-swagger"
 RELEASE_ONLY_MANIFEST_FIELDS = frozenset({"version", "generated_at", "git_sha"})
 REPORT_GENERATED_LINE = re.compile(r"^\*\*Generated:\*\* .*$", re.MULTILINE)
-MAX_ARCHIVE_FILES = 1_000
-MAX_ARCHIVE_BYTES = 100 * 1024 * 1024
 RELEASE_VERSION_PATTERN = re.compile(r"[0-9]{4}\.[0-9]{2}\.[0-9]{2}-[1-9][0-9]*")
 
 
@@ -50,6 +49,8 @@ class VerifiedLatestRelease:
     asset_name: str
     content: bytes
     snapshot: dict[str, Any]
+    receipt: dict[str, Any]
+    delivery_acknowledged: bool
 
 
 def _sha256(content: bytes) -> str:
@@ -153,26 +154,11 @@ def _canonical_entry(path: PurePosixPath, content: bytes) -> bytes:
     return content
 
 
-def _snapshot_from_zip(archive: zipfile.ZipFile) -> dict[str, Any]:
-    infos = archive.infolist()
-    if not infos or len(infos) > MAX_ARCHIVE_FILES:
-        raise SemanticReleaseError("release archive file count is outside the safe limit")
-    if sum(info.file_size for info in infos) > MAX_ARCHIVE_BYTES:
-        raise SemanticReleaseError("release archive expands beyond the safe size limit")
-
-    names: set[str] = set()
+def _snapshot_from_entries(entries: dict[str, bytes]) -> dict[str, Any]:
     domains: dict[str, dict[str, str]] = {}
     artifacts: dict[str, str] = {}
-    for info in infos:
-        path = _safe_archive_path(info.filename)
-        if info.is_dir():
-            continue
-        if info.flag_bits & 0x1:
-            raise SemanticReleaseError(f"release archive entry is encrypted: {path}")
-        if info.filename in names:
-            raise SemanticReleaseError(f"release archive contains duplicate path: {path}")
-        names.add(info.filename)
-        content = archive.read(info)
+    for name, content in entries.items():
+        path = _safe_archive_path(name)
         digest = _sha256(_canonical_entry(path, content))
         if (
             len(path.parts) == 2
@@ -205,30 +191,42 @@ def _snapshot_from_zip(archive: zipfile.ZipFile) -> dict[str, Any]:
     }
 
 
-def semantic_snapshot_from_archive(archive_path: Path) -> dict[str, Any]:
+def semantic_snapshot_from_archive(
+    archive_path: Path,
+    *,
+    expected_version: str,
+    expected_commit: str,
+) -> dict[str, Any]:
     """Return the canonical semantic identity of one release ZIP."""
     path = Path(archive_path)
     if path.is_symlink() or not path.is_file():
         raise SemanticReleaseError(f"release archive is missing or unsafe: {path}")
     try:
-        with zipfile.ZipFile(path) as archive:
-            corrupt = archive.testzip()
-            if corrupt is not None:
-                raise SemanticReleaseError(f"release archive has a corrupt entry: {corrupt}")
-            return _snapshot_from_zip(archive)
-    except zipfile.BadZipFile as error:
-        raise SemanticReleaseError("release archive is not a valid ZIP") from error
+        validated = validate_release_archive_bytes(
+            path.read_bytes(),
+            expected_version=expected_version,
+            expected_commit=expected_commit,
+        )
+    except (OSError, ReleaseArchiveError) as error:
+        raise SemanticReleaseError(str(error)) from error
+    return _snapshot_from_entries(validated.entries)
 
 
-def _snapshot_from_bytes(content: bytes) -> dict[str, Any]:
+def _snapshot_from_bytes(
+    content: bytes,
+    *,
+    expected_version: str,
+    expected_commit: str,
+) -> dict[str, Any]:
     try:
-        with zipfile.ZipFile(io.BytesIO(content)) as archive:
-            corrupt = archive.testzip()
-            if corrupt is not None:
-                raise SemanticReleaseError(f"release archive has a corrupt entry: {corrupt}")
-            return _snapshot_from_zip(archive)
-    except zipfile.BadZipFile as error:
-        raise SemanticReleaseError("release archive is not a valid ZIP") from error
+        validated = validate_release_archive_bytes(
+            content,
+            expected_version=expected_version,
+            expected_commit=expected_commit,
+        )
+    except ReleaseArchiveError as error:
+        raise SemanticReleaseError(str(error)) from error
+    return _snapshot_from_entries(validated.entries)
 
 
 def compare_snapshots(current: dict[str, Any], previous: dict[str, Any]) -> dict[str, Any]:
@@ -273,6 +271,7 @@ def validate_previous_release_asset(
     archive_path: Path,
     *,
     repository: str,
+    expected_commit: str,
 ) -> None:
     """Verify immutable metadata, size, digest, and ZIP bytes for a prior release."""
     tag = release.get("tag_name")
@@ -301,7 +300,12 @@ def validate_previous_release_asset(
     if len(content) != asset["size"]:
         raise SemanticReleaseError("previous release archive size does not match metadata")
     try:
-        verify_asset_bytes(content, asset["digest"])
+        verify_asset_bytes(
+            content,
+            asset["digest"],
+            expected_version=tag.removeprefix("v"),
+            expected_commit=expected_commit,
+        )
     except ReleaseVerificationError as error:
         raise SemanticReleaseError(str(error)) from error
 
@@ -319,12 +323,53 @@ def _direct_tag_commit(tag_ref: Any, tag: str) -> str:
     return commit
 
 
-def _latest_verified_snapshot(repository: str, token: str | None) -> VerifiedLatestRelease:
+def _github_array(
+    url: str,
+    token: str | None,
+    description: str,
+) -> list[Any]:
+    response = requests.get(url, headers=github_headers(token), timeout=30)
+    try:
+        response.raise_for_status()
+        payload = response.json()
+    except (requests.RequestException, requests.JSONDecodeError) as error:
+        raise SemanticReleaseError(
+            f"{description} failed with HTTP {response.status_code}"
+        ) from error
+    if not isinstance(payload, list):
+        raise SemanticReleaseError(f"{description} did not return an array")
+    return payload
+
+
+def _require_clean_bootstrap(repository: str, token: str | None) -> None:
+    releases = _github_array(
+        f"https://api.github.com/repos/{repository}/releases?per_page=1",
+        token,
+        "GitHub release inventory",
+    )
+    version_tags = _github_array(
+        f"https://api.github.com/repos/{repository}/git/matching-refs/tags/v",
+        token,
+        "GitHub version-tag inventory",
+    )
+    if releases or version_tags:
+        raise SemanticReleaseError(
+            "clean bootstrap requires an empty release and version-tag inventory"
+        )
+
+
+def _latest_release_metadata(
+    repository: str,
+    token: str | None,
+) -> tuple[dict[str, Any], str, dict[str, Any]] | None:
     response = requests.get(
         f"https://api.github.com/repos/{repository}/releases/latest",
         headers=github_headers(token),
         timeout=30,
     )
+    if response.status_code == 404:
+        _require_clean_bootstrap(repository, token)
+        return None
     try:
         response.raise_for_status()
         release = response.json()
@@ -357,6 +402,10 @@ def _latest_verified_snapshot(repository: str, token: str | None) -> VerifiedLat
         )
     except ReleaseVerificationError as error:
         raise SemanticReleaseError(str(error)) from error
+    return release, tag, validated
+
+
+def _download_latest_asset(validated: dict[str, Any]) -> bytes:
     try:
         download = requests.get(validated["browser_download_url"], timeout=120)
         download.raise_for_status()
@@ -364,11 +413,10 @@ def _latest_verified_snapshot(repository: str, token: str | None) -> VerifiedLat
         raise SemanticReleaseError("latest release asset download failed") from error
     if len(download.content) != validated["size"]:
         raise SemanticReleaseError("latest release asset size does not match metadata")
-    try:
-        verify_asset_bytes(download.content, validated["digest"])
-    except ReleaseVerificationError as error:
-        raise SemanticReleaseError(str(error)) from error
+    return download.content
 
+
+def _latest_tag_commit(repository: str, tag: str, token: str | None) -> str:
     ref_response = requests.get(
         f"https://api.github.com/repos/{repository}/git/ref/tags/{tag}",
         headers=github_headers(token),
@@ -381,20 +429,53 @@ def _latest_verified_snapshot(repository: str, token: str | None) -> VerifiedLat
         raise SemanticReleaseError(
             f"latest GitHub release tag lookup failed with HTTP {ref_response.status_code}"
         ) from error
-    commit = _direct_tag_commit(tag_ref, tag)
+    return _direct_tag_commit(tag_ref, tag)
+
+
+def _latest_verified_snapshot(
+    repository: str,
+    token: str | None,
+) -> VerifiedLatestRelease | None:
+    metadata = _latest_release_metadata(repository, token)
+    if metadata is None:
+        return None
+    release, tag, validated = metadata
+    content = _download_latest_asset(validated)
+    commit = _latest_tag_commit(repository, tag, token)
+    version = tag.removeprefix("v")
+    try:
+        verify_asset_bytes(
+            content,
+            validated["digest"],
+            expected_version=version,
+            expected_commit=commit,
+        )
+    except ReleaseVerificationError as error:
+        raise SemanticReleaseError(str(error)) from error
+    receipt = release_receipt(release, validated)
+    try:
+        acknowledged = get_delivery_ack(repository, commit, receipt, token or "")
+    except DeliveryAckError as error:
+        raise SemanticReleaseError(str(error)) from error
 
     return VerifiedLatestRelease(
         tag=tag,
         commit=commit,
         asset_name=validated["name"],
-        content=download.content,
-        snapshot=_snapshot_from_bytes(download.content),
+        content=content,
+        snapshot=_snapshot_from_bytes(
+            content,
+            expected_version=version,
+            expected_commit=commit,
+        ),
+        receipt=receipt,
+        delivery_acknowledged=acknowledged,
     )
 
 
 def decide_publication(
     current: dict[str, Any],
-    latest: VerifiedLatestRelease,
+    latest: VerifiedLatestRelease | None,
     *,
     candidate_version: str,
     source_commit: str,
@@ -405,6 +486,24 @@ def decide_publication(
     if re.fullmatch(r"[0-9a-f]{40}", source_commit) is None:
         raise SemanticReleaseError("source commit must be a full Git SHA")
 
+    if latest is None:
+        return {
+            "schema_version": SCHEMA_VERSION,
+            "changed": True,
+            "semantic_digest": current["semantic_digest"],
+            "previous_semantic_digest": "none",
+            "added_domains": sorted(current["domains"]),
+            "removed_domains": [],
+            "modified_domains": [],
+            "changed_artifacts": sorted(current["artifacts"]),
+            "previous_release_tag": "",
+            "previous_release_commit": "",
+            "publication_mode": "create",
+            "release_version": candidate_version,
+            "release_asset": f"api-specs-v{candidate_version}.zip",
+            "release_commit": source_commit,
+        }
+
     decision = compare_snapshots(current, latest.snapshot)
     decision["previous_release_tag"] = latest.tag
     decision["previous_release_commit"] = latest.commit
@@ -414,14 +513,16 @@ def decide_publication(
                 "publication_mode": "create",
                 "release_version": candidate_version,
                 "release_asset": f"api-specs-v{candidate_version}.zip",
+                "release_commit": source_commit,
             }
         )
-    elif latest.commit == source_commit:
+    elif not latest.delivery_acknowledged:
         decision.update(
             {
                 "publication_mode": "recover",
                 "release_version": latest.tag.removeprefix("v"),
                 "release_asset": latest.asset_name,
+                "release_commit": latest.commit,
             }
         )
     else:
@@ -430,6 +531,7 @@ def decide_publication(
                 "publication_mode": "none",
                 "release_version": "",
                 "release_asset": "",
+                "release_commit": "",
             }
         )
     return decision
@@ -523,7 +625,11 @@ def _write_bytes_atomically(path: Path, content: bytes) -> None:
 
 
 def _compare(args: argparse.Namespace) -> int:
-    current = semantic_snapshot_from_archive(args.current_archive)
+    current = semantic_snapshot_from_archive(
+        args.current_archive,
+        expected_version=args.candidate_version,
+        expected_commit=args.source_commit,
+    )
     latest = _latest_verified_snapshot(
         args.repository,
         os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN"),
@@ -534,7 +640,7 @@ def _compare(args: argparse.Namespace) -> int:
         candidate_version=args.candidate_version,
         source_commit=args.source_commit,
     )
-    if decision["publication_mode"] == "recover":
+    if decision["publication_mode"] == "recover" and latest is not None:
         _write_bytes_atomically(args.recovery_directory / latest.asset_name, latest.content)
     _write_json(args.output, decision)
     if args.github_output is not None:
@@ -548,8 +654,9 @@ def _compare(args: argparse.Namespace) -> int:
             )
             output.write(f"release_version={decision['release_version']}\n")
             output.write(f"release_asset={decision['release_asset']}\n")
+            output.write(f"release_commit={decision['release_commit']}\n")
             output.write(f"semantic_digest={decision['semantic_digest']}\n")
-            output.write(f"previous_release_tag={latest.tag}\n")
+            output.write(f"previous_release_tag={latest.tag if latest is not None else ''}\n")
     return 0
 
 

@@ -10,18 +10,18 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import io
 import json
 import os
 import re
 import sys
 import time
-import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 import requests
+
+from scripts.release_archive import ReleaseArchiveError, validate_release_archive_bytes
 
 GITHUB_API_VERSION = "2022-11-28"
 SHA256_DIGEST = re.compile(r"sha256:[0-9a-f]{64}")
@@ -177,23 +177,35 @@ def validate_tag_ref(tag_ref: dict[str, Any], tag: str, expected_commit: str) ->
         raise ReleaseVerificationError("release tag ref does not name the expected commit")
 
 
-def verify_asset_bytes(content: bytes, expected_digest: str) -> None:
-    """Verify downloaded bytes against GitHub's digest and the ZIP structure."""
+def verify_asset_bytes(
+    content: bytes,
+    expected_digest: str,
+    *,
+    expected_version: str,
+    expected_commit: str,
+) -> None:
+    """Verify downloaded bytes against GitHub's digest and strict archive contract."""
     actual_digest = f"sha256:{hashlib.sha256(content).hexdigest()}"
     if actual_digest != expected_digest:
         raise ReleaseVerificationError("downloaded asset digest does not match GitHub's SHA-256")
 
     try:
-        with zipfile.ZipFile(io.BytesIO(content)) as archive:
-            corrupt_member = archive.testzip()
-    except zipfile.BadZipFile as error:
-        raise ReleaseVerificationError("downloaded asset is not a valid ZIP archive") from error
+        validate_release_archive_bytes(
+            content,
+            expected_version=expected_version,
+            expected_commit=expected_commit,
+        )
+    except ReleaseArchiveError as error:
+        raise ReleaseVerificationError(str(error)) from error
 
-    if corrupt_member is not None:
-        raise ReleaseVerificationError("downloaded asset is not a valid ZIP archive")
 
-
-def local_asset_digest(path: Path, expected_name: str) -> str:
+def local_asset_digest(
+    path: Path,
+    expected_name: str,
+    *,
+    expected_version: str,
+    expected_commit: str,
+) -> str:
     """Validate the locally built ZIP and return its SHA-256 identity."""
     if path.name != expected_name:
         raise ReleaseVerificationError("local asset name does not match the expected ZIP")
@@ -204,7 +216,12 @@ def local_asset_digest(path: Path, expected_name: str) -> str:
     except OSError as error:
         raise ReleaseVerificationError("local release asset is unreadable") from error
     digest = f"sha256:{hashlib.sha256(content).hexdigest()}"
-    verify_asset_bytes(content, digest)
+    verify_asset_bytes(
+        content,
+        digest,
+        expected_version=expected_version,
+        expected_commit=expected_commit,
+    )
     return digest
 
 
@@ -279,7 +296,12 @@ def verify_published_release(
                 raise ReleaseVerificationError(
                     "downloaded asset size does not match GitHub release metadata"
                 )
-            verify_asset_bytes(download.content, expected.asset_digest)
+            verify_asset_bytes(
+                download.content,
+                expected.asset_digest,
+                expected_version=expected.tag.removeprefix("v"),
+                expected_commit=expected.commit,
+            )
             if receipt_output is not None:
                 try:
                     receipt_output.parent.mkdir(parents=True, exist_ok=True)
@@ -324,7 +346,12 @@ def main() -> int:
 
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     try:
-        digest = local_asset_digest(args.local_asset, args.expected_asset)
+        digest = local_asset_digest(
+            args.local_asset,
+            args.expected_asset,
+            expected_version=args.tag.removeprefix("v"),
+            expected_commit=args.expected_commit,
+        )
         digest = verify_published_release(
             ExpectedRelease(
                 repository=args.repository,

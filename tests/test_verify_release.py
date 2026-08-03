@@ -25,19 +25,63 @@ from scripts.verify_release import (
 REPOSITORY = "f5-sales-demo/api-specs"
 TAG = "v2026.08.01-1"
 ASSET_NAME = f"api-specs-{TAG}.zip"
-ASSET_BYTES = b""
+EXPECTED_COMMIT = "a" * 40
+
+
+def _canonical_member(path: str) -> zipfile.ZipInfo:
+    member = zipfile.ZipInfo(path, date_time=(2026, 8, 1, 11, 0, 0))
+    member.compress_type = zipfile.ZIP_STORED
+    member.create_system = 3
+    member.external_attr = 0o100644 << 16
+    member.internal_attr = 0
+    member.extra = b""
+    member.comment = b""
+    return member
 
 
 def _zip_bytes() -> bytes:
+    version = TAG.removeprefix("v")
+    aggregate = json.dumps(
+        {
+            "openapi": "3.0.0",
+            "info": {"title": "Aggregate", "version": version},
+            "paths": {},
+            "components": {"schemas": {}},
+        }
+    ).encode()
+    files = {
+        "domains/widgets.json": json.dumps(
+            {"openapi": "3.0.0", "info": {"title": "Widgets", "version": "1"}, "paths": {}}
+        ).encode(),
+        "openapi.json": aggregate,
+        "openapi.yaml": aggregate,
+        "CHANGELOG.md": b"# Changelog\n",
+        "VALIDATION_REPORT.md": b"# Validation\n\n**Generated:** 2026-08-01T11:00:00+00:00\n",
+    }
+    manifest = {
+        "schema_version": 1,
+        "version": version,
+        "generated_at": "2026-08-01T11:00:00+00:00",
+        "git_sha": EXPECTED_COMMIT,
+        "files": [
+            {
+                "path": path,
+                "size": len(content),
+                "sha256": hashlib.sha256(content).hexdigest(),
+            }
+            for path, content in sorted(files.items())
+        ],
+    }
+    payloads = {**files, "manifest.json": json.dumps(manifest).encode()}
     output = io.BytesIO()
-    with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as archive:
-        archive.writestr("openapi.json", '{"openapi":"3.0.3"}\n')
+    with zipfile.ZipFile(output, "w", zipfile.ZIP_STORED) as archive:
+        for path, content in sorted(payloads.items()):
+            archive.writestr(_canonical_member(path), content)
     return output.getvalue()
 
 
 ASSET_BYTES = _zip_bytes()
 ASSET_DIGEST = f"sha256:{hashlib.sha256(ASSET_BYTES).hexdigest()}"
-EXPECTED_COMMIT = "a" * 40
 EXPECTED_RELEASE = ExpectedRelease(
     repository=REPOSITORY,
     tag=TAG,
@@ -174,12 +218,22 @@ def test_rejects_a_tag_that_does_not_directly_name_the_expected_commit(tag_ref):
 
 
 def test_downloaded_asset_must_match_github_sha256_and_be_a_valid_zip():
-    verify_asset_bytes(ASSET_BYTES, ASSET_DIGEST)
+    verify_asset_bytes(
+        ASSET_BYTES,
+        ASSET_DIGEST,
+        expected_version=TAG.removeprefix("v"),
+        expected_commit=EXPECTED_COMMIT,
+    )
 
 
 def test_rejects_downloaded_bytes_that_do_not_match_the_reported_digest():
     with pytest.raises(ReleaseVerificationError, match="digest does not match"):
-        verify_asset_bytes(ASSET_BYTES + b"changed", ASSET_DIGEST)
+        verify_asset_bytes(
+            ASSET_BYTES + b"changed",
+            ASSET_DIGEST,
+            expected_version=TAG.removeprefix("v"),
+            expected_commit=EXPECTED_COMMIT,
+        )
 
 
 def test_rejects_non_zip_bytes_even_when_the_digest_matches():
@@ -187,7 +241,12 @@ def test_rejects_non_zip_bytes_even_when_the_digest_matches():
     digest = f"sha256:{hashlib.sha256(content).hexdigest()}"
 
     with pytest.raises(ReleaseVerificationError, match="valid ZIP"):
-        verify_asset_bytes(content, digest)
+        verify_asset_bytes(
+            content,
+            digest,
+            expected_version=TAG.removeprefix("v"),
+            expected_commit=EXPECTED_COMMIT,
+        )
 
 
 class _Response(requests.Response):
@@ -306,6 +365,53 @@ def test_verified_download_rejects_release_metadata_size_that_does_not_match_byt
         )
 
     assert not output.exists()
+
+
+def test_verified_download_rejects_malformed_manifest_before_writing_receipt(
+    monkeypatch,
+    tmp_path,
+):
+    with zipfile.ZipFile(io.BytesIO(ASSET_BYTES)) as source:
+        entries = {name: source.read(name) for name in source.namelist()}
+    manifest = json.loads(entries["manifest.json"])
+    manifest["files"][0]["sha256"] = "0" * 64
+    entries["manifest.json"] = json.dumps(manifest).encode()
+    output_bytes = io.BytesIO()
+    with zipfile.ZipFile(output_bytes, "w", zipfile.ZIP_STORED) as archive:
+        for name, content in sorted(entries.items()):
+            archive.writestr(_canonical_member(name), content)
+    malformed = output_bytes.getvalue()
+    malformed_digest = f"sha256:{hashlib.sha256(malformed).hexdigest()}"
+    release = _release()
+    release["assets"][0].update(size=len(malformed), digest=malformed_digest)
+    expected = ExpectedRelease(
+        repository=REPOSITORY,
+        tag=TAG,
+        asset_name=ASSET_NAME,
+        asset_digest=malformed_digest,
+        commit=EXPECTED_COMMIT,
+    )
+    monkeypatch.setattr(
+        requests,
+        "get",
+        _get_sequence(
+            [
+                _Response(payload=_tag_ref()),
+                _Response(payload=release),
+                _Response(content=malformed),
+            ]
+        ),
+    )
+    receipt = tmp_path / "receipt.json"
+
+    with pytest.raises(ReleaseVerificationError, match="manifest|digest"):
+        verify_published_release(
+            expected,
+            retry=ReleaseVerificationRetry(attempts=1, interval_seconds=0),
+            receipt_output=receipt,
+        )
+
+    assert not receipt.exists()
 
 
 def test_network_verification_fails_closed_after_bounded_retries(monkeypatch):

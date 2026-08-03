@@ -17,6 +17,7 @@ from pathlib import Path
 import pytest
 
 from scripts.release import ReleaseBuilder, build_validation_report_md, get_git_sha, main
+from scripts.release_archive import validate_release_archive_bytes
 from scripts.utils.constraint_validator import Discrepancy, DiscrepancyType
 from scripts.utils.discrepancy_fingerprint import fingerprint
 
@@ -121,6 +122,129 @@ def test_validation_report_renders_em_dash_when_no_issue_mapped(tmp_path):
 
     assert "Tracked as issues" in md
     assert "—" in md  # em-dash for unmapped rows
+
+
+def test_malformed_validation_entry_fails_closed_and_names_its_index(tmp_path: Path) -> None:
+    validation_report = tmp_path / "validation_report.json"
+    validation_report.write_text(
+        json.dumps(
+            {
+                "summary": {"total_discrepancies": 2},
+                "discrepancies": [
+                    {
+                        "path": "/valid",
+                        "property_name": "port",
+                        "constraint_type": "minimum",
+                        "discrepancy_type": "spec_stricter",
+                        "domain": "origin_pool",
+                        "method": "POST",
+                        "spec_value": 1,
+                        "api_behavior": {},
+                        "test_values": [0],
+                    },
+                    {
+                        "path": "/invalid",
+                        "constraint_type": "minimum",
+                        "discrepancy_type": "spec_stricter",
+                        "domain": "origin_pool",
+                        "method": "POST",
+                        "test_values": [],
+                    },
+                ],
+            }
+        )
+    )
+
+    with pytest.raises(ValueError, match=r"discrepancies\[1\]\.property_name"):
+        build_validation_report_md(
+            validation_report,
+            "2026-04-20T12:34:56+00:00",
+        )
+
+
+@pytest.mark.parametrize(
+    ("field", "invalid"),
+    [
+        ("path", {"not": "a string"}),
+        ("property_name", ["not", "a", "string"]),
+        ("constraint_type", {"not": "a string"}),
+        ("domain", 7),
+        ("method", ["POST"]),
+        ("test_values", {"not": "an array"}),
+    ],
+)
+def test_malformed_discrepancy_field_types_fail_closed(
+    tmp_path: Path,
+    field: str,
+    invalid: object,
+) -> None:
+    discrepancy = {
+        "path": "/widgets",
+        "property_name": "port",
+        "constraint_type": "minimum",
+        "discrepancy_type": "spec_stricter",
+        "domain": "widgets",
+        "method": "POST",
+        "spec_value": 1,
+        "api_behavior": {"accepted": 0},
+        "test_values": [0],
+    }
+    discrepancy[field] = invalid
+    validation_report = tmp_path / "validation_report.json"
+    validation_report.write_text(json.dumps({"discrepancies": [discrepancy]}))
+
+    with pytest.raises(
+        ValueError,
+        match=rf"discrepancies\[0\]\.{field}",
+    ):
+        build_validation_report_md(
+            validation_report,
+            "2026-04-20T12:34:56+00:00",
+        )
+
+
+@pytest.mark.parametrize(
+    "document, message",
+    [
+        ({"summary": {}, "discrepancies": {}}, "discrepancies must be an array"),
+        (
+            {"summary": {"total_discrepancies": 1}, "discrepancies": []},
+            "total_discrepancies",
+        ),
+        ({"summary": [], "discrepancies": []}, "summary must be an object"),
+    ],
+)
+def test_validation_report_schema_is_strict(
+    tmp_path: Path,
+    document: object,
+    message: str,
+) -> None:
+    validation_report = tmp_path / "validation_report.json"
+    validation_report.write_text(json.dumps(document))
+
+    with pytest.raises(ValueError, match=message):
+        build_validation_report_md(
+            validation_report,
+            "2026-04-20T12:34:56+00:00",
+        )
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        '{"summary":{},"discrepancies":[],"discrepancies":[]}',
+        '{"summary":{"total_discrepancies":NaN},"discrepancies":[]}',
+    ],
+)
+def test_validation_report_rejects_lossy_json(content: str, tmp_path: Path) -> None:
+    validation_report = tmp_path / "validation_report.json"
+    validation_report.write_text(content)
+
+    with pytest.raises(ValueError, match="duplicate JSON key|finite"):
+        build_validation_report_md(
+            validation_report,
+            "2026-04-20T12:34:56+00:00",
+        )
 
 
 def test_release_builder_requires_explicit_version_and_complete_evidence(
@@ -250,6 +374,7 @@ def test_release_build_is_byte_identical_across_source_mtimes(
         )
         assert "domains/.spec_metadata.json" not in archive.namelist()
         assert {member.create_system for member in members} == {3}
+        assert {member.compress_type for member in members} == {zipfile.ZIP_STORED}
         assert {(member.external_attr >> 16) & 0o777 for member in members} == {0o644}
         assert {member.date_time for member in members} == {(2026, 8, 2, 7, 8, 10)}
         report = archive.read("VALIDATION_REPORT.md").decode()
@@ -262,6 +387,12 @@ def test_release_build_is_byte_identical_across_source_mtimes(
         entry["path"] for entry in manifest["files"]
     )
     assert len(manifest["git_sha"]) == 40
+    validated = validate_release_archive_bytes(
+        second,
+        expected_version="2026.08.02-1",
+        expected_commit="a" * 40,
+    )
+    assert validated.manifest == manifest
 
 
 @pytest.mark.parametrize(

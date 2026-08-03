@@ -12,6 +12,8 @@ import yaml
 from openapi_spec_validator import validate
 from rich.console import Console
 
+from scripts.utils.openapi_aggregate import load_openapi_document, merge_openapi_documents
+
 console = Console()
 
 
@@ -106,11 +108,7 @@ class SpecLoader:
             msg = f"Spec file not found: {filepath}"
             raise FileNotFoundError(msg)
 
-        with filepath.open() as f:
-            if filename.endswith((".yaml", ".yml")):
-                spec: dict[str, Any] = yaml.safe_load(f)
-            else:
-                spec = json.load(f)
+        spec = load_openapi_document(filepath)
 
         self._specs[filename] = spec
         return spec
@@ -119,7 +117,9 @@ class SpecLoader:
         """Load all domain JSON files from the spec directory."""
         domain_files = {}
 
-        for filepath in self.spec_dir.glob("*.json"):
+        for filepath in sorted(self.spec_dir.iterdir()):
+            if filepath.suffix not in {".json", ".yaml", ".yml"}:
+                continue
             if filepath.name.startswith("."):
                 continue
             spec = self.load_spec(filepath.name)
@@ -306,35 +306,18 @@ class SpecLoader:
 
         return None
 
-    def merge_specs(self, specs: list[dict]) -> dict:
-        """Merge multiple OpenAPI specs into one."""
-        merged: dict[str, Any] = {
-            "openapi": "3.0.0",
-            "info": {"title": "F5 XC API (Merged)", "version": "1.0.0"},
-            "paths": {},
-            "components": {"schemas": {}},
-        }
-
-        for spec in specs:
-            # Merge paths
-            merged["paths"].update(spec.get("paths", {}))
-
-            # Merge schemas
-            components = spec.get("components", {})
-            merged["components"]["schemas"].update(components.get("schemas", {}))
-
-        return merged
+    def merge_specs(self, specs: dict[str, dict[str, Any]]) -> dict[str, Any]:
+        """Merge named specs through the lossless aggregate contract."""
+        return merge_openapi_documents(
+            list(specs.items()),
+            title="F5 XC API (Merged)",
+            version="1.0.0",
+        )
 
 
 def load_spec_from_file(filepath: Path | str) -> dict:
     """Convenience function to load a single spec file."""
-    filepath = Path(filepath)
-    with filepath.open() as f:
-        if filepath.suffix in (".yaml", ".yml"):
-            result: dict = yaml.safe_load(f)
-        else:
-            result = json.load(f)
-        return result
+    return load_openapi_document(Path(filepath))
 
 
 _SHORT_ARRAY_RE = re.compile(
@@ -368,9 +351,9 @@ def save_spec_to_file(spec: dict, filepath: Path | str, fmt: str = "json") -> No
     filepath.parent.mkdir(parents=True, exist_ok=True)
 
     if fmt == "yaml":
-        with filepath.open("w") as f:
+        with filepath.open("w", encoding="utf-8") as f:
             yaml.safe_dump(spec, f, default_flow_style=False, sort_keys=False)
     else:
         json_str = json.dumps(spec, indent=2) + "\n"
         json_str = _compact_short_arrays(json_str)
-        filepath.write_text(json_str)
+        filepath.write_text(json_str, encoding="utf-8")

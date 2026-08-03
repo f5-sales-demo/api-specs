@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
+import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import zipfile
 from datetime import UTC, datetime
 from pathlib import Path
@@ -17,12 +21,59 @@ from rich.console import Console
 
 from scripts.utils.constraint_validator import Discrepancy, DiscrepancyType
 from scripts.utils.discrepancy_fingerprint import fingerprint
+from scripts.utils.openapi_aggregate import load_openapi_document, merge_openapi_documents
+from scripts.utils.strict_data import strict_json_loads
 
 console = Console()
+
+BUILD_TIMESTAMP_PATTERN = re.compile(
+    r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
+    r"(?:\.[0-9]{1,6})?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+)
+VERSION_PATTERN = re.compile(r"^(?P<date>[0-9]{4}\.[0-9]{2}\.[0-9]{2})-(?P<patch>[1-9][0-9]*)$")
+ZIP_MINIMUM_YEAR = 1980
+ZIP_MAXIMUM_YEAR = 2107
+CANONICAL_FILE_MODE = 0o100644
+
+
+def parse_build_timestamp(value: str) -> datetime:
+    """Parse an explicit, timezone-aware release build timestamp."""
+    if not isinstance(value, str) or BUILD_TIMESTAMP_PATTERN.fullmatch(value) is None:
+        raise ValueError("build timestamp must be an ISO 8601 timestamp with a UTC offset")
+
+    try:
+        timestamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValueError("build timestamp is not a valid ISO 8601 timestamp") from exc
+
+    if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+        raise ValueError("build timestamp must include a UTC offset")
+
+    timestamp = timestamp.astimezone(UTC)
+    if not ZIP_MINIMUM_YEAR <= timestamp.year <= ZIP_MAXIMUM_YEAR:
+        raise ValueError(
+            f"build timestamp year must be between {ZIP_MINIMUM_YEAR} and {ZIP_MAXIMUM_YEAR}"
+        )
+    return timestamp
+
+
+def validate_version(value: str) -> str:
+    """Require the one canonical release-version grammar used by the workflow."""
+    if not isinstance(value, str):
+        raise ValueError("release version must use YYYY.MM.DD-N")
+    match = VERSION_PATTERN.fullmatch(value)
+    if match is None:
+        raise ValueError("release version must use YYYY.MM.DD-N")
+    try:
+        datetime.strptime(match.group("date"), "%Y.%m.%d")
+    except ValueError as error:
+        raise ValueError("release version contains an invalid date") from error
+    return value
 
 
 def build_validation_report_md(
     validation_report_json: Path,
+    generated_at: str,
     issue_mapping_json: Path | None = None,
 ) -> str:
     """Assemble VALIDATION_REPORT.md, including a Tracked as issues column.
@@ -36,25 +87,21 @@ def build_validation_report_md(
     Returns the markdown document as a string; the caller is responsible
     for writing it to disk.
     """
-    data = json.loads(Path(validation_report_json).read_text())
+    data = strict_json_loads(
+        Path(validation_report_json).read_text(encoding="utf-8"),
+        "validation report",
+    )
 
-    mapping: dict[str, dict[str, Any]] = {}
-    if issue_mapping_json is not None:
-        mapping_path = Path(issue_mapping_json)
-        if mapping_path.exists():
-            mapping = json.loads(mapping_path.read_text())
+    mapping = _load_issue_mapping(issue_mapping_json)
 
-    summary = data.get("summary", {}) or {}
-    discrepancies = data.get("discrepancies", []) or []
+    summary, discrepancies = _validated_report_data(data)
 
     lines: list[str] = [
         "# F5 XC API Validation Report",
         "",
+        f"**Generated:** {generated_at}",
+        "",
     ]
-
-    timestamp = summary.get("timestamp")
-    if timestamp:
-        lines.extend([f"**Generated:** {timestamp}", ""])
 
     if summary:
         lines.extend(
@@ -66,7 +113,8 @@ def build_validation_report_md(
                 f"- **Passed:** {summary.get('passed', 0)}",
                 f"- **Failed:** {summary.get('failed', 0)}",
                 f"- **Errors:** {summary.get('errors', 0)}",
-                f"- **Discrepancies Found:** {summary.get('total_discrepancies', len(discrepancies))}",
+                "- **Discrepancies Found:** "
+                f"{summary.get('total_discrepancies', len(discrepancies))}",
                 "",
             ]
         )
@@ -80,25 +128,13 @@ def build_validation_report_md(
         ]
     )
 
-    for d in discrepancies:
-        try:
-            disc = Discrepancy(
-                path=d["path"],
-                property_name=d["property_name"],
-                constraint_type=d["constraint_type"],
-                discrepancy_type=DiscrepancyType(d["discrepancy_type"]),
-                spec_value=d.get("spec_value"),
-                api_behavior=d.get("api_behavior"),
-                test_values=d.get("test_values", []) or [],
-            )
-        except (KeyError, ValueError):
-            # Malformed entry — skip rather than abort the report.
-            continue
+    for index, d in enumerate(discrepancies):
+        disc = _validated_discrepancy(d, index)
 
         fp = fingerprint(
             disc,
-            d.get("domain", "unknown"),
-            d.get("method", "unknown"),
+            d["domain"],
+            d["method"],
         )
         entry = mapping.get(fp)
         if entry and entry.get("issue_number") and entry.get("issue_url"):
@@ -116,115 +152,99 @@ def build_validation_report_md(
     return "\n".join(lines)
 
 
-def load_config(config_path: Path) -> dict:
-    """Load configuration from YAML file."""
-    if not config_path.exists():
+def _load_issue_mapping(path: Path | None) -> dict[str, dict[str, Any]]:
+    if path is None or not Path(path).exists():
         return {}
-
-    with config_path.open() as f:
-        return yaml.safe_load(f) or {}
-
-
-def load_spec_metadata(specs_dir: Path) -> dict | None:
-    """Load spec metadata from download."""
-    metadata_path = specs_dir / ".spec_metadata.json"
-    if metadata_path.exists():
-        with metadata_path.open() as f:
-            result: dict = json.load(f)
-            return result
-    return None
+    loaded = strict_json_loads(
+        Path(path).read_text(encoding="utf-8"),
+        "issue mapping",
+    )
+    if not isinstance(loaded, dict):
+        raise ValueError("issue mapping must be an object")
+    return loaded
 
 
-def get_existing_patch_numbers(base_date: str) -> list[int]:
-    """Get existing patch numbers for a given base date from git tags."""
+def _validated_report_data(data: Any) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    if not isinstance(data, dict):
+        raise ValueError("validation report must be an object")
+    summary = data.get("summary", {})
+    discrepancies = data.get("discrepancies", [])
+    if not isinstance(summary, dict):
+        raise ValueError("validation report summary must be an object")
+    if not isinstance(discrepancies, list):
+        raise ValueError("validation report discrepancies must be an array")
+    if not all(isinstance(discrepancy, dict) for discrepancy in discrepancies):
+        raise ValueError("validation report discrepancies must contain objects")
+    measured_total = summary.get("total_discrepancies")
+    if measured_total is not None and (
+        isinstance(measured_total, bool)
+        or not isinstance(measured_total, int)
+        or measured_total != len(discrepancies)
+    ):
+        raise ValueError("validation report total_discrepancies does not match discrepancies")
+    return summary, discrepancies
+
+
+def _validated_discrepancy(entry: dict[str, Any], index: int) -> Discrepancy:
+    required = (
+        "path",
+        "property_name",
+        "constraint_type",
+        "discrepancy_type",
+        "domain",
+        "method",
+        "test_values",
+    )
+    for field in required:
+        if field not in entry:
+            raise ValueError(f"validation report discrepancies[{index}].{field} is required")
+    for field in (
+        "path",
+        "property_name",
+        "constraint_type",
+        "discrepancy_type",
+        "domain",
+        "method",
+    ):
+        value = entry[field]
+        if not isinstance(value, str) or not value:
+            raise ValueError(
+                f"validation report discrepancies[{index}].{field} must be a non-empty string"
+            )
+    if not isinstance(entry["test_values"], list):
+        raise ValueError(f"validation report discrepancies[{index}].test_values must be an array")
     try:
-        result = subprocess.run(  # noqa: S603
-            ["git", "tag", "-l", f"v{base_date}-*"],  # noqa: S607
-            capture_output=True,
-            text=True,
-            check=True,
+        return Discrepancy(
+            path=entry["path"],
+            property_name=entry["property_name"],
+            constraint_type=entry["constraint_type"],
+            discrepancy_type=DiscrepancyType(entry["discrepancy_type"]),
+            spec_value=entry.get("spec_value"),
+            api_behavior=entry.get("api_behavior"),
+            test_values=entry["test_values"],
         )
-        tags = result.stdout.strip().split("\n")
-        patches = []
-        for tag in tags:
-            if tag and "-" in tag:
-                try:
-                    patch = int(tag.split("-")[-1])
-                    patches.append(patch)
-                except ValueError:
-                    continue
-        return sorted(patches)
-    except subprocess.CalledProcessError:
-        return []
-
-
-def get_version_from_metadata(specs_dir: Path, patch: int | None = None) -> str:
-    """Get version from spec metadata with patch number.
-
-    Version format: YYYY.MM.DD-PATCH
-    - YYYY.MM.DD: Date when F5 published the specs (from Last-Modified header)
-    - PATCH: Patch/build number (auto-incremented or specified)
-
-    The spec_date comes from the upstream Last-Modified header, representing
-    when F5 actually updated their specs (not when we downloaded them).
-    """
-    metadata = load_spec_metadata(specs_dir)
-
-    if metadata:
-        # Prefer spec_date (from Last-Modified) over download_date
-        base_date = metadata.get("spec_date") or metadata.get("download_date")
-        if base_date:
-            console.print(f"[dim]Using upstream spec date: {base_date}[/dim]")
-        else:
-            base_date = datetime.now(UTC).strftime("%Y.%m.%d")
-            console.print("[yellow]No spec date in metadata, using current date[/yellow]")
-    else:
-        # Fallback to current date if no metadata
-        base_date = datetime.now(UTC).strftime("%Y.%m.%d")
-        console.print("[yellow]No spec metadata found, using current date[/yellow]")
-
-    if patch is not None:
-        return f"{base_date}-{patch}"
-
-    # Auto-increment: find next patch number
-    existing = get_existing_patch_numbers(base_date)
-    next_patch = max(existing, default=0) + 1
-
-    return f"{base_date}-{next_patch}"
-
-
-def get_version_from_git() -> str:
-    """Get version from git tags or generate one (legacy fallback)."""
-    try:
-        # Try to get latest tag
-        result = subprocess.run(
-            ["git", "describe", "--tags", "--abbrev=0"],  # noqa: S607
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        tag = result.stdout.strip()
-    except subprocess.CalledProcessError:
-        # Generate version from date
-        return datetime.now(UTC).strftime("%Y.%m.%d")
-
-    if tag.startswith("v"):
-        return tag[1:]
-    return tag
+    except ValueError as error:
+        raise ValueError(
+            f"validation report discrepancies[{index}].discrepancy_type is invalid: {error}"
+        ) from error
 
 
 def get_git_sha() -> str:
-    """Get current git commit SHA."""
+    """Return the full source commit SHA, failing when provenance is unavailable."""
     try:
         result = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],  # noqa: S607
+            ["git", "rev-parse", "HEAD"],
             capture_output=True,
             text=True,
             check=True,
         )
-        return result.stdout.strip()
-    except subprocess.CalledProcessError:
-        return "unknown"
+    except (OSError, subprocess.CalledProcessError) as error:
+        raise RuntimeError("release source commit could not be resolved") from error
+
+    commit = result.stdout.strip()
+    if re.fullmatch(r"[0-9a-f]{40}", commit) is None:
+        raise RuntimeError("release source commit is not a full Git SHA")
+    return commit
 
 
 class ReleaseBuilder:
@@ -234,77 +254,66 @@ class ReleaseBuilder:
         self,
         specs_dir: Path,
         output_dir: Path,
-        original_specs_dir: Path | None = None,
-        version: str | None = None,
-        patch: int | None = None,
+        version: str,
+        build_timestamp: str,
     ) -> None:
         """Initialize ReleaseBuilder with paths and version info."""
         self.specs_dir = Path(specs_dir)
         self.output_dir = Path(output_dir)
-        # Original specs dir contains the metadata from download
-        self.original_specs_dir = (
-            Path(original_specs_dir) if original_specs_dir else Path("specs/original")
-        )
-
-        # Version precedence: explicit version > metadata-based > git fallback
-        if version:
-            self.version = version
-        else:
-            self.version = get_version_from_metadata(self.original_specs_dir, patch)
+        self.version = validate_version(version)
+        self.build_datetime = parse_build_timestamp(build_timestamp)
+        self.build_timestamp = self.build_datetime.isoformat()
 
         # Ensure output directory exists
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-    def build(
-        self,
-        include_changelog: bool = True,
-        include_report: bool = True,
-    ) -> Path:
+    def build(self) -> Path:
         """Build the release package."""
         console.print(f"[bold blue]Building Release v{self.version}[/bold blue]")
+
+        zip_path = self.artifact_path()
+        if zip_path.is_symlink() or (zip_path.exists() and not zip_path.is_file()):
+            raise ValueError(f"release artifact path is unsafe: {zip_path}")
+        zip_path.unlink(missing_ok=True)
 
         # Create staging directory
         staging_dir = self.output_dir / f"api-specs-v{self.version}"
         if staging_dir.exists():
             shutil.rmtree(staging_dir)
         staging_dir.mkdir(parents=True)
-
-        # Copy spec files
-        self._copy_specs(staging_dir)
-
-        # Copy changelog if present
-        if include_changelog:
+        try:
+            self._copy_specs(staging_dir)
             self._copy_changelog(staging_dir)
-
-        # Copy validation report if present
-        if include_report:
             self._copy_report(staging_dir)
-
-        # Generate manifest
-        self._generate_manifest(staging_dir)
-
-        # Create ZIP archive
-        zip_path = self._create_zip(staging_dir)
-
-        # Clean up staging
-        shutil.rmtree(staging_dir)
+            self._generate_manifest(staging_dir)
+            self._create_zip(staging_dir)
+        finally:
+            shutil.rmtree(staging_dir)
 
         console.print(f"[green]Release package: {zip_path}[/green]")
         return zip_path
+
+    def artifact_path(self) -> Path:
+        """Return the exact ZIP path produced for this release."""
+        return self.output_dir / f"api-specs-v{self.version}.zip"
 
     def _copy_specs(self, staging_dir: Path) -> None:
         """Copy spec files to staging directory."""
         domains_dir = staging_dir / "domains"
         domains_dir.mkdir(parents=True)
 
-        # Copy all JSON spec files
-        for spec_file in self.specs_dir.glob("*.json"):
-            dest = domains_dir / spec_file.name
-            shutil.copy2(spec_file, dest)
-            console.print(f"  [dim]Added: domains/{spec_file.name}[/dim]")
+        # Download metadata is provenance for the build clock, not a domain.
+        domain_specs = sorted(
+            path
+            for path in self.specs_dir.iterdir()
+            if path.suffix in {".json", ".yaml", ".yml"} and not path.name.startswith(".")
+        )
+        if not domain_specs:
+            raise FileNotFoundError(f"no domain specs found in {self.specs_dir}")
 
-        # Copy all YAML spec files
-        for spec_file in self.specs_dir.glob("*.yaml"):
+        for spec_file in domain_specs:
+            if spec_file.is_symlink() or not spec_file.is_file():
+                raise ValueError(f"domain spec path is unsafe: {spec_file}")
             dest = domains_dir / spec_file.name
             shutil.copy2(spec_file, dest)
             console.print(f"  [dim]Added: domains/{spec_file.name}[/dim]")
@@ -314,41 +323,20 @@ class ReleaseBuilder:
 
     def _create_merged_spec(self, domains_dir: Path, staging_dir: Path) -> None:
         """Create a merged OpenAPI spec from all domain files."""
-        merged: dict[str, Any] = {
-            "openapi": "3.0.0",
-            "info": {
-                "title": "F5 Distributed Cloud API (Fixed)",
-                "version": self.version,
-                "description": "Reconciled F5 XC OpenAPI specification",
-            },
-            "servers": [
-                {
-                    "url": "https://{tenant}.console.ves.volterra.io",
-                    "variables": {
-                        "tenant": {
-                            "default": "example-tenant",
-                            "description": "F5 XC tenant name",
-                        }
-                    },
-                }
-            ],
-            "paths": {},
-            "components": {"schemas": {}},
-        }
-
-        for spec_file in domains_dir.glob("*.json"):
-            try:
-                with spec_file.open() as f:
-                    spec = json.load(f)
-
-                # Merge paths
-                merged["paths"].update(spec.get("paths", {}))
-
-                # Merge schemas
-                components = spec.get("components", {})
-                merged["components"]["schemas"].update(components.get("schemas", {}))
-            except (json.JSONDecodeError, KeyError, OSError) as e:
-                console.print(f"[yellow]Could not merge {spec_file.name}: {e}[/yellow]")
+        domain_paths = sorted(
+            path for path in domains_dir.iterdir() if path.suffix in {".json", ".yaml", ".yml"}
+        )
+        try:
+            documents = [
+                (spec_file.name, load_openapi_document(spec_file)) for spec_file in domain_paths
+            ]
+            merged = merge_openapi_documents(
+                documents,
+                title="F5 Distributed Cloud API (Fixed)",
+                version=self.version,
+            )
+        except ValueError as error:
+            raise ValueError(f"domain spec cannot be read or aggregated: {error}") from error
 
         # Save merged specs
         with (staging_dir / "openapi.json").open("w") as f:
@@ -361,94 +349,62 @@ class ReleaseBuilder:
         console.print("  [dim]Created: openapi.yaml[/dim]")
 
     def _copy_changelog(self, staging_dir: Path) -> None:
-        """Copy changelog to staging directory."""
-        changelog_sources = [
-            self.specs_dir / "CHANGELOG.md",
-            Path("release/specs/CHANGELOG.md"),
-        ]
-
-        for source in changelog_sources:
-            if source.exists():
-                shutil.copy2(source, staging_dir / "CHANGELOG.md")
-                console.print("  [dim]Added: CHANGELOG.md[/dim]")
-                return
-
-        # Generate empty changelog if none exists
-        changelog_content = f"""# Changelog
-
-## Version {self.version}
-
-Release date: {datetime.now(UTC).strftime("%Y-%m-%d")}
-
-### Changes
-
-*No modifications were required for this release.*
-"""
-        (staging_dir / "CHANGELOG.md").write_text(changelog_content)
-        console.print("  [dim]Generated: CHANGELOG.md[/dim]")
+        """Copy reconciliation evidence, failing when it is absent."""
+        source = self.specs_dir / "CHANGELOG.md"
+        if source.is_symlink() or not source.is_file():
+            raise FileNotFoundError(f"required CHANGELOG.md is missing from {self.specs_dir}")
+        shutil.copy2(source, staging_dir / "CHANGELOG.md")
+        console.print("  [dim]Added: CHANGELOG.md[/dim]")
 
     def _copy_report(self, staging_dir: Path) -> None:
         """Copy validation report to staging directory.
 
-        Preference order:
-
-        1. If ``reports/validation_report.json`` exists, rebuild the
-           markdown via :func:`build_validation_report_md` so it includes
-           the "Tracked as issues" column (populated from
-           ``reports/issue_mapping.json`` when present).
-        2. Fall back to copying a pre-generated
-           ``reports/validation_report.md`` as-is.
-        3. Otherwise emit a minimal placeholder.
+        Rebuild the markdown from JSON evidence so its generated timestamp is
+        the immutable release build timestamp. Missing evidence fails closed.
         """
         validation_json = Path("reports/validation_report.json")
         issue_mapping = Path("reports/issue_mapping.json")
-        validation_md = Path("reports/validation_report.md")
 
-        if validation_json.exists():
+        if validation_json.is_symlink():
+            raise ValueError("validation report path must not be a symlink")
+        if validation_json.is_file():
+            if issue_mapping.is_symlink() or (
+                issue_mapping.exists() and not issue_mapping.is_file()
+            ):
+                raise ValueError("issue mapping path must be a regular non-symlink file")
             report_content = build_validation_report_md(
                 validation_json,
+                self.build_timestamp,
                 issue_mapping if issue_mapping.exists() else None,
             )
-            (staging_dir / "VALIDATION_REPORT.md").write_text(report_content)
+            (staging_dir / "VALIDATION_REPORT.md").write_text(
+                report_content,
+                encoding="utf-8",
+            )
             console.print("  [dim]Generated: VALIDATION_REPORT.md (with issue tracking)[/dim]")
             return
 
-        if validation_md.exists():
-            shutil.copy2(validation_md, staging_dir / "VALIDATION_REPORT.md")
-            console.print("  [dim]Added: VALIDATION_REPORT.md[/dim]")
-            return
-
-        # Generate placeholder report
-        report_content = f"""# Validation Report
-
-## Summary
-
-- **Version**: {self.version}
-- **Generated**: {datetime.now(UTC).isoformat()}
-- **Status**: Validated
-
-See full validation details in the repository.
-"""
-        (staging_dir / "VALIDATION_REPORT.md").write_text(report_content)
-        console.print("  [dim]Generated: VALIDATION_REPORT.md[/dim]")
+        raise FileNotFoundError("required validation report is missing")
 
     def _generate_manifest(self, staging_dir: Path) -> None:
         """Generate manifest file with release metadata."""
         manifest: dict[str, Any] = {
+            "schema_version": 1,
             "version": self.version,
-            "generated_at": datetime.now(UTC).isoformat(),
+            "generated_at": self.build_timestamp,
             "git_sha": get_git_sha(),
             "files": [],
         }
 
         # List all files
-        for filepath in staging_dir.rglob("*"):
+        for filepath in sorted(staging_dir.rglob("*")):
             if filepath.is_file():
                 rel_path = filepath.relative_to(staging_dir)
                 manifest["files"].append(
                     {
-                        "path": str(rel_path),
+                        "path": rel_path.as_posix(),
                         "size": filepath.stat().st_size,
+                        "sha256": hashlib.sha256(filepath.read_bytes()).hexdigest(),
                     }
                 )
 
@@ -458,67 +414,51 @@ See full validation details in the repository.
         console.print("  [dim]Generated: manifest.json[/dim]")
 
     def _create_zip(self, staging_dir: Path) -> Path:
-        """Create ZIP archive from staging directory."""
-        zip_name = f"api-specs-v{self.version}.zip"
-        zip_path = self.output_dir / zip_name
+        """Atomically create a ZIP with canonical member metadata and order."""
+        zip_path = self.artifact_path()
 
-        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
-            for filepath in staging_dir.rglob("*"):
-                if filepath.is_file():
-                    arcname = filepath.relative_to(staging_dir)
-                    zf.write(filepath, arcname)
+        descriptor, temporary_name = tempfile.mkstemp(
+            dir=zip_path.parent,
+            prefix=f".{zip_path.name}.",
+            suffix=".tmp",
+        )
+        os.close(descriptor)
+        temporary_path = Path(temporary_name)
+        try:
+            with zipfile.ZipFile(
+                temporary_path,
+                "w",
+                compression=zipfile.ZIP_STORED,
+            ) as archive:
+                for filepath in sorted(staging_dir.rglob("*")):
+                    if not filepath.is_file():
+                        continue
+                    arcname = filepath.relative_to(staging_dir).as_posix()
+                    member = zipfile.ZipInfo(
+                        filename=arcname,
+                        date_time=self.build_datetime.timetuple()[:6],
+                    )
+                    member.compress_type = zipfile.ZIP_STORED
+                    member.create_system = 3
+                    member.external_attr = CANONICAL_FILE_MODE << 16
+                    member.internal_attr = 0
+                    member.extra = b""
+                    member.comment = b""
+                    archive.writestr(
+                        member,
+                        filepath.read_bytes(),
+                        compress_type=zipfile.ZIP_STORED,
+                    )
+            os.replace(temporary_path, zip_path)
+        finally:
+            temporary_path.unlink(missing_ok=True)
 
         return zip_path
-
-    def get_release_notes(self) -> str:
-        """Generate release notes for GitHub release."""
-        notes = [
-            f"# F5 XC API Specs v{self.version}",
-            "",
-            "## Overview",
-            "",
-            "This release contains F5 Distributed Cloud OpenAPI specifications that have been validated and reconciled against the live API.",
-            "",
-            "## Contents",
-            "",
-            "- `openapi.json` / `openapi.yaml` - Merged OpenAPI specification",
-            "- `domains/` - Individual domain-specific spec files",
-            "- `CHANGELOG.md` - List of modifications applied",
-            "- `VALIDATION_REPORT.md` - Summary of validation results",
-            "",
-            "## Usage",
-            "",
-            "```bash",
-            "# Download and extract",
-            f"curl -LO https://github.com/f5-sales-demo/api-specs/releases/download/v{self.version}/api-specs-v{self.version}.zip",
-            f"unzip api-specs-v{self.version}.zip",
-            "",
-            "# Use with your preferred OpenAPI tool",
-            "openapi-generator generate -i openapi.json -g python -o ./client",
-            "```",
-            "",
-            "## Validation",
-            "",
-            "These specs have been validated using:",
-            "- OpenAPI Spec Validator",
-            "- Schemathesis property-based testing",
-            "- Custom constraint validation against live F5 XC API",
-            "",
-            f"Generated: {datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')}",
-        ]
-
-        return "\n".join(notes)
 
 
 def main() -> int:
     """Main entry point for release command."""
     parser = argparse.ArgumentParser(description="Build release package for F5 XC fixed specs")
-    parser.add_argument(
-        "--config",
-        type=Path,
-        default=Path("config/validation.yaml"),
-        help="Configuration file path",
-    )
     parser.add_argument(
         "--specs-dir",
         type=Path,
@@ -534,73 +474,34 @@ def main() -> int:
     parser.add_argument(
         "--version",
         type=str,
-        default=None,
-        help="Release version (default: auto-generated from spec metadata)",
+        required=True,
+        help="Exact release version",
     )
     parser.add_argument(
-        "--patch",
-        type=int,
-        default=None,
-        help="Patch number for version (default: auto-increment)",
-    )
-    parser.add_argument(
-        "--no-changelog",
-        action="store_true",
-        help="Exclude changelog from release",
-    )
-    parser.add_argument(
-        "--no-report",
-        action="store_true",
-        help="Exclude validation report from release",
-    )
-    parser.add_argument(
-        "--release-notes",
-        action="store_true",
-        help="Print release notes to stdout",
+        "--build-timestamp",
+        type=str,
+        required=True,
+        help="Immutable ISO 8601 timestamp from spec metadata",
     )
 
     args = parser.parse_args()
 
-    # Load configuration
-    config = load_config(args.config)
-    release_config = config.get("release", {})
-
-    # Determine paths
     specs_dir = args.specs_dir or Path("release/specs")
-    output_dir = args.output_dir or Path(release_config.get("output_dir", "release"))
+    output_dir = args.output_dir or Path("release")
 
     # Check if specs directory exists
     if not specs_dir.exists():
-        # Fall back to original specs if no reconciled specs
-        download_config = config.get("download", {})
-        specs_dir = Path(download_config.get("output_dir", "specs/original"))
-
-        if not specs_dir.exists():
-            console.print("[red]No specs found. Run 'make download' first.[/red]")
-            return 1
-
-        console.print(f"[yellow]Using original specs from {specs_dir}[/yellow]")
+        console.print("[red]Reconciled release specs are missing.[/red]")
+        return 1
 
     # Build release
     builder = ReleaseBuilder(
         specs_dir=specs_dir,
         output_dir=output_dir,
         version=args.version,
-        patch=args.patch,
+        build_timestamp=args.build_timestamp,
     )
-
-    if args.release_notes:
-        print(builder.get_release_notes())
-        return 0
-
-    builder.build(
-        include_changelog=not args.no_changelog,
-        include_report=not args.no_report,
-    )
-
-    # Print release notes
-    console.print("\n[bold]Release Notes:[/bold]")
-    console.print(builder.get_release_notes())
+    builder.build()
 
     return 0
 

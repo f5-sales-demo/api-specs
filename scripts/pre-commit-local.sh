@@ -17,19 +17,16 @@ resolve_tool() {
   return 1
 }
 
-staged_files=()
-while IFS= read -r -d '' file; do
-  staged_files+=("$file")
-done < <(git diff --cached --name-only --diff-filter=ACM -z)
-
 python_files=()
-for file in "${staged_files[@]}"; do
+python_file_count=0
+while IFS= read -r -d '' file; do
   if [[ "$file" == *.py ]]; then
     python_files+=("$file")
+    python_file_count=$((python_file_count + 1))
   fi
-done
+done < <(git diff --cached --name-only --diff-filter=ACM -z)
 
-if [[ ${#python_files[@]} -gt 0 ]]; then
+if [[ $python_file_count -gt 0 ]]; then
   ruff=$(resolve_tool ruff)
   mypy=$(resolve_tool mypy)
 

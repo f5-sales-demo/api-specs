@@ -32,6 +32,25 @@ def test_local_gate_has_no_declared_fail_open_checks() -> None:
     assert "typos" not in source
 
 
+def test_no_staged_python_files_is_a_valid_noop(tmp_path: Path) -> None:
+    subprocess.run(["git", "init", "-q", tmp_path], check=True)
+    hook = tmp_path / "scripts" / "pre-commit-local.sh"
+    hook.parent.mkdir()
+    hook.write_bytes(HOOK.read_bytes())
+
+    result = subprocess.run(
+        ["bash", hook],
+        cwd=tmp_path,
+        env={"PATH": os.environ["PATH"]},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "All repo-specific checks passed" in result.stdout
+
+
 def test_missing_required_python_tools_fails_the_gate(tmp_path: Path) -> None:
     hook = _prepare_repository(tmp_path)
     result = subprocess.run(

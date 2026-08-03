@@ -12,12 +12,10 @@ on:
       - 'scripts/**'
       - 'config/**'
       - 'pyproject.toml'
-  workflow_dispatch:
-    inputs:
-      force_release:
-        description: 'Force release even if no changes detected'
-        type: boolean
-        default: false
+      - 'uv.lock'
+      - '.python-version'
+      - '.github/workflows/validate-and-release.yml'
+  workflow_dispatch: {}
 
 # Read-only default; jobs that write declare their own scope: `validate` needs
 # issues: write (it syncs discrepancy issues), `failure-tracker` needs
@@ -27,7 +25,9 @@ permissions:
   contents: read
 
 env:
-  PYTHON_VERSION: '3.11'
+  PYTHON_VERSION: '3.11.13'
+  NODE_VERSION: '20.19.5'
+  UV_VERSION: '0.12.1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -38,28 +38,27 @@ jobs:
     name: Validate Specs
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      issues: write
+      contents: read # Checks out the exact source and tag history used as validation inputs.
+      issues: write # Synchronizes measured live discrepancies to their tracker issues.
     outputs:
       specs_changed: ${{ steps.check_specs.outputs.changed }}
       specs_etag: ${{ steps.check_specs.outputs.etag }}
-      content_hash: ${{ steps.content_hash.outputs.hash }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0  # Need full history for tags
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Set up Node.js (for Spectral)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '20'
+          node-version: ${{ env.NODE_VERSION }}
           # Now that a lockfile exists, setup-node can key the npm cache off it.
           cache: npm
 
@@ -75,24 +74,23 @@ jobs:
         # binary with shutil.which("spectral"), so node_modules/.bin must be on PATH.
         run: |
           npm ci --ignore-scripts
+          npm audit --audit-level=high
           echo "${GITHUB_WORKSPACE}/node_modules/.bin" >> "${GITHUB_PATH}"
 
-      - name: Cache pip packages
-        uses: actions/cache@v4
+      - name: Set up uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
 
-      - name: Install dependencies
+      - name: Sync locked environment
         run: |
-          python -m pip install --upgrade pip
-          pip install -e .
+          uv sync --frozen
 
       - name: Get previous ETag from cache
         id: prev_etag
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: .etag_cache
           key: etag-${{ github.sha }}
@@ -110,7 +108,7 @@ jobs:
           fi
 
           # Download specs (will use ETag for conditional GET)
-          python -m scripts.download --list
+          uv run --frozen python -m scripts.download --list
 
           # Get new ETag
           NEW_ETAG=""
@@ -133,7 +131,7 @@ jobs:
       - name: Transform specs to compliant OAS3
         run: |
           echo "Running OAS3 transform pipeline..."
-          python -m scripts.transform
+          uv run --frozen python -m scripts.transform
           echo "Transformed specs written to specs/transformed/"
 
       - name: Validate specs (live)
@@ -145,18 +143,19 @@ jobs:
           : "${F5XC_API_URL:?F5XC_API_URL is required for live validation}"
           : "${F5XC_API_TOKEN:?F5XC_API_TOKEN is required for live validation}"
           : "${F5XC_NAMESPACE:?F5XC_NAMESPACE is required for live validation}"
-          python -m scripts.validate
+          uv run --frozen python -m scripts.validate
 
       - name: Run Spectral OAS3 linting
         run: |
           echo "Running Spectral analysis on downloaded specs..."
-          python -m scripts.spectral_lint --mode discover
+          uv run --frozen python -m scripts.spectral_lint --mode discover
           echo "Spectral report saved to reports/spectral_report.json"
 
       - name: Reconcile specs and apply fixes
         run: |
           echo "Reconciling specs based on validation and Spectral results..."
-          python -m scripts.reconcile --report reports/validation_report.json reports/spectral_report.json
+          uv run --frozen python -m scripts.reconcile \
+            --report reports/validation_report.json reports/spectral_report.json
           echo "Fix report saved to reports/fixes_applied.json"
 
       - name: Sync discrepancies to GitHub issues
@@ -168,7 +167,7 @@ jobs:
           F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          python -m scripts.issue_sync \
+          uv run --frozen python -m scripts.issue_sync \
             --report reports/validation_report.json \
             --mapping-out reports/issue_mapping.json \
             --config config/issue_sync.yaml \
@@ -183,7 +182,7 @@ jobs:
           F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          python -m scripts.issue_sync \
+          uv run --frozen python -m scripts.issue_sync \
             --report reports/validation_report.json \
             --mapping-out reports/issue_mapping.json \
             --config config/issue_sync.yaml \
@@ -192,7 +191,7 @@ jobs:
 
       - name: Upload issue mapping artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: issue-mapping
           path: reports/issue_mapping.json
@@ -201,92 +200,102 @@ jobs:
       - name: Spectral quality gate
         run: |
           echo "Running Spectral quality gate on reconciled specs..."
-          python -m scripts.spectral_lint --mode gate
+          uv run --frozen python -m scripts.spectral_lint --mode gate
           echo "Gate report saved to reports/spectral_gate_report.json"
-
-      - name: Calculate content hash
-        id: content_hash
-        run: |
-          # Create deterministic hash of reconciled specs content
-          HASH=$(find release/specs -type f -name "*.json" -exec sha256sum {} \; | sort | sha256sum | cut -d' ' -f1)
-          echo "Reconciled specs hash: ${HASH}"
-          echo "hash=${HASH}" >> "${GITHUB_OUTPUT}"
 
       - name: Upload validation reports
         # Always: the Spectral gate above is the step most likely to fail, and
         # its report is the only place the offending rule and file are
         # recorded in full.
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: validation-reports
           path: reports/
           retention-days: 30
 
       - name: Upload reconciled specs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: reconciled-specs
           path: release/specs/
           retention-days: 7
 
       - name: Upload spec metadata
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: spec-metadata
           path: specs/original/.spec_metadata.json
           retention-days: 7
           include-hidden-files: true
 
-  check-release-needed:
-    name: Check if Release Needed
+  release-metadata:
+    name: Determine Release Metadata
     needs: validate
     runs-on: ubuntu-latest
-    # Only reads: `gh release view` to recover the previous content hash.
     permissions:
       contents: read
     outputs:
-      should_release: ${{ steps.check.outputs.should_release }}
       version: ${{ steps.version.outputs.version }}
+      build_timestamp: ${{ steps.version.outputs.build_timestamp }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Sync locked environment
+        run: |
+          uv sync --frozen
+
       - name: Download spec metadata
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: spec-metadata
           path: specs/original/
 
-      - name: Get previous release hash
-        id: prev_hash
-        run: |
-          # Get the content hash from the most recent release tag
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          if [ -n "${LATEST_TAG}" ]; then
-            # Check if release notes contain the hash
-            PREV_HASH=$(gh release view "${LATEST_TAG}" --json body -q '.body' | grep -oP 'Content Hash: \K[a-f0-9]+' || echo "")
-            echo "Previous release hash: ${PREV_HASH}"
-            echo "hash=${PREV_HASH}" >> "${GITHUB_OUTPUT}"
-          else
-            echo "No previous release found"
-            echo "hash=" >> "${GITHUB_OUTPUT}"
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Determine version from metadata
         id: version
         run: |
-          # Read spec_date from metadata
-          if [ -f specs/original/.spec_metadata.json ]; then
-            SPEC_DATE=$(python3 -c "import json; print(json.load(open('specs/original/.spec_metadata.json')).get('spec_date', ''))")
-          else
-            SPEC_DATE=$(date -u +"%Y.%m.%d")
-          fi
+          IFS=$'\t' read -r SPEC_DATE BUILD_TIMESTAMP < <(python - <<'PY'
+          from datetime import UTC, datetime
+          import json
+          import re
+          from pathlib import Path
+
+          path = Path("specs/original/.spec_metadata.json")
+          document = json.loads(path.read_text())
+          spec_date = document.get("spec_date")
+          if not isinstance(spec_date, str) or re.fullmatch(r"[0-9]{4}\.[0-9]{2}\.[0-9]{2}", spec_date) is None:
+              raise ValueError("spec metadata requires YYYY.MM.DD spec_date")
+          spec_timestamp = document.get("spec_timestamp")
+          if not isinstance(spec_timestamp, str):
+              raise ValueError("spec metadata requires spec_timestamp")
+          try:
+              parsed_timestamp = datetime.fromisoformat(spec_timestamp.replace("Z", "+00:00"))
+          except ValueError as exc:
+              raise ValueError("spec metadata spec_timestamp must be ISO 8601") from exc
+          if parsed_timestamp.tzinfo is None or parsed_timestamp.utcoffset() is None:
+              raise ValueError("spec metadata spec_timestamp requires a UTC offset")
+          parsed_timestamp = parsed_timestamp.astimezone(UTC)
+          if parsed_timestamp.strftime("%Y.%m.%d") != spec_date:
+              raise ValueError("spec_date and spec_timestamp identify different dates")
+          print(f"{spec_date}\t{parsed_timestamp.isoformat()}")
+          PY
+          )
 
           # Find next patch number for this spec date
           PATCH=1
@@ -297,136 +306,225 @@ jobs:
           VERSION="${SPEC_DATE}-${PATCH}"
           echo "Version: ${VERSION}"
           echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "build_timestamp=${BUILD_TIMESTAMP}" >> "${GITHUB_OUTPUT}"
 
-      - name: Check if release is needed
-        id: check
-        env:
-          SPECS_CHANGED: ${{ needs.validate.outputs.specs_changed }}
-          CURRENT_HASH: ${{ needs.validate.outputs.content_hash }}
-          PREV_HASH: ${{ steps.prev_hash.outputs.hash }}
-          FORCE: ${{ inputs.force_release }}
-        run: |
-          echo "Specs changed: ${SPECS_CHANGED}"
-          echo "Current hash: ${CURRENT_HASH}"
-          echo "Previous hash: ${PREV_HASH}"
-          echo "Force release: ${FORCE}"
-
-          if [ "${FORCE}" = "true" ]; then
-            echo "Force release requested"
-            echo "should_release=true" >> "${GITHUB_OUTPUT}"
-          elif [ "${SPECS_CHANGED}" = "true" ]; then
-            echo "Upstream specs changed - release needed"
-            echo "should_release=true" >> "${GITHUB_OUTPUT}"
-          elif [ -z "${PREV_HASH}" ]; then
-            echo "No previous release found - release needed"
-            echo "should_release=true" >> "${GITHUB_OUTPUT}"
-          elif [ "${CURRENT_HASH}" != "${PREV_HASH}" ]; then
-            echo "Content hash changed (code changes affected output) - release needed"
-            echo "should_release=true" >> "${GITHUB_OUTPUT}"
-          else
-            echo "No changes detected - skipping release"
-            echo "should_release=false" >> "${GITHUB_OUTPUT}"
-          fi
-
-  release:
-    name: Create Release
-    needs: [validate, check-release-needed]
-    if: needs.check-release-needed.outputs.should_release == 'true'
+  build-release-candidate:
+    name: Build Release Candidate (${{ matrix.candidate }})
+    needs: [validate, release-metadata]
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        candidate: [one, two]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e .
+      - name: Set up uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
 
-      - name: Discard committed specs before extracting the artifact
+      - name: Sync locked environment
         run: |
-          # release/specs is committed but is a build product. Upstream
-          # filenames embed a sequence index that shifts when F5 adds or
-          # removes a domain, so checked-out specs the current run does not
-          # overwrite would otherwise be packaged into the release.
-          rm -rf release/specs
-          mkdir -p release/specs
+          uv sync --frozen
+
+      - name: Discard committed candidate inputs
+        run: |
+          rm -rf release/specs reports
+          mkdir -p release/specs reports
 
       - name: Download reconciled specs
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: reconciled-specs
           path: release/specs/
 
       - name: Download validation reports
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: validation-reports
           path: reports/
 
-      - name: Download spec metadata
-        uses: actions/download-artifact@v8
-        with:
-          name: spec-metadata
-          path: specs/original/
-
-      - name: Build release package
+      - name: Build release candidate
         env:
-          VERSION: ${{ needs.check-release-needed.outputs.version }}
+          VERSION: ${{ needs.release-metadata.outputs.version }}
+          BUILD_TIMESTAMP: ${{ needs.release-metadata.outputs.build_timestamp }}
         run: |
-          python -m scripts.release --version "${VERSION}"
+          uv run --isolated --frozen python -m scripts.release \
+            --output-dir release/candidate \
+            --version "${VERSION}" \
+            --build-timestamp "${BUILD_TIMESTAMP}"
+
+      - name: Upload release candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-candidate-${{ matrix.candidate }}
+          path: release/candidate/api-specs-v${{ needs.release-metadata.outputs.version }}.zip
+          if-no-files-found: error
+          retention-days: 7
+
+  check-release-needed:
+    name: Check if Release Needed
+    needs: [validate, release-metadata, build-release-candidate]
+    runs-on: ubuntu-latest
+    # Reads the latest immutable release and downloads its exact asset for a
+    # semantic comparison. Publication remains in the separate release job.
+    permissions:
+      contents: read # Reads immutable release metadata and the exact published asset.
+      deployments: read # Reads durable downstream-delivery acknowledgements for recovery.
+    outputs:
+      should_publish: ${{ steps.check.outputs.should_publish }}
+      semantic_changed: ${{ steps.check.outputs.semantic_changed }}
+      resume_publication: ${{ steps.check.outputs.resume_publication }}
+      version: ${{ steps.check.outputs.release_version }}
+      release_asset: ${{ steps.check.outputs.release_asset }}
+      semantic_digest: ${{ steps.check.outputs.semantic_digest }}
+      release_commit: ${{ steps.check.outputs.release_commit }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Sync locked environment
+        run: |
+          uv sync --frozen
+
+      - name: Download candidate one
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: release-candidate-one
+          path: release/candidate-one/
+
+      - name: Download candidate two
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: release-candidate-two
+          path: release/candidate-two/
+
+      - name: Compare independent release candidates
+        env:
+          VERSION: ${{ needs.release-metadata.outputs.version }}
+        run: |
+          sha256sum \
+            "release/candidate-one/api-specs-v${VERSION}.zip" \
+            "release/candidate-two/api-specs-v${VERSION}.zip"
+          cmp \
+            "release/candidate-one/api-specs-v${VERSION}.zip" \
+            "release/candidate-two/api-specs-v${VERSION}.zip"
+          mv "release/candidate-one/api-specs-v${VERSION}.zip" release/
+
+      - name: Compare semantic release
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.release-metadata.outputs.version }}
+        run: |
+          uv run --frozen python -m scripts.semantic_release compare \
+            --current-archive "release/api-specs-v${VERSION}.zip" \
+            --candidate-version "${VERSION}" \
+            --source-commit "${GITHUB_SHA}" \
+            --repository "${GITHUB_REPOSITORY}" \
+            --output reports/semantic-release-decision.json \
+            --github-output "${GITHUB_OUTPUT}" \
+            --recovery-directory release
+
+      - name: Upload semantic release decision
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: semantic-release-decision
+          path: reports/semantic-release-decision.json
+          retention-days: 30
+
+      - name: Upload release candidate
+        if: steps.check.outputs.should_publish == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-candidate
+          path: release/${{ steps.check.outputs.release_asset }}
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    name: Create Release
+    needs: [validate, check-release-needed]
+    if: needs.check-release-needed.outputs.should_publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Creates the exact tag and immutable GitHub release asset.
+    outputs:
+      release_receipt: ${{ steps.verify_release.outputs.release_receipt }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Sync locked environment
+        run: |
+          uv sync --frozen
+
+      - name: Download release candidate
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: release-candidate
+          path: release/
+
+      - name: Download semantic release decision
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: semantic-release-decision
+          path: reports/
 
       - name: Generate release notes
+        if: needs.check-release-needed.outputs.semantic_changed == 'true'
         id: release_notes
         env:
           VERSION: ${{ needs.check-release-needed.outputs.version }}
-          CONTENT_HASH: ${{ needs.validate.outputs.content_hash }}
-          SPECS_CHANGED: ${{ needs.validate.outputs.specs_changed }}
           SPECS_ETAG: ${{ needs.validate.outputs.specs_etag }}
           REPOSITORY: ${{ github.repository }}
         run: |
-
-          cat > release_notes.md << EOF
-          ## F5 XC API Specs v${VERSION}
-
-          ### Changes
-          EOF
-
-          if [ "${SPECS_CHANGED}" = "true" ]; then
-            echo "- Upstream F5 XC specs updated" >> release_notes.md
-          else
-            echo "- Code changes resulted in updated output" >> release_notes.md
-          fi
-
-          cat >> release_notes.md << EOF
-
-          ### Validation
-          - OpenAPI Spec Validator: ✅
-          - Schemathesis property-based testing
-          - Custom constraint validation
-
-          ### Contents
-          - \`openapi.json\` - Merged OpenAPI specification
-          - \`openapi.yaml\` - YAML format
-          - \`domains/\` - Individual domain spec files
-          - \`CHANGELOG.md\` - List of fixes applied
-          - \`VALIDATION_REPORT.md\` - Validation summary
-
-          ### Metadata
-          - Content Hash: ${CONTENT_HASH}
-          - Specs ETag: ${SPECS_ETAG}
-
-          ---
-          🤖 Generated by [F5 XC API Validation Framework](https://github.com/${REPOSITORY})
-          EOF
-
+          uv run --frozen python -m scripts.semantic_release notes \
+            --decision reports/semantic-release-decision.json \
+            --version "${VERSION}" \
+            --specs-etag "${SPECS_ETAG}" \
+            --repository "${REPOSITORY}" \
+            --output release_notes.md
           cat release_notes.md
 
       - name: Require immutable releases setting
@@ -442,32 +540,33 @@ jobs:
             --jq '.enabled == true' | grep -qx true
 
       - name: Create GitHub Release
+        if: needs.check-release-needed.outputs.semantic_changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ needs.check-release-needed.outputs.version }}
         run: |
-          if gh release view "v${VERSION}" >/dev/null 2>&1; then
-            echo "Release v${VERSION} already exists; verifying it before recovery dispatch"
-          else
-            gh release create \
-              "v${VERSION}" \
-              "release/api-specs-v${VERSION}.zip" \
-              --target "${GITHUB_SHA}" \
-              --title "F5 XC API Specs v${VERSION}" \
-              --notes-file release_notes.md
-          fi
+          gh release create \
+            "v${VERSION}" \
+            "release/api-specs-v${VERSION}.zip" \
+            --target "${GITHUB_SHA}" \
+            --title "F5 XC API Specs v${VERSION}" \
+            --notes-file release_notes.md
 
       - name: Verify immutable GitHub release
+        id: verify_release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ needs.check-release-needed.outputs.version }}
+          RELEASE_COMMIT: ${{ needs.check-release-needed.outputs.release_commit }}
         run: |
-          python -m scripts.verify_release \
+          uv run --frozen python -m scripts.verify_release \
             --repository "${GITHUB_REPOSITORY}" \
             --tag "v${VERSION}" \
             --expected-asset "api-specs-v${VERSION}.zip" \
             --local-asset "release/api-specs-v${VERSION}.zip" \
-            --expected-commit "${GITHUB_SHA}"
+            --expected-commit "${RELEASE_COMMIT}" \
+            --receipt-output "$RUNNER_TEMP/api-specs-release-receipt.json" \
+            --install-dir "$RUNNER_TEMP/api-specs-install-uat"
 
           attestation_verified=false
           for attempt in 1 2 3 4 5 6; do
@@ -486,17 +585,21 @@ jobs:
             echo "::error::GitHub release attestation did not verify"
             exit 1
           fi
+          receipt=$(jq -ce '.' "$RUNNER_TEMP/api-specs-release-receipt.json")
+          echo "release_receipt=$receipt" >> "$GITHUB_OUTPUT"
 
       - name: Summary
         env:
           VERSION: ${{ needs.check-release-needed.outputs.version }}
-          CONTENT_HASH: ${{ needs.validate.outputs.content_hash }}
+          SEMANTIC_DIGEST: ${{ needs.check-release-needed.outputs.semantic_digest }}
+          RESUMED: ${{ needs.check-release-needed.outputs.resume_publication }}
         run: |
           {
-            echo "### Release Created 🎉"
+            echo "### Release Verified 🎉"
             echo ""
             echo "**Version**: v${VERSION}"
-            echo "**Content Hash**: ${CONTENT_HASH}"
+            echo "**Semantic Digest**: ${SEMANTIC_DIGEST}"
+            echo "**Recovered Publication**: ${RESUMED}"
           } >> "${GITHUB_STEP_SUMMARY}"
 
   notify-downstream:
@@ -507,18 +610,37 @@ jobs:
     # whenever `check-release-needed` says there is nothing to publish, and it
     # fails if `gh release create` fails; `== 'success'` is false in both
     # cases, so a skipped or failed release never dispatches. This job is
-    # deliberately separate from `release` rather than a step inside it: the
-    # dispatch needs no repository write at all, and keeping it out of the
-    # `contents: write` job keeps that scope on the steps that earn it.
+    # deliberately separate from `release` rather than a step inside it, so
+    # release publication and downstream delivery have separate permissions.
     if: needs.release.result == 'success'
     runs-on: ubuntu-latest
-    # The cross-repo dispatch authenticates with a PAT, not GITHUB_TOKEN (a
-    # repository's own GITHUB_TOKEN cannot dispatch to another repository), so
-    # nothing here needs a GITHUB_TOKEN write scope.
+    # The cross-repo dispatch authenticates with a PAT because a repository's
+    # own GITHUB_TOKEN cannot dispatch elsewhere. GITHUB_TOKEN writes only the
+    # exact-receipt deployment acknowledgement in this source repository.
     permissions:
-      contents: read
+      contents: read # Checks out the receipt validation and acknowledgement scripts.
+      deployments: write # Records the exact downstream-delivery receipt acknowledgement.
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Sync locked environment
+        run: |
+          uv sync --frozen
+
       - name: Dispatch upstream-specs-released to api-specs-enriched
         env:
           # POST /repos/{owner}/{repo}/dispatches needs Contents: write on the
@@ -533,7 +655,7 @@ jobs:
           GH_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
           VERSION: ${{ needs.check-release-needed.outputs.version }}
           SOURCE_REPO: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
+          RELEASE_RECEIPT: ${{ needs.release.outputs.release_receipt }}
         run: |
           # Plain `gh api` rather than a third-party action. A
           # repository_dispatch is a single API call, so depending on an
@@ -546,13 +668,34 @@ jobs:
           # Every value crosses into the shell through env: above and is
           # referenced as a quoted variable; nothing is interpolated into this
           # body.
-          gh api "repos/f5-sales-demo/api-specs-enriched/dispatches" \
-            -f "event_type=upstream-specs-released" \
-            -f "client_payload[version]=${VERSION}" \
-            -f "client_payload[release_tag]=v${VERSION}" \
-            -f "client_payload[release_url]=${GITHUB_SERVER_URL}/${SOURCE_REPO}/releases/tag/v${VERSION}" \
-            -f "client_payload[trigger_source]=${SOURCE_REPO}" \
-            -f "client_payload[run_id]=${RUN_ID}"
+          jq -nce \
+            --arg source "$SOURCE_REPO" \
+            --argjson receipt "$RELEASE_RECEIPT" '
+              if ($receipt | keys | sort) !=
+                  (["asset_digest", "asset_name", "asset_size", "published_at", "tag_name", "version"] | sort)
+              then error("verified release receipt has an unexpected shape")
+              else {
+                event_type: "upstream-specs-released",
+                client_payload: {
+                  trigger_source: $source,
+                  release_receipt: $receipt
+                }
+              }
+              end
+            ' > "$RUNNER_TEMP/downstream-dispatch.json"
+          gh api --method POST "repos/f5-sales-demo/api-specs-enriched/dispatches" \
+            --input "$RUNNER_TEMP/downstream-dispatch.json"
+
+      - name: Record exact downstream delivery acknowledgement
+        env:
+          ACK_TOKEN: ${{ github.token }}
+          RELEASE_RECEIPT: ${{ needs.release.outputs.release_receipt }}
+          RELEASE_COMMIT: ${{ needs.check-release-needed.outputs.release_commit }}
+        run: |
+          uv run --frozen python -m scripts.dispatch_ack record \
+            --repository "${GITHUB_REPOSITORY}" \
+            --commit "${RELEASE_COMMIT}" \
+            --receipt-json "${RELEASE_RECEIPT}"
 
       - name: Summary
         env:
@@ -570,7 +713,7 @@ jobs:
   skip-release:
     name: Skip Release (No Changes)
     needs: [validate, check-release-needed]
-    if: needs.check-release-needed.outputs.should_release == 'false'
+    if: needs.check-release-needed.outputs.should_publish == 'false'
     runs-on: ubuntu-latest
     # Writes only to the step summary.
     permissions:
@@ -580,7 +723,7 @@ jobs:
       - name: Summary
         env:
           SPECS_CHANGED: ${{ needs.validate.outputs.specs_changed }}
-          CONTENT_HASH: ${{ needs.validate.outputs.content_hash }}
+          SEMANTIC_DIGEST: ${{ needs.check-release-needed.outputs.semantic_digest }}
         run: |
           {
             echo "### No Release Needed ⏭️"
@@ -588,34 +731,47 @@ jobs:
             echo "No changes detected in upstream specs or generated output."
             echo ""
             echo "**Specs Changed**: ${SPECS_CHANGED}"
-            echo "**Content Hash**: ${CONTENT_HASH}"
+            echo "**Semantic Digest**: ${SEMANTIC_DIGEST}"
           } >> "${GITHUB_STEP_SUMMARY}"
 
   failure-tracker:
-    name: Failure Tracker
-    needs: [validate, check-release-needed, release, notify-downstream]
+    name: Producer Release Failure Tracker
+    needs:
+      - validate
+      - release-metadata
+      - build-release-candidate
+      - check-release-needed
+      - release
+      - notify-downstream
+      - skip-release
+      - commit-release-specs
     # Runs on success too, so the tracker it opens is also the thing that
-    # closes it. `release` and `notify-downstream` are skipped when there is
-    # nothing to publish, which is not a failure. A dispatch that fails after
-    # a successful release is tracked here: it leaves the published correction
-    # unconsumed downstream, which is exactly the silent stall this job exists
-    # to make loud.
-    if: ${{ !cancelled() }}
+    # closes it. Producer jobs skipped by their measured release decision are
+    # healthy; failed or cancelled producer jobs are not. Documentation is
+    # deliberately outside this producer/release tracker and has independent
+    # ownership.
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     # Opens, updates or closes the single pipeline-failure tracking issue.
     permissions:
-      contents: read
-      issues: write
+      contents: read # Retains the workflow's read-only repository baseline.
+      issues: write # Creates, updates, and closes the producer failure tracker.
 
     steps:
       - name: Reconcile the failure tracker with this run
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          PIPELINE_FAILED: ${{ contains(needs.*.result, 'failure') }}
+          PIPELINE_UNHEALTHY: >-
+            ${{ contains(needs.*.result, 'failure') ||
+                contains(needs.*.result, 'cancelled') }}
           VALIDATE_RESULT: ${{ needs.validate.result }}
+          METADATA_RESULT: ${{ needs.release-metadata.result }}
+          BUILD_RESULT: ${{ needs.build-release-candidate.result }}
           CHECK_RESULT: ${{ needs.check-release-needed.result }}
           RELEASE_RESULT: ${{ needs.release.result }}
           NOTIFY_RESULT: ${{ needs.notify-downstream.result }}
+          SKIP_RESULT: ${{ needs.skip-release.result }}
+          PUBLISH_SPECS_RESULT: ${{ needs.commit-release-specs.result }}
         with:
           script: |
             // One tracker, not one issue per run. The previous version opened
@@ -624,8 +780,8 @@ jobs:
             // cause, so a two-week outage read as routine noise. A single
             // issue that accumulates occurrences -- and closes itself when a
             // run succeeds -- is the signal.
-            const marker = '<!-- validate-and-release-failure-tracker -->';
-            const failed = process.env.PIPELINE_FAILED === 'true';
+            const marker = '<!-- validate-and-release-producer-failure-tracker -->';
+            const failed = process.env.PIPELINE_UNHEALTHY === 'true';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/` +
               `${context.repo.repo}/actions/runs/${context.runId}`;
 
@@ -637,18 +793,7 @@ jobs:
               per_page: 100,
             });
             const tracker = open.find((issue) => (issue.body || '').includes(marker));
-            const publicationRecoverySkipped = tracker && (
-              process.env.RELEASE_RESULT === 'skipped' ||
-              process.env.NOTIFY_RESULT === 'skipped'
-            );
-
             if (!failed) {
-              if (publicationRecoverySkipped) {
-                core.warning(
-                  `Run is green but publication recovery was skipped; keeping the tracker open: ${runUrl}`
-                );
-                return;
-              }
               if (tracker) {
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
@@ -676,9 +821,13 @@ jobs:
               '| Job | Result |',
               '| --- | --- |',
               `| Validate | ${process.env.VALIDATE_RESULT} |`,
+              `| Release Metadata | ${process.env.METADATA_RESULT} |`,
+              `| Independent Builds | ${process.env.BUILD_RESULT} |`,
               `| Check Release | ${process.env.CHECK_RESULT} |`,
               `| Release | ${process.env.RELEASE_RESULT} |`,
               `| Notify Downstream | ${process.env.NOTIFY_RESULT} |`,
+              `| Skip Release | ${process.env.SKIP_RESULT} |`,
+              `| Publish Regenerated Specs | ${process.env.PUBLISH_SPECS_RESULT} |`,
               '',
               'The failing step names the cause in its own log; the full',
               'Spectral gate report is in the `validation-reports` artifact.',
@@ -698,37 +847,37 @@ jobs:
             const created = await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: 'Validate and Release is failing',
+              title: 'Producer release pipeline is unhealthy',
               body: [
                 marker,
-                '## Validate and Release is failing',
+                '## Producer release pipeline is unhealthy',
                 '',
-                'No release artifact publishes while this is red, which',
-                'strands every downstream consumer. This issue collects each',
+                'Publication and delivery state are remeasured from immutable',
+                'release evidence and exact delivery acknowledgement. This issue collects each',
                 'further occurrence and closes itself when a run succeeds.',
                 '',
                 occurrence,
               ].join('\n'),
               labels: ['automation', 'bug'],
             });
-            core.notice(`Pipeline failed; opened #${created.data.number}`);
+            core.notice(`Producer pipeline unhealthy; opened #${created.data.number}`);
 
   update-docs:
     name: Update Documentation
     needs: [validate]
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Pushes the generated documentation branch.
+      pull-requests: write # Opens and enables auto-merge for the generated documentation PR.
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           token: ${{ secrets.REPO_ADMIN_TOKEN }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -738,7 +887,7 @@ jobs:
           pip install -e .
 
       - name: Download validation reports
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: validation-reports
           path: reports/
@@ -796,8 +945,8 @@ jobs:
     needs: [validate]
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Pushes the regenerated specification artifact branch.
+      pull-requests: write # Opens and enables auto-merge for the artifact publication PR.
 
     # The other half of #681. A human PR carries its own regeneration (the drift gate in
     # tests.yml enforces that), which covers corrections. It cannot cover the case where F5
@@ -811,7 +960,7 @@ jobs:
       # into a repository takeover. GITHUB_TOKEN is not a candidate either -- pushes made with
       # it do not trigger pull_request workflows, so tests.yml would never run on the PR.
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           token: ${{ secrets.REPO_SYNC_TOKEN }}
 
@@ -835,7 +984,7 @@ jobs:
           mkdir -p release/specs
 
       - name: Download reconciled specs
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: reconciled-specs
           path: release/specs/
@@ -844,7 +993,7 @@ jobs:
       # `include-hidden-files`, so the dot-prefixed provenance record is absent from it. The
       # artifact must carry it: the drift gate reads spec_date from here to pin info.version.
       - name: Download spec metadata
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: spec-metadata
           path: release/specs/

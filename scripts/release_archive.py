@@ -263,12 +263,16 @@ def _validate_release_shape(
     info = aggregate_json.get("info")
     if not isinstance(info, dict) or info.get("version") != expected_version:
         raise ReleaseArchiveError("aggregate OpenAPI version does not match release version")
-    generated_line = f"**Generated:** {manifest['generated_at']}"
+
+    _validate_report_timestamp(entries["VALIDATION_REPORT.md"], manifest["generated_at"])
+
+
+def _validate_report_timestamp(report_bytes: bytes, generated_at: str) -> None:
     try:
-        report = entries["VALIDATION_REPORT.md"].decode("utf-8")
+        report = report_bytes.decode("utf-8")
     except UnicodeDecodeError as error:
         raise ReleaseArchiveError("VALIDATION_REPORT.md is not UTF-8") from error
-    if generated_line not in report.splitlines():
+    if f"**Generated:** {generated_at}" not in report.splitlines():
         raise ReleaseArchiveError("validation report does not match manifest generated_at")
 
 

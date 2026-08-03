@@ -309,6 +309,63 @@ def test_release_install_opens_parent_ancestry_one_component_at_a_time(
     assert any(path == target.parent.name and dir_fd is not None for path, dir_fd in opens)
 
 
+def test_release_install_fails_if_opened_parent_is_detached_before_commit(
+    tmp_path, monkeypatch
+) -> None:
+    requested_root = tmp_path / "safe"
+    target = requested_root / "nested" / "installed"
+    target.parent.mkdir(parents=True)
+    parked_root = tmp_path / "safe-parked"
+    original_open_parent = install_release._open_safe_parent
+
+    def detach_after_open(path):
+        absolute, parent_fd = original_open_parent(path)
+        requested_root.rename(parked_root)
+        (requested_root / "nested").mkdir(parents=True)
+        return absolute, parent_fd
+
+    monkeypatch.setattr(install_release, "_open_safe_parent", detach_after_open)
+
+    with pytest.raises(ReleaseInstallError, match="parent changed"):
+        install_release_archive(
+            _archive(),
+            target,
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+    assert not target.exists()
+    assert not (parked_root / "nested" / "installed").exists()
+
+
+def test_release_install_rolls_back_if_parent_is_detached_during_commit(
+    tmp_path, monkeypatch
+) -> None:
+    requested_root = tmp_path / "safe"
+    target = requested_root / "nested" / "installed"
+    target.parent.mkdir(parents=True)
+    parked_root = tmp_path / "safe-parked"
+    original_commit = install_release._atomic_commit_no_replace
+
+    def detach_after_commit(parent_fd, temporary_name, target_name) -> None:
+        original_commit(parent_fd, temporary_name, target_name)
+        requested_root.rename(parked_root)
+        (requested_root / "nested").mkdir(parents=True)
+
+    monkeypatch.setattr(install_release, "_atomic_commit_no_replace", detach_after_commit)
+
+    with pytest.raises(ReleaseInstallError, match="parent changed"):
+        install_release_archive(
+            _archive(),
+            target,
+            expected_version=VERSION,
+            expected_commit=COMMIT,
+        )
+
+    assert not target.exists()
+    assert not (parked_root / "nested" / "installed").exists()
+
+
 def test_release_install_cleanup_failure_preserves_the_root_cause(tmp_path, monkeypatch) -> None:
     def fail_write(*_args, **_kwargs):
         raise ReleaseInstallError("measured write failure")
@@ -370,6 +427,29 @@ def test_atomic_file_commit_cannot_replace_a_concurrent_target(tmp_path, monkeyp
 
     assert target.stat().st_ino == concurrent_inode
     assert target.read_bytes() == b"owner-data"
+
+
+def test_atomic_file_write_rolls_back_if_parent_is_detached_during_commit(
+    tmp_path, monkeypatch
+) -> None:
+    requested_root = tmp_path / "safe"
+    target = requested_root / "nested" / "receipt.json"
+    target.parent.mkdir(parents=True)
+    parked_root = tmp_path / "safe-parked"
+    original_commit = install_release._atomic_commit_no_replace
+
+    def detach_after_commit(parent_fd, temporary_name, target_name) -> None:
+        original_commit(parent_fd, temporary_name, target_name)
+        requested_root.rename(parked_root)
+        (requested_root / "nested").mkdir(parents=True)
+
+    monkeypatch.setattr(install_release, "_atomic_commit_no_replace", detach_after_commit)
+
+    with pytest.raises(ReleaseInstallError, match="parent changed"):
+        write_new_file_atomically(b"receipt", target)
+
+    assert not target.exists()
+    assert not (parked_root / "nested" / "receipt.json").exists()
 
 
 def test_release_zip_must_be_stored_and_in_canonical_member_order() -> None:

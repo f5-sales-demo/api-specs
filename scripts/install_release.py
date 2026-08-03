@@ -68,18 +68,43 @@ def _require_new_target(target: Path) -> None:
             raise ReleaseInstallError("release install target requires a safe existing parent")
 
 
+def _open_anchored_directory(directory: Path) -> int:
+    components = directory.parts
+    if not components or components[0] != directory.anchor:
+        raise ReleaseInstallError("release install target parent is unsafe")
+    current_fd = os.open(directory.anchor, DIRECTORY_FLAGS)
+    try:
+        for component in components[1:]:
+            next_fd = os.open(component, DIRECTORY_FLAGS, dir_fd=current_fd)
+            os.close(current_fd)
+            current_fd = next_fd
+        return current_fd
+    except OSError:
+        os.close(current_fd)
+        raise
+
+
+def _require_parent_identity(absolute_target: Path, parent_fd: int) -> None:
+    current_fd: int | None = None
+    try:
+        current_fd = _open_anchored_directory(absolute_target.parent)
+        if not os.path.samestat(os.fstat(parent_fd), os.fstat(current_fd)):
+            raise ReleaseInstallError("release install target parent changed during transaction")
+    except OSError as error:
+        raise ReleaseInstallError(
+            "release install target parent changed during transaction"
+        ) from error
+    finally:
+        if current_fd is not None:
+            os.close(current_fd)
+
+
 def _open_safe_parent(target: Path) -> tuple[Path, int]:
     absolute = Path(os.path.abspath(target))
     _require_new_target(absolute)
-    components = absolute.parent.parts
-    if not components or components[0] != absolute.anchor:
-        raise ReleaseInstallError("release install target parent is unsafe")
-    parent_fd = os.open(absolute.anchor, DIRECTORY_FLAGS)
+    parent_fd: int | None = None
     try:
-        for component in components[1:]:
-            next_fd = os.open(component, DIRECTORY_FLAGS, dir_fd=parent_fd)
-            os.close(parent_fd)
-            parent_fd = next_fd
+        parent_fd = _open_anchored_directory(absolute.parent)
         try:
             os.stat(absolute.name, dir_fd=parent_fd, follow_symlinks=False)
         except FileNotFoundError:
@@ -88,11 +113,15 @@ def _open_safe_parent(target: Path) -> tuple[Path, int]:
             raise ReleaseInstallError("release install target already exists")
         _require_new_target(absolute)
     except OSError as error:
-        os.close(parent_fd)
+        if parent_fd is not None:
+            os.close(parent_fd)
         raise ReleaseInstallError("release install target parent is unsafe") from error
     except ReleaseInstallError:
-        os.close(parent_fd)
+        if parent_fd is not None:
+            os.close(parent_fd)
         raise
+    if parent_fd is None:
+        raise ReleaseInstallError("release install target parent could not be opened")
     return absolute, parent_fd
 
 
@@ -296,8 +325,17 @@ def write_new_file_atomically(content: bytes, target: Path) -> None:
                 output.flush()
                 os.fchmod(output.fileno(), 0o644)
             _require_new_target(absolute_target)
+            _require_parent_identity(absolute_target, parent_fd)
             _atomic_commit_no_replace(parent_fd, temporary_name, absolute_target.name)
             temporary_exists = False
+            try:
+                _require_parent_identity(absolute_target, parent_fd)
+            except ReleaseInstallError as error:
+                try:
+                    os.unlink(absolute_target.name, dir_fd=parent_fd)
+                except OSError:
+                    raise ReleaseInstallError(f"{error}; rollback failed") from error
+                raise
         except (OSError, ReleaseInstallError) as error:
             if temporary_exists:
                 try:
@@ -339,8 +377,17 @@ def install_release_archive(
             finally:
                 os.close(temporary_fd)
             _require_new_target(absolute_target)
+            _require_parent_identity(absolute_target, parent_fd)
             _atomic_commit_no_replace(parent_fd, temporary_name, absolute_target.name)
             temporary_name = None
+            try:
+                _require_parent_identity(absolute_target, parent_fd)
+            except ReleaseInstallError as error:
+                try:
+                    shutil.rmtree(absolute_target.name, dir_fd=parent_fd)
+                except OSError:
+                    raise ReleaseInstallError(f"{error}; rollback failed") from error
+                raise
         except (OSError, ReleaseInstallError) as error:
             if temporary_name is not None:
                 _cleanup_failed_install(parent_fd, temporary_name, error)

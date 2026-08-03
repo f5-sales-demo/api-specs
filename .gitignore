@@ -131,7 +131,7 @@ oauth-success.html
 # Lock file preferences (Bun-based repos)
 package-lock.json
 yarn.lock
-bun.lock
+/bun.lock
 
 # Monorepo build
 .turbo/

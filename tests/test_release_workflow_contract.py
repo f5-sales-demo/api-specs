@@ -313,6 +313,12 @@ def test_release_builder_toolchain_is_exact_locked_and_reproduced_in_fresh_envir
     assert "python -m scripts.release" not in comparison["run"]
 
     validate = _jobs()["validate"]
+    spectral_install = next(
+        step for step in validate["steps"] if step["name"] == "Install Spectral"
+    )
+    assert "npm ci --ignore-scripts" in spectral_install["run"]
+    assert "npm audit --audit-level=high" in spectral_install["run"]
+    assert spectral_install["run"].index("npm ci") < spectral_install["run"].index("npm audit")
     validate_source = "\n".join(step.get("run", "") for step in validate["steps"])
     assert "uv sync --frozen" in validate_source
     assert "pip install" not in validate_source

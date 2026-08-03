@@ -38,8 +38,8 @@ jobs:
     name: Validate Specs
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      issues: write
+      contents: read # Checks out the exact source and tag history used as validation inputs.
+      issues: write # Synchronizes measured live discrepancies to their tracker issues.
     outputs:
       specs_changed: ${{ steps.check_specs.outputs.changed }}
       specs_etag: ${{ steps.check_specs.outputs.etag }}
@@ -74,6 +74,7 @@ jobs:
         # binary with shutil.which("spectral"), so node_modules/.bin must be on PATH.
         run: |
           npm ci --ignore-scripts
+          npm audit --audit-level=high
           echo "${GITHUB_WORKSPACE}/node_modules/.bin" >> "${GITHUB_PATH}"
 
       - name: Set up uv
@@ -380,8 +381,8 @@ jobs:
     # Reads the latest immutable release and downloads its exact asset for a
     # semantic comparison. Publication remains in the separate release job.
     permissions:
-      contents: read
-      deployments: read
+      contents: read # Reads immutable release metadata and the exact published asset.
+      deployments: read # Reads durable downstream-delivery acknowledgements for recovery.
     outputs:
       should_publish: ${{ steps.check.outputs.should_publish }}
       semantic_changed: ${{ steps.check.outputs.semantic_changed }}
@@ -474,7 +475,7 @@ jobs:
     if: needs.check-release-needed.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Creates the exact tag and immutable GitHub release asset.
     outputs:
       release_receipt: ${{ steps.verify_release.outputs.release_receipt }}
 
@@ -617,8 +618,8 @@ jobs:
     # own GITHUB_TOKEN cannot dispatch elsewhere. GITHUB_TOKEN writes only the
     # exact-receipt deployment acknowledgement in this source repository.
     permissions:
-      contents: read
-      deployments: write
+      contents: read # Checks out the receipt validation and acknowledgement scripts.
+      deployments: write # Records the exact downstream-delivery receipt acknowledgement.
 
     steps:
       - name: Checkout
@@ -753,8 +754,8 @@ jobs:
     runs-on: ubuntu-latest
     # Opens, updates or closes the single pipeline-failure tracking issue.
     permissions:
-      contents: read
-      issues: write
+      contents: read # Retains the workflow's read-only repository baseline.
+      issues: write # Creates, updates, and closes the producer failure tracker.
 
     steps:
       - name: Reconcile the failure tracker with this run
@@ -866,8 +867,8 @@ jobs:
     needs: [validate]
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Pushes the generated documentation branch.
+      pull-requests: write # Opens and enables auto-merge for the generated documentation PR.
 
     steps:
       - name: Checkout
@@ -944,8 +945,8 @@ jobs:
     needs: [validate]
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Pushes the regenerated specification artifact branch.
+      pull-requests: write # Opens and enables auto-merge for the artifact publication PR.
 
     # The other half of #681. A human PR carries its own regeneration (the drift gate in
     # tests.yml enforces that), which covers corrections. It cannot cover the case where F5

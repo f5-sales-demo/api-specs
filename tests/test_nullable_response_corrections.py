@@ -63,6 +63,28 @@ def test_nullable_correction_is_idempotent() -> None:
     assert second == first
 
 
+def test_live_measured_healthcheck_and_origin_pool_rules_are_exact() -> None:
+    root = Path(__file__).parents[1]
+    corrections = yaml.safe_load(
+        (root / "config" / "nullable_response_corrections.yaml").read_text()
+    )["corrections"]
+    by_pattern = {correction["file_pattern"]: correction for correction in corrections}
+
+    expected = {
+        ".schema.healthcheck.ves-swagger.json": "healthcheckListResponseItem",
+        ".schema.views.origin_pool.ves-swagger.json": "origin_poolListResponseItem",
+    }
+    for file_pattern, schema in expected.items():
+        correction = by_pattern[file_pattern]
+        assert correction["schema"] == schema
+        assert correction["properties"] == [
+            "get_spec",
+            "metadata",
+            "owner_view",
+            "system_metadata",
+        ]
+
+
 def test_committed_artifact_contains_measured_nullable_response_contract() -> None:
     root = Path(__file__).parents[1]
     corrections = yaml.safe_load(

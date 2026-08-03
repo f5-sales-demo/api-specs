@@ -28,6 +28,22 @@ corrections:
       Authenticated list response returned one item whose four summary object
       fields were JSON null; Schemathesis measured four schema violations.
 
+  - file_pattern: .schema.healthcheck.ves-swagger.json
+    schema: healthcheckListResponseItem
+    properties: *nullable_summary_fields
+    measured: 2026-08-03
+    evidence: >-
+      Authenticated list validation returned JSON null for all four summary
+      object fields; Schemathesis measured four response-schema violations.
+
+  - file_pattern: .schema.views.origin_pool.ves-swagger.json
+    schema: origin_poolListResponseItem
+    properties: *nullable_summary_fields
+    measured: 2026-08-03
+    evidence: >-
+      Authenticated list validation returned JSON null for all four summary
+      object fields; Schemathesis measured four response-schema violations.
+
   - file_pattern: .schema.service_policy.ves-swagger.json
     schema: service_policyListResponseItem
     properties: *nullable_summary_fields

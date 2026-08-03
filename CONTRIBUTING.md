@@ -52,8 +52,8 @@ Every change follows this path:
 Issue → Branch → PR (linked to issue) → CI passes → auto-merge when green → Branch auto-deleted
 ```
 
-The automated code review used to sit in that chain. It is **currently suspended** — see
-[CI review](#ci-review-suspended).
+The automated code review runs as an advisory check while fleet validation completes — see
+[CI review](#ci-review).
 
 No exceptions. PRs without a linked issue will be blocked by CI.
 
@@ -182,34 +182,29 @@ If a branch falls behind `main` while its PR is open, use the **Update branch** 
 ## Step 5: Review and Merge
 
 - All required CI checks must pass before merge.
-- The automated Claude Code review is **currently suspended** and is not a required check (see
-  [CI review](#ci-review-suspended)).
+- The automated Claude Code review runs as an advisory CI check and is not yet a required context
+  (see [CI review](#ci-review)).
 - Merging is automated: once every required check is green, auto-merge squash-merges the PR.
 - The branch is automatically deleted after merge (`delete_branch_on_merge` is enabled); clean up
   your local branch afterward.
 
 ## Automated code review
 
-Review happens in two layers. They are not interchangeable, and neither substitutes for the other:
+Review uses three routes. They are not interchangeable, and none substitutes for another:
 
-| Layer | What it reviews | Authority |
+| Route | What it reviews | Authority |
 | ----- | --------------- | --------- |
-| **Local, pre-PR** | A spec, an implementation plan, or an unpushed branch | Advisory |
-| **CI** | The pull-request diff | **Currently suspended** — not running, not required |
+| **Local document review** | A spec or implementation plan | Advisory |
+| **Local Antigravity review** | The committed branch diff before a PR push | Required workflow step |
+| **CI** | The pull-request diff | Advisory until fleet validation is complete |
 
-### CI review (suspended)
+### CI review
 
-> **Suspended.** No CI job currently reviews pull-request diffs. The self-hosted Claude reviewer is
-> gated behind `REVIEWER_ENABLED` (docs-control#838), and its required context was removed first
-> (docs-control#833). The quota-backed Gemini Antigravity reviewer is disabled in GitHub Actions and
-> fail-closed behind `ANTIGRAVITY_REVIEW_ENABLED` (docs-control#1043). Do not wait for either review
-> or treat its absence as a fault.
-
-The rest of this section describes the reviewer as it behaves when enabled.
-
-Every downstream pull request is reviewed by a **Claude Code reviewer** running on a self-hosted
-runner. It is a **required status check** (`review / claude-review`) — auto-merge will not merge
-until it passes.
+Human-authored, same-repository pull requests are reviewed by a **Claude Code reviewer** on an
+ephemeral GitHub-hosted runner. The check is advisory while the fleet migration is validated; it
+must complete successfully before `review / claude-review` is restored as a required context.
+The separate Gemini Antigravity reviewer remains disabled and fail-closed behind
+`ANTIGRAVITY_REVIEW_ENABLED` until docs-control#1016 is resolved.
 
 - **It enforces the [Engineering Standards](#engineering-standards) in this document** — it is not
   a separate rulebook. Meet those standards and it approves. Its reviewer persona and rubric live
@@ -227,108 +222,121 @@ until it passes.
 
 #### Restoring Antigravity review
 
-Keep the source gate in place. After quota is available, enable the reusable workflow in
-`docs-control`, enable the caller workflow only in the selected repositories, and only then set
-their `ANTIGRAVITY_REVIEW_ENABLED` Actions variable to the literal string `true`. Exercise a real
-same-repository pull request in every selected repository before relying on the reviewer. The
-Antigravity review is advisory and must not be added to required status contexts.
+Keep the source gate in place. After docs-control#1016 is verified, create the organisation Actions
+variable `ANTIGRAVITY_REVIEW_ENABLED` with value `false`, remove any same-named repository variables,
+and enable the reusable and governed caller workflows. Pilot with selected visibility and the literal
+value `true`; after a real same-repository pull request completes safely, expand visibility to every
+governed repository. Future toggles change only the organisation variable, never workflow state.
+The Antigravity CI review is advisory and must not be added to required status contexts.
 
 The Claude review has a separate restoration procedure in `REVIEWER-SPEC.md`: set its variable and
 confirm a real review completes *before* re-adding its required context. Reversing that order
 deadlocks every open pull request.
 
-### Local pre-PR review (advisory second opinion)
+### Local review before a pull-request push
 
-A second review layer runs on your own machine **before the pull request exists**. It catches
-problems while they are still cheap to fix — in a spec or a plan, before any code is written.
+Document review remains advisory. Use the shared `verified-code-review` skill when installed
+(`verified-review:verified-code-review` in Claude and `$verified-code-review` in Codex), and verify its
+findings against the repository. Both agents load the same provider-neutral review→verify→gate
+contract; the current provider adapter uses Antigravity.
 
-- **Advisory, never a gate.** It emits no verdict and posts no commit status, so it cannot block a
-  merge or deadlock a required check. When the tooling is absent it is skipped and work continues.
-- **Where it runs.** At the spec and plan review points, before a push that opens or updates a pull
-  request, and after each round of fixes. Reviewing a written spec or implementation plan is its
-  primary use — a document, not a diff.
-- **Verification is mandatory.** A finding counts only once it has been confirmed against the
-  codebase: for code, with a test that fails today; for a document, with a quotation. An AI reviewer
-  misattributes findings to files that do not contain them, and a hallucinated blocking finding can
-  never be fixed — treating it as blocking would stop the loop from ever terminating.
-- **Bounded.** Three iterations maximum, with no-progress detection when two consecutive rounds
-  produce the same blocking set. On either, the outstanding findings go to a human.
-- **Do not reach for a PR-diff reviewer instead.** Reviewing a spec, a plan, or a local branch with
-  a pull-request review tool is the wrong layer — a spec has no diff to review. `CLAUDE.md` names
-  the tool to use, the tools not to use, and the deny rules that enforce it.
+Branch review is mandatory before every push that opens or updates a pull request:
 
-The two layers are complementary: the local layer catches issues before the pull request exists and
-costs nothing when it is wrong, while CI remains the gate that decides whether a change merges.
+```bash
+bash scripts/agy-pre-push-review.sh
+```
 
-## Translations (suspended)
+Commit or stash every working-tree change first. The script binds the review to the current HEAD and
+the merge base with `origin/main`, removes GitHub credentials, and runs `agy` in sandboxed plan mode.
+It neither edits files nor posts comments. Apply the shared skill's verification and gate rules:
+confirm each finding against the codebase, fix verified blocking findings, commit, and rerun; do not
+push until the current HEAD completes cleanly. The developer environment is responsible for
+providing an authenticated `agy` executable.
 
-Automated translation is suspended while Gemini Antigravity quota is exhausted. The reusable
-workflow is disabled in GitHub Actions, and both it and every governed caller fail closed unless
-`vars.TRANSLATIONS_ENABLED` is the literal string `true`. Local generation and the freshness audit
-remain suspended under the same switch. Translation files stay in place and can be restored without
-recreating the workflows or credentials.
+Do not substitute a PR-diff plugin for either local route. `CLAUDE.md` names the prohibited tools and
+the enforcement that keeps them out of local work. CI remains the merge layer once restored.
+
+## Translations (local active, GitHub Actions held)
+
+Local translation generation is always active for staged English documentation. The managed
+pre-commit hook runs `agy` against an isolated staged-index snapshot, validates all 12 locale files,
+and blocks the commit if Antigravity is unavailable or returns incomplete or out-of-scope output.
+
+GitHub Actions translation remains held until the security boundary in docs-control#1016 is fixed.
+Both the governed caller and reusable workflow fail closed unless the organisation variable
+`TRANSLATIONS_ENABLED` is the literal string `true`. The workflow files must remain enabled once the
+security fix lands; the organisation variable is the only runtime switch. Repository variables with
+the same name are forbidden because they override the organisation value.
 
 How the translation pipeline operates:
 
 | Part | Where | How it Works |
 | ---- | ----- | ------------ |
-| Automated Translation | `.github/workflows/antigravity-translate.yml` — invokes `agy` on a GitHub Actions runner | **Suspended.** When restored, it translates missing or stale files and commits them back to same-repository pull-request branches. |
-| Freshness Audit | `.github/workflows/translation-audit.yml` — compares each translation's `i18n.sourceHash` against English source SHA-256 | **Suspended.** The gated job is retained but may skip while translations intentionally drift. |
+| Local Translation | `.pre-commit-config.yaml` — invokes `scripts/antigravity-translate-staged.sh` | **Active.** Requires `agy` in the developer environment and blocks invalid English-documentation commits. |
+| Automated Translation | `.github/workflows/antigravity-translate.yml` — invokes `agy` on a GitHub Actions runner | **Security hold.** After docs-control#1016, the organisation variable controls execution. |
+| Freshness Audit | `.github/workflows/translation-audit.yml` — compares each translation's `i18n.sourceHash` against English source SHA-256 | **Advisory when enabled.** It shares the Actions switch but is not a required context. |
 | Required Context | `audit / Translation freshness` in branch protection | **Not required.** Requiring a check while its job can skip would deadlock pull requests. |
 
-### Restoring translations and activating Antigravity `agy` translator
+### Activating Antigravity Actions
 
-Order matters, and getting it wrong deadlocks every open pull request — the same trap the suspended
-reviewer left behind.
+`ANTIGRAVITY_REVIEW_ENABLED` and `TRANSLATIONS_ENABLED` are independent organisation Actions
+variables. Unset, `false`, or any other value disables the corresponding automation; only the
+literal string `true` enables it. They are Actions controls only and do not disable the always-active
+local translation hook.
 
-1. Restore the workflow states before the switch. First enable the reusable workflow in
-   `docs-control`, then enable the governed caller workflow only in the selected repositories. Do
-   not set `TRANSLATIONS_ENABLED` yet: a positive source gate must remain between an accidentally
-   enabled workflow and quota-backed execution.
+1. Verify docs-control#1016 in the live workflow bytes, not merely by issue state. The installer must
+   be immutable, PR-head content must not execute with model or write credentials, permission bypass
+   must be absent, and exact base/head/workflow receipts and behavioral security tests must pass.
 
-2. Turn on **both** switch environments. `TRANSLATIONS_ENABLED` is one name for two independent
-   settings, and setting only one half-restores the system:
+2. Create both organisation variables with value `false` and visibility covering every governed
+   repository. Confirm there are no same-named repository variables. Enable the two reusable
+   workflows in `docs-control` and verify every governed caller is active; do not manually disable
+   these workflows again. From a `docs-control` checkout, verify the false/active state with
+   `bash scripts/verify-antigravity-controls.sh --workflow-state active`.
+
+3. Set selected visibility for a pilot same-repository documentation pull request. Set each desired
+   variable to `true`, then require a completed Antigravity review and 12 validated locale outputs.
+   If the pilot fails, set the relevant variable to `false` before cancelling in-flight runs.
+
+4. Expand visibility to all governed repositories after the pilot. Future suspension changes only
+   the organisation variable value and cancels any already-running jobs; workflow states remain
+   active. After every change, run the verifier from a `docs-control` checkout with the expected
+   boolean values, for example:
 
    ```bash
-   # Generation — the pre-commit hook reads your local process environment.
-   # No organisation variable sets this; it must be exported where you commit.
-   export TRANSLATIONS_ENABLED=true
-   export ANTHROPIC_API_KEY=...
+   bash scripts/verify-antigravity-controls.sh \
+     --review-enabled false --translations-enabled false --workflow-state active
    ```
 
-   Then set the `TRANSLATIONS_ENABLED` **organisation variable** to `true`, which is what the audit
-   and Antigravity workflows read — an organisation variable is exposed to Actions through the
-   `vars` context only, so it never reaches the hook on your machine.
+   It checks all 38 governed repositories plus `docs-control`, rejects repository-variable shadows,
+   and exits 84 without retry amplification when GitHub reports a rate limit.
 
-   Setting just the organisation variable is the trap: the `--force` run in step 3 works, because you
-   run it directly, and then every later English edit silently skips generation. Nothing complains
-   until the audit is required again, at which point pull requests fail fleet-wide.
-   Make sure the organisation variable is visible to **all** governed repositories. An organisation
-   variable scoped to a subset leaves the rest with a job that silently never runs.
-3. Regenerate everything with `docs-translate --force` and commit. Expect roughly 4,320 files across
-   the fleet.
-4. **Un-gate the audit and local hook, and let that sync downstream.** In
-   `workflows/translation-audit.yml`, delete the
+### Future restoration of the required freshness context
+
+This is deliberately separate from enabling generation. First reconcile every missing or stale
+locale through Antigravity-backed same-repository branches. Then:
+
+1. **Un-gate the audit and let that sync downstream.** In `workflows/translation-audit.yml`, delete the
    `if: vars.TRANSLATIONS_ENABLED == 'true'` line *and* the `SUSPENDED:` comment block, returning the
-   job to unconditional. In `.pre-commit-config.yaml`, remove the `TRANSLATIONS_ENABLED` branch from
-   the `docs-translate` hook. Keep the Antigravity caller and reusable-workflow gates: quota-backed
-   automation should remain fail-closed even after the audit is unconditional again.
+   job to unconditional. Keep the Antigravity caller and reusable-workflow gates: quota-backed
+   Actions automation remains fail-closed even after the audit is unconditional.
 
    Delete the `if:`, do not merely set the variable. Leaving the condition in place makes organisation
    variable visibility permanently load-bearing for CI: any repository the variable is not visible to
    silently skips the job, and once the context is required again its pull requests wait forever for a
    check that is never emitted. An unconditional audit removes that whole class of failure — after
-   this, `TRANSLATIONS_ENABLED` gates only quota-backed Antigravity generation.
+   this, `TRANSLATIONS_ENABLED` gates only quota-backed Antigravity generation and review remains
+   independently controlled.
 
    docs-control's `tests/test-translation-suspension.sh` keys section 1 on the `SUSPENDED:` marker,
    so leaving it in place fails the guard the moment the context comes back.
-5. Confirm the audit actually reports on **every governed repository that receives the workflow**, not
+2. Confirm the audit actually reports on **every governed repository that receives the workflow**, not
    on one pull request. Three traps here, all of them load-bearing:
 
    - **One green PR proves one repo.** During the suspension a five-repository spot check came back
      clean while **9 of 38** still had the old branch protection, because enforcement fans out in
      batches of five. Re-adding the context on that evidence would have deadlocked nine repositories.
-   - **An old run proves nothing.** The last conclusion may predate the un-gating in step 4, or come
+   - **An old run proves nothing.** The last conclusion may predate the un-gating in step 1, or come
      from a repository still running the gated workflow. Confirm the synced file no longer contains the
      `if:` before trusting a run, and only count runs created after that.
    - **Some repos never receive this workflow at all.** Anything listed under `skip_files` for
@@ -338,7 +346,7 @@ reviewer left behind.
      *permanent* deadlock, not a transient one.
 
    ```bash
-   SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)   # capture AFTER step 4 has synced
+   SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)   # capture AFTER step 1 has synced
    SKIP=$(jq -r '.skip_files | to_entries[]
                  | select(any(.value[]; test("translation-audit"))) | .key' .claude/governance.json)
    while IFS= read -r r; do
@@ -381,17 +389,17 @@ reviewer left behind.
    Close the probe pull request once the audit reports. Skipping this step is how an operator ends up
    re-adding the required context on the strength of repositories that were never actually exercised.
 
-6. **Only then** re-add `audit / Translation freshness` to
+3. **Only then** re-add `audit / Translation freshness` to
    `branch_protection[0].required_status_checks.contexts` — **and re-add
    `excluded_required_contexts: ["audit / Translation freshness"]` to the `terraform-provider-xcsh`
    and `code-review` overrides**, which were removed with the base context because an exclusion that
    matches no required context silently no-ops. Without them those two repositories would gain a
    check they were deliberately exempt from.
 
-Re-adding the required context before step 5 makes a check that never reports mandatory, which blocks
+Re-adding the required context before step 2 makes a check that never reports mandatory, which blocks
 every pull request until an administrator intervenes. The guard test cannot catch this for you: it
 reads files, and no static check can see whether an organisation variable is set in every repository.
-Step 5 is the only thing standing between a restore and a fleet-wide outage.
+Step 2 is the only thing standing between a restore and a fleet-wide outage.
 
 ## Branch Protection Rules
 

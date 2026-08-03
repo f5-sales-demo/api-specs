@@ -11,6 +11,8 @@ on:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 
+permissions: {}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -35,12 +37,12 @@ jobs:
         startsWith(github.head_ref, 'auto-regenerate/') ||
         startsWith(github.head_ref, 'auto-generate/') ||
         startsWith(github.head_ref, 'autoresearch/') ||
-        (startsWith(github.head_ref, 'dependabot/') && github.actor == 'dependabot[bot]'))
-    uses: f5-sales-demo/docs-control/.github/workflows/antigravity-translate.yml@8eaaced5c8800da45934031b152c863ce8ee84c0
+        (startsWith(github.head_ref, 'dependabot/') && github.event.pull_request.user.id == 49699333))
+    uses: f5-sales-demo/docs-control/.github/workflows/antigravity-translate.yml@94a0cb518b88f717e7b452a714fe7f97a00d0bbb
     permissions:
-      contents: write
-      pull-requests: write
-      issues: write
+      contents: write # commit generated translations to the same-repository branch
+      pull-requests: write # update the translated pull request
+      issues: write # report translation failures through GitHub issue surfaces
     secrets:
       ANTIGRAVITY_TOKEN: ${{ secrets.ANTIGRAVITY_TOKEN }}
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}

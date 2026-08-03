@@ -190,14 +190,14 @@ def test_invalid_release_leaves_no_target_or_partial_install(tmp_path) -> None:
         )
 
     assert not target.exists()
-    assert list(tmp_path.iterdir()) == []
+    assert not list(tmp_path.iterdir())
 
 
 def test_release_install_commit_cannot_replace_a_concurrent_empty_target(
     tmp_path, monkeypatch
 ) -> None:
     target = tmp_path / "installed"
-    original_check = install_release._require_new_target
+    original_check = vars(install_release)["_require_new_target"]
     checks = 0
     concurrent_inode = 0
 
@@ -220,7 +220,7 @@ def test_release_install_commit_cannot_replace_a_concurrent_empty_target(
         )
 
     assert target.stat().st_ino == concurrent_inode
-    assert list(target.iterdir()) == []
+    assert not list(target.iterdir())
 
 
 def test_release_install_rejects_a_symlink_anywhere_in_target_ancestry(tmp_path) -> None:
@@ -281,7 +281,7 @@ def test_release_install_cleans_up_when_reserved_directory_cannot_be_opened(
             expected_commit=COMMIT,
         )
 
-    assert list(tmp_path.glob(".installed.install-*")) == []
+    assert not list(tmp_path.glob(".installed.install-*"))
 
 
 def test_release_install_opens_parent_ancestry_one_component_at_a_time(
@@ -316,7 +316,7 @@ def test_release_install_fails_if_opened_parent_is_detached_before_commit(
     target = requested_root / "nested" / "installed"
     target.parent.mkdir(parents=True)
     parked_root = tmp_path / "safe-parked"
-    original_open_parent = install_release._open_safe_parent
+    original_open_parent = vars(install_release)["_open_safe_parent"]
 
     def detach_after_open(path):
         absolute, parent_fd = original_open_parent(path)
@@ -345,7 +345,7 @@ def test_release_install_rolls_back_if_parent_is_detached_during_commit(
     target = requested_root / "nested" / "installed"
     target.parent.mkdir(parents=True)
     parked_root = tmp_path / "safe-parked"
-    original_commit = install_release._atomic_commit_no_replace
+    original_commit = vars(install_release)["_atomic_commit_no_replace"]
 
     def detach_after_commit(parent_fd, temporary_name, target_name) -> None:
         original_commit(parent_fd, temporary_name, target_name)
@@ -389,7 +389,7 @@ def test_release_install_cleanup_failure_preserves_the_root_cause(tmp_path, monk
 
 
 def test_release_install_rejects_unexpected_empty_directories(tmp_path, monkeypatch) -> None:
-    original_write = install_release._write_entries
+    original_write = vars(install_release)["_write_entries"]
 
     def add_unexpected_directory(temporary_fd, entries) -> None:
         original_write(temporary_fd, entries)
@@ -408,7 +408,7 @@ def test_release_install_rejects_unexpected_empty_directories(tmp_path, monkeypa
 
 def test_atomic_file_commit_cannot_replace_a_concurrent_target(tmp_path, monkeypatch) -> None:
     target = tmp_path / "receipt.json"
-    original_check = install_release._require_new_target
+    original_check = vars(install_release)["_require_new_target"]
     checks = 0
     concurrent_inode = 0
 
@@ -436,7 +436,7 @@ def test_atomic_file_write_rolls_back_if_parent_is_detached_during_commit(
     target = requested_root / "nested" / "receipt.json"
     target.parent.mkdir(parents=True)
     parked_root = tmp_path / "safe-parked"
-    original_commit = install_release._atomic_commit_no_replace
+    original_commit = vars(install_release)["_atomic_commit_no_replace"]
 
     def detach_after_commit(parent_fd, temporary_name, target_name) -> None:
         original_commit(parent_fd, temporary_name, target_name)

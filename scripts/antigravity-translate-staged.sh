@@ -116,6 +116,16 @@ done <"$deleted"
 
 sort -u "$allowed" -o "$allowed"
 
+run_agy() {
+  local prompt_path="$1"
+  (
+    cd "$snapshot"
+    env -u GH_TOKEN -u GITHUB_TOKEN -u REPO_SETTINGS_TOKEN -u REPO_SYNC_TOKEN \
+      agy --new-project --sandbox --mode accept-edits --disable-slash-commands \
+      --print-timeout 25m --print "$(cat "$prompt_path")"
+  )
+}
+
 if grep -q '^translate[[:space:]]' "$requests"; then
   if ! command -v agy >/dev/null 2>&1; then
     echo "[i18n] Antigravity translation requires agy in the developer environment" >&2
@@ -126,6 +136,8 @@ if grep -q '^translate[[:space:]]' "$requests"; then
   {
     echo "Read .agents/skills/i18n-translate/SKILL.md and translate only the staged-index snapshot described below."
     echo "The snapshot is not a git repository. Do not run git, commit, stage, push, use GitHub, or change any file except the locale targets for these sources."
+    echo "Edit only the listed locale target files directly."
+    echo "Do not create scratch files, helper scripts, or directories anywhere in the snapshot."
     echo "Preserve code, inline code, imports, exports, MDX/JSX tags and attributes, URLs, file paths, and product names exactly."
     echo "Every target must set i18n.sourceHash to the supplied hash and i18n.translator to machine."
     echo "Translate every source into exactly these locales: fr es de pt-br ja ko zh-cn zh-tw ar it hi th."
@@ -133,18 +145,14 @@ if grep -q '^translate[[:space:]]' "$requests"; then
     awk -F '\t' '$1 == "translate" { printf "- %s sourceHash=%s\n", $2, $3 }' "$requests"
   } >"$prompt_file"
 
-  if ! (
-    cd "$snapshot"
-    env -u GH_TOKEN -u GITHUB_TOKEN -u REPO_SETTINGS_TOKEN -u REPO_SYNC_TOKEN \
-      agy --new-project --sandbox --mode accept-edits --disable-slash-commands \
-      --print-timeout 25m --print "$(cat "$prompt_file")"
-  ); then
+  if ! run_agy "$prompt_file"; then
     echo "[i18n] Antigravity translation failed; the commit remains blocked" >&2
     exit 1
   fi
 fi
 
-python3 - "$before" "$snapshot" "$allowed" "$requests" <<'PY'
+validate_snapshot() {
+  python3 - "$before" "$snapshot" "$allowed" "$requests" <<'PY'
 from __future__ import annotations
 
 from collections import Counter
@@ -195,7 +203,7 @@ def protected_tokens(raw: str) -> Counter[str]:
         r"(?<!`)`[^`\n]+`(?!`)",
         r"(?m)^(?:import|export)\b.*$",
         r"<[A-Za-z][^>\n]*>",
-        r"https?://[^\s)>]+",
+        r"https?://[^\s)>`\u0080-\U0010FFFF]+",
         r"\]\(([^)]+)\)",
     )
     tokens: Counter[str] = Counter()
@@ -203,6 +211,8 @@ def protected_tokens(raw: str) -> Counter[str]:
         for match in re.finditer(pattern, raw):
             tokens[match.group(0)] += 1
     return tokens
+
+repairable_errors: list[str] = []
 
 for action, source, expected_hash in requests:
     targets = [target_path(source, locale) for locale in locales]
@@ -223,17 +233,53 @@ for action, source, expected_hash in requests:
     for target in targets:
         target_file = after / target
         if not target_file.is_file() or target_file.is_symlink():
-            raise SystemExit(f"missing regular translation file: {target}")
+            repairable_errors.append(f"missing regular translation file: {target}")
+            continue
         raw = target_file.read_text(encoding="utf-8")
         hash_match = re.search(r'^\s*sourceHash:\s*["\']?([0-9a-f]{12})["\']?\s*$', raw, re.MULTILINE)
         translator_match = re.search(r'^\s*translator:\s*["\']?machine["\']?\s*$', raw, re.MULTILINE)
         if not hash_match or hash_match.group(1) != expected_hash:
-            raise SystemExit(f"wrong or missing i18n.sourceHash in {target}")
+            repairable_errors.append(f"wrong or missing i18n.sourceHash in {target}")
         if not translator_match:
-            raise SystemExit(f"wrong or missing i18n.translator in {target}")
+            repairable_errors.append(f"wrong or missing i18n.translator in {target}")
         if protected_tokens(raw) != source_tokens:
-            raise SystemExit(f"protected MDX/code/URL tokens changed in {target}")
+            repairable_errors.append(f"protected MDX/code/URL tokens changed in {target}")
+
+if repairable_errors:
+    raise SystemExit("REPAIRABLE:\n" + "\n".join(f"- {error}" for error in repairable_errors))
 PY
+}
+
+validation_output=""
+if ! validation_output=$(validate_snapshot 2>&1); then
+  case "$validation_output" in
+  REPAIRABLE:*)
+    repair_prompt="$work/repair-prompt"
+    {
+      echo "Read .agents/skills/i18n-translate/SKILL.md and repair only the validation failure below."
+      echo "Edit only the listed locale target files directly."
+      echo "Do not create scratch files, helper scripts, or directories anywhere in the snapshot."
+      echo "Compare the failing target with its English source and preserve every code block, inline code span, MDX/JSX tag and attribute, import, export, URL, and file path byte-for-byte."
+      echo "Validation failure: $validation_output"
+      echo "Requests:"
+      awk -F '\t' '$1 == "translate" { printf "- %s sourceHash=%s\n", $2, $3 }' "$requests"
+    } >"$repair_prompt"
+    if ! run_agy "$repair_prompt"; then
+      echo "[i18n] Antigravity translation repair failed; the commit remains blocked" >&2
+      exit 1
+    fi
+    if ! validation_output=$(validate_snapshot 2>&1); then
+      echo "$validation_output" >&2
+      echo "[i18n] Antigravity translation remained invalid after one repair; the commit remains blocked" >&2
+      exit 1
+    fi
+    ;;
+  *)
+    echo "$validation_output" >&2
+    exit 1
+    ;;
+  esac
+fi
 
 while IFS= read -r target; do
   [ -n "$target" ] || continue

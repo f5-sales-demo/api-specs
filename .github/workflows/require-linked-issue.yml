@@ -5,6 +5,15 @@ on:
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
+    inputs:
+      pull_request_number:
+        description: Exact pull request to evaluate, including a just-merged bootstrap PR
+        required: false
+        type: string
+      expected_head_sha:
+        description: Full head SHA that the targeted pull request must still reference
+        required: false
+        type: string
 
 permissions: {}
 
@@ -43,12 +52,31 @@ jobs:
               globToRegex(pattern.trim()),
             );
 
-            const pulls = await github.paginate(github.rest.pulls.list, {
-              owner,
-              repo,
-              state: "open",
-              per_page: 100,
-            });
+            const inputs = context.eventName === "workflow_dispatch" ? context.payload.inputs ?? {} : {};
+            const requestedNumber = inputs.pull_request_number ?? "";
+            const requestedHead = inputs.expected_head_sha ?? "";
+            let pulls;
+            if (requestedNumber !== "" || requestedHead !== "") {
+              if (!/^[1-9][0-9]*$/.test(requestedNumber) || !/^[0-9a-f]{40}$/.test(requestedHead)) {
+                throw new Error("Targeted linked-issue evaluation requires an exact PR number and head SHA");
+              }
+              const { data: pull } = await github.rest.pulls.get({
+                owner,
+                repo,
+                pull_number: Number(requestedNumber),
+              });
+              if (pull.head.sha !== requestedHead) {
+                throw new Error(`PR #${requestedNumber} head changed before linked-issue evaluation`);
+              }
+              pulls = [pull];
+            } else {
+              pulls = await github.paginate(github.rest.pulls.list, {
+                owner,
+                repo,
+                state: "open",
+                per_page: 100,
+              });
+            }
             const evaluationErrors = [];
 
             for (const pull of pulls) {

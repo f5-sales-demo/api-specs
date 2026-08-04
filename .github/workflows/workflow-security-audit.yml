@@ -43,4 +43,8 @@ jobs:
           persist-credentials: false
 
       - name: Reject every workflow security finding
-        run: pipx run zizmor --no-config --no-ignores --persona=auditor .github/workflows/ workflows/*.yml
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          targets=(.github/workflows/ workflows/*.yml)
+          pipx run zizmor --no-config --no-ignores --persona=auditor "${targets[@]}"

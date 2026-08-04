@@ -81,12 +81,19 @@ Check for English source files that have been **deleted** from `docs/en/` or `sr
     translator: "machine"
   ```
 
-### Non-Translatable Elements
+### Translatable Prose and Protected Structure
 
-1. **Code Blocks & Inline Code**: Keep code blocks (fenced with ``` or ~~~) and inline code (`...`) completely untranslated.
-2. **JSX / MDX Elements**: Keep HTML/JSX component tags intact, including attributes, imports (`import ... from '...'`), and exports (`export ...`).
-3. **Brand & Product Names**: Keep technical product names untranslated (e.g., `F5`, `F5 Distributed Cloud`, `XC`, `NGINX`, `Terraform`, `Kubernetes`, `Docker`).
-4. **URLs & File Paths**: Do not translate image paths, hyperlinks, or absolute/relative URLs unless locale-specific pathing is explicitly required.
+1. **Fenced Blocks**: Preserve the number of fenced blocks and every info string after the
+   opening fence. Translate human-readable output and comments, but keep executable syntax,
+   commands, flags, identifiers, and configuration data unchanged.
+2. **Inline Code**: Translate a span only when it contains a natural-language interface label,
+   status, or message. Keep commands, identifiers, literal values, and file paths unchanged.
+3. **JSX / MDX Elements**: Keep element names, nesting, and attribute names intact. Translate
+   literal string values only for the prose attributes `title`, `text`, and `alt`; preserve every
+   other attribute value or expression. Keep imports (`import ... from '...'`) and exports
+   (`export ...`) unchanged.
+4. **Brand & Product Names**: Keep technical product names untranslated (e.g., `F5`, `F5 Distributed Cloud`, `XC`, `NGINX`, `Terraform`, `Kubernetes`, `Docker`).
+5. **URLs & File Paths**: Do not translate image paths, link targets, or absolute/relative URLs unless locale-specific pathing is explicitly required.
 
 ---
 

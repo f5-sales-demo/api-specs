@@ -276,19 +276,18 @@ repos:
         pass_filenames: false
 
   # ===========================================================================
-  # Translation generation — regenerate locale docs when English changes.
-  # The developer environment provides agy. The hook translates an isolated
-  # snapshot of the staged index, validates its 12 locale outputs, and copies
-  # only allowlisted files back. It is intentionally always active locally;
-  # TRANSLATIONS_ENABLED controls GitHub Actions only.
+  # Translation validation — deterministic only. English-only source commits
+  # are allowed through so the governed workflow can generate locale output;
+  # any locale file that is staged locally must already match its English hash
+  # and preserve fence shape, links, imports, and MDX component structure.
   # ===========================================================================
   - repo: local
     hooks:
-      - id: antigravity-translate
-        name: "i18n: translate staged English docs with Antigravity"
-        entry: bash scripts/antigravity-translate-staged.sh
+      - id: validate-translations
+        name: "i18n: validate staged locale output"
+        entry: bash scripts/validate-translations.sh --staged
         language: system
-        files: ^(docs/en|src/content/docs/en)/.*\.mdx?$
+        files: ^(docs|src/content/docs)/(en|fr|es|de|pt-br|ja|ko|zh-cn|zh-tw|ar|it|hi|th)/.*\.mdx?$
         pass_filenames: false
 
 ci:
@@ -313,4 +312,4 @@ ci:
     - zizmor
     - checkov
     - gitleaks
-    - antigravity-translate
+    - validate-translations

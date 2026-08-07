@@ -78,7 +78,7 @@ def test_exact_spec_file_classification() -> None:
         api_behavior={},
         spec_file="other.json",
     )
-    
+
     d2 = Discrepancy(
         path="/some/other/path",
         property_name="p",
@@ -92,6 +92,6 @@ def test_exact_spec_file_classification() -> None:
     # If we classify "target.json" using d.spec_file == filename:
     # d1 should NOT match "target.json" (since its spec_file is "other.json").
     # d2 should match "target.json".
-    
+
     assert d1.spec_file != "target.json"
     assert d2.spec_file == "target.json"

@@ -1,23 +1,13 @@
 import json
-import pytest
-from pathlib import Path
-from scripts.utils.strict_data import StrictDataError
 
-# Try to import our utility. Since we work test-first, this will fail if the module isn't implemented or has issues.
-try:
-    from scripts.utils.reconciliation_report import (
-        validate_reconciliation_report,
-        load_reconciliation_report,
-        write_reconciliation_report,
-        ReconciliationReportError,
-    )
-except ImportError:
-    # During TDD red phase, we allow import failure so that we can verify the red state.
-    validate_reconciliation_report = None
-    load_reconciliation_report = None
-    write_reconciliation_report = None
-    class ReconciliationReportError(Exception):
-        pass
+import pytest
+
+from scripts.utils.reconciliation_report import (
+    ReconciliationReportError,
+    load_reconciliation_report,
+    validate_reconciliation_report,
+    write_reconciliation_report,
+)
 
 
 def test_tdd_red_assert_defined():
@@ -38,7 +28,7 @@ def valid_report_dict():
             "fixes_applied": 1,
             "failures": 1,
             "modified_files": ["example.json"],
-            "unmodified_files": ["other.json"]
+            "unmodified_files": ["other.json"],
         },
         "fixes": [
             {
@@ -57,8 +47,8 @@ def valid_report_dict():
                     "test_values": [],
                     "recommendation": "...",
                     "domain": "...",
-                    "method": "POST"
-                }
+                    "method": "POST",
+                },
             }
         ],
         "failures": [
@@ -77,23 +67,18 @@ def valid_report_dict():
                     "test_values": [],
                     "recommendation": "...",
                     "domain": "...",
-                    "method": "POST"
-                }
+                    "method": "POST",
+                },
             }
-        ]
+        ],
     }
 
 
 def test_valid_report_passes(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
     validate_reconciliation_report(valid_report_dict)
 
 
 def test_invalid_schema_fails(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
-    
     # Missing required root fields
     bad = valid_report_dict.copy()
     del bad["schema_version"]
@@ -102,8 +87,6 @@ def test_invalid_schema_fails(valid_report_dict):
 
 
 def test_schema_version_not_one_fails(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
     bad = valid_report_dict.copy()
     bad["schema_version"] = 2
     with pytest.raises(ReconciliationReportError):
@@ -111,8 +94,6 @@ def test_schema_version_not_one_fails(valid_report_dict):
 
 
 def test_invalid_additional_properties_fails(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
     bad = valid_report_dict.copy()
     bad["extra_property"] = "invalid"
     with pytest.raises(ReconciliationReportError):
@@ -120,8 +101,6 @@ def test_invalid_additional_properties_fails(valid_report_dict):
 
 
 def test_invalid_strategy_fails(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
     bad = json.loads(json.dumps(valid_report_dict))
     bad["fixes"][0]["strategy"] = "invalid_strategy"
     with pytest.raises(ReconciliationReportError):
@@ -129,8 +108,6 @@ def test_invalid_strategy_fails(valid_report_dict):
 
 
 def test_invalid_stage_fails(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
     bad = json.loads(json.dumps(valid_report_dict))
     bad["failures"][0]["stage"] = "invalid_stage"
     with pytest.raises(ReconciliationReportError):
@@ -138,8 +115,6 @@ def test_invalid_stage_fails(valid_report_dict):
 
 
 def test_negative_counts_fail(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
     bad = json.loads(json.dumps(valid_report_dict))
     bad["summary"]["processed_specs"] = -1
     with pytest.raises(ReconciliationReportError):
@@ -147,9 +122,6 @@ def test_negative_counts_fail(valid_report_dict):
 
 
 def test_count_mismatches_fail(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
-    
     # summary.fixes_applied != len(fixes)
     bad = json.loads(json.dumps(valid_report_dict))
     bad["summary"]["fixes_applied"] = 0
@@ -170,8 +142,6 @@ def test_count_mismatches_fail(valid_report_dict):
 
 
 def test_file_partitions_fail_when_overlapping(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
     bad = json.loads(json.dumps(valid_report_dict))
     # 'example.json' in both modified and unmodified lists
     bad["summary"]["modified_files"] = ["example.json"]
@@ -181,8 +151,6 @@ def test_file_partitions_fail_when_overlapping(valid_report_dict):
 
 
 def test_differing_filenames_fail(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
     bad = json.loads(json.dumps(valid_report_dict))
     # top level spec_file is "example.json" but source discrepancy is "other.json"
     bad["fixes"][0]["spec_file"] = "example.json"
@@ -192,9 +160,6 @@ def test_differing_filenames_fail(valid_report_dict):
 
 
 def test_modified_unmodified_union_and_fixes_invariants(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
-    
     bad = json.loads(json.dumps(valid_report_dict))
     # Fix references "example.json", but "example.json" is not in modified_files
     bad["summary"]["modified_files"] = []
@@ -208,9 +173,6 @@ def test_modified_unmodified_union_and_fixes_invariants(valid_report_dict):
 
 
 def test_unmodified_files_cannot_have_fixes(valid_report_dict):
-    if validate_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
-    
     bad = json.loads(json.dumps(valid_report_dict))
     # 'example.json' is in unmodified list, but has a fix entry
     bad["summary"]["modified_files"] = []
@@ -220,21 +182,59 @@ def test_unmodified_files_cannot_have_fixes(valid_report_dict):
 
 
 def test_duplicate_keys_fail_loads(tmp_path):
-    if load_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
-    
     # Write report with duplicate keys
     file_path = tmp_path / "dup_keys.json"
     file_path.write_text('{"schema_version":1,"schema_version":1}')
-    with pytest.raises(StrictDataError):
+    with pytest.raises(ReconciliationReportError):
         load_reconciliation_report(file_path)
 
 
 def test_non_finite_values_fail_loads(tmp_path):
-    if load_reconciliation_report is None:
-        pytest.skip("Module not implemented yet")
-    
     file_path = tmp_path / "non_finite.json"
-    file_path.write_text('{"schema_version":1,"generated_at":"2026-08-07T12:00:00+00:00","fixes":[],"failures":[],"summary":{"processed_specs":0,"discrepancies_received":0,"fixes_applied":0,"failures":0,"modified_files":[],"unmodified_files":[]},"bad_val": NaN}')
-    with pytest.raises(StrictDataError):
+    file_path.write_text(
+        '{"schema_version":1,"generated_at":"2026-08-07T12:00:00+00:00","fixes":[],"failures":[],"summary":{"processed_specs":0,"discrepancies_received":0,"fixes_applied":0,"failures":0,"modified_files":[],"unmodified_files":[]},"bad_val": NaN}'
+    )
+    with pytest.raises(ReconciliationReportError):
         load_reconciliation_report(file_path)
+
+
+def test_write_reconciliation_report_rejects_nan_and_infinities(tmp_path, valid_report_dict):
+    # NaN in a nested field
+    bad = json.loads(json.dumps(valid_report_dict))
+    bad["fixes"][0]["before"] = float("nan")
+    file_path = tmp_path / "test_nan.json"
+    with pytest.raises(ReconciliationReportError):
+        write_reconciliation_report(bad, file_path)
+    assert not file_path.exists()
+
+    # Infinity in nested field
+    bad = json.loads(json.dumps(valid_report_dict))
+    bad["fixes"][0]["before"] = float("inf")
+    file_path = tmp_path / "test_inf.json"
+    with pytest.raises(ReconciliationReportError):
+        write_reconciliation_report(bad, file_path)
+    assert not file_path.exists()
+
+    # -Infinity in nested field
+    bad = json.loads(json.dumps(valid_report_dict))
+    bad["fixes"][0]["before"] = float("-inf")
+    file_path = tmp_path / "test_neginf.json"
+    with pytest.raises(ReconciliationReportError):
+        write_reconciliation_report(bad, file_path)
+    assert not file_path.exists()
+
+
+def test_write_rejected_does_not_replace_pre_existing_valid_report(tmp_path, valid_report_dict):
+    file_path = tmp_path / "existing.json"
+    write_reconciliation_report(valid_report_dict, file_path)
+    assert file_path.exists()
+    original_content = file_path.read_text(encoding="utf-8")
+
+    # Attempt to write invalid report with NaN
+    bad = json.loads(json.dumps(valid_report_dict))
+    bad["fixes"][0]["before"] = float("nan")
+    with pytest.raises(ReconciliationReportError):
+        write_reconciliation_report(bad, file_path)
+
+    # Check that the pre-existing report is unmodified
+    assert file_path.read_text(encoding="utf-8") == original_content

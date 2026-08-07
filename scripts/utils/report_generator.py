@@ -66,27 +66,13 @@ class ReportGenerator:
 
         for fmt in self.config.formats:
             if fmt == "json":
-                output_files["json"] = self._generate_json(
-                    summary, results, discrepancies
-                )
+                output_files["json"] = self._generate_json(summary, results, discrepancies)
             elif fmt == "html":
                 output_files["html"] = self._generate_html(summary, results, discrepancies)
             elif fmt == "markdown":
                 output_files["markdown"] = self._generate_markdown(summary, results, discrepancies)
 
         return output_files
-
-    @staticmethod
-    def _align_parallel_list(
-        values: list[str] | None,
-        length: int,
-    ) -> list[str]:
-        """Return ``values`` padded/truncated to ``length`` with ``"unknown"``."""
-        if not values:
-            return ["unknown"] * length
-        if len(values) >= length:
-            return list(values[:length])
-        return list(values) + ["unknown"] * (length - len(values))
 
     def _create_summary(
         self,
@@ -127,10 +113,7 @@ class ReportGenerator:
         report = {
             "summary": asdict(summary),
             "results": [self._result_to_dict(r) for r in results],
-            "discrepancies": [
-                self._discrepancy_to_dict(d)
-                for d in discrepancies
-            ],
+            "discrepancies": [self._discrepancy_to_dict(d) for d in discrepancies],
         }
 
         with output_path.open("w") as f:
@@ -286,10 +269,7 @@ class ReportGenerator:
             "errors": result.errors,
             # Nested discrepancies inherit the result's method; domain is
             # not carried on SchemathesisResult, so default to "unknown".
-            "discrepancies": [
-                self._discrepancy_to_dict(d)
-                for d in result.discrepancies
-            ],
+            "discrepancies": [self._discrepancy_to_dict(d) for d in result.discrepancies],
         }
 
     def _discrepancy_to_dict(

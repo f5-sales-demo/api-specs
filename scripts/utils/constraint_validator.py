@@ -75,7 +75,6 @@ class Discrepancy:
         }
 
 
-
 @dataclass
 class ValidationTestCase:
     """A test case for constraint validation."""

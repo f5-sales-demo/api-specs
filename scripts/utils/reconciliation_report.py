@@ -4,15 +4,17 @@ import json
 import os
 import tempfile
 from pathlib import Path
-from typing import Any, Union
+from typing import Any
+
 from jsonschema import Draft7Validator, FormatChecker
 from jsonschema.exceptions import ValidationError
 
-from .strict_data import strict_json_loads, StrictDataError
+from .strict_data import StrictDataError, strict_json_loads
 
 
 class ReconciliationReportError(ValueError):
     """Exception raised for any reconciliation report validation or operation errors."""
+
     pass
 
 
@@ -24,7 +26,7 @@ def _load_schema() -> dict[str, Any]:
     """Load and verify the JSON Schema of the reconciliation report."""
     if not SCHEMA_PATH.exists():
         raise ReconciliationReportError(f"Reconciliation report schema not found at {SCHEMA_PATH}")
-    
+
     try:
         content = SCHEMA_PATH.read_text(encoding="utf-8")
         # Use strict loads to ensure the schema itself is perfectly valid and has no duplicate keys
@@ -47,7 +49,9 @@ def validate_reconciliation_report(data: dict[str, Any]) -> None:
     try:
         validator.validate(data)
     except ValidationError as error:
-        raise ReconciliationReportError(f"Schema validation failed: {error.message} at path '{error.json_path}'") from error
+        raise ReconciliationReportError(
+            f"Schema validation failed: {error.message} at path '{error.json_path}'"
+        ) from error
 
     # 2. Extract sections for semantic invariant checks
     summary = data["summary"]
@@ -102,9 +106,13 @@ def validate_reconciliation_report(data: dict[str, Any]) -> None:
     unmodified_set = set(unmodified_files)
 
     if len(modified_files) != len(modified_set):
-        raise ReconciliationReportError("Semantic invariant violation: Modified files contains duplicate entries")
+        raise ReconciliationReportError(
+            "Semantic invariant violation: Modified files contains duplicate entries"
+        )
     if len(unmodified_files) != len(unmodified_set):
-        raise ReconciliationReportError("Semantic invariant violation: Unmodified files contains duplicate entries")
+        raise ReconciliationReportError(
+            "Semantic invariant violation: Unmodified files contains duplicate entries"
+        )
 
     intersection = modified_set & unmodified_set
     if intersection:
@@ -134,26 +142,24 @@ def validate_reconciliation_report(data: dict[str, Any]) -> None:
             raise ReconciliationReportError(
                 f"Semantic invariant violation: Fix #{i} references unmodified file '{spec}'"
             )
-            
+
     # Validate timestamp format (using schema's format validation, which FormatChecker covers)
     # Draft7Validator with FormatChecker validates date-time, but let's double check it or ensure FormatChecker was effective
     pass
 
 
-def load_reconciliation_report(file_path: Union[str, Path]) -> dict[str, Any]:
+def load_reconciliation_report(file_path: str | Path) -> dict[str, Any]:
     """Load, strictly parse, and validate a reconciliation report from a JSON file."""
     path = Path(file_path)
     if not path.exists():
         raise ReconciliationReportError(f"Reconciliation report file does not exist: {file_path}")
-    
+
     try:
         content = path.read_text(encoding="utf-8")
         # Use strict_json_loads to reject duplicates and non-finite values (like NaN/Infinity)
         data = strict_json_loads(content, str(path))
     except StrictDataError as error:
-        # Wrap strict data errors as ReconciliationReportError or let them propagate?
-        # The test test_duplicate_keys_fail_loads expects StrictDataError, so we let StrictDataError propagate!
-        raise
+        raise ReconciliationReportError(f"Strict parse validation failed: {error}") from error
     except Exception as error:
         raise ReconciliationReportError(f"Failed to read reconciliation report: {error}") from error
 
@@ -161,22 +167,26 @@ def load_reconciliation_report(file_path: Union[str, Path]) -> dict[str, Any]:
     return data
 
 
-def write_reconciliation_report(data: dict[str, Any], file_path: Union[str, Path]) -> None:
+def write_reconciliation_report(data: dict[str, Any], file_path: str | Path) -> None:
     """Validate and atomically write a reconciliation report to a JSON file."""
     path = Path(file_path).resolve()
-    
+
     # Run full structural and semantic validation first
     validate_reconciliation_report(data)
-    
+
     # Ensure the parent directory exists
     path.parent.mkdir(parents=True, exist_ok=True)
-    
-    # Serialize to standard indented JSON format safely
+
+    # Serialize to standard indented JSON format safely, rejecting NaN/Infinities recursively
     try:
-        serialized = json.dumps(data, indent=2, sort_keys=True) + "\n"
+        serialized = json.dumps(data, indent=2, sort_keys=True, allow_nan=False) + "\n"
         serialized_bytes = serialized.encode("utf-8")
+    except ValueError as error:
+        raise ReconciliationReportError(f"JSON value must be finite: {error}") from error
     except Exception as error:
-        raise ReconciliationReportError(f"Failed to serialize reconciliation report: {error}") from error
+        raise ReconciliationReportError(
+            f"Failed to serialize reconciliation report: {error}"
+        ) from error
 
     # Perform atomic write via same-directory temporary file replacement
     tmp_fd, tmp_path = tempfile.mkstemp(dir=str(path.parent), prefix=".tmp-recon-")
@@ -190,4 +200,6 @@ def write_reconciliation_report(data: dict[str, Any], file_path: Union[str, Path
                 os.unlink(tmp_path)
             except OSError:
                 pass
-        raise ReconciliationReportError(f"Failed to atomically write reconciliation report: {error}") from error
+        raise ReconciliationReportError(
+            f"Failed to atomically write reconciliation report: {error}"
+        ) from error

@@ -76,52 +76,7 @@
           "before": {},
           "after": {},
           "source_discrepancy": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["path", "property_name", "constraint_type", "discrepancy_type", "spec_file"],
-            "properties": {
-              "path": {
-                "type": "string"
-              },
-              "property_name": {
-                "type": "string"
-              },
-              "constraint_type": {
-                "type": "string"
-              },
-              "discrepancy_type": {
-                "type": "string",
-                "enum": [
-                  "spec_stricter",
-                  "spec_looser",
-                  "missing_constraint",
-                  "extra_constraint",
-                  "constraint_mismatch",
-                  "type_mismatch",
-                  "spectral_missing",
-                  "spectral_invalid",
-                  "spectral_unused"
-                ]
-              },
-              "spec_value": {},
-              "api_behavior": {},
-              "spec_file": {
-                "type": "string",
-                "minLength": 1
-              },
-              "test_values": {
-                "type": "array"
-              },
-              "recommendation": {
-                "type": "string"
-              },
-              "domain": {
-                "type": "string"
-              },
-              "method": {
-                "type": "string"
-              }
-            }
+            "$ref": "#/definitions/source_discrepancy"
           }
         }
       }
@@ -142,56 +97,79 @@
             "enum": ["match", "apply", "validate"]
           },
           "error": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "source_discrepancy": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["path", "property_name", "constraint_type", "discrepancy_type", "spec_file"],
-            "properties": {
-              "path": {
-                "type": "string"
-              },
-              "property_name": {
-                "type": "string"
-              },
-              "constraint_type": {
-                "type": "string"
-              },
-              "discrepancy_type": {
-                "type": "string",
-                "enum": [
-                  "spec_stricter",
-                  "spec_looser",
-                  "missing_constraint",
-                  "extra_constraint",
-                  "constraint_mismatch",
-                  "type_mismatch",
-                  "spectral_missing",
-                  "spectral_invalid",
-                  "spectral_unused"
-                ]
-              },
-              "spec_value": {},
-              "api_behavior": {},
-              "spec_file": {
-                "type": "string",
-                "minLength": 1
-              },
-              "test_values": {
-                "type": "array"
-              },
-              "recommendation": {
-                "type": "string"
-              },
-              "domain": {
-                "type": "string"
-              },
-              "method": {
-                "type": "string"
-              }
-            }
+            "$ref": "#/definitions/source_discrepancy"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "source_discrepancy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "property_name",
+        "constraint_type",
+        "discrepancy_type",
+        "spec_value",
+        "api_behavior",
+        "spec_file",
+        "test_values",
+        "recommendation",
+        "domain",
+        "method"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "property_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "constraint_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "discrepancy_type": {
+          "type": "string",
+          "enum": [
+            "spec_stricter",
+            "spec_looser",
+            "missing_constraint",
+            "extra_constraint",
+            "constraint_mismatch",
+            "type_mismatch",
+            "spectral_missing",
+            "spectral_invalid",
+            "spectral_unused"
+          ]
+        },
+        "spec_value": {},
+        "api_behavior": {},
+        "spec_file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "test_values": {
+          "type": "array"
+        },
+        "recommendation": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
         }
       }
     }

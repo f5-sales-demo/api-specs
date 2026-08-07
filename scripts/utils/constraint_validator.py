@@ -55,6 +55,25 @@ class Discrepancy:
     spec_file: str = "unknown"
     test_values: list[Any] = field(default_factory=list)
     recommendation: str = ""
+    domain: str = ""
+    method: str = ""
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize Discrepancy to a dictionary matching reconciliation report schema."""
+        return {
+            "path": self.path,
+            "property_name": self.property_name,
+            "constraint_type": self.constraint_type,
+            "discrepancy_type": self.discrepancy_type.value,
+            "spec_value": self.spec_value,
+            "api_behavior": self.api_behavior,
+            "spec_file": self.spec_file,
+            "test_values": self.test_values,
+            "recommendation": self.recommendation,
+            "domain": self.domain,
+            "method": self.method,
+        }
+
 
 
 @dataclass

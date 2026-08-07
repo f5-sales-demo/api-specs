@@ -250,16 +250,11 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
         # Results storage
         self.discrepancies: list[Discrepancy] = []
         self.test_results: list[SchemathesisResult] = []
-        # Parallel lists aligned with ``self.discrepancies`` so the JSON
-        # report can emit ``domain`` and ``method`` per entry (consumed by
-        # scripts/issue_sync.py).
-        self.discrepancy_domains: list[str] = []
-        self.discrepancy_methods: list[str] = []
-        self.discrepancy_spec_files: list[str] = []
 
     def run(
         self,
         endpoint_filter: str | None = None,
+        allow_discrepancies: bool = False,
     ) -> int:
         """Run the full validation pipeline."""
         console.print("[bold blue]F5 XC API Spec Validation[/bold blue]")
@@ -314,7 +309,10 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
                 console.print(f"  [red]- {execution_error}[/red]")
             return 1
 
-        return 0 if not self.discrepancies else 1
+        if self.discrepancies and not allow_discrepancies:
+            return 1
+
+        return 0
 
     def _load_specs(self) -> dict[str, dict]:
         """Load all OpenAPI specs."""
@@ -364,9 +362,8 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
                     self.discrepancies.extend(result.discrepancies)
                     for d in result.discrepancies:
                         d.spec_file = target.filename
-                    self.discrepancy_domains.extend([target.domain] * len(result.discrepancies))
-                    self.discrepancy_methods.extend([result.method] * len(result.discrepancies))
-                    self.discrepancy_spec_files.extend([target.filename] * len(result.discrepancies))
+                        d.domain = target.domain
+                        d.method = result.method
                 validate_live_results(target, target.operations, results)
             except (LiveValidationError, OperationResolutionError) as error:
                 errors.append(str(error))
@@ -383,22 +380,17 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
         # For now, all files are considered unmodified until reconciliation
         specs = self.spec_loader.load_all_domain_files()
         for filename in specs:
-            if any(d.path and filename in d.path for d in self.discrepancies):
+            if any(d.spec_file == filename for d in self.discrepancies):
                 modified_files.append(filename)
             else:
                 unmodified_files.append(filename)
 
-        # Generate reports — thread the parallel domain/method lists so
-        # every entry in validation_report.json carries the fields that
-        # scripts/issue_sync.py needs.
+        # Generate reports
         self.report_generator.generate_all(
             results=self.test_results,
             discrepancies=self.discrepancies,
             modified_files=modified_files,
             unmodified_files=unmodified_files,
-            discrepancy_domains=self.discrepancy_domains,
-            discrepancy_methods=self.discrepancy_methods,
-            discrepancy_spec_files=self.discrepancy_spec_files,
         )
 
     def _print_summary(self) -> None:
@@ -449,6 +441,11 @@ def main() -> int:
         default=None,
         help="Filter to specific endpoint",
     )
+    parser.add_argument(
+        "--allow-discrepancies",
+        action="store_true",
+        help="Always return exit 0 if validation execution runs cleanly, even with discrepancies.",
+    )
 
     args = parser.parse_args()
 
@@ -474,7 +471,10 @@ def main() -> int:
         auth=auth,
     )
 
-    return orchestrator.run(endpoint_filter=args.endpoint)
+    return orchestrator.run(
+        endpoint_filter=args.endpoint,
+        allow_discrepancies=args.allow_discrepancies,
+    )
 
 
 if __name__ == "__main__":

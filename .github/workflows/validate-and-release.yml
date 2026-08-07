@@ -145,7 +145,7 @@ jobs:
           : "${F5XC_API_URL:?F5XC_API_URL is required for live validation}"
           : "${F5XC_API_TOKEN:?F5XC_API_TOKEN is required for live validation}"
           : "${F5XC_NAMESPACE:?F5XC_NAMESPACE is required for live validation}"
-          uv run --frozen python -m scripts.validate
+          uv run --frozen python -m scripts.validate --allow-discrepancies
 
       - name: Run Spectral OAS3 linting
         run: |
@@ -157,7 +157,8 @@ jobs:
         run: |
           echo "Reconciling specs based on validation results..."
           uv run --frozen python -m scripts.reconcile \
-            --report reports/validation_report.json
+            --report reports/validation_report.json \
+            --reconciliation-report-out reports/reconciliation_report.json
           echo "Fix report saved to reports/reconciliation_report.json"
 
       - name: Sync discrepancies to GitHub issues
@@ -898,7 +899,7 @@ jobs:
         run: |
           python scripts/generate_docs.py \
             --reconciliation-report reports/reconciliation_report.json \
-            --output docs/01-validation-report.mdx
+            --output docs/en/01-validation-report.mdx
 
       - name: Commit and PR if changed
         env:

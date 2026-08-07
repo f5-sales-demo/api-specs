@@ -4,24 +4,57 @@
   "additionalProperties": false,
   "required": ["schema_version", "generated_at", "summary", "fixes", "failures"],
   "properties": {
-    "schema_version": { "type": "integer" },
-    "generated_at": { "type": "string", "format": "date-time" },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
     "summary": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["processed_specs", "discrepancies_received", "fixes_applied", "failures", "modified_files", "unmodified_files"],
+      "required": [
+        "processed_specs",
+        "discrepancies_received",
+        "fixes_applied",
+        "failures",
+        "modified_files",
+        "unmodified_files"
+      ],
       "properties": {
-        "processed_specs": { "type": "integer" },
-        "discrepancies_received": { "type": "integer" },
-        "fixes_applied": { "type": "integer" },
-        "failures": { "type": "integer" },
+        "processed_specs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "discrepancies_received": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fixes_applied": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failures": {
+          "type": "integer",
+          "minimum": 0
+        },
         "modified_files": {
           "type": "array",
-          "items": { "type": "string" }
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "unmodified_files": {
           "type": "array",
-          "items": { "type": "string" }
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
@@ -32,11 +65,64 @@
         "additionalProperties": false,
         "required": ["spec_file", "strategy", "before", "after", "source_discrepancy"],
         "properties": {
-          "spec_file": { "type": "string" },
-          "strategy": { "type": "string" },
+          "spec_file": {
+            "type": "string",
+            "minLength": 1
+          },
+          "strategy": {
+            "type": "string",
+            "enum": ["relax", "tighten", "add", "remove"]
+          },
           "before": {},
           "after": {},
-          "source_discrepancy": { "type": "object" }
+          "source_discrepancy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "property_name", "constraint_type", "discrepancy_type", "spec_file"],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "property_name": {
+                "type": "string"
+              },
+              "constraint_type": {
+                "type": "string"
+              },
+              "discrepancy_type": {
+                "type": "string",
+                "enum": [
+                  "spec_stricter",
+                  "spec_looser",
+                  "missing_constraint",
+                  "extra_constraint",
+                  "constraint_mismatch",
+                  "type_mismatch",
+                  "spectral_missing",
+                  "spectral_invalid",
+                  "spectral_unused"
+                ]
+              },
+              "spec_value": {},
+              "api_behavior": {},
+              "spec_file": {
+                "type": "string",
+                "minLength": 1
+              },
+              "test_values": {
+                "type": "array"
+              },
+              "recommendation": {
+                "type": "string"
+              },
+              "domain": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },
@@ -47,10 +133,65 @@
         "additionalProperties": false,
         "required": ["spec_file", "stage", "error", "source_discrepancy"],
         "properties": {
-          "spec_file": { "type": "string" },
-          "stage": { "type": "string", "enum": ["match", "apply", "validate"] },
-          "error": { "type": "string" },
-          "source_discrepancy": { "type": "object" }
+          "spec_file": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stage": {
+            "type": "string",
+            "enum": ["match", "apply", "validate"]
+          },
+          "error": {
+            "type": "string"
+          },
+          "source_discrepancy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "property_name", "constraint_type", "discrepancy_type", "spec_file"],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "property_name": {
+                "type": "string"
+              },
+              "constraint_type": {
+                "type": "string"
+              },
+              "discrepancy_type": {
+                "type": "string",
+                "enum": [
+                  "spec_stricter",
+                  "spec_looser",
+                  "missing_constraint",
+                  "extra_constraint",
+                  "constraint_mismatch",
+                  "type_mismatch",
+                  "spectral_missing",
+                  "spectral_invalid",
+                  "spectral_unused"
+                ]
+              },
+              "spec_value": {},
+              "api_behavior": {},
+              "spec_file": {
+                "type": "string",
+                "minLength": 1
+              },
+              "test_values": {
+                "type": "array"
+              },
+              "recommendation": {
+                "type": "string"
+              },
+              "domain": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     }

@@ -8,8 +8,9 @@ import json
 import sys
 from pathlib import Path
 
-import jsonschema
 from rich.console import Console
+
+from .utils.reconciliation_report import load_reconciliation_report
 
 console = Console()
 
@@ -20,67 +21,28 @@ description: F5 XC API spec validation and fix report
 """
 
 
-def _check_duplicate_keys(ordered_pairs):
-    d = {}
-    for k, v in ordered_pairs:
-        if k in d:
-            raise ValueError(f"Duplicate key: {k}")
-        d[k] = v
-    return d
-
-
-def _parse_constant(c):
-    raise ValueError(f"Non-finite JSON: {c}")
-
-
-def load_strict_json(report_path: Path) -> dict:
-    """Load and strictly parse a JSON report file."""
-    if not report_path.exists():
-        console.print(f"[red]Report not found: {report_path}[/red]")
-        sys.exit(1)
-        
-    try:
-        with report_path.open() as f:
-            data = json.load(
-                f,
-                object_pairs_hook=_check_duplicate_keys,
-                parse_constant=_parse_constant
-            )
-    except json.JSONDecodeError as e:
-        console.print(f"[red]Failed to parse report: {e}[/red]")
-        sys.exit(1)
-    except ValueError as e:
-        console.print(f"[red]Invalid JSON report: {e}[/red]")
-        sys.exit(1)
-
-    schema_path = Path("config/reconciliation_report.schema.json")
-    if schema_path.exists():
-        with schema_path.open() as sf:
-            schema = json.load(sf)
-        try:
-            jsonschema.validate(instance=data, schema=schema)
-        except jsonschema.ValidationError as e:
-            console.print(f"[red]Report fails schema validation: {e.message}[/red]")
-            sys.exit(1)
-
-    return data
-
-
 def _format_value(value: object) -> str:
-    """Format a value for display in MDX table, escaping HTML chars."""
+    """Format a value for display in MDX table, escaping HTML chars and MDX braces."""
     if value is None:
         return "-"
     if isinstance(value, bool):
-        return "true" if value else "false"
-    if isinstance(value, (list, dict)):
+        str_value = "true" if value else "false"
+    elif isinstance(value, (list, dict)):
         json_str = json.dumps(value)
         if len(json_str) > 50:
             json_str = f"{json_str[:47]}..."
-        value = json_str
+        str_value = json_str
+    else:
+        str_value = str(value)
     
     # MDX-safe escaping
-    str_value = str(value)
-    str_value = str_value.replace("<", "&lt;").replace(">", "&gt;").replace("|", "&#124;")
+    str_value = (
+        str_value.replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("|", "&#124;")
+        .replace("{", "&#123;")
+        .replace("}", "&#125;")
+    )
     return f"`{str_value}`"
 
 
@@ -187,13 +149,18 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("docs/01-validation-report.mdx"),
+        default=Path("docs/en/01-validation-report.mdx"),
         help="Output path for documentation page",
     )
     args = parser.parse_args()
 
     console.print("[bold blue]Generating Documentation[/bold blue]")
-    report = load_strict_json(args.reconciliation_report)
+    try:
+        report = load_reconciliation_report(args.reconciliation_report)
+    except Exception as e:
+        console.print(f"[red]Failed to load reconciliation report: {e}[/red]")
+        return 1
+
     generate_fixes_page(report, args.output)
     console.print("[green]Documentation generation complete[/green]")
     return 0

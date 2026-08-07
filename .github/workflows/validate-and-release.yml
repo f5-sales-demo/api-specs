@@ -14,6 +14,8 @@ on:
       - 'pyproject.toml'
       - 'uv.lock'
       - '.python-version'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/validate-and-release.yml'
   workflow_dispatch: {}
 
@@ -153,10 +155,10 @@ jobs:
 
       - name: Reconcile specs and apply fixes
         run: |
-          echo "Reconciling specs based on validation and Spectral results..."
+          echo "Reconciling specs based on validation results..."
           uv run --frozen python -m scripts.reconcile \
-            --report reports/validation_report.json reports/spectral_report.json
-          echo "Fix report saved to reports/fixes_applied.json"
+            --report reports/validation_report.json
+          echo "Fix report saved to reports/reconciliation_report.json"
 
       - name: Sync discrepancies to GitHub issues
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -895,8 +897,7 @@ jobs:
       - name: Generate documentation
         run: |
           python scripts/generate_docs.py \
-            --validation-report reports/validation_report.json \
-            --fix-report reports/fixes_applied.json \
+            --reconciliation-report reports/reconciliation_report.json \
             --output docs/01-validation-report.mdx
 
       - name: Commit and PR if changed

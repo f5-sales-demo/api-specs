@@ -59,6 +59,7 @@ class ReportGenerator:
         unmodified_files: list[str],
         discrepancy_domains: list[str] | None = None,
         discrepancy_methods: list[str] | None = None,
+        discrepancy_spec_files: list[str] | None = None,
     ) -> dict[str, Path]:
         """Generate reports in all configured formats.
 
@@ -72,6 +73,7 @@ class ReportGenerator:
         # Align parallel lists; pad with "unknown" if callers didn't supply.
         domains = self._align_parallel_list(discrepancy_domains, len(discrepancies))
         methods = self._align_parallel_list(discrepancy_methods, len(discrepancies))
+        spec_files = self._align_parallel_list(discrepancy_spec_files, len(discrepancies))
 
         # Create summary
         summary = self._create_summary(results, discrepancies, modified_files, unmodified_files)
@@ -81,7 +83,7 @@ class ReportGenerator:
         for fmt in self.config.formats:
             if fmt == "json":
                 output_files["json"] = self._generate_json(
-                    summary, results, discrepancies, domains, methods
+                    summary, results, discrepancies, domains, methods, spec_files
                 )
             elif fmt == "html":
                 output_files["html"] = self._generate_html(summary, results, discrepancies)
@@ -136,19 +138,21 @@ class ReportGenerator:
         discrepancies: list[Discrepancy],
         discrepancy_domains: list[str] | None = None,
         discrepancy_methods: list[str] | None = None,
+        discrepancy_spec_files: list[str] | None = None,
     ) -> Path:
         """Generate JSON report."""
         output_path = self.config.output_dir / "validation_report.json"
 
         domains = self._align_parallel_list(discrepancy_domains, len(discrepancies))
         methods = self._align_parallel_list(discrepancy_methods, len(discrepancies))
+        spec_files = self._align_parallel_list(discrepancy_spec_files, len(discrepancies))
 
         report = {
             "summary": asdict(summary),
             "results": [self._result_to_dict(r) for r in results],
             "discrepancies": [
-                self._discrepancy_to_dict(d, domain=dom, method=mth)
-                for d, dom, mth in zip(discrepancies, domains, methods, strict=True)
+                self._discrepancy_to_dict(d, domain=dom, method=mth, spec_file=sf)
+                for d, dom, mth, sf in zip(discrepancies, domains, methods, spec_files, strict=True)
             ],
         }
 
@@ -306,7 +310,7 @@ class ReportGenerator:
             # Nested discrepancies inherit the result's method; domain is
             # not carried on SchemathesisResult, so default to "unknown".
             "discrepancies": [
-                self._discrepancy_to_dict(d, domain="unknown", method=result.method)
+                self._discrepancy_to_dict(d, domain="unknown", method=result.method, spec_file=d.spec_file)
                 for d in result.discrepancies
             ],
         }
@@ -316,6 +320,7 @@ class ReportGenerator:
         discrepancy: Discrepancy,
         domain: str = "unknown",
         method: str = "unknown",
+        spec_file: str = "unknown",
     ) -> dict:
         """Convert Discrepancy to dictionary."""
         return {
@@ -325,6 +330,7 @@ class ReportGenerator:
             "discrepancy_type": discrepancy.discrepancy_type.value,
             "spec_value": discrepancy.spec_value,
             "api_behavior": discrepancy.api_behavior,
+            "spec_file": spec_file,
             "test_values": discrepancy.test_values[: self.config.max_examples_per_issue],
             "recommendation": discrepancy.recommendation,
             "domain": domain,

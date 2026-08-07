@@ -255,6 +255,7 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
         # scripts/issue_sync.py).
         self.discrepancy_domains: list[str] = []
         self.discrepancy_methods: list[str] = []
+        self.discrepancy_spec_files: list[str] = []
 
     def run(
         self,
@@ -361,8 +362,11 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
 
                 for result in results:
                     self.discrepancies.extend(result.discrepancies)
+                    for d in result.discrepancies:
+                        d.spec_file = target.filename
                     self.discrepancy_domains.extend([target.domain] * len(result.discrepancies))
                     self.discrepancy_methods.extend([result.method] * len(result.discrepancies))
+                    self.discrepancy_spec_files.extend([target.filename] * len(result.discrepancies))
                 validate_live_results(target, target.operations, results)
             except (LiveValidationError, OperationResolutionError) as error:
                 errors.append(str(error))
@@ -394,6 +398,7 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
             unmodified_files=unmodified_files,
             discrepancy_domains=self.discrepancy_domains,
             discrepancy_methods=self.discrepancy_methods,
+            discrepancy_spec_files=self.discrepancy_spec_files,
         )
 
     def _print_summary(self) -> None:

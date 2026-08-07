@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "summary", "fixes", "failures"],
+  "properties": {
+    "schema_version": { "type": "integer" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["processed_specs", "discrepancies_received", "fixes_applied", "failures", "modified_files", "unmodified_files"],
+      "properties": {
+        "processed_specs": { "type": "integer" },
+        "discrepancies_received": { "type": "integer" },
+        "fixes_applied": { "type": "integer" },
+        "failures": { "type": "integer" },
+        "modified_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "unmodified_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "fixes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["spec_file", "strategy", "before", "after", "source_discrepancy"],
+        "properties": {
+          "spec_file": { "type": "string" },
+          "strategy": { "type": "string" },
+          "before": {},
+          "after": {},
+          "source_discrepancy": { "type": "object" }
+        }
+      }
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["spec_file", "stage", "error", "source_discrepancy"],
+        "properties": {
+          "spec_file": { "type": "string" },
+          "stage": { "type": "string", "enum": ["match", "apply", "validate"] },
+          "error": { "type": "string" },
+          "source_discrepancy": { "type": "object" }
+        }
+      }
+    }
+  }
+}

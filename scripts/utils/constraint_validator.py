@@ -52,6 +52,7 @@ class Discrepancy:
     discrepancy_type: DiscrepancyType
     spec_value: Any
     api_behavior: Any
+    spec_file: str = "unknown"
     test_values: list[Any] = field(default_factory=list)
     recommendation: str = ""
 

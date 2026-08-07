@@ -57,7 +57,7 @@ validate:
 	$(BIN)/python -m scripts.validate
 
 reconcile:
-	$(BIN)/python -m scripts.reconcile --report reports/validation_report.json reports/spectral_report.json
+	$(BIN)/python -m scripts.reconcile --report reports/validation_report.json
 
 spectral-lint:
 	$(BIN)/python -m scripts.spectral_lint --mode discover
@@ -129,7 +129,7 @@ ci-validate: install download transform spectral-lint validate reconcile spectra
 
 # Documentation targets
 docs-generate:
-	$(BIN)/python scripts/generate_docs.py
+	$(BIN)/python scripts/generate_docs.py --reconciliation-report reports/reconciliation_report.json
 
 docs: docs-generate
 	$(BIN)/mkdocs build --strict

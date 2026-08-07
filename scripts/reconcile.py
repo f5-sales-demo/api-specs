@@ -101,9 +101,7 @@ class SpecReconciler:
         grouped: dict[str, list[Discrepancy]] = {}
 
         for d in discrepancies:
-            # Extract filename from path
-            filename = d.path.split(":")[0] if ":" in d.path else d.path
-
+            filename = d.spec_file if d.spec_file != "unknown" else (d.path.split(":")[0] if ":" in d.path else d.path)
             if filename not in grouped:
                 grouped[filename] = []
             grouped[filename].append(d)
@@ -526,12 +524,9 @@ class SpecReconciler:
                 elif action == "remove":
                     lines.append(f"- **Removed** `{constraint}` from `{prop}` (was `{old_val}`)")
                     has_items = True
-                elif constraint_type.startswith("spectral:"):
-                    lines.append(f"- **Spectral fix** `{constraint_type}`: {action or 'applied'}")
-                    has_items = True
 
             if not has_items:
-                lines.append(f"- *{len(result.changes)} Spectral fixes applied*")
+                lines.append(f"- *{len(result.changes)} fixes applied*")
 
             lines.append("")
 
@@ -554,6 +549,7 @@ def load_discrepancies(report_path: Path) -> list[Discrepancy]:
             discrepancy_type=DiscrepancyType(d.get("discrepancy_type", "constraint_mismatch")),
             spec_value=d.get("spec_value"),
             api_behavior=d.get("api_behavior"),
+            spec_file=d.get("spec_file", "unknown"),
             test_values=d.get("test_values", []),
             recommendation=d.get("recommendation", ""),
         )
@@ -646,6 +642,52 @@ def main() -> int:
     console.print(f"  Modified: {len(summary['modified_files'])} files")
     console.print(f"  Unmodified: {len(summary['unmodified_files'])} files")
     console.print(f"  Total changes: {summary['total_changes']}")
+
+    # Write strict JSON report
+    from datetime import datetime, UTC
+    report_data = {
+        "schema_version": 1,
+        "generated_at": datetime.now(UTC).isoformat(),
+        "summary": {
+            "processed_specs": len(reconciler.results),
+            "discrepancies_received": len(discrepancies),
+            "fixes_applied": sum(len(r.changes) for r in reconciler.results if r.modified),
+            "failures": sum(len(r.validation_errors) for r in reconciler.results),
+            "modified_files": sorted(summary["modified_files"]),
+            "unmodified_files": sorted(summary["unmodified_files"]),
+        },
+        "fixes": [],
+        "failures": []
+    }
+
+    for r in sorted(reconciler.results, key=lambda x: x.filename):
+        if r.modified:
+            for change in r.changes:
+                report_data["fixes"].append({
+                    "spec_file": r.filename,
+                    "strategy": change.get("action", "unknown"),
+                    "before": change.get("old_value"),
+                    "after": change.get("new_value"),
+                    "source_discrepancy": {
+                        "path": change.get("path"),
+                        "property_name": change.get("property"),
+                        "constraint_type": change.get("constraint")
+                    }
+                })
+        for err in r.validation_errors:
+            report_data["failures"].append({
+                "spec_file": r.filename,
+                "stage": "validate",
+                "error": err,
+                "source_discrepancy": {}
+            })
+
+    report_path = Path("reports/reconciliation_report.json")
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    with report_path.open("w") as f:
+        json.dump(report_data, f, indent=2, sort_keys=True)
+        f.write("\n")
+    console.print(f"[green]Strict report: {report_path}[/green]")
 
     return 0
 

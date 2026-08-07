@@ -67,7 +67,8 @@
         "properties": {
           "spec_file": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9._-]+$"
           },
           "strategy": {
             "type": "string",
@@ -90,7 +91,8 @@
         "properties": {
           "spec_file": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9._-]+$"
           },
           "stage": {
             "type": "string",
@@ -155,7 +157,8 @@
         "api_behavior": {},
         "spec_file": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9._-]+$"
         },
         "test_values": {
           "type": "array"

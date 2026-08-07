@@ -341,3 +341,30 @@ def test_python_test_workflow_uses_the_same_locked_toolchain():
     assert "pip install" not in source
     for action, ref in re.findall(r"^\s*uses:\s+([^\s@]+)@([^\s#]+)", source, re.MULTILINE):
         assert re.fullmatch(r"[0-9a-f]{40}", ref), f"{action}@{ref} is mutable"
+
+
+def test_release_workflow_parameters_contract():
+    """Verify parameters contract such as --allow-discrepancies and --reconciliation-report-out."""
+    workflow = yaml.safe_load(WORKFLOW.read_text())
+    jobs = workflow["jobs"]
+    validate = jobs["validate"]
+
+    # 1. Verify --allow-discrepancies is present in validation step
+    validation_step = next(
+        step for step in validate["steps"] if step.get("name") == "Validate specs (live)"
+    )
+    assert "--allow-discrepancies" in validation_step["run"]
+
+    # 2. Verify --reconciliation-report-out is present in reconcile step
+    reconcile_step = next(
+        step for step in validate["steps"] if step.get("name") == "Reconcile specs and apply fixes"
+    )
+    assert "--reconciliation-report-out reports/reconciliation_report.json" in reconcile_step["run"]
+
+    # 3. Verify that the generated documentation path contract is correctly configured
+    publish_docs = jobs["update-docs"]
+    generate_docs_step = next(
+        step for step in publish_docs["steps"] if step.get("name") == "Generate documentation"
+    )
+    assert "--reconciliation-report reports/reconciliation_report.json" in generate_docs_step["run"]
+    assert "--output docs/en/01-validation-report.mdx" in generate_docs_step["run"]

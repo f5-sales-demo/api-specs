@@ -54,6 +54,23 @@ def _format_value(value: object) -> str:
     return f"`{escaped}`"
 
 
+def _escape_markdown(text: str) -> str:
+    """Escapes any Markdown/MDX special syntax characters to make it completely inert."""
+    if not text:
+        return ""
+    # Replace markdown symbols with their safe representations
+    escaped = text
+    # Replace backslashes first
+    escaped = escaped.replace("\\", "\\\\")
+    # Escape other Markdown special characters
+    special_chars = ["#", "*", "`", "[", "]", "(", ")", "{", "}", "<", ">", "|", "$", "+", "!", "="]
+    for char in special_chars:
+        escaped = escaped.replace(char, f"\\{char}")
+    # Replace any newlines/carriage returns with space to prevent injecting headers on a new line
+    escaped = escaped.replace("\r", " ").replace("\n", " ")
+    return escaped
+
+
 def generate_fixes_page(report: dict, output_path: Path) -> None:
     lines = [
         FRONTMATTER.strip(),
@@ -96,7 +113,7 @@ def generate_fixes_page(report: dict, output_path: Path) -> None:
         for filename, file_fixes in sorted(fixes_by_file.items()):
             lines.extend(
                 [
-                    f"### {filename}",
+                    f"### {_escape_markdown(filename)}",
                     "",
                     "| Property | Constraint | Discrepancy Type | Strategy | Before | After |",
                     "| :--- | :--- | :--- | :--- | :--- | :--- |",
@@ -134,7 +151,7 @@ def generate_fixes_page(report: dict, output_path: Path) -> None:
         for filename, file_failures in sorted(failures_by_file.items()):
             lines.extend(
                 [
-                    f"### {filename}",
+                    f"### {_escape_markdown(filename)}",
                     "",
                     "| Property | Constraint | Discrepancy Type | Stage | Error |",
                     "| :--- | :--- | :--- | :--- | :--- |",

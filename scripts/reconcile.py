@@ -702,6 +702,15 @@ def load_discrepancies(report_path: Path) -> list[Discrepancy]:
                     f"Malformed discrepancy #{idx}: identity field '{field_name}' cannot be empty"
                 )
 
+        # Validate spec_file matches strict pattern grammar to prevent markdown injection or traversal
+        import re
+
+        spec_file = d["spec_file"]
+        if not re.match(r"^[a-zA-Z0-9._-]+$", spec_file):
+            raise ValueError(
+                f"Malformed discrepancy #{idx}: 'spec_file' contains invalid characters: '{spec_file}'"
+            )
+
         # Validate test_values is a list
         if not isinstance(d["test_values"], list):
             raise ValueError(f"Malformed discrepancy #{idx}: 'test_values' must be a list")

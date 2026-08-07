@@ -224,3 +224,64 @@ def test_mdx_prose_safety_gate(tmp_path):
     cmd_lint = ["bash", "scripts/lint-mdx-prose.sh", str(output_path)]
     result = subprocess.run(cmd_lint, capture_output=True, text=True)
     assert result.returncode == 0, f"Prose lint failed with: {result.stdout}\n{result.stderr}"
+
+
+def test_generate_docs_escapes_markdown_injections(tmp_path):
+    """Verify that generate_docs escapes filenames containing markdown/MDX injection vectors."""
+    import subprocess
+
+    report_path = tmp_path / "injection_report.json"
+    report_data = {
+        "schema_version": 1,
+        "generated_at": "2026-08-07T12:00:00Z",
+        "summary": {
+            "processed_specs": 1,
+            "discrepancies_received": 1,
+            "fixes_applied": 1,
+            "failures": 0,
+            "modified_files": ["bad_file.json"],
+            "unmodified_files": [],
+        },
+        "fixes": [
+            {
+                "spec_file": "bad_file\n# Injected Heading\n```python\nprint(1)\n```\n`backtick` {bracket}",
+                "strategy": "relax",
+                "before": "val",
+                "after": "after",
+                "source_discrepancy": {
+                    "path": "TestModel",
+                    "property_name": "prop",
+                    "constraint_type": "maxLength",
+                    "discrepancy_type": "spec_stricter",
+                    "spec_value": "val",
+                    "api_behavior": "after",
+                    "spec_file": "bad_file\n# Injected Heading\n```python\nprint(1)\n```\n`backtick` {bracket}",
+                    "test_values": [],
+                    "recommendation": "rec",
+                    "domain": "dom",
+                    "method": "GET",
+                },
+            }
+        ],
+        "failures": [],
+    }
+    report_path.write_text(json.dumps(report_data), encoding="utf-8")
+
+    output_path = tmp_path / "validation-report-injection.mdx"
+
+    # Run the generator directly to isolate the rendering/escaping boundary
+    generate_fixes_page(report_data, output_path)
+
+    # Read generated MDX and verify no headings, code fences or tags were injected
+    generated_content = output_path.read_text(encoding="utf-8")
+    assert "\n# Injected Heading" not in generated_content
+    assert "\n```python" not in generated_content
+    # The raw string in heading should be escaped and safe
+    assert "bad_file" in generated_content
+
+    # Run prose linter script
+    prose_gate_script = Path("scripts/lint-mdx-prose.sh")
+    if prose_gate_script.exists():
+        cmd_lint = ["bash", "scripts/lint-mdx-prose.sh", str(output_path)]
+        result = subprocess.run(cmd_lint, capture_output=True, text=True)
+        assert result.returncode == 0, f"Prose lint failed with: {result.stdout}\n{result.stderr}"

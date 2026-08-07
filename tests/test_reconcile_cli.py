@@ -407,3 +407,34 @@ def test_custom_reconciliation_report_out_honored(setup_reconcile_env):
 
     data = json.loads(custom_report.read_text())
     validate_reconciliation_report(data)
+
+
+def test_load_discrepancies_filename_validation(tmp_path):
+    """Verify that load_discrepancies allows valid filenames and rejects invalid ones."""
+    from scripts.reconcile import load_discrepancies
+
+    # 1. Valid filename
+    valid_report = tmp_path / "valid_report.json"
+    valid_data = {"discrepancies": [_make_discrepancy(spec_file="valid-filename.json")]}
+    valid_report.write_text(json.dumps(valid_data))
+    res = load_discrepancies(valid_report)
+    assert len(res) == 1
+    assert res[0].spec_file == "valid-filename.json"
+
+    # 2. Invalid filenames with control characters or markdown injections
+    invalid_cases = [
+        "bad\nfile.json",
+        "bad\rfile.json",
+        "bad/file.json",
+        "../bad.json",
+        "bad`file.json",
+        "bad#file.json",
+        "bad{file}.json",
+    ]
+
+    for idx, filename in enumerate(invalid_cases):
+        invalid_report = tmp_path / f"invalid_report_{idx}.json"
+        invalid_data = {"discrepancies": [_make_discrepancy(spec_file=filename)]}
+        invalid_report.write_text(json.dumps(invalid_data))
+        with pytest.raises(ValueError, match="invalid characters"):
+            load_discrepancies(invalid_report)

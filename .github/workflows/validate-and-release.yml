@@ -51,6 +51,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0  # Need full history for tags
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -247,6 +248,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -325,6 +327,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -400,6 +404,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -485,6 +490,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -627,6 +634,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -878,6 +887,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           token: ${{ secrets.REPO_ADMIN_TOKEN }}
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -930,7 +940,7 @@ jobs:
           # -B, not -b: the branch may already exist locally on a re-run, and -b would abort.
           git checkout -B "${BRANCH}"
           git commit -m "docs: update validation report"
-          git push --force origin "${BRANCH}"
+          git push --force https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git "${BRANCH}"
 
           # Reuse the open PR if there is one; --force above has already updated its head.
           if [ -z "$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[].number')" ]; then
@@ -965,6 +975,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           token: ${{ secrets.REPO_SYNC_TOKEN }}
+          persist-credentials: false
 
       - name: Fail fast if the sync token is absent
         env:
@@ -1028,10 +1039,10 @@ jobs:
           BRANCH="sync/regenerate-release-specs-$(date +%s)"
           git checkout -b "${BRANCH}"
           git commit -m "chore: publish regenerated release/specs"
-          git push origin "${BRANCH}"
+          git push https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git "${BRANCH}"
 
           gh pr create \
             --title "chore: publish regenerated release/specs" \
             --body "Auto-generated: the pipeline produced a \`release/specs\` that differs from the committed artifact. See #681." \
             --head "${BRANCH}"
-          gh pr merge --auto --squash
+          gh pr merge --auto --squash "${BRANCH}"

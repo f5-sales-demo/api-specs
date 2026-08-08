@@ -238,3 +238,54 @@ def test_write_rejected_does_not_replace_pre_existing_valid_report(tmp_path, val
 
     # Check that the pre-existing report is unmodified
     assert file_path.read_text(encoding="utf-8") == original_content
+
+
+@pytest.mark.parametrize("invalid_filename", [
+    "bad\nfilename.json",
+    "bad\rfilename.json",
+    "bad/filename.json",
+    "../traversal.json",
+    "# heading.json",
+    "braces{heading}.json",
+    "angle<brackets>.json",
+    ""
+])
+def test_schema_filename_validation_negative(valid_report_dict, invalid_filename):
+    # Test modified_files negative validation
+    bad_report = json.loads(json.dumps(valid_report_dict))
+    bad_report["summary"]["modified_files"].append(invalid_filename)
+    # Adjust processed_specs count to match union length since disjoint-union is checked semantically
+    bad_report["summary"]["processed_specs"] = len(bad_report["summary"]["modified_files"]) + len(bad_report["summary"]["unmodified_files"])
+    with pytest.raises(ReconciliationReportError, match="Schema validation failed"):
+        validate_reconciliation_report(bad_report)
+
+    # Test unmodified_files negative validation
+    bad_report = json.loads(json.dumps(valid_report_dict))
+    bad_report["summary"]["unmodified_files"].append(invalid_filename)
+    bad_report["summary"]["processed_specs"] = len(bad_report["summary"]["modified_files"]) + len(bad_report["summary"]["unmodified_files"])
+    with pytest.raises(ReconciliationReportError, match="Schema validation failed"):
+        validate_reconciliation_report(bad_report)
+
+    # Test fixes negative validation
+    bad_report = json.loads(json.dumps(valid_report_dict))
+    bad_report["fixes"][0]["spec_file"] = invalid_filename
+    # Fix the source_discrepancy spec_file to match to avoid triggering semantic check before schema validation
+    bad_report["fixes"][0]["source_discrepancy"]["spec_file"] = invalid_filename
+    if invalid_filename not in bad_report["summary"]["modified_files"]:
+        bad_report["summary"]["modified_files"].append(invalid_filename)
+    bad_report["summary"]["processed_specs"] = len(bad_report["summary"]["modified_files"]) + len(bad_report["summary"]["unmodified_files"])
+    with pytest.raises(ReconciliationReportError, match="Schema validation failed"):
+        validate_reconciliation_report(bad_report)
+
+
+def test_schema_filename_validation_positive(valid_report_dict):
+    # Confirm that valid alphanumeric and allowed characters (._-) pass validation
+    good_report = json.loads(json.dumps(valid_report_dict))
+    valid_filenames = ["spec.json", "spec_1.json", "spec-2.json", "spec.name.json"]
+    for fname in valid_filenames:
+        good_report["fixes"][0]["spec_file"] = fname
+        good_report["fixes"][0]["source_discrepancy"]["spec_file"] = fname
+        good_report["summary"]["modified_files"] = [fname]
+        good_report["summary"]["processed_specs"] = len(good_report["summary"]["modified_files"]) + len(good_report["summary"]["unmodified_files"])
+        validate_reconciliation_report(good_report)
+

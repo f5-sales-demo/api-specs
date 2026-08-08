@@ -940,7 +940,16 @@ jobs:
           # -B, not -b: the branch may already exist locally on a re-run, and -b would abort.
           git checkout -B "${BRANCH}"
           git commit -m "docs: update validation report"
-          git push --force https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git "${BRANCH}"
+
+          # Setup secure, ephemeral git credentials helper
+          ASKPASS_PATH="${RUNNER_TEMP}/git-askpass-helper.sh"
+          echo '#!/bin/sh' > "${ASKPASS_PATH}"
+          echo 'echo "${GH_TOKEN}"' >> "${ASKPASS_PATH}"
+          chmod 700 "${ASKPASS_PATH}"
+          trap 'rm -f "${ASKPASS_PATH}"' EXIT
+
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push --force "https://github.com/${{ github.repository }}.git" "${BRANCH}"
+
 
           # Reuse the open PR if there is one; --force above has already updated its head.
           if [ -z "$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[].number')" ]; then
@@ -1039,7 +1048,16 @@ jobs:
           BRANCH="sync/regenerate-release-specs-$(date +%s)"
           git checkout -b "${BRANCH}"
           git commit -m "chore: publish regenerated release/specs"
-          git push https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git "${BRANCH}"
+
+          # Setup secure, ephemeral git credentials helper
+          ASKPASS_PATH="${RUNNER_TEMP}/git-askpass-helper.sh"
+          echo '#!/bin/sh' > "${ASKPASS_PATH}"
+          echo 'echo "${GH_TOKEN}"' >> "${ASKPASS_PATH}"
+          chmod 700 "${ASKPASS_PATH}"
+          trap 'rm -f "${ASKPASS_PATH}"' EXIT
+
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push "https://github.com/${{ github.repository }}.git" "${BRANCH}"
+
 
           gh pr create \
             --title "chore: publish regenerated release/specs" \

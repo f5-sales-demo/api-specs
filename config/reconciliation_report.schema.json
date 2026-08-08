@@ -44,16 +44,14 @@
           "type": "array",
           "uniqueItems": true,
           "items": {
-            "type": "string",
-            "minLength": 1
+            "$ref": "#/definitions/filename"
           }
         },
         "unmodified_files": {
           "type": "array",
           "uniqueItems": true,
           "items": {
-            "type": "string",
-            "minLength": 1
+            "$ref": "#/definitions/filename"
           }
         }
       }
@@ -66,9 +64,7 @@
         "required": ["spec_file", "strategy", "before", "after", "source_discrepancy"],
         "properties": {
           "spec_file": {
-            "type": "string",
-            "minLength": 1,
-            "pattern": "^[a-zA-Z0-9._-]+$"
+            "$ref": "#/definitions/filename"
           },
           "strategy": {
             "type": "string",
@@ -90,9 +86,7 @@
         "required": ["spec_file", "stage", "error", "source_discrepancy"],
         "properties": {
           "spec_file": {
-            "type": "string",
-            "minLength": 1,
-            "pattern": "^[a-zA-Z0-9._-]+$"
+            "$ref": "#/definitions/filename"
           },
           "stage": {
             "type": "string",
@@ -110,6 +104,11 @@
     }
   },
   "definitions": {
+    "filename": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9._-]+$"
+    },
     "source_discrepancy": {
       "type": "object",
       "additionalProperties": false,
@@ -156,9 +155,7 @@
         "spec_value": {},
         "api_behavior": {},
         "spec_file": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "^[a-zA-Z0-9._-]+$"
+          "$ref": "#/definitions/filename"
         },
         "test_values": {
           "type": "array"

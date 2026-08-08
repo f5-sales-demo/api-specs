@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "summary", "fixes", "failures"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "processed_specs",
+        "discrepancies_received",
+        "fixes_applied",
+        "failures",
+        "modified_files",
+        "unmodified_files"
+      ],
+      "properties": {
+        "processed_specs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "discrepancies_received": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fixes_applied": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failures": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "modified_files": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/filename"
+          }
+        },
+        "unmodified_files": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/filename"
+          }
+        }
+      }
+    },
+    "fixes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["spec_file", "strategy", "before", "after", "source_discrepancy"],
+        "properties": {
+          "spec_file": {
+            "$ref": "#/definitions/filename"
+          },
+          "strategy": {
+            "type": "string",
+            "enum": ["relax", "tighten", "add", "remove"]
+          },
+          "before": {},
+          "after": {},
+          "source_discrepancy": {
+            "$ref": "#/definitions/source_discrepancy"
+          }
+        }
+      }
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["spec_file", "stage", "error", "source_discrepancy"],
+        "properties": {
+          "spec_file": {
+            "$ref": "#/definitions/filename"
+          },
+          "stage": {
+            "type": "string",
+            "enum": ["match", "apply", "validate"]
+          },
+          "error": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_discrepancy": {
+            "$ref": "#/definitions/source_discrepancy"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "filename": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9._-]+$"
+    },
+    "source_discrepancy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "property_name",
+        "constraint_type",
+        "discrepancy_type",
+        "spec_value",
+        "api_behavior",
+        "spec_file",
+        "test_values",
+        "recommendation",
+        "domain",
+        "method"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "property_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "constraint_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "discrepancy_type": {
+          "type": "string",
+          "enum": [
+            "spec_stricter",
+            "spec_looser",
+            "missing_constraint",
+            "extra_constraint",
+            "constraint_mismatch",
+            "type_mismatch",
+            "spectral_missing",
+            "spectral_invalid",
+            "spectral_unused"
+          ]
+        },
+        "spec_value": {},
+        "api_behavior": {},
+        "spec_file": {
+          "$ref": "#/definitions/filename"
+        },
+        "test_values": {
+          "type": "array"
+        },
+        "recommendation": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

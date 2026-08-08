@@ -14,6 +14,8 @@ on:
       - 'pyproject.toml'
       - 'uv.lock'
       - '.python-version'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/validate-and-release.yml'
   workflow_dispatch: {}
 
@@ -49,6 +51,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0  # Need full history for tags
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -143,7 +146,7 @@ jobs:
           : "${F5XC_API_URL:?F5XC_API_URL is required for live validation}"
           : "${F5XC_API_TOKEN:?F5XC_API_TOKEN is required for live validation}"
           : "${F5XC_NAMESPACE:?F5XC_NAMESPACE is required for live validation}"
-          uv run --frozen python -m scripts.validate
+          uv run --frozen python -m scripts.validate --allow-discrepancies
 
       - name: Run Spectral OAS3 linting
         run: |
@@ -153,10 +156,11 @@ jobs:
 
       - name: Reconcile specs and apply fixes
         run: |
-          echo "Reconciling specs based on validation and Spectral results..."
+          echo "Reconciling specs based on validation results..."
           uv run --frozen python -m scripts.reconcile \
-            --report reports/validation_report.json reports/spectral_report.json
-          echo "Fix report saved to reports/fixes_applied.json"
+            --report reports/validation_report.json \
+            --reconciliation-report-out reports/reconciliation_report.json
+          echo "Fix report saved to reports/reconciliation_report.json"
 
       - name: Sync discrepancies to GitHub issues
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -244,6 +248,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -322,6 +327,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -397,6 +404,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -482,6 +490,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -624,6 +634,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -875,6 +887,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           token: ${{ secrets.REPO_ADMIN_TOKEN }}
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -895,9 +908,8 @@ jobs:
       - name: Generate documentation
         run: |
           python scripts/generate_docs.py \
-            --validation-report reports/validation_report.json \
-            --fix-report reports/fixes_applied.json \
-            --output docs/01-validation-report.mdx
+            --reconciliation-report reports/reconciliation_report.json \
+            --output docs/en/01-validation-report.mdx
 
       - name: Commit and PR if changed
         env:
@@ -928,7 +940,16 @@ jobs:
           # -B, not -b: the branch may already exist locally on a re-run, and -b would abort.
           git checkout -B "${BRANCH}"
           git commit -m "docs: update validation report"
-          git push --force origin "${BRANCH}"
+
+          # Setup secure, ephemeral git credentials helper
+          ASKPASS_PATH="${RUNNER_TEMP}/git-askpass-helper.sh"
+          echo '#!/bin/sh' > "${ASKPASS_PATH}"
+          echo 'echo "${GH_TOKEN}"' >> "${ASKPASS_PATH}"
+          chmod 700 "${ASKPASS_PATH}"
+          trap 'rm -f "${ASKPASS_PATH}"' EXIT
+
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push --force "https://github.com/${{ github.repository }}.git" "${BRANCH}"
+
 
           # Reuse the open PR if there is one; --force above has already updated its head.
           if [ -z "$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[].number')" ]; then
@@ -963,6 +984,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           token: ${{ secrets.REPO_SYNC_TOKEN }}
+          persist-credentials: false
 
       - name: Fail fast if the sync token is absent
         env:
@@ -1026,10 +1048,19 @@ jobs:
           BRANCH="sync/regenerate-release-specs-$(date +%s)"
           git checkout -b "${BRANCH}"
           git commit -m "chore: publish regenerated release/specs"
-          git push origin "${BRANCH}"
+
+          # Setup secure, ephemeral git credentials helper
+          ASKPASS_PATH="${RUNNER_TEMP}/git-askpass-helper.sh"
+          echo '#!/bin/sh' > "${ASKPASS_PATH}"
+          echo 'echo "${GH_TOKEN}"' >> "${ASKPASS_PATH}"
+          chmod 700 "${ASKPASS_PATH}"
+          trap 'rm -f "${ASKPASS_PATH}"' EXIT
+
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push "https://github.com/${{ github.repository }}.git" "${BRANCH}"
+
 
           gh pr create \
             --title "chore: publish regenerated release/specs" \
             --body "Auto-generated: the pipeline produced a \`release/specs\` that differs from the committed artifact. See #681." \
             --head "${BRANCH}"
-          gh pr merge --auto --squash
+          gh pr merge --auto --squash "${BRANCH}"

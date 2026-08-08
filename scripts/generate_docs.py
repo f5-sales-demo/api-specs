@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
-"""Generate documentation from validation reports and fix reports."""
+"""Generate documentation from reconciliation reports."""
 
 from __future__ import annotations
 
 import argparse
 import json
 import sys
-from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from rich.console import Console
+
+if __name__ == "__main__" and not __package__:
+    # Allow running as direct script
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts.utils.reconciliation_report import load_reconciliation_report
 
 console = Console()
 
@@ -20,391 +26,200 @@ description: F5 XC API spec validation and fix report
 """
 
 
-def load_json_report(report_path: Path, report_type: str = "report") -> dict | None:
-    """Load a JSON report file."""
-    if not report_path.exists():
-        console.print(f"[yellow]{report_type.capitalize()} not found: {report_path}[/yellow]")
-        return None
+def _format_value(value: object) -> str:
+    """Format a value for display in MDX table, escaping HTML chars, MDX braces, backticks, and newlines."""
+    if value is None:
+        return "-"
+    if isinstance(value, bool):
+        str_value = "true" if value else "false"
+    elif isinstance(value, (list, dict)):
+        json_str = json.dumps(value)
+        if len(json_str) > 50:
+            json_str = f"{json_str[:47]}..."
+        str_value = json_str
+    else:
+        str_value = str(value)
 
-    try:
-        with report_path.open() as f:
-            result: dict = json.load(f)
-            return result
-    except json.JSONDecodeError as e:
-        console.print(f"[red]Failed to parse {report_type}: {e}[/red]")
-        return None
+    if str_value == "-":
+        return "-"
+
+    # Centralized MDX-safe cell escaping
+    escaped = str_value.replace("&", "&amp;")
+    escaped = escaped.replace("<", "&lt;").replace(">", "&gt;")
+    escaped = escaped.replace("|", "&#124;")
+    escaped = escaped.replace("{", "&#123;").replace("}", "&#125;")
+    escaped = escaped.replace("`", "&#96;")
+    escaped = escaped.replace("\r\n", "<br />").replace("\n", "<br />")
+
+    return f"`{escaped}`"
 
 
-def generate_fixes_page(
-    validation_report: dict | None,
-    fix_report: dict | None,
-    output_path: Path,
-) -> None:
-    """Generate the main documentation page showing fixes applied."""
+def _escape_markdown(text: str) -> str:
+    """Escapes any Markdown/MDX special syntax characters to make it completely inert."""
+    if not text:
+        return ""
+    # Replace markdown symbols with their safe representations
+    escaped = text
+    # Replace backslashes first
+    escaped = escaped.replace("\\", "\\\\")
+    # Escape other Markdown special characters
+    special_chars = ["#", "*", "`", "[", "]", "(", ")", "{", "}", "<", ">", "|", "$", "+", "!", "="]
+    for char in special_chars:
+        escaped = escaped.replace(char, f"\\{char}")
+    # Replace any newlines/carriage returns with space to prevent injecting headers on a new line
+    escaped = escaped.replace("\r", " ").replace("\n", " ")
+    return escaped
+
+
+def _format_fixes_section(fixes: list[dict[str, Any]]) -> list[str]:
+    """Format fixes section for the MDX report."""
+    if not fixes:
+        return []
+
+    lines = [
+        "## Fixes Applied",
+        "",
+    ]
+    fixes_by_file: dict[str, list[dict[str, Any]]] = {}
+    for fix in fixes:
+        fixes_by_file.setdefault(fix["spec_file"], []).append(fix)
+
+    for filename, file_fixes in sorted(fixes_by_file.items()):
+        lines.extend(
+            [
+                f"### {_escape_markdown(filename)}",
+                "",
+                "| Property | Constraint | Discrepancy Type | Strategy | Before | After |",
+                "| :--- | :--- | :--- | :--- | :--- | :--- |",
+            ]
+        )
+        for fix in file_fixes:
+            sd = fix.get("source_discrepancy", {})
+            prop = _format_value(sd.get("property_name"))
+            constraint = _format_value(sd.get("constraint_type"))
+            dtype = _format_value(sd.get("discrepancy_type"))
+            strategy = _format_value(fix.get("strategy"))
+            before = _format_value(fix.get("before"))
+            after = _format_value(fix.get("after"))
+            lines.append(f"| {prop} | {constraint} | {dtype} | {strategy} | {before} | {after} |")
+        lines.extend(
+            [
+                "",
+            ]
+        )
+    return lines
+
+
+def _format_failures_section(failures: list[dict[str, Any]]) -> list[str]:
+    """Format failures section for the MDX report."""
+    if not failures:
+        return []
+
+    lines = [
+        "## Failures",
+        "",
+    ]
+    failures_by_file: dict[str, list[dict[str, Any]]] = {}
+    for failure in failures:
+        failures_by_file.setdefault(failure["spec_file"], []).append(failure)
+
+    for filename, file_failures in sorted(failures_by_file.items()):
+        lines.extend(
+            [
+                f"### {_escape_markdown(filename)}",
+                "",
+                "| Property | Constraint | Discrepancy Type | Stage | Error |",
+                "| :--- | :--- | :--- | :--- | :--- |",
+            ]
+        )
+        for failure in file_failures:
+            sd = failure.get("source_discrepancy", {})
+            prop = _format_value(sd.get("property_name"))
+            constraint = _format_value(sd.get("constraint_type"))
+            dtype = _format_value(sd.get("discrepancy_type"))
+            stage = _format_value(failure.get("stage"))
+            err = _format_value(failure.get("error"))
+            lines.append(f"| {prop} | {constraint} | {dtype} | {stage} | {err} |")
+        lines.extend(
+            [
+                "",
+            ]
+        )
+    return lines
+
+
+def generate_fixes_page(report: dict, output_path: Path) -> None:
+    """Generate MDX documentation from reconciliation report."""
     lines = [
         FRONTMATTER.strip(),
         "",
-        "# F5 XC API Spec Fixes Applied",
+        "## F5 XC API Spec Fixes Applied",
         "",
         "Validated and reconciled F5 Distributed Cloud OpenAPI specifications.",
         "",
-        "This project validates F5 XC OpenAPI specifications against the live API, "
-        "identifies discrepancies, and automatically applies fixes to produce corrected spec files.",
+        f"Generated: {report.get('generated_at', 'unknown')}",
         "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "| :--- | :--- |",
     ]
 
-    # Add generation timestamp
-    now = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
+    summary = report.get("summary", {})
     lines.extend(
         [
-            f"*Last updated: {now}*",
+            f"| Specs Processed | {summary.get('processed_specs', 0)} |",
+            f"| Discrepancies Received | {summary.get('discrepancies_received', 0)} |",
+            f"| **Fixes Applied** | **{summary.get('fixes_applied', 0)}** |",
+            f"| Failures | {summary.get('failures', 0)} |",
             "",
         ]
     )
 
-    # If we have a fix report, show the summary
-    if fix_report:
-        summary = fix_report.get("summary", {})
-        fixes = fix_report.get("fixes", [])
-        failures = fix_report.get("failures", [])
+    lines.extend(_format_fixes_section(report.get("fixes", [])))
+    lines.extend(_format_failures_section(report.get("failures", [])))
 
-        lines.extend(
-            [
-                "## Summary",
-                "",
-                "| Metric | Count |",
-                "|--------|-------|",
-                f"| Specs Processed | {summary.get('total_specs_processed', 0)} |",
-                f"| Discrepancies Found | {summary.get('total_discrepancies_found', 0)} |",
-                f"| **Fixes Applied** | **{summary.get('total_fixes_applied', 0)}** |",
-                f"| Fixes Failed | {summary.get('total_fixes_failed', 0)} |",
-                "",
-            ]
-        )
-
-        if fixes:
-            lines.extend(_generate_fixes_section(fixes))
-
-        if failures:
-            lines.extend(_generate_failures_section(failures))
-
-    elif validation_report:
-        # Fall back to showing discrepancies from validation report
-        lines.extend(_generate_discrepancies_section(validation_report))
-    else:
-        lines.extend(
-            [
-                ":::note[No Reports Found]",
-                "No validation or fix reports were found. Run the validation pipeline to generate reports.",
-                ":::",
-                "",
-            ]
-        )
-
-    # Add legend
-    lines.extend(_generate_legend())
-
-    # Footer
     lines.extend(
         [
             "---",
             "",
             "*This page is auto-generated by the [validation pipeline](https://github.com/f5-sales-demo/api-specs/actions).*",
-        ]
-    )
-
-    _write_file(output_path, lines)
-
-
-def _generate_fixes_section(fixes: list[dict]) -> list[str]:
-    """Generate the fixes applied section."""
-    lines = [
-        "## Fixes Applied",
-        "",
-    ]
-
-    # Group fixes by file
-    fixes_by_file: dict[str, list[dict]] = {}
-    for fix in fixes:
-        filename = fix.get("spec_file", "unknown")
-        if filename not in fixes_by_file:
-            fixes_by_file[filename] = []
-        fixes_by_file[filename].append(fix)
-
-    for filename, file_fixes in sorted(fixes_by_file.items()):
-        lines.extend(
-            [
-                f"### {filename}",
-                "",
-                "| Property | Constraint | Strategy | Before | After | Evidence |",
-                "|----------|------------|----------|--------|-------|----------|",
-            ]
-        )
-
-        for fix in file_fixes:
-            prop = fix.get("property_path", "-")
-            constraint = fix.get("constraint_type", "-")
-            strategy = _get_strategy_badge(fix.get("fix_strategy", "-"))
-            old_val = _format_value(fix.get("original_value"))
-            new_val = _format_value(fix.get("new_value"))
-
-            # Extract evidence summary
-            evidence = fix.get("test_evidence", {})
-            http_status = evidence.get("http_status")
-            evidence_str = f"HTTP {http_status}" if http_status else "-"
-
-            lines.append(
-                f"| `{prop}` | `{constraint}` | {strategy} | {old_val} | {new_val} | {evidence_str} |"
-            )
-
-        # Add collapsible details
-        lines.extend(
-            [
-                "",
-                "<details>",
-                "<summary>Fix Details</summary>",
-                "",
-            ]
-        )
-
-        for i, fix in enumerate(file_fixes, 1):
-            prop = fix.get("property_path", "unknown")
-            reason = fix.get("reason", "No reason provided")
-            lines.extend(
-                [
-                    f"**{i}. {prop}**",
-                    f"{reason}",
-                    "",
-                ]
-            )
-
-        lines.extend(
-            [
-                "</details>",
-                "",
-            ]
-        )
-
-    return lines
-
-
-def _generate_failures_section(failures: list[dict]) -> list[str]:
-    """Generate the failed fixes section."""
-    lines = [
-        "## Failed Fixes",
-        "",
-        "The following discrepancies could not be automatically fixed:",
-        "",
-    ]
-
-    # Group failures by file
-    failures_by_file: dict[str, list[dict]] = {}
-    for failure in failures:
-        filename = failure.get("spec_file", "unknown")
-        if filename not in failures_by_file:
-            failures_by_file[filename] = []
-        failures_by_file[filename].append(failure)
-
-    for filename, file_failures in sorted(failures_by_file.items()):
-        lines.extend(
-            [
-                f"### {filename}",
-                "",
-                "| Property | Constraint | Error |",
-                "|----------|------------|-------|",
-            ]
-        )
-
-        for failure in file_failures:
-            prop = failure.get("property_path", "-")
-            constraint = failure.get("constraint_type", "-")
-            error = _format_value(failure.get("error", "-"))
-            lines.append(f"| `{prop}` | `{constraint}` | {error} |")
-
-        lines.append("")
-
-    return lines
-
-
-def _generate_discrepancies_section(report: dict) -> list[str]:
-    """Generate discrepancies section from validation report (legacy format)."""
-    discrepancies = report.get("discrepancies", [])
-    modified_files = report.get("modified_files", [])
-    unmodified_files = report.get("unmodified_files", [])
-
-    lines = [
-        "## Summary",
-        "",
-        f"- **Modified Files**: {len(modified_files)}",
-        f"- **Unmodified Files**: {len(unmodified_files)}",
-        f"- **Total Discrepancies**: {len(discrepancies)}",
-        "",
-    ]
-
-    if not discrepancies:
-        lines.extend(
-            [
-                ":::tip[No Modifications Required]",
-                "All specs match live API behavior. No modifications were applied.",
-                ":::",
-                "",
-            ]
-        )
-        return lines
-
-    # Group discrepancies by file
-    by_file: dict[str, list] = {}
-    for d in discrepancies:
-        path = d.get("path", "unknown")
-        filename = path.split(":")[0] if ":" in path else path
-        if filename not in by_file:
-            by_file[filename] = []
-        by_file[filename].append(d)
-
-    lines.extend(
-        [
-            "## Modifications by File",
             "",
         ]
     )
 
-    for filename, file_discrepancies in sorted(by_file.items()):
-        lines.extend(
-            [
-                f"### {filename}",
-                "",
-                "| Property | Constraint | Type | Spec Value | API Behavior |",
-                "|----------|------------|------|------------|--------------|",
-            ]
-        )
-
-        for d in file_discrepancies:
-            prop = d.get("property_name", "-")
-            constraint = d.get("constraint_type", "-")
-            dtype = d.get("discrepancy_type", "-")
-            spec_val = d.get("spec_value", "-")
-            api_val = d.get("api_behavior", "-")
-
-            spec_str = _format_value(spec_val)
-            api_str = _format_value(api_val)
-            dtype_badge = _get_type_badge(dtype)
-
-            lines.append(f"| `{prop}` | `{constraint}` | {dtype_badge} | {spec_str} | {api_str} |")
-
-        lines.append("")
-
-    return lines
-
-
-def _generate_legend() -> list[str]:
-    """Generate the legend section."""
-    return [
-        "## Fix Strategies",
-        "",
-        "| Strategy | Description |",
-        "|----------|-------------|",
-        "| **Relaxed** | Constraint was too strict - API accepts values the spec rejected |",
-        "| **Tightened** | Constraint was too loose - API rejects values the spec accepted |",
-        "| **Added** | Missing constraint discovered through API testing |",
-        "| **Removed** | Extra constraint that API ignores |",
-        "| **Updated** | Schema updated to match API response structure |",
-        "",
-    ]
-
-
-_MAX_JSON_DISPLAY_LEN = 50
-_JSON_TRUNCATE_LEN = 47
-
-
-def _format_value(value: object) -> str:
-    """Format a value for display in markdown table."""
-    if value is None:
-        return "-"
-    if isinstance(value, bool):
-        return "true" if value else "false"
-    if isinstance(value, (list, dict)):
-        json_str = json.dumps(value)
-        if len(json_str) > _MAX_JSON_DISPLAY_LEN:
-            return f"`{json_str[:_JSON_TRUNCATE_LEN]}...`"
-        return f"`{json_str}`"
-    # Replace newlines with HTML line breaks for markdown tables
-    str_value = str(value).replace("\n", "<br>")
-    # Don't wrap in backticks if it contains HTML
-    if "<br>" in str_value:
-        return str_value
-    return f"`{str_value}`"
-
-
-def _get_strategy_badge(strategy: str) -> str:
-    """Get a badge for the fix strategy."""
-    badges = {
-        "relax": "**Relaxed**",
-        "tighten": "**Tightened**",
-        "add": "**Added**",
-        "remove": "**Removed**",
-        "add_status_code": "**Added Status**",
-        "update_schema": "**Updated**",
-    }
-    return badges.get(strategy.lower(), strategy)
-
-
-def _get_type_badge(dtype: str) -> str:
-    """Get a badge for the discrepancy type."""
-    badges = {
-        "spec_stricter": "**Relaxed**",
-        "spec_looser": "**Tightened**",
-        "missing_constraint": "**Added**",
-        "extra_constraint": "**Removed**",
-        "constraint_mismatch": "**Mismatch**",
-        "type_mismatch": "**Type**",
-    }
-    return badges.get(dtype, dtype)
-
-
-def _write_file(path: Path, lines: list[str]) -> None:
-    """Write lines to file."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w") as f:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w") as f:
         f.write("\n".join(lines))
-    console.print(f"[green]Generated: {path}[/green]")
+    console.print(f"[green]Generated: {output_path}[/green]")
 
 
 def main() -> int:
-    """Main entry point."""
     parser = argparse.ArgumentParser(
-        description="Generate documentation from validation and fix reports"
+        description="Generate documentation from reconciliation reports"
     )
     parser.add_argument(
-        "--validation-report",
-        "--report",
+        "--reconciliation-report",
         type=Path,
-        default=Path("reports/validation_report.json"),
-        help="Path to validation report JSON",
-    )
-    parser.add_argument(
-        "--fix-report",
-        type=Path,
-        default=Path("reports/fixes_applied.json"),
-        help="Path to fix report JSON",
+        required=True,
+        help="Path to strict reconciliation report JSON",
     )
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("docs/01-validation-report.mdx"),
+        default=Path("docs/en/01-validation-report.mdx"),
         help="Output path for documentation page",
     )
-
     args = parser.parse_args()
 
     console.print("[bold blue]Generating Documentation[/bold blue]")
+    try:
+        report = load_reconciliation_report(args.reconciliation_report)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as e:
+        console.print(f"[red]Failed to load reconciliation report: {e}[/red]")
+        return 1
 
-    # Load reports
-    validation_report = load_json_report(args.validation_report, "validation report")
-    fix_report = load_json_report(args.fix_report, "fix report")
-
-    # Generate documentation
-    generate_fixes_page(validation_report, fix_report, args.output)
-
+    generate_fixes_page(report, args.output)
     console.print("[green]Documentation generation complete[/green]")
     return 0
 

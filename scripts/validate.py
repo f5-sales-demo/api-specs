@@ -250,33 +250,26 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
         # Results storage
         self.discrepancies: list[Discrepancy] = []
         self.test_results: list[SchemathesisResult] = []
-        # Parallel lists aligned with ``self.discrepancies`` so the JSON
-        # report can emit ``domain`` and ``method`` per entry (consumed by
-        # scripts/issue_sync.py).
-        self.discrepancy_domains: list[str] = []
-        self.discrepancy_methods: list[str] = []
 
-    def run(
+    def _prepare_validation_targets(
         self,
         endpoint_filter: str | None = None,
-    ) -> int:
-        """Run the full validation pipeline."""
-        console.print("[bold blue]F5 XC API Spec Validation[/bold blue]")
-
+    ) -> tuple[dict[str, dict], tuple[ValidationTarget, ...]] | None:
+        """Load, validate specs, resolve validation targets, and filter them."""
         # Step 1: Load and validate specs
         console.print("\n[bold]Step 1: Loading OpenAPI Specs[/bold]")
         specs = self._load_specs()
 
         if not specs:
             console.print("[red]No specs found. Run 'make download' first.[/red]")
-            return 1
+            return None
 
         # Step 2: Validate spec structure
         console.print("\n[bold]Step 2: Validating Spec Structure[/bold]")
         structure_errors = self._validate_spec_structure(specs)
         if structure_errors:
             console.print(f"[red]Validation stopped: {len(structure_errors)} invalid specs[/red]")
-            return 1
+            return None
 
         # Step 3: Resolve every semantic domain and exact operation before
         # making requests. A stale config must fail rather than test nothing.
@@ -285,7 +278,7 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
             targets = resolve_validation_targets(specs, self.endpoints_config)
         except LiveValidationError as error:
             console.print(f"[red]Validation contract error: {error}[/red]")
-            return 1
+            return None
 
         if endpoint_filter:
             targets = tuple(target for target in targets if target.endpoint_name == endpoint_filter)
@@ -293,7 +286,23 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
                 console.print(
                     f"[red]Validation contract error: unknown endpoint '{endpoint_filter}'[/red]"
                 )
-                return 1
+                return None
+
+        return specs, targets
+
+    def run(
+        self,
+        endpoint_filter: str | None = None,
+        allow_discrepancies: bool = False,
+    ) -> int:
+        """Run the full validation pipeline."""
+        console.print("[bold blue]F5 XC API Spec Validation[/bold blue]")
+
+        prep_result = self._prepare_validation_targets(endpoint_filter)
+        if prep_result is None:
+            return 1
+
+        specs, targets = prep_result
 
         # Step 4: Execute exact configured operations and retain all evidence,
         # even when one target fails, so the report explains the failed gate.
@@ -313,7 +322,10 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
                 console.print(f"  [red]- {execution_error}[/red]")
             return 1
 
-        return 0 if not self.discrepancies else 1
+        if self.discrepancies and not allow_discrepancies:
+            return 1
+
+        return 0
 
     def _load_specs(self) -> dict[str, dict]:
         """Load all OpenAPI specs."""
@@ -361,8 +373,10 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
 
                 for result in results:
                     self.discrepancies.extend(result.discrepancies)
-                    self.discrepancy_domains.extend([target.domain] * len(result.discrepancies))
-                    self.discrepancy_methods.extend([result.method] * len(result.discrepancies))
+                    for d in result.discrepancies:
+                        d.spec_file = target.filename
+                        d.domain = target.domain
+                        d.method = result.method
                 validate_live_results(target, target.operations, results)
             except (LiveValidationError, OperationResolutionError) as error:
                 errors.append(str(error))
@@ -379,21 +393,17 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
         # For now, all files are considered unmodified until reconciliation
         specs = self.spec_loader.load_all_domain_files()
         for filename in specs:
-            if any(d.path and filename in d.path for d in self.discrepancies):
+            if any(d.spec_file == filename for d in self.discrepancies):
                 modified_files.append(filename)
             else:
                 unmodified_files.append(filename)
 
-        # Generate reports — thread the parallel domain/method lists so
-        # every entry in validation_report.json carries the fields that
-        # scripts/issue_sync.py needs.
+        # Generate reports
         self.report_generator.generate_all(
             results=self.test_results,
             discrepancies=self.discrepancies,
             modified_files=modified_files,
             unmodified_files=unmodified_files,
-            discrepancy_domains=self.discrepancy_domains,
-            discrepancy_methods=self.discrepancy_methods,
         )
 
     def _print_summary(self) -> None:
@@ -444,6 +454,11 @@ def main() -> int:
         default=None,
         help="Filter to specific endpoint",
     )
+    parser.add_argument(
+        "--allow-discrepancies",
+        action="store_true",
+        help="Always return exit 0 if validation execution runs cleanly, even with discrepancies.",
+    )
 
     args = parser.parse_args()
 
@@ -469,7 +484,10 @@ def main() -> int:
         auth=auth,
     )
 
-    return orchestrator.run(endpoint_filter=args.endpoint)
+    return orchestrator.run(
+        endpoint_filter=args.endpoint,
+        allow_discrepancies=args.allow_discrepancies,
+    )
 
 
 if __name__ == "__main__":

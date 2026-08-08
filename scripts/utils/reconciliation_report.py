@@ -85,7 +85,7 @@ def _validate_outcome_invariants(
 
 
 def _validate_file_invariants(summary: dict[str, Any], fixes: list[dict[str, Any]]) -> None:
-    """Validate uniqueness, disjointness, union size, and outcome coverage for file lists."""
+    """Validate uniqueness, disjointedness, union size, and outcome coverage for file lists."""
     modified_files = summary["modified_files"]
     unmodified_files = summary["unmodified_files"]
 

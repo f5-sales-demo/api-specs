@@ -43,6 +43,15 @@ class ValidationResult:
 
 
 @dataclass
+class DiscrepancyProvenance:
+    """Contextual provenance for a discrepancy."""
+
+    spec_file: str = "unknown"
+    domain: str = ""
+    method: str = ""
+
+
+@dataclass
 class Discrepancy:
     """A discrepancy between spec constraint and API behavior."""
 
@@ -52,11 +61,57 @@ class Discrepancy:
     discrepancy_type: DiscrepancyType
     spec_value: Any
     api_behavior: Any
-    spec_file: str = "unknown"
     test_values: list[Any] = field(default_factory=list)
     recommendation: str = ""
-    domain: str = ""
-    method: str = ""
+    provenance: DiscrepancyProvenance = field(default_factory=DiscrepancyProvenance)
+
+    def __init__(
+        self,
+        path: str,
+        property_name: str,
+        constraint_type: str,
+        discrepancy_type: DiscrepancyType,
+        spec_value: Any,
+        api_behavior: Any,
+        spec_file: str = "unknown",
+        test_values: list[Any] | None = None,
+        recommendation: str = "",
+        domain: str = "",
+        method: str = "",
+    ) -> None:
+        self.path = path
+        self.property_name = property_name
+        self.constraint_type = constraint_type
+        self.discrepancy_type = discrepancy_type
+        self.spec_value = spec_value
+        self.api_behavior = api_behavior
+        self.test_values = test_values if test_values is not None else []
+        self.recommendation = recommendation
+        self.provenance = DiscrepancyProvenance(spec_file=spec_file, domain=domain, method=method)
+
+    @property
+    def spec_file(self) -> str:
+        return self.provenance.spec_file
+
+    @spec_file.setter
+    def spec_file(self, value: str) -> None:
+        self.provenance.spec_file = value
+
+    @property
+    def domain(self) -> str:
+        return self.provenance.domain
+
+    @domain.setter
+    def domain(self, value: str) -> None:
+        self.provenance.domain = value
+
+    @property
+    def method(self) -> str:
+        return self.provenance.method
+
+    @method.setter
+    def method(self, value: str) -> None:
+        self.provenance.method = value
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize Discrepancy to a dictionary matching reconciliation report schema."""

@@ -5,13 +5,17 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import re
 import sys
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 import yaml
 from openapi_spec_validator import validate
+from openapi_spec_validator.exceptions import OpenAPIError, OpenAPISpecValidatorError
+from openapi_spec_validator.validation.exceptions import OpenAPIValidationError
 from rich.console import Console
 
 from .utils.constraint_validator import Discrepancy, DiscrepancyType
@@ -65,6 +69,8 @@ class SpecReconciler:
         self.results: list[ReconciliationResult] = []
         self.fixes: list[dict[str, Any]] = []
         self.failures: list[dict[str, Any]] = []
+        self.modified_files_set: set[str] = set()
+        self.unmodified_files_set: set[str] = set()
 
         # Ensure output directory exists
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -87,6 +93,22 @@ class SpecReconciler:
         existing_filenames = {sp.name for sp in spec_paths}
 
         # 1. Generate match failures for discrepancies whose source specification cannot be matched
+        self._record_match_failures(discrepancies, existing_filenames)
+
+        # Group discrepancies by file
+        discrepancies_by_file = self._group_by_file(discrepancies)
+
+        # Process each original spec file
+        for spec_path in spec_paths:
+            discrepancies_for_file = discrepancies_by_file.get(spec_path.name, [])
+            self._process_spec_file(spec_path, discrepancies_for_file)
+
+        return self.results
+
+    def _record_match_failures(
+        self, discrepancies: list[Discrepancy], existing_filenames: set[str]
+    ) -> None:
+        """Record match failures for discrepancies that cannot be matched to any file."""
         for d in discrepancies:
             filename = (
                 d.spec_file
@@ -103,152 +125,119 @@ class SpecReconciler:
                     }
                 )
 
-        # Group discrepancies by file
-        discrepancies_by_file = self._group_by_file(discrepancies)
+    def _process_spec_file(
+        self, spec_path: Path, discrepancies_for_file: list[Discrepancy]
+    ) -> None:
+        """Reconcile a single specification file."""
+        try:
+            with spec_path.open() as f:
+                if spec_path.suffix == ".yaml":
+                    original = yaml.safe_load(f)
+                else:
+                    original = json.load(f)
+        except (json.JSONDecodeError, yaml.YAMLError, OSError) as e:
+            console.print(f"[red]Failed to load {spec_path}: {e}[/red]")
+            # Convert all discrepancies for this file into apply failures
+            for d in discrepancies_for_file:
+                self.failures.append(
+                    {
+                        "spec_file": spec_path.name,
+                        "stage": "apply",
+                        "error": f"Failed to load original spec file: {e}",
+                        "source_discrepancy": d.to_dict(),
+                    }
+                )
+            self.unmodified_files_set.add(spec_path.name)
+            # Append a failed result
+            result = ReconciliationResult(
+                filename=spec_path.name,
+                original_path=spec_path,
+                modified=False,
+            )
+            result.validation_errors.append(str(e))
+            self.results.append(result)
+            return
 
-        # Process each original spec file
-        for spec_path in spec_paths:
-            discrepancies_for_file = discrepancies_by_file.get(spec_path.name, [])
+        if not discrepancies_for_file:
+            # Pass-through unmodified
+            self.unmodified_files_set.add(spec_path.name)
+            result = ReconciliationResult(
+                filename=spec_path.name,
+                original_path=spec_path,
+                modified=False,
+                fixed_spec=original,
+            )
+            self.results.append(result)
+            console.print(f"[green]{spec_path.name}: No changes needed (pass-through)[/green]")
+            return
 
-            # Load original spec
+        # Apply fixes
+        self._apply_fixes_to_spec(spec_path, original, discrepancies_for_file)
+
+    def _apply_fixes_to_spec(
+        self, spec_path: Path, original: dict, discrepancies_for_file: list[Discrepancy]
+    ) -> None:
+        """Apply, validate, and commit/rollback changes for a spec file."""
+        fixed = copy.deepcopy(original)
+        provisional_fixes = []
+        modified = False
+
+        for discrepancy in discrepancies_for_file:
             try:
-                with spec_path.open() as f:
-                    if spec_path.suffix == ".yaml":
-                        original = yaml.safe_load(f)
-                    else:
-                        original = json.load(f)
-            except (json.JSONDecodeError, yaml.YAMLError, OSError) as e:
-                console.print(f"[red]Failed to load {spec_path}: {e}[/red]")
-                # Convert all discrepancies for this file into apply failures
-                for d in discrepancies_for_file:
-                    self.failures.append(
-                        {
-                            "spec_file": spec_path.name,
-                            "stage": "apply",
-                            "error": f"Failed to load original spec file: {e}",
-                            "source_discrepancy": d.to_dict(),
-                        }
-                    )
-                self.unmodified_files_set.add(spec_path.name)
-                # Append a failed result
+                change = self._apply_fix(fixed, discrepancy)
+                if change:
+                    provisional_fixes.append((change, discrepancy))
+                    modified = True
+                else:
+                    self._handle_apply_noop(spec_path, fixed, discrepancy)
+            except (ValueError, TypeError, KeyError) as e:
+                self.failures.append(
+                    {
+                        "spec_file": spec_path.name,
+                        "stage": "apply",
+                        "error": f"Mutation apply error: {e}",
+                        "source_discrepancy": discrepancy.to_dict(),
+                    }
+                )
+
+        # Validate fixed spec
+        if modified and provisional_fixes:
+            try:
+                validate(fixed)
+                # Validation success! Confirmed fixes
+                self.modified_files_set.add(spec_path.name)
                 result = ReconciliationResult(
                     filename=spec_path.name,
                     original_path=spec_path,
-                    modified=False,
+                    modified=True,
+                    fixed_spec=fixed,
                 )
-                result.validation_errors.append(str(e))
-                self.results.append(result)
-                continue
 
-            if not discrepancies_for_file:
-                # Pass-through unmodified
-                self.unmodified_files_set.add(spec_path.name)
-                result = ReconciliationResult(
-                    filename=spec_path.name,
-                    original_path=spec_path,
-                    modified=False,
-                    fixed_spec=original,
-                )
-                self.results.append(result)
-                console.print(f"[green]{spec_path.name}: No changes needed (pass-through)[/green]")
-                continue
-
-            # Apply fixes
-            fixed = copy.deepcopy(original)
-            provisional_fixes = []
-            modified = False
-
-            for discrepancy in discrepancies_for_file:
-                try:
-                    change = self._apply_fix(fixed, discrepancy)
-                    if change:
-                        provisional_fixes.append((change, discrepancy))
-                        modified = True
-                    else:
-                        # Determine why it returned None (no-op or unsupported)
-                        strategy = self._get_fix_strategy(discrepancy)
-                        if strategy == "skip":
-                            reason = "Unsupported or unknown fix strategy"
-                        else:
-                            # Find schema
-                            schema = self._find_schema(fixed, discrepancy.property_name)
-                            if not schema:
-                                reason = (
-                                    f"Property path '{discrepancy.property_name}' not found in spec"
-                                )
-                            else:
-                                reason = "Mutation resulted in no-op (constraint already matches or cannot be computed)"
-                        self.failures.append(
-                            {
-                                "spec_file": spec_path.name,
-                                "stage": "apply",
-                                "error": reason,
-                                "source_discrepancy": discrepancy.to_dict(),
-                            }
-                        )
-                except Exception as e:
-                    self.failures.append(
+                # Record confirmed fixes
+                for change, discrepancy in provisional_fixes:
+                    self.fixes.append(
                         {
                             "spec_file": spec_path.name,
-                            "stage": "apply",
-                            "error": f"Mutation apply error: {e}",
+                            "strategy": change.get("action", "unknown"),
+                            "before": change.get("old_value"),
+                            "after": change.get("new_value"),
                             "source_discrepancy": discrepancy.to_dict(),
                         }
                     )
+                    result.changes.append(change)
 
-            # Validate fixed spec
-            if modified and provisional_fixes:
-                try:
-                    validate(fixed)
-                    # Validation success! Confirmed fixes
-                    self.modified_files_set.add(spec_path.name)
-                    result = ReconciliationResult(
-                        filename=spec_path.name,
-                        original_path=spec_path,
-                        modified=True,
-                        fixed_spec=fixed,
-                    )
-
-                    # Record confirmed fixes
-                    for change, discrepancy in provisional_fixes:
-                        self.fixes.append(
-                            {
-                                "spec_file": spec_path.name,
-                                "strategy": change.get("action", "unknown"),
-                                "before": change.get("old_value"),
-                                "after": change.get("new_value"),
-                                "source_discrepancy": discrepancy.to_dict(),
-                            }
-                        )
-                        result.changes.append(change)
-
-                    self.results.append(result)
-                    console.print(
-                        f"[yellow]{spec_path.name}: {len(result.changes)} fixes applied[/yellow]"
-                    )
-                except Exception as e:
-                    # Rollback! Convert provisional fixes to validate failures
-                    self.unmodified_files_set.add(spec_path.name)
-                    result = ReconciliationResult(
-                        filename=spec_path.name,
-                        original_path=spec_path,
-                        modified=False,
-                        fixed_spec=original,
-                    )
-                    result.validation_errors.append(str(e))
-                    self.results.append(result)
-                    console.print(f"[red]{spec_path.name}: Fixed spec invalid: {e}[/red]")
-
-                    for change, discrepancy in provisional_fixes:
-                        self.failures.append(
-                            {
-                                "spec_file": spec_path.name,
-                                "stage": "validate",
-                                "error": f"OpenAPI validation failed: {e}",
-                                "source_discrepancy": discrepancy.to_dict(),
-                            }
-                        )
-            else:
+                self.results.append(result)
+                console.print(
+                    f"[yellow]{spec_path.name}: {len(result.changes)} fixes applied[/yellow]"
+                )
+            except (
+                OpenAPISpecValidatorError,
+                OpenAPIError,
+                OpenAPIValidationError,
+                ValueError,
+                TypeError,
+            ) as e:
+                # Rollback! Convert provisional fixes to validate failures
                 self.unmodified_files_set.add(spec_path.name)
                 result = ReconciliationResult(
                     filename=spec_path.name,
@@ -256,8 +245,51 @@ class SpecReconciler:
                     modified=False,
                     fixed_spec=original,
                 )
+                result.validation_errors.append(str(e))
                 self.results.append(result)
-        return self.results
+                console.print(f"[red]{spec_path.name}: Fixed spec invalid: {e}[/red]")
+
+                for change, discrepancy in provisional_fixes:
+                    self.failures.append(
+                        {
+                            "spec_file": spec_path.name,
+                            "stage": "validate",
+                            "error": f"OpenAPI validation failed: {e}",
+                            "source_discrepancy": discrepancy.to_dict(),
+                        }
+                    )
+        else:
+            self.unmodified_files_set.add(spec_path.name)
+            result = ReconciliationResult(
+                filename=spec_path.name,
+                original_path=spec_path,
+                modified=False,
+                fixed_spec=original,
+            )
+            self.results.append(result)
+
+    def _handle_apply_noop(self, spec_path: Path, fixed: dict, discrepancy: Discrepancy) -> None:
+        """Handle a discrepancy fix application that returned None (no-op)."""
+        strategy = self._get_fix_strategy(discrepancy)
+        if strategy == "skip":
+            reason = "Unsupported or unknown fix strategy"
+        else:
+            # Find schema
+            schema = self._find_schema(fixed, discrepancy.property_name)
+            if not schema:
+                reason = f"Property path '{discrepancy.property_name}' not found in spec"
+            else:
+                reason = (
+                    "Mutation resulted in no-op (constraint already matches or cannot be computed)"
+                )
+        self.failures.append(
+            {
+                "spec_file": spec_path.name,
+                "stage": "apply",
+                "error": reason,
+                "source_discrepancy": discrepancy.to_dict(),
+            }
+        )
 
     def _group_by_file(
         self,
@@ -616,7 +648,6 @@ class SpecReconciler:
                     continue
                 action = change.get("action", "")
                 constraint = change.get("constraint", "")
-                constraint_type = change.get("constraint_type", "")
                 prop = change.get("property", "")
                 old_val = change.get("old_value", "")
                 new_val = change.get("new_value", "")
@@ -644,6 +675,64 @@ class SpecReconciler:
             lines.append("")
 
         return self._as_document(lines)
+
+
+def _validate_raw_discrepancy(
+    idx: int,
+    d: dict,
+    allowed_fields: set[str],
+    identity_fields: set[str],
+) -> Discrepancy:
+    """Validate a raw discrepancy dictionary and return a Discrepancy instance."""
+    # Reject extra fields
+    for k in d:
+        if k not in allowed_fields:
+            raise ValueError(f"Malformed discrepancy #{idx}: unexpected field '{k}'")
+
+    # Require all 11 fields to be present
+    for f in allowed_fields:
+        if f not in d:
+            raise ValueError(f"Malformed discrepancy #{idx}: missing required field '{f}'")
+
+    # Validate identity fields are non-empty strings
+    for field_name in identity_fields:
+        val = d[field_name]
+        if not isinstance(val, str) or len(val) == 0:
+            raise ValueError(
+                f"Malformed discrepancy #{idx}: identity field '{field_name}' cannot be empty"
+            )
+
+    # Validate spec_file matches strict pattern grammar to prevent markdown injection or traversal
+    spec_file = d["spec_file"]
+    if not re.match(r"^[a-zA-Z0-9._-]+$", spec_file):
+        raise ValueError(
+            f"Malformed discrepancy #{idx}: 'spec_file' contains invalid characters: '{spec_file}'"
+        )
+
+    # Validate test_values is a list
+    if not isinstance(d["test_values"], list):
+        raise ValueError(f"Malformed discrepancy #{idx}: 'test_values' must be a list")
+
+    try:
+        dtype = DiscrepancyType(d["discrepancy_type"])
+    except ValueError as err:
+        raise ValueError(
+            f"Malformed discrepancy #{idx}: invalid discrepancy_type '{d['discrepancy_type']}'"
+        ) from err
+
+    return Discrepancy(
+        path=d["path"],
+        property_name=d["property_name"],
+        constraint_type=d["constraint_type"],
+        discrepancy_type=dtype,
+        spec_value=d["spec_value"],
+        api_behavior=d["api_behavior"],
+        spec_file=d["spec_file"],
+        test_values=d["test_values"],
+        recommendation=d["recommendation"],
+        domain=d["domain"],
+        method=d["method"],
+    )
 
 
 def load_discrepancies(report_path: Path) -> list[Discrepancy]:
@@ -684,64 +773,14 @@ def load_discrepancies(report_path: Path) -> list[Discrepancy]:
     }
 
     for idx, d in enumerate(report["discrepancies"]):
-        # Reject extra fields
-        for k in d:
-            if k not in allowed_fields:
-                raise ValueError(f"Malformed discrepancy #{idx}: unexpected field '{k}'")
+        discrepancy = _validate_raw_discrepancy(idx, d, allowed_fields, identity_fields)
+        discrepancies.append(discrepancy)
 
-        # Require all 11 fields to be present
-        for f in allowed_fields:
-            if f not in d:
-                raise ValueError(f"Malformed discrepancy #{idx}: missing required field '{f}'")
-
-        # Validate identity fields are non-empty strings
-        for field_name in identity_fields:
-            val = d[field_name]
-            if not isinstance(val, str) or len(val) == 0:
-                raise ValueError(
-                    f"Malformed discrepancy #{idx}: identity field '{field_name}' cannot be empty"
-                )
-
-        # Validate spec_file matches strict pattern grammar to prevent markdown injection or traversal
-        import re
-
-        spec_file = d["spec_file"]
-        if not re.match(r"^[a-zA-Z0-9._-]+$", spec_file):
-            raise ValueError(
-                f"Malformed discrepancy #{idx}: 'spec_file' contains invalid characters: '{spec_file}'"
-            )
-
-        # Validate test_values is a list
-        if not isinstance(d["test_values"], list):
-            raise ValueError(f"Malformed discrepancy #{idx}: 'test_values' must be a list")
-
-        try:
-            dtype = DiscrepancyType(d["discrepancy_type"])
-        except ValueError as err:
-            raise ValueError(
-                f"Malformed discrepancy #{idx}: invalid discrepancy_type '{d['discrepancy_type']}'"
-            ) from err
-
-        discrepancies.append(
-            Discrepancy(
-                path=d["path"],
-                property_name=d["property_name"],
-                constraint_type=d["constraint_type"],
-                discrepancy_type=dtype,
-                spec_value=d["spec_value"],
-                api_behavior=d["api_behavior"],
-                spec_file=d["spec_file"],
-                test_values=d["test_values"],
-                recommendation=d["recommendation"],
-                domain=d["domain"],
-                method=d["method"],
-            )
-        )
     return discrepancies
 
 
-def main() -> int:
-    """Main entry point for reconciliation command."""
+def _parse_reconciliation_args() -> argparse.Namespace:
+    """Parse CLI arguments for reconciliation."""
     parser = argparse.ArgumentParser(description="Reconcile F5 XC OpenAPI specs with API behavior")
     parser.add_argument(
         "--config",
@@ -774,17 +813,19 @@ def main() -> int:
         default=Path("reports/reconciliation_report.json"),
         help="Output path for the strict reconciliation report",
     )
+    return parser.parse_args()
 
-    args = parser.parse_args()
 
-    # Load configuration
+def _load_config_and_determine_paths(
+    args: argparse.Namespace,
+) -> tuple[dict, Path, Path]:
+    """Load config and determine original/output specification directories."""
     if args.config.exists():
         with args.config.open() as f:
             config = yaml.safe_load(f)
     else:
         config = {}
 
-    # Determine paths
     transform_config = config.get("transform", {})
     reconciliation_config = config.get("reconciliation", {})
 
@@ -793,51 +834,15 @@ def main() -> int:
     )
     output_dir = args.output_dir or Path("release/specs")
 
-    # Load discrepancies from report with strict validation
-    discrepancies = []
-    try:
-        for report_path in args.report:
-            loaded = load_discrepancies(report_path)
-            discrepancies.extend(loaded)
-            console.print(f"[dim]Loaded {len(loaded)} discrepancies from {report_path}[/dim]")
-    except Exception as e:
-        console.print(f"[red]Fatal validation report loading error: {e}[/red]", style="bold red")
-        return 1
+    return reconciliation_config, original_dir, output_dir
 
-    # Create reconciler
-    recon_config = ReconciliationConfig(
-        priority=reconciliation_config.get("priority", ["existing", "discovery", "inferred"]),
-        fix_strategies=reconciliation_config.get("fix_strategies", {}),
-    )
 
-    reconciler = SpecReconciler(
-        original_dir=original_dir,
-        output_dir=output_dir,
-        config=recon_config,
-    )
-
-    # Run reconciliation
-    reconciler.reconcile_all(discrepancies)
-
-    # Save results
-    saved = reconciler.save_results()
-    console.print(f"\n[green]Saved {len(saved)} spec files[/green]")
-
-    # Generate and save changelog
-    changelog = reconciler.generate_changelog()
-    changelog_path = output_dir / "CHANGELOG.md"
-    changelog_path.write_text(changelog)
-    console.print(f"[green]Changelog: {changelog_path}[/green]")
-
-    # Print summary
-    summary = reconciler.get_summary()
-    console.print("\n[bold]Summary:[/bold]")
-    console.print(f"  Modified: {len(summary['modified_files'])} files")
-    console.print(f"  Unmodified: {len(summary['unmodified_files'])} files")
-    console.print(f"  Total changes: {summary['total_changes']}")
-    # Build strict in-memory reconciliation report
-    from datetime import UTC, datetime
-
+def _emit_reconciliation_report(
+    args: argparse.Namespace,
+    reconciler: SpecReconciler,
+    discrepancies: list[Discrepancy],
+) -> int:
+    """Build, verify, and write strict reconciliation report JSON, and verify multiset matching."""
     report_data = {
         "schema_version": 1,
         "generated_at": datetime.now(UTC).isoformat(),
@@ -876,10 +881,65 @@ def main() -> int:
     try:
         write_reconciliation_report(report_data, args.reconciliation_report_out)
         console.print(f"[green]Strict report written: {args.reconciliation_report_out}[/green]")
-    except Exception as e:
+    except (OSError, TypeError, ValueError) as e:
         console.print(
             f"[red]Fatal error writing reconciliation report: {e}[/red]", style="bold red"
         )
+        return 1
+
+    return 0
+
+
+def main() -> int:
+    """Main entry point for reconciliation command."""
+    args = _parse_reconciliation_args()
+    reconciliation_config, original_dir, output_dir = _load_config_and_determine_paths(args)
+
+    # Load discrepancies from report with strict validation
+    discrepancies = []
+    try:
+        for report_path in args.report:
+            loaded = load_discrepancies(report_path)
+            discrepancies.extend(loaded)
+            console.print(f"[dim]Loaded {len(loaded)} discrepancies from {report_path}[/dim]")
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as e:
+        console.print(f"[red]Fatal validation report loading error: {e}[/red]", style="bold red")
+        return 1
+
+    # Create reconciler
+    recon_config = ReconciliationConfig(
+        priority=reconciliation_config.get("priority", ["existing", "discovery", "inferred"]),
+        fix_strategies=reconciliation_config.get("fix_strategies", {}),
+    )
+
+    reconciler = SpecReconciler(
+        original_dir=original_dir,
+        output_dir=output_dir,
+        config=recon_config,
+    )
+
+    # Run reconciliation
+    reconciler.reconcile_all(discrepancies)
+
+    # Save results
+    saved = reconciler.save_results()
+    console.print(f"\n[green]Saved {len(saved)} spec files[/green]")
+
+    # Generate and save changelog
+    changelog = reconciler.generate_changelog()
+    changelog_path = output_dir / "CHANGELOG.md"
+    changelog_path.write_text(changelog)
+    console.print(f"[green]Changelog: {changelog_path}[/green]")
+
+    # Print summary
+    summary = reconciler.get_summary()
+    console.print("\n[bold]Summary:[/bold]")
+    console.print(f"  Modified: {len(summary['modified_files'])} files")
+    console.print(f"  Unmodified: {len(summary['unmodified_files'])} files")
+    console.print(f"  Total changes: {summary['total_changes']}")
+
+    # Build strict in-memory reconciliation report and verify multiset matching
+    if _emit_reconciliation_report(args, reconciler, discrepancies) != 0:
         return 1
 
     # Return nonzero for ordinary reconciliation failures, zero for perfect success

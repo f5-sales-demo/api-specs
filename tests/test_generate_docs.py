@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -108,9 +109,9 @@ def test_frontmatter_mapping(tmp_path):
 
 def test_cli_subprocess_generate_docs(tmp_path):
     """Verify that generate_docs.py runs cleanly as a direct subprocess."""
-    import subprocess
 
     report_path = tmp_path / "report.json"
+
     report_data = {
         "schema_version": 1,
         "generated_at": "2026-08-07T12:00:00Z",
@@ -164,9 +165,9 @@ def test_cli_subprocess_generate_docs(tmp_path):
 
 def test_mdx_prose_safety_gate(tmp_path):
     """Generate an MDX report with adversarial characters and run the real prose linter on it."""
-    import subprocess
 
     prose_gate_script = Path("scripts/lint-mdx-prose.sh")
+
     if not prose_gate_script.exists():
         pytest.skip("lint-mdx-prose.sh script not found")
 
@@ -222,15 +223,15 @@ def test_mdx_prose_safety_gate(tmp_path):
 
     # Run prose linter script
     cmd_lint = ["bash", "scripts/lint-mdx-prose.sh", str(output_path)]
-    result = subprocess.run(cmd_lint, capture_output=True, text=True)
+    result = subprocess.run(cmd_lint, capture_output=True, text=True, check=False)
     assert result.returncode == 0, f"Prose lint failed with: {result.stdout}\n{result.stderr}"
 
 
 def test_generate_docs_escapes_markdown_injections(tmp_path):
     """Verify that generate_docs escapes filenames containing markdown/MDX injection vectors."""
-    import subprocess
 
     report_path = tmp_path / "injection_report.json"
+
     report_data = {
         "schema_version": 1,
         "generated_at": "2026-08-07T12:00:00Z",
@@ -283,5 +284,5 @@ def test_generate_docs_escapes_markdown_injections(tmp_path):
     prose_gate_script = Path("scripts/lint-mdx-prose.sh")
     if prose_gate_script.exists():
         cmd_lint = ["bash", "scripts/lint-mdx-prose.sh", str(output_path)]
-        result = subprocess.run(cmd_lint, capture_output=True, text=True)
+        result = subprocess.run(cmd_lint, capture_output=True, text=True, check=False)
         assert result.returncode == 0, f"Prose lint failed with: {result.stdout}\n{result.stderr}"

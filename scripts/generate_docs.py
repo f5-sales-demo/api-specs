@@ -71,7 +71,85 @@ def _escape_markdown(text: str) -> str:
     return escaped
 
 
+def _format_fixes_section(fixes: list[dict[str, Any]]) -> list[str]:
+    """Format fixes section for the MDX report."""
+    if not fixes:
+        return []
+
+    lines = [
+        "## Fixes Applied",
+        "",
+    ]
+    fixes_by_file: dict[str, list[dict[str, Any]]] = {}
+    for fix in fixes:
+        fixes_by_file.setdefault(fix["spec_file"], []).append(fix)
+
+    for filename, file_fixes in sorted(fixes_by_file.items()):
+        lines.extend(
+            [
+                f"### {_escape_markdown(filename)}",
+                "",
+                "| Property | Constraint | Discrepancy Type | Strategy | Before | After |",
+                "| :--- | :--- | :--- | :--- | :--- | :--- |",
+            ]
+        )
+        for fix in file_fixes:
+            sd = fix.get("source_discrepancy", {})
+            prop = _format_value(sd.get("property_name"))
+            constraint = _format_value(sd.get("constraint_type"))
+            dtype = _format_value(sd.get("discrepancy_type"))
+            strategy = _format_value(fix.get("strategy"))
+            before = _format_value(fix.get("before"))
+            after = _format_value(fix.get("after"))
+            lines.append(f"| {prop} | {constraint} | {dtype} | {strategy} | {before} | {after} |")
+        lines.extend(
+            [
+                "",
+            ]
+        )
+    return lines
+
+
+def _format_failures_section(failures: list[dict[str, Any]]) -> list[str]:
+    """Format failures section for the MDX report."""
+    if not failures:
+        return []
+
+    lines = [
+        "## Failures",
+        "",
+    ]
+    failures_by_file: dict[str, list[dict[str, Any]]] = {}
+    for failure in failures:
+        failures_by_file.setdefault(failure["spec_file"], []).append(failure)
+
+    for filename, file_failures in sorted(failures_by_file.items()):
+        lines.extend(
+            [
+                f"### {_escape_markdown(filename)}",
+                "",
+                "| Property | Constraint | Discrepancy Type | Stage | Error |",
+                "| :--- | :--- | :--- | :--- | :--- |",
+            ]
+        )
+        for failure in file_failures:
+            sd = failure.get("source_discrepancy", {})
+            prop = _format_value(sd.get("property_name"))
+            constraint = _format_value(sd.get("constraint_type"))
+            dtype = _format_value(sd.get("discrepancy_type"))
+            stage = _format_value(failure.get("stage"))
+            err = _format_value(failure.get("error"))
+            lines.append(f"| {prop} | {constraint} | {dtype} | {stage} | {err} |")
+        lines.extend(
+            [
+                "",
+            ]
+        )
+    return lines
+
+
 def generate_fixes_page(report: dict, output_path: Path) -> None:
+    """Generate MDX documentation from reconciliation report."""
     lines = [
         FRONTMATTER.strip(),
         "",
@@ -98,78 +176,8 @@ def generate_fixes_page(report: dict, output_path: Path) -> None:
         ]
     )
 
-    fixes = report.get("fixes", [])
-    if fixes:
-        lines.extend(
-            [
-                "## Fixes Applied",
-                "",
-            ]
-        )
-        fixes_by_file: dict[str, list[dict[str, Any]]] = {}
-        for fix in fixes:
-            fixes_by_file.setdefault(fix["spec_file"], []).append(fix)
-
-        for filename, file_fixes in sorted(fixes_by_file.items()):
-            lines.extend(
-                [
-                    f"### {_escape_markdown(filename)}",
-                    "",
-                    "| Property | Constraint | Discrepancy Type | Strategy | Before | After |",
-                    "| :--- | :--- | :--- | :--- | :--- | :--- |",
-                ]
-            )
-            for fix in file_fixes:
-                sd = fix.get("source_discrepancy", {})
-                prop = _format_value(sd.get("property_name"))
-                constraint = _format_value(sd.get("constraint_type"))
-                dtype = _format_value(sd.get("discrepancy_type"))
-                strategy = _format_value(fix.get("strategy"))
-                before = _format_value(fix.get("before"))
-                after = _format_value(fix.get("after"))
-                lines.append(
-                    f"| {prop} | {constraint} | {dtype} | {strategy} | {before} | {after} |"
-                )
-            lines.extend(
-                [
-                    "",
-                ]
-            )
-
-    failures = report.get("failures", [])
-    if failures:
-        lines.extend(
-            [
-                "## Failures",
-                "",
-            ]
-        )
-        failures_by_file: dict[str, list[dict[str, Any]]] = {}
-        for failure in failures:
-            failures_by_file.setdefault(failure["spec_file"], []).append(failure)
-
-        for filename, file_failures in sorted(failures_by_file.items()):
-            lines.extend(
-                [
-                    f"### {_escape_markdown(filename)}",
-                    "",
-                    "| Property | Constraint | Discrepancy Type | Stage | Error |",
-                    "| :--- | :--- | :--- | :--- | :--- |",
-                ]
-            )
-            for failure in file_failures:
-                sd = failure.get("source_discrepancy", {})
-                prop = _format_value(sd.get("property_name"))
-                constraint = _format_value(sd.get("constraint_type"))
-                dtype = _format_value(sd.get("discrepancy_type"))
-                stage = _format_value(failure.get("stage"))
-                err = _format_value(failure.get("error"))
-                lines.append(f"| {prop} | {constraint} | {dtype} | {stage} | {err} |")
-            lines.extend(
-                [
-                    "",
-                ]
-            )
+    lines.extend(_format_fixes_section(report.get("fixes", [])))
+    lines.extend(_format_failures_section(report.get("failures", [])))
 
     lines.extend(
         [
@@ -207,7 +215,7 @@ def main() -> int:
     console.print("[bold blue]Generating Documentation[/bold blue]")
     try:
         report = load_reconciliation_report(args.reconciliation_report)
-    except Exception as e:
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as e:
         console.print(f"[red]Failed to load reconciliation report: {e}[/red]")
         return 1
 

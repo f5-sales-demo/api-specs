@@ -8,6 +8,7 @@ from typing import Any
 
 import pytest
 
+from scripts.reconcile import load_discrepancies
 from scripts.reconcile import main as reconcile_main
 from scripts.utils.reconciliation_report import (
     validate_reconciliation_report,
@@ -411,7 +412,6 @@ def test_custom_reconciliation_report_out_honored(setup_reconcile_env):
 
 def test_load_discrepancies_filename_validation(tmp_path):
     """Verify that load_discrepancies allows valid filenames and rejects invalid ones."""
-    from scripts.reconcile import load_discrepancies
 
     # 1. Valid filename
     valid_report = tmp_path / "valid_report.json"

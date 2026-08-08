@@ -251,28 +251,25 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
         self.discrepancies: list[Discrepancy] = []
         self.test_results: list[SchemathesisResult] = []
 
-    def run(
+    def _prepare_validation_targets(
         self,
         endpoint_filter: str | None = None,
-        allow_discrepancies: bool = False,
-    ) -> int:
-        """Run the full validation pipeline."""
-        console.print("[bold blue]F5 XC API Spec Validation[/bold blue]")
-
+    ) -> tuple[dict[str, dict], tuple[ValidationTarget, ...]] | None:
+        """Load, validate specs, resolve validation targets, and filter them."""
         # Step 1: Load and validate specs
         console.print("\n[bold]Step 1: Loading OpenAPI Specs[/bold]")
         specs = self._load_specs()
 
         if not specs:
             console.print("[red]No specs found. Run 'make download' first.[/red]")
-            return 1
+            return None
 
         # Step 2: Validate spec structure
         console.print("\n[bold]Step 2: Validating Spec Structure[/bold]")
         structure_errors = self._validate_spec_structure(specs)
         if structure_errors:
             console.print(f"[red]Validation stopped: {len(structure_errors)} invalid specs[/red]")
-            return 1
+            return None
 
         # Step 3: Resolve every semantic domain and exact operation before
         # making requests. A stale config must fail rather than test nothing.
@@ -281,7 +278,7 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
             targets = resolve_validation_targets(specs, self.endpoints_config)
         except LiveValidationError as error:
             console.print(f"[red]Validation contract error: {error}[/red]")
-            return 1
+            return None
 
         if endpoint_filter:
             targets = tuple(target for target in targets if target.endpoint_name == endpoint_filter)
@@ -289,7 +286,23 @@ class ValidationOrchestrator:  # pylint: disable=too-many-instance-attributes
                 console.print(
                     f"[red]Validation contract error: unknown endpoint '{endpoint_filter}'[/red]"
                 )
-                return 1
+                return None
+
+        return specs, targets
+
+    def run(
+        self,
+        endpoint_filter: str | None = None,
+        allow_discrepancies: bool = False,
+    ) -> int:
+        """Run the full validation pipeline."""
+        console.print("[bold blue]F5 XC API Spec Validation[/bold blue]")
+
+        prep_result = self._prepare_validation_targets(endpoint_filter)
+        if prep_result is None:
+            return 1
+
+        specs, targets = prep_result
 
         # Step 4: Execute exact configured operations and retain all evidence,
         # even when one target fails, so the report explains the failed gate.

@@ -395,15 +395,21 @@ def test_release_workflow_security_and_push_contract():
     # 2. Assert every checkout step has persist-credentials: False
     for job_name, step in checkout_steps:
         with_params = step.get("with", {})
-        assert "persist-credentials" in with_params, f"persist-credentials missing in job {job_name}"
+        assert "persist-credentials" in with_params, (
+            f"persist-credentials missing in job {job_name}"
+        )
         # Ensure it is a boolean False, not string "false"
-        assert with_params["persist-credentials"] is False, f"persist-credentials must be boolean False in job {job_name}"
+        assert with_params["persist-credentials"] is False, (
+            f"persist-credentials must be boolean False in job {job_name}"
+        )
 
     # 3. Assert exactly 2 authenticated push steps (under update-docs and commit-release-specs)
     assert len(push_steps) == 2, f"Expected exactly 2 push steps, found {len(push_steps)}"
     expected_jobs = {"update-docs", "commit-release-specs"}
     found_jobs = {job_name for job_name, _ in push_steps}
-    assert found_jobs == expected_jobs, f"Expected push steps in jobs {expected_jobs}, found in {found_jobs}"
+    assert found_jobs == expected_jobs, (
+        f"Expected push steps in jobs {expected_jobs}, found in {found_jobs}"
+    )
 
     # 4. Assert no git push contains token or GH_TOKEN interpolation in URL, and uses GIT_ASKPASS
     for job_name, step in push_steps:
@@ -411,17 +417,30 @@ def test_release_workflow_security_and_push_contract():
         # Ensure no token or interpolation in any git push line
         git_push_lines = [line for line in run_script.splitlines() if "git push" in line]
         for line in git_push_lines:
-            assert "x-access-token" not in line, f"Found explicit token in git push of job {job_name}"
-            assert "${GH_TOKEN}" not in line, f"Found token variable interpolation in git push URL of job {job_name}"
+            assert "x-access-token" not in line, (
+                f"Found explicit token in git push of job {job_name}"
+            )
+            assert "${GH_TOKEN}" not in line, (
+                f"Found token variable interpolation in git push URL of job {job_name}"
+            )
             # Ensure GIT_ASKPASS and GIT_TERMINAL_PROMPT=0 are used
             assert "GIT_ASKPASS=" in line, f"GIT_ASKPASS must be set on push line in job {job_name}"
-            assert "GIT_TERMINAL_PROMPT=0" in line, f"GIT_TERMINAL_PROMPT=0 must be set on push line in job {job_name}"
+            assert "GIT_TERMINAL_PROMPT=0" in line, (
+                f"GIT_TERMINAL_PROMPT=0 must be set on push line in job {job_name}"
+            )
             # Ensure the push target is credential-free (uses github.com URL directly)
-            assert "github.com/" in line, f"Should push to a direct credential-free remote URL, found: {line}"
+            assert "github.com/" in line, (
+                f"Should push to a direct credential-free remote URL, found: {line}"
+            )
 
         # 5. Ensure the askpass helper is created securely and ephemeral cleanup is used
         assert 'ASKPASS_PATH="' in run_script, f"ASKPASS_PATH not defined in job {job_name}"
-        assert 'echo \'echo "${GH_TOKEN}"\'' in run_script, f"Askpass must print GH_TOKEN directly from environment in job {job_name}"
-        assert "chmod 700" in run_script, f"Askpass helper must have restricted 700 permissions in job {job_name}"
-        assert "trap " in run_script and "rm -f" in run_script, f"Askpass helper must use trap for cleanup in job {job_name}"
-
+        assert "echo 'echo \"${GH_TOKEN}\"'" in run_script, (
+            f"Askpass must print GH_TOKEN directly from environment in job {job_name}"
+        )
+        assert "chmod 700" in run_script, (
+            f"Askpass helper must have restricted 700 permissions in job {job_name}"
+        )
+        assert "trap " in run_script and "rm -f" in run_script, (
+            f"Askpass helper must use trap for cleanup in job {job_name}"
+        )

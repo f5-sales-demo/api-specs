@@ -15,8 +15,6 @@ from .strict_data import StrictDataError, strict_json_loads
 class ReconciliationReportError(ValueError):
     """Exception raised for any reconciliation report validation or operation errors."""
 
-    pass
-
 
 # Resolve the schema file path relative to this module
 SCHEMA_PATH = Path(__file__).resolve().parents[2] / "config" / "reconciliation_report.schema.json"
@@ -42,49 +40,33 @@ def _load_schema() -> dict[str, Any]:
 SCHEMA = _load_schema()
 
 
-def validate_reconciliation_report(data: dict[str, Any]) -> None:
-    """Validate a reconciliation report dictionary against JSON Schema and semantic invariants."""
-    # 1. Structural validation via JSON Schema with a Draft7Validator and FormatChecker
-    validator = Draft7Validator(SCHEMA, format_checker=FormatChecker())
-    try:
-        validator.validate(data)
-    except ValidationError as error:
+def _validate_summary_invariants(
+    summary: dict[str, Any],
+    fixes: list[dict[str, Any]],
+    failures: list[dict[str, Any]],
+) -> None:
+    """Validate summary count invariants against the actual lists of fixes and failures."""
+    if summary["fixes_applied"] != len(fixes):
         raise ReconciliationReportError(
-            f"Schema validation failed: {error.message} at path '{error.json_path}'"
-        ) from error
-
-    # 2. Extract sections for semantic invariant checks
-    summary = data["summary"]
-    fixes = data.get("fixes", [])
-    failures = data.get("failures", [])
-
-    processed_specs = summary["processed_specs"]
-    discrepancies_received = summary["discrepancies_received"]
-    fixes_applied = summary["fixes_applied"]
-    sum_failures = summary["failures"]
-    modified_files = summary["modified_files"]
-    unmodified_files = summary["unmodified_files"]
-
-    # 3. Invariant: summary.fixes_applied == len(fixes)
-    if fixes_applied != len(fixes):
-        raise ReconciliationReportError(
-            f"Semantic invariant violation: summary.fixes_applied ({fixes_applied}) must equal length of fixes list ({len(fixes)})"
+            f"Semantic invariant violation: summary.fixes_applied ({summary['fixes_applied']}) must equal length of fixes list ({len(fixes)})"
         )
 
-    # 4. Invariant: summary.failures == len(failures)
-    if sum_failures != len(failures):
+    if summary["failures"] != len(failures):
         raise ReconciliationReportError(
-            f"Semantic invariant violation: summary.failures ({sum_failures}) must equal length of failures list ({len(failures)})"
+            f"Semantic invariant violation: summary.failures ({summary['failures']}) must equal length of failures list ({len(failures)})"
         )
 
-    # 5. Invariant: summary.discrepancies_received == len(fixes) + len(failures)
     expected_received = len(fixes) + len(failures)
-    if discrepancies_received != expected_received:
+    if summary["discrepancies_received"] != expected_received:
         raise ReconciliationReportError(
-            f"Semantic invariant violation: summary.discrepancies_received ({discrepancies_received}) must equal total outcomes ({expected_received})"
+            f"Semantic invariant violation: summary.discrepancies_received ({summary['discrepancies_received']}) must equal total outcomes ({expected_received})"
         )
 
-    # 6. Invariant: Each outcome's top-level spec_file equals its source record's spec_file
+
+def _validate_outcome_invariants(
+    fixes: list[dict[str, Any]], failures: list[dict[str, Any]]
+) -> None:
+    """Validate that every outcome's top-level spec_file matches its source discrepancy's spec_file."""
     for i, fix in enumerate(fixes):
         top_spec = fix["spec_file"]
         source_spec = fix["source_discrepancy"].get("spec_file")
@@ -101,7 +83,12 @@ def validate_reconciliation_report(data: dict[str, Any]) -> None:
                 f"Semantic invariant violation: Failure #{i} has top-level spec_file '{top_spec}' but source record spec_file '{source_spec}'"
             )
 
-    # 7. Invariant: Modified and unmodified file lists are unique and disjoint
+
+def _validate_file_invariants(summary: dict[str, Any], fixes: list[dict[str, Any]]) -> None:
+    """Validate uniqueness, disjointness, union size, and outcome coverage for file lists."""
+    modified_files = summary["modified_files"]
+    unmodified_files = summary["unmodified_files"]
+
     modified_set = set(modified_files)
     unmodified_set = set(unmodified_files)
 
@@ -120,32 +107,44 @@ def validate_reconciliation_report(data: dict[str, Any]) -> None:
             f"Semantic invariant violation: Modified and unmodified file lists must be disjoint. Overlap: {intersection}"
         )
 
-    # 8. Invariant: Their union contains every processed spec exactly once
     union_set = modified_set | unmodified_set
-    if len(union_set) != processed_specs:
+    if len(union_set) != summary["processed_specs"]:
         raise ReconciliationReportError(
-            f"Semantic invariant violation: Processed specs count ({processed_specs}) must equal size of file union ({len(union_set)})"
+            f"Semantic invariant violation: Processed specs count ({summary['processed_specs']}) must equal size of file union ({len(union_set)})"
         )
 
-    # 9. Invariant: Every fix references a modified file
     for i, fix in enumerate(fixes):
         spec = fix["spec_file"]
         if spec not in modified_set:
             raise ReconciliationReportError(
                 f"Semantic invariant violation: Fix #{i} references file '{spec}' which is not in the modified files list"
             )
-
-    # 10. Invariant: Unmodified files have no fix entries
-    for i, fix in enumerate(fixes):
-        spec = fix["spec_file"]
         if spec in unmodified_set:
             raise ReconciliationReportError(
                 f"Semantic invariant violation: Fix #{i} references unmodified file '{spec}'"
             )
 
-    # Validate timestamp format (using schema's format validation, which FormatChecker covers)
-    # Draft7Validator with FormatChecker validates date-time, but let's double check it or ensure FormatChecker was effective
-    pass
+
+def validate_reconciliation_report(data: dict[str, Any]) -> None:
+    """Validate a reconciliation report dictionary against JSON Schema and semantic invariants."""
+    # 1. Structural validation via JSON Schema with a Draft7Validator and FormatChecker
+    validator = Draft7Validator(SCHEMA, format_checker=FormatChecker())
+    try:
+        validator.validate(data)
+    except ValidationError as error:
+        raise ReconciliationReportError(
+            f"Schema validation failed: {error.message} at path '{error.json_path}'"
+        ) from error
+
+    # 2. Extract sections for semantic invariant checks
+    summary = data["summary"]
+    fixes = data.get("fixes", [])
+    failures = data.get("failures", [])
+
+    # 3. Perform semantic invariant checks using focused helper functions
+    _validate_summary_invariants(summary, fixes, failures)
+    _validate_outcome_invariants(fixes, failures)
+    _validate_file_invariants(summary, fixes)
 
 
 def load_reconciliation_report(file_path: str | Path) -> dict[str, Any]:

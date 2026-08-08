@@ -65,7 +65,7 @@ class Discrepancy:
     recommendation: str = ""
     provenance: DiscrepancyProvenance = field(default_factory=DiscrepancyProvenance)
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         path: str,
         property_name: str,

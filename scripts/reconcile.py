@@ -96,7 +96,7 @@ class SpecReconciler:
         self._record_match_failures(discrepancies, existing_filenames)
 
         # Group discrepancies by file
-        discrepancies_by_file = self._group_by_file(discrepancies)
+        discrepancies_by_file = self._group_by_file(discrepancies, existing_filenames)
 
         # Process each original spec file
         for spec_path in spec_paths:
@@ -294,16 +294,18 @@ class SpecReconciler:
     def _group_by_file(
         self,
         discrepancies: list[Discrepancy],
+        existing_filenames: set[str],
     ) -> dict[str, list[Discrepancy]]:
         """Group discrepancies by source file."""
         grouped: dict[str, list[Discrepancy]] = {}
 
         for d in discrepancies:
-            filename = (
-                d.spec_file
-                if d.spec_file != "unknown"
-                else (d.path.split(":")[0] if ":" in d.path else d.path)
-            )
+            if d.spec_file == "unknown":
+                continue
+            filename = d.spec_file
+            if filename not in existing_filenames:
+                continue
+
             if filename not in grouped:
                 grouped[filename] = []
             grouped[filename].append(d)

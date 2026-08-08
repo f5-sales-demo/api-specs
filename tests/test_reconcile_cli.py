@@ -438,3 +438,50 @@ def test_load_discrepancies_filename_validation(tmp_path):
         invalid_report.write_text(json.dumps(invalid_data))
         with pytest.raises(ValueError, match="invalid characters"):
             load_discrepancies(invalid_report)
+
+
+def test_unknown_spec_file_not_double_accounted(setup_reconcile_env):
+    """Verify that discrepancies with spec_file == 'unknown' do not cause double accounting."""
+    run, reports, out, config = setup_reconcile_env
+    specs = {
+        "test_spec.json": {
+            "openapi": "3.0.0",
+            "info": {"title": "Test", "version": "1.0.0"},
+            "paths": {},
+        }
+    }
+
+    # A discrepancy with spec_file == "unknown" but path that split-matches "test_spec.json"
+    discrepancies = [
+        _make_discrepancy(
+            spec_file="unknown",
+            path="test_spec.json#/components/schemas/foo",
+            property_name="foo",
+            constraint_type="maxLength",
+            discrepancy_type="spec_stricter",
+            spec_value=10,
+            api_behavior=20,
+            domain="test",
+            method="POST",
+        )
+    ]
+
+    ret = run(discrepancies, specs)
+    # Since it is a match failure (spec_file == "unknown"), it is recorded in match stage
+    # and not processed in _group_by_file, so it doesn't try to apply/write any fix.
+    # It exits with 1 (because failures occurred during reconciliation, i.e. match failure).
+    assert ret == 1
+
+    report_file = Path("reports/reconciliation_report.json")
+    assert report_file.exists()
+
+    data = json.loads(report_file.read_text())
+    validate_reconciliation_report(data)
+
+    # It should be listed exactly once in the failures (with stage: match) and 0 in fixes
+    assert data["summary"]["fixes_applied"] == 0
+    assert data["summary"]["failures"] == 1
+    assert len(data["fixes"]) == 0
+    assert len(data["failures"]) == 1
+    assert data["failures"][0]["stage"] == "match"
+

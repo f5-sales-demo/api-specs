@@ -484,4 +484,3 @@ def test_unknown_spec_file_not_double_accounted(setup_reconcile_env):
     assert len(data["fixes"]) == 0
     assert len(data["failures"]) == 1
     assert data["failures"][0]["stage"] == "match"
-

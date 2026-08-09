@@ -286,7 +286,7 @@ def test_dispatch_success_precedes_durable_exact_receipt_acknowledgement():
 def test_release_builder_toolchain_is_exact_locked_and_reproduced_in_fresh_environments():
     workflow = yaml.safe_load(WORKFLOW.read_text())
     assert workflow["env"]["PYTHON_VERSION"] == "3.11.13"
-    assert workflow["env"]["NODE_VERSION"] == "20.19.5"
+    assert workflow["env"]["NODE_VERSION"] == "24.19.0"
     assert LOCKFILE.is_file()
     assert "uv.lock" in workflow[True]["push"]["paths"]
 
@@ -444,3 +444,99 @@ def test_release_workflow_security_and_push_contract():
         assert "trap " in run_script and "rm -f" in run_script, (
             f"Askpass helper must use trap for cleanup in job {job_name}"
         )
+
+
+def test_release_workflow_explicit_environments():
+    """Verify that jobs in validate-and-release.yml are explicitly mapped to their correct security environments."""
+    jobs = _jobs()
+    assert jobs["validate"]["environment"] == "f5xc-live-validation"
+    assert jobs["release"]["environment"] == "repository-settings"
+    assert jobs["notify-downstream"]["environment"] == "api-specs-enriched-release-delivery"
+    assert jobs["update-docs"]["environment"] == "api-specs-publication"
+    assert jobs["commit-release-specs"]["environment"] == "api-specs-publication"
+
+
+def test_narrower_token_selection_and_no_admin_token():
+    """Verify that secrets.REPO_ADMIN_TOKEN is eliminated and REPO_SYNC_TOKEN is used with a fail-fast checker."""
+    workflow_text = WORKFLOW.read_text()
+    assert "secrets.REPO_ADMIN_TOKEN" not in workflow_text, (
+        "secrets.REPO_ADMIN_TOKEN must be completely eliminated"
+    )
+
+    jobs = _jobs()
+    for job_name in ("update-docs", "commit-release-specs"):
+        job = jobs[job_name]
+        steps = job["steps"]
+
+        # Check checkout step token
+        checkout_step = next(
+            step for step in steps if step.get("uses", "").startswith("actions/checkout")
+        )
+        assert checkout_step["with"]["token"] == "${{ secrets.REPO_SYNC_TOKEN }}"
+
+        # Check fail-fast helper checking REPO_SYNC_TOKEN liveness
+        fail_fast_step = next(step for step in steps if "Fail fast if" in step.get("name", ""))
+        assert "REPO_SYNC_TOKEN" in fail_fast_step["env"]["SYNC_TOKEN"]
+        assert 'if [ -z "${SYNC_TOKEN}" ]' in fail_fast_step["run"]
+
+        # Check commit/push step token
+        commit_step = next(
+            step
+            for step in steps
+            if "Commit and PR" in step.get("name", "") or "Open a PR if" in step.get("name", "")
+        )
+        assert commit_step["env"]["GH_TOKEN"] == "${{ secrets.REPO_SYNC_TOKEN }}"
+
+
+def test_deterministic_uv_in_documentation_setup():
+    """Verify that update-docs uses deterministic uv commands and no raw pip."""
+    jobs = _jobs()
+    steps = jobs["update-docs"]["steps"]
+
+    # Assert setup-uv and uv sync --frozen are used
+    assert any(step.get("uses", "").startswith("astral-sh/setup-uv") for step in steps)
+    assert any("uv sync --frozen" in step.get("run", "") for step in steps)
+    assert not any("pip install" in step.get("run", "") for step in steps)
+
+    # Assert generate step uses uv run --frozen
+    generate_step = next(step for step in steps if step.get("name") == "Generate documentation")
+    assert "uv run --frozen python" in generate_step["run"]
+
+
+def test_tests_workflow_checkout_persist_credentials():
+    """Verify that all actions/checkout steps in tests.yml have persist-credentials explicitly set to False."""
+    test_wf = yaml.safe_load(TEST_WORKFLOW.read_text())
+    found_checkout = False
+    for job_name, job_def in test_wf["jobs"].items():
+        if "steps" in job_def:
+            for step in job_def["steps"]:
+                if step.get("uses", "").startswith("actions/checkout"):
+                    found_checkout = True
+                    assert "persist-credentials" in step.get("with", {}), (
+                        f"persist-credentials parameter is missing in tests.yml job {job_name}"
+                    )
+                    assert step["with"]["persist-credentials"] is False, (
+                        f"persist-credentials must be boolean False in tests.yml job {job_name}"
+                    )
+    assert found_checkout, "Expected to find actions/checkout in tests.yml"
+
+
+def test_node24_action_hashes_are_strictly_enforced():
+    """Verify that all checkouts, setup-python, setup-node, cache, and upload-artifact steps in release and test workflows use specific Node 24 hashes."""
+    expected_hashes = {
+        "actions/checkout": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "actions/setup-python": "5fda3b95a4ea91299a34e894583c3862153e4b97",
+        "actions/setup-node": "820762786026740c76f36085b0efc47a31fe5020",
+        "actions/cache": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+        "actions/upload-artifact": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+    }
+
+    for workflow_path in (WORKFLOW, TEST_WORKFLOW):
+        content = workflow_path.read_text()
+        action_refs = re.findall(r"^\s*uses:\s+([^\s@]+)@([^\s#\n\s]+)", content, re.MULTILINE)
+        for action, ref in action_refs:
+            if action in expected_hashes:
+                assert ref == expected_hashes[action], (
+                    f"In {workflow_path.name}, action {action} is pinned to {ref}, "
+                    f"expected Node 24 hash {expected_hashes[action]}"
+                )

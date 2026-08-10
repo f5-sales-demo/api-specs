@@ -540,3 +540,16 @@ def test_node24_action_hashes_are_strictly_enforced():
                     f"In {workflow_path.name}, action {action} is pinned to {ref}, "
                     f"expected Node 24 hash {expected_hashes[action]}"
                 )
+
+
+def test_no_direct_github_repository_interpolation_in_run_blocks():
+    """Verify that ${{ github.repository }} is not directly interpolated into any run: scripts of validate-and-release.yml to prevent template-injection."""
+    jobs = _jobs()
+    for job_name, job_def in jobs.items():
+        if "steps" in job_def:
+            for step in job_def["steps"]:
+                if "run" in step:
+                    run_script = step["run"]
+                    assert "${{ github.repository }}" not in run_script, (
+                        f"Direct interpolation of ${{ github.repository }} is forbidden in run script of step '{step.get('name', 'unnamed')}' in job '{job_name}' to prevent template-injection. Use step-level env instead."
+                    )

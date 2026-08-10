@@ -3,8 +3,15 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
-from scripts.spectral_lint import SpectralAdapter, map_violation_to_discrepancy
+import pytest
+
+from scripts.spectral_lint import (
+    SpectralAdapter,
+    SpectralOperationalError,
+    map_violation_to_discrepancy,
+)
 from scripts.utils.constraint_validator import DiscrepancyType
 
 SAMPLE_VIOLATION_SERVERS = {
@@ -124,7 +131,7 @@ class TestSpectralAdapterGate:
 
     def test_failure_names_every_offending_error(self, monkeypatch, capsys):
         monkeypatch.setenv("COLUMNS", "300")
-        adapter = SpectralAdapter(ruleset=".spectral.yaml")
+        adapter = SpectralAdapter(ruleset=".spectral.mjs")
 
         violations = [SAMPLE_VIOLATION_INVALID_REF, SAMPLE_VIOLATION_TAGS]
         passed = adapter.check_gate(violations, 0, None)
@@ -138,7 +145,7 @@ class TestSpectralAdapterGate:
 
     def test_warnings_are_not_listed_when_the_gate_passes(self, monkeypatch, capsys):
         monkeypatch.setenv("COLUMNS", "300")
-        adapter = SpectralAdapter(ruleset=".spectral.yaml")
+        adapter = SpectralAdapter(ruleset=".spectral.mjs")
 
         passed = adapter.check_gate([SAMPLE_VIOLATION_TAGS], 0, None)
 
@@ -148,7 +155,7 @@ class TestSpectralAdapterGate:
 
     def test_warning_budget_breach_names_the_warnings(self, monkeypatch, capsys):
         monkeypatch.setenv("COLUMNS", "300")
-        adapter = SpectralAdapter(ruleset=".spectral.yaml")
+        adapter = SpectralAdapter(ruleset=".spectral.mjs")
 
         passed = adapter.check_gate([SAMPLE_VIOLATION_TAGS], None, 0)
 
@@ -160,7 +167,7 @@ class TestSpectralAdapterGate:
 class TestSpectralAdapterWriteReport:
     def test_write_report_creates_valid_json(self, tmp_path):
         violations = [SAMPLE_VIOLATION_SERVERS, SAMPLE_VIOLATION_TAGS]
-        adapter = SpectralAdapter(ruleset=".spectral.yaml")
+        adapter = SpectralAdapter(ruleset=".spectral.mjs")
         report_path = tmp_path / "spectral_report.json"
         adapter.write_report(violations, report_path)
 
@@ -168,3 +175,77 @@ class TestSpectralAdapterWriteReport:
         assert "discrepancies" in report
         assert len(report["discrepancies"]) == 2
         assert report["discrepancies"][0]["constraint_type"] == "spectral:oas3-api-servers"
+
+
+class TestSpectralAdapterFailClosed:
+    def test_missing_node_raises_operational_error(self, monkeypatch):
+        monkeypatch.setattr("shutil.which", lambda x: None if x == "node" else "/usr/bin/node")
+        adapter = SpectralAdapter(ruleset=".spectral.mjs")
+        with pytest.raises(SpectralOperationalError, match="node binary not found"):
+            adapter.run_lint(Path("specs"))
+
+    def test_missing_runner_raises_operational_error(self, monkeypatch, tmp_path):
+        monkeypatch.setattr("shutil.which", lambda x: "/usr/bin/node" if x == "node" else None)
+        adapter = SpectralAdapter(
+            ruleset=".spectral.mjs", runner_path=tmp_path / "missing_runner.mjs"
+        )
+        with pytest.raises(SpectralOperationalError, match="spectral_runner.mjs not found"):
+            adapter.run_lint(Path("specs"))
+
+    def test_missing_ruleset_raises_operational_error(self, monkeypatch, tmp_path):
+        monkeypatch.setattr("shutil.which", lambda x: "/usr/bin/node" if x == "node" else None)
+        runner = tmp_path / "runner.mjs"
+        runner.touch()
+        adapter = SpectralAdapter(ruleset=tmp_path / "missing_ruleset.mjs", runner_path=runner)
+        with pytest.raises(SpectralOperationalError, match="ruleset file not found"):
+            adapter.run_lint(Path("specs"))
+
+    def test_empty_spec_directory_raises_operational_error(self, monkeypatch, tmp_path):
+        monkeypatch.setattr("shutil.which", lambda x: "/usr/bin/node" if x == "node" else None)
+        runner = tmp_path / "runner.mjs"
+        runner.touch()
+        ruleset = tmp_path / "ruleset.mjs"
+        ruleset.touch()
+        adapter = SpectralAdapter(ruleset=ruleset, runner_path=runner)
+        with pytest.raises(SpectralOperationalError, match="No JSON spec files found"):
+            adapter.run_lint(tmp_path / "empty_dir")
+
+    def test_malformed_runner_json_raises_operational_error(self, monkeypatch, tmp_path):
+        monkeypatch.setattr("shutil.which", lambda x: "/usr/bin/node" if x == "node" else None)
+        runner = tmp_path / "runner.mjs"
+        runner.touch()
+        ruleset = tmp_path / "ruleset.mjs"
+        ruleset.touch()
+        spec_dir = tmp_path / "specs"
+        spec_dir.mkdir()
+        (spec_dir / "spec.json").touch()
+
+        class MockCompletedProcess:
+            returncode = 0
+            stdout = "invalid json{}"
+            stderr = ""
+
+        monkeypatch.setattr("subprocess.run", lambda *args, **kwargs: MockCompletedProcess())
+        adapter = SpectralAdapter(ruleset=ruleset, runner_path=runner)
+        with pytest.raises(SpectralOperationalError, match="Failed to parse runner output"):
+            adapter.run_lint(spec_dir)
+
+    def test_nonzero_runner_execution_raises_operational_error(self, monkeypatch, tmp_path):
+        monkeypatch.setattr("shutil.which", lambda x: "/usr/bin/node" if x == "node" else None)
+        runner = tmp_path / "runner.mjs"
+        runner.touch()
+        ruleset = tmp_path / "ruleset.mjs"
+        ruleset.touch()
+        spec_dir = tmp_path / "specs"
+        spec_dir.mkdir()
+        (spec_dir / "spec.json").touch()
+
+        class MockCompletedProcess:
+            returncode = 1
+            stdout = ""
+            stderr = "Some engine error"
+
+        monkeypatch.setattr("subprocess.run", lambda *args, **kwargs: MockCompletedProcess())
+        adapter = SpectralAdapter(ruleset=ruleset, runner_path=runner)
+        with pytest.raises(SpectralOperationalError, match="Spectral runner exited with code 1"):
+            adapter.run_lint(spec_dir)

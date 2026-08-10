@@ -933,6 +933,7 @@ jobs:
       - name: Commit and PR if changed
         env:
           GH_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -963,12 +964,12 @@ jobs:
           # Setup secure, ephemeral git credentials helper
           ASKPASS_PATH="${RUNNER_TEMP}/git-askpass-helper.sh"
           echo '#!/bin/sh' > "${ASKPASS_PATH}"
+          # shellcheck disable=SC2016
           echo 'echo "${GH_TOKEN}"' >> "${ASKPASS_PATH}"
           chmod 700 "${ASKPASS_PATH}"
           trap 'rm -f "${ASKPASS_PATH}"' EXIT
 
-          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push --force "https://github.com/${{ github.repository }}.git" "${BRANCH}"
-
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push --force "https://github.com/${GITHUB_REPOSITORY}.git" "${BRANCH}"
 
           # Reuse the open PR if there is one; --force above has already updated its head.
           if [ -z "$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[].number')" ]; then
@@ -1043,6 +1044,7 @@ jobs:
       - name: Open a PR if the published specs changed
         env:
           GH_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -1072,12 +1074,12 @@ jobs:
           # Setup secure, ephemeral git credentials helper
           ASKPASS_PATH="${RUNNER_TEMP}/git-askpass-helper.sh"
           echo '#!/bin/sh' > "${ASKPASS_PATH}"
+          # shellcheck disable=SC2016
           echo 'echo "${GH_TOKEN}"' >> "${ASKPASS_PATH}"
           chmod 700 "${ASKPASS_PATH}"
           trap 'rm -f "${ASKPASS_PATH}"' EXIT
 
-          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push "https://github.com/${{ github.repository }}.git" "${BRANCH}"
-
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push "https://github.com/${GITHUB_REPOSITORY}.git" "${BRANCH}"
 
           gh pr create \
             --title "chore: publish regenerated release/specs" \

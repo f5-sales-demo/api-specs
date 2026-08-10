@@ -1,8 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
-import { pathToFileURL } from "node:url";
-import corePkg from "@stoplight/spectral-core";
-import parsersPkg from "@stoplight/spectral-parsers";
+import fs from 'node:fs';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+import corePkg from '@stoplight/spectral-core';
+import parsersPkg from '@stoplight/spectral-parsers';
 
 const { Spectral, Document } = corePkg;
 const { Json } = parsersPkg;

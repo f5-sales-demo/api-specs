@@ -69,44 +69,62 @@ def map_violation_to_discrepancy(violation: dict[str, Any]) -> Discrepancy:
     )
 
 
-class SpectralAdapter:
-    """Run Spectral CLI and convert output to pipeline-compatible format."""
+class SpectralOperationalError(Exception):
+    """Raised when there is an operational/infrastructure error in the Spectral pipeline."""
 
-    def __init__(self, ruleset: str = ".spectral.yaml") -> None:
-        """Initialize the Spectral adapter with a ruleset path."""
-        self.ruleset = ruleset
+
+class SpectralAdapter:
+    """Run Spectral via direct node runner and convert output to pipeline-compatible format."""
+
+    def __init__(
+        self, ruleset: str = ".spectral.mjs", runner_path: str | Path | None = None
+    ) -> None:
+        """Initialize the Spectral adapter with a ruleset path and optional custom runner path."""
+        self.ruleset = Path(ruleset)
+        self.runner_path = Path(runner_path) if runner_path else Path("scripts/spectral_runner.mjs")
 
     def run_lint(self, spec_dir: Path) -> list[dict[str, Any]]:
         """Run Spectral lint on all JSON specs in a directory."""
-        spectral_bin = shutil.which("spectral")
-        if spectral_bin is None:
-            console.print("[yellow]Warning: spectral binary not found[/yellow]")
-            return []
+        node_bin = shutil.which("node")
+        if node_bin is None:
+            raise SpectralOperationalError("node binary not found")
+
+        if not self.runner_path.exists():
+            raise SpectralOperationalError(f"spectral_runner.mjs not found at {self.runner_path}")
+
+        if not self.ruleset.exists():
+            raise SpectralOperationalError(f"ruleset file not found at {self.ruleset}")
 
         spec_files = sorted(spec_dir.glob("*.json"))
         spec_files = [f for f in spec_files if f.name.startswith(".") is False]
         if len(spec_files) == 0:
-            console.print(f"[yellow]No JSON spec files found in {spec_dir}[/yellow]")
-            return []
+            raise SpectralOperationalError(f"No JSON spec files found in {spec_dir}")
 
         file_args = [str(f) for f in spec_files]
         cmd = [
-            spectral_bin,
-            "lint",
-            *file_args,
-            "-f",
-            "json",
+            node_bin,
+            str(self.runner_path),
             "--ruleset",
-            self.ruleset,
+            str(self.ruleset),
+            *file_args,
         ]
 
         console.print(f"[dim]Running Spectral on {len(spec_files)} specs...[/dim]")
         result = subprocess.run(cmd, capture_output=True, text=True, check=False)  # noqa: S603
 
-        if result.stdout.strip():
+        if result.returncode != 0:
+            raise SpectralOperationalError(
+                f"Spectral runner exited with code {result.returncode}: {result.stderr.strip()}"
+            )
+
+        if not result.stdout.strip():
+            return []
+
+        try:
             violations: list[dict[str, Any]] = json.loads(result.stdout)
             return violations
-        return []
+        except json.JSONDecodeError as e:
+            raise SpectralOperationalError(f"Failed to parse runner output as JSON: {e}") from e
 
     def write_report(
         self,
@@ -238,34 +256,38 @@ def main() -> int:
         console.print("[dim]Spectral linting disabled in config[/dim]")
         return 0
 
-    ruleset = spectral_config.get("ruleset", ".spectral.yaml")
+    ruleset = spectral_config.get("ruleset", ".spectral.mjs")
     adapter = SpectralAdapter(ruleset=ruleset)
 
-    if args.mode == "discover":
-        spec_dir = args.spec_dir or Path(
-            config.get("transform", {}).get("output_dir", "specs/transformed")
-        )
-        output = args.output or Path("reports/spectral_report.json")
+    try:
+        if args.mode == "discover":
+            spec_dir = args.spec_dir or Path(
+                config.get("transform", {}).get("output_dir", "specs/transformed")
+            )
+            output = args.output or Path("reports/spectral_report.json")
+
+            violations = adapter.run_lint(spec_dir)
+            adapter.write_report(violations, output)
+
+            console.print(f"[bold]Spectral discover: {len(violations)} violations found[/bold]")
+            return 0
+
+        # gate mode
+        spec_dir = args.spec_dir or Path("release/specs")
+        output = args.output or Path("reports/spectral_gate_report.json")
+        gate_config = spectral_config.get("gate", {})
+        max_errors = gate_config.get("max_errors")
+        max_warnings = gate_config.get("max_warnings")
 
         violations = adapter.run_lint(spec_dir)
         adapter.write_report(violations, output)
 
-        console.print(f"[bold]Spectral discover: {len(violations)} violations found[/bold]")
+        if adapter.check_gate(violations, max_errors, max_warnings) is False:
+            return 1
         return 0
-
-    # gate mode
-    spec_dir = args.spec_dir or Path("release/specs")
-    output = args.output or Path("reports/spectral_gate_report.json")
-    gate_config = spectral_config.get("gate", {})
-    max_errors = gate_config.get("max_errors")
-    max_warnings = gate_config.get("max_warnings")
-
-    violations = adapter.run_lint(spec_dir)
-    adapter.write_report(violations, output)
-
-    if adapter.check_gate(violations, max_errors, max_warnings) is False:
-        return 1
-    return 0
+    except SpectralOperationalError as e:
+        console.print(f"[red]Operational Error: {e}[/red]", style="bold red")
+        return 2
 
 
 if __name__ == "__main__":

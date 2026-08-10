@@ -4,8 +4,12 @@
   "private": true,
   "description": "Node tooling for the F5 XC OpenAPI spec pipeline. Spectral is the OAS3 lint gate; scripts/spectral_lint.py resolves it from PATH, which `npm ci` populates via node_modules/.bin.",
   "license": "Apache-2.0",
+  "type": "module",
   "devDependencies": {
-    "@stoplight/spectral-cli": "6.16.2"
+    "@stoplight/spectral-core": "1.23.1",
+    "@stoplight/spectral-rulesets": "1.22.7",
+    "@stoplight/spectral-parsers": "1.0.5",
+    "@stoplight/spectral-functions": "1.10.5"
   },
   "overrides": {
     "fast-uri": "3.1.5"

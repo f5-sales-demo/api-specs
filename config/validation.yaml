@@ -117,7 +117,7 @@ release:
 # Spectral OAS3 Linting Configuration
 spectral:
   enabled: true
-  ruleset: "spectral-pipeline.yaml"
+  ruleset: "spectral-pipeline.mjs"
   auto_fix:
     oas3-api-servers: true
     info-contact: true

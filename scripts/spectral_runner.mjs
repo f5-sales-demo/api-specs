@@ -1,9 +1,10 @@
-import fs from "fs";
-import path from "path";
-import { pathToFileURL } from "url";
+import fs from "node:fs";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
 import corePkg from "@stoplight/spectral-core";
-const { Spectral, Document } = corePkg;
 import parsersPkg from "@stoplight/spectral-parsers";
+
+const { Spectral, Document } = corePkg;
 const { Json } = parsersPkg;
 
 async function main() {
@@ -12,7 +13,7 @@ async function main() {
   const files = [];
 
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--ruleset") {
+    if (args[i] === '--ruleset') {
       rulesetPath = args[i + 1];
       i++;
     } else {
@@ -21,12 +22,12 @@ async function main() {
   }
 
   if (!rulesetPath) {
-    console.error("Error: --ruleset parameter is required");
+    console.error('Error: --ruleset parameter is required');
     process.exit(2);
   }
 
   if (files.length === 0) {
-    console.error("Error: At least one specification file must be specified");
+    console.error('Error: At least one specification file must be specified');
     process.exit(2);
   }
 
@@ -45,7 +46,7 @@ async function main() {
   try {
     spectral.setRuleset(ruleset);
   } catch (err) {
-    console.error("Error setting Spectral ruleset:", err);
+    console.error('Error setting Spectral ruleset:', err);
     process.exit(2);
   }
 
@@ -58,7 +59,7 @@ async function main() {
       process.exit(2);
     }
 
-    const content = fs.readFileSync(resolvedFilePath, "utf8");
+    const content = fs.readFileSync(resolvedFilePath, 'utf8');
     try {
       const document = new Document(content, Json, file);
       const findings = await spectral.run(document);
@@ -82,6 +83,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("Fatal error:", err);
+  console.error('Fatal error:', err);
   process.exit(2);
 });

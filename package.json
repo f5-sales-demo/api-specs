@@ -2,7 +2,7 @@
   "name": "@f5-sales-demo/api-specs",
   "version": "0.0.0",
   "private": true,
-  "description": "Node tooling for the F5 XC OpenAPI spec pipeline. Spectral is the OAS3 lint gate; scripts/spectral_lint.py resolves it from PATH, which `npm ci` populates via node_modules/.bin.",
+  "description": "Node tooling for the F5 XC OpenAPI spec pipeline. Spectral is the OAS3 lint gate; scripts/spectral_lint.py executes the Node.js API runner scripts/spectral_runner.mjs.",
   "license": "Apache-2.0",
   "type": "module",
   "devDependencies": {

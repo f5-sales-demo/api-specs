@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { pathToFileURL } from "url";
 import corePkg from "@stoplight/spectral-core";
 const { Spectral, Document } = corePkg;
 import parsersPkg from "@stoplight/spectral-parsers";
@@ -30,12 +31,13 @@ async function main() {
   }
 
   const resolvedRulesetPath = path.resolve(rulesetPath);
+  const fileUrlPath = pathToFileURL(resolvedRulesetPath).href;
   let ruleset;
   try {
-    const rulesetModule = await import(resolvedRulesetPath);
+    const rulesetModule = await import(fileUrlPath);
     ruleset = rulesetModule.default;
   } catch (err) {
-    console.error(`Error loading ruleset from ${resolvedRulesetPath}:`, err);
+    console.error(`Error loading ruleset from ${fileUrlPath}:`, err);
     process.exit(2);
   }
 

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.cluster",
     "description": "cluster object represent common set of endpoints (providers of service) that can serve given route for virtual_host\nCluster has list of references to Endpoint which forms the set\nCluster has common properties for this collection\n * Reference to healthcheck object\n * load balancer algorithm\n * Circuit breaker based on\n    * Number of concurrent connections\n    * Outstanding requests\n    * Number of retries\n * Subset of endpoints\n * TLS parameter for the endpoints\n * Protocol Timeouts",
-    "version": "2026.07.30",
+    "version": "2026.08.11",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

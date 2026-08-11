@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.workload",
     "description": "Workload is used to configure and deploy a workload in Virtual Kubernetes. A workload can be\neither a service or stateful service or a batch job. Services and jobs can be deployed on\nregional edges or customer sites. Services can be exposed in-cluster or by L7 or L4\nload balancer on Internet or on sites using an advertise policy.",
-    "version": "2026.07.30",
+    "version": "2026.08.11",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

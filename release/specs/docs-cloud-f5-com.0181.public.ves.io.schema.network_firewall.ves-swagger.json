@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.network_firewall",
     "description": "Network Firewall is applicable when referred to by a Fleet. The Network Firewall will be applied to all\nsites that are member of the referring Fleet.\n\nIt is applied on all virtual networks that are valid on this site that get instantiated due to fleet object.\nNetwork Firewall defines following,\n- network_policy_set - L3/L4 policies to be applied in all sites that are member of the fleet\n- forward_proxy_policy_set - L7 firewall to be applied in all sites that are member of the fleet\n- fast_acl_set - List of Fast ACL set to be applied in all sites that are member of the fleet.",
-    "version": "2026.07.30",
+    "version": "2026.08.11",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

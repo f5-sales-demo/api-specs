@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tunnel",
     "description": "Tunnel configuration allows user to specify parameters for configuring static tunnels.\nConfiguration involves specification of encapsulation and related parameters to be used\nfor this tunnel\nPayload traffic which will be encapsulated to go on tunnel belongs to a network which is derived\nby looking at tunnel network interface to which this tunnel is attached. IOW VN of referring network\ninterface is the network from which payload is sent inside the tunnel\nNote: For tunnel configuration to come into effect it has to be attached to a tunnel network interface\n\nConfiguration Parameters\n- Tunnel Type - Supported encapsulations are IPSEC\n- Local IP Address - Provides local source IP for tunnel and virtual network type selection for transporting encapsulated packets\n- Remote IP Address - IP used for remote in destination of encapsulated packet\n- Tunnel Params - Involves configuration for supported tunnel type i.e. IPSEC\n\nIPSec configuration params\n- Ipsec PSK - pre shared key to be used by IKE to establish SA",
-    "version": "2026.07.30",
+    "version": "2026.08.11",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.cloud_region",
     "description": "Cloud Region contains tenant specific configuration\nobject. Users cannot create/delete these objects. They will be internally created\nor deleted whenever the corresponding cloud_region_region object is created/deleted\nand possibly based on tenant configuration (e.g. Cloud Region feature may be disabled\nfor some tenants)",
-    "version": "2026.07.30",
+    "version": "2026.08.11",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

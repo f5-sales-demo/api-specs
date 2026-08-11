@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.k8s_pod_security_admission",
     "description": "Pod security admission allows users to enforce Pod Security Standards",
-    "version": "2026.07.30",
+    "version": "2026.08.11",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

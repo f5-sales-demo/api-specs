@@ -38,7 +38,7 @@ concurrency:
 jobs:
   validate:
     name: Validate Specs
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: f5xc-live-validation
     permissions:
       contents: read # Checks out the exact source and tag history used as validation inputs.
@@ -237,7 +237,7 @@ jobs:
   release-metadata:
     name: Determine Release Metadata
     needs: validate
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     permissions:
       contents: read
     outputs:
@@ -317,7 +317,7 @@ jobs:
   build-release-candidate:
     name: Build Release Candidate (${{ matrix.candidate }})
     needs: [validate, release-metadata]
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     permissions:
       contents: read
     strategy:
@@ -385,7 +385,7 @@ jobs:
   check-release-needed:
     name: Check if Release Needed
     needs: [validate, release-metadata, build-release-candidate]
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     # Reads the latest immutable release and downloads its exact asset for a
     # semantic comparison. Publication remains in the separate release job.
     permissions:
@@ -482,7 +482,7 @@ jobs:
     name: Create Release
     needs: [validate, check-release-needed]
     if: needs.check-release-needed.outputs.should_publish == 'true'
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: repository-settings
     permissions:
       contents: write # Creates the exact tag and immutable GitHub release asset.
@@ -625,7 +625,7 @@ jobs:
     # deliberately separate from `release` rather than a step inside it, so
     # release publication and downstream delivery have separate permissions.
     if: needs.release.result == 'success'
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: api-specs-enriched-release-delivery
     # The cross-repo dispatch authenticates with a PAT because a repository's
     # own GITHUB_TOKEN cannot dispatch elsewhere. GITHUB_TOKEN writes only the
@@ -729,7 +729,7 @@ jobs:
     name: Skip Release (No Changes)
     needs: [validate, check-release-needed]
     if: needs.check-release-needed.outputs.should_publish == 'false'
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     # Writes only to the step summary.
     permissions:
       contents: read
@@ -766,7 +766,7 @@ jobs:
     # deliberately outside this producer/release tracker and has independent
     # ownership.
     if: ${{ always() }}
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     # Opens, updates or closes the single pipeline-failure tracking issue.
     permissions:
       contents: read # Retains the workflow's read-only repository baseline.
@@ -880,7 +880,7 @@ jobs:
   update-docs:
     name: Update Documentation
     needs: [validate]
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: api-specs-publication
     permissions:
       contents: write # Pushes the generated documentation branch.
@@ -984,7 +984,7 @@ jobs:
   commit-release-specs:
     name: Publish Regenerated Specs
     needs: [validate]
-    runs-on: [self-hosted, Linux, X64, api-specs]
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: api-specs-publication
     permissions:
       contents: write # Pushes the regenerated specification artifact branch.

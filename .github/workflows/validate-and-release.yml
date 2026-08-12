@@ -38,7 +38,7 @@ concurrency:
 jobs:
   validate:
     name: Validate Specs
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: f5xc-live-validation
     permissions:
       contents: read # Checks out the exact source and tag history used as validation inputs.
@@ -82,7 +82,7 @@ jobs:
           echo "${GITHUB_WORKSPACE}/node_modules/.bin" >> "${GITHUB_PATH}"
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -237,7 +237,7 @@ jobs:
   release-metadata:
     name: Determine Release Metadata
     needs: validate
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     permissions:
       contents: read
     outputs:
@@ -257,7 +257,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -268,7 +268,7 @@ jobs:
           uv sync --frozen
 
       - name: Download spec metadata
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: spec-metadata
           path: specs/original/
@@ -317,7 +317,7 @@ jobs:
   build-release-candidate:
     name: Build Release Candidate (${{ matrix.candidate }})
     needs: [validate, release-metadata]
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     permissions:
       contents: read
     strategy:
@@ -337,7 +337,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -353,13 +353,13 @@ jobs:
           mkdir -p release/specs reports
 
       - name: Download reconciled specs
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: reconciled-specs
           path: release/specs/
 
       - name: Download validation reports
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: validation-reports
           path: reports/
@@ -385,7 +385,7 @@ jobs:
   check-release-needed:
     name: Check if Release Needed
     needs: [validate, release-metadata, build-release-candidate]
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     # Reads the latest immutable release and downloads its exact asset for a
     # semantic comparison. Publication remains in the separate release job.
     permissions:
@@ -413,7 +413,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -424,13 +424,13 @@ jobs:
           uv sync --frozen
 
       - name: Download candidate one
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: release-candidate-one
           path: release/candidate-one/
 
       - name: Download candidate two
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: release-candidate-two
           path: release/candidate-two/
@@ -482,7 +482,7 @@ jobs:
     name: Create Release
     needs: [validate, check-release-needed]
     if: needs.check-release-needed.outputs.should_publish == 'true'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: repository-settings
     permissions:
       contents: write # Creates the exact tag and immutable GitHub release asset.
@@ -501,7 +501,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -512,13 +512,13 @@ jobs:
           uv sync --frozen
 
       - name: Download release candidate
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: release-candidate
           path: release/
 
       - name: Download semantic release decision
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: semantic-release-decision
           path: reports/
@@ -625,7 +625,7 @@ jobs:
     # deliberately separate from `release` rather than a step inside it, so
     # release publication and downstream delivery have separate permissions.
     if: needs.release.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: api-specs-enriched-release-delivery
     # The cross-repo dispatch authenticates with a PAT because a repository's
     # own GITHUB_TOKEN cannot dispatch elsewhere. GITHUB_TOKEN writes only the
@@ -646,7 +646,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -729,7 +729,7 @@ jobs:
     name: Skip Release (No Changes)
     needs: [validate, check-release-needed]
     if: needs.check-release-needed.outputs.should_publish == 'false'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     # Writes only to the step summary.
     permissions:
       contents: read
@@ -766,7 +766,7 @@ jobs:
     # deliberately outside this producer/release tracker and has independent
     # ownership.
     if: ${{ always() }}
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     # Opens, updates or closes the single pipeline-failure tracking issue.
     permissions:
       contents: read # Retains the workflow's read-only repository baseline.
@@ -774,7 +774,7 @@ jobs:
 
     steps:
       - name: Reconcile the failure tracker with this run
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           PIPELINE_UNHEALTHY: >-
             ${{ contains(needs.*.result, 'failure') ||
@@ -880,7 +880,7 @@ jobs:
   update-docs:
     name: Update Documentation
     needs: [validate]
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: api-specs-publication
     permissions:
       contents: write # Pushes the generated documentation branch.
@@ -908,7 +908,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -919,7 +919,7 @@ jobs:
           uv sync --frozen
 
       - name: Download validation reports
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: validation-reports
           path: reports/
@@ -984,7 +984,7 @@ jobs:
   commit-release-specs:
     name: Publish Regenerated Specs
     needs: [validate]
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
     environment: api-specs-publication
     permissions:
       contents: write # Pushes the regenerated specification artifact branch.
@@ -1027,7 +1027,7 @@ jobs:
           mkdir -p release/specs
 
       - name: Download reconciled specs
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: reconciled-specs
           path: release/specs/
@@ -1036,7 +1036,7 @@ jobs:
       # `include-hidden-files`, so the dot-prefixed provenance record is absent from it. The
       # artifact must carry it: the drift gate reads spec_date from here to pin info.version.
       - name: Download spec metadata
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: spec-metadata
           path: release/specs/

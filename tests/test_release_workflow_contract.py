@@ -295,7 +295,13 @@ def test_release_builder_toolchain_is_exact_locked_and_reproduced_in_fresh_envir
     assert check["permissions"]["deployments"] == "read"
     for job_name in ("release-metadata", "build-release-candidate", "check-release-needed"):
         job = jobs[job_name]
-        assert job["runs-on"] == "ubuntu-latest"
+        assert job["runs-on"] == [
+            "self-hosted",
+            "Linux",
+            "X64",
+            "api-specs",
+            "ubuntu-24.04",
+        ]
         install = next(step for step in job["steps"] if step["name"] == "Sync locked environment")
         assert "uv sync --frozen" in install["run"]
         assert "pip install" not in install["run"]

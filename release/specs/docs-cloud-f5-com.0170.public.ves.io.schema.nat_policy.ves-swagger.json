@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.nat_policy",
     "description": "NAT Policy object represents the configuration of Network Address Translation parameters on\nF5XC Customer Edge sites. The following properties can be configured in this object:\n     Site where the NAT objects are applicable\n     Ingress points where the NAT policies need to be applied\n     Match criteria of the packet to apply NAT Policy\n     Action to take if the Match criteria passes",
-    "version": "2026.08.11",
+    "version": "2026.08.12",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

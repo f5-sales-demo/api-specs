@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.forward_proxy_policy",
     "description": "Forward Proxy policy defines access control rules for connections going via forward\nProxy. It is view type of config object that uses service policy mechanism to achieve\nRequired functionality.\n\nView will create following child objects.\n\n* Service Policy\n* Service Policy Rule",
-    "version": "2026.08.11",
+    "version": "2026.08.12",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

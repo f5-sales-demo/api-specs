@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.registration",
     "description": "registration API(s) are used by Customer edge site to register itself with volterra edge cloud.\nEvery node in given site is represented by it's registration.\nregistration must have unique hostname for given cluster_name. Registration state is changed to RETIRED in order to decommission node.\nRegistration can't be changed by user after creation.\n\nRegistration contains HA information about node in infra section\nand site which belongs to in passport.",
-    "version": "2026.08.11",
+    "version": "2026.08.12",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

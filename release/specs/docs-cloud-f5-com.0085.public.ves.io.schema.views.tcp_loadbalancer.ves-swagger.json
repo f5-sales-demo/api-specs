@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.tcp_loadbalancer",
     "description": "TCP load balancer view defines a required parameters that can be used in CRUD, to create and manage TCP load balancer.\nIt can be used to create TCP load balancer and TCP load balancer with SNI.\n\nView will create following child objects.\n\n* Virtual-host\n* default route\n* clusters\n* endpoints\n* advertise policy",
-    "version": "2026.08.11",
+    "version": "2026.08.12",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

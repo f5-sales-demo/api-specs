@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.log",
     "description": "Two types of logs are supported, viz, access logs and audit logs.\n  * Access logs are sampled records of API calls made to a virtual host. It contains\n    both the request and the response data with more context like application type,\n    user, request path, method, request body, response code, source,\n    destination, etc.,\n  * Audit logs provides audit of all configuration changes made in the system using\n    public APIs provided by Volterra. It contains both the request and response body\n    with additional context necessary for post-mortem analysis such as user, request path,\n    method, request body, response code, source, destination service, etc.,\nBoth the access logs and audit logs are used to find \"who did what and when and what was the result?\"\nwho - answered by user/user-agent in the log.\nwhat - answered by request url/method/body in the log.\nwhen - answered by timestamp in the log.\nresult - answered by response code in the log.",
-    "version": "2026.08.11",
+    "version": "2026.08.12",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

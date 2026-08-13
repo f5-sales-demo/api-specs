@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.ike1",
     "description": "IKE Phase1 profile mainly includes the following\n1. Encryption protocols to be used for IKE SA\n2. Authentication Protocols to be used for IKE SA\n3. DH group\n4. PRF\n5. Key lifetime etc",
-    "version": "2026.08.11",
+    "version": "2026.08.12",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.scim",
     "description": "This schema specification details Volterra's support for SCIM protocol.\nAdmin can use SCIM feature on top of SSO to enable automated provisioning of\nuser and user groups from external identity provider into the F5 saas platform.\nWith this feature, complete life cycle management of user and groups can be\nachieved from single source of truth which is managed by tenant's admin.\n\ncurrent protocol support is using schema version v2.0 https://datatracker.ietf.org/doc/html/rfc7643\n\nSCIM feature can be enabled part of SSO configuration (using RPC `UpdateScimIntegration` under oidc_provider resource)\nBy default, F5XC will not sync groups and users. Admin is required to set object identifier of group\nin external identity provider to corresponding user_group resource in volterra. Users with corresponding\ngroup membership if exist in external identity provider will be synced.",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

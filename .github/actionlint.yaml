@@ -23,6 +23,7 @@ self-hosted-runner:
     - docs-control
     - docs-icons
     - docs-theme
+    - fixture
     - i18n-core
     - marketplace
     - marketplace-claude-code
@@ -44,3 +45,11 @@ self-hosted-runner:
     - xcsh-chrome-extension
 
 config-variables: null
+
+paths:
+  .github/workflows/**/*.yml:
+    ignore:
+      - "SC2016:.+"
+  .github/workflows/enforce-repo-settings.yml:
+    ignore:
+      - 'property "repo_settings_token" is not defined'

@@ -23,6 +23,7 @@ self-hosted-runner:
     - docs-control
     - docs-icons
     - docs-theme
+    - fixture
     - i18n-core
     - marketplace
     - marketplace-claude-code

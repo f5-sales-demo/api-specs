@@ -160,13 +160,17 @@ def main(argv: list[str] | None = None) -> int:
         findings: list[tuple[str, IdentifierFinding]] = []
         for file in files:
             spec = json.loads(file.read_text(encoding="utf-8"))
-            findings.extend((file.name, finding) for finding in find_unsafe_identifiers(spec, policy))
+            findings.extend(
+                (file.name, finding) for finding in find_unsafe_identifiers(spec, policy)
+            )
     except (OSError, ValueError, json.JSONDecodeError) as error:
         print(f"Identifier release gate error: {error}", file=sys.stderr)
         return 2
     if findings:
         for filename, finding in findings:
-            print(f"::error file={filename}::[{finding.category}] realistic identifier ({finding.path})")
+            print(
+                f"::error file={filename}::[{finding.category}] realistic identifier ({finding.path})"
+            )
         print(f"Identifier release gate: {len(findings)} finding(s).", file=sys.stderr)
         return 1
     print("Identifier release gate: clean.")

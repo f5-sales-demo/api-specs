@@ -109,8 +109,8 @@ def sample_config() -> dict:
     return {
         "api": {
             "base_url": "https://test.example.com",
-            "tenant": "test-tenant",
-            "namespace": "test-namespace",
+            "tenant": "example-tenant",
+            "namespace": "example-namespace",
             "timeout": 30,
             "retries": 3,
         },

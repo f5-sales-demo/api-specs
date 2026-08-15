@@ -131,10 +131,10 @@ PHONE_FIELD_RE = re.compile(
     r"\s*[:=]\s*['\"]?(?P<value>\+?[0-9][0-9(). \-]{7,}[0-9])"
 )
 PERSON_FIELD_RE = re.compile(
-    r"(?i)(?:^|[,{\s])['\"]?"
+    r"(?i)(?:^|[,;{\s])['\"]?"
     r"(?P<key>full_name|first_name|last_name|given_name|family_name|display_name)"
-    r"['\"]?\s*(?P<separator>[:=])\s*(?P<quote>['\"`]?)"
-    r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
+    r"['\"]?\s*(?P<separator>[:=])\s*(?P<quote>\\['\"`]|['\"`])?"
+    r"(?P<value>(?:(?!\\[rn])[^'\"`#;,\r\n}\]])+)"
 )
 LOCALIZATION_BUNDLE_RE = re.compile(
     r"(?:bundle\.l10n|package\.nls)(?:\.[A-Za-z0-9-]+)?\.json$",
@@ -156,8 +156,8 @@ IDENTITY_FIELD_RE = re.compile(
     r"(?P<key_open>[*_~`'\"]*)"
     r"(?P<key>tenant(?:_name|_id)?|customer(?:_name|_id)?|account(?:_name|_id)?|"
     r"subscription(?:_name|_id)|project(?:_name|_id)|namespace)"
-    r"(?P<key_close>[*_~`'\"]*)\s*(?P<separator>[:=])\s*(?P<quote>['\"`]?)"
-    r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
+    r"(?P<key_close>[*_~`'\"]*)\s*(?P<separator>[:=])\s*(?P<quote>\\['\"`]|['\"`])?"
+    r"(?P<value>(?:(?!\\[rn])[^'\"`#;,\r\n}\]])+)"
 )
 PROSE_IDENTITY_QUANTIFIER_RE = re.compile(
     r"(?:^|\s)(?:any|each|every|no)$",
@@ -478,6 +478,7 @@ class LineScanContext:
     """Format-aware state shared by the line-oriented detectors."""
 
     source_code: bool
+    structured_data: bool
     jq_spans: tuple[tuple[int, int], ...]
     localization_spans: tuple[tuple[int, int], ...]
     source_structure: str
@@ -743,7 +744,10 @@ def safe_home_user(user: str) -> bool:
 
 def normalized_value(value: str) -> str:
     """Remove serialization punctuation surrounding a structured value."""
-    return value.strip().strip("'\"").strip()
+    value = value.strip()
+    if value.startswith('\\"') and value.endswith('\\"'):
+        value = value[2:-2]
+    return value.strip("'\"").strip().rstrip(";,!?").strip()
 
 
 def serialization_nesting(text: str) -> int:
@@ -1024,6 +1028,24 @@ def quoted_structured_field_value(
     return line[start:]
 
 
+def escaped_quoted_structured_field_value(line: str, start: int, quote: str) -> str:
+    """Read a scalar quoted inside a JSON-serialized description string."""
+    index = start
+    while index < len(line):
+        if line[index] != quote:
+            index += 1
+            continue
+        backslashes = 0
+        before = index - 1
+        while before >= start and line[before] == "\\":
+            backslashes += 1
+            before -= 1
+        if backslashes == 1:
+            return line[start : index - 1]
+        index += 1
+    return line[start:]
+
+
 def placeholder_terminates_structured_value(
     path: str,
     line: str,
@@ -1052,7 +1074,16 @@ def structured_field_value(path: str, line: str, match: re.Match[str]) -> str:
     start = match.start("value")
     quote = match.group("quote")
     if quote:
+        if quote.startswith("\\"):
+            return escaped_quoted_structured_field_value(line, start, quote[-1])
         return quoted_structured_field_value(line, start, quote)
+
+    raw_value = match.group("value")
+    if raw_value.endswith("\\"):
+        # The line scanner is looking at a JSON-escaped closing quote.  Treat
+        # the preceding scalar as the value; a non-placeholder scalar is
+        # still rejected by the caller.
+        return raw_value[:-1]
 
     suffix = PurePosixPath(path).suffix.lower()
     yaml = suffix in {".yaml", ".yml"}
@@ -1072,6 +1103,11 @@ def structured_field_value(path: str, line: str, match: re.Match[str]) -> str:
     while index < len(line):
         character = line[index]
         if character in "}]`" or (character == "," and (not yaml or flow_context)):
+            break
+        # JSON description strings commonly serialize adjacent example fields
+        # with semicolons.  The delimiter ends this field value without making
+        # a literal after it safe: that next field is scanned independently.
+        if character == ";" and suffix == ".json":
             break
         if character == "#" and (index == start or line[index - 1].isspace()):
             break
@@ -1165,7 +1201,10 @@ def is_structured_identity_field(path: str, line: str, match: re.Match[str]) -> 
     key_close = match.group("key_close")
     whole_inline_field = key_open == "`" and "`" in line[match.end() :]
     balanced_wrappers = sorted(key_open) == sorted(key_close)
-    if not balanced_wrappers and not whole_inline_field:
+    serialized_json_field = (
+        PurePosixPath(path).suffix.lower() == ".json" and key_open in {"'", '"'} and not key_close
+    )
+    if not balanced_wrappers and not whole_inline_field and not serialized_json_field:
         return False
     if match.group("field_prefix") == "." and match.group("separator") != "=":
         return False
@@ -1954,6 +1993,8 @@ def scan_contacts(
         for match in PERSON_FIELD_RE.finditer(line):
             if match_is_in_spans(match, context.localization_spans):
                 continue
+            if structured_container_value(path, match, context):
+                continue
             value = structured_field_value(path, line, match)
             if NUMERIC_LITERAL_RE.fullmatch(value):
                 continue
@@ -1965,7 +2006,7 @@ def scan_contacts(
                 value_override=value,
             ):
                 continue
-            if not placeholder_value(value):
+            if not placeholder_value(normalized_value(value)):
                 if match.group("key").lower() == "display_name":
                     add_review_finding(
                         findings,
@@ -2016,6 +2057,8 @@ def scan_structured_identity(
     for match in IDENTITY_FIELD_RE.finditer(line):
         if match_is_in_spans(match, context.localization_spans):
             continue
+        if structured_container_value(path, match, context):
+            continue
         if not is_structured_identity_field(path, line, match):
             continue
         value = structured_field_value(path, line, match)
@@ -2047,7 +2090,7 @@ def scan_structured_identity(
             safe_alias = aliases_at_value.get(alias.group(1), False)
         else:
             safe_alias = None
-        if jq_literal or not (safe_alias if alias else placeholder_value(value)):
+        if jq_literal or not (safe_alias if alias else placeholder_value(normalized_value(value))):
             add_finding(
                 findings,
                 path=path,
@@ -2057,6 +2100,8 @@ def scan_structured_identity(
             )
 
     for match in ADDRESS_FIELD_RE.finditer(line):
+        if structured_container_value(path, match, context):
+            continue
         value = structured_field_value(path, line, match)
         if is_nonliteral_code_expression(
             line,
@@ -2066,7 +2111,7 @@ def scan_structured_identity(
             value_override=value,
         ):
             continue
-        if not placeholder_value(value):
+        if not placeholder_value(normalized_value(value)):
             add_finding(
                 findings,
                 path=path,
@@ -2074,6 +2119,23 @@ def scan_structured_identity(
                 category="personal-record",
                 message=f"{match.group('key')} contains a literal personal value",
             )
+
+
+def structured_container_value(
+    path: str,
+    match: re.Match[str],
+    context: LineScanContext,
+) -> bool:
+    """Return whether a structured field begins an object or array value.
+
+    A schema declaration such as ``\"namespace\": {\"type\": \"string\"}``
+    names an identity-shaped field but stores no identifier.  The scanner must
+    inspect scalar values and serialized examples, not mistake JSON/YAML
+    containers for a literal value.
+    """
+    if not context.structured_data or match.group("quote"):
+        return False
+    return match.group("value").lstrip().startswith(("{", "["))
 
 
 def scan_query_parameters(
@@ -2389,6 +2451,7 @@ def scan_text(path: str, text: str, findings: set[Finding]) -> None:
         suffix_is_source = suffix in SOURCE_CODE_SUFFIXES
         fence_is_source = effective_language in SOURCE_FENCE_LANGUAGES
         source_code = suffix_is_source or fence_is_source
+        structured_data = suffix == ".json" or effective_language in {"json", "yaml", "yml"}
         line_source_brace_depth = source_brace_depth
         source_structure = ""
         if source_code:
@@ -2442,6 +2505,7 @@ def scan_text(path: str, text: str, findings: set[Finding]) -> None:
 
         context = LineScanContext(
             source_code=source_code,
+            structured_data=structured_data,
             jq_spans=spans,
             localization_spans=localization_strings.get(line_number, ()),
             source_structure=source_structure,

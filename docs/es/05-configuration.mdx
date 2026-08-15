@@ -2,7 +2,7 @@
 title: Referencia de Configuración
 description: Referencia para los archivos de configuración validation.yaml y endpoints.yaml
 i18n:
-  sourceHash: 57925f07d3c8
+  sourceHash: fd479ebd3b67
   translator: machine
 ---
 
@@ -58,6 +58,17 @@ download:
 | `url` | URL del paquete oficial de especificaciones OpenAPI de F5 XC (ZIP). |
 | `output_dir` | Directorio donde se almacenan las especificaciones extraídas. |
 | `etag_cache` | Archivo que almacena el ETag HTTP para descargas condicionales. |
+
+### Entrada de validación en vivo
+
+```yaml
+validation:
+  input_dir: "specs/transformed"
+```
+
+Las pruebas en vivo resuelven sus dominios semánticos a partir de la salida de transformación corregida.
+Los archivos sin procesar en `specs/original/` siguen siendo los bytes de entrada ascendentes inmutables y
+nunca se presentan como el contrato de API intermedio corregido.
 
 ### Categorías de Validación
 
@@ -127,7 +138,7 @@ reconciliation:
 | Campo | Descripción |
 |-------|-------------|
 | `priority` | Orden de preferencia cuando múltiples fuentes de datos discrepan. |
-| `fix_strategies` | Asigna a cada tipo de discrepancia su acción de corrección. Consulte [Correcciones Aplicadas](/api-specs/es/03-fixes-applied/). |
+| `fix_strategies` | Asigna a cada tipo de discrepancia su acción de corrección. Consulte [Correcciones Aplicadas](/api-specs/en/03-fixes-applied/). |
 
 ### Configuración de Spectral
 
@@ -149,7 +160,7 @@ spectral:
   contact:
     name: "F5 Distributed Cloud"
     url: "https://docs.cloud.f5.com"
-    email: "support@f5.com"
+    email: "support@example.com"
   servers:
     - url: "https://{tenant}.console.ves.volterra.io"
       description: "F5 Distributed Cloud API"

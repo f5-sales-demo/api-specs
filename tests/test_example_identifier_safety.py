@@ -27,7 +27,9 @@ def test_sanitizer_replaces_uuid_and_private_address_examples_deterministically(
     assert sanitize_identifier_examples(sanitized) == sanitized
 
 
-def test_release_gate_rejects_realistic_identifiers_but_allows_documented_synthetic_values() -> None:
+def test_release_gate_rejects_realistic_identifiers_but_allows_documented_synthetic_values() -> (
+    None
+):
     spec = {
         "description": "123e4567-e89b-42d3-a456-426614174000 10.24.0.8",
         "safe": "00000000-0000-4000-8000-320159ebe321 192.0.2.8",

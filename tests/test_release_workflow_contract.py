@@ -337,12 +337,15 @@ def test_release_workflow_runs_the_identifier_example_gate_after_reconciliation(
         index for index, step in enumerate(steps) if step["name"] == "Spectral quality gate"
     )
     identifier_index = next(
-        index for index, step in enumerate(steps) if step["name"] == "Identifier example release gate"
+        index
+        for index, step in enumerate(steps)
+        if step["name"] == "Identifier example release gate"
     )
     assert spectral_index < identifier_index
-    assert "python -m scripts.example_identifier_safety --spec-dir release/specs" in steps[
-        identifier_index
-    ]["run"]
+    assert (
+        "python -m scripts.example_identifier_safety --spec-dir release/specs"
+        in steps[identifier_index]["run"]
+    )
 
 
 def test_every_direct_action_in_release_workflow_is_commit_pinned():

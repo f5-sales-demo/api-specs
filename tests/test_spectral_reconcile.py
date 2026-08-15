@@ -30,7 +30,7 @@ def spectral_config():
             "contact": {
                 "name": "F5 Distributed Cloud",
                 "url": "https://docs.cloud.f5.com",
-                "email": "support@f5.com",
+                "email": "support@example.com",
             },
             "servers": [
                 {

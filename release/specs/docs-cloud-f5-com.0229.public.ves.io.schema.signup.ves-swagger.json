@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -2185,10 +2185,10 @@
           },
           "email": {
             "type": "string",
-            "description": " email of the customer (ideally someone who's responsible for the company\n account)\n obsolete\n\nExample: ` \"customer@email.com\"`",
+            "description": " email of the customer (ideally someone who's responsible for the company\n account)\n obsolete\n\nExample: ` \"dana@example.com\"`",
             "title": "email",
             "x-displayname": "Email",
-            "x-ves-example": "customer@email.com"
+            "x-ves-example": "dana@example.com"
           },
           "first_name": {
             "type": "string",
@@ -2551,10 +2551,10 @@
           },
           "email": {
             "type": "string",
-            "description": " email of the user requesting for\n\nExample: ` \"admin@email.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " email of the user requesting for\n\nExample: ` \"dana@example.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "email of the user",
             "x-displayname": "email",
-            "x-ves-example": "admin@email.com",
+            "x-ves-example": "dana@example.com",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -2725,10 +2725,10 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": " email of the user requesting for\n\nExample: ` \"admin@email.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " email of the user requesting for\n\nExample: ` \"dana@example.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "email of the user",
             "x-displayname": "Email",
-            "x-ves-example": "admin@email.com",
+            "x-ves-example": "dana@example.com",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"

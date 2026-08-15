@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any
 import yaml
 from rich.console import Console
 
+from .check_pii import EMAIL_RE, IDENTITY_FIELD_RE, PERSON_FIELD_RE, placeholder_value, safe_email
 from .example_identifier_safety import sanitize_identifier_examples
 from .utils.nullable_response import apply_nullable_response_corrections
 from .utils.spec_loader import save_spec_to_file
@@ -767,6 +768,75 @@ def sanitize_example_identifiers(
 ) -> dict:
     """Replace realistic UUID and private-address examples with synthetic values."""
     return sanitize_identifier_examples(spec)
+
+
+def _replace_structured_literals(
+    text: str,
+    pattern: re.Pattern[str],
+    replacement_for_key: Callable[[str], str],
+) -> str:
+    """Replace scalar documentation values while preserving their field syntax."""
+    pieces: list[str] = []
+    cursor = 0
+    for match in pattern.finditer(text):
+        raw_value = match.group("value")
+        value = re.split(r"(?=[,;])", raw_value, maxsplit=1)[0]
+        if not value or placeholder_value(value):
+            continue
+        value_start = match.start("value")
+        value_end = value_start + len(value)
+        pieces.extend((text[cursor:value_start], replacement_for_key(match.group("key").lower())))
+        cursor = value_end
+    pieces.append(text[cursor:])
+    return "".join(pieces)
+
+
+def _sanitize_pii_text(text: str) -> str:
+    """Replace contact and identity literals with documented synthetic values."""
+
+    def replace_email(match: re.Match[str]) -> str:
+        return match.group(0) if safe_email(match.group(0)) else "dana@example.com"
+
+    text = EMAIL_RE.sub(replace_email, text)
+    text = _replace_structured_literals(text, PERSON_FIELD_RE, lambda _key: "Dana R.")
+
+    def identity_placeholder(key: str) -> str:
+        category = next(
+            (
+                candidate
+                for candidate in (
+                    "tenant",
+                    "customer",
+                    "account",
+                    "subscription",
+                    "project",
+                    "namespace",
+                )
+                if candidate in key
+            ),
+            "resource",
+        )
+        return f"example-{category}"
+
+    return _replace_structured_literals(text, IDENTITY_FIELD_RE, identity_placeholder)
+
+
+@register_transform("sanitize_pii_placeholders")
+def sanitize_pii_placeholders(
+    spec: dict,
+    _config: TransformConfig,
+    _filename: str,
+) -> dict:
+    """Remove contact, person, and customer literals from every emitted string."""
+
+    def sanitize(value: Any) -> Any:
+        if isinstance(value, dict):
+            return {key: sanitize(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [sanitize(item) for item in value]
+        return _sanitize_pii_text(value) if isinstance(value, str) else value
+
+    return sanitize(spec)
 
 
 @register_transform("inject_operation_descriptions")

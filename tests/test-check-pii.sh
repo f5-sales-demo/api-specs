@@ -172,6 +172,71 @@ git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm synthetic
 assert_clean "reserved synthetic values" "$repo" --scope head --mode enforce
 
+repo=$(new_repo schema-object-fields)
+cat >"${repo}/fixture.json" <<'EOF'
+{
+  "namespace": {"type": "string"},
+  "email": {"type": "string"},
+  "first_name": {"type": "string"},
+  "date_of_birth": {"type": "string"}
+}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm schema-object-fields
+assert_clean "object-valued schema fields are declarations, not PII values" "$repo" --scope head --mode enforce
+
+repo=$(new_repo serialized-placeholders)
+cat >"${repo}/fixture.json" <<'EOF'
+{"description": "first_name: Dana R.; namespace: example-namespace;"}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm serialized-placeholders
+assert_clean "approved placeholders followed by serialization punctuation remain clean" \
+  "$repo" --scope head --mode enforce
+
+repo=$(new_repo serialized-literal-after-placeholder)
+cat >"${repo}/fixture.json" <<'EOF'
+{"description": "first_name: Dana R.; last_name: Private Name"}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm serialized-literal-after-placeholder
+assert_single_finding "a later serialized person literal remains enforced" \
+  "$repo" person-name high --scope head --mode enforce
+
+repo=$(new_repo escaped-json-placeholders)
+cat >"${repo}/fixture.json" <<'EOF'
+{"description": "first_name: \"Dana R.\"; namespace: \"example-namespace\""}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm escaped-json-placeholders
+assert_clean "escaped JSON placeholder values remain clean" "$repo" --scope head --mode enforce
+
+repo=$(new_repo escaped-json-literal)
+cat >"${repo}/fixture.json" <<'EOF'
+{"description": "first_name: \"Private Name\""}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm escaped-json-literal
+assert_single_finding "escaped JSON literals remain enforced" \
+  "$repo" person-name high --scope head --mode enforce
+
+repo=$(new_repo escaped-inline-placeholder)
+cat >"${repo}/fixture.json" <<'EOF'
+{"description": "NAMESPACE: `\"example-namespace\"`"}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm escaped-inline-placeholder
+assert_clean "escaped inline-code placeholders remain clean" "$repo" --scope head --mode enforce
+
+repo=$(new_repo escaped-inline-literal)
+cat >"${repo}/fixture.json" <<'EOF'
+{"description": "NAMESPACE: `\"private-namespace\"`"}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm escaped-inline-literal
+assert_single_finding "escaped inline-code literals remain enforced" \
+  "$repo" customer-identifier high --scope head --mode enforce
+
 repo=$(new_repo shell-positional-identities)
 cat >"${repo}/fixture.sh" <<'EOF'
 NAMESPACE=$2

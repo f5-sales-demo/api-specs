@@ -27,7 +27,7 @@ def test_environment_is_the_only_live_target_authority(monkeypatch: pytest.Monke
         {
             "api": {
                 "base_url": "https://stale-config.example.invalid",
-                "namespace": "stale-config-namespace",
+                "namespace": "example-namespace",
             }
         }
     )
@@ -42,7 +42,7 @@ def test_connection_fails_when_configured_namespace_is_absent(
     auth = F5XCAuth(
         api_url="https://example.invalid",
         api_token="not-a-real-token",
-        namespace="required-namespace",
+        namespace="example-namespace",
     )
     response = SimpleNamespace(
         status_code=200,
@@ -59,11 +59,11 @@ def test_connection_accepts_only_the_configured_namespace(
     auth = F5XCAuth(
         api_url="https://example.invalid",
         api_token="not-a-real-token",
-        namespace="required-namespace",
+        namespace="example-namespace",
     )
     response = SimpleNamespace(
         status_code=200,
-        json=lambda: {"items": [{"name": "required-namespace"}]},
+        json=lambda: {"items": [{"name": "example-namespace"}]},
     )
     monkeypatch.setattr(auth, "get", lambda _path: response)
 

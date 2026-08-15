@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -1356,7 +1356,7 @@
           },
           {
             "name": "name",
-            "description": "Username\n\nx-example: \"user1@company.com\"\nThis is an optional field meant to be used as username.\nInside Volterra's UAM, email is already treated as user's username\nand as best practice, recommendation is to keep this same as email field.\nif not specified, this field will be set same as email field.",
+            "description": "Username\n\nx-example: \"dana@example.com\"\nThis is an optional field meant to be used as username.\nInside Volterra's UAM, email is already treated as user's username\nand as best practice, recommendation is to keep this same as email field.\nif not specified, this field will be set same as email field.",
             "in": "path",
             "required": true,
             "x-displayname": "Username",
@@ -1886,7 +1886,7 @@
       },
       "protobufAny": {
         "type": "object",
-        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = Dana R.;\n      string last_name = Dana R.;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
         "properties": {
           "type_url": {
             "type": "string",
@@ -2489,13 +2489,13 @@
           },
           "username": {
             "type": "array",
-            "description": " Username of the user that needs the role assigned.\n ideally this will be the email address of the user (which is by default treated as username)\n check Create RPC UserRoleRequest for more details.\n\nExample: ` \"user1@company.com\"`",
+            "description": " Username of the user that needs the role assigned.\n ideally this will be the email address of the user (which is by default treated as username)\n check Create RPC UserRoleRequest for more details.\n\nExample: ` \"dana@example.com\"`",
             "title": "Username",
             "items": {
               "type": "string"
             },
             "x-displayname": "Username",
-            "x-ves-example": "user1@company.com"
+            "x-ves-example": "dana@example.com"
           }
         }
       },
@@ -3382,12 +3382,12 @@
           },
           "username": {
             "type": "string",
-            "description": " Username of the user who should be associated with the group.\n\nExample: ` \"test@email.com\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 320\n  ves.io.schema.rules.string.min_bytes: 1\n",
+            "description": " Username of the user who should be associated with the group.\n\nExample: ` \"dana@example.com\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 320\n  ves.io.schema.rules.string.min_bytes: 1\n",
             "title": "Username",
             "minLength": 1,
             "maxLength": 320,
             "x-displayname": "Username",
-            "x-ves-example": "test@email.com",
+            "x-ves-example": "dana@example.com",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "320",
               "ves.io.schema.rules.string.min_bytes": "1"
@@ -3415,10 +3415,10 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": " user's email\n\nExample: ` \"user1@company.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " user's email\n\nExample: ` \"dana@example.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "email",
             "x-displayname": "Email Address",
-            "x-ves-example": "user1@company.com",
+            "x-ves-example": "dana@example.com",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -3461,10 +3461,10 @@
           },
           "name": {
             "type": "string",
-            "description": " This is an optional field meant to be used as username.\n Inside Volterra's UAM, email is already treated as user's username\n and as best practice, recommendation is to keep this same as email field.\n if not specified, this field will be set same as email field.\n\nExample: ` \"user1@company.com\"`",
+            "description": " This is an optional field meant to be used as username.\n Inside Volterra's UAM, email is already treated as user's username\n and as best practice, recommendation is to keep this same as email field.\n if not specified, this field will be set same as email field.\n\nExample: ` \"dana@example.com\"`",
             "title": "Username",
             "x-displayname": "Username",
-            "x-ves-example": "user1@company.com"
+            "x-ves-example": "dana@example.com"
           },
           "namespace": {
             "type": "string",

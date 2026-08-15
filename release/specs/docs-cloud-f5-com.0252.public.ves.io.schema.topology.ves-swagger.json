@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.topology",
     "description": "APIs to get topology of all the resources associated/connected to a site such as other CEs (Customer Edge),\nREs (Regional Edge), VPCs (Virtual Private Cloud) networks, etc., and the associated metrics. Relationship between\nthe resources associated with a site is represented as a graph, where each resource/entity is represented as a node\n(example: CE, RE, VPC, Subnet, etc.,) and their association is represented as edge (example: CE - RE connection,\nNetwork - Subnets association, etc.,)",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.client_side_defense.mitigated_domain",
     "description": "\nMitigated Domain Object defines which domains will be mitigated by Client-Side Defense.\nClient-Side Defense Objects is used to configure Client-Side Defense to detect/mitigate anomalous URLs for enterprise webpages\nCustom handler in Client-Side Defense microservice will forward request(s) to backend API(s)",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

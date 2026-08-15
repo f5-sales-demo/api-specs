@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.sensitive_data_policy",
     "description": "The sensitive_data_policy is a policy defined by the user to discover the relevant compliances\nand data types to the user.\nthe user can disabled predefined data types, and add custom data types.\nthe user defines the compliance list that he'd like to monitor.",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

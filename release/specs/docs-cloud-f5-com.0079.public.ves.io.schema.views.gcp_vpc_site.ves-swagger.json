@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.gcp_vpc_site",
     "description": "GCP VPC site view defines a required parameters that can be used in CRUD, to create and manage a volterra site in GCP VPC.\nIt can be used to automatically site creation in the GCP VPC.",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

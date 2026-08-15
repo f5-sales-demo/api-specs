@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.policy_based_routing",
     "description": "Policy based routing is used to control how different classes of traffic is forwarded and QOS is\napplied over WAN interfaces in SDWAN scenarios.",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

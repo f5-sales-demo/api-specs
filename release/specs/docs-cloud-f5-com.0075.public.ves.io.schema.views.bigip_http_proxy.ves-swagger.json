@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.bigip_http_proxy",
     "description": "BIG-IP HTTP Proxy is used for configuring HTTP/HTTPS Load Balancer for a domain.",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

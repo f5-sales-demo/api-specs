@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.oidc_provider",
     "description": "F5XC Identity supports identity brokering and third-party identity can be added to\nprovide Single Sign-On (SSO) login for user to access tenant via VoltConsole.\nUsing Volterra's OIDC Provider config object API(s), tenant admin can configure and manage\nSSO providers such as Google, Microsoft, Okta or any provider that supports\nOpenIDConnect(OIDC) V1.0 protocol. It is required that the OIDC provider application that will\nbe integrated must have the support enabled for Authorization Code flow as defined by the specification.\n\nBefore proceeding, admin needs to have access to organization's authentication application\nor has permission to create a new one. Create API require entering details of well-known\nOpenID configuration of authentication application and once successful creation, admin should\nenable the redirect URL provided by volterra identity in application's allowed list of URLs.\nMore details of this can be found under create request/response.\n\nWith OIDC provider configured, admin of a tenant can make use of Single Sign On (SSO)\nfunctionality for users to access F5XC service using same email address and admin has the\nflexibility to re-use the authentication/identity provider that may be already using\nwithin their organization. Once SSO is enabled, except tenant admin (owner) all users in the tenant\nwill be converted to SSO user and will lose existing email/password login created with Volterra\nand can only use SSO to login.",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

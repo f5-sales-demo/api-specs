@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.global_log_receiver",
     "description": "Global Log Receiver is used to specify a receiver (s3 bucket, etc.) for periodic streaming of access logs",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.discovery",
     "description": "Service discovery in F5XC performs following\n\nDynamic service discovery: Resolving the load balancer endpoints for a ADC cluster\nDynamic VIP discovery: Publishing virtual IP to attract traffic from clients",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

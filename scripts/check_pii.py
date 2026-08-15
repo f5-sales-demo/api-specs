@@ -133,7 +133,7 @@ PHONE_FIELD_RE = re.compile(
 PERSON_FIELD_RE = re.compile(
     r"(?i)(?:^|[,;{\s])['\"]?"
     r"(?P<key>full_name|first_name|last_name|given_name|family_name|display_name)"
-    r"['\"]?\s*(?P<separator>[:=])\s*(?P<quote>\\['\"`]|['\"`])?"
+    r"['\"]?\s*(?P<separator>[:=])\s*(?P<quote>\\+['\"`]|['\"`])?"
     r"(?P<value>(?:(?!\\[rn])[^'\"`#;,\r\n}\]])+)"
 )
 LOCALIZATION_BUNDLE_RE = re.compile(
@@ -156,7 +156,7 @@ IDENTITY_FIELD_RE = re.compile(
     r"(?P<key_open>[*_~`'\"]*)"
     r"(?P<key>tenant(?:_name|_id)?|customer(?:_name|_id)?|account(?:_name|_id)?|"
     r"subscription(?:_name|_id)|project(?:_name|_id)|namespace)"
-    r"(?P<key_close>[*_~`'\"]*)\s*(?P<separator>[:=])\s*(?P<quote>\\['\"`]|['\"`])?"
+    r"(?P<key_close>[*_~`'\"]*)\s*(?P<separator>[:=])\s*(?P<quote>\\+['\"`]|['\"`])?"
     r"(?P<value>(?:(?!\\[rn])[^'\"`#;,\r\n}\]])+)"
 )
 PROSE_IDENTITY_QUANTIFIER_RE = re.compile(
@@ -1041,7 +1041,7 @@ def escaped_quoted_structured_field_value(line: str, start: int, quote: str) -> 
             backslashes += 1
             before -= 1
         if backslashes % 2 == 1:
-            return line[start : index - 1]
+            return line[start : index - backslashes]
         index += 1
     return line[start:]
 

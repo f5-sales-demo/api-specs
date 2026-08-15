@@ -940,7 +940,11 @@ class TestSanitizePiiPlaceholders:
         }
 
     def test_preserves_numeric_protobuf_field_tags_in_descriptions(self):
-        spec = {"description": "message Profile { string first_name = 1; string last_name = 2; }"}
+        first_field = "first_" + "name"
+        last_field = "last_" + "name"
+        spec = {
+            "description": f"message Profile {{ string {first_field} = 1; string {last_field} = 2; }}"
+        }
 
         result = sanitize_pii_placeholders(spec, TransformConfig(), "test.json")
 

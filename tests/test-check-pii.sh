@@ -237,6 +237,15 @@ git -C "$repo" commit -qm escaped-inline-literal
 assert_single_finding "escaped inline-code literals remain enforced" \
   "$repo" customer-identifier high --scope head --mode enforce
 
+repo=$(new_repo multiply-escaped-inline-placeholder)
+cat >"${repo}/fixture.json" <<'EOF'
+{"description": "NAMESPACE: \\\"example-namespace\\\""}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm multiply-escaped-inline-placeholder
+assert_clean "multiply escaped inline-code placeholders remain clean" \
+  "$repo" --scope head --mode enforce
+
 repo=$(new_repo shell-positional-identities)
 cat >"${repo}/fixture.sh" <<'EOF'
 NAMESPACE=$2

@@ -58,7 +58,9 @@ fi
 if [ "${FAKE_AGY_DELAY_CALL:-0}" -eq "$count" ]; then
   sleep "${FAKE_AGY_DELAY_SECONDS:-2}"
 fi
-if [ "${FAKE_AGY_MALFORMED_CALL:-0}" -eq "$count" ]; then
+if [ "${FAKE_AGY_NON_SUCCESS_CALL:-0}" -eq "$count" ]; then
+  printf '%s\n' '{"event":"result","result":{"status":"FAILED","structured_output":null}}'
+elif [ "${FAKE_AGY_MALFORMED_CALL:-0}" -eq "$count" ]; then
   printf 'not-json\n'
 elif [ "${FAKE_AGY_BLOCK_CALL:-0}" -eq "$count" ]; then
   printf '%s\n' '{"event":"result","result":{"status":"SUCCESS","structured_output":{"verdict":"needs-attention","summary":"blocking finding","findings":[{"severity":"high","title":"bug","body":"redacted evidence","file":"file.txt","line_start":1,"line_end":1,"confidence":1,"recommendation":"fix it"}],"next_steps":["fix"]}}}'
@@ -181,6 +183,19 @@ elif grep -q 'malformed or incomplete' "$WORK/output"; then
   pass "malformed provider output fails closed"
 else
   fail "malformed provider output fails closed" "$(cat "$WORK/output")"
+fi
+
+setup_repo
+diagnostic="$WORK/non-success-review.json"
+if run_review "$WORK/bin:$PATH" env FAKE_AGY_NON_SUCCESS_CALL=2 \
+  AGY_REVIEW_DIAGNOSTIC_FILE="$diagnostic"; then
+  fail "non-success provider result blocks" "review returned success"
+elif grep -q 'provider status: FAILED' "$WORK/output" &&
+  [ -s "$diagnostic" ] &&
+  grep -q '"status": "FAILED"' "$diagnostic"; then
+  pass "non-success provider result preserves a diagnostic receipt"
+else
+  fail "non-success provider result preserves a diagnostic receipt" "$(cat "$WORK/output")"
 fi
 
 setup_repo

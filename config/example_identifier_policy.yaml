@@ -1,0 +1,4 @@
+# Explicit exceptions for immutable schema semantics, not for examples.  Each
+# entry is a JSON Pointer into a specification and requires security review.
+# Keep this empty unless a schema constant cannot be represented synthetically.
+schema_constant_paths: []

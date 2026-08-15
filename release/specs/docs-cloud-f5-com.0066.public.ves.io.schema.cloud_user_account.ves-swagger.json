@@ -431,10 +431,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           }
         }
       }

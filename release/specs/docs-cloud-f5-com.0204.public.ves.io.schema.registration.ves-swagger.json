@@ -875,7 +875,7 @@
           },
           {
             "name": "name",
-            "description": "Name\n\nx-required\nx-example: \"r-e9030963-639e-41cd-aba6-261504f4a6be\"\nRegistration name (= \"r-\" + uid) to approve. Registration name is taken from listing pending registrations.",
+            "description": "Name\n\nx-required\nx-example: \"r-00000000-0000-4000-8000-946fdf7ca6a3\"\nRegistration name (= \"r-\" + uid) to approve. Registration name is taken from listing pending registrations.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
@@ -1761,10 +1761,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           }
         }
       },
@@ -1851,10 +1851,10 @@
           },
           "name": {
             "type": "string",
-            "description": " Registration name (= \"r-\" + uid) to approve. Registration name is taken from listing pending registrations.\n\nExample: ` \"r-e9030963-639e-41cd-aba6-261504f4a6be\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " Registration name (= \"r-\" + uid) to approve. Registration name is taken from listing pending registrations.\n\nExample: ` \"r-00000000-0000-4000-8000-946fdf7ca6a3\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "r-e9030963-639e-41cd-aba6-261504f4a6be",
+            "x-ves-example": "r-00000000-0000-4000-8000-946fdf7ca6a3",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -1939,10 +1939,10 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": " Registration name\n\nExample: ` \"r-e9030963-639e-41cd-aba6-261504f4a6be\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " Registration name\n\nExample: ` \"r-00000000-0000-4000-8000-946fdf7ca6a3\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "r-e9030963-639e-41cd-aba6-261504f4a6be",
+            "x-ves-example": "r-00000000-0000-4000-8000-946fdf7ca6a3",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -1961,10 +1961,10 @@
           },
           "token": {
             "type": "string",
-            "description": " Token - verify node identity\n\nExample: ` \"835af393-3056-46af-a9e4-57613fbe0339\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " Token - verify node identity\n\nExample: ` \"00000000-0000-4000-8000-ce47f538482c\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "Token",
             "x-displayname": "Token",
-            "x-ves-example": "835af393-3056-46af-a9e4-57613fbe0339",
+            "x-ves-example": "00000000-0000-4000-8000-ce47f538482c",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -2073,10 +2073,10 @@
         "properties": {
           "site_token": {
             "type": "string",
-            "description": " site token to query on\n\nExample: ` \"12345678-1234-1234-1234-1234567890ab\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "description": " site token to query on\n\nExample: ` \"00000000-0000-4000-8000-f4a29bc68178\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
             "title": "Site token",
             "x-displayname": "Site Token",
-            "x-ves-example": "12345678-1234-1234-1234-1234567890ab",
+            "x-ves-example": "00000000-0000-4000-8000-f4a29bc68178",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -2266,24 +2266,24 @@
         "properties": {
           "http_proxy": {
             "type": "string",
-            "description": " It will be used as the proxy URL for HTTP requests and HTTPS requests unless overridden by HTTPSProxy or NoProxy.\n\nExample: ` \"http://USERNAME:PASSWORD@10.0.1.1:8080/\"`",
+            "description": " It will be used as the proxy URL for HTTP requests and HTTPS requests unless overridden by HTTPSProxy or NoProxy.\n\nExample: ` \"http://USERNAME:PASSWORD@192.0.2.215:8080/\"`",
             "title": "Http Proxy",
             "x-displayname": "HTTP PROXY",
-            "x-ves-example": "http://USERNAME:PASSWORD@10.0.1.1:8080/"
+            "x-ves-example": "http://USERNAME:PASSWORD@192.0.2.215:8080/"
           },
           "https_proxy": {
             "type": "string",
-            "description": " It will be used as the proxy URL for HTTPS requests unless overridden by NoProxy.\n\nExample: ` \"https://USERNAME:PASSWORD@10.0.0.1:8080/\"`",
+            "description": " It will be used as the proxy URL for HTTPS requests unless overridden by NoProxy.\n\nExample: ` \"https://USERNAME:PASSWORD@192.0.2.246:8080/\"`",
             "title": "Https Proxy",
             "x-displayname": "HTTPS PROXY",
-            "x-ves-example": "https://USERNAME:PASSWORD@10.0.0.1:8080/"
+            "x-ves-example": "https://USERNAME:PASSWORD@192.0.2.246:8080/"
           },
           "no_proxy": {
             "type": "string",
-            "description": " It specifies a string that contains comma-separated values\n specifying hosts that should be excluded from proxying. Each value is\n represented by an IP address prefix (1.2.3.4), an IP address prefix in\n CIDR notation (1.2.3.4/8), a domain name, or a special DNS label (*).\n An IP address prefix and domain name can also include a literal port\n number (1.2.3.4:80).\n A domain name matches that name and all subdomains. A domain name with\n a leading \".\" matches subdomains only. For example \"foo.com\" matches\n \"foo.com\" and \"bar.foo.com\"; \".y.com\" matches \"x.y.com\" but not \"y.com\".\n A single asterisk (*) indicates that no proxying should be done.\n\nExample: ` \"master.hostname.example.com,10.1.0.0/16,172.30.0.0/16\"`",
+            "description": " It specifies a string that contains comma-separated values\n specifying hosts that should be excluded from proxying. Each value is\n represented by an IP address prefix (1.2.3.4), an IP address prefix in\n CIDR notation (1.2.3.4/8), a domain name, or a special DNS label (*).\n An IP address prefix and domain name can also include a literal port\n number (1.2.3.4:80).\n A domain name matches that name and all subdomains. A domain name with\n a leading \".\" matches subdomains only. For example \"foo.com\" matches\n \"foo.com\" and \"bar.foo.com\"; \".y.com\" matches \"x.y.com\" but not \"y.com\".\n A single asterisk (*) indicates that no proxying should be done.\n\nExample: ` \"master.hostname.example.com,192.0.2.0/24,192.0.2.0/24\"`",
             "title": "No Proxy",
             "x-displayname": "NO PROXY",
-            "x-ves-example": "master.hostname.example.com,10.1.0.0/16,172.30.0.0/16"
+            "x-ves-example": "master.hostname.example.com,192.0.2.0/24,192.0.2.0/24"
           },
           "proxy_cacert_url": {
             "type": "string",
@@ -2391,10 +2391,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " The unique uid of this registration\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
+            "description": " The unique uid of this registration\n\nExample: ` \"00000000-0000-4000-8000-d36e055b3ea2\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d27938ba-967e-40a7-9709-57b8627f9f75"
+            "x-ves-example": "00000000-0000-4000-8000-d36e055b3ea2"
           }
         }
       },
@@ -2998,10 +2998,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " uid is the unique in time and space value for this object. Object create will fail if\n provided by the client and the value exists in the system. Typically generated by the\n server on successful creation of an object and is not allowed to change once populated.\n Shadowed by SystemObjectMeta's uid field.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " uid is the unique in time and space value for this object. Object create will fail if\n provided by the client and the value exists in the system. Typically generated by the\n server on successful creation of an object and is not allowed to change once populated.\n Shadowed by SystemObjectMeta's uid field.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           }
         }
       },
@@ -3160,10 +3160,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           }
         }
       },
@@ -3297,10 +3297,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           },
           "vtrp_id": {
             "type": "string",
@@ -3347,10 +3347,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " UID of the view object\n\nExample: ` \"f3744323-1adf-4aaa-a5dc-0707c1d1bd82\"`",
+            "description": " UID of the view object\n\nExample: ` \"00000000-0000-4000-8000-d543fad8e1f8\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "f3744323-1adf-4aaa-a5dc-0707c1d1bd82"
+            "x-ves-example": "00000000-0000-4000-8000-d543fad8e1f8"
           }
         }
       },
@@ -4111,10 +4111,10 @@
           },
           "serial": {
             "type": "string",
-            "description": " serial number, eg. for aws ec254b6d-9676-1a51-8b10-21370dbdc3e5. Info taken from /sys/class/dmi/id/product_serial\n\nExample: ` \"ec254b6d-9676-1a51-8b10-21370dbdc3e5\"`",
+            "description": " serial number, eg. for aws 00000000-0000-4000-8000-23460f645a1f. Info taken from /sys/class/dmi/id/product_serial\n\nExample: ` \"00000000-0000-4000-8000-23460f645a1f\"`",
             "title": "serial",
             "x-displayname": "Serial Number",
-            "x-ves-example": "ec254b6d-9676-1a51-8b10-21370dbdc3e5"
+            "x-ves-example": "00000000-0000-4000-8000-23460f645a1f"
           },
           "vendor": {
             "type": "string",

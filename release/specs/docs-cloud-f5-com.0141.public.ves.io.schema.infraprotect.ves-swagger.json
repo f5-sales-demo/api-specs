@@ -359,7 +359,7 @@
           },
           {
             "name": "alert_id",
-            "description": "Alert ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nAlert to be link with an event",
+            "description": "Alert ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nAlert to be link with an event",
             "in": "path",
             "required": true,
             "x-displayname": "Alert ID",
@@ -759,7 +759,7 @@
           },
           {
             "name": "event_id",
-            "description": "Event ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nID of the event we want to get details for.",
+            "description": "Event ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nID of the event we want to get details for.",
             "in": "path",
             "required": true,
             "x-displayname": "Evemt ID",
@@ -884,7 +884,7 @@
           },
           {
             "name": "event_id",
-            "description": "Alert ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nID of the event we want to edit.",
+            "description": "Alert ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nID of the event we want to edit.",
             "in": "path",
             "required": true,
             "x-displayname": "Alert ID",
@@ -1024,7 +1024,7 @@
           },
           {
             "name": "event_id",
-            "description": "Event ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nID of the event we want to get alerts for.",
+            "description": "Event ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nID of the event we want to get alerts for.",
             "in": "path",
             "required": true,
             "x-displayname": "Event ID",
@@ -1154,7 +1154,7 @@
           },
           {
             "name": "event_id",
-            "description": "Event ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nID of the event we want to get attachments for.",
+            "description": "Event ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nID of the event we want to get attachments for.",
             "in": "path",
             "required": true,
             "x-displayname": "Event ID",
@@ -1284,7 +1284,7 @@
           },
           {
             "name": "event_id",
-            "description": "Event ID\n\nx-example: \"8094c17b-80c1-429d-8b17-7232f0e2937c\"\nEvent ID we want to delete the event detail for.",
+            "description": "Event ID\n\nx-example: \"00000000-0000-4000-8000-7248e7cee302\"\nEvent ID we want to delete the event detail for.",
             "in": "path",
             "required": true,
             "x-displayname": "Event ID",
@@ -1294,7 +1294,7 @@
           },
           {
             "name": "event_detail_id",
-            "description": "Event Detail ID\n\nx-example: \"8094c17b-80c1-429d-8b17-7232f0e2937c\"\nEvent detail ID we want to delete.",
+            "description": "Event Detail ID\n\nx-example: \"00000000-0000-4000-8000-7248e7cee302\"\nEvent detail ID we want to delete.",
             "in": "path",
             "required": true,
             "x-displayname": "Event Detail ID",
@@ -1419,7 +1419,7 @@
           },
           {
             "name": "event_id",
-            "description": "Event ID\n\nx-example: \"8094c17b-80c1-429d-8b17-7232f0e2937c\"\nEvent ID we want to edit the event detail for.",
+            "description": "Event ID\n\nx-example: \"00000000-0000-4000-8000-7248e7cee302\"\nEvent ID we want to edit the event detail for.",
             "in": "path",
             "required": true,
             "x-displayname": "Event ID",
@@ -1429,7 +1429,7 @@
           },
           {
             "name": "event_detail_id",
-            "description": "Event Detail ID\n\nx-example: \"8094c17b-80c1-429d-8b17-7232f0e2937c\"\nEvent detail ID we want to update.",
+            "description": "Event Detail ID\n\nx-example: \"00000000-0000-4000-8000-7248e7cee302\"\nEvent detail ID we want to update.",
             "in": "path",
             "required": true,
             "x-displayname": "Event Detail ID",
@@ -1569,7 +1569,7 @@
           },
           {
             "name": "event_id",
-            "description": "Event ID\n\nx-example: \"8094c17b-80c1-429d-8b17-7232f0e2937c\"\nEvent ID we want to list the event details for.",
+            "description": "Event ID\n\nx-example: \"00000000-0000-4000-8000-7248e7cee302\"\nEvent ID we want to list the event details for.",
             "in": "path",
             "required": true,
             "x-displayname": "Event ID",
@@ -1694,7 +1694,7 @@
           },
           {
             "name": "event_id",
-            "description": "Event ID\n\nx-example: \"8094c17b-80c1-429d-8b17-7232f0e2937c\"\nEvent ID we want to list the event details for.",
+            "description": "Event ID\n\nx-example: \"00000000-0000-4000-8000-7248e7cee302\"\nEvent ID we want to list the event details for.",
             "in": "path",
             "required": true,
             "x-displayname": "Event ID",
@@ -1834,7 +1834,7 @@
           },
           {
             "name": "event_id",
-            "description": "Event ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nID of the event we want to get mitigations for.",
+            "description": "Event ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nID of the event we want to get mitigations for.",
             "in": "path",
             "required": true,
             "x-displayname": "Event ID",
@@ -2094,7 +2094,7 @@
           },
           {
             "name": "alert_id",
-            "description": "x-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nOptional - allows to filter events by alert so only relevant events are returned. If not provided, all user events are returned.",
+            "description": "x-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nOptional - allows to filter events by alert so only relevant events are returned. If not provided, all user events are returned.",
             "in": "query",
             "required": false,
             "x-displayname": "Alert ID",
@@ -2224,7 +2224,7 @@
           },
           {
             "name": "mitigation_id",
-            "description": "Mitigation ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nID of the mitigation we want to get the details for.",
+            "description": "Mitigation ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nID of the mitigation we want to get the details for.",
             "in": "path",
             "required": true,
             "x-displayname": "Mitigation ID",
@@ -2354,7 +2354,7 @@
           },
           {
             "name": "mitigation_id",
-            "description": "Mitigation ID\n\nx-example: \"92d6e1e6-b6e9-46d4-9286-796a6b3fbf6a\"\nID of the mitigation we want to get the annotations for.",
+            "description": "Mitigation ID\n\nx-example: \"00000000-0000-4000-8000-fa2ad3369a06\"\nID of the mitigation we want to get the annotations for.",
             "in": "path",
             "required": true,
             "x-displayname": "Mitigation ID",
@@ -2484,7 +2484,7 @@
           },
           {
             "name": "mitigation_id",
-            "description": "Mitigation ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nID of the mitigation we want to get the countermeasures for.",
+            "description": "Mitigation ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nID of the mitigation we want to get the countermeasures for.",
             "in": "path",
             "required": true,
             "x-displayname": "Mitigation ID",
@@ -2614,7 +2614,7 @@
           },
           {
             "name": "mitigation_id",
-            "description": "Mitigation ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nID of the mitigation we want to get the IPs for.",
+            "description": "Mitigation ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nID of the mitigation we want to get the IPs for.",
             "in": "path",
             "required": true,
             "x-displayname": "Mitigation ID",
@@ -2994,7 +2994,7 @@
           },
           {
             "name": "report_id",
-            "description": "Report ID\n\nx-example: \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"\nID of the document we want to get the contents for.",
+            "description": "Report ID\n\nx-example: \"00000000-0000-4000-8000-8bd111298e1f\"\nID of the document we want to get the contents for.",
             "in": "path",
             "required": true,
             "x-displayname": "Report ID",
@@ -3449,17 +3449,17 @@
         "properties": {
           "alert_id": {
             "type": "string",
-            "description": " Alert to be link with an event\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " Alert to be link with an event\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Alert ID",
             "x-displayname": "Alert ID",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "event_id": {
             "type": "string",
-            "description": " Event to be link with an alert\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " Event to be link with an alert\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Event ID",
             "x-displayname": "Event ID",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "namespace": {
             "type": "string",
@@ -3502,10 +3502,10 @@
           },
           "event_id": {
             "type": "string",
-            "description": " Event ID we want to list the event details for.\n\nExample: ` \"8094c17b-80c1-429d-8b17-7232f0e2937c\"`",
+            "description": " Event ID we want to list the event details for.\n\nExample: ` \"00000000-0000-4000-8000-7248e7cee302\"`",
             "title": "Event ID",
             "x-displayname": "Event ID",
-            "x-ves-example": "8094c17b-80c1-429d-8b17-7232f0e2937c"
+            "x-ves-example": "00000000-0000-4000-8000-7248e7cee302"
           },
           "namespace": {
             "type": "string",
@@ -3590,17 +3590,17 @@
           },
           "id": {
             "type": "string",
-            "description": " ID of the alert used to uniquely identify it.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " ID of the alert used to uniquely identify it.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Id",
             "x-displayname": "Id",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "ip": {
             "type": "string",
-            "description": " IP the alert is triggered for. This is the \"protected\" IP\n\nExample: ` \"127.0.0.1\"`",
+            "description": " IP the alert is triggered for. This is the \"protected\" IP\n\nExample: ` \"192.0.2.19\"`",
             "title": "IP address",
             "x-displayname": "IP address",
-            "x-ves-example": "127.0.0.1"
+            "x-ves-example": "192.0.2.19"
           },
           "network_id": {
             "type": "string",
@@ -3723,10 +3723,10 @@
         "properties": {
           "cidr": {
             "type": "string",
-            "description": " Cidr of the alert source\n\nExample: ` \"127.0.0.1/0\"`",
+            "description": " Cidr of the alert source\n\nExample: ` \"192.0.2.0/24\"`",
             "title": "Cidr",
             "x-displayname": "Cidr",
-            "x-ves-example": "127.0.0.1/0"
+            "x-ves-example": "192.0.2.0/24"
           },
           "destination": {
             "type": "boolean",
@@ -3823,10 +3823,10 @@
         "properties": {
           "attachment_id": {
             "type": "string",
-            "description": " ID of the attachment\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " ID of the attachment\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Attachment ID",
             "x-displayname": "Attachment ID",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "attachment_type": {
             "$ref": "#/components/schemas/infraprotectAttachmentType"
@@ -4500,17 +4500,17 @@
           },
           "event_detail_id": {
             "type": "string",
-            "description": " Event detail ID we want to update.\n\nExample: ` \"8094c17b-80c1-429d-8b17-7232f0e2937c\"`",
+            "description": " Event detail ID we want to update.\n\nExample: ` \"00000000-0000-4000-8000-7248e7cee302\"`",
             "title": "Event Detail ID",
             "x-displayname": "Event Detail ID",
-            "x-ves-example": "8094c17b-80c1-429d-8b17-7232f0e2937c"
+            "x-ves-example": "00000000-0000-4000-8000-7248e7cee302"
           },
           "event_id": {
             "type": "string",
-            "description": " Event ID we want to edit the event detail for.\n\nExample: ` \"8094c17b-80c1-429d-8b17-7232f0e2937c\"`",
+            "description": " Event ID we want to edit the event detail for.\n\nExample: ` \"00000000-0000-4000-8000-7248e7cee302\"`",
             "title": "Event ID",
             "x-displayname": "Event ID",
-            "x-ves-example": "8094c17b-80c1-429d-8b17-7232f0e2937c"
+            "x-ves-example": "00000000-0000-4000-8000-7248e7cee302"
           },
           "namespace": {
             "type": "string",
@@ -4581,10 +4581,10 @@
           },
           "event_id": {
             "type": "string",
-            "description": " ID of the event we want to edit.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " ID of the event we want to edit.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Alert ID",
             "x-displayname": "Alert ID",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "name": {
             "type": "string",
@@ -4668,17 +4668,17 @@
           },
           "id": {
             "type": "string",
-            "description": " ID of the event used to uniquely identify it.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " ID of the event used to uniquely identify it.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Id",
             "x-displayname": "Id",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "ip": {
             "type": "string",
-            "description": " Target IP\n\nExample: ` \"192.168.0.0/0\"`",
+            "description": " Target IP\n\nExample: ` \"192.0.2.0/24\"`",
             "title": "IP",
             "x-displayname": "IP",
-            "x-ves-example": "192.168.0.0/0"
+            "x-ves-example": "192.0.2.0/24"
           },
           "mitigation_id": {
             "type": "string",
@@ -4743,10 +4743,10 @@
           },
           "id": {
             "type": "string",
-            "description": " ID of the event detail used to uniquely identify it.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " ID of the event detail used to uniquely identify it.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Id",
             "x-displayname": "Id",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "time": {
             "type": "string",
@@ -4960,13 +4960,13 @@
           },
           "prefixes": {
             "type": "array",
-            "description": " Prefixes associated to mitigation\n\nExample: ` \"192.168.0.0/32 192.168.0.1/32\"`",
+            "description": " Prefixes associated to mitigation\n\nExample: ` \"192.0.2.0/24 192.0.2.0/24\"`",
             "title": "Prefixes",
             "items": {
               "type": "string"
             },
             "x-displayname": "Prefixes",
-            "x-ves-example": "192.168.0.0/32 192.168.0.1/32"
+            "x-ves-example": "192.0.2.0/24 192.0.2.0/24"
           }
         }
       },
@@ -5142,10 +5142,10 @@
           },
           "mitigation_id": {
             "type": "string",
-            "description": " Filter events by mitigation\n\n Optional: If not specified, then events are returned regardless of mitigation.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " Filter events by mitigation\n\n Optional: If not specified, then events are returned regardless of mitigation.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Mitigation",
             "x-displayname": "Mitigation",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "namespace": {
             "type": "string",
@@ -5156,10 +5156,10 @@
           },
           "network_id": {
             "type": "string",
-            "description": " Filter events by network\n\n Optional: If not specified, then all tenant's networks are considerate.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " Filter events by network\n\n Optional: If not specified, then all tenant's networks are considerate.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Network",
             "x-displayname": "Network",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "start_time": {
             "type": "string",
@@ -5261,10 +5261,10 @@
           },
           "event_id": {
             "type": "string",
-            "description": " Filter mitigations by an event\n\n Optional: If not specified, then all tenant's events are considerate.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " Filter mitigations by an event\n\n Optional: If not specified, then all tenant's events are considerate.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Event",
             "x-displayname": "Event",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "namespace": {
             "type": "string",
@@ -5275,10 +5275,10 @@
           },
           "network_id": {
             "type": "string",
-            "description": " Filter mitigations by network\n\n Optional: If not specified, then all tenant's networks are considerate.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " Filter mitigations by network\n\n Optional: If not specified, then all tenant's networks are considerate.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Network",
             "x-displayname": "Network",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "start_time": {
             "type": "string",
@@ -5406,10 +5406,10 @@
           },
           "id": {
             "type": "string",
-            "description": " Mitigation ID\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " Mitigation ID\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "ID",
             "x-displayname": "ID",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "is_ongoing": {
             "type": "boolean",
@@ -5440,10 +5440,10 @@
           },
           "offramp": {
             "type": "string",
-            "description": " Offramp related to the mitigation\n\nExample: ` \"192.168.0.1/32\"`",
+            "description": " Offramp related to the mitigation\n\nExample: ` \"192.0.2.0/24\"`",
             "title": "Offramp",
             "x-displayname": "Offramp",
-            "x-ves-example": "192.168.0.1/32"
+            "x-ves-example": "192.0.2.0/24"
           },
           "start_time": {
             "type": "string",
@@ -5478,10 +5478,10 @@
           },
           "id": {
             "type": "string",
-            "description": " Mitigation ID\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " Mitigation ID\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "ID",
             "x-displayname": "ID",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "time": {
             "type": "string",
@@ -5502,10 +5502,10 @@
         "properties": {
           "ip": {
             "type": "string",
-            "description": " Mitigation source IP\n\nExample: ` \"192.168.0.0/0\"`",
+            "description": " Mitigation source IP\n\nExample: ` \"192.0.2.0/24\"`",
             "title": "IP",
             "x-displayname": "IP",
-            "x-ves-example": "192.168.0.0/0"
+            "x-ves-example": "192.0.2.0/24"
           },
           "log_count": {
             "type": "string",
@@ -5526,10 +5526,10 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": " ID of the network.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " ID of the network.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Network IDListNetworksResponse",
             "x-displayname": "Network ID",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "name": {
             "type": "string",
@@ -5574,10 +5574,10 @@
           },
           "id": {
             "type": "string",
-            "description": " ID of the report.\n\nExample: ` \"9ba097cf-35e3-4560-9c00-5a1a36b8f85b\"`",
+            "description": " ID of the report.\n\nExample: ` \"00000000-0000-4000-8000-8bd111298e1f\"`",
             "title": "Report ID",
             "x-displayname": "Report ID",
-            "x-ves-example": "9ba097cf-35e3-4560-9c00-5a1a36b8f85b"
+            "x-ves-example": "00000000-0000-4000-8000-8bd111298e1f"
           },
           "name": {
             "type": "string",
@@ -5889,10 +5889,10 @@
         "properties": {
           "addr": {
             "type": "string",
-            "description": " IPv4 Address in string form with dot-decimal notation\n\nExample: ` \"192.168.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " IPv4 Address in string form with dot-decimal notation\n\nExample: ` \"192.0.2.198\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "IPv4 Address",
             "x-displayname": "IPv4 Address",
-            "x-ves-example": "192.168.1.1",
+            "x-ves-example": "192.0.2.198",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
@@ -5954,14 +5954,14 @@
         "properties": {
           "prefix": {
             "type": "array",
-            "description": " IP Address prefix in string format. String must contain both prefix and prefix-length\n\nExample: ` \"[192.168.1.0/24, 192.168.2.0/24]\"\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.ipv4_prefix: true\n  ves.io.schema.rules.repeated.max_items: 256\n",
+            "description": " IP Address prefix in string format. String must contain both prefix and prefix-length\n\nExample: ` \"[192.0.2.0/24, 192.0.2.0/24]\"\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.ipv4_prefix: true\n  ves.io.schema.rules.repeated.max_items: 256\n",
             "title": "Prefix",
             "maxItems": 256,
             "items": {
               "type": "string"
             },
             "x-displayname": "Prefix",
-            "x-ves-example": "[192.168.1.0/24, 192.168.2.0/24]\"",
+            "x-ves-example": "[192.0.2.0/24, 192.0.2.0/24]\"",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.items.string.ipv4_prefix": "true",
               "ves.io.schema.rules.repeated.max_items": "256"

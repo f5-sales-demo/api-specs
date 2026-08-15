@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any
 import yaml
 from rich.console import Console
 
+from .example_identifier_safety import sanitize_identifier_examples
 from .utils.nullable_response import apply_nullable_response_corrections
 from .utils.spec_loader import save_spec_to_file
 from .utils.text_replacements import (
@@ -756,6 +757,16 @@ def sanitize_example_placeholders(
     patterns = build_replacement_patterns(corrections)
     replace_text_fields_recursive(spec, patterns, text_fields)
     return spec
+
+
+@register_transform("sanitize_example_identifiers")
+def sanitize_example_identifiers(
+    spec: dict,
+    _config: TransformConfig,
+    _filename: str,
+) -> dict:
+    """Replace realistic UUID and private-address examples with synthetic values."""
+    return sanitize_identifier_examples(spec)
 
 
 @register_transform("inject_operation_descriptions")

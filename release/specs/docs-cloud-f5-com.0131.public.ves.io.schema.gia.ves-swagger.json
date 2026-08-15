@@ -290,10 +290,10 @@
           },
           "ip": {
             "type": "string",
-            "description": "\n\nExample: ` \"192.168.0.1\"`",
+            "description": "\n\nExample: ` \"192.0.2.56\"`",
             "title": "ip address",
             "x-displayname": "IP Address allocated",
-            "x-ves-example": "192.168.0.1"
+            "x-ves-example": "192.0.2.56"
           }
         }
       },
@@ -313,10 +313,10 @@
           },
           "ip": {
             "type": "string",
-            "description": " IP which needs to de-allocated\n\nExample: ` \"192.168.0.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": " IP which needs to de-allocated\n\nExample: ` \"192.0.2.56\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "ip address",
             "x-displayname": "IP Address",
-            "x-ves-example": "192.168.0.1",
+            "x-ves-example": "192.0.2.56",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }

@@ -170,6 +170,7 @@ transform:
     fix_oneof_group_names: true
     fix_spelling: true
     sanitize_example_placeholders: true
+    sanitize_example_identifiers: true
     fix_dangling_refs: true
     remove_unused_schemas: true
     inject_operation_descriptions: true

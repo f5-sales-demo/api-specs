@@ -237,10 +237,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " Unique identifier of this time frame\n\nExample: ` \"a536793b-2852-455c-9df8-ef237e811825\"`",
+            "description": " Unique identifier of this time frame\n\nExample: ` \"00000000-0000-4000-8000-c698bccc2be4\"`",
             "title": "UUID",
             "x-displayname": "UUID",
-            "x-ves-example": "a536793b-2852-455c-9df8-ef237e811825"
+            "x-ves-example": "00000000-0000-4000-8000-c698bccc2be4"
           }
         }
       },
@@ -291,10 +291,10 @@
           },
           "name": {
             "type": "string",
-            "description": " Name of the subscription (internal name, not human readable), a subscription has no human readable name\n\nExample: ` \"sub-name-2e170678-4f50-4336-8af9-5413e9bdf250\"`",
+            "description": " Name of the subscription (internal name, not human readable), a subscription has no human readable name\n\nExample: ` \"sub-name-00000000-0000-4000-8000-727ea87b3b37\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "sub-name-2e170678-4f50-4336-8af9-5413e9bdf250"
+            "x-ves-example": "sub-name-00000000-0000-4000-8000-727ea87b3b37"
           },
           "plan_name": {
             "type": "string",
@@ -305,10 +305,10 @@
           },
           "plan_object_name": {
             "type": "string",
-            "description": " Plan object name\n\nExample: ` \"plan-000f0453-9719-45bf-9cc9-c3e1f491f634\"`",
+            "description": " Plan object name\n\nExample: ` \"plan-00000000-0000-4000-8000-204b781243ce\"`",
             "title": "Plan object name",
             "x-displayname": "Plan object name",
-            "x-ves-example": "plan-000f0453-9719-45bf-9cc9-c3e1f491f634"
+            "x-ves-example": "plan-00000000-0000-4000-8000-204b781243ce"
           },
           "previous_billing_periods": {
             "type": "array",

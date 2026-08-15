@@ -240,7 +240,7 @@
           },
           {
             "name": "deployment_id",
-            "description": "x-example: \"06957ed8-52b5-43e0-bb56-429db281bfb4\"\nx-required\nUnique identifier for a deployment",
+            "description": "x-example: \"00000000-0000-4000-8000-8201a7f4be46\"\nx-required\nUnique identifier for a deployment",
             "in": "query",
             "required": false,
             "x-displayname": "Deployment Id",

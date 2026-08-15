@@ -1,0 +1,31 @@
+---
+title: Identifier Remediation Ledger
+description: Redacted production-readiness evidence for OpenAPI example identifiers
+---
+
+This ledger records categories, locations, replacement classes, and verification
+receipts only. It never records matched identifiers or values.
+
+## Release-artifact identifier remediation
+
+The release artifact inventory found 38 unique UUID-shaped fingerprints and 54
+unique private IPv4 fingerprints. The sanitizer is applied to every downloaded
+OpenAPI object before the generated `release/specs/` artifact is published.
+
+| Source category | Generated descendants | Replacement class | Verification receipt |
+| --- | --- | --- | --- |
+| UUID-shaped descriptions and examples | Reconciled JSON specifications and release archive | Deterministic synthetic version-4 UUID with a fixed synthetic prefix and a SHA-256-derived suffix | `python -m scripts.example_identifier_safety --spec-dir release/specs` exits 0 |
+| Private IPv4 descriptions and examples | Reconciled JSON specifications and release archive | RFC 5737 address; CIDR examples become an RFC 5737 `/24` network | `python -m scripts.example_identifier_safety --spec-dir release/specs` exits 0 |
+| Schema constants | None unless an exact JSON Pointer is reviewed in `config/example_identifier_policy.yaml` | No implicit exception; reviewed path-only policy entry required | Focused policy contract test |
+
+The release workflow runs the same identifier gate after reconciliation and before
+the artifact is uploaded. It reports category and JSON Pointer only, never the
+matched value.
+
+## Repository-wide PII sweep status
+
+Issue #882 remains open. Its initial redacted enforcement inventory contains
+customer-identifier, email, person-name, and personal-record categories across
+source and generated artifacts. Those categories require their own source-by-source
+replacement and regeneration receipts; this identifier ledger does not treat the
+UUID/private-address remediation as proof that the broader PII sweep is complete.

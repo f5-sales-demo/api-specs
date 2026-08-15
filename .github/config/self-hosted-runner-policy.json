@@ -11,7 +11,7 @@
   },
   "profiles": {
     "ubuntu-24.04": {
-      "image": "ghcr.io/f5-sales-demo/actions-runner@sha256:7b1016451a59afd38d165ab72025a96fc9c5cd2303efd670d258bfb9ed4cd269",
+      "image": "ghcr.io/f5-sales-demo/actions-runner@sha256:33f152d25a5e3e072c1e37678f80cb0a860e51e64c44a73a54472ad604ca8ee1",
       "labels": ["ubuntu-24.04"],
       "memory": "8g",
       "cpus": "4",
@@ -21,7 +21,7 @@
       "docker_socket": false
     },
     "ubuntu-24.04-secondary": {
-      "image": "ghcr.io/f5-sales-demo/actions-runner@sha256:7b1016451a59afd38d165ab72025a96fc9c5cd2303efd670d258bfb9ed4cd269",
+      "image": "ghcr.io/f5-sales-demo/actions-runner@sha256:33f152d25a5e3e072c1e37678f80cb0a860e51e64c44a73a54472ad604ca8ee1",
       "labels": ["ubuntu-24.04"],
       "memory": "8g",
       "cpus": "4",
@@ -31,7 +31,7 @@
       "docker_socket": false
     },
     "automation": {
-      "image": "ghcr.io/f5-sales-demo/actions-runner@sha256:7b1016451a59afd38d165ab72025a96fc9c5cd2303efd670d258bfb9ed4cd269",
+      "image": "ghcr.io/f5-sales-demo/actions-runner@sha256:33f152d25a5e3e072c1e37678f80cb0a860e51e64c44a73a54472ad604ca8ee1",
       "labels": ["automation"],
       "memory": "8g",
       "cpus": "4",
@@ -41,7 +41,7 @@
       "docker_socket": false
     },
     "ubuntu-22.04": {
-      "image": "ghcr.io/f5-sales-demo/actions-runner@sha256:0d6fe3f995e6de7e05997c26b17b59106368da5321b7be8777890784e89fae70",
+      "image": "ghcr.io/f5-sales-demo/actions-runner@sha256:cebd0176739eda88f9afa7d9092bc418fd4b1d1d5f62437c133798c356d7fba5",
       "labels": ["ubuntu-22.04"],
       "memory": "8g",
       "cpus": "4",
@@ -51,7 +51,7 @@
       "docker_socket": false
     },
     "container-build": {
-      "image": "ghcr.io/f5-sales-demo/actions-runner-container@sha256:18bc89e50d73071641706218dcaae8fbba7a2e1628cc59cf7b557ea137ca0ed7",
+      "image": "ghcr.io/f5-sales-demo/actions-runner-container@sha256:10a5e55507d1fb682fbd9614e6a0f1463efbf6236278cf5ae7ab090836788d8d",
       "labels": ["container-build"],
       "memory": "16g",
       "cpus": "6",
@@ -90,13 +90,47 @@
     },
     "f5-sales-demo/vscode-xcsh": {
       ".github/workflows/ci.yml": {
-        "test-macos": {
-          "runs_on": "macos-latest",
-          "reason": "native macOS extension test"
+        "spec-delivery": {
+          "runs_on": "ubuntu-latest",
+          "reason": "spec delivery validates the GitHub-hosted release contract"
         },
-        "test-windows": {
-          "runs_on": "windows-latest",
-          "reason": "native Windows extension test"
+        "validate-generation": {
+          "runs_on": "ubuntu-latest",
+          "reason": "generation uses the GitHub-hosted Node toolchain"
+        },
+        "test": {
+          "runs_on": "matrix",
+          "reason": "extension integration tests require native hosted platforms"
+        },
+        "build": {
+          "runs_on": "ubuntu-latest",
+          "reason": "VSIX build uses the GitHub-hosted packaging toolchain"
+        },
+        "security": {
+          "runs_on": "ubuntu-latest",
+          "reason": "dependency audit uses the GitHub-hosted Node toolchain"
+        },
+        "release-eligibility": {
+          "runs_on": "ubuntu-latest",
+          "reason": "release classification is a read-only hosted check"
+        },
+        "release": {
+          "runs_on": "ubuntu-latest",
+          "reason": "extension publication uses GitHub-hosted release credentials"
+        },
+        "stage-spec-delivery": {
+          "runs_on": "ubuntu-latest",
+          "reason": "spec staging uses GitHub-hosted delivery credentials"
+        },
+        "record-spec-delivery": {
+          "runs_on": "ubuntu-latest",
+          "reason": "delivery recording uses GitHub-hosted publication credentials"
+        }
+      },
+      ".github/workflows/knip.yml": {
+        "knip": {
+          "runs_on": "ubuntu-latest",
+          "reason": "dead-code analysis uses the GitHub-hosted Node toolchain"
         }
       },
       ".github/workflows/workflow-security-audit.yml": {
@@ -108,14 +142,6 @@
     },
     "f5-sales-demo/xcsh": {
       ".github/workflows/ci.yml": {
-        "setup-zig-native": {
-          "runs_on": "matrix",
-          "reason": "native macOS and Windows toolchain validation"
-        },
-        "native-nonlinux": {
-          "runs_on": "matrix",
-          "reason": "native macOS and Windows release validation"
-        },
         "build-sign-macos": {
           "runs_on": "matrix",
           "reason": "Apple signing and notarization require macOS"
@@ -123,12 +149,6 @@
         "verify-homebrew-install": {
           "runs_on": "macos-14",
           "reason": "Homebrew release verification requires macOS"
-        }
-      },
-      ".github/workflows/container.yml": {
-        "container-build-arm64": {
-          "runs_on": "ubuntu-24.04-arm",
-          "reason": "native ARM64 container validation"
         }
       },
       ".github/workflows/test-codesign.yml": {
@@ -179,14 +199,6 @@
       }
     },
     "f5-sales-demo/api-specs": {
-      ".github/workflows/workflow-security-audit.yml": {
-        "workflow-security-audit": {
-          "runs_on": "ubuntu-latest",
-          "reason": "read-only pull request workflow security audit"
-        }
-      }
-    },
-    "f5-sales-demo/api-specs-enriched": {
       ".github/workflows/workflow-security-audit.yml": {
         "workflow-security-audit": {
           "runs_on": "ubuntu-latest",

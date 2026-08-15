@@ -1040,7 +1040,7 @@ def escaped_quoted_structured_field_value(line: str, start: int, quote: str) -> 
         while before >= start and line[before] == "\\":
             backslashes += 1
             before -= 1
-        if backslashes == 1:
+        if backslashes % 2 == 1:
             return line[start : index - 1]
         index += 1
     return line[start:]

@@ -781,7 +781,7 @@ def _replace_structured_literals(
     for match in pattern.finditer(text):
         raw_value = match.group("value")
         value = re.split(r"(?=[,;])", raw_value, maxsplit=1)[0]
-        if not value or placeholder_value(value):
+        if not value or value.strip().isdigit() or placeholder_value(value):
             continue
         value_start = match.start("value")
         value_end = value_start + len(value)

@@ -938,3 +938,10 @@ class TestSanitizePiiPlaceholders:
             "x-ves-example": "customer_id: example-customer",
             "contact": {"email": "dana@example.com"},
         }
+
+    def test_preserves_numeric_protobuf_field_tags_in_descriptions(self):
+        spec = {"description": "message Profile { string first_name = 1; string last_name = 2; }"}
+
+        result = sanitize_pii_placeholders(spec, TransformConfig(), "test.json")
+
+        assert result == spec

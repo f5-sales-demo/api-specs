@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.pbac.addon_subscription",
     "description": "\nRepresents addon subscription\nEywa will create the schema.pbac.addon_subscription object (SUBSCRIPTION_PENDING)\nSRE/Support team member via f5xc-support tenant changes the status of the addon_subscription object (SUBSCRIPTION_ENABLE)",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

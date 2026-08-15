@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.bgp_routing_policy",
     "description": "BGP Routing Policy is a list of rules, which contains match criteria and\naction to be taken upon match. This helps in filtering routes which are\nexported or imported by BGP peers",
-    "version": "2026.08.12",
+    "version": "2026.08.14",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

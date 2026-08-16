@@ -99,7 +99,11 @@ def sanitize_identifier_examples(spec: Any) -> Any:
     return _sanitize_text(spec) if isinstance(spec, str) else spec
 
 
-def _is_documentation_address(address: ipaddress.IPv4Address) -> bool:
+def _is_documentation_address(
+    address: ipaddress.IPv4Address | ipaddress.IPv6Address,
+) -> bool:
+    if not isinstance(address, ipaddress.IPv4Address):
+        return False
     return any(address in network for network in DOCUMENTATION_NETWORKS)
 
 

@@ -78,4 +78,4 @@ def test_committed_release_specs_pass_the_identifier_release_gate() -> None:
     for spec_path in sorted(Path("release/specs").glob("*.json")):
         findings.extend(find_unsafe_identifiers(json.loads(spec_path.read_text()), policy))
 
-    assert findings == []
+    assert not findings

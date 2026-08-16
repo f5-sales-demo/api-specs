@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import copy
 import json
-import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -14,10 +13,11 @@ from typing import TYPE_CHECKING, Any
 import yaml
 from rich.console import Console
 
-from .check_pii import EMAIL_RE, IDENTITY_FIELD_RE, PERSON_FIELD_RE, placeholder_value, safe_email
 from .example_identifier_safety import sanitize_identifier_examples
+from .pii_sanitizer import sanitize_pii_strings
 from .utils.nullable_response import apply_nullable_response_corrections
 from .utils.spec_loader import save_spec_to_file
+from .utils.spec_sanitizers import strip_scripts_recursive
 from .utils.text_replacements import (
     DEFAULT_EXAMPLE_PLACEHOLDER_FIELDS,
     DEFAULT_SPELLING_TEXT_FIELDS,
@@ -112,29 +112,6 @@ class TransformResult:
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-
-
-def _strip_scripts_recursive(obj: Any) -> None:
-    """Walk *obj* in-place and strip ``<script>`` tags from ``description`` fields."""
-    if isinstance(obj, dict):
-        if "description" in obj and isinstance(obj["description"], str):
-            obj["description"] = re.sub(
-                r"<script[^>]*>.*?</script>",
-                "",
-                obj["description"],
-                flags=re.DOTALL | re.IGNORECASE,
-            )
-            obj["description"] = re.sub(
-                r"</?script[^>]*>",
-                "",
-                obj["description"],
-                flags=re.IGNORECASE,
-            )
-        for value in obj.values():
-            _strip_scripts_recursive(value)
-    elif isinstance(obj, list):
-        for item in obj:
-            _strip_scripts_recursive(item)
 
 
 def _fix_examples_recursive(obj: Any) -> None:
@@ -443,7 +420,7 @@ def strip_script_tags(
     _filename: str,
 ) -> dict:
     """Strip ``<script>`` tags from all ``description`` fields recursively."""
-    _strip_scripts_recursive(spec)
+    strip_scripts_recursive(spec)
     return spec
 
 
@@ -770,57 +747,6 @@ def sanitize_example_identifiers(
     return sanitize_identifier_examples(spec)
 
 
-def _replace_structured_literals(
-    text: str,
-    pattern: re.Pattern[str],
-    replacement_for_key: Callable[[str], str],
-) -> str:
-    """Replace scalar documentation values while preserving their field syntax."""
-    pieces: list[str] = []
-    cursor = 0
-    for match in pattern.finditer(text):
-        raw_value = match.group("value")
-        value = re.split(r"(?=[,;])", raw_value, maxsplit=1)[0]
-        if not value or value.strip().isdigit() or placeholder_value(value):
-            continue
-        value_start = match.start("value")
-        value_end = value_start + len(value)
-        pieces.extend((text[cursor:value_start], replacement_for_key(match.group("key").lower())))
-        cursor = value_end
-    pieces.append(text[cursor:])
-    return "".join(pieces)
-
-
-def _sanitize_pii_text(text: str) -> str:
-    """Replace contact and identity literals with documented synthetic values."""
-
-    def replace_email(match: re.Match[str]) -> str:
-        return match.group(0) if safe_email(match.group(0)) else "dana@example.com"
-
-    text = EMAIL_RE.sub(replace_email, text)
-    text = _replace_structured_literals(text, PERSON_FIELD_RE, lambda _key: "Dana R.")
-
-    def identity_placeholder(key: str) -> str:
-        category = next(
-            (
-                candidate
-                for candidate in (
-                    "tenant",
-                    "customer",
-                    "account",
-                    "subscription",
-                    "project",
-                    "namespace",
-                )
-                if candidate in key
-            ),
-            "resource",
-        )
-        return f"example-{category}"
-
-    return _replace_structured_literals(text, IDENTITY_FIELD_RE, identity_placeholder)
-
-
 @register_transform("sanitize_pii_placeholders")
 def sanitize_pii_placeholders(
     spec: dict,
@@ -829,14 +755,7 @@ def sanitize_pii_placeholders(
 ) -> dict:
     """Remove contact, person, and customer literals from every emitted string."""
 
-    def sanitize(value: Any) -> Any:
-        if isinstance(value, dict):
-            return {key: sanitize(item) for key, item in value.items()}
-        if isinstance(value, list):
-            return [sanitize(item) for item in value]
-        return _sanitize_pii_text(value) if isinstance(value, str) else value
-
-    return sanitize(spec)
+    return sanitize_pii_strings(spec)
 
 
 @register_transform("inject_operation_descriptions")

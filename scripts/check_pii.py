@@ -2078,19 +2078,7 @@ def scan_structured_identity(
             value_override=value,
         ):
             continue
-        alias = None
-        if not match.group("quote"):
-            alias = re.fullmatch(r"\*([A-Za-z0-9_.-]+)", normalized_value(value))
-        if alias:
-            aliases_at_value = context.yaml_aliases.copy()
-            for position, name, safe in context.yaml_alias_events:
-                if position >= match.start("value"):
-                    break
-                aliases_at_value[name] = safe
-            safe_alias = aliases_at_value.get(alias.group(1), False)
-        else:
-            safe_alias = None
-        if jq_literal or not (safe_alias if alias else placeholder_value(normalized_value(value))):
+        if jq_literal or not structured_identity_value_is_safe(match, value, context):
             add_finding(
                 findings,
                 path=path,
@@ -2119,6 +2107,24 @@ def scan_structured_identity(
                 category="personal-record",
                 message=f"{match.group('key')} contains a literal personal value",
             )
+
+
+def structured_identity_value_is_safe(
+    match: re.Match[str], value: str, context: LineScanContext
+) -> bool:
+    """Return whether a scalar identity value is an approved placeholder or alias."""
+    normalized = normalized_value(value)
+    if match.group("quote"):
+        return placeholder_value(normalized)
+    alias = re.fullmatch(r"\*([A-Za-z0-9_.-]+)", normalized)
+    if alias is None:
+        return placeholder_value(normalized)
+    aliases_at_value = context.yaml_aliases.copy()
+    for position, name, safe in context.yaml_alias_events:
+        if position >= match.start("value"):
+            break
+        aliases_at_value[name] = safe
+    return aliases_at_value.get(alias.group(1), False)
 
 
 def structured_container_value(

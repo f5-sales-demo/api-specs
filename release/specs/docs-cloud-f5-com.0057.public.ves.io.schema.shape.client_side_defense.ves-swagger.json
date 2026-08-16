@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -4276,10 +4276,10 @@
           },
           "user_agent": {
             "type": "string",
-            "description": " User agent of affected user\n\nExample: ` \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36\"`",
+            "description": " User agent of affected user\n\nExample: ` \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/192.0.2.183 Safari/537.36\"`",
             "title": "user_agent",
             "x-displayname": "User Agent",
-            "x-ves-example": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+            "x-ves-example": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/192.0.2.183 Safari/537.36"
           }
         }
       },
@@ -5480,7 +5480,7 @@
         "properties": {
           "ip_strings": {
             "type": "array",
-            "description": " An unordered list of ip address strings\n\nExample: ` \"['192.168.1.1']\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ip: true\n  ves.io.schema.rules.repeated.items.string.max_len: 256\n  ves.io.schema.rules.repeated.max_items: 64\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " An unordered list of ip address strings\n\nExample: ` \"['192.0.2.198']\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ip: true\n  ves.io.schema.rules.repeated.items.string.max_len: 256\n  ves.io.schema.rules.repeated.max_items: 64\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "IP Strings",
             "minItems": 1,
             "maxItems": 64,
@@ -5489,7 +5489,7 @@
               "maxLength": 256
             },
             "x-displayname": "IP Address Strings",
-            "x-ves-example": "['192.168.1.1']",
+            "x-ves-example": "['192.0.2.198']",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",

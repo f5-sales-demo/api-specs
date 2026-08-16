@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -487,11 +487,11 @@
           },
           "email": {
             "type": "string",
-            "description": " email of the user\n\nExample: ` \"jane.doe@gmail.com\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 256\n",
+            "description": " email of the user\n\nExample: ` \"dana@example.com\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 256\n",
             "title": "E-mail",
             "maxLength": 256,
             "x-displayname": "E-mail",
-            "x-ves-example": "jane.doe@gmail.com",
+            "x-ves-example": "dana@example.com",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "256"
             }

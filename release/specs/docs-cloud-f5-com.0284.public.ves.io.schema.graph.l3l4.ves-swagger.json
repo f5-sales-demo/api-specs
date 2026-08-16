@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -681,7 +681,7 @@
           },
           {
             "name": "network_id",
-            "description": "NetworkId\n\nx-example: \"3c33d46b-8f19-420c-9202-038c5833ac55\"\nThe network id we want the data for. If empty or * is provided then all networks data is returned.",
+            "description": "NetworkId\n\nx-example: \"00000000-0000-4000-8000-2e540be20504\"\nThe network id we want the data for. If empty or * is provided then all networks data is returned.",
             "in": "path",
             "required": true,
             "x-displayname": "NetworkId",
@@ -1161,10 +1161,10 @@
           },
           "network_id": {
             "type": "string",
-            "description": " The network id we want the data for. If empty or * is provided then all networks data is returned.\n\nExample: ` \"3c33d46b-8f19-420c-9202-038c5833ac55\"`",
+            "description": " The network id we want the data for. If empty or * is provided then all networks data is returned.\n\nExample: ` \"00000000-0000-4000-8000-2e540be20504\"`",
             "title": "NetworkId",
             "x-displayname": "NetworkId",
-            "x-ves-example": "3c33d46b-8f19-420c-9202-038c5833ac55"
+            "x-ves-example": "00000000-0000-4000-8000-2e540be20504"
           },
           "start_time": {
             "type": "string",

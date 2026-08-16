@@ -162,14 +162,14 @@ def test_namespace_scope_is_injected_and_redacted() -> None:
     runner.auth = cast(
         Any,
         SimpleNamespace(
-            namespace="private-namespace",
+            namespace="example-namespace",
             headers={"Authorization": "APIToken secret"},
         ),
     )
     case = SimpleNamespace(
         path="/namespaces/{namespace}/items",
         method="GET",
-        path_parameters={"namespace": "generated", "name": "generated-name"},
+        path_parameters={"namespace": "example-namespace", "name": "generated-name"},
         headers={"Authorization": "generated-invalid-auth"},
         query={"fuzzed": "value"},
         body=None,
@@ -178,14 +178,14 @@ def test_namespace_scope_is_injected_and_redacted() -> None:
     runner.bind_scope(case)
     evidence = runner.case_evidence(case)
 
-    assert case.path_parameters["namespace"] == "private-namespace"
+    assert case.path_parameters["namespace"] == "example-namespace"
     assert case.headers == {"Authorization": "APIToken secret"}
     assert case.query == {}
     assert evidence["path_parameters"] == {
         "namespace": "<configured-namespace>",
         "name": "generated-name",
     }
-    assert "private-namespace" not in str(evidence)
+    assert "example-namespace" not in str(evidence)
 
 
 class _NoWaitRateLimiter:
@@ -202,7 +202,7 @@ class _Response:
 
 def _single_case_runner(monkeypatch: pytest.MonkeyPatch, case: object) -> _TestableRunner:
     runner = object.__new__(_TestableRunner)
-    runner.auth = cast(Any, SimpleNamespace(namespace="private-namespace"))
+    runner.auth = cast(Any, SimpleNamespace(namespace="example-namespace"))
     runner.config = SchemathesisConfig(examples_per_operation=1)
     runner.results = []
     runner.set_rate_limiter(_NoWaitRateLimiter())
@@ -328,13 +328,13 @@ def test_unexpected_response_validator_exception_is_an_error(
     class Case:
         path = "/items"
         method = "GET"
-        path_parameters = {"namespace": "private-namespace"}
+        path_parameters = {"namespace": "example-namespace"}
         query: dict[str, object] = {}
         body = None
 
         def validate_response(self, _response: object, *, checks: list[object]) -> None:
             del checks
-            raise RuntimeError("validator crashed in private-namespace")
+            raise RuntimeError("validator crashed in example-namespace")
 
     result = _single_case_runner(monkeypatch, Case()).test_operation(
         SimpleNamespace(path="/items", method="get")

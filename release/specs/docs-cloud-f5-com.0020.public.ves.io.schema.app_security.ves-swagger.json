@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -4177,10 +4177,10 @@
           },
           "ip_prefix": {
             "type": "string",
-            "description": " IP prefix string.\n\nExample: ` \"192.168.20.0/24\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix: true\n",
+            "description": " IP prefix string.\n\nExample: ` \"192.0.2.0/24\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix: true\n",
             "title": "ip prefix",
             "x-displayname": "IP Prefix",
-            "x-ves-example": "192.168.20.0/24",
+            "x-ves-example": "192.0.2.0/24",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -4519,10 +4519,10 @@
           },
           "ip_prefix": {
             "type": "string",
-            "description": " IP prefix string.\n\nExample: ` \"192.168.20.0/24\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix: true\n",
+            "description": " IP prefix string.\n\nExample: ` \"192.0.2.0/24\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix: true\n",
             "title": "ip prefix",
             "x-displayname": "IP Prefix",
-            "x-ves-example": "192.168.20.0/24",
+            "x-ves-example": "192.0.2.0/24",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -4710,10 +4710,10 @@
           },
           "route_uuid": {
             "type": "string",
-            "description": " Unique identifier for the request route\n\nExample: ` \"fc407065-7aa7-48a6-a3e7-c28108b29bcd\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.pattern: ^$|^[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}$\n",
+            "description": " Unique identifier for the request route\n\nExample: ` \"00000000-0000-4000-8000-25a697151bfa\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.pattern: ^$|^[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}$\n",
             "title": "Route UUID",
             "x-displayname": "Route UUID",
-            "x-ves-example": "fc407065-7aa7-48a6-a3e7-c28108b29bcd",
+            "x-ves-example": "00000000-0000-4000-8000-25a697151bfa",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.pattern": "^$|^[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}$"
             }
@@ -6492,10 +6492,10 @@
           },
           "ip_prefix": {
             "type": "string",
-            "description": "Exclusive with [as_number http_header ipv6_prefix user_identifier]\n IPv4 prefix string.\n\nExample: ` \"192.168.20.0/24\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4_prefix: true\n",
+            "description": "Exclusive with [as_number http_header ipv6_prefix user_identifier]\n IPv4 prefix string.\n\nExample: ` \"192.0.2.0/24\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4_prefix: true\n",
             "title": "ip prefix",
             "x-displayname": "IPv4 Prefix",
-            "x-ves-example": "192.168.20.0/24",
+            "x-ves-example": "192.0.2.0/24",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4_prefix": "true"
             }
@@ -6717,10 +6717,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           }
         }
       },
@@ -7688,14 +7688,14 @@
           },
           "ip_prefixes": {
             "type": "array",
-            "description": " List of IPv4 prefix strings.\n\nExample: ` \"192.168.20.0/24\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.ipv4_prefix: true\n  ves.io.schema.rules.repeated.items.string.not_empty: true\n  ves.io.schema.rules.repeated.max_items: 128\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " List of IPv4 prefix strings.\n\nExample: ` \"192.0.2.0/24\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.ipv4_prefix: true\n  ves.io.schema.rules.repeated.items.string.not_empty: true\n  ves.io.schema.rules.repeated.max_items: 128\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "ip prefixes",
             "maxItems": 128,
             "items": {
               "type": "string"
             },
             "x-displayname": "IPv4 Prefix List",
-            "x-ves-example": "192.168.20.0/24",
+            "x-ves-example": "192.0.2.0/24",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.items.string.ipv4_prefix": "true",
               "ves.io.schema.rules.repeated.items.string.not_empty": "true",

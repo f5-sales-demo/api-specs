@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -143,7 +143,7 @@
         "properties": {
           "uids": {
             "type": "array",
-            "description": "\nExample: ` [\"d27938ba-967e-40a7-9709-57b8627f9f75\", \"e87138ce-124e-44b8-ac9c-e764c1711a33\"]`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 100\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.pattern: ^([0-9a-f]{8}-){1}([0-9a-f]{4}-){3}([0-9a-f]{12})$\n",
+            "description": "\nExample: ` [\"00000000-0000-4000-8000-d36e055b3ea2\", \"00000000-0000-4000-8000-631b8bae734e\"]`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 100\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.pattern: ^([0-9a-f]{8}-){1}([0-9a-f]{4}-){3}([0-9a-f]{12})$\n",
             "minItems": 1,
             "maxItems": 100,
             "items": {

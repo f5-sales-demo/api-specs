@@ -2,7 +2,7 @@
 title: 설정 참조
 description: validation.yaml 및 endpoints.yaml 설정 파일에 대한 참조
 i18n:
-  sourceHash: 57925f07d3c8
+  sourceHash: fd479ebd3b67
   translator: machine
 ---
 
@@ -58,6 +58,17 @@ download:
 | `url` | 공식 F5 XC OpenAPI 스펙 번들(ZIP)의 URL. |
 | `output_dir` | 추출된 스펙이 저장되는 위치. |
 | `etag_cache` | 조건부 다운로드를 위한 HTTP ETag를 저장하는 파일. |
+
+### 라이브 검증 입력
+
+```yaml
+validation:
+  input_dir: "specs/transformed"
+```
+
+라이브 테스트는 수정된 변환 출력에서 의미론적 도메인을 확인합니다.
+`specs/original/`의 원본 파일은 변경 불가능한 업스트림 바이트로 남아 있으며
+수정된 중간 API 계약으로 제공되지 않습니다.
 
 ### 유효성 검사 카테고리
 
@@ -127,7 +138,7 @@ reconciliation:
 | 필드 | 설명 |
 |-------|-------------|
 | `priority` | 여러 데이터 소스가 일치하지 않을 때의 우선순위. |
-| `fix_strategies` | 각 불일치 유형을 수정 작업에 매핑합니다. [적용된 수정 사항](/api-specs/ko/03-fixes-applied/)을 참조하세요. |
+| `fix_strategies` | 각 불일치 유형을 수정 작업에 매핑합니다. [적용된 수정 사항](/api-specs/en/03-fixes-applied/)을 참조하세요. |
 
 ### Spectral 설정
 
@@ -149,7 +160,7 @@ spectral:
   contact:
     name: "F5 Distributed Cloud"
     url: "https://docs.cloud.f5.com"
-    email: "support@f5.com"
+    email: "support@example.com"
   servers:
     - url: "https://{tenant}.console.ves.volterra.io"
       description: "F5 Distributed Cloud API"

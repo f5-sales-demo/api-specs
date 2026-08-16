@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -1060,10 +1060,10 @@
           },
           "query": {
             "type": "string",
-            "description": " query is used to specify the list of matchers\n syntax for query := {[<matcher>]}\n <matcher> := <field_name><operator>\"<value>\"\n <field_name> := string\n  One or more of the following fields in audit log may be specified in the query.\n   user - user name\n   src_ip - source ip address\n   secret_name - secret name\n   author_tenant - tenant name of the secret creator\n   operation - Encrypt/Decrypt\n   result - Success/Fail\n   country - Country name\n <value> := string\n <operator> := [\"=\"|\"!=\"|\"=~\"|\"!~\"]\n   = : equal to\n   != : not equal to\n When more than one matcher is specified in the query, then audit logs matching ALL the matchers will be returned in the response.\n\n Optional: If not specified, all the audit logs matching the given tenant will be considered for aggregation\n\nExample: ` \"{user=\\\"abc@xyz.com\\\"}\"`",
+            "description": " query is used to specify the list of matchers\n syntax for query := {[<matcher>]}\n <matcher> := <field_name><operator>\"<value>\"\n <field_name> := string\n  One or more of the following fields in audit log may be specified in the query.\n   user - user name\n   src_ip - source ip address\n   secret_name - secret name\n   author_tenant - tenant name of the secret creator\n   operation - Encrypt/Decrypt\n   result - Success/Fail\n   country - Country name\n <value> := string\n <operator> := [\"=\"|\"!=\"|\"=~\"|\"!~\"]\n   = : equal to\n   != : not equal to\n When more than one matcher is specified in the query, then audit logs matching ALL the matchers will be returned in the response.\n\n Optional: If not specified, all the audit logs matching the given tenant will be considered for aggregation\n\nExample: ` \"{user=\\\"dana@example.com\\\"}\"`",
             "title": "query",
             "x-displayname": "Query",
-            "x-ves-example": "{user=\\\"abc@xyz.com\\\"}"
+            "x-ves-example": "{user=\\\"dana@example.com\\\"}"
           },
           "start_time": {
             "type": "string",
@@ -1140,10 +1140,10 @@
           },
           "query": {
             "type": "string",
-            "description": " query is used to specify the list of matchers\n syntax for query := {[<matcher>]}\n <matcher> := <field_name><operator>\"<value>\"\n <field_name> := string\n  One or more of the following fields in audit log may be specified in the query.\n   user - user name\n   src_ip - source ip address\n   secret_name - secret name\n   author_tenant - tenant name of the secret creator\n   operation - Encrypt/Decrypt\n   result - Success/Fail\n   country - Country name\n <value> := string\n <operator> := [\"=\"|\"!=\"|\"=~\"|\"!~\"]\n   = : equal to\n   != : not equal to\n   =~ : regex match\n   !~ : not regex match\n When more than one matcher is specified in the query, then audit logs matching ALL the matchers will be returned in the response.\n\n Optional: If not specified, all the audit logs matching the given tenant will be returned.\n\nExample: ` \"{user=\\\"abc@xyz.com\\\"}\"`",
+            "description": " query is used to specify the list of matchers\n syntax for query := {[<matcher>]}\n <matcher> := <field_name><operator>\"<value>\"\n <field_name> := string\n  One or more of the following fields in audit log may be specified in the query.\n   user - user name\n   src_ip - source ip address\n   secret_name - secret name\n   author_tenant - tenant name of the secret creator\n   operation - Encrypt/Decrypt\n   result - Success/Fail\n   country - Country name\n <value> := string\n <operator> := [\"=\"|\"!=\"|\"=~\"|\"!~\"]\n   = : equal to\n   != : not equal to\n   =~ : regex match\n   !~ : not regex match\n When more than one matcher is specified in the query, then audit logs matching ALL the matchers will be returned in the response.\n\n Optional: If not specified, all the audit logs matching the given tenant will be returned.\n\nExample: ` \"{user=\\\"dana@example.com\\\"}\"`",
             "title": "query",
             "x-displayname": "Query",
-            "x-ves-example": "{user=\\\"abc@xyz.com\\\"}"
+            "x-ves-example": "{user=\\\"dana@example.com\\\"}"
           },
           "scroll": {
             "type": "boolean",

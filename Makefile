@@ -1,4 +1,4 @@
-.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update spectral-lint spectral-gate transform regenerate-specs spell-check-specs verify-property-names
+.PHONY: help install dev-install docs-install download validate reconcile release test lint typecheck clean all docs docs-serve docs-generate pre-commit pre-commit-install pre-commit-update spectral-lint spectral-gate identifier-gate transform regenerate-specs spell-check-specs verify-property-names
 
 PYTHON := python3
 VENV := .venv
@@ -64,6 +64,9 @@ spectral-lint:
 
 spectral-gate:
 	$(BIN)/python -m scripts.spectral_lint --mode gate
+
+identifier-gate:
+	$(BIN)/python -m scripts.example_identifier_safety --spec-dir release/specs
 
 transform:
 	$(BIN)/python -m scripts.transform

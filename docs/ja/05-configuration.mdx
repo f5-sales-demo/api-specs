@@ -2,7 +2,7 @@
 title: 設定リファレンス
 description: validation.yaml と endpoints.yaml 設定ファイルのリファレンス
 i18n:
-  sourceHash: 57925f07d3c8
+  sourceHash: fd479ebd3b67
   translator: machine
 ---
 
@@ -58,6 +58,17 @@ download:
 | `url` | 公式F5 XC OpenAPIスペックバンドル（ZIP）のURL。 |
 | `output_dir` | 展開されたスペックの保存先。 |
 | `etag_cache` | 条件付きダウンロード用のHTTP ETagを保存するファイル。 |
+
+### ライブ検証入力
+
+```yaml
+validation:
+  input_dir: "specs/transformed"
+```
+
+ライブテストは、修正された変換出力からセマンティックドメインを解決します。
+`specs/original/` 内の生ファイルは不変の上流ランディングバイトのままであり、
+修正された中間 API 契約として提示されることはありません。
 
 ### バリデーションカテゴリ
 
@@ -127,7 +138,7 @@ reconciliation:
 | フィールド | 説明 |
 |-------|-------------|
 | `priority` | 複数のデータソースが不一致の場合の優先順位。 |
-| `fix_strategies` | 各不一致タイプを修正アクションにマッピング。[適用される修正](/api-specs/ja/03-fixes-applied/)を参照。 |
+| `fix_strategies` | 各不一致タイプを修正アクションにマッピング。[適用される修正](/api-specs/en/03-fixes-applied/)を参照。 |
 
 ### Spectral設定
 
@@ -149,7 +160,7 @@ spectral:
   contact:
     name: "F5 Distributed Cloud"
     url: "https://docs.cloud.f5.com"
-    email: "support@f5.com"
+    email: "support@example.com"
   servers:
     - url: "https://{tenant}.console.ves.volterra.io"
       description: "F5 Distributed Cloud API"

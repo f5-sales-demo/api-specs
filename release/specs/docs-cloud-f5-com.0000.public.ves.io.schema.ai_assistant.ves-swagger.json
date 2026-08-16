@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -577,10 +577,10 @@
           },
           "query_id": {
             "type": "string",
-            "description": " Query Identifier\n\nExample: ` \"07e03bc6-81d4-4c86-a865-67b5763fe294\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.pattern: ^([0-9a-f]{8}-){1}([0-9a-f]{4}-){3}([0-9a-f]{12})$\n",
+            "description": " Query Identifier\n\nExample: ` \"00000000-0000-4000-8000-f44fac7dd7bf\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.pattern: ^([0-9a-f]{8}-){1}([0-9a-f]{4}-){3}([0-9a-f]{12})$\n",
             "title": "query_id",
             "x-displayname": "Query Id",
-            "x-ves-example": "07e03bc6-81d4-4c86-a865-67b5763fe294",
+            "x-ves-example": "00000000-0000-4000-8000-f44fac7dd7bf",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.pattern": "^([0-9a-f]{8}-){1}([0-9a-f]{4}-){3}([0-9a-f]{12})$"
             }
@@ -596,10 +596,10 @@
         "properties": {
           "current_query": {
             "type": "string",
-            "description": " Current query will be in text format\n\nExample: ` \"Explain security event 07e03bc6-81d4-4c86-a865-67b5763fe294\"`",
+            "description": " Current query will be in text format\n\nExample: ` \"Explain security event 00000000-0000-4000-8000-f44fac7dd7bf\"`",
             "title": "current_query",
             "x-displayname": "Current query",
-            "x-ves-example": "Explain security event 07e03bc6-81d4-4c86-a865-67b5763fe294"
+            "x-ves-example": "Explain security event 00000000-0000-4000-8000-f44fac7dd7bf"
           },
           "namespace": {
             "type": "string",
@@ -620,10 +620,10 @@
         "properties": {
           "current_query": {
             "type": "string",
-            "description": " Current query will be in text format\n\nExample: ` \"Explain security event 07e03bc6-81d4-4c86-a865-67b5763fe294\"`",
+            "description": " Current query will be in text format\n\nExample: ` \"Explain security event 00000000-0000-4000-8000-f44fac7dd7bf\"`",
             "title": "current_query",
             "x-displayname": "Current query",
-            "x-ves-example": "Explain security event 07e03bc6-81d4-4c86-a865-67b5763fe294"
+            "x-ves-example": "Explain security event 00000000-0000-4000-8000-f44fac7dd7bf"
           },
           "explain_log": {
             "$ref": "#/components/schemas/explain_log_recordExplainLogRecordResponse"
@@ -652,10 +652,10 @@
           },
           "query_id": {
             "type": "string",
-            "description": " Query Identifier\n\nExample: ` \"07e03bc6-81d4-4c86-a865-67b5763fe294\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.pattern: ^([0-9a-f]{8}-){1}([0-9a-f]{4}-){3}([0-9a-f]{12})$\n",
+            "description": " Query Identifier\n\nExample: ` \"00000000-0000-4000-8000-f44fac7dd7bf\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.pattern: ^([0-9a-f]{8}-){1}([0-9a-f]{4}-){3}([0-9a-f]{12})$\n",
             "title": "query_id",
             "x-displayname": "Query Id",
-            "x-ves-example": "07e03bc6-81d4-4c86-a865-67b5763fe294",
+            "x-ves-example": "00000000-0000-4000-8000-f44fac7dd7bf",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.pattern": "^([0-9a-f]{8}-){1}([0-9a-f]{4}-){3}([0-9a-f]{12})$"
             }

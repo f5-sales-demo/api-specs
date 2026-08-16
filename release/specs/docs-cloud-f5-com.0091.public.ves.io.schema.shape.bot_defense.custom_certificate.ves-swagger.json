@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -1721,10 +1721,10 @@
           },
           "email": {
             "type": "string",
-            "description": "\n\nExample: ` \"abc@f5.com\"`",
+            "description": "\n\nExample: ` \"dana@example.com\"`",
             "title": "Email",
             "x-displayname": "Email",
-            "x-ves-example": "abc@f5.com"
+            "x-ves-example": "dana@example.com"
           },
           "enterprise_id": {
             "type": "string",
@@ -1874,11 +1874,11 @@
           },
           "email": {
             "type": "string",
-            "description": "\nExample: ` \"user@gmail.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.email: true\n  ves.io.schema.rules.string.min_len: 1\n",
+            "description": "\nExample: ` \"dana@example.com\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.email: true\n  ves.io.schema.rules.string.min_len: 1\n",
             "title": "Email",
             "minLength": 1,
             "x-displayname": "Email",
-            "x-ves-example": "user@gmail.com",
+            "x-ves-example": "dana@example.com",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",

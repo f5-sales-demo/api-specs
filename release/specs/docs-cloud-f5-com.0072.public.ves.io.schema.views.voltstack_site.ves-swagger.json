@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -1331,10 +1331,10 @@
           },
           "mgmt_ip": {
             "type": "string",
-            "description": "Exclusive with [mgmt_dns_name]\n Management Endpoint is reachable at the given ip address\n\nExample: ` \"10.5.2.4\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": "Exclusive with [mgmt_dns_name]\n Management Endpoint is reachable at the given ip address\n\nExample: ` \"192.0.2.103\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "Management Endpoint IP Address",
             "x-displayname": "Management Endpoint IP Address",
-            "x-ves-example": "10.5.2.4",
+            "x-ves-example": "192.0.2.103",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
@@ -1481,10 +1481,10 @@
           },
           "mgmt_ip": {
             "type": "string",
-            "description": "Exclusive with [mgmt_dns_name]\n Management Endpoint is reachable at the given ip address\n\nExample: ` \"10.5.2.4\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": "Exclusive with [mgmt_dns_name]\n Management Endpoint is reachable at the given ip address\n\nExample: ` \"192.0.2.103\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "Management Endpoint IP Address",
             "x-displayname": "Management Endpoint IP Address",
-            "x-ves-example": "10.5.2.4",
+            "x-ves-example": "192.0.2.103",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
@@ -1503,10 +1503,10 @@
           },
           "nfs_endpoint_ip": {
             "type": "string",
-            "description": "Exclusive with [nfs_endpoint_dns_name]\n Endpoint is reachable at the given ip address\n\nExample: ` \"10.5.2.4\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": "Exclusive with [nfs_endpoint_dns_name]\n Endpoint is reachable at the given ip address\n\nExample: ` \"192.0.2.103\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "NFS IP Address",
             "x-displayname": "NFS IP Address",
-            "x-ves-example": "10.5.2.4",
+            "x-ves-example": "192.0.2.103",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
@@ -2391,10 +2391,10 @@
           },
           "storage_server_ip_address": {
             "type": "string",
-            "description": " Enter storage server IP address\n\nExample: ` \"10.10.10.10\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " Enter storage server IP address\n\nExample: ` \"192.0.2.108\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "Storage Server IP address",
             "x-displayname": "Storage Server IP address",
-            "x-ves-example": "10.10.10.10",
+            "x-ves-example": "192.0.2.108",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
@@ -2486,10 +2486,10 @@
           },
           "data_lif_ip": {
             "type": "string",
-            "description": "Exclusive with [data_lif_dns_name]\n Backend Data LIF IP Address is reachable at the given ip address\n\nExample: ` \"10.5.2.4\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": "Exclusive with [data_lif_dns_name]\n Backend Data LIF IP Address is reachable at the given ip address\n\nExample: ` \"192.0.2.103\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "Backend Data LIF IP Address",
             "x-displayname": "Backend Data LIF IP Address",
-            "x-ves-example": "10.5.2.4",
+            "x-ves-example": "192.0.2.103",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
@@ -2536,10 +2536,10 @@
           },
           "management_lif_ip": {
             "type": "string",
-            "description": "Exclusive with [management_lif_dns_name]\n Backend Management LIF IP Address is reachable at the given ip address\n\nExample: ` \"10.5.2.4\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": "Exclusive with [management_lif_dns_name]\n Backend Management LIF IP Address is reachable at the given ip address\n\nExample: ` \"192.0.2.103\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "Backend Management LIF IP Address",
             "x-displayname": "Backend Management LIF IP Address",
-            "x-ves-example": "10.5.2.4",
+            "x-ves-example": "192.0.2.103",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
@@ -2676,10 +2676,10 @@
           },
           "data_lif_ip": {
             "type": "string",
-            "description": "Exclusive with [data_lif_dns_name]\n Backend Data LIF IP Address is reachable at the given ip address\n\nExample: ` \"10.5.2.4\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": "Exclusive with [data_lif_dns_name]\n Backend Data LIF IP Address is reachable at the given ip address\n\nExample: ` \"192.0.2.103\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "Backend Data LIF IP Address",
             "x-displayname": "Backend Data LIF IP Address",
-            "x-ves-example": "10.5.2.4",
+            "x-ves-example": "192.0.2.103",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
@@ -2745,10 +2745,10 @@
           },
           "management_lif_ip": {
             "type": "string",
-            "description": "Exclusive with [management_lif_dns_name]\n Backend Management LIF IP Address is reachable at the given ip address\n\nExample: ` \"10.5.2.4\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": "Exclusive with [management_lif_dns_name]\n Backend Management LIF IP Address is reachable at the given ip address\n\nExample: ` \"192.0.2.103\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "Backend Management LIF IP Address",
             "x-displayname": "Backend Management LIF IP Address",
-            "x-ves-example": "10.5.2.4",
+            "x-ves-example": "192.0.2.103",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
@@ -3004,10 +3004,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           }
         }
       },
@@ -3262,20 +3262,20 @@
         "properties": {
           "dgw_address": {
             "type": "string",
-            "description": "Exclusive with [first_address last_address]\n Enter a IPv4 address from the network prefix to be used as the default gateway.\n\nExample: ` \"10.1.1.10\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": "Exclusive with [first_address last_address]\n Enter a IPv4 address from the network prefix to be used as the default gateway.\n\nExample: ` \"192.0.2.2\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "Configured Address",
             "x-displayname": "Static IPv4 Configuration",
-            "x-ves-example": "10.1.1.10",
+            "x-ves-example": "192.0.2.2",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
           },
           "dns_address": {
             "type": "string",
-            "description": "Exclusive with [same_as_dgw]\n Enter a IPv4 address from the network prefix to be used as the DNS server.\n\nExample: ` \"10.1.1.11\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": "Exclusive with [same_as_dgw]\n Enter a IPv4 address from the network prefix to be used as the DNS server.\n\nExample: ` \"192.0.2.193\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "Configured Address",
             "x-displayname": "Static IPv4 Configuration",
-            "x-ves-example": "10.1.1.11",
+            "x-ves-example": "192.0.2.193",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
@@ -3288,10 +3288,10 @@
           },
           "network_prefix": {
             "type": "string",
-            "description": "Exclusive with []\n Set the network prefix for the site. ex: 10.1.1.0/24\n\nExample: ` \"10.1.1.0/24\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4_prefix: true\n",
+            "description": "Exclusive with []\n Set the network prefix for the site. ex: 192.0.2.0/24\n\nExample: ` \"192.0.2.0/24\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4_prefix: true\n",
             "title": "Network Prefix",
             "x-displayname": "Network Prefix",
-            "x-ves-example": "10.1.1.0/24",
+            "x-ves-example": "192.0.2.0/24",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4_prefix": "true"
             }
@@ -3336,20 +3336,20 @@
         "properties": {
           "end_ip": {
             "type": "string",
-            "description": " Ending IP of the pool range.\n In case of address allocator, offset is derived based on network prefix.\n 10.1.1.200 with prefix length of 24, end offset is 0.0.0.200\n\nExample: ` \"10.1.1.200\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " Ending IP of the pool range.\n In case of address allocator, offset is derived based on network prefix.\n 192.0.2.39 with prefix length of 24, end offset is 192.0.2.186\n\nExample: ` \"192.0.2.39\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "End IP",
             "x-displayname": "Ending IP",
-            "x-ves-example": "10.1.1.200",
+            "x-ves-example": "192.0.2.39",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
           },
           "start_ip": {
             "type": "string",
-            "description": " Starting IP of the pool range.\n In case of address allocator, offset is derived based on network prefix.\n 10.1.1.5 with prefix length of 24, start offset is 0.0.0.5\n\nExample: ` \"10.1.1.5\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " Starting IP of the pool range.\n In case of address allocator, offset is derived based on network prefix.\n 192.0.2.173 with prefix length of 24, start offset is 192.0.2.96\n\nExample: ` \"192.0.2.173\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "Start IP",
             "x-displayname": "Starting IP",
-            "x-ves-example": "10.1.1.5",
+            "x-ves-example": "192.0.2.173",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
@@ -3816,20 +3816,20 @@
         "properties": {
           "default_gw": {
             "type": "string",
-            "description": " IP address of the default gateway.\n\nExample: ` \"192.168.20.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": " IP address of the default gateway.\n\nExample: ` \"192.0.2.13\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "Default Gateway",
             "x-displayname": "Default Gateway",
-            "x-ves-example": "192.168.20.1",
+            "x-ves-example": "192.0.2.13",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
           },
           "ip_address": {
             "type": "string",
-            "description": " IP address of the interface and prefix length\n\nExample: ` \"192.168.20.1/24\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix: true\n",
+            "description": " IP address of the interface and prefix length\n\nExample: ` \"192.0.2.0/24\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix: true\n",
             "title": "Default Gateway",
             "x-displayname": "IP address/Prefix Length",
-            "x-ves-example": "192.168.20.1/24",
+            "x-ves-example": "192.0.2.0/24",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -4458,10 +4458,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " uid is the unique in time and space value for a StatusObject.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " uid is the unique in time and space value for a StatusObject.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           },
           "vtrp_id": {
             "type": "string",
@@ -4600,10 +4600,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           }
         }
       },
@@ -4637,10 +4637,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " UID of the view object\n\nExample: ` \"f3744323-1adf-4aaa-a5dc-0707c1d1bd82\"`",
+            "description": " UID of the view object\n\nExample: ` \"00000000-0000-4000-8000-d543fad8e1f8\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "f3744323-1adf-4aaa-a5dc-0707c1d1bd82"
+            "x-ves-example": "00000000-0000-4000-8000-d543fad8e1f8"
           }
         }
       },
@@ -4842,20 +4842,20 @@
         "properties": {
           "inside_nameserver": {
             "type": "string",
-            "description": " Optional DNS server IP to be used for name resolution in inside network\n\nExample: ` \"10.1.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " Optional DNS server IP to be used for name resolution in inside network\n\nExample: ` \"192.0.2.14\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "inside_nameserver",
             "x-displayname": "DNS Server for Inside Network",
-            "x-ves-example": "10.1.1.1",
+            "x-ves-example": "192.0.2.14",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
           },
           "outside_nameserver": {
             "type": "string",
-            "description": " Optional DNS server IP to be used for name resolution in outside network\n\nExample: ` \"10.1.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " Optional DNS server IP to be used for name resolution in outside network\n\nExample: ` \"192.0.2.14\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "outside_nameserver",
             "x-displayname": "DNS Server for Outside Network",
-            "x-ves-example": "10.1.1.1",
+            "x-ves-example": "192.0.2.14",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
@@ -4954,10 +4954,10 @@
           },
           "public_ip": {
             "type": "string",
-            "description": " IP Address of the master node. This ip will be used when other sites connect\n via Site Mesh Group\n\nExample: ` \"192.168.0.156\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " IP Address of the master node. This ip will be used when other sites connect\n via Site Mesh Group\n\nExample: ` \"192.0.2.102\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "Public IP",
             "x-displayname": "Public IP",
-            "x-ves-example": "192.168.0.156",
+            "x-ves-example": "192.0.2.102",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
@@ -5007,21 +5007,21 @@
       },
       "viewsPrefixStringListType": {
         "type": "object",
-        "description": "x-example: \"192.168.20.0/24\"\nList of IPv4 prefixes that represent an endpoint",
+        "description": "x-example: \"192.0.2.0/24\"\nList of IPv4 prefixes that represent an endpoint",
         "title": "ipv4 prefix list",
         "x-displayname": "IPv4 Prefix List",
         "x-ves-proto-message": "ves.io.schema.views.PrefixStringListType",
         "properties": {
           "prefixes": {
             "type": "array",
-            "description": " List of IPv4 prefixes that represent an endpoint\n\nExample: ` \"192.168.20.0/24\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.ipv4_prefix: true\n  ves.io.schema.rules.repeated.max_items: 128\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " List of IPv4 prefixes that represent an endpoint\n\nExample: ` \"192.0.2.0/24\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.ipv4_prefix: true\n  ves.io.schema.rules.repeated.max_items: 128\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "ipv4 prefix list",
             "maxItems": 128,
             "items": {
               "type": "string"
             },
             "x-displayname": "IPv4 Prefix List",
-            "x-ves-example": "192.168.20.0/24",
+            "x-ves-example": "192.0.2.0/24",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.items.string.ipv4_prefix": "true",
               "ves.io.schema.rules.repeated.max_items": "128",
@@ -5591,7 +5591,7 @@
           },
           "ip_prefixes": {
             "type": "array",
-            "description": " List of route prefixes that have common next hop and attributes\n\nExample: ` \"10.0.0.0/24\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ipv4_prefix: true\n  ves.io.schema.rules.repeated.max_items: 256\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " List of route prefixes that have common next hop and attributes\n\nExample: ` \"192.0.2.0/24\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ipv4_prefix: true\n  ves.io.schema.rules.repeated.max_items: 256\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "IP Prefixes",
             "minItems": 1,
             "maxItems": 256,
@@ -5599,7 +5599,7 @@
               "type": "string"
             },
             "x-displayname": "IP Prefixes",
-            "x-ves-example": "10.0.0.0/24",
+            "x-ves-example": "192.0.2.0/24",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -5997,10 +5997,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " The unique uid of this voltstack_site\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
+            "description": " The unique uid of this voltstack_site\n\nExample: ` \"00000000-0000-4000-8000-d36e055b3ea2\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d27938ba-967e-40a7-9709-57b8627f9f75"
+            "x-ves-example": "00000000-0000-4000-8000-d36e055b3ea2"
           }
         }
       },
@@ -6221,20 +6221,20 @@
           },
           "bgp_peer_address": {
             "type": "string",
-            "description": " Optional bgp peer address that can be used as parameter for BGP configuration when BGP is configured\n to fetch BGP peer address from site Object. This can be used to change peer address per site in fleet.\n\nExample: ` \"10.1.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": " Optional bgp peer address that can be used as parameter for BGP configuration when BGP is configured\n to fetch BGP peer address from site Object. This can be used to change peer address per site in fleet.\n\nExample: ` \"192.0.2.14\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "bgp_peer_address",
             "x-displayname": "BGP Peer Address",
-            "x-ves-example": "10.1.1.1",
+            "x-ves-example": "192.0.2.14",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
           },
           "bgp_router_id": {
             "type": "string",
-            "description": " Optional bgp router id that can be used as parameter for BGP configuration when BGP is configured to\n fetch BGP router ID from site object.\n\nExample: ` \"10.1.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": " Optional bgp router id that can be used as parameter for BGP configuration when BGP is configured to\n fetch BGP router ID from site object.\n\nExample: ` \"192.0.2.14\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "bgp_router_id",
             "x-displayname": "BGP Router ID",
-            "x-ves-example": "10.1.1.1",
+            "x-ves-example": "192.0.2.14",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }
@@ -6268,20 +6268,20 @@
           },
           "outside_nameserver": {
             "type": "string",
-            "description": " Optional DNS server V4 IP to be used for name resolution in local network\n\nExample: ` \"10.1.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " Optional DNS server V4 IP to be used for name resolution in local network\n\nExample: ` \"192.0.2.14\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "outside_nameserver",
             "x-displayname": "DNS V4 Server for Local Network",
-            "x-ves-example": "10.1.1.1",
+            "x-ves-example": "192.0.2.14",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }
           },
           "outside_vip": {
             "type": "string",
-            "description": " Optional common virtual V4 IP  across all nodes to be used as automatic VIP for site local network.\n\nExample: ` \"10.1.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " Optional common virtual V4 IP  across all nodes to be used as automatic VIP for site local network.\n\nExample: ` \"192.0.2.14\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "Common V4 VIP",
             "x-displayname": "Common V4 VIP",
-            "x-ves-example": "10.1.1.1",
+            "x-ves-example": "192.0.2.14",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }

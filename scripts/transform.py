@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import copy
 import json
-import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -14,8 +13,11 @@ from typing import TYPE_CHECKING, Any
 import yaml
 from rich.console import Console
 
+from .example_identifier_safety import sanitize_identifier_examples
+from .pii_sanitizer import sanitize_pii_strings
 from .utils.nullable_response import apply_nullable_response_corrections
 from .utils.spec_loader import save_spec_to_file
+from .utils.spec_sanitizers import strip_scripts_recursive
 from .utils.text_replacements import (
     DEFAULT_EXAMPLE_PLACEHOLDER_FIELDS,
     DEFAULT_SPELLING_TEXT_FIELDS,
@@ -110,29 +112,6 @@ class TransformResult:
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-
-
-def _strip_scripts_recursive(obj: Any) -> None:
-    """Walk *obj* in-place and strip ``<script>`` tags from ``description`` fields."""
-    if isinstance(obj, dict):
-        if "description" in obj and isinstance(obj["description"], str):
-            obj["description"] = re.sub(
-                r"<script[^>]*>.*?</script>",
-                "",
-                obj["description"],
-                flags=re.DOTALL | re.IGNORECASE,
-            )
-            obj["description"] = re.sub(
-                r"</?script[^>]*>",
-                "",
-                obj["description"],
-                flags=re.IGNORECASE,
-            )
-        for value in obj.values():
-            _strip_scripts_recursive(value)
-    elif isinstance(obj, list):
-        for item in obj:
-            _strip_scripts_recursive(item)
 
 
 def _fix_examples_recursive(obj: Any) -> None:
@@ -441,7 +420,7 @@ def strip_script_tags(
     _filename: str,
 ) -> dict:
     """Strip ``<script>`` tags from all ``description`` fields recursively."""
-    _strip_scripts_recursive(spec)
+    strip_scripts_recursive(spec)
     return spec
 
 
@@ -756,6 +735,27 @@ def sanitize_example_placeholders(
     patterns = build_replacement_patterns(corrections)
     replace_text_fields_recursive(spec, patterns, text_fields)
     return spec
+
+
+@register_transform("sanitize_example_identifiers")
+def sanitize_example_identifiers(
+    spec: dict,
+    _config: TransformConfig,
+    _filename: str,
+) -> dict:
+    """Replace realistic UUID and private-address examples with synthetic values."""
+    return sanitize_identifier_examples(spec)
+
+
+@register_transform("sanitize_pii_placeholders")
+def sanitize_pii_placeholders(
+    spec: dict,
+    _config: TransformConfig,
+    _filename: str,
+) -> dict:
+    """Remove contact, person, and customer literals from every emitted string."""
+
+    return sanitize_pii_strings(spec)
 
 
 @register_transform("inject_operation_descriptions")

@@ -2,7 +2,7 @@
 title: 配置參考
 description: validation.yaml 和 endpoints.yaml 配置檔案的參考文件
 i18n:
-  sourceHash: 57925f07d3c8
+  sourceHash: fd479ebd3b67
   translator: machine
 ---
 
@@ -58,6 +58,17 @@ download:
 | `url` | 官方 F5 XC OpenAPI 規格包（ZIP）的 URL。 |
 | `output_dir` | 解壓縮後規格檔案的存放位置。 |
 | `etag_cache` | 儲存 HTTP ETag 以進行條件式下載的檔案。 |
+
+### 實時驗證輸入
+
+```yaml
+validation:
+  input_dir: "specs/transformed"
+```
+
+實時測試從糾正後的轉換輸出中解析其語義域。
+`specs/original/` 中的原始檔案保持為不可變的上游位元組，
+絕不會作為糾正後的中間 API 合約呈現。
 
 ### 驗證類別
 
@@ -127,7 +138,7 @@ reconciliation:
 | 欄位 | 說明 |
 |-------|-------------|
 | `priority` | 當多個資料來源不一致時的優先順序。 |
-| `fix_strategies` | 將每種差異類型對應到其修正動作。請參閱[已套用的修正](/api-specs/zh-tw/03-fixes-applied/)。 |
+| `fix_strategies` | 將每種差異類型對應到其修正動作。請參閱[已套用的修正](/api-specs/en/03-fixes-applied/)。 |
 
 ### Spectral 設定
 
@@ -149,7 +160,7 @@ spectral:
   contact:
     name: "F5 Distributed Cloud"
     url: "https://docs.cloud.f5.com"
-    email: "support@f5.com"
+    email: "support@example.com"
   servers:
     - url: "https://{tenant}.console.ves.volterra.io"
       description: "F5 Distributed Cloud API"

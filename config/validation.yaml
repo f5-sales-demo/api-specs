@@ -132,7 +132,7 @@ spectral:
   contact:
     name: "F5 Distributed Cloud"
     url: "https://docs.cloud.f5.com"
-    email: "support@f5.com"
+    email: "support@example.com"
   servers:
     - url: "https://{tenant}.console.ves.volterra.io"
       description: "F5 Distributed Cloud API"
@@ -170,6 +170,8 @@ transform:
     fix_oneof_group_names: true
     fix_spelling: true
     sanitize_example_placeholders: true
+    sanitize_example_identifiers: true
+    sanitize_pii_placeholders: true
     fix_dangling_refs: true
     remove_unused_schemas: true
     inject_operation_descriptions: true

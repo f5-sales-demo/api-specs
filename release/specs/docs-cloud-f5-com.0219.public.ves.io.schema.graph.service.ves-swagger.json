@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -1068,13 +1068,13 @@
         "properties": {
           "component_examples": {
             "type": "array",
-            "description": " List of sample URL(s) that are collapsed\n\nExample: ` \"[d0161a1e-044e-427b-a806-3bad9eac97fc, a74eb844-6d91-474c-9874-f19fa3983f4d]\"`",
+            "description": " List of sample URL(s) that are collapsed\n\nExample: ` \"[00000000-0000-4000-8000-885eebac2748, 00000000-0000-4000-8000-de5d031e1760]\"`",
             "title": "List of expanded URLs",
             "items": {
               "type": "string"
             },
             "x-displayname": "Expanded URL(s)",
-            "x-ves-example": "[d0161a1e-044e-427b-a806-3bad9eac97fc, a74eb844-6d91-474c-9874-f19fa3983f4d]"
+            "x-ves-example": "[00000000-0000-4000-8000-885eebac2748, 00000000-0000-4000-8000-de5d031e1760]"
           },
           "component_identifier": {
             "type": "string",
@@ -2575,10 +2575,10 @@
           },
           "vip": {
             "type": "string",
-            "description": " Identifies the VIP associated with the Virtual Host\n\nExample: ` \"192.168.1.1\"`",
+            "description": " Identifies the VIP associated with the Virtual Host\n\nExample: ` \"192.0.2.198\"`",
             "title": "VIP",
             "x-displayname": "VIP",
-            "x-ves-example": "192.168.1.1"
+            "x-ves-example": "192.0.2.198"
           },
           "virtual_host_type": {
             "type": "string",

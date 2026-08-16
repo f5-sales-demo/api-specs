@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -380,7 +380,7 @@
         "parameters": [
           {
             "name": "id",
-            "description": "Id\n\nx-example: \"sam.smith@gmail.com\"\nx-required\nId with which the request will find entry.",
+            "description": "Id\n\nx-example: \"dana@example.com\"\nx-required\nId with which the request will find entry.",
             "in": "path",
             "required": true,
             "x-displayname": "Email",
@@ -509,7 +509,7 @@
         "parameters": [
           {
             "name": "id",
-            "description": "Id\n\nx-example: \"sam.smith@gmail.com\"\nx-required\nId with which the request will find entry.",
+            "description": "Id\n\nx-example: \"dana@example.com\"\nx-required\nId with which the request will find entry.",
             "in": "path",
             "required": true,
             "x-displayname": "Email",
@@ -1000,7 +1000,7 @@
         "parameters": [
           {
             "name": "id",
-            "description": "Id\n\nx-example: \"sam.smith@gmail.com\"\nx-required\nId with which the request will find entry.",
+            "description": "Id\n\nx-example: \"dana@example.com\"\nx-required\nId with which the request will find entry.",
             "in": "path",
             "required": true,
             "x-displayname": "Email",
@@ -1242,7 +1242,7 @@
         "parameters": [
           {
             "name": "id",
-            "description": "Id\n\nx-example: \"sam.smith@gmail.com\"\nx-required\nId with which the request will find entry.",
+            "description": "Id\n\nx-example: \"dana@example.com\"\nx-required\nId with which the request will find entry.",
             "in": "path",
             "required": true,
             "x-displayname": "Email",
@@ -1754,7 +1754,7 @@
         "parameters": [
           {
             "name": "id",
-            "description": "Id\n\nx-example: \"sam.smith@gmail.com\"\nx-required\nId with which the request will find entry.",
+            "description": "Id\n\nx-example: \"dana@example.com\"\nx-required\nId with which the request will find entry.",
             "in": "path",
             "required": true,
             "x-displayname": "Email",
@@ -1883,7 +1883,7 @@
         "parameters": [
           {
             "name": "id",
-            "description": "Id\n\nx-example: \"sam.smith@gmail.com\"\nx-required\nId with which the request will find entry.",
+            "description": "Id\n\nx-example: \"dana@example.com\"\nx-required\nId with which the request will find entry.",
             "in": "path",
             "required": true,
             "x-displayname": "Email",
@@ -2286,13 +2286,13 @@
           },
           "emails": {
             "type": "array",
-            "description": " emails can be list of emails to be used by user work, personal etc.\n\nExample: ` \"sam@test.com\"`",
+            "description": " emails can be list of emails to be used by user work, personal etc.\n\nExample: ` \"dana@example.com\"`",
             "title": "emails",
             "items": {
               "$ref": "#/components/schemas/scimEmail"
             },
             "x-displayname": "emails",
-            "x-ves-example": "sam@test.com"
+            "x-ves-example": "dana@example.com"
           },
           "externalId": {
             "type": "string",
@@ -2377,10 +2377,10 @@
           },
           "value": {
             "type": "string",
-            "description": " value.\n\nExample: ` \"newEmail@domain.com\"`",
+            "description": " value.\n\nExample: ` \"dana@example.com\"`",
             "title": "value",
             "x-displayname": "value",
-            "x-ves-example": "newEmail@domain.com"
+            "x-ves-example": "dana@example.com"
           }
         }
       },
@@ -3132,13 +3132,13 @@
           },
           "emails": {
             "type": "array",
-            "description": " emails for the user whether primary or secondary.\n\nExample: ` \"test@email.com\"`",
+            "description": " emails for the user whether primary or secondary.\n\nExample: ` \"dana@example.com\"`",
             "title": "emails",
             "items": {
               "$ref": "#/components/schemas/scimEmail"
             },
             "x-displayname": "emails",
-            "x-ves-example": "test@email.com"
+            "x-ves-example": "dana@example.com"
           },
           "externalId": {
             "type": "string",

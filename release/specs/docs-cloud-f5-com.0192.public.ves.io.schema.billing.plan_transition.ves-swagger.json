@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -111,7 +111,7 @@
         "parameters": [
           {
             "name": "id",
-            "description": "x-example: \"dec2417d-adb1-4fcc-8dcd-529b1d31a652\"\nId of the plan transition request",
+            "description": "x-example: \"00000000-0000-4000-8000-4304c9d6d1ad\"\nId of the plan transition request",
             "in": "query",
             "required": false,
             "x-displayname": "id",
@@ -325,10 +325,10 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": " Id of the newly created plan transition request\n\nExample: ` \"dec2417d-adb1-4fcc-8dcd-529b1d31a652\"`",
+            "description": " Id of the newly created plan transition request\n\nExample: ` \"00000000-0000-4000-8000-4304c9d6d1ad\"`",
             "title": "id",
             "x-displayname": "id",
-            "x-ves-example": "dec2417d-adb1-4fcc-8dcd-529b1d31a652"
+            "x-ves-example": "00000000-0000-4000-8000-4304c9d6d1ad"
           },
           "requires_manual_approval": {
             "type": "boolean",
@@ -360,10 +360,10 @@
           },
           "billing_provider_account_id": {
             "type": "string",
-            "description": " Id of the billing provider account created to verify the billing info provided with this object.\n The id is then used to ensure no more duplicate billing account is created.\n Note: this is set by the backend during the creation of plan_transition object. Anything passed from ui will be ignored\n\nExample: ` \"f68bb6f4-b279-403b-b5e8-59dd6fcf73f0\"`",
+            "description": " Id of the billing provider account created to verify the billing info provided with this object.\n The id is then used to ensure no more duplicate billing account is created.\n Note: this is set by the backend during the creation of plan_transition object. Anything passed from ui will be ignored\n\nExample: ` \"00000000-0000-4000-8000-8d4d83a4c67f\"`",
             "title": "billing_provider_account_id",
             "x-displayname": "Billing provider account id",
-            "x-ves-example": "f68bb6f4-b279-403b-b5e8-59dd6fcf73f0"
+            "x-ves-example": "00000000-0000-4000-8000-8d4d83a4c67f"
           },
           "create_support_ticket": {
             "type": "boolean",
@@ -418,10 +418,10 @@
           },
           "tp_subscription_id": {
             "type": "string",
-            "description": " Id of the third party subscription id created.\n Note: this is set by the backend as part of the notifiers run as the plan_transition object is created.\n\nExample: ` \"e265802e-9dfa-4632-8c0b-cc2596e5599e\"`",
+            "description": " Id of the third party subscription id created.\n Note: this is set by the backend as part of the notifiers run as the plan_transition object is created.\n\nExample: ` \"00000000-0000-4000-8000-298dab645fd8\"`",
             "title": "tp_subscription_id",
             "x-displayname": "Third party subscription id",
-            "x-ves-example": "e265802e-9dfa-4632-8c0b-cc2596e5599e"
+            "x-ves-example": "00000000-0000-4000-8000-298dab645fd8"
           },
           "unsubscribe_addon_services": {
             "type": "array",

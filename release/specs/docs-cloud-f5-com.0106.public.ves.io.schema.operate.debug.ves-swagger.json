@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "support@f5.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -3589,10 +3589,10 @@
           },
           "serial": {
             "type": "string",
-            "description": " serial number, eg. for aws ec254b6d-9676-1a51-8b10-21370dbdc3e5. Info taken from /sys/class/dmi/id/product_serial\n\nExample: ` \"ec254b6d-9676-1a51-8b10-21370dbdc3e5\"`",
+            "description": " serial number, eg. for aws 00000000-0000-4000-8000-23460f645a1f. Info taken from /sys/class/dmi/id/product_serial\n\nExample: ` \"00000000-0000-4000-8000-23460f645a1f\"`",
             "title": "serial",
             "x-displayname": "Serial Number",
-            "x-ves-example": "ec254b6d-9676-1a51-8b10-21370dbdc3e5"
+            "x-ves-example": "00000000-0000-4000-8000-23460f645a1f"
           },
           "vendor": {
             "type": "string",

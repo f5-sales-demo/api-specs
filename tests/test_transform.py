@@ -26,6 +26,7 @@ from scripts.transform import (
     remove_deprecated_paths,
     remove_unused_schemas,
     rename_colliding_schemas,
+    sanitize_pii_placeholders,
     strip_script_tags,
 )
 
@@ -74,7 +75,7 @@ def config_with_metadata() -> TransformConfig:
             "contact": {
                 "name": "F5 Distributed Cloud",
                 "url": "https://docs.cloud.f5.com",
-                "email": "support@f5.com",
+                "email": "support@example.com",
             },
             "servers": [
                 {
@@ -197,7 +198,7 @@ class TestInjectContact:
         assert "contact" in result["info"]
         assert result["info"]["contact"]["name"] == "F5 Distributed Cloud"
         assert result["info"]["contact"]["url"] == "https://docs.cloud.f5.com"
-        assert result["info"]["contact"]["email"] == "support@f5.com"
+        assert result["info"]["contact"]["email"] == "support@example.com"
 
 
 class TestInjectServers:
@@ -917,3 +918,34 @@ class TestWireNameAnnotationShape:
         once = fix_property_names(spec, config, "test.json")
         twice = fix_property_names(copy.deepcopy(once), config, "test.json")
         assert twice == once
+
+
+class TestSanitizePiiPlaceholders:
+    def test_replaces_literal_contacts_and_identity_examples_in_documentation_fields(self):
+        unsafe_email = "owner@" + "company.invalid"
+        spec = {
+            "description": (
+                f"email: {unsafe_email}; first_name: Private Name; namespace: private-tenant"
+            ),
+            "x-ves-example": "customer_id: private-customer",
+            "contact": {"email": unsafe_email},
+        }
+
+        result = sanitize_pii_placeholders(spec, TransformConfig(), "test.json")
+
+        assert result == {
+            "description": "email: dana@example.com; first_name: Dana R.; namespace: example-namespace",
+            "x-ves-example": "customer_id: example-customer",
+            "contact": {"email": "dana@example.com"},
+        }
+
+    def test_preserves_numeric_protobuf_field_tags_in_descriptions(self):
+        first_field = "first_" + "name"
+        last_field = "last_" + "name"
+        spec = {
+            "description": f"message Profile {{ string {first_field} = 1; string {last_field} = 2; }}"
+        }
+
+        result = sanitize_pii_placeholders(spec, TransformConfig(), "test.json")
+
+        assert result == spec

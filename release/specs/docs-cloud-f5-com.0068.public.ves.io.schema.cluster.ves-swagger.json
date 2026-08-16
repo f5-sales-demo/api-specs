@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "dana@example.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -858,7 +858,7 @@
           },
           "endpoint_subsets": {
             "type": "array",
-            "description": " Cluster may be configured to divide its endpoints into subsets based on metadata\n attached to the endpoints. Routes may then specify the metadata that a endpoint must match in\n order to be selected by the load balancer.\n\n endpoint_subsets is list of subsets for this cluster. Each entry in this list has definition for a subset\n (which is collection of keys)\n\n During routing, the route\u2019s metadata match configuration is used to find a specific subset.\n If there is a subset with the exact keys and values specified by the route, the subset is used\n for load balancing. Otherwise, the fallback policy is used. The cluster\u2019s subset configuration must,\n therefore, contain a definition that has the same keys as a given route in order for subset load\n balancing to occur.\n\n Example:\n\n RouteConfig\n\n routes:\n - match:\n   - headers: []\n     path:\n       path: /1.log\n     query_params: []\n   routeDestination:\n     destinations:\n     - cluster:\n       - kind: cluster.Object\n         uid: 00000000-0000-0000-0001-000000000005\n     endpointSubsets:\n       site: india\n\n EndpointConfig\n\n metadata:\n labels:\n   deployment: debug\n   site: india\n name: end-1\n uid: end-1\n\n ClusterConfig\n\n gcSpec:\n  defaultSubset:\n    stage: production\n  fallbackPolicy: DEFAULT_SUBSET\n  endpointSubsets:\n  - keys:\n    - site\n  - keys:\n    - stage\n    - app\n\n Assume the below endpoints are defined and associated with the cluster.\n\n Endpoint   Labels\n --------   ------\n\n  ep1       stage: production, site: india\n  ep2       stage: deployment, site: us\n  ep3       stage: production, app: hr\n  ep4       site: india\n\n The following table describes some routes and the result of their application\n to the cluster. The subset definition for cluster is assumed to be same as given\n above in the ClusterConfig section\n\n RouteMatch Criteria             Subset        Reason\n -------------------             ------        ------\n\n  site: india                    ep1, ep4     Subset of endpoints selected\n  site: us                       ep2          Subset of endpoints selected\n  app: hr                        ep1, ep3     Fallback: No subset selector for \"app\" alone\n  stage: production, app: hr     ep3          Subset of endpoints selected\n  other: x                       ep1, ep3     Fallback: No subset selector for \u201cother\u201d\n  (none)                         ep1, ep3     Fallback: No subset requested\n\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 32\n",
+            "description": " Cluster may be configured to divide its endpoints into subsets based on metadata\n attached to the endpoints. Routes may then specify the metadata that a endpoint must match in\n order to be selected by the load balancer.\n\n endpoint_subsets is list of subsets for this cluster. Each entry in this list has definition for a subset\n (which is collection of keys)\n\n During routing, the route\u2019s metadata match configuration is used to find a specific subset.\n If there is a subset with the exact keys and values specified by the route, the subset is used\n for load balancing. Otherwise, the fallback policy is used. The cluster\u2019s subset configuration must,\n therefore, contain a definition that has the same keys as a given route in order for subset load\n balancing to occur.\n\n Example:\n\n RouteConfig\n\n routes:\n - match:\n   - headers: []\n     path:\n       path: /1.log\n     query_params: []\n   routeDestination:\n     destinations:\n     - cluster:\n       - kind: cluster.Object\n         uid: 00000000-0000-4000-8000-0b50b89d07a2\n     endpointSubsets:\n       site: india\n\n EndpointConfig\n\n metadata:\n labels:\n   deployment: debug\n   site: india\n name: end-1\n uid: end-1\n\n ClusterConfig\n\n gcSpec:\n  defaultSubset:\n    stage: production\n  fallbackPolicy: DEFAULT_SUBSET\n  endpointSubsets:\n  - keys:\n    - site\n  - keys:\n    - stage\n    - app\n\n Assume the below endpoints are defined and associated with the cluster.\n\n Endpoint   Labels\n --------   ------\n\n  ep1       stage: production, site: india\n  ep2       stage: deployment, site: us\n  ep3       stage: production, app: hr\n  ep4       site: india\n\n The following table describes some routes and the result of their application\n to the cluster. The subset definition for cluster is assumed to be same as given\n above in the ClusterConfig section\n\n RouteMatch Criteria             Subset        Reason\n -------------------             ------        ------\n\n  site: india                    ep1, ep4     Subset of endpoints selected\n  site: us                       ep2          Subset of endpoints selected\n  app: hr                        ep1, ep3     Fallback: No subset selector for \"app\" alone\n  stage: production, app: hr     ep3          Subset of endpoints selected\n  other: x                       ep1, ep3     Fallback: No subset selector for \u201cother\u201d\n  (none)                         ep1, ep3     Fallback: No subset requested\n\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 32\n",
             "maxItems": 32,
             "items": {
               "$ref": "#/components/schemas/clusterEndpointSubsetSelectorType"
@@ -1141,7 +1141,7 @@
           },
           "endpoint_subsets": {
             "type": "array",
-            "description": " Cluster may be configured to divide its endpoints into subsets based on metadata\n attached to the endpoints. Routes may then specify the metadata that a endpoint must match in\n order to be selected by the load balancer.\n\n endpoint_subsets is list of subsets for this cluster. Each entry in this list has definition for a subset\n (which is collection of keys)\n\n During routing, the route\u2019s metadata match configuration is used to find a specific subset.\n If there is a subset with the exact keys and values specified by the route, the subset is used\n for load balancing. Otherwise, the fallback policy is used. The cluster\u2019s subset configuration must,\n therefore, contain a definition that has the same keys as a given route in order for subset load\n balancing to occur.\n\n Example:\n\n RouteConfig\n\n routes:\n - match:\n   - headers: []\n     path:\n       path: /1.log\n     query_params: []\n   routeDestination:\n     destinations:\n     - cluster:\n       - kind: cluster.Object\n         uid: 00000000-0000-0000-0001-000000000005\n     endpointSubsets:\n       site: india\n\n EndpointConfig\n\n metadata:\n labels:\n   deployment: debug\n   site: india\n name: end-1\n uid: end-1\n\n ClusterConfig\n\n gcSpec:\n  defaultSubset:\n    stage: production\n  fallbackPolicy: DEFAULT_SUBSET\n  endpointSubsets:\n  - keys:\n    - site\n  - keys:\n    - stage\n    - app\n\n Assume the below endpoints are defined and associated with the cluster.\n\n Endpoint   Labels\n --------   ------\n\n  ep1       stage: production, site: india\n  ep2       stage: deployment, site: us\n  ep3       stage: production, app: hr\n  ep4       site: india\n\n The following table describes some routes and the result of their application\n to the cluster. The subset definition for cluster is assumed to be same as given\n above in the ClusterConfig section\n\n RouteMatch Criteria             Subset        Reason\n -------------------             ------        ------\n\n  site: india                    ep1, ep4     Subset of endpoints selected\n  site: us                       ep2          Subset of endpoints selected\n  app: hr                        ep1, ep3     Fallback: No subset selector for \"app\" alone\n  stage: production, app: hr     ep3          Subset of endpoints selected\n  other: x                       ep1, ep3     Fallback: No subset selector for \u201cother\u201d\n  (none)                         ep1, ep3     Fallback: No subset requested\n\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 32\n",
+            "description": " Cluster may be configured to divide its endpoints into subsets based on metadata\n attached to the endpoints. Routes may then specify the metadata that a endpoint must match in\n order to be selected by the load balancer.\n\n endpoint_subsets is list of subsets for this cluster. Each entry in this list has definition for a subset\n (which is collection of keys)\n\n During routing, the route\u2019s metadata match configuration is used to find a specific subset.\n If there is a subset with the exact keys and values specified by the route, the subset is used\n for load balancing. Otherwise, the fallback policy is used. The cluster\u2019s subset configuration must,\n therefore, contain a definition that has the same keys as a given route in order for subset load\n balancing to occur.\n\n Example:\n\n RouteConfig\n\n routes:\n - match:\n   - headers: []\n     path:\n       path: /1.log\n     query_params: []\n   routeDestination:\n     destinations:\n     - cluster:\n       - kind: cluster.Object\n         uid: 00000000-0000-4000-8000-0b50b89d07a2\n     endpointSubsets:\n       site: india\n\n EndpointConfig\n\n metadata:\n labels:\n   deployment: debug\n   site: india\n name: end-1\n uid: end-1\n\n ClusterConfig\n\n gcSpec:\n  defaultSubset:\n    stage: production\n  fallbackPolicy: DEFAULT_SUBSET\n  endpointSubsets:\n  - keys:\n    - site\n  - keys:\n    - stage\n    - app\n\n Assume the below endpoints are defined and associated with the cluster.\n\n Endpoint   Labels\n --------   ------\n\n  ep1       stage: production, site: india\n  ep2       stage: deployment, site: us\n  ep3       stage: production, app: hr\n  ep4       site: india\n\n The following table describes some routes and the result of their application\n to the cluster. The subset definition for cluster is assumed to be same as given\n above in the ClusterConfig section\n\n RouteMatch Criteria             Subset        Reason\n -------------------             ------        ------\n\n  site: india                    ep1, ep4     Subset of endpoints selected\n  site: us                       ep2          Subset of endpoints selected\n  app: hr                        ep1, ep3     Fallback: No subset selector for \"app\" alone\n  stage: production, app: hr     ep3          Subset of endpoints selected\n  other: x                       ep1, ep3     Fallback: No subset selector for \u201cother\u201d\n  (none)                         ep1, ep3     Fallback: No subset requested\n\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 32\n",
             "maxItems": 32,
             "items": {
               "$ref": "#/components/schemas/clusterEndpointSubsetSelectorType"
@@ -1369,10 +1369,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " The unique uid of this cluster\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
+            "description": " The unique uid of this cluster\n\nExample: ` \"00000000-0000-4000-8000-d36e055b3ea2\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d27938ba-967e-40a7-9709-57b8627f9f75"
+            "x-ves-example": "00000000-0000-4000-8000-d36e055b3ea2"
           }
         }
       },
@@ -1513,7 +1513,7 @@
           },
           "endpoint_subsets": {
             "type": "array",
-            "description": " Cluster may be configured to divide its endpoints into subsets based on metadata\n attached to the endpoints. Routes may then specify the metadata that a endpoint must match in\n order to be selected by the load balancer.\n\n endpoint_subsets is list of subsets for this cluster. Each entry in this list has definition for a subset\n (which is collection of keys)\n\n During routing, the route\u2019s metadata match configuration is used to find a specific subset.\n If there is a subset with the exact keys and values specified by the route, the subset is used\n for load balancing. Otherwise, the fallback policy is used. The cluster\u2019s subset configuration must,\n therefore, contain a definition that has the same keys as a given route in order for subset load\n balancing to occur.\n\n Example:\n\n RouteConfig\n\n routes:\n - match:\n   - headers: []\n     path:\n       path: /1.log\n     query_params: []\n   routeDestination:\n     destinations:\n     - cluster:\n       - kind: cluster.Object\n         uid: 00000000-0000-0000-0001-000000000005\n     endpointSubsets:\n       site: india\n\n EndpointConfig\n\n metadata:\n labels:\n   deployment: debug\n   site: india\n name: end-1\n uid: end-1\n\n ClusterConfig\n\n gcSpec:\n  defaultSubset:\n    stage: production\n  fallbackPolicy: DEFAULT_SUBSET\n  endpointSubsets:\n  - keys:\n    - site\n  - keys:\n    - stage\n    - app\n\n Assume the below endpoints are defined and associated with the cluster.\n\n Endpoint   Labels\n --------   ------\n\n  ep1       stage: production, site: india\n  ep2       stage: deployment, site: us\n  ep3       stage: production, app: hr\n  ep4       site: india\n\n The following table describes some routes and the result of their application\n to the cluster. The subset definition for cluster is assumed to be same as given\n above in the ClusterConfig section\n\n RouteMatch Criteria             Subset        Reason\n -------------------             ------        ------\n\n  site: india                    ep1, ep4     Subset of endpoints selected\n  site: us                       ep2          Subset of endpoints selected\n  app: hr                        ep1, ep3     Fallback: No subset selector for \"app\" alone\n  stage: production, app: hr     ep3          Subset of endpoints selected\n  other: x                       ep1, ep3     Fallback: No subset selector for \u201cother\u201d\n  (none)                         ep1, ep3     Fallback: No subset requested\n\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 32\n",
+            "description": " Cluster may be configured to divide its endpoints into subsets based on metadata\n attached to the endpoints. Routes may then specify the metadata that a endpoint must match in\n order to be selected by the load balancer.\n\n endpoint_subsets is list of subsets for this cluster. Each entry in this list has definition for a subset\n (which is collection of keys)\n\n During routing, the route\u2019s metadata match configuration is used to find a specific subset.\n If there is a subset with the exact keys and values specified by the route, the subset is used\n for load balancing. Otherwise, the fallback policy is used. The cluster\u2019s subset configuration must,\n therefore, contain a definition that has the same keys as a given route in order for subset load\n balancing to occur.\n\n Example:\n\n RouteConfig\n\n routes:\n - match:\n   - headers: []\n     path:\n       path: /1.log\n     query_params: []\n   routeDestination:\n     destinations:\n     - cluster:\n       - kind: cluster.Object\n         uid: 00000000-0000-4000-8000-0b50b89d07a2\n     endpointSubsets:\n       site: india\n\n EndpointConfig\n\n metadata:\n labels:\n   deployment: debug\n   site: india\n name: end-1\n uid: end-1\n\n ClusterConfig\n\n gcSpec:\n  defaultSubset:\n    stage: production\n  fallbackPolicy: DEFAULT_SUBSET\n  endpointSubsets:\n  - keys:\n    - site\n  - keys:\n    - stage\n    - app\n\n Assume the below endpoints are defined and associated with the cluster.\n\n Endpoint   Labels\n --------   ------\n\n  ep1       stage: production, site: india\n  ep2       stage: deployment, site: us\n  ep3       stage: production, app: hr\n  ep4       site: india\n\n The following table describes some routes and the result of their application\n to the cluster. The subset definition for cluster is assumed to be same as given\n above in the ClusterConfig section\n\n RouteMatch Criteria             Subset        Reason\n -------------------             ------        ------\n\n  site: india                    ep1, ep4     Subset of endpoints selected\n  site: us                       ep2          Subset of endpoints selected\n  app: hr                        ep1, ep3     Fallback: No subset selector for \"app\" alone\n  stage: production, app: hr     ep3          Subset of endpoints selected\n  other: x                       ep1, ep3     Fallback: No subset selector for \u201cother\u201d\n  (none)                         ep1, ep3     Fallback: No subset requested\n\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 32\n",
             "maxItems": 32,
             "items": {
               "$ref": "#/components/schemas/clusterEndpointSubsetSelectorType"
@@ -2095,10 +2095,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           }
         }
       },
@@ -2230,10 +2230,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " uid is the unique in time and space value for a StatusObject.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " uid is the unique in time and space value for a StatusObject.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           },
           "vtrp_id": {
             "type": "string",
@@ -2372,10 +2372,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
           }
         }
       },
@@ -2685,10 +2685,10 @@
           },
           "uid": {
             "type": "string",
-            "description": " UID of the view object\n\nExample: ` \"f3744323-1adf-4aaa-a5dc-0707c1d1bd82\"`",
+            "description": " UID of the view object\n\nExample: ` \"00000000-0000-4000-8000-d543fad8e1f8\"`",
             "title": "uid",
             "x-displayname": "UID",
-            "x-ves-example": "f3744323-1adf-4aaa-a5dc-0707c1d1bd82"
+            "x-ves-example": "00000000-0000-4000-8000-d543fad8e1f8"
           }
         }
       }

@@ -33,7 +33,7 @@ def test_environment_is_the_only_live_target_authority(monkeypatch: pytest.Monke
     )
 
     assert auth.api_url == "https://environment.example.invalid"
-    assert auth.namespace =example-namespace"environment-namespace"
+    assert auth.namespace == "environment-namespace"
 
 
 def test_connection_fails_when_configured_namespace_is_absent(
@@ -63,7 +63,7 @@ def test_connection_accepts_only_the_configured_namespace(
     )
     response = SimpleNamespace(
         status_code=200,
-        json=lambda: {"items": [{"name": "required-namespace"}]},
+        json=lambda: {"items": [{"name": "example-namespace"}]},
     )
     monkeypatch.setattr(auth, "get", lambda _path: response)
 

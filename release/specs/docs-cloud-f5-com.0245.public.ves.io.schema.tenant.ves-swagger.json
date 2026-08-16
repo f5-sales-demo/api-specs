@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "dana@example.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -241,7 +241,7 @@
         "parameters": [
           {
             "name": "realm_id",
-            "description": "x-example: \"3d05688b-f560-4f70-9af1-384a0ec0ff15\"\nuser's email",
+            "description": "x-example: \"00000000-0000-4000-8000-dfd2e37f3c73\"\nuser's email",
             "in": "query",
             "required": false,
             "x-displayname": "Email",
@@ -3498,9 +3498,9 @@
         "properties": {
           "active_plan_transition_id": {
             "type": "string",
-            "description": " Id of the plan transition request which is currently in state CREATING.\n\nExample: ` \"7e1ba0f9-26dc-4397-97b3-b600df2097d3\"`",
+            "description": " Id of the plan transition request which is currently in state CREATING.\n\nExample: ` \"00000000-0000-4000-8000-e92dff7c10ec\"`",
             "x-displayname": "ActivePlanTransitionId",
-            "x-ves-example": "7e1ba0f9-26dc-4397-97b3-b600df2097d3"
+            "x-ves-example": "00000000-0000-4000-8000-e92dff7c10ec"
           },
           "company_name": {
             "type": "string",

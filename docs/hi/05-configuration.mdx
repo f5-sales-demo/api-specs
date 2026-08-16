@@ -2,7 +2,7 @@
 title: कॉन्फ़िगरेशन संदर्भ
 description: validation.yaml और endpoints.yaml कॉन्फ़िगरेशन फ़ाइलों का संदर्भ
 i18n:
-  sourceHash: 57925f07d3c8
+  sourceHash: fd479ebd3b67
   translator: machine
 ---
 
@@ -58,6 +58,17 @@ download:
 | `url` | आधिकारिक F5 XC OpenAPI स्पेक बंडल (ZIP) का URL। |
 | `output_dir` | जहाँ निकाली गई स्पेक्स संग्रहीत होती हैं। |
 | `etag_cache` | वह फ़ाइल जो सशर्त डाउनलोड के लिए HTTP ETag संग्रहीत करती है। |
+
+### लाइव सत्यापन इनपुट
+
+```yaml
+validation:
+  input_dir: "specs/transformed"
+```
+
+लाइव परीक्षण सही किए गए परिवर्तन आउटपुट से अपने सिमेंटिक डोमेन को हल करते हैं।
+`specs/original/` में कच्ची फ़ाइलें अपरिवर्तनीय अपस्ट्रीम लैंडिंग बाइट्स बनी रहती हैं और
+उन्हें कभी भी सही किए गए मध्यवर्ती API अनुबंध के रूप में प्रस्तुत नहीं किया जाता है।
 
 ### सत्यापन श्रेणियाँ
 
@@ -127,7 +138,7 @@ reconciliation:
 | फ़ील्ड | विवरण |
 |-------|-------------|
 | `priority` | जब एकाधिक डेटा स्रोत असहमत हों तो प्राथमिकता का क्रम। |
-| `fix_strategies` | प्रत्येक विसंगति प्रकार को उसकी फ़िक्स कार्रवाई से मैप करता है। [लागू किए गए सुधार](/api-specs/hi/03-fixes-applied/) देखें। |
+| `fix_strategies` | प्रत्येक विसंगति प्रकार को उसकी फ़िक्स कार्रवाई से मैप करता है। [लागू किए गए सुधार](/api-specs/en/03-fixes-applied/) देखें। |
 
 ### Spectral सेटिंग्स
 
@@ -149,13 +160,13 @@ spectral:
   contact:
     name: "F5 Distributed Cloud"
     url: "https://docs.cloud.f5.com"
-    email: "dana@example.com"
+    email: "support@example.com"
   servers:
     - url: "https://{tenant}.console.ves.volterra.io"
       description: "F5 Distributed Cloud API"
       variables:
         tenant:
-          example-tenant"example-tenant"
+          default: "example-tenant"
           description: "Your F5 XC tenant name"
   security_scheme:
     type: "apiKey"

@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "dana@example.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -248,10 +248,10 @@
           },
           "dest": {
             "type": "string",
-            "description": " Destination address used for ping\n\nExample: ` \"192.168.10.25\"`",
+            "description": " Destination address used for ping\n\nExample: ` \"192.0.2.192\"`",
             "title": "Destination",
             "x-displayname": "Destination",
-            "x-ves-example": "192.168.10.25"
+            "x-ves-example": "192.0.2.192"
           },
           "lost": {
             "type": "integer",
@@ -329,10 +329,10 @@
           },
           "ip": {
             "type": "string",
-            "description": "Exclusive with [hostname]\n IP address of the host\n\nExample: ` \"192.168.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
+            "description": "Exclusive with [hostname]\n IP address of the host\n\nExample: ` \"192.0.2.198\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ip: true\n",
             "title": "IP",
             "x-displayname": "IP",
-            "x-ves-example": "192.168.1.1",
+            "x-ves-example": "192.0.2.198",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
             }

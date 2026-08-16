@@ -178,14 +178,14 @@ def test_namespace_scope_is_injected_and_redacted() -> None:
     runner.bind_scope(case)
     evidence = runner.case_evidence(case)
 
-    assert case.path_parameters["namespace"] == "private-namespace"
+    assert case.path_parameters["namespace"] == "example-namespace"
     assert case.headers == {"Authorization": "APIToken secret"}
     assert case.query == {}
     assert evidence["path_parameters"] == {
-        "namespace": "example-namespace",
+        "namespace": "<configured-namespace>",
         "name": "generated-name",
     }
-    assert "private-namespace" not in str(evidence)
+    assert "example-namespace" not in str(evidence)
 
 
 class _NoWaitRateLimiter:
@@ -334,7 +334,7 @@ def test_unexpected_response_validator_exception_is_an_error(
 
         def validate_response(self, _response: object, *, checks: list[object]) -> None:
             del checks
-            raise RuntimeError("validator crashed in private-namespace")
+            raise RuntimeError("validator crashed in example-namespace")
 
     result = _single_case_runner(monkeypatch, Case()).test_operation(
         SimpleNamespace(path="/items", method="get")
@@ -349,7 +349,7 @@ def test_unexpected_response_validator_exception_is_an_error(
             "case": {
                 "path": "/items",
                 "method": "GET",
-                "path_parameters": {"namespace": "example-namespace"},
+                "path_parameters": {"namespace": "<configured-namespace>"},
                 "query": {},
                 "body": None,
             },

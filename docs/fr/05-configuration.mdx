@@ -2,7 +2,7 @@
 title: Référence de configuration
 description: Référence pour les fichiers de configuration validation.yaml et endpoints.yaml
 i18n:
-  sourceHash: 57925f07d3c8
+  sourceHash: fd479ebd3b67
   translator: machine
 ---
 
@@ -58,6 +58,17 @@ download:
 | `url` | URL du bundle officiel de spécifications OpenAPI F5 XC (ZIP). |
 | `output_dir` | Emplacement de stockage des spécifications extraites. |
 | `etag_cache` | Fichier qui stocke l'ETag HTTP pour les téléchargements conditionnels. |
+
+### Entrée de validation en direct
+
+```yaml
+validation:
+  input_dir: "specs/transformed"
+```
+
+Les tests en direct résolvent leurs domaines sémantiques à partir de la sortie de transformation corrigée.
+Les fichiers bruts dans `specs/original/` restent les octets d'atterrissage en amont immuables et
+ne sont jamais présentés comme le contrat d'API intermédiaire corrigé.
 
 ### Catégories de validation
 
@@ -127,7 +138,7 @@ reconciliation:
 | Champ | Description |
 |-------|-------------|
 | `priority` | Ordre de préférence lorsque plusieurs sources de données sont en désaccord. |
-| `fix_strategies` | Associe chaque type de divergence à son action corrective. Voir [Corrections appliquées](/api-specs/fr/03-fixes-applied/). |
+| `fix_strategies` | Associe chaque type de divergence à son action corrective. Voir [Corrections appliquées](/api-specs/en/03-fixes-applied/). |
 
 ### Paramètres Spectral
 
@@ -149,13 +160,13 @@ spectral:
   contact:
     name: "F5 Distributed Cloud"
     url: "https://docs.cloud.f5.com"
-    email: "dana@example.com"
+    email: "support@example.com"
   servers:
     - url: "https://{tenant}.console.ves.volterra.io"
       description: "F5 Distributed Cloud API"
       variables:
         tenant:
-          example-tenant"example-tenant"
+          default: "example-tenant"
           description: "Your F5 XC tenant name"
   security_scheme:
     type: "apiKey"

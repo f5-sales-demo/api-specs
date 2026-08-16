@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "dana@example.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -18782,14 +18782,14 @@
           },
           "referer_strings": {
             "type": "array",
-            "description": " An list of strings\n\nExample: ` \"['http://172.29.42.57/index.php']\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 64\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " An list of strings\n\nExample: ` \"['http://192.0.2.101/index.php']\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 64\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "Inference Strings",
             "maxItems": 64,
             "items": {
               "type": "string"
             },
             "x-displayname": "Referer Strings",
-            "x-ves-example": "['http://172.29.42.57/index.php']",
+            "x-ves-example": "['http://192.0.2.101/index.php']",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -20956,10 +20956,10 @@
           },
           "referer": {
             "type": "string",
-            "description": " header reference\n\nExample: ` \"http://172.29.42.57/index.php?\"`",
+            "description": " header reference\n\nExample: ` \"http://192.0.2.101/index.php?\"`",
             "title": "header reference",
             "x-displayname": "header reference",
-            "x-ves-example": "http://172.29.42.57/index.php?"
+            "x-ves-example": "http://192.0.2.101/index.php?"
           },
           "timestamp": {
             "type": "string",

@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "dana@example.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -111,7 +111,7 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "x-example: \"value\"\nnamespace to scope the listing of alerts.\nwhen namespace = \"example-namespace\", all alerts for the tenant will be returned.",
+            "description": "x-example: \"value\"\nnamespace to scope the listing of alerts.\nwhen namespace = \"system\", all alerts for the tenant will be returned.",
             "in": "query",
             "required": false,
             "x-displayname": "Namespace",
@@ -285,7 +285,7 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "namespace\n\nx-example: \"value\"\nnamespace to scope the listing of alerts.\nwhen namespace = \"example-namespace\", all alerts for the tenant will be returned.",
+            "description": "namespace\n\nx-example: \"value\"\nnamespace to scope the listing of alerts.\nwhen namespace = \"system\", all alerts for the tenant will be returned.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",

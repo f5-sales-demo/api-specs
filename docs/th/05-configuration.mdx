@@ -2,7 +2,7 @@
 title: เอกสารอ้างอิงการกำหนดค่า
 description: เอกสารอ้างอิงสำหรับไฟล์กำหนดค่า validation.yaml และ endpoints.yaml
 i18n:
-  sourceHash: 57925f07d3c8
+  sourceHash: fd479ebd3b67
   translator: machine
 ---
 
@@ -58,6 +58,17 @@ download:
 | `url` | URL ของชุด OpenAPI spec อย่างเป็นทางการของ F5 XC (ZIP) |
 | `output_dir` | ตำแหน่งที่จัดเก็บ spec ที่แตกไฟล์แล้ว |
 | `etag_cache` | ไฟล์ที่จัดเก็บ HTTP ETag สำหรับการดาวน์โหลดแบบมีเงื่อนไข |
+
+### อินพุตการตรวจสอบสด
+
+```yaml
+validation:
+  input_dir: "specs/transformed"
+```
+
+การทดสอบสดจะแก้ไขโดเมนความหมายจากผลลัพธ์การแปลงที่แก้ไขแล้ว
+ไฟล์ดิบใน `specs/original/` ยังคงเป็นไบต์ขาเข้าต้นน้ำที่ไม่สามารถเปลี่ยนแปลงได้ และ
+จะไม่ถูกนำเสนอเป็นสัญญา API ระดับกลางที่แก้ไขแล้ว
 
 ### หมวดหมู่การตรวจสอบ
 
@@ -127,7 +138,7 @@ reconciliation:
 | ฟิลด์ | คำอธิบาย |
 |-------|-------------|
 | `priority` | ลำดับความสำคัญเมื่อแหล่งข้อมูลหลายแหล่งไม่ตรงกัน |
-| `fix_strategies` | แมปประเภทความไม่สอดคล้องแต่ละประเภทกับการดำเนินการแก้ไข ดู [การแก้ไขที่ใช้](/api-specs/th/03-fixes-applied/) |
+| `fix_strategies` | แมปประเภทความไม่สอดคล้องแต่ละประเภทกับการดำเนินการแก้ไข ดู [การแก้ไขที่ใช้](/api-specs/en/03-fixes-applied/) |
 
 ### การตั้งค่า Spectral
 
@@ -149,13 +160,13 @@ spectral:
   contact:
     name: "F5 Distributed Cloud"
     url: "https://docs.cloud.f5.com"
-    email: "dana@example.com"
+    email: "support@example.com"
   servers:
     - url: "https://{tenant}.console.ves.volterra.io"
       description: "F5 Distributed Cloud API"
       variables:
         tenant:
-          example-tenant"example-tenant"
+          default: "example-tenant"
           description: "Your F5 XC tenant name"
   security_scheme:
     type: "apiKey"

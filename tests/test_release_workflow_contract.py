@@ -331,6 +331,23 @@ def test_release_builder_toolchain_is_exact_locked_and_reproduced_in_fresh_envir
     assert validate_source.count("uv run --frozen python -m scripts.") >= 7
 
 
+def test_release_workflow_runs_the_identifier_example_gate_after_reconciliation():
+    steps = _jobs()["validate"]["steps"]
+    spectral_index = next(
+        index for index, step in enumerate(steps) if step["name"] == "Spectral quality gate"
+    )
+    identifier_index = next(
+        index
+        for index, step in enumerate(steps)
+        if step["name"] == "Identifier example release gate"
+    )
+    assert spectral_index < identifier_index
+    assert (
+        "python -m scripts.example_identifier_safety --spec-dir release/specs"
+        in steps[identifier_index]["run"]
+    )
+
+
 def test_every_direct_action_in_release_workflow_is_commit_pinned():
     action_refs = re.findall(r"^\s*uses:\s+([^\s@]+)@([^\s#]+)", WORKFLOW.read_text(), re.MULTILINE)
     assert action_refs

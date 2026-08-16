@@ -7,7 +7,7 @@
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
-      "email": "dana@example.com"
+      "email": "support@example.com"
     }
   },
   "paths": {
@@ -650,10 +650,10 @@
         "properties": {
           "addr": {
             "type": "string",
-            "description": " IPv4 Address in string form with dot-decimal notation\n\nExample: ` \"192.168.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " IPv4 Address in string form with dot-decimal notation\n\nExample: ` \"192.0.2.198\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "IPv4 Address",
             "x-displayname": "IPv4 Address",
-            "x-ves-example": "192.168.1.1",
+            "x-ves-example": "192.0.2.198",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }

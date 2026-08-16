@@ -208,6 +208,11 @@ jobs:
           uv run --frozen python -m scripts.spectral_lint --mode gate
           echo "Gate report saved to reports/spectral_gate_report.json"
 
+      - name: Identifier example release gate
+        run: |
+          echo "Rejecting realistic UUID and private-address examples..."
+          uv run --frozen python -m scripts.example_identifier_safety --spec-dir release/specs
+
       - name: Upload validation reports
         # Always: the Spectral gate above is the step most likely to fail, and
         # its report is the only place the offending rule and file are

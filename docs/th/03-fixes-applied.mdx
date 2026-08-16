@@ -4,7 +4,7 @@ description: >-
   รายการอ้างอิงฉบับสมบูรณ์ของทุกการแก้ไขที่เอนจินการปรับประสานนำไปใช้กับสเปค
   OpenAPI ของ F5 XC
 i18n:
-  sourceHash: dec89a2175af
+  sourceHash: 981ba93d60e7
   translator: machine
 ---
 
@@ -12,7 +12,7 @@ i18n:
 
 ## การแก้ไขข้อจำกัด
 
-การแก้ไขเหล่านี้ปรับข้อจำกัดของ OpenAPI schema เพื่อให้สเปคตรงกับสิ่งที่ API จริงบังคับใช้ การแก้ไขแต่ละรายการขับเคลื่อนโดยอ็อบเจกต์ `Discrepancy` ที่สร้างขึ้นระหว่าง[การตรวจสอบ](/api-specs/th/02-pipeline/#2-validate)
+การแก้ไขเหล่านี้ปรับข้อจำกัดของ OpenAPI schema เพื่อให้สเปคตรงกับสิ่งที่ API จริงบังคับใช้ การแก้ไขแต่ละรายการขับเคลื่อนโดยอ็อบเจกต์ `Discrepancy` ที่สร้างขึ้นระหว่าง[การตรวจสอบ](/api-specs/en/02-pipeline/#2-validate)
 
 | กลยุทธ์ | ทริกเกอร์ | สิ่งที่ทำ | การเปลี่ยนแปลงสัญญา |
 |----------|---------|--------------|-----------------|
@@ -42,7 +42,7 @@ i18n:
 
 ## การเพิ่มคุณภาพจาก Spectral
 
-การแก้ไขเหล่านี้แก้ไขปัญหาคุณภาพ OAS3 ที่พบโดย[การตรวจสอบ Spectral](/api-specs/th/04-spectral-rules/) เพิ่มหรือแก้ไขเมตาดาต้าโดยไม่เปลี่ยนพฤติกรรม API
+การแก้ไขเหล่านี้แก้ไขปัญหาคุณภาพ OAS3 ที่พบโดย[การตรวจสอบ Spectral](/api-specs/en/04-spectral-rules/) เพิ่มหรือแก้ไขเมตาดาต้าโดยไม่เปลี่ยนพฤติกรรม API
 
 ### การเพิ่มบล็อก Servers
 
@@ -63,7 +63,7 @@ i18n:
 }]
 ```
 
-URL ของเซิร์ฟเวอร์และค่าตัวแปรมาจาก `spectral.servers` ใน [validation.yaml](/api-specs/th/05-configuration/)
+URL ของเซิร์ฟเวอร์และค่าตัวแปรมาจาก `spectral.servers` ใน [validation.yaml](/api-specs/en/05-configuration/)
 
 ### การเพิ่มข้อมูลติดต่อ
 
@@ -75,11 +75,11 @@ URL ของเซิร์ฟเวอร์และค่าตัวแป�
 "contact": {
   "name": "F5 Distributed Cloud",
   "url": "https://docs.cloud.f5.com",
-  "email": "dana@example.com"
+  "email": "support@example.com"
 }
 ```
 
-ค่ามาจาก `spectral.contact` ใน [validation.yaml](/api-specs/th/05-configuration/)
+ค่ามาจาก `spectral.contact` ใน [validation.yaml](/api-specs/en/05-configuration/)
 
 ### การสร้างแท็กของ Operation
 
@@ -131,7 +131,7 @@ URL ของเซิร์ฟเวอร์และค่าตัวแป�
 "security": [{ "apiKeyAuth": [] }]
 ```
 
-นิยามของ scheme มาจาก `spectral.security_scheme` ใน [validation.yaml](/api-specs/th/05-configuration/) สิ่งนี้บอกผู้ใช้ API ว่าจะตรวจสอบสิทธิ์อย่างไร แต่ไม่เปลี่ยนพฤติกรรมรันไทม์
+นิยามของ scheme มาจาก `spectral.security_scheme` ใน [validation.yaml](/api-specs/en/05-configuration/) สิ่งนี้บอกผู้ใช้ API ว่าจะตรวจสอบสิทธิ์อย่างไร แต่ไม่เปลี่ยนพฤติกรรมรันไทม์
 
 ## การจัดรูปแบบ JSON
 

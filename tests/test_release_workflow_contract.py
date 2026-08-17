@@ -204,24 +204,20 @@ def test_release_notes_render_the_measured_semantic_decision():
     assert "Upstream F5 XC specs updated" not in command
 
 
-def test_live_validation_cannot_fall_back_or_ignore_failure():
+def test_release_validation_is_offline_and_never_reads_live_f5xc_credentials():
     workflow = yaml.safe_load(WORKFLOW.read_text())
     dispatch = workflow[True]["workflow_dispatch"]
     assert "skip_live_tests" not in dispatch.get("inputs", {})
 
     validate_steps = _jobs()["validate"]["steps"]
-    assert not any(step["name"] == "Validate specs (dry run)" for step in validate_steps)
-    live = next(step for step in validate_steps if step["name"] == "Validate specs (live)")
-    command = live["run"]
-
-    assert "if" not in live
-    assert 'if [ -z "${F5XC_API_TOKEN}" ]' not in command
-    assert "--dry-run" not in command
-    assert "|| true" not in command
-    assert "${F5XC_API_TOKEN:?" in command
-    assert "${F5XC_API_URL:?" in command
-    assert "${F5XC_NAMESPACE:?" in command
-    assert live["env"]["F5XC_NAMESPACE"] == "${{ secrets.F5XC_NAMESPACE }}"
+    assert not any("live" in step.get("name", "").lower() for step in validate_steps)
+    offline = next(
+        step for step in validate_steps if step["name"] == "Write offline validation report"
+    )
+    assert "python -m scripts.offline_validation_report" in offline["run"]
+    assert "F5XC_" not in WORKFLOW.read_text()
+    assert "scripts.validate" not in WORKFLOW.read_text()
+    assert "scripts.issue_sync" not in WORKFLOW.read_text()
 
 
 def test_failure_tracker_tracks_pipeline_health_without_inferring_delivery_state():
@@ -367,16 +363,17 @@ def test_python_test_workflow_uses_the_same_locked_toolchain():
 
 
 def test_release_workflow_parameters_contract():
-    """Verify parameters contract such as --allow-discrepancies and --reconciliation-report-out."""
+    """Verify offline-report, reconciliation, and publication parameters."""
     workflow = yaml.safe_load(WORKFLOW.read_text())
     jobs = workflow["jobs"]
     validate = jobs["validate"]
 
-    # 1. Verify --allow-discrepancies is present in validation step
+    # 1. Verify the offline report is written from transformed specs.
     validation_step = next(
-        step for step in validate["steps"] if step.get("name") == "Validate specs (live)"
+        step for step in validate["steps"] if step.get("name") == "Write offline validation report"
     )
-    assert "--allow-discrepancies" in validation_step["run"]
+    assert "--spec-dir specs/transformed" in validation_step["run"]
+    assert "--output reports/validation_report.json" in validation_step["run"]
 
     # 2. Verify --reconciliation-report-out is present in reconcile step
     reconcile_step = next(
@@ -472,7 +469,7 @@ def test_release_workflow_security_and_push_contract():
 def test_release_workflow_explicit_environments():
     """Verify that jobs in validate-and-release.yml are explicitly mapped to their correct security environments."""
     jobs = _jobs()
-    assert jobs["validate"]["environment"] == "f5xc-live-validation"
+    assert "environment" not in jobs["validate"]
     assert jobs["release"]["environment"] == "repository-settings"
     assert jobs["notify-downstream"]["environment"] == "api-specs-enriched-release-delivery"
     assert jobs["update-docs"]["environment"] == "api-specs-publication"

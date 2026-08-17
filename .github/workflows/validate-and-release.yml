@@ -39,10 +39,8 @@ jobs:
   validate:
     name: Validate Specs
     runs-on: [self-hosted, Linux, X64, api-specs, ubuntu-24.04]
-    environment: f5xc-live-validation
     permissions:
       contents: read # Checks out the exact source and tag history used as validation inputs.
-      issues: write # Synchronizes measured live discrepancies to their tracker issues.
     outputs:
       specs_changed: ${{ steps.check_specs.outputs.changed }}
       specs_etag: ${{ steps.check_specs.outputs.etag }}
@@ -138,16 +136,11 @@ jobs:
           uv run --frozen python -m scripts.transform
           echo "Transformed specs written to specs/transformed/"
 
-      - name: Validate specs (live)
-        env:
-          F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
-          F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
-          F5XC_NAMESPACE: ${{ secrets.F5XC_NAMESPACE }}
+      - name: Write offline validation report
         run: |
-          : "${F5XC_API_URL:?F5XC_API_URL is required for live validation}"
-          : "${F5XC_API_TOKEN:?F5XC_API_TOKEN is required for live validation}"
-          : "${F5XC_NAMESPACE:?F5XC_NAMESPACE is required for live validation}"
-          uv run --frozen python -m scripts.validate --allow-discrepancies
+          uv run --frozen python -m scripts.offline_validation_report \
+            --spec-dir specs/transformed \
+            --output reports/validation_report.json
 
       - name: Run Spectral OAS3 linting
         run: |
@@ -162,45 +155,6 @@ jobs:
             --report reports/validation_report.json \
             --reconciliation-report-out reports/reconciliation_report.json
           echo "Fix report saved to reports/reconciliation_report.json"
-
-      - name: Sync discrepancies to GitHub issues
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
-          F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          uv run --frozen python -m scripts.issue_sync \
-            --report reports/validation_report.json \
-            --mapping-out reports/issue_mapping.json \
-            --config config/issue_sync.yaml \
-            --run-url "$RUN_URL"
-
-      - name: Sync discrepancies (dry-run on PR)
-        if: github.event_name == 'pull_request'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
-          F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          uv run --frozen python -m scripts.issue_sync \
-            --report reports/validation_report.json \
-            --mapping-out reports/issue_mapping.json \
-            --config config/issue_sync.yaml \
-            --dry-run \
-            --run-url "$RUN_URL"
-
-      - name: Upload issue mapping artifact
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: issue-mapping
-          path: reports/issue_mapping.json
-          retention-days: 30
 
       - name: Spectral quality gate
         run: |

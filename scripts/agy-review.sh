@@ -188,19 +188,6 @@ invoke_agy() {
       error("missing structured output")
     else $results[0].result.structured_output end
   ' "$stream_file" >"$result_file"; then
-    local provider_status diagnostic_file
-    provider_status=$(jq -rs '
-      [.[] | select(.event == "result")] as $results |
-      if ($results | length) == 1 then ($results[0].result.status // "missing")
-      else "missing-result-event" end
-    ' "$stream_file" 2>/dev/null || printf 'unavailable')
-    diagnostic_file=${AGY_REVIEW_DIAGNOSTIC_FILE:-}
-    if [ -n "$diagnostic_file" ]; then
-      mkdir -p "$(dirname "$diagnostic_file")"
-      jq -n --arg phase "$phase" --arg status "$provider_status" \
-        '{phase: $phase, status: $status}' >"$diagnostic_file"
-    fi
-    echo "[review] Antigravity provider status: $provider_status" >&2
     echo "[review] Antigravity returned malformed or incomplete structured output" >&2
     return 1
   fi

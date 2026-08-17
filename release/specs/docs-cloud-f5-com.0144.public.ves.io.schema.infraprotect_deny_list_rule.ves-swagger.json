@@ -788,9 +788,9 @@
           },
           "prefix": {
             "type": "string",
-            "description": " Prefix\n\nExample: ` \"12.13.14.0/24 or 12.13.14.15/32\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix_globally_routable: true\n",
+            "description": " Prefix\n\nExample: ` \"192.0.2.161/24 or 192.0.2.145/32\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix_globally_routable: true\n",
             "x-displayname": "Prefix",
-            "x-ves-example": "12.13.14.0/24 or 12.13.14.15/32",
+            "x-ves-example": "192.0.2.161/24 or 192.0.2.145/32",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -908,9 +908,9 @@
           },
           "prefix": {
             "type": "string",
-            "description": " Prefix\n\nExample: ` \"12.13.14.0/24 or 12.13.14.15/32\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix_globally_routable: true\n",
+            "description": " Prefix\n\nExample: ` \"192.0.2.161/24 or 192.0.2.145/32\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix_globally_routable: true\n",
             "x-displayname": "Prefix",
-            "x-ves-example": "12.13.14.0/24 or 12.13.14.15/32",
+            "x-ves-example": "192.0.2.161/24 or 192.0.2.145/32",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -1079,9 +1079,9 @@
           },
           "prefix": {
             "type": "string",
-            "description": " Prefix\n\nExample: ` \"12.13.14.0/24 or 12.13.14.15/32\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix_globally_routable: true\n",
+            "description": " Prefix\n\nExample: ` \"192.0.2.161/24 or 192.0.2.145/32\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip_prefix_globally_routable: true\n",
             "x-displayname": "Prefix",
-            "x-ves-example": "12.13.14.0/24 or 12.13.14.15/32",
+            "x-ves-example": "192.0.2.161/24 or 192.0.2.145/32",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",

@@ -2593,7 +2593,7 @@
           },
           "values": {
             "type": "array",
-            "description": " A valid IPv4 address, for example: 1.1.1.1\n\nExample: ` \"1.1.1.1\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ipv4: true\n  ves.io.schema.rules.repeated.max_items: 100\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " A valid IPv4 address, for example: 192.0.2.242\n\nExample: ` \"192.0.2.242\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ipv4: true\n  ves.io.schema.rules.repeated.max_items: 100\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "IPv4 addresses",
             "minItems": 1,
             "maxItems": 100,
@@ -2601,7 +2601,7 @@
               "type": "string"
             },
             "x-displayname": "IPv4 Addresses",
-            "x-ves-example": "1.1.1.1",
+            "x-ves-example": "192.0.2.242",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -3564,10 +3564,10 @@
         "properties": {
           "client_subnet": {
             "type": "string",
-            "description": " Client Subnet\n\nExample: ` \"1.2.3.4\"`",
+            "description": " Client Subnet\n\nExample: ` \"192.0.2.103\"`",
             "title": "Client subnet",
             "x-displayname": "Client subnet",
-            "x-ves-example": "1.2.3.4"
+            "x-ves-example": "192.0.2.103"
           },
           "country_code": {
             "type": "string",
@@ -3829,10 +3829,10 @@
           },
           "primary_server": {
             "type": "string",
-            "description": "\nExample: ` \"1.2.3.4\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": "\nExample: ` \"192.0.2.103\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "Primary Server",
             "x-displayname": "Primary DNS Server",
-            "x-ves-example": "1.2.3.4",
+            "x-ves-example": "192.0.2.103",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -4982,7 +4982,7 @@
         "properties": {
           "primary_servers": {
             "type": "array",
-            "description": "\nExample: ` \"8.8.8.8\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ipv4: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": "\nExample: ` \"192.0.2.132\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ipv4: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "List of zone primary servers",
             "minItems": 1,
             "maxItems": 10,
@@ -4990,7 +4990,7 @@
               "type": "string"
             },
             "x-displayname": "DNS Primary Server IP",
-            "x-ves-example": "8.8.8.8",
+            "x-ves-example": "192.0.2.132",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -5032,7 +5032,7 @@
           },
           "primary_servers": {
             "type": "array",
-            "description": "\nExample: ` \"8.8.8.8\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ipv4: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": "\nExample: ` \"192.0.2.132\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ipv4: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
             "minItems": 1,
             "maxItems": 10,
             "items": {

@@ -2280,7 +2280,7 @@
           },
           "no_proxy": {
             "type": "string",
-            "description": " It specifies a string that contains comma-separated values\n specifying hosts that should be excluded from proxying. Each value is\n represented by an IP address prefix (1.2.3.4), an IP address prefix in\n CIDR notation (1.2.3.4/8), a domain name, or a special DNS label (*).\n An IP address prefix and domain name can also include a literal port\n number (1.2.3.4:80).\n A domain name matches that name and all subdomains. A domain name with\n a leading \".\" matches subdomains only. For example \"foo.com\" matches\n \"foo.com\" and \"bar.foo.com\"; \".y.com\" matches \"x.y.com\" but not \"y.com\".\n A single asterisk (*) indicates that no proxying should be done.\n\nExample: ` \"master.hostname.example.com,192.0.2.0/24,192.0.2.0/24\"`",
+            "description": " It specifies a string that contains comma-separated values\n specifying hosts that should be excluded from proxying. Each value is\n represented by an IP address prefix (192.0.2.103), an IP address prefix in\n CIDR notation (192.0.2.103/8), a domain name, or a special DNS label (*).\n An IP address prefix and domain name can also include a literal port\n number (192.0.2.103:80).\n A domain name matches that name and all subdomains. A domain name with\n a leading \".\" matches subdomains only. For example \"foo.com\" matches\n \"foo.com\" and \"bar.foo.com\"; \".y.com\" matches \"x.y.com\" but not \"y.com\".\n A single asterisk (*) indicates that no proxying should be done.\n\nExample: ` \"master.hostname.example.com,192.0.2.0/24,192.0.2.0/24\"`",
             "title": "No Proxy",
             "x-displayname": "NO PROXY",
             "x-ves-example": "master.hostname.example.com,192.0.2.0/24,192.0.2.0/24"
@@ -3932,13 +3932,13 @@
           },
           "ip_address": {
             "type": "array",
-            "description": " ip address on interface\n\nExample: ` \"1.1.1.1\"`",
+            "description": " ip address on interface\n\nExample: ` \"192.0.2.242\"`",
             "title": "ip_address",
             "items": {
               "type": "string"
             },
             "x-displayname": "IP Address",
-            "x-ves-example": "1.1.1.1"
+            "x-ves-example": "192.0.2.242"
           },
           "link_quality": {
             "$ref": "#/components/schemas/siteLinkQuality"

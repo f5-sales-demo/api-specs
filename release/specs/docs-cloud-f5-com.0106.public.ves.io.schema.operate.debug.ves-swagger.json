@@ -2518,10 +2518,10 @@
         "properties": {
           "output": {
             "type": "string",
-            "description": " Output of the requested command.\n\nExample: ` \"Non-authoritative answer:\\nName   google.com\\nAddress: 172.217.12.110\"`",
+            "description": " Output of the requested command.\n\nExample: ` \"Non-authoritative answer:\\nName   google.com\\nAddress: 192.0.2.121\"`",
             "title": "Command output",
             "x-displayname": "Command output",
-            "x-ves-example": "Non-authoritative answer:\\nName:    google.com\\nAddress: 172.217.12.110"
+            "x-ves-example": "Non-authoritative answer:\\nName:    google.com\\nAddress: 192.0.2.121"
           },
           "return_code": {
             "type": "integer",
@@ -2705,10 +2705,10 @@
           },
           "dest_ip": {
             "type": "string",
-            "description": " Destination IP is the address of the host being pinged.\n\nExample: ` \"8.8.8.8\"`",
+            "description": " Destination IP is the address of the host being pinged.\n\nExample: ` \"192.0.2.132\"`",
             "title": "Destination IP",
             "x-displayname": "Destination IP",
-            "x-ves-example": "8.8.8.8"
+            "x-ves-example": "192.0.2.132"
           },
           "lost": {
             "type": "integer",
@@ -3410,13 +3410,13 @@
           },
           "ip_address": {
             "type": "array",
-            "description": " ip address on interface\n\nExample: ` \"1.1.1.1\"`",
+            "description": " ip address on interface\n\nExample: ` \"192.0.2.242\"`",
             "title": "ip_address",
             "items": {
               "type": "string"
             },
             "x-displayname": "IP Address",
-            "x-ves-example": "1.1.1.1"
+            "x-ves-example": "192.0.2.242"
           },
           "link_quality": {
             "$ref": "#/components/schemas/siteLinkQuality"

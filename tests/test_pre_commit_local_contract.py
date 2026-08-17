@@ -27,12 +27,13 @@ def test_local_gate_has_no_declared_fail_open_checks() -> None:
     assert "|| true" not in source
     assert "skipping" not in source.lower()
     assert 'ruff" format --check' in source
-    assert 'mypy" --config-file .mypy.ini' in source
+    assert 'mypy" "${python_files[@]}"' in source
     assert "bandit" not in source
     assert "typos" not in source
 
 
 def test_no_staged_python_files_is_a_valid_noop(tmp_path: Path) -> None:
+
     subprocess.run(["git", "init", "-q", tmp_path], check=True)
     hook = tmp_path / "scripts" / "pre-commit-local.sh"
     hook.parent.mkdir()
@@ -53,6 +54,7 @@ def test_no_staged_python_files_is_a_valid_noop(tmp_path: Path) -> None:
 
 def test_missing_required_python_tools_fails_the_gate(tmp_path: Path) -> None:
     hook = _prepare_repository(tmp_path)
+
     result = subprocess.run(
         ["bash", hook],
         cwd=tmp_path,
@@ -68,6 +70,7 @@ def test_missing_required_python_tools_fails_the_gate(tmp_path: Path) -> None:
 
 def test_linter_failure_is_propagated(tmp_path: Path) -> None:
     hook = _prepare_repository(tmp_path)
+
     bin_dir = tmp_path / ".venv" / "bin"
     bin_dir.mkdir(parents=True)
     ruff = bin_dir / "ruff"
@@ -87,3 +90,9 @@ def test_linter_failure_is_propagated(tmp_path: Path) -> None:
     )
 
     assert result.returncode == 23
+
+
+def test_mypy_policy_has_one_repository_configuration() -> None:
+    assert not (ROOT / ".mypy.ini").exists()
+    assert "[tool.mypy]" in (ROOT / "pyproject.toml").read_text()
+    assert "mypy scripts/ tests/" in (ROOT / "Makefile").read_text()

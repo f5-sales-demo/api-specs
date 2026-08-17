@@ -1985,7 +1985,6 @@ def jq_filter_spans(
 
 
 def scan_contacts(
-    # pylint: disable-next=too-many-branches
     path: str,
     line_number: int,
     line: str,
@@ -2051,6 +2050,11 @@ def scan_contacts(
                 message="home-directory path contains a non-placeholder user segment",
             )
 
+    scan_phone_fields(path, line_number, line, findings)
+
+
+def scan_phone_fields(path: str, line_number: int, line: str, findings: set[Finding]) -> None:
+    """Scan phone fields independently from the aggregate contact scanner."""
     for match in PHONE_FIELD_RE.finditer(line):
         if not safe_phone(match.group("value")):
             add_finding(

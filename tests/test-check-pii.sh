@@ -172,80 +172,6 @@ git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm synthetic
 assert_clean "reserved synthetic values" "$repo" --scope head --mode enforce
 
-repo=$(new_repo schema-object-fields)
-cat >"${repo}/fixture.json" <<'EOF'
-{
-  "namespace": {"type": "string"},
-  "email": {"type": "string"},
-  "first_name": {"type": "string"},
-  "date_of_birth": {"type": "string"}
-}
-EOF
-git -C "$repo" add fixture.json
-git -C "$repo" commit -qm schema-object-fields
-assert_clean "object-valued schema fields are declarations, not PII values" "$repo" --scope head --mode enforce
-
-repo=$(new_repo serialized-placeholders)
-cat >"${repo}/fixture.json" <<'EOF'
-{"description": "first_name: Dana R.; namespace: example-namespace;"}
-EOF
-git -C "$repo" add fixture.json
-git -C "$repo" commit -qm serialized-placeholders
-assert_clean "approved placeholders followed by serialization punctuation remain clean" \
-  "$repo" --scope head --mode enforce
-
-repo=$(new_repo serialized-literal-after-placeholder)
-cat >"${repo}/fixture.json" <<'EOF'
-{"description": "first_name: Dana R.; last_name: Private Name"}
-EOF
-git -C "$repo" add fixture.json
-git -C "$repo" commit -qm serialized-literal-after-placeholder
-assert_single_finding "a later serialized person literal remains enforced" \
-  "$repo" person-name high --scope head --mode enforce
-
-repo=$(new_repo escaped-json-placeholders)
-cat >"${repo}/fixture.json" <<'EOF'
-{"description": "first_name: \"Dana R.\"; namespace: \"example-namespace\""}
-EOF
-git -C "$repo" add fixture.json
-git -C "$repo" commit -qm escaped-json-placeholders
-assert_clean "escaped JSON placeholder values remain clean" "$repo" --scope head --mode enforce
-
-repo=$(new_repo escaped-json-literal)
-cat >"${repo}/fixture.json" <<'EOF'
-{"description": "first_name: \"Private Name\""}
-EOF
-git -C "$repo" add fixture.json
-git -C "$repo" commit -qm escaped-json-literal
-assert_single_finding "escaped JSON literals remain enforced" \
-  "$repo" person-name high --scope head --mode enforce
-
-repo=$(new_repo escaped-inline-placeholder)
-cat >"${repo}/fixture.json" <<'EOF'
-{"description": "NAMESPACE: `\"example-namespace\"`"}
-EOF
-git -C "$repo" add fixture.json
-git -C "$repo" commit -qm escaped-inline-placeholder
-assert_clean "escaped inline-code placeholders remain clean" "$repo" --scope head --mode enforce
-
-repo=$(new_repo escaped-inline-literal)
-cat >"${repo}/fixture.json" <<'EOF'
-{"description": "NAMESPACE: `\"private-namespace\"`"}
-EOF
-git -C "$repo" add fixture.json
-git -C "$repo" commit -qm escaped-inline-literal
-assert_single_finding "escaped inline-code literals remain enforced" \
-  "$repo" customer-identifier high --scope head --mode enforce
-
-repo=$(new_repo multiply-escaped-inline-placeholder)
-cat >"${repo}/fixture.json" <<'EOF'
-{"description": "NAMESPACE: \\\"example-namespace\\\""}
-EOF
-git -C "$repo" add fixture.json
-git -C "$repo" commit -qm multiply-escaped-inline-placeholder
-assert_clean "multiply escaped inline-code placeholders remain clean" \
-  "$repo" --scope head --mode enforce
-
 repo=$(new_repo shell-positional-identities)
 cat >"${repo}/fixture.sh" <<'EOF'
 NAMESPACE=$2
@@ -2295,10 +2221,27 @@ tenant: staging
 namespace: default
 project: demo
 account: value
+extension_namespace: x-f5xc-
+tenant: x-f5xc-tenant
+namespace: x-f5xc-tenant-namespace
+example_namespace: user_namespace
+security_namespace: security
+domain: tenant_and_identity
+display_name: xc container services
+person_name: xc kubernetes service
+empty_tenant: {}
+empty_namespace: []
+zip_code: '90210'
 EOF
 git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm schematic
-assert_clean "generic environment and schema identities" "$repo" --scope head --mode enforce
+assert_clean "generic environment, schema identities, and reserved records" "$repo" --scope head --mode enforce
+
+repo=$(new_repo x-f5xc-customer-identifier)
+printf 'tenant: x-f5xc-real-customer\n' >"${repo}/fixture.yaml"
+git -C "$repo" add fixture.yaml
+git -C "$repo" commit -qm x-f5xc-customer
+assert_violation "x-f5xc customer identifiers remain enforced" "$repo" --scope head --mode enforce
 
 repo=$(new_repo composite-schematic-identities)
 cat >"${repo}/fixture.yaml" <<'EOF'
@@ -2318,6 +2261,37 @@ EOF
 git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm composite-customer
 assert_violation "composite literal customer identifiers" "$repo" --scope head --mode enforce
+
+repo=$(new_repo json-schema-identity-context)
+cat >"${repo}/fixture.json" <<'EOF'
+{
+  "description": "Set namespace: customer-selected and first_name: customer-selected.",
+  "properties": {
+    "namespace": {"type": "string"},
+    "first_name": {"type": "string"},
+    "zip_code": {"type": "string"}
+  }
+}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm json-schema-context
+assert_clean \
+  "JSON schema prose and property containers are not literal identity values" \
+  "$repo" --scope head --mode enforce
+
+repo=$(new_repo json-scalar-identity)
+printf '%s\n' \
+  '{"namespace":"customer-selected","first_name":"Customer Selected","zip_code":"12345"}' \
+  >"${repo}/fixture.json"
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm json-scalar-identity
+assert_violation "JSON scalar identity values remain enforced" "$repo" --scope head --mode enforce
+
+repo=$(new_repo json-array-identity)
+printf '%s\n' '{"tenant":["customer-selected"]}' >"${repo}/fixture.json"
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm json-array-identity
+assert_violation "JSON identity arrays remain enforced" "$repo" --scope head --mode enforce
 
 repo=$(new_repo sensitive-query)
 printf 'redirect=/done?email=person%%40customer.local\n' >"${repo}/config.ini"

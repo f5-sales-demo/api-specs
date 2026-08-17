@@ -939,6 +939,16 @@ class TestSanitizePiiPlaceholders:
             "contact": {"email": "dana@example.com"},
         }
 
+    def test_preserves_escaped_safe_values_and_sanitizes_escaped_literals(self):
+        safe = r'{NAMESPACE=\"example-namespace"}'
+        unsafe = r'{NAMESPACE=\"private-namespace"}'
+        expected_unsafe = r'{NAMESPACE=\"example-namespace"}'
+        spec = {"description": f"safe: {safe}; unsafe: {unsafe}"}
+
+        result = sanitize_pii_placeholders(spec, TransformConfig(), "test.json")
+
+        assert result == {"description": f"safe: {safe}; unsafe: {expected_unsafe}"}
+
     def test_preserves_numeric_protobuf_field_tags_in_descriptions(self):
         first_field = "first_" + "name"
         last_field = "last_" + "name"

@@ -56,6 +56,36 @@ def test_sanitizer_replaces_documentation_addresses_but_preserves_wire_fields() 
     assert sanitize_identifier_examples(sanitized) == sanitized
 
 
+def test_sanitizer_replaces_identifiers_in_published_validation_rules() -> None:
+    private_address = ".".join(("10", "24", "0", "8"))
+    spec = {
+        "components": {
+            "schemas": {
+                "network": {
+                    "properties": {
+                        "configured_vip": {
+                            "x-ves-validation-rules": {
+                                "ves.io.schema.rules.string.not_in": private_address
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    sanitized = sanitize_identifier_examples(spec)
+    findings = find_unsafe_identifiers(sanitized, IdentifierPolicy())
+
+    assert (
+        sanitized["components"]["schemas"]["network"]["properties"]["configured_vip"][
+            "x-ves-validation-rules"
+        ]["ves.io.schema.rules.string.not_in"]
+        == "192.0.2.171"
+    )
+    assert not findings
+
+
 def test_release_gate_rejects_realistic_identifiers_but_allows_documented_synthetic_values() -> (
     None
 ):

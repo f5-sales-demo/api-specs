@@ -156,7 +156,7 @@ IDENTITY_FIELD_RE = re.compile(
     r"(?P<key_open>[*_~`'\"]*)"
     r"(?P<key>tenant(?:_name|_id)?|customer(?:_name|_id)?|account(?:_name|_id)?|"
     r"subscription(?:_name|_id)|project(?:_name|_id)|namespace)"
-    r"(?P<key_close>[*_~`'\"]*)\s*(?P<separator>[:=])\s*(?P<quote>(?:\\['\"`]|['\"`])?)"
+    r"(?P<key_close>[*_~`'\"]*)\s*(?P<separator>[:=])\s*(?P<quote>['\"`]?)"
     r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
 )
 PROSE_IDENTITY_QUANTIFIER_RE = re.compile(
@@ -468,11 +468,6 @@ DOCUMENTATION_NETWORKS = (
     ipaddress.ip_network("203.0.113.0/24"),
 )
 SAFE_IDENTITY_VALUES_LOWER = {item.lower() for item in SAFE_IDENTITY_VALUES}
-MANAGED_TEMPLATE_DISPLAY_NAME_PATH = ".agents/skills/demo-components/agents/openai.yaml"
-MANAGED_TEMPLATE_DISPLAY_NAME_FIELD = "display_name"
-MANAGED_TEMPLATE_DISPLAY_NAME_SHA256 = (
-    "e75acb53d4112492fa3082645a65d8d06db85ff0c26c010b0bcd607cb6319f1c"
-)
 
 
 @dataclass(frozen=True, order=True)
@@ -766,14 +761,6 @@ def safe_home_user(user: str) -> bool:
 def normalized_value(value: str) -> str:
     """Remove serialization punctuation surrounding a structured value."""
     return value.strip().strip("'\"").strip()
-
-
-def approved_managed_display_name(path: str, key: str, value: str) -> bool:
-    """Accept only the reviewed managed-template display name by normalized digest."""
-    if path != MANAGED_TEMPLATE_DISPLAY_NAME_PATH or key != MANAGED_TEMPLATE_DISPLAY_NAME_FIELD:
-        return False
-    digest = hashlib.sha256(normalized_value(value).encode("utf-8")).hexdigest()
-    return digest == MANAGED_TEMPLATE_DISPLAY_NAME_SHA256
 
 
 def serialization_nesting(text: str) -> int:
@@ -1082,7 +1069,7 @@ def structured_field_value(path: str, line: str, match: re.Match[str]) -> str:
     start = match.start("value")
     quote = match.group("quote")
     if quote:
-        return quoted_structured_field_value(line, start, quote[-1])
+        return quoted_structured_field_value(line, start, quote)
 
     suffix = PurePosixPath(path).suffix.lower()
     yaml = suffix in {".yaml", ".yml"}
@@ -2067,8 +2054,6 @@ def scan_contacts(
                 continue
             if not placeholder_value(value):
                 if match.group("key").lower() == "display_name":
-                    if approved_managed_display_name(path, match.group("key"), value):
-                        continue
                     add_review_finding(
                         findings,
                         path=path,
@@ -2096,11 +2081,6 @@ def scan_contacts(
                 message="home-directory path contains a non-placeholder user segment",
             )
 
-    scan_phone_fields(path, line_number, line, findings)
-
-
-def scan_phone_fields(path: str, line_number: int, line: str, findings: set[Finding]) -> None:
-    """Scan phone fields independently from the aggregate contact scanner."""
     for match in PHONE_FIELD_RE.finditer(line):
         if not safe_phone(match.group("value")):
             add_finding(

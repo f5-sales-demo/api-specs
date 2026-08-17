@@ -111,7 +111,7 @@ def test_ack_lookup_paginates_deployments_and_exact_statuses(monkeypatch) -> Non
     assert get_delivery_ack("example/api-specs", COMMIT, RECEIPT, "token") is True
 
 
-def test_missing_ack_is_recoverable_but_malformed_or_conflicting_ack_fails(monkeypatch) -> None:
+def test_missing_ack_is_recoverable_and_malformed_ack_is_ignored(monkeypatch) -> None:
     monkeypatch.setattr(requests, "get", lambda *_args, **_kwargs: _Response([]))
     assert get_delivery_ack("example/api-specs", COMMIT, RECEIPT, "token") is False
 
@@ -121,8 +121,7 @@ def test_missing_ack_is_recoverable_but_malformed_or_conflicting_ack_fails(monke
             "get",
             lambda *_args, payload=payload, **_kwargs: _Response([_deployment(payload)]),
         )
-        with pytest.raises(DeliveryAckError, match="acknowledgement payload"):
-            get_delivery_ack("example/api-specs", COMMIT, RECEIPT, "token")
+        assert get_delivery_ack("example/api-specs", COMMIT, RECEIPT, "token") is False
 
 
 def test_ack_lookup_error_fails_closed(monkeypatch) -> None:

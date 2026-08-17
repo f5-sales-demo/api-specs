@@ -116,16 +116,16 @@ def _get_all_pages(
         page += 1
 
 
-def _payload_digest(payload: Any) -> str:
+def _payload_digest(payload: Any) -> str | None:
     if (
         not isinstance(payload, dict)
         or set(payload) != {"schema_version", "receipt_digest"}
         or payload.get("schema_version") != 1
     ):
-        raise DeliveryAckError("delivery acknowledgement payload is malformed")
+        return None
     digest = payload.get("receipt_digest")
     if not isinstance(digest, str) or DIGEST_PATTERN.fullmatch(digest) is None:
-        raise DeliveryAckError("delivery acknowledgement payload is malformed")
+        return None
     return digest
 
 

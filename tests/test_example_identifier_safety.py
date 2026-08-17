@@ -15,12 +15,13 @@ from scripts.example_identifier_safety import (
 def test_sanitizer_replaces_documentation_addresses_but_preserves_wire_fields() -> None:
     public_address = ".".join(("8", "8", "8", "8"))
     alternate_public_address = ".".join(("1", "1", "1", "1"))
+    public_host_cidr = f"{public_address}/32"
     spec = {
         "description": (
             "Resource 123e4567-e89b-42d3-a456-426614174000 at 10.24.0.8/16 "
             f'with escaped JSON {{\\"origin\\": \\"{public_address}\\"}}'
         ),
-        "x-ves-example": {"upstream": public_address, "private": "172.16.2.9"},
+        "x-ves-example": {"upstream": public_host_cidr, "private": "172.16.2.9"},
         "components": {
             "schemas": {
                 "network": {
@@ -40,7 +41,7 @@ def test_sanitizer_replaces_documentation_addresses_but_preserves_wire_fields() 
             "Resource 00000000-0000-4000-8000-320159ebe321 at 192.0.2.0/24 "
             'with escaped JSON {\\"origin\\": \\"192.0.2.132\\"}'
         ),
-        "x-ves-example": {"upstream": "192.0.2.132", "private": "192.0.2.58"},
+        "x-ves-example": {"upstream": "192.0.2.132/32", "private": "192.0.2.58"},
         "components": {
             "schemas": {
                 "network": {

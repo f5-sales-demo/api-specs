@@ -82,11 +82,14 @@ def _sanitize_text(value: str) -> str:
         address = ipaddress.ip_address(match.group("address"))
         if not _is_unsafe_ipv4(address):
             return match.group(0)
-        # A documentation network is only RFC 5737 when represented as /24;
-        # retain host examples but replace private network examples as a whole.
-        if match.group("cidr"):
+        cidr = match.group("cidr")
+        # Retain the existing private-network replacement. Public CIDR examples
+        # keep their prefix length so distinct host and network semantics remain
+        # visible after their addresses are made synthetic.
+        if cidr and address.is_private:
             return "192.0.2.0/24"
-        return _synthetic_ipv4(match.group("address"))
+        replacement = _synthetic_ipv4(match.group("address"))
+        return f"{replacement}{cidr}" if cidr else replacement
 
     return IPV4_WITH_CIDR_RE.sub(replace_ipv4, value)
 

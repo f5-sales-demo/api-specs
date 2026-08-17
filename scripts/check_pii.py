@@ -1985,6 +1985,7 @@ def jq_filter_spans(
 
 
 def scan_contacts(
+    # pylint: disable-next=too-many-branches
     path: str,
     line_number: int,
     line: str,

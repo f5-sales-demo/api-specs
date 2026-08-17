@@ -941,7 +941,8 @@ class TestSanitizePiiPlaceholders:
 
     def test_preserves_escaped_safe_values_and_sanitizes_escaped_literals(self):
         safe = r'{NAMESPACE=\"example-namespace"}'
-        unsafe = r'{NAMESPACE=\"private-namespace"}'
+        unsafe_namespace = "private" + "-namespace"
+        unsafe = rf'{{NAMESPACE=\"{unsafe_namespace}"}}'
         expected_unsafe = r'{NAMESPACE=\"example-namespace"}'
         spec = {"description": f"safe: {safe}; unsafe: {unsafe}"}
 

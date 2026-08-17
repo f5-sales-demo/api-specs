@@ -33,6 +33,12 @@ IPV4_WITH_CIDR_RE = re.compile(
 )
 SYNTHETIC_UUID_RE = re.compile(r"00000000-0000-4000-8000-[0-9a-f]{12}$")
 DOCUMENTATION_VALUE_KEYS = frozenset({"description", "example", "examples", "summary", "title"})
+# These values are published alongside their schemas as vendor validation
+# metadata.  They are not wire fields and must not retain realistic identifier
+# literals in release artifacts.
+IDENTIFIER_SANITIZATION_VALUE_KEYS = DOCUMENTATION_VALUE_KEYS | frozenset(
+    {"x-ves-example", "x-ves-validation-rules"}
+)
 DOCUMENTATION_NETWORKS = (
     ipaddress.ip_network("192.0.2.0/24"),
     ipaddress.ip_network("198.51.100.0/24"),
@@ -95,12 +101,12 @@ def _sanitize_text(value: str) -> str:
 
 
 def _sanitize_documentation_value(value: Any, documentation_context: bool = False) -> Any:
-    """Sanitize only OpenAPI documentation text and vendor examples."""
+    """Sanitize published documentation, examples, and validation metadata."""
     if isinstance(value, dict):
         return {
             key: _sanitize_documentation_value(
                 item,
-                documentation_context or key in DOCUMENTATION_VALUE_KEYS or key == "x-ves-example",
+                documentation_context or key in IDENTIFIER_SANITIZATION_VALUE_KEYS,
             )
             for key, item in value.items()
         }

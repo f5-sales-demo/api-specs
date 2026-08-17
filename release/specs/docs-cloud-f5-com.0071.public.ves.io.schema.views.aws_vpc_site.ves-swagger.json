@@ -1579,13 +1579,13 @@
           },
           "public_ips": {
             "type": "array",
-            "description": " AWS Elastic IPs used by the nodes\n\nExample: ` \"1.1.1.1, 2.2.2.2, 3.3.3.3\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ip: true\n  ves.io.schema.rules.repeated.num_items: 0,1,3\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " AWS Elastic IPs used by the nodes\n\nExample: ` \"192.0.2.242, 192.0.2.31, 192.0.2.63\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.ip: true\n  ves.io.schema.rules.repeated.num_items: 0,1,3\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "AWS Node Elastic IPs",
             "items": {
               "type": "string"
             },
             "x-displayname": "AWS Node Elastic IPs",
-            "x-ves-example": "1.1.1.1, 2.2.2.2, 3.3.3.3",
+            "x-ves-example": "192.0.2.242, 192.0.2.31, 192.0.2.63",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",

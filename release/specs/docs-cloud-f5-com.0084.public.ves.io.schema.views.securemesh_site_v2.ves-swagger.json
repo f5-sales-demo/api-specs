@@ -2412,10 +2412,10 @@
           },
           "proxy_ip_address": {
             "type": "string",
-            "description": " Specify the IPv4 Address of the internal Enterprise Proxy\n\nExample: ` \"123.234.0.1\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " Specify the IPv4 Address of the internal Enterprise Proxy\n\nExample: ` \"192.0.2.172\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "Proxy IPv4 Address",
             "x-displayname": "Proxy IPv4 Address",
-            "x-ves-example": "123.234.0.1",
+            "x-ves-example": "192.0.2.172",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -4080,11 +4080,11 @@
           },
           "public_ip": {
             "type": "string",
-            "description": " Public IP for this Node\n\nExample: ` \"1.1.1.1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 256\n",
+            "description": " Public IP for this Node\n\nExample: ` \"192.0.2.242\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 256\n",
             "title": "Public IP",
             "maxLength": 256,
             "x-displayname": "Public IP",
-            "x-ves-example": "1.1.1.1",
+            "x-ves-example": "192.0.2.242",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "256"
             }

@@ -12,17 +12,43 @@ from scripts.example_identifier_safety import (
 )
 
 
-def test_sanitizer_replaces_uuid_and_private_address_examples_deterministically() -> None:
+def test_sanitizer_replaces_documentation_addresses_but_preserves_wire_fields() -> None:
     spec = {
-        "description": "Resource 123e4567-e89b-42d3-a456-426614174000 at 10.24.0.8/16",
-        "x-ves-example": "172.16.2.9",
+        "description": (
+            "Resource 123e4567-e89b-42d3-a456-426614174000 at 10.24.0.8/16 "
+            'with escaped JSON {\\"origin\\": \\"8.8.8.8\\"}'
+        ),
+        "x-ves-example": {"upstream": "8.8.8.8", "private": "172.16.2.9"},
+        "components": {
+            "schemas": {
+                "network": {
+                    "const": "8.8.8.8",
+                    "default": "8.8.8.8",
+                    "enum": ["1.1.1.1"],
+                    "wire_value": "10.24.0.8",
+                }
+            }
+        },
     }
 
     sanitized = sanitize_identifier_examples(spec)
 
     assert sanitized == {
-        "description": "Resource 00000000-0000-4000-8000-320159ebe321 at 192.0.2.0/24",
-        "x-ves-example": "192.0.2.58",
+        "description": (
+            "Resource 00000000-0000-4000-8000-320159ebe321 at 192.0.2.0/24 "
+            'with escaped JSON {\\"origin\\": \\"192.0.2.132\\"}'
+        ),
+        "x-ves-example": {"upstream": "192.0.2.132", "private": "192.0.2.58"},
+        "components": {
+            "schemas": {
+                "network": {
+                    "const": "8.8.8.8",
+                    "default": "8.8.8.8",
+                    "enum": ["1.1.1.1"],
+                    "wire_value": "10.24.0.8",
+                }
+            }
+        },
     }
     assert sanitize_identifier_examples(sanitized) == sanitized
 
@@ -31,15 +57,18 @@ def test_release_gate_rejects_realistic_identifiers_but_allows_documented_synthe
     None
 ):
     spec = {
-        "description": "123e4567-e89b-42d3-a456-426614174000 10.24.0.8",
+        "uuid": "123e4567-e89b-42d3-a456-426614174000",
+        "private": "10.24.0.8",
+        "public": "8.8.8.8",
         "safe": "00000000-0000-4000-8000-320159ebe321 192.0.2.8",
     }
 
     findings = find_unsafe_identifiers(spec, IdentifierPolicy())
 
     assert {(finding.category, finding.path) for finding in findings} == {
-        ("realistic-uuid", "/description"),
-        ("private-ipv4", "/description"),
+        ("realistic-uuid", "/uuid"),
+        ("unsafe-ipv4", "/private"),
+        ("unsafe-ipv4", "/public"),
     }
 
 
@@ -66,7 +95,7 @@ def test_release_gate_allows_only_configured_schema_constant_paths() -> None:
 
     assert [(finding.category, finding.path) for finding in findings] == [
         (
-            "private-ipv4",
+            "unsafe-ipv4",
             "/components/schemas/example/properties/unreviewed/default",
         )
     ]

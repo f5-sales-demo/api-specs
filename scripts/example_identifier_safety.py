@@ -32,6 +32,7 @@ IPV4_WITH_CIDR_RE = re.compile(
     r"(?![0-9.])"
 )
 SYNTHETIC_UUID_RE = re.compile(r"00000000-0000-4000-8000-[0-9a-f]{12}$")
+DOCUMENTATION_VALUE_KEYS = frozenset({"description", "example", "examples", "summary", "title"})
 DOCUMENTATION_NETWORKS = (
     ipaddress.ip_network("192.0.2.0/24"),
     ipaddress.ip_network("198.51.100.0/24"),
@@ -79,7 +80,7 @@ def _sanitize_text(value: str) -> str:
 
     def replace_ipv4(match: re.Match[str]) -> str:
         address = ipaddress.ip_address(match.group("address"))
-        if _is_documentation_address(address) or not address.is_private:
+        if not _is_unsafe_ipv4(address):
             return match.group(0)
         # A documentation network is only RFC 5737 when represented as /24;
         # retain host examples but replace private network examples as a whole.
@@ -90,13 +91,24 @@ def _sanitize_text(value: str) -> str:
     return IPV4_WITH_CIDR_RE.sub(replace_ipv4, value)
 
 
+def _sanitize_documentation_value(value: Any, documentation_context: bool = False) -> Any:
+    """Sanitize only OpenAPI documentation text and vendor examples."""
+    if isinstance(value, dict):
+        return {
+            key: _sanitize_documentation_value(
+                item,
+                documentation_context or key in DOCUMENTATION_VALUE_KEYS or key == "x-ves-example",
+            )
+            for key, item in value.items()
+        }
+    if isinstance(value, list):
+        return [_sanitize_documentation_value(item, documentation_context) for item in value]
+    return _sanitize_text(value) if documentation_context and isinstance(value, str) else value
+
+
 def sanitize_identifier_examples(spec: Any) -> Any:
-    """Return a recursively sanitized copy of a JSON-compatible OpenAPI object."""
-    if isinstance(spec, dict):
-        return {key: sanitize_identifier_examples(value) for key, value in spec.items()}
-    if isinstance(spec, list):
-        return [sanitize_identifier_examples(value) for value in spec]
-    return _sanitize_text(spec) if isinstance(spec, str) else spec
+    """Return a copy with unsafe identifiers replaced only in documentation surfaces."""
+    return _sanitize_documentation_value(spec)
 
 
 def _is_documentation_address(
@@ -105,6 +117,15 @@ def _is_documentation_address(
     if not isinstance(address, ipaddress.IPv4Address):
         return False
     return any(address in network for network in DOCUMENTATION_NETWORKS)
+
+
+def _is_unsafe_ipv4(address: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
+    """Return whether an IPv4 address is unsuitable for a published example."""
+    return (
+        isinstance(address, ipaddress.IPv4Address)
+        and not _is_documentation_address(address)
+        and (address.is_private or (address.is_global and not address.is_multicast))
+    )
 
 
 def _walk_strings(value: Any, path: str = "") -> Iterator[tuple[str, str]]:
@@ -119,7 +140,7 @@ def _walk_strings(value: Any, path: str = "") -> Iterator[tuple[str, str]]:
 
 
 def find_unsafe_identifiers(spec: Any, policy: IdentifierPolicy) -> list[IdentifierFinding]:
-    """Return redacted findings for realistic UUIDs and private IPv4 values."""
+    """Return redacted findings for realistic UUIDs and unsafe IPv4 values."""
     findings: set[IdentifierFinding] = set()
     for path, value in _walk_strings(spec):
         if path in policy.schema_constant_paths:
@@ -129,8 +150,8 @@ def find_unsafe_identifiers(spec: Any, policy: IdentifierPolicy) -> list[Identif
                 findings.add(IdentifierFinding("realistic-uuid", path))
         for match in IPV4_WITH_CIDR_RE.finditer(value):
             address = ipaddress.ip_address(match.group("address"))
-            if address.is_private and not _is_documentation_address(address):
-                findings.add(IdentifierFinding("private-ipv4", path))
+            if _is_unsafe_ipv4(address):
+                findings.add(IdentifierFinding("unsafe-ipv4", path))
     return sorted(findings)
 
 

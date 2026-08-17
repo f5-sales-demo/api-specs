@@ -451,6 +451,11 @@ DOCUMENTATION_NETWORKS = (
     ipaddress.ip_network("203.0.113.0/24"),
 )
 SAFE_IDENTITY_VALUES_LOWER = {item.lower() for item in SAFE_IDENTITY_VALUES}
+MANAGED_TEMPLATE_DISPLAY_NAME_PATH = ".agents/skills/demo-components/agents/openai.yaml"
+MANAGED_TEMPLATE_DISPLAY_NAME_FIELD = "display_name"
+MANAGED_TEMPLATE_DISPLAY_NAME_SHA256 = (
+    "e75acb53d4112492fa3082645a65d8d06db85ff0c26c010b0bcd607cb6319f1c"
+)
 
 
 @dataclass(frozen=True, order=True)
@@ -748,6 +753,14 @@ def normalized_value(value: str) -> str:
     if value.startswith('\\"') and value.endswith('\\"'):
         value = value[2:-2]
     return value.strip("'\"").strip().rstrip(";,!?").strip()
+
+
+def approved_managed_display_name(path: str, key: str, value: str) -> bool:
+    """Accept only the reviewed managed-template display name by normalized digest."""
+    if path != MANAGED_TEMPLATE_DISPLAY_NAME_PATH or key != MANAGED_TEMPLATE_DISPLAY_NAME_FIELD:
+        return False
+    digest = hashlib.sha256(normalized_value(value).encode("utf-8")).hexdigest()
+    return digest == MANAGED_TEMPLATE_DISPLAY_NAME_SHA256
 
 
 def serialization_nesting(text: str) -> int:
@@ -2008,6 +2021,8 @@ def scan_contacts(
                 continue
             if not placeholder_value(normalized_value(value)):
                 if match.group("key").lower() == "display_name":
+                    if approved_managed_display_name(path, match.group("key"), value):
+                        continue
                     add_review_finding(
                         findings,
                         path=path,

@@ -2495,6 +2495,39 @@ assert_clean \
   "history scanner does not dereference symlinks" \
   "$repo" --scope history --mode enforce
 
+repo=$(new_repo managed-display-name)
+mkdir -p "${repo}/.agents/skills/demo-components/agents"
+cp "${REPO_ROOT}/.agents/skills/demo-components/agents/openai.yaml" "${repo}/.agents/skills/demo-components/agents/openai.yaml"
+git -C "$repo" add .agents
+git -C "$repo" commit -qm managed-display-name
+assert_clean "the exact digest-pinned managed display name is clean" "$repo" --scope head --mode audit
+
+python3 - "${repo}/.agents/skills/demo-components/agents/openai.yaml" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+path.write_text(
+    "".join(
+        "display_name: changed managed value\n"
+        if line.lstrip().startswith("display_name:")
+        else line
+        for line in lines
+    ),
+    encoding="utf-8",
+)
+PY
+git -C "$repo" add .agents
+git -C "$repo" commit -qm altered-managed-display-name
+assert_single_finding "a changed managed display name remains review-required" "$repo" display-name-review review --scope head --mode audit
+
+git -C "$repo" rm -q .agents/skills/demo-components/agents/openai.yaml
+mkdir -p "${repo}/.agents/skills/demo-components/agents"
+cp "${REPO_ROOT}/.agents/skills/demo-components/agents/openai.yaml" "${repo}/.agents/skills/demo-components/agents/other.yaml"
+git -C "$repo" add .agents
+git -C "$repo" commit -qm other-managed-display-name-path
+assert_single_finding "the managed display name at another path remains review-required" "$repo" display-name-review review --scope head --mode audit
 repo=$(new_repo json-output)
 printf 'email: person@customer.local\n' >"${repo}/fixture.yaml"
 git -C "$repo" add fixture.yaml

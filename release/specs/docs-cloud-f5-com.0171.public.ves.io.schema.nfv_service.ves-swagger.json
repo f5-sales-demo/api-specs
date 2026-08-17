@@ -1971,10 +1971,10 @@
           },
           "server": {
             "type": "string",
-            "description": " Panorama Server Address to which the firewall should connect to\n\nExample: ` \"1.1.1.1\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip: true\n",
+            "description": " Panorama Server Address to which the firewall should connect to\n\nExample: ` \"192.0.2.242\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.ip: true\n",
             "title": "Server Ipv4 Address",
             "x-displayname": "Server Ipv4 Address",
-            "x-ves-example": "1.1.1.1",
+            "x-ves-example": "192.0.2.242",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",

@@ -2766,10 +2766,10 @@
         "properties": {
           "ip": {
             "type": "string",
-            "description": " Use given IP address as VIP on the site\n\nExample: ` \"8.8.8.8\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
+            "description": " Use given IP address as VIP on the site\n\nExample: ` \"192.0.2.132\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv4: true\n",
             "title": "IP address on the site",
             "x-displayname": "IP Address",
-            "x-ves-example": "8.8.8.8",
+            "x-ves-example": "192.0.2.132",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ipv4": "true"
             }

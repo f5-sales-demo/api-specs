@@ -101,6 +101,8 @@ def test_frontmatter_mapping(tmp_path):
         "---\ntitle: Validation Report\ndescription: F5 XC API spec validation and fix report\n---"
     )
 
+    assert "Generated:" not in content
+
     # Verify MDX-breaking brackets or braces are escaped inside tables too
     assert "| Specs Processed | 1 |" in content
     assert "| **Fixes Applied** | **1** |" in content

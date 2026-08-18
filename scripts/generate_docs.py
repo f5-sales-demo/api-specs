@@ -157,8 +157,6 @@ def generate_fixes_page(report: dict, output_path: Path) -> None:
         "",
         "Validated and reconciled F5 Distributed Cloud OpenAPI specifications.",
         "",
-        f"Generated: {report.get('generated_at', 'unknown')}",
-        "",
         "## Summary",
         "",
         "| Metric | Count |",

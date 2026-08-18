@@ -108,7 +108,7 @@ format:
 	$(BIN)/ruff check --fix scripts/ tests/
 
 typecheck:
-	$(BIN)/mypy --config-file .mypy.ini scripts/ tests/
+	$(BIN)/mypy scripts/ tests/
 
 clean:
 	rm -rf specs/original/*

@@ -35,7 +35,7 @@ if [[ $python_file_count -gt 0 ]]; then
   "$ruff" format --check "${python_files[@]}"
 
   echo "[local] Type checking staged Python files with mypy..."
-  "$mypy" --config-file .mypy.ini "${python_files[@]}"
+  "$mypy" "${python_files[@]}"
 fi
 
 echo "[local] All repo-specific checks passed."

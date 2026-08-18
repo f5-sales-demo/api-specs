@@ -30,6 +30,35 @@ from scripts.transform import (
     strip_script_tags,
 )
 
+EXPECTED_TRANSFORM_ORDER = [
+    "inject_info_version",
+    "inject_contact",
+    "inject_servers",
+    "inject_security_schemes",
+    "inject_operation_tags",
+    "deduplicate_operation_ids",
+    "strip_script_tags",
+    "fix_invalid_examples",
+    "rename_colliding_schemas",
+    "remove_deprecated_paths",
+    "mark_deprecated_operations",
+    "fix_dangling_refs",
+    "mark_nullable_response_fields",
+    "remove_unused_schemas",
+    "fix_property_names",
+    "fix_oneof_group_names",
+    "fix_spelling",
+    "sanitize_example_placeholders",
+    "sanitize_example_identifiers",
+    "sanitize_pii_placeholders",
+    "inject_operation_descriptions",
+]
+
+
+def test_transform_registry_order_is_stable():
+    assert [name for name, _ in TRANSFORM_REGISTRY] == EXPECTED_TRANSFORM_ORDER
+
+
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------

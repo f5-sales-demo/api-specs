@@ -74,13 +74,18 @@ def strict_json_loads(content: str | bytes, location: str) -> Any:
     return document
 
 
+class _StrictSafeLoader(yaml.SafeLoader):
+    """Safe loader with an isolated duplicate-key constructor registry."""
+
+
+_StrictSafeLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _construct_unique_mapping
+)
+
+
 def strict_yaml_loads(content: str | bytes, location: str) -> Any:
     """Parse safe YAML while rejecting duplicate keys and non-finite numbers."""
-    loader = yaml.SafeLoader(content)
-    loader.yaml_constructors = loader.yaml_constructors.copy()
-    loader.yaml_constructors[yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG] = (
-        _construct_unique_mapping
-    )
+    loader = _StrictSafeLoader(content)
     try:
         document = loader.get_single_data()
     except (UnicodeDecodeError, yaml.YAMLError) as error:

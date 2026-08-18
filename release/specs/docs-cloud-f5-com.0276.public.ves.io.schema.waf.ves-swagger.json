@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.waf",
     "description": "APIs to get monitoring information about WAF instances on virtual-host basis.\nIt gets data for a given virtual host based on any WAF instance attached to virtual host or route used by virtual host.",
-    "version": "2026.08.14",
+    "version": "2026.08.17",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

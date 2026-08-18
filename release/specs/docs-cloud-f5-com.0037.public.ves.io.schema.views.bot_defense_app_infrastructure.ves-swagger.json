@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.bot_defense_app_infrastructure",
     "description": "Bot Defense App Infrastructure is the main configuration for a Bot Defense Advanced Integration.\nIt is intended to be created per tenant.\nIt defines various configuration parameters needed to use Bot Defense Advanced SSEs.",
-    "version": "2026.08.14",
+    "version": "2026.08.17",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

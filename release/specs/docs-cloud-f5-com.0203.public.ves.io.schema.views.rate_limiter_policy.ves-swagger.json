@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.rate_limiter_policy",
     "description": "Rate limiter policy defines parameters that can be used for fine-grained control over requests for a http load balancer that are subjected to rate limiting.\n\nIt will create the following child objects.\n\n* service_policy\n* service_policy_rule",
-    "version": "2026.08.14",
+    "version": "2026.08.17",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

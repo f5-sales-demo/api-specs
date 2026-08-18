@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.endpoint",
     "description": "Endpoint object represent the actual endpoint that provides the service (Origin Server).\nSometimes due to dynamic discovery of the endpoints, single endpoint object may result in\nmultiple actual discovered endpoints",
-    "version": "2026.08.14",
+    "version": "2026.08.17",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

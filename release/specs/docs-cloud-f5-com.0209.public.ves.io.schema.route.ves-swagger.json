@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.route",
     "description": "route object is used to configuring L7 routing decision. route is made of three things\n1. Match condition for incoming request\n2. Actions to take if match is true\n3. Whether custom java script processing is enabled for this route match.",
-    "version": "2026.08.14",
+    "version": "2026.08.17",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

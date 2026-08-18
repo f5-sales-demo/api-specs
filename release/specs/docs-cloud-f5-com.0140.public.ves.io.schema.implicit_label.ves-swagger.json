@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.implicit_label",
     "description": "Implicit labels are attached to objects implicitly by the system. Users are not allowed to create/update/delete these labels\nThey are also not allowed to attach/detach these labels to objects. This API is provided to get the implicit labels available\nto be used in service-policies",
-    "version": "2026.08.14",
+    "version": "2026.08.17",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

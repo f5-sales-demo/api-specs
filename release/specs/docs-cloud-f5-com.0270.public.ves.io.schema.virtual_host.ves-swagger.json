@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.virtual_host",
     "description": "Virtual host is main anchor configuration for a proxy. Primary application for virtual host configuration is\nreverse proxy.  Virtual host object is used to create a Loadbalancer, virtual service Or API gateway.\nIt can also be viewed as base object to define application routing.\n\nTypes of proxies supported\n\n* HTTP Proxy\n* TCP Proxy\n* TCP Proxy with SNI\n* HTTPS Proxy\n* UDP Proxy\n* Secret Management Access Proxy\n\nTerminology\n\nDownstream: A downstream host connects to virtual host, sends requests, and receives responses.\nUpstream: An upstream host receives connections and requests from virtual host and returns responses.",
-    "version": "2026.08.14",
+    "version": "2026.08.17",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

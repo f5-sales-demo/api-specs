@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.pbac.plan",
     "description": "\nRepresents collection of addon services that a tenant can subscribe or allowed to subscribe to.\nDuring signup, depending on the service requirements, user need to select a plan from pre-defined\nset of plans and tenant will be created with included addon services and will be allowed to subscribe\nnew addon services based on the allowed addon service list.",
-    "version": "2026.08.14",
+    "version": "2026.08.17",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

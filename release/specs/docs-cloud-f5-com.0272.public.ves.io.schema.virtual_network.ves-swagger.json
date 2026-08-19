@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.virtual_network",
     "description": "Virtual network is an isolated L3 network. A virtual network can contain\none or more IP Subnets. Network elements in a virtual network (interface,\nhost, listener etc...) can talk to each other directly.\n\nTwo virtual networks can have overlapping ip address space. If two networks\nare connected directly then they will have to guarantee unique ip addressing.\n\nList of sites where virtual network configuration needs to be present can\nbe configured.",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.known_label",
     "description": "Known labels serves two purposes\n\nIts let users declare labels so that they can be consistently used across their namespaces. Declared labels can be used by the Web UI in drop down. Description field in the label lets everyone know what this label means.\n\nSystem allocates unique integer (ID) values for known labels. These ID(s) are used in Network Policy or Service Policy enforcement. Hence only Known labels can be used in Network Policy or L7 Policy.",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

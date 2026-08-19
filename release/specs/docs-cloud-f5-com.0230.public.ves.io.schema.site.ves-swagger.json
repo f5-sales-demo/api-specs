@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.site",
     "description": "Site represent physical/cloud cluster of volterra processing elements. There are two types of sites currently.\n\n   Regional Edge (RE)\n\n    Regional Edge sites are network edge sites owned and operated by volterra edge cloud. RE can be used to\n    host VIPs, run API gateway or any application at network edge.\n\n   Customer Edge (CE)\n\n    Customer Edge sites are edge sites owned by customer and operated by volterra cloud. CE can be as application gateway\n    to connect applications in multiple clusters or clouds. CE can also run applications at customer premise.\n\n   Nginx One\n     Nginx One sites are sites owned and operated by Nginx One SaaS Console. Nginx One site can be used to configure service\n     discovery which allows customer to bring their NGINX inventory visibility into the core XC workspaces.\n\nSite configuration contains the information like\n\n    Site locations\n    parameters to override fleet config\n    IP Addresses to be used by automatic vip assignments for default networks\n    etc\n\n Sites are automatically created by registration mechanism. They can be modified to add location or description and they can be deleted.",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

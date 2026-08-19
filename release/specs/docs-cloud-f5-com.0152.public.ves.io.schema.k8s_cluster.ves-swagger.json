@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.k8s_cluster",
     "description": "K8s cluster represents the real physical K8s cluster on the site. It can be used to configure various aspect of of the K8s cluster\ne.g. Pod security, k8s_cluster roles, k8s_cluster role binding, User access to the K8s cluster etc.",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.user_identification",
     "description": "A user_identification object consists of an ordered list of rules. The rules are evaluated against the input fields that are extracted from an request API\nto determine a user identifier. The identifier is subsequently used to apply a rate_limiter to the request. A user_identification object can be referred to\nfrom virtual_host and rate_limiter objects. The rules in the most specific user_identification object are used to obtain the identifier prior to applying a\nrate_limiter. For example, the user_identification rules from a rate_limiter are preferred over those from a virtual_host. If there no user_identification\nobjects associated with the virtual_host or the rate_limiter being applied, the client IP address is treated as the identifier.",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

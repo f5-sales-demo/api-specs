@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tpm_manager",
     "description": "TPM Manager stores the required TPM management related data for the customer.\nThe data includes APIKeys, Category, Root and SubCA's, and Client Certificates\nThere are three types of Root CAs that are generated when a TPM Manager instance is created.\nThese types are: EK(Endorsement Key), AK(Attestation Key), and SRK(Storage Root Key) as defined by TPM spec",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

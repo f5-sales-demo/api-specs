@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.malicious_user_mitigation",
     "description": "A malicious_user_mitigation object consists of settings that specify the actions to be taken when\nmalicious users are determined to be at different threat levels. User's activity is monitored and\ncontinuously analyzed for malicious behavior. From this analysis, a threat level is assigned to each user.\nThe settings defined in malicious user mitigation specify what mitigation actions to take for users\ndetermined to be at different threat levels.",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

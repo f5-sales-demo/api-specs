@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.site_mesh_group",
     "description": "Site mesh group is a configuration tool to provide Site to Site\nconnectivity\n\nSet of sites in a site mesh group are defined by a virtual site.\n\nThe site mesh groups can be of type HUB or SPOKE. Where,\n- SITE_MESH_GROUP_TYPE_HUB_FULL_MESH\n  'virtual_site' in the Site Mesh Group defines list of HUB Sites for the Site Mesh Group\n  A HUB Site will route traffic between all its Spoke Sites.\n\n  Current release can support only a single site in Site Mesh Group of this type\n\n- SITE_MESH_GROUP_TYPE_SPOKE\n  'virtual_site' selects list of Spoke sites. Traffic between two Spoke sites is\n   routed thru Hub Sites.\n\n  'hub' field refers to another Site Mesh Group. The 'virtual_site' in this Site Mesh Group\n  gives list of Hub Sites for the Spokes. Every Spoke site will create tunnels with all the\n  Hub Sites\n\n- SITE_MESH_GROUP_TYPE_FULL_MESH\n  'virtual_site' selects list of Sites. Full mesh of tunnels is created between all sites that\n  are member of virtual_site\n\nNOTE :\n- The tunnels created by Site Mesh Group are in addition to the tunnels created from CE to its 'Connected REs'\n- The tunnels can be setup over either public network or a private network and tunnels can be of type IPSec only\n- A site can be member of either SITE_MESH_GROUP_TYPE_HUB_FULL_MESH or SITE_MESH_GROUP_TYPE_SPOKE. Not both",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

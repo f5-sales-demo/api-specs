@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.billing",
     "description": "Billing data has the following 3 public APIs:\n1. Usage Summary (grouped by Service+Usage Type = SKU ID)\n   Eg: Service = DNS + Usage Type = Public Load Balancers maps to F5-XC-O-ADN-DNS-LB\n2. Usage Details (grouped by Usage Type(SKU ID), Namespace, Object Name(Feature ID))\n3. Hourly Usage Details (grouped by Object Name)\n   Note: Object Name's default value is Aggregated, which means a further breakdown is not available.enum\n   Eg: For public load balancers, breakdown by load balancers is possible.\n       However, for CDN distributions, this breakdown is not yet available.",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.nfv_service",
     "description": "NFV Service manages the lifecycle  of the NFV appliance, which includes the functionalities like health checks, restarts, dynamic\naddition and deletion of NFV instances for auto scaling, defining the policies that steers the packets to NFV etc. The service is\ndefined as two different types Forwarding Service and Endpoint Service.\nForwarding Service receives the original packet as is using the help of Policies or Traffic Selectors and forwards the packets to\noriginal destination without modifying its L3/L4 headers\nEndpoint Service packets are destined to NFV and the destination of the packets is modified to a new destination",
-    "version": "2026.08.17",
+    "version": "2026.08.18",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

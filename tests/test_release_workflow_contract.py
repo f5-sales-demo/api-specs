@@ -354,7 +354,7 @@ def test_every_direct_action_in_release_workflow_is_commit_pinned():
 def test_python_test_workflow_uses_the_same_locked_toolchain():
     workflow = yaml.safe_load(TEST_WORKFLOW.read_text())
     assert workflow["env"]["PYTHON_VERSION"] == "3.11.13"
-    assert workflow["env"]["UV_VERSION"] == "0.12.1"
+    assert workflow["env"]["UV_VERSION"] == "0.8.24"
     source = TEST_WORKFLOW.read_text()
     assert "uv sync --frozen --extra dev" in source
     assert "pip install" not in source

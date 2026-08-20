@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.api_sec.api_discovery",
     "description": "The api_discovery contains settings for API discovery",
-    "version": "2026.08.18",
+    "version": "2026.08.20",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

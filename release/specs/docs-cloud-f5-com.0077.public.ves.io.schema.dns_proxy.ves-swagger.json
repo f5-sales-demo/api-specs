@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_proxy",
     "description": "DNS Proxy view defines the required parameters that can be used in CRUD, to create and manage DNS Proxy.\nIt can be used to create DNS Proxy.\n\nView will create the following child objects.\n\n* Virtual-host\n* default route\n* clusters\n* endpoints\n* advertise policy",
-    "version": "2026.08.18",
+    "version": "2026.08.20",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

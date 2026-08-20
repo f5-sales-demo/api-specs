@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tenant_management.child_tenant_manager",
     "description": "\nChild Tenant Manager uses Tenant Profile template to create child tenant and store its object reference.\nAny look up for child tenant should be done from child tenant manager since it stores object reference for all child tenants.",
-    "version": "2026.08.18",
+    "version": "2026.08.20",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

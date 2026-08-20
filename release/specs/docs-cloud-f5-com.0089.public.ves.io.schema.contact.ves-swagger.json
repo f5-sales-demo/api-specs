@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.contact",
     "description": "Customer or tenant contact details.\nThese details allows sending emails or regular mails to a customer.\nCustomer can have many contacts and they come in two flavors:\n* billing - used for invoicing\n* mailing - used for general communication\ninitially this information comes from the signup object, customers can later amend it in the admin UI.",
-    "version": "2026.08.18",
+    "version": "2026.08.20",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

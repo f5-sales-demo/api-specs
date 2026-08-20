@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.status_at_site",
     "description": "Any user configured object in F5XC Edge Cloud has a status object associated with that it.\nAn object may be created in multiple sites and therefore it is desirable to have the ability\nto get the current status of the configured object in a given site.",
-    "version": "2026.08.18",
+    "version": "2026.08.20",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

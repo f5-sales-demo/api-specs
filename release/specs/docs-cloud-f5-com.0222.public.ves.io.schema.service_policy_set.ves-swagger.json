@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.service_policy_set",
     "description": "A service_policy_set object consists of an ordered list of references to service_policy objects. The policies are evaluated in the specified order against\na set of input fields that are extracted from or derived from an L7 request API. The evaluation of the policy set terminates when the request API matches a\npolicy which results in an \"allow\" or \"deny\" action. If the request API does not match a policy, the next policy in the list is evaluated. If the request API\ndoes not match any of the policies in the set, the result is a \"default_deny\" action.\n\nThere can be no more than one service policy set configured under a namespace. That policy set is applied to requests destined to all virtual_hosts in that\nnamespace.",
-    "version": "2026.08.18",
+    "version": "2026.08.20",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

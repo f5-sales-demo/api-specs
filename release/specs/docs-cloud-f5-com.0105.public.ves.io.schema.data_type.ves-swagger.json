@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.data_type",
     "description": "A data_type is defined by a set of rules. these rules include the patterns for which that data type will be detected.\nA data type also includes information like it's related compliances weather is sensitive data and is it also pii.\nA data type is either predefined - defined in system. or custom - defined by the user.",
-    "version": "2026.08.18",
+    "version": "2026.08.20",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -2,7 +2,7 @@
 # ruff: noqa: ANN001, ANN201, D101, D103, EM101, EM102, RUF100, TRY003
 # pylint: disable=invalid-name,too-many-branches,broad-exception-caught,import-error
 # fmt: off
-"""Fail-closed authorization for Zizmor self-hosted-runner findings."""
+"""Fail-closed authorization for self-hosted routes and Zizmor findings."""
 
 import argparse
 import json
@@ -623,6 +623,10 @@ def validate_job(repository, workflow, job, spec, default_profile, routes):
 
 # pylint: disable-next=too-many-locals
 def inventory(root, repository, policy, default_profile, routes):
+    """Inventory jobs whose exact route is authorized by repository policy.
+
+    Per-job entries add stricter exception constraints; they are not a job allowlist.
+    """
     actual = {}
     paths = (
         *(root / ".github/workflows").glob("*.y*ml"),
@@ -662,6 +666,12 @@ def inventory(root, repository, policy, default_profile, routes):
                 )
             if self_hosted:
                 key = (relative, job_id)
+                if resolved_profile is None:
+                    raise PolicyError(
+                        f"{relative}/{job_id}: runs-on must use the canonical repository route"
+                    )
+                # The exact repository route is the ordinary-job authorization.
+                # A per-job entry adds stricter permissions, trigger, and secret checks.
                 if key in policy:
                     errors = validate_job(
                         repository,
@@ -675,10 +685,6 @@ def inventory(root, repository, policy, default_profile, routes):
                         raise PolicyError(
                             f"{relative}/{job_id}: " + "; ".join(errors)
                         )
-                elif resolved_profile is None:
-                    raise PolicyError(
-                        f"{relative}/{job_id}: runs-on must use the canonical repository route"
-                    )
                 actual[key] = workflow
     unused = sorted(set(policy) - set(actual))
     if unused:
@@ -695,6 +701,16 @@ def validate(findings, root, repository, policy_path, governance_path):
     actual = inventory(
         root, repository, policy, default_profile, repository_routes
     )
+    if repository_routes["kind"] == "arc":
+        if findings:
+            raise PolicyError(
+                "unexpected Zizmor finding for internally validated ARC scalar routes"
+            )
+        return [
+            (workflow, job_id, ["jobs", job_id, "runs-on"])
+            for workflow, job_id in sorted(actual)
+        ]
+
     found = []
     routes = []
     for finding in findings:
@@ -753,7 +769,7 @@ def main(argv=None):
         print(
             f"approved {args.repository}:{workflow}:{job_id} route={json.dumps(route)}"
         )
-    print(f"validated {len(routes)} governed self-hosted-runner finding(s)")
+    print(f"validated {len(routes)} governed self-hosted-runner route(s)")
     return 0
 
 

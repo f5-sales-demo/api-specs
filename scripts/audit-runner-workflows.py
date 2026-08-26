@@ -27,7 +27,9 @@ CALLABLE_DOCKER_GUARD = (
 DEFAULT_BRANCH_DOCKER_GUARD = (
     "github.event_name == 'workflow_dispatch' || "
     "(github.event_name == 'push' && "
-    "github.ref == format('refs/heads/{0}', github.event.repository.default_branch)) || "
+    "(github.ref == format('refs/heads/{0}', "
+    "github.event.repository.default_branch) || "
+    "startsWith(github.ref, 'refs/tags/v'))) || "
     "(github.event_name == 'pull_request' && "
     "github.event.pull_request.head.repo.full_name == github.repository)"
 )
@@ -220,8 +222,8 @@ def audit_docker_route(workflow, job, profiles, routes, repository, profile):
             "Docker-capable PR job requires the complete same-repository guard",
         )
     needs = job.get("needs")
-    needs_is_trust_gate_list = isinstance(needs, list) and needs == ["trust-gate"]
-    if needs != "trust-gate" and not needs_is_trust_gate_list:
+    needs_has_trust_gate = isinstance(needs, list) and "trust-gate" in needs
+    if needs != "trust-gate" and not needs_has_trust_gate:
         errors.append("Docker-capable PR job requires the socketless trust-gate")
     trust_gate = workflow.get("jobs", {}).get("trust-gate")
     trust_runs_on = trust_gate.get("runs-on") if isinstance(trust_gate, dict) else None

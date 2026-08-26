@@ -7,6 +7,10 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: require-linked-issue-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   check-linked-issues:
     # The central reconciler creates and links its issue before it attests this

@@ -510,8 +510,8 @@ if [ -f "$watcher" ]; then
     grep -qF 'GitHub Free-compatible' "$watcher"
   check 'central content reconciler uses a self-hosted runner' \
     grep -qF 'runs-on: [self-hosted' "$content_reconciler"
-  check 'central settings reconciler uses a self-hosted runner and six-hour schedule' \
-    bash -c "grep -qF 'runs-on: [self-hosted' '$settings_reconciler' && grep -qF '17 */6' '$settings_reconciler'"
+  check 'central settings reconciler remains self-hosted, push-driven, and manually dispatchable without cron' \
+    bash -c "grep -qF 'runs-on: [self-hosted' '$settings_reconciler' && grep -qF 'push:' '$settings_reconciler' && grep -qF 'workflow_dispatch:' '$settings_reconciler' && ! grep -qF 'schedule:' '$settings_reconciler'"
   check 'central workflows react to reconciliation engine changes' \
     bash -c "grep -qF -- \"- 'scripts/fleet-reconciler.cjs'\" '$content_reconciler' && grep -qF -- \"- 'scripts/github-api-resilience.cjs'\" '$content_reconciler' && grep -qF -- \"- 'scripts/fleet-reconciler.cjs'\" '$settings_reconciler' && grep -qF -- \"- 'scripts/github-api-resilience.cjs'\" '$settings_reconciler'"
   check 'central reconcilers prefer GitHub App credentials with cutover fallback' \

@@ -1,0 +1,6 @@
+---
+# Stable changed-file fixture for controlled Super-Linter performance comparisons.
+schema_version: 1
+repository: api-specs
+workload: super-linter
+purpose: profiling-canary

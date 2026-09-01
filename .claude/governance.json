@@ -88,7 +88,7 @@
     ".github/workflows/auto-merge.yml",
     ".github/workflows/workflow-security-audit.yml",
     ".github/config/self-hosted-runner-policy.json",
-    "scripts/workflow-security-validator.py",
+    "scripts/workflow_security_validator.py",
     "scripts/audit-runner-workflows.py",
     "scripts/ephemeral-runner-controller.py",
     "scripts/provision-ephemeral-runners.py",

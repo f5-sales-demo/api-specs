@@ -69,7 +69,7 @@ def save_metadata(
             dt = parsedate_to_datetime(last_modified)
             spec_date = dt.strftime("%Y.%m.%d")
             spec_timestamp = dt.isoformat()
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             pass
 
     # Fallback to download date if Last-Modified not available

@@ -277,7 +277,7 @@ class F5XCAuth:
                         return True
                     console.print("[red]Configured namespace is not available[/red]")
                     return False
-                except (ValueError, KeyError, TypeError):
+                except ValueError, KeyError, TypeError:
                     console.print("[red]Namespace probe returned an invalid response[/red]")
                     return False
             console.print(f"[red]API connection failed: {response.status_code}[/red]")

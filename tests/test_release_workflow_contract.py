@@ -1,6 +1,7 @@
 """Structural guards for immutable release publication."""
 
 import re
+import tomllib
 from pathlib import Path
 
 import yaml
@@ -8,6 +9,8 @@ import yaml
 WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "validate-and-release.yml"
 LOCKFILE = Path(__file__).parents[1] / "uv.lock"
 TEST_WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "tests.yml"
+PYPROJECT = Path(__file__).parents[1] / "pyproject.toml"
+PYTHON_VERSION_FILE = Path(__file__).parents[1] / ".python-version"
 
 
 def _jobs():
@@ -281,7 +284,7 @@ def test_dispatch_success_precedes_durable_exact_receipt_acknowledgement():
 
 def test_release_builder_toolchain_is_exact_locked_and_reproduced_in_fresh_environments():
     workflow = yaml.safe_load(WORKFLOW.read_text())
-    assert workflow["env"]["PYTHON_VERSION"] == "3.11.13"
+    assert workflow["env"]["PYTHON_VERSION"] == "3.14.7"
     assert workflow["env"]["NODE_VERSION"] == "24.19.0"
     assert LOCKFILE.is_file()
     assert "uv.lock" in workflow[True]["push"]["paths"]
@@ -347,13 +350,23 @@ def test_every_direct_action_in_release_workflow_is_commit_pinned():
 
 def test_python_test_workflow_uses_the_same_locked_toolchain():
     workflow = yaml.safe_load(TEST_WORKFLOW.read_text())
-    assert workflow["env"]["PYTHON_VERSION"] == "3.11.13"
+    assert workflow["env"]["PYTHON_VERSION"] == "3.14.7"
     assert workflow["env"]["UV_VERSION"] == "0.8.24"
     source = TEST_WORKFLOW.read_text()
     assert "uv sync --frozen --extra dev" in source
     assert "pip install" not in source
     for action, ref in re.findall(r"^\s*uses:\s+([^\s@]+)@([^\s#]+)", source, re.MULTILINE):
         assert re.fullmatch(r"[0-9a-f]{40}", ref), f"{action}@{ref} is mutable"
+
+
+def test_python_runtime_metadata_matches_the_exact_ci_runtime():
+    project = tomllib.loads(PYPROJECT.read_text())
+    assert PYTHON_VERSION_FILE.read_text().strip() == "3.14.7"
+    assert project["project"]["requires-python"] == ">=3.14,<3.15"
+    assert "Programming Language :: Python :: 3.14" in project["project"]["classifiers"]
+    assert project["tool"]["ruff"]["target-version"] == "py314"
+    assert project["tool"]["ruff"]["per-file-target-version"] == {"scripts/check_pii.py": "py311"}
+    assert project["tool"]["mypy"]["python_version"] == "3.14"
 
 
 def test_release_workflow_parameters_contract():

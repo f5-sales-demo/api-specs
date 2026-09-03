@@ -1,5 +1,6 @@
 """Structural guards for immutable release publication."""
 
+import json
 import re
 import tomllib
 from pathlib import Path
@@ -11,6 +12,8 @@ LOCKFILE = Path(__file__).parents[1] / "uv.lock"
 TEST_WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "tests.yml"
 PYPROJECT = Path(__file__).parents[1] / "pyproject.toml"
 PYTHON_VERSION_FILE = Path(__file__).parents[1] / ".python-version"
+PACKAGE_JSON = Path(__file__).parents[1] / "package.json"
+PACKAGE_LOCK = Path(__file__).parents[1] / "package-lock.json"
 
 
 def _jobs():
@@ -322,6 +325,14 @@ def test_release_builder_toolchain_is_exact_locked_and_reproduced_in_fresh_envir
     assert "uv sync --frozen" in validate_source
     assert "pip install" not in validate_source
     assert validate_source.count("uv run --frozen python -m scripts.") >= 7
+
+
+def test_spectral_dependency_override_uses_the_audited_fast_uri_release():
+    package = json.loads(PACKAGE_JSON.read_text())
+    lock = json.loads(PACKAGE_LOCK.read_text())
+
+    assert package["overrides"]["fast-uri"] == "3.1.6"
+    assert lock["packages"]["node_modules/fast-uri"]["version"] == "3.1.6"
 
 
 def test_release_workflow_runs_the_identifier_example_gate_after_reconciliation():

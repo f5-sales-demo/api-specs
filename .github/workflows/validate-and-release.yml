@@ -1065,10 +1065,8 @@ jobs:
             exit 0
           fi
 
-          # sync/ clears both gates without a governance change: it is in docs-control's
-          # EXCLUDE_BRANCHES for require-linked-issue, and in both branch lists in
-          # code-review.yml. Prefixes like governance/ are in the latter but not the former
-          # and would deadlock.
+          # The generated PR still follows linked-issue governance. Issue #681 is the
+          # durable specification for committing regenerated release/specs.
           BRANCH="sync/regenerate-release-specs-$(date +%s)"
           git checkout -b "${BRANCH}"
           git commit -m "chore: publish regenerated release/specs"
@@ -1085,6 +1083,6 @@ jobs:
 
           gh pr create \
             --title "chore: publish regenerated release/specs" \
-            --body "Auto-generated: the pipeline produced a \`release/specs\` that differs from the committed artifact. See #681." \
+            --body "Auto-generated: the pipeline produced a \`release/specs\` that differs from the committed artifact. Closes #681." \
             --head "${BRANCH}"
           gh pr merge --auto --squash "${BRANCH}"

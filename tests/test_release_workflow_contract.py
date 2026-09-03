@@ -566,6 +566,20 @@ def test_release_workflow_parameters_contract():
     assert "--output docs/en/01-validation-report.mdx" in generate_docs_step["run"]
 
 
+def test_generated_release_specs_pr_links_its_governing_issue():
+    publish = next(
+        step
+        for step in _jobs()["commit-release-specs"]["steps"]
+        if step["name"] == "Open a PR if the published specs changed"
+    )
+
+    assert '--body "Auto-generated:' in publish["run"]
+    assert "Closes #681" in publish["run"]
+    assert "See #681" not in publish["run"]
+    assert "EXCLUDE_BRANCHES" not in publish["run"]
+    assert 'gh pr merge --auto --squash "${BRANCH}"' in publish["run"]
+
+
 def test_release_workflow_security_and_push_contract():
     """Verify security protections: persist-credentials is false on checkouts,
 

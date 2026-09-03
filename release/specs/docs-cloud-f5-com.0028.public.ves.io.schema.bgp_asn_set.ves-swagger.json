@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.bgp_asn_set",
     "description": "An unordered set of RFC 6793 defined 4-byte AS numbers that can be used to create whitelists or blacklists for use in network policy or service policy. The\nsource or destination public IP address from the input packet/message is used as the key to lookup a GeoIP database in order to determine the origin ASN for\nthe IP address.",
-    "version": "2026.08.20",
+    "version": "2026.09.01",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.service_policy_rule",
     "description": "A service_policy_rule object consists of an unordered list of predicates and an action. The predicates are evaluated against a set of input fields that are\nextracted from or derived from an L7 request API. A request API is considered to match a rule if all predicates in the rule evaluate to true for that request.\nAny predicates that are not specified in a rule are implicitly considered to be true. If a request API matches a rule, the action specified for the rule is\nenforced for that request.\n\nA service_policy_rule can be part of exactly one service_policy and must belong to the same namespace as the service policy.",
-    "version": "2026.08.20",
+    "version": "2026.09.01",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

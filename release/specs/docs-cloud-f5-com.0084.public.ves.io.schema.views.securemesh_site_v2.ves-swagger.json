@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.securemesh_site_v2",
     "description": "Secure Mesh site defines a required parameters that can be used in CRUD, to create and manage an Secure Mesh site.",
-    "version": "2026.08.20",
+    "version": "2026.09.01",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.signup",
     "description": "Use this API to signup for F5XC service.\none can signup to use volterra service as an individual/free account or\nas a team account more suited for enterprise customers.\nfor more details on what each type of account features, visit - https://console.ves.volterra.io/signup/usage_plan\nsince signup flow includes more complex selections and passing in secure payment processing,\nwe recommend using web UI for this process https://console.ves.volterra.io/signup/start",
-    "version": "2026.08.20",
+    "version": "2026.09.01",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

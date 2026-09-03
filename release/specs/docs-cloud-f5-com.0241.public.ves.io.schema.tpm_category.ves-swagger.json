@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tpm_category",
     "description": "Category is a grouping of APIKeys, each category comes with its own SubCA for signing\nTPM EK, SRK and AK certificates",
-    "version": "2026.08.20",
+    "version": "2026.09.01",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

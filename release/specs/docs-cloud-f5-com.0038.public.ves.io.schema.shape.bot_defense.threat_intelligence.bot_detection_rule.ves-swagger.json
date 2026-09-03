@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule",
     "description": "Configures Bot Detection Rule",
-    "version": "2026.08.20",
+    "version": "2026.09.01",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -2704,11 +2704,42 @@
       },
       "threat_intelligenceK8sClusterDeliveryStatus": {
         "type": "object",
-        "title": "K8sClusterDeliveryStatus",
-        "description": "Delivery status of a bot detection rule for a single Kubernetes cluster. Upstream references this message but does not publish its schema, so the shape of the value is unspecified.",
-        "x-displayname": "Kubernetes Cluster Delivery Status",
+        "description": "Kubernetes Cluster Deliver Status",
+        "title": "Kubernetes Cluster Deliver Status",
+        "x-displayname": "Kubernetes Cluster Deliver Status",
         "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.K8sClusterDeliveryStatus",
-        "x-f5xc-upstream-defect": "Stub for a message F5 references but never emits. See https://github.com/f5-sales-demo/api-specs/issues/680"
+        "properties": {
+          "bot_infra_delivery_status": {
+            "$ref": "#/components/schemas/threat_intelligenceBotInfraDeploymentStatus"
+          },
+          "generated_url": {
+            "type": "string",
+            "description": "Generated URL for the deployment",
+            "title": "Generated URL",
+            "x-displayname": "Generated URL"
+          },
+          "k8s_cluster_tags": {
+            "type": "array",
+            "description": "List of k8s cluster_tag belongs the bot infra",
+            "title": "K8s Cluster Names",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "K8s Cluster Names"
+          },
+          "policy_id": {
+            "type": "string",
+            "description": "Policy ID associated with the deployment",
+            "title": "Policy ID",
+            "x-displayname": "Policy ID"
+          },
+          "status_message": {
+            "type": "string",
+            "description": "Status message. In case of error, this would contain error details",
+            "title": "Status Message",
+            "x-displayname": "Status Message"
+          }
+        }
       }
     },
     "securitySchemes": {

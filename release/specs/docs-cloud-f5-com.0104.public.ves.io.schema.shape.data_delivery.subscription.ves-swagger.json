@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.data_delivery.subscription",
     "description": "Use this API to subscribe to Data Intelligence",
-    "version": "2026.08.20",
+    "version": "2026.09.01",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

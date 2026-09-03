@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.pbac.addon_service",
     "description": "Basic unit of logical representation of a F5XC service.\nAn addon service can be self serviced, partially managed or fully managed depending upon the activation requirement.\nA configuration object belong to exactly one addon service and every addon service will be linked to one or more navigation tile.\nBy default, API Groups consisting of APIs for read, write, admin read/write and subscription management capabality will be auto created.",
-    "version": "2026.08.20",
+    "version": "2026.09.01",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

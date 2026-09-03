@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.k8s_pod_security_policy",
     "description": "Pod Security Policies enable fine-grained authorization of pod creation and updates.",
-    "version": "2026.08.20",
+    "version": "2026.09.01",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",

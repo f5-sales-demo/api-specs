@@ -110,7 +110,10 @@ jobs:
           fi
 
           # Download specs (will use ETag for conditional GET)
-          uv run --frozen python -m scripts.download --list
+          runner-profile \
+            --name download \
+            --output "$RUNNER_TEMP/workload-profile/download.json" \
+            -- uv run --frozen python -m scripts.download --list
 
           # Get new ETag
           NEW_ETAG=""
@@ -133,7 +136,10 @@ jobs:
       - name: Transform specs to compliant OAS3
         run: |
           echo "Running OAS3 transform pipeline..."
-          uv run --frozen python -m scripts.transform
+          runner-profile \
+            --name transform \
+            --output "$RUNNER_TEMP/workload-profile/transform.json" \
+            -- uv run --frozen python -m scripts.transform
           echo "Transformed specs written to specs/transformed/"
 
       - name: Write offline validation report
@@ -145,27 +151,52 @@ jobs:
       - name: Run Spectral OAS3 linting
         run: |
           echo "Running Spectral analysis on downloaded specs..."
-          uv run --frozen python -m scripts.spectral_lint --mode discover
+          runner-profile \
+            --name spectral-discovery \
+            --output "$RUNNER_TEMP/workload-profile/spectral-discovery.json" \
+            -- uv run --frozen python -m scripts.spectral_lint --mode discover
           echo "Spectral report saved to reports/spectral_report.json"
 
       - name: Reconcile specs and apply fixes
         run: |
           echo "Reconciling specs based on validation results..."
-          uv run --frozen python -m scripts.reconcile \
-            --report reports/validation_report.json \
-            --reconciliation-report-out reports/reconciliation_report.json
+          runner-profile \
+            --name reconciliation \
+            --output "$RUNNER_TEMP/workload-profile/reconciliation.json" \
+            -- uv run --frozen python -m scripts.reconcile \
+              --report reports/validation_report.json \
+              --reconciliation-report-out reports/reconciliation_report.json
           echo "Fix report saved to reports/reconciliation_report.json"
 
       - name: Spectral quality gate
         run: |
           echo "Running Spectral quality gate on reconciled specs..."
-          uv run --frozen python -m scripts.spectral_lint --mode gate
+          runner-profile \
+            --name spectral-gate \
+            --output "$RUNNER_TEMP/workload-profile/spectral-gate.json" \
+            -- uv run --frozen python -m scripts.spectral_lint --mode gate
           echo "Gate report saved to reports/spectral_gate_report.json"
 
       - name: Identifier example release gate
         run: |
           echo "Rejecting realistic UUID and private-address examples..."
           uv run --frozen python -m scripts.example_identifier_safety --spec-dir release/specs
+
+      - name: Verify validation workload profiles
+        if: always()
+        run: |
+          for profile in download transform spectral-discovery reconciliation spectral-gate; do
+            test -f "$RUNNER_TEMP/workload-profile/${profile}.json"
+          done
+
+      - name: Upload validation workload profiles
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: workload-profile-api-specs-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/workload-profile/*.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Upload validation reports
         # Always: the Spectral gate above is the step most likely to fail, and
@@ -328,10 +359,22 @@ jobs:
           VERSION: ${{ needs.release-metadata.outputs.version }}
           BUILD_TIMESTAMP: ${{ needs.release-metadata.outputs.build_timestamp }}
         run: |
-          uv run --isolated --frozen python -m scripts.release \
-            --output-dir release/candidate \
-            --version "${VERSION}" \
-            --build-timestamp "${BUILD_TIMESTAMP}"
+          runner-profile \
+            --name release-packaging \
+            --output "$RUNNER_TEMP/workload-profile/release-packaging.json" \
+            -- uv run --isolated --frozen python -m scripts.release \
+              --output-dir release/candidate \
+              --version "${VERSION}" \
+              --build-timestamp "${BUILD_TIMESTAMP}"
+
+      - name: Upload release workload profile
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: workload-profile-api-specs-release-${{ matrix.candidate }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/workload-profile/release-packaging.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Upload release candidate
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

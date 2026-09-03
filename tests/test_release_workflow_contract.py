@@ -359,6 +359,164 @@ def test_python_test_workflow_uses_the_same_locked_toolchain():
         assert re.fullmatch(r"[0-9a-f]{40}", ref), f"{action}@{ref} is mutable"
 
 
+def _step(job: dict, name: str) -> dict:
+    return next(step for step in job["steps"] if step["name"] == name)
+
+
+def _assert_profile_upload(step: dict, *, name: str, path: str) -> None:
+    assert step["if"] == "always()"
+    assert step["uses"] == ("actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a")
+    assert step["with"] == {
+        "name": name,
+        "path": path,
+        "if-no-files-found": "error",
+        "retention-days": 30,
+    }
+
+
+def _normalize_shell(command: str) -> str:
+    return " ".join(command.replace("\\", " ").split())
+
+
+def test_workload_profiles_wrap_each_original_command_once_with_redacted_metadata():
+    release_jobs = _jobs()
+    test_jobs = yaml.safe_load(TEST_WORKFLOW.read_text())["jobs"]
+    test_source = TEST_WORKFLOW.read_text()
+    release_source = WORKFLOW.read_text()
+
+    expected = (
+        (test_jobs["pytest"], "Run tests", "pytest", "pytest.json", "uv run --frozen pytest -q"),
+        (
+            release_jobs["validate"],
+            "Check upstream specs for changes",
+            "download",
+            "download.json",
+            "uv run --frozen python -m scripts.download --list",
+        ),
+        (
+            release_jobs["validate"],
+            "Transform specs to compliant OAS3",
+            "transform",
+            "transform.json",
+            "uv run --frozen python -m scripts.transform",
+        ),
+        (
+            release_jobs["validate"],
+            "Run Spectral OAS3 linting",
+            "spectral-discovery",
+            "spectral-discovery.json",
+            "uv run --frozen python -m scripts.spectral_lint --mode discover",
+        ),
+        (
+            release_jobs["validate"],
+            "Reconcile specs and apply fixes",
+            "reconciliation",
+            "reconciliation.json",
+            "uv run --frozen python -m scripts.reconcile "
+            "--report reports/validation_report.json "
+            "--reconciliation-report-out reports/reconciliation_report.json",
+        ),
+        (
+            release_jobs["validate"],
+            "Spectral quality gate",
+            "spectral-gate",
+            "spectral-gate.json",
+            "uv run --frozen python -m scripts.spectral_lint --mode gate",
+        ),
+        (
+            release_jobs["build-release-candidate"],
+            "Build release candidate",
+            "release-packaging",
+            "release-packaging.json",
+            "uv run --isolated --frozen python -m scripts.release "
+            "--output-dir release/candidate "
+            '--version "${VERSION}" '
+            '--build-timestamp "${BUILD_TIMESTAMP}"',
+        ),
+    )
+
+    profile_runs = []
+    for job, step_name, phase, filename, command in expected:
+        run = _normalize_shell(_step(job, step_name)["run"])
+        profile_runs.append(run)
+        command = _normalize_shell(command)
+        assert "runner-profile" in run
+        assert f"--name {phase}" in run
+        assert f'--output "$RUNNER_TEMP/workload-profile/{filename}"' in run
+        assert f"-- {command}" in run
+
+    for source, command in (
+        (test_source, "uv run --frozen pytest -q"),
+        (release_source, "uv run --frozen python -m scripts.download --list"),
+        (release_source, "uv run --frozen python -m scripts.transform"),
+        (release_source, "uv run --frozen python -m scripts.spectral_lint --mode discover"),
+        (release_source, "uv run --frozen python -m scripts.reconcile"),
+        (release_source, "uv run --frozen python -m scripts.spectral_lint --mode gate"),
+        (release_source, "uv run --isolated --frozen python -m scripts.release"),
+    ):
+        assert source.count(command) == 1
+
+    assert "--durations" not in _step(test_jobs["pytest"], "Run tests")["run"]
+    offline = _step(release_jobs["validate"], "Write offline validation report")["run"]
+    assert "runner-profile" not in offline
+    assert "python -m scripts.offline_validation_report" in offline
+    for forbidden in (
+        "--repository",
+        "--commit",
+        "--run-id",
+        "--run-attempt",
+        "--job-id",
+        "--runner-name",
+        "--runner-profile",
+        "--image-digest",
+        "--variant",
+        "--pair-id",
+        "--output-digest",
+    ):
+        assert forbidden not in "\n".join(profile_runs)
+
+
+def test_workload_profile_artifact_contracts_are_exact_and_fail_closed():
+    release_jobs = _jobs()
+    test_jobs = yaml.safe_load(TEST_WORKFLOW.read_text())["jobs"]
+    _assert_profile_upload(
+        _step(test_jobs["pytest"], "Upload pytest workload profile"),
+        name="workload-profile-api-specs-pytest-${{ github.run_id }}-${{ github.run_attempt }}",
+        path="${{ runner.temp }}/workload-profile/pytest.json",
+    )
+    _assert_profile_upload(
+        _step(release_jobs["validate"], "Upload validation workload profiles"),
+        name="workload-profile-api-specs-validation-${{ github.run_id }}-${{ github.run_attempt }}",
+        path="${{ runner.temp }}/workload-profile/*.json",
+    )
+    verify = _step(release_jobs["validate"], "Verify validation workload profiles")
+    assert verify["if"] == "always()"
+    assert _normalize_shell(verify["run"]) == (
+        "for profile in download transform spectral-discovery reconciliation spectral-gate; "
+        'do test -f "$RUNNER_TEMP/workload-profile/${profile}.json" done'
+    )
+    _assert_profile_upload(
+        _step(release_jobs["build-release-candidate"], "Upload release workload profile"),
+        name=(
+            "workload-profile-api-specs-release-${{ matrix.candidate }}-"
+            "${{ github.run_id }}-${{ github.run_attempt }}"
+        ),
+        path="${{ runner.temp }}/workload-profile/release-packaging.json",
+    )
+
+
+def test_profiled_jobs_use_only_the_managed_socketless_route():
+    release_jobs = _jobs()
+    test_jobs = yaml.safe_load(TEST_WORKFLOW.read_text())["jobs"]
+    assert test_jobs["pytest"]["runs-on"] == "managed-socketless"
+    assert release_jobs["validate"]["runs-on"] == "managed-socketless"
+    assert release_jobs["build-release-candidate"]["runs-on"] == "managed-socketless"
+
+    profiled_source = TEST_WORKFLOW.read_text() + WORKFLOW.read_text()
+    for legacy_label in ("api-specs", "api-specs-socketless", "api-specs-runner"):
+        assert f"runs-on: {legacy_label}" not in profiled_source
+
+
 def test_python_runtime_metadata_matches_the_exact_ci_runtime():
     project = tomllib.loads(PYPROJECT.read_text())
     assert PYTHON_VERSION_FILE.read_text().strip() == "3.14.7"

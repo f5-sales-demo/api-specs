@@ -118,13 +118,83 @@ class SpectralAdapter:
             )
 
         if not result.stdout.strip():
-            return []
+            raise SpectralOperationalError("Spectral runner stdout was empty")
 
         try:
-            violations: list[dict[str, Any]] = json.loads(result.stdout)
-            return violations
+            violations = json.loads(result.stdout)
         except json.JSONDecodeError as e:
             raise SpectralOperationalError(f"Failed to parse runner output as JSON: {e}") from e
+
+        if not isinstance(violations, list):
+            raise SpectralOperationalError("Runner output top-level must be a JSON array")
+
+        for idx, item in enumerate(violations):
+            if not isinstance(item, dict):
+                raise SpectralOperationalError(f"Runner output entry at index {idx} is not an object")
+
+            required_fields = ["code", "message", "path", "range", "severity", "source"]
+            for field in required_fields:
+                if field not in item:
+                    raise SpectralOperationalError(
+                        f"Runner output entry at index {idx} is missing required field '{field}'"
+                    )
+
+            if not isinstance(item["code"], str):
+                raise SpectralOperationalError(
+                    f"Runner output entry at index {idx} field 'code' must be a string"
+                )
+
+            if not isinstance(item["message"], str):
+                raise SpectralOperationalError(
+                    f"Runner output entry at index {idx} field 'message' must be a string"
+                )
+
+            if not isinstance(item["path"], list):
+                raise SpectralOperationalError(
+                    f"Runner output entry at index {idx} field 'path' must be a list"
+                )
+            for p_idx, p_val in enumerate(item["path"]):
+                if not isinstance(p_val, (str, int)):
+                    raise SpectralOperationalError(
+                        f"Runner output entry at index {idx} field 'path' element {p_idx} must be a string or integer"
+                    )
+
+            if not isinstance(item["range"], dict):
+                raise SpectralOperationalError(
+                    f"Runner output entry at index {idx} field 'range' must be an object"
+                )
+
+            for r_boundary in ["start", "end"]:
+                if r_boundary not in item["range"]:
+                    raise SpectralOperationalError(
+                        f"Runner output entry at index {idx} range is missing '{r_boundary}' boundary"
+                    )
+                boundary_val = item["range"][r_boundary]
+                if not isinstance(boundary_val, dict):
+                    raise SpectralOperationalError(
+                        f"Runner output entry at index {idx} range '{r_boundary}' must be an object"
+                    )
+                for key in ["line", "character"]:
+                    if key not in boundary_val:
+                        raise SpectralOperationalError(
+                            f"Runner output entry at index {idx} range '{r_boundary}' is missing '{key}'"
+                        )
+                    if not isinstance(boundary_val[key], int) or boundary_val[key] < 0:
+                        raise SpectralOperationalError(
+                            f"Runner output entry at index {idx} range '{r_boundary}' '{key}' must be a non-negative integer"
+                        )
+
+            if not isinstance(item["severity"], int) or item["severity"] not in [0, 1, 2, 3]:
+                raise SpectralOperationalError(
+                    f"Runner output entry at index {idx} field 'severity' must be an integer strictly in [0, 1, 2, 3]"
+                )
+
+            if not isinstance(item["source"], str):
+                raise SpectralOperationalError(
+                    f"Runner output entry at index {idx} field 'source' must be a string"
+                )
+
+        return violations
 
     def write_report(
         self,

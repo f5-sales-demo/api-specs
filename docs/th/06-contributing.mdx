@@ -2,7 +2,7 @@
 title: คู่มือการพัฒนา
 description: วิธีการตั้งค่า รัน ทดสอบ และมีส่วนร่วมในโปรเจกต์ F5 XC API Specs
 i18n:
-  sourceHash: 8e5dcfa20947
+  sourceHash: f1531d0d6676
   translator: machine
 ---
 
@@ -14,8 +14,8 @@ git clone https://github.com/f5-sales-demo/api-specs.git
 cd api-specs
 make dev-install
 
-# Install Spectral CLI (required for linting stages)
-npm install -g @stoplight/spectral-cli
+# ติดตั้ง dependencies ของ Spectral (จำเป็นสำหรับขั้นตอน linting)
+npm ci --ignore-scripts
 ```
 
 `make dev-install` จะสร้าง virtualenv ในไดเรกทอรี `.venv/` และติดตั้งโปรเจกต์พร้อมกับ dev extras (pytest, ruff, mypy)
@@ -78,7 +78,7 @@ make pre-commit           # Run all hooks manually
 
 ## โครงสร้างโปรเจกต์
 
-```
+```text
 scripts/
   download.py           # Stage 1: Fetch specs from F5
   validate.py           # Stage 2: Live API testing

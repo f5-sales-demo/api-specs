@@ -2,7 +2,7 @@
 title: دليل التطوير
 description: كيفية إعداد وتشغيل واختبار والمساهمة في مشروع F5 XC API Specs
 i18n:
-  sourceHash: 8e5dcfa20947
+  sourceHash: f1531d0d6676
   translator: machine
 ---
 
@@ -14,8 +14,8 @@ git clone https://github.com/f5-sales-demo/api-specs.git
 cd api-specs
 make dev-install
 
-# Install Spectral CLI (required for linting stages)
-npm install -g @stoplight/spectral-cli
+# Install Spectral dependencies (required for linting stages)
+npm ci --ignore-scripts
 ```
 
 يقوم `make dev-install` بإنشاء بيئة افتراضية في `.venv/` ويثبّت المشروع مع الحزم الإضافية للتطوير (pytest، ruff، mypy).
@@ -78,7 +78,7 @@ make pre-commit           # Run all hooks manually
 
 ## هيكل المشروع
 
-```
+```text
 scripts/
   download.py           # Stage 1: Fetch specs from F5
   validate.py           # Stage 2: Live API testing

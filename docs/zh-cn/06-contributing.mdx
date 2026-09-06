@@ -2,7 +2,7 @@
 title: 开发指南
 description: 如何设置、运行、测试和参与 F5 XC API Specs 项目的贡献
 i18n:
-  sourceHash: 8e5dcfa20947
+  sourceHash: f1531d0d6676
   translator: machine
 ---
 
@@ -14,8 +14,8 @@ git clone https://github.com/f5-sales-demo/api-specs.git
 cd api-specs
 make dev-install
 
-# 安装 Spectral CLI（lint 阶段必需）
-npm install -g @stoplight/spectral-cli
+# 安装 Spectral 依赖项（lint 阶段必需）
+npm ci --ignore-scripts
 ```
 
 `make dev-install` 会在 `.venv/` 中创建虚拟环境，并安装包含开发附加组件（pytest、ruff、mypy）的项目。
@@ -78,7 +78,7 @@ make pre-commit           # 手动运行所有钩子
 
 ## 项目结构
 
-```
+```text
 scripts/
   download.py           # 阶段 1：从 F5 获取规范
   validate.py           # 阶段 2：实时 API 测试

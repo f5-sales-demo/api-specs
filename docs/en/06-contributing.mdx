@@ -11,8 +11,8 @@ git clone https://github.com/f5-sales-demo/api-specs.git
 cd api-specs
 make dev-install
 
-# Install Spectral CLI (required for linting stages)
-npm install -g @stoplight/spectral-cli
+# Install Spectral dependencies (required for linting stages)
+npm ci --ignore-scripts
 ```
 
 `make dev-install` creates a virtualenv in `.venv/` and installs the project with dev extras (pytest, ruff, mypy).

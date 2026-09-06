@@ -5,7 +5,7 @@ import corePkg from '@stoplight/spectral-core';
 import parsersPkg from '@stoplight/spectral-parsers';
 
 const { Spectral, Document } = corePkg;
-const { Json } = parsersPkg;
+const { Yaml } = parsersPkg;
 
 async function main() {
   const args = process.argv.slice(2);
@@ -61,7 +61,7 @@ async function main() {
 
     const content = fs.readFileSync(resolvedFilePath, 'utf8');
     try {
-      const document = new Document(content, Json, file);
+      const document = new Document(content, Yaml, resolvedFilePath);
       const findings = await spectral.run(document);
       for (const finding of findings) {
         allFindings.push({
@@ -70,7 +70,7 @@ async function main() {
           path: finding.path,
           range: finding.range,
           severity: finding.severity,
-          source: finding.source || file,
+          source: finding.source || resolvedFilePath,
         });
       }
     } catch (err) {

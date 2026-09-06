@@ -2,7 +2,7 @@
 title: 開発ガイド
 description: F5 XC API Specs プロジェクトのセットアップ、実行、テスト、コントリビューション方法
 i18n:
-  sourceHash: 8e5dcfa20947
+  sourceHash: f1531d0d6676
   translator: machine
 ---
 
@@ -14,8 +14,8 @@ git clone https://github.com/f5-sales-demo/api-specs.git
 cd api-specs
 make dev-install
 
-# Spectral CLI をインストール（リンティングステージに必要）
-npm install -g @stoplight/spectral-cli
+# Spectral の依存関係をインストール（リンティングステージに必要）
+npm ci --ignore-scripts
 ```
 
 `make dev-install` は `.venv/` に仮想環境を作成し、開発用エクストラ（pytest、ruff、mypy）を含むプロジェクトをインストールします。
@@ -78,7 +78,7 @@ make pre-commit           # すべてのフックを手動で実行
 
 ## プロジェクト構成
 
-```
+```text
 scripts/
   download.py           # ステージ 1: F5 から仕様を取得
   validate.py           # ステージ 2: ライブ API テスト

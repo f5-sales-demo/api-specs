@@ -2,7 +2,7 @@
 title: Entwicklungsleitfaden
 description: 'Einrichtung, Ausführung, Tests und Mitwirkung am F5 XC API Specs Projekt'
 i18n:
-  sourceHash: 8e5dcfa20947
+  sourceHash: f1531d0d6676
   translator: machine
 ---
 
@@ -14,8 +14,8 @@ git clone https://github.com/f5-sales-demo/api-specs.git
 cd api-specs
 make dev-install
 
-# Spectral CLI installieren (erforderlich für Linting-Stufen)
-npm install -g @stoplight/spectral-cli
+# Spectral-Abhängigkeiten installieren (erforderlich für Linting-Stufen)
+npm ci --ignore-scripts
 ```
 
 `make dev-install` erstellt eine virtuelle Umgebung in `.venv/` und installiert das Projekt mit Entwicklungszusätzen (pytest, ruff, mypy).
@@ -78,7 +78,7 @@ make pre-commit           # Alle Hooks manuell ausführen
 
 ## Projektstruktur
 
-```
+```text
 scripts/
   download.py           # Stufe 1: Spezifikationen von F5 abrufen
   validate.py           # Stufe 2: Live-API-Tests

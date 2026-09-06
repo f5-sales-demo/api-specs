@@ -34,6 +34,7 @@ For every English document (`docs/en/path/to/file.md[x]`), calculate the **SHA-2
 
 ```python
 import hashlib
+
 source_hash = hashlib.sha256(english_raw_bytes).hexdigest()[:12]
 ```
 

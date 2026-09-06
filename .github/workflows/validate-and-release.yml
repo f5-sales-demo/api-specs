@@ -73,13 +73,12 @@ jobs:
         # zizmor's adhoc-packages audit flags, which had the pre-commit hook failing on an
         # untouched main.
         #
-        # --ignore-scripts because Spectral needs no build step, and the tree pulls in
-        # @scarf/scarf, whose postinstall phones home. scripts/spectral_lint.py resolves the
-        # binary with shutil.which("spectral"), so node_modules/.bin must be on PATH.
+        # --ignore-scripts prevents @scarf/scarf postinstall analytics.
+        # scripts/spectral_lint.py invokes the Node.js API runner scripts/spectral_runner.mjs,
+        # so Node.js must be available. The legacy Spectral CLI binary is no longer resolved or needed.
         run: |
           npm ci --ignore-scripts
           npm audit --audit-level=high
-          echo "${GITHUB_WORKSPACE}/node_modules/.bin" >> "${GITHUB_PATH}"
 
       - name: Set up uv
         uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0

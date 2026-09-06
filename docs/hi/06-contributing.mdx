@@ -2,7 +2,7 @@
 title: विकास मार्गदर्शिका
 description: 'F5 XC API Specs प्रोजेक्ट को सेटअप, चलाने, परीक्षण और योगदान करने का तरीका'
 i18n:
-  sourceHash: 8e5dcfa20947
+  sourceHash: f1531d0d6676
   translator: machine
 ---
 
@@ -14,8 +14,8 @@ git clone https://github.com/f5-sales-demo/api-specs.git
 cd api-specs
 make dev-install
 
-# Spectral CLI इंस्टॉल करें (लिंटिंग स्टेज के लिए आवश्यक)
-npm install -g @stoplight/spectral-cli
+# Spectral निर्भरताएँ स्थापित करें (लिंटिंग स्टेज के लिए आवश्यक)
+npm ci --ignore-scripts
 ```
 
 `make dev-install` `.venv/` में एक virtualenv बनाता है और dev extras (pytest, ruff, mypy) के साथ प्रोजेक्ट इंस्टॉल करता है।
@@ -78,7 +78,7 @@ make pre-commit           # सभी हुक्स मैन्युअल�
 
 ## प्रोजेक्ट संरचना
 
-```
+```text
 scripts/
   download.py           # स्टेज 1: F5 से स्पेक्स प्राप्त करें
   validate.py           # स्टेज 2: लाइव API परीक्षण

@@ -56,6 +56,7 @@ def _archive(
     domain_name = "docs-cloud-f5-com.0001.public.ves.io.schema.widgets.ves-swagger.json"
     domain = _openapi(version, path=domain_path)
     aggregate = _openapi(version, path=domain_path)
+    aggregate["x-f5-domain-metadata"] = {domain_name: {"info": {"version": version}}}
     report = (
         "# F5 XC API Validation Report\n\n"
         f"**Generated:** {generated_at}\n\n"

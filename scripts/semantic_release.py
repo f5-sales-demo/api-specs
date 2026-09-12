@@ -101,6 +101,13 @@ def _normalize_openapi(document: Any) -> Any:
     info = normalized.get("info")
     if isinstance(info, dict):
         info.pop("version", None)
+    domain_metadata = normalized.get("x-f5-domain-metadata")
+    if isinstance(domain_metadata, dict):
+        for metadata in domain_metadata.values():
+            if isinstance(metadata, dict):
+                metadata_info = metadata.get("info")
+                if isinstance(metadata_info, dict):
+                    metadata_info.pop("version", None)
     return normalized
 
 

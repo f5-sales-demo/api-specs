@@ -179,6 +179,14 @@ def test_domain_and_nonmetadata_generated_changes_are_measured(tmp_path: Path) -
     )
 
     decision = compare_snapshots(current, previous)
+    decision.update(
+        {
+            "provenance_changed": True,
+            "previous_provenance_timestamp": "2026-08-02T05:30:00+00:00",
+            "current_provenance_timestamp": "2026-08-02T08:25:00+00:00",
+            "release_reason": "semantic-change",
+        }
+    )
 
     assert decision["changed"] is True
     assert decision["modified_domains"] == ["widgets"]
@@ -214,6 +222,14 @@ def test_release_notes_state_only_measured_semantic_changes(tmp_path: Path) -> N
         "b" * 40,
     )
     decision = compare_snapshots(current, previous)
+    decision.update(
+        {
+            "provenance_changed": True,
+            "previous_provenance_timestamp": "2026-08-02T05:30:00+00:00",
+            "current_provenance_timestamp": "2026-08-02T08:25:00+00:00",
+            "release_reason": "semantic-change",
+        }
+    )
 
     notes = render_release_notes(
         decision,
@@ -353,6 +369,7 @@ def test_empty_repository_creates_a_measured_baseline_release(tmp_path: Path) ->
         None,
         candidate_version="2026.07.30-1",
         source_commit=commit,
+        current_provenance_timestamp="2026-07-30T15:32:52+00:00",
     )
 
     assert decision["publication_mode"] == "create"
@@ -392,6 +409,7 @@ def test_published_release_with_failed_dispatch_recovers_on_later_run(tmp_path: 
         snapshot=previous_snapshot,
         receipt=_receipt("2026.07.30-18"),
         delivery_acknowledged=True,
+        provenance_timestamp="2026-07-30T15:32:52+00:00",
     )
 
     initial = decide_publication(
@@ -399,6 +417,7 @@ def test_published_release_with_failed_dispatch_recovers_on_later_run(tmp_path: 
         prior_release,
         candidate_version="2026.07.30-19",
         source_commit=source_commit,
+        current_provenance_timestamp="2026-07-30T15:32:52+00:00",
     )
     assert initial["publication_mode"] == "create"
     assert initial["changed"] is True
@@ -413,12 +432,14 @@ def test_published_release_with_failed_dispatch_recovers_on_later_run(tmp_path: 
         snapshot=current_snapshot,
         receipt=_receipt("2026.07.30-19"),
         delivery_acknowledged=False,
+        provenance_timestamp="2026-07-30T15:32:52+00:00",
     )
     retry = decide_publication(
         current_snapshot,
         published_release,
         candidate_version="2026.07.30-20",
         source_commit=source_commit,
+        current_provenance_timestamp="2026-07-30T15:32:52+00:00",
     )
 
     assert retry["changed"] is False
@@ -446,6 +467,7 @@ def test_acknowledged_release_is_not_redispatched_from_a_later_commit(tmp_path: 
         snapshot=snapshot,
         receipt=_receipt("2026.07.30-19"),
         delivery_acknowledged=True,
+        provenance_timestamp="2026-07-30T15:32:52+00:00",
     )
 
     decision = decide_publication(
@@ -453,10 +475,13 @@ def test_acknowledged_release_is_not_redispatched_from_a_later_commit(tmp_path: 
         latest,
         candidate_version="2026.07.30-20",
         source_commit="b" * 40,
+        current_provenance_timestamp="2026-07-30T15:32:52+00:00",
     )
 
     assert decision["publication_mode"] == "none"
     assert decision["release_version"] == ""
+    assert decision["provenance_changed"] is False
+    assert decision["release_reason"] == "no-change"
 
 
 def test_unacknowledged_release_recovers_across_later_nonsemantic_commit(
@@ -482,6 +507,7 @@ def test_unacknowledged_release_recovers_across_later_nonsemantic_commit(
         snapshot=snapshot,
         receipt=_receipt("2026.07.30-19"),
         delivery_acknowledged=False,
+        provenance_timestamp="2026-07-30T15:32:52+00:00",
     )
 
     decision = decide_publication(
@@ -489,8 +515,90 @@ def test_unacknowledged_release_recovers_across_later_nonsemantic_commit(
         latest,
         candidate_version="2026.07.30-20",
         source_commit=later_commit,
+        current_provenance_timestamp="2026-07-30T15:32:52+00:00",
     )
 
     assert decision["publication_mode"] == "recover"
     assert decision["release_version"] == "2026.07.30-19"
     assert decision["release_commit"] == release_commit
+    assert decision["release_reason"] == "delivery-recovery"
+
+
+def test_provenance_advance_creates_release_without_semantic_changes(tmp_path: Path) -> None:
+    commit = "a" * 40
+    snapshot = _snapshot(
+        _archive(
+            tmp_path / "candidate.zip",
+            version="2026.09.10-1",
+            generated_at="2026-09-10T22:01:33+00:00",
+            git_sha=commit,
+        ),
+        "2026.09.10-1",
+        commit,
+    )
+    latest = VerifiedLatestRelease(
+        tag="v2026.09.01-1",
+        commit="b" * 40,
+        asset_name="api-specs-v2026.09.01-1.zip",
+        content=b"release",
+        snapshot=snapshot,
+        receipt=_receipt("2026.09.01-1"),
+        delivery_acknowledged=True,
+        provenance_timestamp="2026-09-01T15:44:33+00:00",
+    )
+
+    decision = decide_publication(
+        snapshot,
+        latest,
+        candidate_version="2026.09.10-1",
+        source_commit=commit,
+        current_provenance_timestamp="2026-09-10T22:01:33+00:00",
+    )
+
+    assert decision["changed"] is False
+    assert decision["provenance_changed"] is True
+    assert decision["publication_mode"] == "create"
+    assert decision["release_reason"] == "provenance-advance"
+    notes = render_release_notes(
+        decision,
+        version="2026.09.10-1",
+        specs_etag='W/"33e9bd-1a08d572248"',
+        repository="f5-sales-demo/api-specs",
+    )
+    assert "Provenance-only release" in notes
+    assert "Domain changes: 0" in notes
+    assert "2026-09-10T22:01:33+00:00" in notes
+    assert 'W/"33e9bd-1a08d572248"' in notes
+
+
+def test_provenance_regression_is_rejected(tmp_path: Path) -> None:
+    commit = "a" * 40
+    snapshot = _snapshot(
+        _archive(
+            tmp_path / "candidate.zip",
+            version="2026.09.10-1",
+            generated_at="2026-09-10T22:01:33+00:00",
+            git_sha=commit,
+        ),
+        "2026.09.10-1",
+        commit,
+    )
+    latest = VerifiedLatestRelease(
+        tag="v2026.09.10-1",
+        commit="b" * 40,
+        asset_name="api-specs-v2026.09.10-1.zip",
+        content=b"release",
+        snapshot=snapshot,
+        receipt=_receipt("2026.09.10-1"),
+        delivery_acknowledged=True,
+        provenance_timestamp="2026-09-10T22:01:33+00:00",
+    )
+
+    with pytest.raises(SemanticReleaseError, match="provenance timestamp regressed"):
+        decide_publication(
+            snapshot,
+            latest,
+            candidate_version="2026.09.10-2",
+            source_commit=commit,
+            current_provenance_timestamp="2026-09-01T15:44:33+00:00",
+        )

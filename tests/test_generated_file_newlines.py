@@ -55,6 +55,8 @@ class TestSpecMetadataEndsWithNewline:
             etag='W/"test"',
             last_modified="Fri, 24 Jul 2026 17:30:26 GMT",
             file_count=3,
+            archive_sha256="a" * 64,
+            archive_size_bytes=123,
         )
         written = (tmp_path / ".spec_metadata.json").read_text()
 
@@ -65,6 +67,8 @@ class TestSpecMetadataEndsWithNewline:
         assert not written.endswith("\n\n")
         # Still valid JSON, and the newline is the only change.
         assert json.loads(written)["file_count"] == 3
+        assert json.loads(written)["archive_sha256"] == "a" * 64
+        assert json.loads(written)["archive_size_bytes"] == 123
 
     def test_the_committed_metadata_conforms(self):
         committed = (REPO_ROOT / "release" / "specs" / ".spec_metadata.json").read_text()

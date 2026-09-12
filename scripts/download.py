@@ -57,6 +57,8 @@ def save_metadata(
     etag: str | None,
     last_modified: str | None,
     file_count: int,
+    archive_sha256: str,
+    archive_size_bytes: int,
 ) -> None:
     """Save download metadata for versioning."""
     metadata_path = output_dir / DEFAULT_METADATA_FILE
@@ -82,6 +84,8 @@ def save_metadata(
         "etag": etag,
         "last_modified": last_modified,
         "file_count": file_count,
+        "archive_sha256": archive_sha256,
+        "archive_size_bytes": archive_size_bytes,
         "source_url": DEFAULT_DOWNLOAD_URL,
     }
 
@@ -181,12 +185,21 @@ def download_specs(
             save_etag(etag_cache, new_etag)
             console.print(f"[dim]ETag saved: {new_etag[:20]}...[/dim]")
 
+        archive_bytes = content.getvalue()
+
         # Extract ZIP
         content.seek(0)
         extracted_files = extract_zip(content, output_dir)
 
         # Save metadata for versioning (includes upstream Last-Modified date)
-        save_metadata(output_dir, new_etag, last_modified, len(extracted_files))
+        save_metadata(
+            output_dir,
+            new_etag,
+            last_modified,
+            len(extracted_files),
+            hashlib.sha256(archive_bytes).hexdigest(),
+            len(archive_bytes),
+        )
 
         console.print(f"[green]Extracted {len(extracted_files)} files to {output_dir}[/green]")
 

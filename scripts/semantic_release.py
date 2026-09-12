@@ -11,6 +11,7 @@ import sys
 import tempfile
 from copy import deepcopy
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 from typing import Any
 
@@ -51,6 +52,7 @@ class VerifiedLatestRelease:
     snapshot: dict[str, Any]
     receipt: dict[str, Any]
     delivery_acknowledged: bool
+    provenance_timestamp: str
 
 
 def _sha256(content: bytes) -> str:
@@ -227,6 +229,58 @@ def _snapshot_from_bytes(
     except ReleaseArchiveError as error:
         raise SemanticReleaseError(str(error)) from error
     return _snapshot_from_entries(validated.entries)
+
+
+def _provenance_timestamp_from_manifest(manifest: dict[str, Any]) -> str:
+    """Return the immutable upstream timestamp in canonical UTC form."""
+    value = manifest.get("generated_at")
+    if not isinstance(value, str):
+        raise SemanticReleaseError("release manifest has no provenance timestamp")
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise SemanticReleaseError("release manifest provenance timestamp is invalid") from error
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise SemanticReleaseError("release manifest provenance timestamp requires a UTC offset")
+    return parsed.astimezone(UTC).isoformat()
+
+
+def provenance_timestamp_from_archive(
+    archive_path: Path,
+    *,
+    expected_version: str,
+    expected_commit: str,
+) -> str:
+    """Extract upstream provenance only after validating the whole release archive."""
+    path = Path(archive_path)
+    if path.is_symlink() or not path.is_file():
+        raise SemanticReleaseError(f"release archive is missing or unsafe: {path}")
+    try:
+        validated = validate_release_archive_bytes(
+            path.read_bytes(),
+            expected_version=expected_version,
+            expected_commit=expected_commit,
+        )
+    except (OSError, ReleaseArchiveError) as error:
+        raise SemanticReleaseError(str(error)) from error
+    return _provenance_timestamp_from_manifest(validated.manifest)
+
+
+def _provenance_timestamp_from_bytes(
+    content: bytes,
+    *,
+    expected_version: str,
+    expected_commit: str,
+) -> str:
+    try:
+        validated = validate_release_archive_bytes(
+            content,
+            expected_version=expected_version,
+            expected_commit=expected_commit,
+        )
+    except ReleaseArchiveError as error:
+        raise SemanticReleaseError(str(error)) from error
+    return _provenance_timestamp_from_manifest(validated.manifest)
 
 
 def compare_snapshots(current: dict[str, Any], previous: dict[str, Any]) -> dict[str, Any]:
@@ -470,6 +524,11 @@ def _latest_verified_snapshot(
         ),
         receipt=receipt,
         delivery_acknowledged=acknowledged,
+        provenance_timestamp=_provenance_timestamp_from_bytes(
+            content,
+            expected_version=version,
+            expected_commit=commit,
+        ),
     )
 
 
@@ -479,12 +538,16 @@ def decide_publication(
     *,
     candidate_version: str,
     source_commit: str,
+    current_provenance_timestamp: str,
 ) -> dict[str, Any]:
-    """Choose create, recovery, or no-op from measured semantic and source identity."""
+    """Choose create, recovery, or no-op from semantic and upstream provenance identity."""
     if RELEASE_VERSION_PATTERN.fullmatch(candidate_version) is None:
         raise SemanticReleaseError("candidate version must use YYYY.MM.DD-N")
     if re.fullmatch(r"[0-9a-f]{40}", source_commit) is None:
         raise SemanticReleaseError("source commit must be a full Git SHA")
+    current_provenance_timestamp = _provenance_timestamp_from_manifest(
+        {"generated_at": current_provenance_timestamp}
+    )
 
     if latest is None:
         return {
@@ -498,6 +561,10 @@ def decide_publication(
             "changed_artifacts": sorted(current["artifacts"]),
             "previous_release_tag": "",
             "previous_release_commit": "",
+            "provenance_changed": True,
+            "previous_provenance_timestamp": "none",
+            "current_provenance_timestamp": current_provenance_timestamp,
+            "release_reason": "bootstrap",
             "publication_mode": "create",
             "release_version": candidate_version,
             "release_asset": f"api-specs-v{candidate_version}.zip",
@@ -507,9 +574,28 @@ def decide_publication(
     decision = compare_snapshots(current, latest.snapshot)
     decision["previous_release_tag"] = latest.tag
     decision["previous_release_commit"] = latest.commit
+    previous_provenance_timestamp = _provenance_timestamp_from_manifest(
+        {"generated_at": latest.provenance_timestamp}
+    )
+    decision["previous_provenance_timestamp"] = previous_provenance_timestamp
+    decision["current_provenance_timestamp"] = current_provenance_timestamp
+    if current_provenance_timestamp < previous_provenance_timestamp:
+        raise SemanticReleaseError("upstream provenance timestamp regressed")
+    decision["provenance_changed"] = current_provenance_timestamp > previous_provenance_timestamp
     if decision["changed"]:
         decision.update(
             {
+                "release_reason": "semantic-change",
+                "publication_mode": "create",
+                "release_version": candidate_version,
+                "release_asset": f"api-specs-v{candidate_version}.zip",
+                "release_commit": source_commit,
+            }
+        )
+    elif decision["provenance_changed"]:
+        decision.update(
+            {
+                "release_reason": "provenance-advance",
                 "publication_mode": "create",
                 "release_version": candidate_version,
                 "release_asset": f"api-specs-v{candidate_version}.zip",
@@ -519,6 +605,7 @@ def decide_publication(
     elif not latest.delivery_acknowledged:
         decision.update(
             {
+                "release_reason": "delivery-recovery",
                 "publication_mode": "recover",
                 "release_version": latest.tag.removeprefix("v"),
                 "release_asset": latest.asset_name,
@@ -528,6 +615,7 @@ def decide_publication(
     else:
         decision.update(
             {
+                "release_reason": "no-change",
                 "publication_mode": "none",
                 "release_version": "",
                 "release_asset": "",
@@ -551,26 +639,46 @@ def render_release_notes(
     specs_etag: str,
     repository: str,
 ) -> str:
-    """Render release notes containing only measured semantic changes."""
-    if decision.get("changed") is not True:
-        raise SemanticReleaseError("release notes cannot be generated for unchanged semantics")
-    lines = [
-        f"## F5 XC API Specs v{version}",
-        "",
-        "### Measured semantic changes",
-    ]
-    measurements = (
-        ("Added domains", decision.get("added_domains")),
-        ("Removed domains", decision.get("removed_domains")),
-        ("Modified domains", decision.get("modified_domains")),
-        ("Changed generated artifacts", decision.get("changed_artifacts")),
-    )
-    for label, values in measurements:
-        if not isinstance(values, list) or not all(isinstance(value, str) for value in values):
-            raise SemanticReleaseError(f"semantic decision has invalid {label.lower()}")
-        line = _format_measured(label, values)
-        if line is not None:
-            lines.append(line)
+    """Render release notes for a measured semantic or provenance release."""
+    semantic_changed = decision.get("changed")
+    provenance_changed = decision.get("provenance_changed")
+    if not isinstance(semantic_changed, bool) or not isinstance(provenance_changed, bool):
+        raise SemanticReleaseError("release decision has invalid change flags")
+    if not semantic_changed and not provenance_changed:
+        raise SemanticReleaseError("release notes require a semantic or provenance change")
+    previous_provenance = decision.get("previous_provenance_timestamp")
+    current_provenance = decision.get("current_provenance_timestamp")
+    release_reason = decision.get("release_reason")
+    if (
+        not isinstance(previous_provenance, str)
+        or not isinstance(current_provenance, str)
+        or not isinstance(release_reason, str)
+    ):
+        raise SemanticReleaseError("release decision has invalid provenance metadata")
+    lines = [f"## F5 XC API Specs v{version}", ""]
+    if semantic_changed:
+        lines.append("### Measured semantic changes")
+        measurements = (
+            ("Added domains", decision.get("added_domains")),
+            ("Removed domains", decision.get("removed_domains")),
+            ("Modified domains", decision.get("modified_domains")),
+            ("Changed generated artifacts", decision.get("changed_artifacts")),
+        )
+        for label, values in measurements:
+            if not isinstance(values, list) or not all(isinstance(value, str) for value in values):
+                raise SemanticReleaseError(f"semantic decision has invalid {label.lower()}")
+            line = _format_measured(label, values)
+            if line is not None:
+                lines.append(line)
+    else:
+        lines.extend(
+            [
+                "### Provenance-only release",
+                "- Domain changes: 0",
+                "- Generated artifact changes: 0",
+                f"- Upstream source timestamp: {current_provenance}",
+            ]
+        )
     lines.extend(
         [
             "",
@@ -589,6 +697,9 @@ def render_release_notes(
             "### Metadata",
             f"- Semantic Digest: {decision['semantic_digest']}",
             f"- Previous Semantic Digest: {decision['previous_semantic_digest']}",
+            f"- Release Reason: {release_reason}",
+            f"- Previous Upstream Provenance: {previous_provenance}",
+            f"- Current Upstream Provenance: {current_provenance}",
             f"- Specs ETag: {specs_etag}",
             "",
             "---",
@@ -630,6 +741,11 @@ def _compare(args: argparse.Namespace) -> int:
         expected_version=args.candidate_version,
         expected_commit=args.source_commit,
     )
+    current_provenance_timestamp = provenance_timestamp_from_archive(
+        args.current_archive,
+        expected_version=args.candidate_version,
+        expected_commit=args.source_commit,
+    )
     latest = _latest_verified_snapshot(
         args.repository,
         os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN"),
@@ -639,6 +755,7 @@ def _compare(args: argparse.Namespace) -> int:
         latest,
         candidate_version=args.candidate_version,
         source_commit=args.source_commit,
+        current_provenance_timestamp=current_provenance_timestamp,
     )
     if decision["publication_mode"] == "recover" and latest is not None:
         _write_bytes_atomically(args.recovery_directory / latest.asset_name, latest.content)
@@ -649,6 +766,13 @@ def _compare(args: argparse.Namespace) -> int:
             output.write(f"should_publish={'true' if should_publish else 'false'}\n")
             output.write(f"semantic_changed={'true' if decision['changed'] else 'false'}\n")
             output.write(
+                f"provenance_changed={'true' if decision['provenance_changed'] else 'false'}\n"
+            )
+            output.write(
+                "new_release_required="
+                f"{'true' if decision['publication_mode'] == 'create' else 'false'}\n"
+            )
+            output.write(
                 "resume_publication="
                 f"{'true' if decision['publication_mode'] == 'recover' else 'false'}\n"
             )
@@ -656,6 +780,13 @@ def _compare(args: argparse.Namespace) -> int:
             output.write(f"release_asset={decision['release_asset']}\n")
             output.write(f"release_commit={decision['release_commit']}\n")
             output.write(f"semantic_digest={decision['semantic_digest']}\n")
+            output.write(f"release_reason={decision['release_reason']}\n")
+            output.write(
+                f"previous_provenance_timestamp={decision['previous_provenance_timestamp']}\n"
+            )
+            output.write(
+                f"current_provenance_timestamp={decision['current_provenance_timestamp']}\n"
+            )
             output.write(f"previous_release_tag={latest.tag if latest is not None else ''}\n")
     return 0
 

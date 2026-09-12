@@ -396,10 +396,15 @@ jobs:
     outputs:
       should_publish: ${{ steps.check.outputs.should_publish }}
       semantic_changed: ${{ steps.check.outputs.semantic_changed }}
+      provenance_changed: ${{ steps.check.outputs.provenance_changed }}
+      new_release_required: ${{ steps.check.outputs.new_release_required }}
       resume_publication: ${{ steps.check.outputs.resume_publication }}
       version: ${{ steps.check.outputs.release_version }}
       release_asset: ${{ steps.check.outputs.release_asset }}
       semantic_digest: ${{ steps.check.outputs.semantic_digest }}
+      release_reason: ${{ steps.check.outputs.release_reason }}
+      previous_provenance_timestamp: ${{ steps.check.outputs.previous_provenance_timestamp }}
+      current_provenance_timestamp: ${{ steps.check.outputs.current_provenance_timestamp }}
       release_commit: ${{ steps.check.outputs.release_commit }}
 
     steps:
@@ -526,7 +531,7 @@ jobs:
           path: reports/
 
       - name: Generate release notes
-        if: needs.check-release-needed.outputs.semantic_changed == 'true'
+        if: needs.check-release-needed.outputs.new_release_required == 'true'
         id: release_notes
         env:
           VERSION: ${{ needs.check-release-needed.outputs.version }}
@@ -554,7 +559,7 @@ jobs:
             --jq '.enabled == true' | grep -qx true
 
       - name: Create GitHub Release
-        if: needs.check-release-needed.outputs.semantic_changed == 'true'
+        if: needs.check-release-needed.outputs.new_release_required == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ needs.check-release-needed.outputs.version }}
@@ -606,6 +611,9 @@ jobs:
         env:
           VERSION: ${{ needs.check-release-needed.outputs.version }}
           SEMANTIC_DIGEST: ${{ needs.check-release-needed.outputs.semantic_digest }}
+          RELEASE_REASON: ${{ needs.check-release-needed.outputs.release_reason }}
+          PREVIOUS_PROVENANCE: ${{ needs.check-release-needed.outputs.previous_provenance_timestamp }}
+          CURRENT_PROVENANCE: ${{ needs.check-release-needed.outputs.current_provenance_timestamp }}
           RESUMED: ${{ needs.check-release-needed.outputs.resume_publication }}
         run: |
           {
@@ -613,6 +621,9 @@ jobs:
             echo ""
             echo "**Version**: v${VERSION}"
             echo "**Semantic Digest**: ${SEMANTIC_DIGEST}"
+            echo "**Release Reason**: ${RELEASE_REASON}"
+            echo "**Previous Upstream Provenance**: ${PREVIOUS_PROVENANCE}"
+            echo "**Current Upstream Provenance**: ${CURRENT_PROVENANCE}"
             echo "**Recovered Publication**: ${RESUMED}"
           } >> "${GITHUB_STEP_SUMMARY}"
 

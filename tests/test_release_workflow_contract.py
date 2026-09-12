@@ -151,6 +151,12 @@ def test_release_recovery_verifies_and_dispatches_without_creating_a_new_release
     workflow = yaml.safe_load(WORKFLOW.read_text())
     check = _jobs()["check-release-needed"]
     assert check["outputs"]["should_publish"] == "${{ steps.check.outputs.should_publish }}"
+    assert check["outputs"]["provenance_changed"] == (
+        "${{ steps.check.outputs.provenance_changed }}"
+    )
+    assert check["outputs"]["new_release_required"] == (
+        "${{ steps.check.outputs.new_release_required }}"
+    )
     assert check["outputs"]["resume_publication"] == (
         "${{ steps.check.outputs.resume_publication }}"
     )
@@ -162,8 +168,8 @@ def test_release_recovery_verifies_and_dispatches_without_creating_a_new_release
     create = next(step for step in steps if step["name"] == "Create GitHub Release")
     verify = next(step for step in steps if step["name"] == "Verify immutable GitHub release")
     notes = next(step for step in steps if step["name"] == "Generate release notes")
-    assert create["if"] == "needs.check-release-needed.outputs.semantic_changed == 'true'"
-    assert notes["if"] == "needs.check-release-needed.outputs.semantic_changed == 'true'"
+    assert create["if"] == "needs.check-release-needed.outputs.new_release_required == 'true'"
+    assert notes["if"] == "needs.check-release-needed.outputs.new_release_required == 'true'"
     assert "gh release view" not in create["run"]
     assert "if" not in verify
     assert verify["env"]["RELEASE_COMMIT"] == (
@@ -206,6 +212,7 @@ def test_release_notes_render_the_measured_semantic_decision():
     assert "python -m scripts.semantic_release notes" in command
     assert "uv run --frozen" in command
     assert "semantic-release-decision.json" in command
+    assert "new_release_required" in notes["if"]
     assert "Code changes resulted in updated output" not in command
     assert "Upstream F5 XC specs updated" not in command
 

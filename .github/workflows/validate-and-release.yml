@@ -54,6 +54,10 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        # The image cache at /opt/hostedtoolcache is read-only. ARC seeds this
+        # writable private cache for each ephemeral runner.
+        env:
+          AGENT_TOOLSDIRECTORY: /runner-runtime/_tool
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -243,6 +247,10 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        # The image cache at /opt/hostedtoolcache is read-only. ARC seeds this
+        # writable private cache for each ephemeral runner.
+        env:
+          AGENT_TOOLSDIRECTORY: /runner-runtime/_tool
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -323,6 +331,10 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        # The image cache at /opt/hostedtoolcache is read-only. ARC seeds this
+        # writable private cache for each ephemeral runner.
+        env:
+          AGENT_TOOLSDIRECTORY: /runner-runtime/_tool
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -416,6 +428,10 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        # The image cache at /opt/hostedtoolcache is read-only. ARC seeds this
+        # writable private cache for each ephemeral runner.
+        env:
+          AGENT_TOOLSDIRECTORY: /runner-runtime/_tool
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -504,6 +520,10 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        # The image cache at /opt/hostedtoolcache is read-only. ARC seeds this
+        # writable private cache for each ephemeral runner.
+        env:
+          AGENT_TOOLSDIRECTORY: /runner-runtime/_tool
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -655,6 +675,10 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        # The image cache at /opt/hostedtoolcache is read-only. ARC seeds this
+        # writable private cache for each ephemeral runner.
+        env:
+          AGENT_TOOLSDIRECTORY: /runner-runtime/_tool
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -917,6 +941,10 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        # The image cache at /opt/hostedtoolcache is read-only. ARC seeds this
+        # writable private cache for each ephemeral runner.
+        env:
+          AGENT_TOOLSDIRECTORY: /runner-runtime/_tool
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.views.http_loadbalancer",
     "description": "HTTP Load Balancer view defines a required parameters that can be used in CRUD, to create and manage HTTP Load Balancer.\nIt can be used to create HTTP Load Balancer and HTTPS Load Balancer.\n\nView will create following child objects.\n\n* virtual_host\n* routes\n* clusters\n* endpoints\n* advertise_policy",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -233,6 +243,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -376,6 +396,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -506,6 +536,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -633,6 +673,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -775,6 +825,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -936,6 +996,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1063,6 +1133,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1209,6 +1289,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1346,6 +1436,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1491,6 +1591,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1620,6 +1730,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1765,6 +1885,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1892,6 +2022,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2037,6 +2177,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -2179,6 +2329,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -2306,6 +2466,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2449,6 +2619,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -2576,6 +2756,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2932,7 +3122,6 @@
             "type": "boolean",
             "description": " Enable/disable HTTP2 Protocol for upstream connections",
             "title": "enabled",
-            "format": "boolean",
             "x-displayname": "HTTP2 Enabled"
           }
         }
@@ -3338,7 +3527,6 @@
             "type": "boolean",
             "description": " Cache Hard Purge\n\nExample: ` true`",
             "title": "Hard Purge",
-            "format": "boolean",
             "x-displayname": "Cache Hard Purge"
           },
           "purge_time": {
@@ -3588,14 +3776,33 @@
           }
         }
       },
-      "common_securityBotDefenseAdvancedType": {
+      "common_securityBotDefenseAdvancedProtection": {
         "type": "object",
-        "description": "Bot Defense Advanced",
-        "title": "BotDefenseAdvancedType",
+        "description": "Bot Defense Advanced Protection - replaces BotDefenseAdvancedType.",
+        "title": "BotDefenseAdvancedProtection",
         "x-displayname": "Bot Defense Advanced",
+        "x-ves-oneof-field-client_type_choice": "[\"both_web_and_mobile\",\"mobile_only\",\"web_only\"]",
+        "x-ves-proto-message": "ves.io.schema.views.common_security.BotDefenseAdvancedProtection",
+        "properties": {
+          "both_web_and_mobile": {
+            "$ref": "#/components/schemas/common_securityBothWebAndMobileType"
+          },
+          "mobile_only": {
+            "$ref": "#/components/schemas/common_securityMobileOnlyType"
+          },
+          "web_only": {
+            "$ref": "#/components/schemas/common_securityWebOnlyType"
+          }
+        }
+      },
+      "common_securityBothWebAndMobileType": {
+        "type": "object",
+        "description": "Both Web and Mobile configuration",
+        "title": "BothWebAndMobileType",
+        "x-displayname": "Both Web & Mobile",
         "x-ves-oneof-field-java_script_choice": "[\"disable_js_insert\",\"js_insert_all_pages\",\"js_insert_all_pages_except\",\"js_insertion_rules\"]",
         "x-ves-oneof-field-mobile_sdk_choice": "[\"disable_mobile_sdk\",\"mobile_sdk_config\"]",
-        "x-ves-proto-message": "ves.io.schema.views.common_security.BotDefenseAdvancedType",
+        "x-ves-proto-message": "ves.io.schema.views.common_security.BothWebAndMobileType",
         "properties": {
           "disable_js_insert": {
             "$ref": "#/components/schemas/ioschemaEmpty"
@@ -3972,6 +4179,18 @@
         "x-displayname": "Mobile Identifier",
         "x-ves-proto-enum": "ves.io.schema.views.common_security.MobileIdentifier"
       },
+      "common_securityMobileOnlyType": {
+        "type": "object",
+        "description": "Mobile only configuration",
+        "title": "MobileOnlyType",
+        "x-displayname": "Mobile",
+        "x-ves-proto-message": "ves.io.schema.views.common_security.MobileOnlyType",
+        "properties": {
+          "mobile": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
+          }
+        }
+      },
       "common_securityMobileSDKConfigType": {
         "type": "object",
         "description": "Mobile SDK configuration.",
@@ -4266,6 +4485,31 @@
         "properties": {
           "mobile_identifier": {
             "$ref": "#/components/schemas/common_securityMobileIdentifier"
+          }
+        }
+      },
+      "common_securityWebOnlyType": {
+        "type": "object",
+        "description": "Web only configuration",
+        "title": "WebOnlyType",
+        "x-displayname": "Web",
+        "x-ves-oneof-field-java_script_choice": "[\"disable_js_insert\",\"js_insert_all_pages\",\"js_insert_all_pages_except\",\"js_insertion_rules\"]",
+        "x-ves-proto-message": "ves.io.schema.views.common_security.WebOnlyType",
+        "properties": {
+          "disable_js_insert": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "js_insert_all_pages": {
+            "$ref": "#/components/schemas/common_securityShapeJavaScriptInsertAllType"
+          },
+          "js_insert_all_pages_except": {
+            "$ref": "#/components/schemas/common_securityShapeJavaScriptInsertAllWithExceptionsType"
+          },
+          "js_insertion_rules": {
+            "$ref": "#/components/schemas/common_securityShapeJavaScriptInsertType"
+          },
+          "web": {
+            "$ref": "#/components/schemas/schemaviewsObjectRefType"
           }
         }
       },
@@ -5602,7 +5846,7 @@
         "properties": {
           "actions": {
             "type": "array",
-            "description": " Actions that should be taken when client identifier matches the rule\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.enum.defined_only: true\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " Actions that should be taken when client identifier matches the rule\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.enum.defined_only: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "actions",
             "maxItems": 10,
             "items": {
@@ -5611,8 +5855,8 @@
             "x-displayname": "Actions",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.enum.defined_only": "true",
               "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.repeated.items.enum.defined_only": "true",
               "ves.io.schema.rules.repeated.max_items": "10",
               "ves.io.schema.rules.repeated.unique": "true"
             }
@@ -5982,7 +6226,6 @@
             "type": "boolean",
             "description": " Disable the use of default F5XC error pages.",
             "title": "Disable the use of default F5XC error pages",
-            "format": "boolean",
             "x-displayname": "Disable Default Error Pages"
           },
           "disable_path_normalize": {
@@ -6248,7 +6491,6 @@
             "type": "boolean",
             "description": " Create an empty API Definition object, if not exists",
             "title": "Create if not exists",
-            "format": "boolean",
             "x-displayname": "Create if not exists"
           },
           "name": {
@@ -6439,7 +6681,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -6838,7 +7079,6 @@
             "type": "boolean",
             "description": " A value of true indicates http_loadbalancer is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -6971,7 +7211,6 @@
             "type": "boolean",
             "description": " DNS records for domains will be managed automatically by F5 Distributed Cloud.\n As a prerequisite, the domain must be delegated to F5 Distributed Cloud using Delegated domain feature\n or a DNS CNAME record should be created in your DNS provider's portal.",
             "title": "Manage DNS Domain",
-            "format": "boolean",
             "x-displayname": "Automatically Manage DNS Records"
           },
           "port": {
@@ -7019,7 +7258,6 @@
             "type": "boolean",
             "description": " Add HTTP Strict-Transport-Security response header",
             "title": "Add HSTS",
-            "format": "boolean",
             "x-displayname": "Add HSTS Header"
           },
           "append_server_name": {
@@ -7065,7 +7303,6 @@
             "type": "boolean",
             "description": " Redirect HTTP traffic to HTTPS",
             "title": "HTTP Redirect",
-            "format": "boolean",
             "x-displayname": "HTTP Redirect to HTTPS"
           },
           "non_default_loadbalancer": {
@@ -7135,7 +7372,6 @@
             "type": "boolean",
             "description": " Add HTTP Strict-Transport-Security response header",
             "title": "Add HSTS",
-            "format": "boolean",
             "x-displayname": "Add HSTS Header"
           },
           "append_server_name": {
@@ -7181,7 +7417,6 @@
             "type": "boolean",
             "description": " Redirect HTTP traffic to HTTPS",
             "title": "HTTP Redirect",
-            "format": "boolean",
             "x-displayname": "HTTP Redirect to HTTPS"
           },
           "no_mtls": {
@@ -7301,7 +7536,6 @@
             "type": "boolean",
             "description": " disables append of x-volterra-location = <re-site-name> at route level, if it is configured at\n virtual-host level. This configuration is ignored on CE sites.\n\nExample: ` true`",
             "title": "disable_location_add",
-            "format": "boolean",
             "x-displayname": "Disable Location Addition"
           },
           "disable_mirroring": {
@@ -7947,7 +8181,6 @@
             "type": "boolean",
             "description": " Invert the result of the match to detect missing header or non-matching value",
             "title": "invert_match",
-            "format": "boolean",
             "x-displayname": "NOT of match"
           },
           "name": {
@@ -7970,18 +8203,16 @@
             "type": "boolean",
             "description": "Exclusive with [exact regex]\n If true, check for presence of header",
             "title": "presence",
-            "format": "boolean",
             "x-displayname": "Presence"
           },
           "regex": {
             "type": "string",
-            "description": "Exclusive with [exact presence]\n Regex match of the header value in re2 format\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 256\n  ves.io.schema.rules.string.not_empty: true\n  ves.io.schema.rules.string.regex: true\n",
+            "description": "Exclusive with [exact presence]\n Regex match of the header value in re2 format\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 256\n  ves.io.schema.rules.string.regex: true\n",
             "title": "regex",
             "maxLength": 256,
             "x-displayname": "Regex",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "256",
-              "ves.io.schema.rules.string.not_empty": "true",
               "ves.io.schema.rules.string.regex": "true"
             }
           }
@@ -8942,7 +9173,6 @@
             "type": "boolean",
             "description": " Invert Match of the expression defined",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Matcher"
           },
           "item": {
@@ -9094,7 +9324,6 @@
             "type": "boolean",
             "description": " Invert Match of the expression defined",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Matcher"
           },
           "item": {
@@ -9570,7 +9799,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Method Matcher"
           },
           "methods": {
@@ -9624,7 +9852,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert IP Matcher"
           },
           "prefix_sets": {
@@ -9687,7 +9914,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Matcher"
           },
           "item": {
@@ -9909,7 +10135,7 @@
           },
           "re_name_list": {
             "type": "array",
-            "description": " List of RE names for match\n\nExample: ` \"ves-io-re01\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 32\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.max_len: 64\n",
+            "description": " List of RE names for match\n\nExample: ` \"ves-io-re01\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.max_len: 64\n  ves.io.schema.rules.repeated.max_items: 32\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "RE Name list",
             "maxItems": 32,
             "items": {
@@ -9919,9 +10145,9 @@
             "x-displayname": "RE Names",
             "x-ves-example": "ves-io-re01",
             "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.items.string.max_len": "64",
               "ves.io.schema.rules.repeated.max_items": "32",
-              "ves.io.schema.rules.repeated.unique": "true",
-              "ves.io.schema.rules.string.max_len": "64"
+              "ves.io.schema.rules.repeated.unique": "true"
             }
           }
         }
@@ -9937,7 +10163,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Match Result"
           },
           "ip_prefixes": {
@@ -10697,14 +10922,12 @@
             "type": "boolean",
             "description": "Exclusive with [cookie header_name]\n Hash based on source IP address\n\nExample: ` true`",
             "title": "Source IP",
-            "format": "boolean",
             "x-displayname": "Source IP"
           },
           "terminal": {
             "type": "boolean",
             "description": " Specify if its a terminal policy\n\nExample: ` true`",
             "title": "terminal",
-            "format": "boolean",
             "x-displayname": "Terminal"
           }
         }
@@ -10942,8 +11165,28 @@
             "type": "boolean",
             "description": " Specifies that the HTTP client connection to this route is allowed to upgrade to\n a WebSocket connection\n\nExample: ` true`",
             "title": "use_websocket",
-            "format": "boolean",
             "x-displayname": "Use Websocket"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -11224,7 +11467,7 @@
           },
           "regex_values": {
             "type": "array",
-            "description": " A list of regular expressions to match the input against.\n\nExample: ` \"['^new .*$', 'san f.*', '.* del .*']\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.max_bytes: 256\n  ves.io.schema.rules.repeated.items.string.not_empty: true\n  ves.io.schema.rules.repeated.items.string.regex: true\n  ves.io.schema.rules.repeated.max_items: 16\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " A list of regular expressions to match the input against.\n\nExample: ` \"['^new .*$', 'san f.*', '.* del .*']\"`\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.max_bytes: 256\n  ves.io.schema.rules.repeated.items.string.regex: true\n  ves.io.schema.rules.repeated.max_items: 16\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "regex values",
             "maxItems": 16,
             "items": {
@@ -11235,7 +11478,6 @@
             "x-ves-example": "['^new .*$', 'san f.*', '.* del .*']",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.items.string.max_bytes": "256",
-              "ves.io.schema.rules.repeated.items.string.not_empty": "true",
               "ves.io.schema.rules.repeated.items.string.regex": "true",
               "ves.io.schema.rules.repeated.max_items": "16",
               "ves.io.schema.rules.repeated.unique": "true"
@@ -11313,7 +11555,6 @@
             "type": "boolean",
             "description": " Disable buffering for a particular route. This is useful when virtual-host\n has buffering, but we need to disable it on a specific route.\n The value of this field is ignored for virtual-host",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "max_request_bytes": {
@@ -11512,7 +11753,6 @@
             "type": "boolean",
             "description": " Should the value be overwritten? If true, the value is overwritten to existing values.\n Default value is do not overwrite",
             "title": "overwrite",
-            "format": "boolean",
             "x-displayname": "Overwrite"
           },
           "secret_value": {
@@ -11542,7 +11782,6 @@
             "type": "boolean",
             "description": " Specifies whether the resource allows credentials",
             "title": "allow_credentials",
-            "format": "boolean",
             "x-displayname": "Allow Credentials"
           },
           "allow_headers": {
@@ -11605,7 +11844,6 @@
             "type": "boolean",
             "description": " Disable the CorsPolicy for a particular route. This is useful when\n virtual-host has CorsPolicy, but we need to disable it on a specific route.\n The value of this field is ignored for virtual-host",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "expose_headers": {
@@ -11872,7 +12110,6 @@
             "type": "boolean",
             "description": " Should the value be appended? If true, the value is appended to existing values.\n Default value is do not append",
             "title": "append",
-            "format": "boolean",
             "x-displayname": "Append"
           },
           "name": {
@@ -12145,7 +12382,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -12209,7 +12445,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -12275,7 +12510,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -12595,7 +12829,6 @@
             "type": "boolean",
             "description": " Should the value be overwritten? If true, the value is overwritten to existing values.\n Default value is do not overwrite",
             "title": "overwrite",
-            "format": "boolean",
             "x-displayname": "Overwrite"
           },
           "samesite_lax": {
@@ -12676,7 +12909,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }
@@ -13095,7 +13327,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Header Matcher"
           },
           "item": {
@@ -13153,7 +13384,6 @@
             "type": "boolean",
             "description": "Match against the encoded, escaped path\n\nExample: ` \"match \\\"/path/%20another%20path\\\" instead of default \\\"/path/ another path\\\"\"`",
             "title": "Encoded_Path",
-            "format": "boolean",
             "x-displayname": "Match Encoded Path",
             "x-ves-example": "match \\\"/path/%20another%20path\\\" instead of default \\\"/path/ another path\\\""
           },
@@ -13180,7 +13410,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Path Matcher"
           },
           "prefix_values": {
@@ -13274,7 +13503,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Query Parameter Matcher"
           },
           "item": {
@@ -13455,7 +13683,7 @@
           },
           "arg_matchers": {
             "type": "array",
-            "description": " A list of predicates for all POST args that need to be matched. The criteria for matching each arg are described in individual instances\n of ArgMatcherType. The actual arg values are extracted from the request API as a list of strings for each arg selector name.\n Note that all specified arg matcher predicates must evaluate to true.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 16\n",
+            "description": " A list of predicates for all POST args that need to be matched. The criteria for matching each arg are described in individual instances\n of ArgMatcherType. The actual arg values are extracted from the request API as a list of strings for each arg selector name.\n Note that all specified arg matcher predicates must evaluate to true. A request body greater than 64KB will not be evaluated.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 16\n",
             "maxItems": 16,
             "items": {
               "$ref": "#/components/schemas/policyArgMatcherType"
@@ -13716,7 +13944,6 @@
             "type": "boolean",
             "description": " Client certificate is optional. If the client has provided a certificate,\n the load balancer will verify it. If certification verification fails,\n the connection will be terminated. If the client does not provide a certificate,\n the connection will be accepted.",
             "title": "client_certificate_optional",
-            "format": "boolean",
             "x-displayname": "Client Certificate Optional"
           },
           "crl": {
@@ -14106,11 +14333,17 @@
         "title": "WhereType",
         "x-displayname": "Select Where to Advertise",
         "x-ves-displayorder": "4,5",
-        "x-ves-oneof-field-choice": "[\"advertise_on_public\",\"cloud_edge_segment\",\"segment\",\"site\",\"site_segment\",\"virtual_network\",\"virtual_site\",\"virtual_site_segment\",\"virtual_site_with_vip\",\"vk8s_service\"]",
+        "x-ves-oneof-field-choice": "[\"advertise_dualstack_on_public\",\"advertise_on_public\",\"advertise_v6_on_public\",\"cloud_edge_segment\",\"segment\",\"site\",\"site_segment\",\"virtual_network\",\"virtual_site\",\"virtual_site_segment\",\"virtual_site_with_vip\",\"vk8s_service\"]",
         "x-ves-oneof-field-port_choice": "[\"port\",\"port_ranges\",\"use_default_port\"]",
         "x-ves-proto-message": "ves.io.schema.views.WhereType",
         "properties": {
+          "advertise_dualstack_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
           "advertise_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
+          "advertise_v6_on_public": {
             "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
           "port": {
@@ -14425,11 +14658,11 @@
         "description": "Shape of the HTTP load balancer specification",
         "title": "CreateSpecType",
         "x-displayname": "Create HTTP Load Balancer",
-        "x-ves-oneof-field-advertise_choice": "[\"advertise_custom\",\"advertise_on_public\",\"advertise_on_public_default_vip\",\"do_not_advertise\"]",
+        "x-ves-oneof-field-advertise_choice": "[\"advertise_custom\",\"advertise_dualstack_on_public\",\"advertise_on_public\",\"advertise_on_public_default_vip\",\"advertise_v6_on_public\",\"do_not_advertise\"]",
         "x-ves-oneof-field-api_definition_choice": "[\"api_specification\",\"disable_api_definition\"]",
         "x-ves-oneof-field-api_discovery_choice": "[\"disable_api_discovery\",\"enable_api_discovery\"]",
         "x-ves-oneof-field-api_testing_choice": "[\"api_testing\",\"disable_api_testing\"]",
-        "x-ves-oneof-field-bot_defense_choice": "[\"bot_defense\",\"bot_defense_advanced\",\"disable_bot_defense\"]",
+        "x-ves-oneof-field-bot_defense_choice": "[\"bot_defense\",\"bot_defense_advanced_protection\",\"disable_bot_defense\"]",
         "x-ves-oneof-field-cache_options": "[\"caching_policy\",\"disable_caching\"]",
         "x-ves-oneof-field-challenge_type": "[\"captcha_challenge\",\"enable_challenge\",\"js_challenge\",\"no_challenge\",\"policy_based_challenge\"]",
         "x-ves-oneof-field-client_side_defense_choice": "[\"client_side_defense\",\"disable_client_side_defense\"]",
@@ -14457,18 +14690,23 @@
           "add_location": {
             "type": "boolean",
             "description": " x-example: true\n Appends header x-volterra-location = <re-site-name> in responses. This configuration\n is ignored on CE sites.\n\nExample: ` \"true\"`",
-            "format": "boolean",
             "x-displayname": "Add Location",
             "x-ves-example": "true"
           },
           "advertise_custom": {
             "$ref": "#/components/schemas/viewsAdvertiseCustom"
           },
+          "advertise_dualstack_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
           "advertise_on_public": {
             "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
           "advertise_on_public_default_vip": {
             "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "advertise_v6_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
           "api_protection_rules": {
             "$ref": "#/components/schemas/common_wafAPIProtectionRules"
@@ -14501,8 +14739,8 @@
           "bot_defense": {
             "$ref": "#/components/schemas/common_securityShapeBotDefenseType"
           },
-          "bot_defense_advanced": {
-            "$ref": "#/components/schemas/common_securityBotDefenseAdvancedType"
+          "bot_defense_advanced_protection": {
+            "$ref": "#/components/schemas/common_securityBotDefenseAdvancedProtection"
           },
           "caching_policy": {
             "$ref": "#/components/schemas/http_loadbalancerCachingPolicy"
@@ -14811,7 +15049,6 @@
             "type": "boolean",
             "description": " Enable to allow API Testing to execute against destructive methods. Use with caution as these may modify or delete data",
             "title": "Destructive Methods",
-            "format": "boolean",
             "x-displayname": "Use Destructive Methods (e.g., DELETE, PUT)"
           },
           "credentials": {
@@ -14847,11 +15084,11 @@
         "description": "Shape of the HTTP load balancer specification",
         "title": "GetSpecType",
         "x-displayname": "Get HTTP Load Balancer",
-        "x-ves-oneof-field-advertise_choice": "[\"advertise_custom\",\"advertise_on_public\",\"advertise_on_public_default_vip\",\"do_not_advertise\"]",
+        "x-ves-oneof-field-advertise_choice": "[\"advertise_custom\",\"advertise_dualstack_on_public\",\"advertise_on_public\",\"advertise_on_public_default_vip\",\"advertise_v6_on_public\",\"do_not_advertise\"]",
         "x-ves-oneof-field-api_definition_choice": "[\"api_specification\",\"disable_api_definition\"]",
         "x-ves-oneof-field-api_discovery_choice": "[\"disable_api_discovery\",\"enable_api_discovery\"]",
         "x-ves-oneof-field-api_testing_choice": "[\"api_testing\",\"disable_api_testing\"]",
-        "x-ves-oneof-field-bot_defense_choice": "[\"bot_defense\",\"bot_defense_advanced\",\"disable_bot_defense\"]",
+        "x-ves-oneof-field-bot_defense_choice": "[\"bot_defense\",\"bot_defense_advanced_protection\",\"disable_bot_defense\"]",
         "x-ves-oneof-field-cache_options": "[\"caching_policy\",\"disable_caching\"]",
         "x-ves-oneof-field-challenge_type": "[\"captcha_challenge\",\"enable_challenge\",\"js_challenge\",\"no_challenge\",\"policy_based_challenge\"]",
         "x-ves-oneof-field-client_side_defense_choice": "[\"client_side_defense\",\"disable_client_side_defense\"]",
@@ -14879,18 +15116,23 @@
           "add_location": {
             "type": "boolean",
             "description": " x-example: true\n Appends header x-volterra-location = <re-site-name> in responses. This configuration\n is ignored on CE sites.\n\nExample: ` \"true\"`",
-            "format": "boolean",
             "x-displayname": "Add Location",
             "x-ves-example": "true"
           },
           "advertise_custom": {
             "$ref": "#/components/schemas/viewsAdvertiseCustom"
           },
+          "advertise_dualstack_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
           "advertise_on_public": {
             "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
           "advertise_on_public_default_vip": {
             "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "advertise_v6_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
           "api_protection_rules": {
             "$ref": "#/components/schemas/common_wafAPIProtectionRules"
@@ -14926,8 +15168,8 @@
           "bot_defense": {
             "$ref": "#/components/schemas/common_securityShapeBotDefenseType"
           },
-          "bot_defense_advanced": {
-            "$ref": "#/components/schemas/common_securityBotDefenseAdvancedType"
+          "bot_defense_advanced_protection": {
+            "$ref": "#/components/schemas/common_securityBotDefenseAdvancedProtection"
           },
           "caching_policy": {
             "$ref": "#/components/schemas/http_loadbalancerCachingPolicy"
@@ -15273,11 +15515,11 @@
         "description": "Shape of the HTTP load balancer specification",
         "title": "ReplaceSpecType",
         "x-displayname": "Replace HTTP Load Balancer",
-        "x-ves-oneof-field-advertise_choice": "[\"advertise_custom\",\"advertise_on_public\",\"advertise_on_public_default_vip\",\"do_not_advertise\"]",
+        "x-ves-oneof-field-advertise_choice": "[\"advertise_custom\",\"advertise_dualstack_on_public\",\"advertise_on_public\",\"advertise_on_public_default_vip\",\"advertise_v6_on_public\",\"do_not_advertise\"]",
         "x-ves-oneof-field-api_definition_choice": "[\"api_specification\",\"disable_api_definition\"]",
         "x-ves-oneof-field-api_discovery_choice": "[\"disable_api_discovery\",\"enable_api_discovery\"]",
         "x-ves-oneof-field-api_testing_choice": "[\"api_testing\",\"disable_api_testing\"]",
-        "x-ves-oneof-field-bot_defense_choice": "[\"bot_defense\",\"bot_defense_advanced\",\"disable_bot_defense\"]",
+        "x-ves-oneof-field-bot_defense_choice": "[\"bot_defense\",\"bot_defense_advanced_protection\",\"disable_bot_defense\"]",
         "x-ves-oneof-field-cache_options": "[\"caching_policy\",\"disable_caching\"]",
         "x-ves-oneof-field-challenge_type": "[\"captcha_challenge\",\"enable_challenge\",\"js_challenge\",\"no_challenge\",\"policy_based_challenge\"]",
         "x-ves-oneof-field-client_side_defense_choice": "[\"client_side_defense\",\"disable_client_side_defense\"]",
@@ -15305,18 +15547,23 @@
           "add_location": {
             "type": "boolean",
             "description": " x-example: true\n Appends header x-volterra-location = <re-site-name> in responses. This configuration\n is ignored on CE sites.\n\nExample: ` \"true\"`",
-            "format": "boolean",
             "x-displayname": "Add Location",
             "x-ves-example": "true"
           },
           "advertise_custom": {
             "$ref": "#/components/schemas/viewsAdvertiseCustom"
           },
+          "advertise_dualstack_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
           "advertise_on_public": {
             "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
           "advertise_on_public_default_vip": {
             "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "advertise_v6_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
           "api_protection_rules": {
             "$ref": "#/components/schemas/common_wafAPIProtectionRules"
@@ -15349,8 +15596,8 @@
           "bot_defense": {
             "$ref": "#/components/schemas/common_securityShapeBotDefenseType"
           },
-          "bot_defense_advanced": {
-            "$ref": "#/components/schemas/common_securityBotDefenseAdvancedType"
+          "bot_defense_advanced_protection": {
+            "$ref": "#/components/schemas/common_securityBotDefenseAdvancedProtection"
           },
           "caching_policy": {
             "$ref": "#/components/schemas/http_loadbalancerCachingPolicy"
@@ -15946,7 +16193,6 @@
             "type": "boolean",
             "description": " If true, disables compression when the response contains an etag header. When it is false,\n weak etags will be preserved and the ones that require strong validation will be removed.\n\nExample: ` \"true\"`",
             "title": "disable_on_etag_header",
-            "format": "boolean",
             "x-displayname": "Disable On Etag Header",
             "x-ves-example": "true"
           },
@@ -15954,7 +16200,6 @@
             "type": "boolean",
             "description": " If true, removes accept-encoding from the request headers before dispatching it to the upstream\n so that responses do not get compressed before reaching the filter.\n\nExample: ` \"true\"`",
             "title": "remove_accept_encoding_header",
-            "format": "boolean",
             "x-displayname": "Remove Accept-Encoding Header",
             "x-ves-example": "true"
           }
@@ -16149,7 +16394,7 @@
       },
       "virtual_hostVirtualHostState": {
         "type": "string",
-        "description": "State of the virtual host\n\n - VIRTUAL_HOST_READY: VIRTUAL_HOST_READY\n\nVirtual host is ready to install\n - VIRTUAL_HOST_PENDING_VERIFICATION: VIRTUAL_HOST_PENDING_VERIFICATION\n\nVirtual host is verification pending for some or all of its domains\n - VIRTUAL_HOST_VERIFICATION_FAILED: VIRTUAL_HOST_VERIFICATION_FAILED\n\nVirtual host has one or more domains for which verification failed\n - VIRTUAL_HOST_PENDING_DNS_DELEGATION: VIRTUAL_HOST_PENDING_DNS_DELEGATION\n\nVirtual host is pending DNS delegation\n - VIRTUAL_HOST_PENDING_A_RECORD: VIRTUAL_HOST_PENDING_A_RECORD\n\nVirtual host is waiting for one or more A records to be created\n - VIRTUAL_HOST_DNS_A_RECORD_ADDED: VIRTUAL_HOST_DNS_A_RECORD_ADDED\n\nDNS A record has been added for this Virtual host\n - VIRTUAL_HOST_INTERNET_NLB_PENDING_CREATION: VIRTUAL_HOST_INTERNET_NLB_PENDING_CREATION\n\nInternet facing NLB, is being created on the site/sites belonging to the virtual site\n - VIRTUAL_HOST_INTERNET_NLB_CREATION_FAILED: VIRTUAL_HOST_INTERNET_NLB_CREATION_FAILED\n\nInternet NLB creation failed on the site/sites. InternetNLBVIPStatus will have more information.",
+        "description": "State of the virtual host\n\n - VIRTUAL_HOST_READY: VIRTUAL_HOST_READY\n\nVirtual host is ready to install\n - VIRTUAL_HOST_PENDING_VERIFICATION: VIRTUAL_HOST_PENDING_VERIFICATION\n\nVirtual host is verification pending for some or all of its domains\n - VIRTUAL_HOST_VERIFICATION_FAILED: VIRTUAL_HOST_VERIFICATION_FAILED\n\nVirtual host has one or more domains for which verification failed\n - VIRTUAL_HOST_PENDING_DNS_DELEGATION: VIRTUAL_HOST_PENDING_DNS_DELEGATION\n\nVirtual host is pending DNS delegation\n - VIRTUAL_HOST_PENDING_A_RECORD: VIRTUAL_HOST_PENDING_A_RECORD\n\nVirtual host is waiting for one or more A records to be created\n - VIRTUAL_HOST_DNS_A_RECORD_ADDED: VIRTUAL_HOST_DNS_A_RECORD_ADDED\n\nDNS A record has been added for this Virtual host\n - VIRTUAL_HOST_INTERNET_NLB_PENDING_CREATION: VIRTUAL_HOST_INTERNET_NLB_PENDING_CREATION\n\nInternet facing NLB, is being created on the site/sites belonging to the virtual site\n - VIRTUAL_HOST_INTERNET_NLB_CREATION_FAILED: VIRTUAL_HOST_INTERNET_NLB_CREATION_FAILED\n\nInternet NLB creation failed on the site/sites. InternetNLBVIPStatus will have more information.\n - VIRTUAL_HOST_PENDING_AAAA_RECORD: VIRTUAL_HOST_PENDING_AAAA_RECORD\n\nVirtual host is waiting for one or more AAAA records to be created\n - VIRTUAL_HOST_DNS_AAAA_RECORD_ADDED: VIRTUAL_HOST_DNS_AAAA_RECORD_ADDED\n\nDNS AAAA record has been added for this Virtual host\n - VIRTUAL_HOST_PENDING_DUALSTACK_RECORDS: VIRTUAL_HOST_PENDING_DUALSTACK_RECORDS\n\nVirtual host is waiting for one or more Dualstack records to be created\n - VIRTUAL_HOST_DNS_DUALSTACK_RECORDS_ADDED: VIRTUAL_HOST_DNS_DUALSTACK_RECORDS_ADDED\n\nDNS Dualstack records has been added for this Virtual host",
         "title": "VirtualHostState",
         "enum": [
           "VIRTUAL_HOST_READY",
@@ -16159,7 +16404,11 @@
           "VIRTUAL_HOST_PENDING_A_RECORD",
           "VIRTUAL_HOST_DNS_A_RECORD_ADDED",
           "VIRTUAL_HOST_INTERNET_NLB_PENDING_CREATION",
-          "VIRTUAL_HOST_INTERNET_NLB_CREATION_FAILED"
+          "VIRTUAL_HOST_INTERNET_NLB_CREATION_FAILED",
+          "VIRTUAL_HOST_PENDING_AAAA_RECORD",
+          "VIRTUAL_HOST_DNS_AAAA_RECORD_ADDED",
+          "VIRTUAL_HOST_PENDING_DUALSTACK_RECORDS",
+          "VIRTUAL_HOST_DNS_DUALSTACK_RECORDS_ADDED"
         ],
         "default": "VIRTUAL_HOST_READY",
         "x-displayname": "Virtual Host State",
@@ -16179,6 +16428,15 @@
             "x-displayname": "IP Address",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.ip": "true"
+            }
+          },
+          "ipv6_address": {
+            "type": "string",
+            "description": " IPv6 address associated with virtual host\n\nValidation Rules:\n  ves.io.schema.rules.string.ipv6: true\n",
+            "title": "IPv6 address",
+            "x-displayname": "IPv6 Address",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.ipv6": "true"
             }
           }
         }

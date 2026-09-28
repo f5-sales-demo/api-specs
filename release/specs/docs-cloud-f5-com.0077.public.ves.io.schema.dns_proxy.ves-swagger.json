@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_proxy",
     "description": "DNS Proxy view defines the required parameters that can be used in CRUD, to create and manage DNS Proxy.\nIt can be used to create DNS Proxy.\n\nView will create the following child objects.\n\n* Virtual-host\n* default route\n* clusters\n* endpoints\n* advertise policy",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -233,6 +243,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -373,6 +393,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -534,6 +564,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -677,6 +717,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -794,7 +844,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -1037,7 +1086,6 @@
             "type": "boolean",
             "description": " A value of true indicates dns_proxy is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -1132,17 +1180,29 @@
         "description": "Proxy Advertisement Type",
         "title": "Proxy Advertisement Type",
         "x-displayname": "Proxy Advertisement Type",
-        "x-ves-oneof-field-advertise_choice": "[\"advertise_custom\",\"advertise_on_public\",\"advertise_on_public_default_vip\",\"do_not_advertise\"]",
+        "x-ves-oneof-field-advertise_choice": "[\"advertise_custom\",\"advertise_dualstack_on_public\",\"advertise_on_public\",\"advertise_on_public_default_dualstack_vip\",\"advertise_on_public_default_ipv6_vip\",\"advertise_on_public_default_vip\",\"advertise_v6_on_public\",\"do_not_advertise\"]",
         "x-ves-proto-message": "ves.io.schema.dns_proxy.ProxyAdvertisementType",
         "properties": {
           "advertise_custom": {
             "$ref": "#/components/schemas/viewsAdvertiseCustom"
           },
+          "advertise_dualstack_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
           "advertise_on_public": {
             "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
+          "advertise_on_public_default_dualstack_vip": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "advertise_on_public_default_ipv6_vip": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
           "advertise_on_public_default_vip": {
             "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "advertise_v6_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
           "do_not_advertise": {
             "$ref": "#/components/schemas/ioschemaEmpty"
@@ -1286,7 +1346,6 @@
             "type": "boolean",
             "description": " Enable the monitor operation in reverse mode.\n When the monitor is in reverse mode, a successful receive\n string match marks the monitored object down instead of up.\n\nExample: ` false`",
             "title": "Use Reverse mode",
-            "format": "boolean",
             "x-displayname": "Use Reverse mode"
           }
         }
@@ -1498,6 +1557,27 @@
           }
         }
       },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "schemaConditionType": {
         "type": "object",
         "description": "Conditions are used in the object status to describe the current state of the\nobject, e.g. Ready, Succeeded, etc.",
@@ -1664,7 +1744,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -1728,7 +1807,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -1794,7 +1872,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -1877,7 +1954,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }
@@ -2425,11 +2501,17 @@
         "title": "WhereType",
         "x-displayname": "Select Where to Advertise",
         "x-ves-displayorder": "4,5",
-        "x-ves-oneof-field-choice": "[\"advertise_on_public\",\"cloud_edge_segment\",\"segment\",\"site\",\"site_segment\",\"virtual_network\",\"virtual_site\",\"virtual_site_segment\",\"virtual_site_with_vip\",\"vk8s_service\"]",
+        "x-ves-oneof-field-choice": "[\"advertise_dualstack_on_public\",\"advertise_on_public\",\"advertise_v6_on_public\",\"cloud_edge_segment\",\"segment\",\"site\",\"site_segment\",\"virtual_network\",\"virtual_site\",\"virtual_site_segment\",\"virtual_site_with_vip\",\"vk8s_service\"]",
         "x-ves-oneof-field-port_choice": "[\"port\",\"port_ranges\",\"use_default_port\"]",
         "x-ves-proto-message": "ves.io.schema.views.WhereType",
         "properties": {
+          "advertise_dualstack_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
           "advertise_on_public": {
+            "$ref": "#/components/schemas/viewsAdvertisePublic"
+          },
+          "advertise_v6_on_public": {
             "$ref": "#/components/schemas/viewsAdvertisePublic"
           },
           "port": {

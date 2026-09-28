@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.tenant_management.allowed_tenant",
     "description": "\nAllowed tenant object will allow tenant in the name field to manage tenant in which its created.\nAdmin can create allowed_tenant configuration if the tenant needs to be managed by tenant in allowed_tenant\nconfiguration - by \"allow\"ing access to manage.\nAdmin can precisely limit access of allowed tenant via selecting required groups (`user_groups`) which underlying\nhas the namespace and roles configured.\n\nTenant which is creating allowed_tenant configuration is called `Managed Tenant` or `MT` and tenant ID specified\nin the spec configuration is called as `Original Tenant` or `OT`.\n\nAdmin of OT can create a corresponding managed_tenant configuration in their tenant which can be treated as an\nintent to manage and creation of this allowed_tenant configuration in MT grants access for OT into MT.\nBoth configuration - allowed_tenant in MT and managed_tenant in OT, need to exist for managed tenant access to work.\n\nDepending on a tenant's current plan, certain tenant may already have default allowed tenant configurations to provide\naccess for Support Team which can be precisely managed via additional APIs.",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -206,6 +216,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -324,6 +344,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -454,6 +484,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -594,6 +634,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -755,6 +805,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -898,6 +958,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -961,7 +1031,6 @@
             "type": "boolean",
             "description": " Temporarily revoke access to this tenant.",
             "title": "Disable",
-            "format": "boolean",
             "x-displayname": "Pause Access"
           },
           "read_only": {
@@ -986,7 +1055,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -1191,6 +1259,27 @@
           }
         }
       },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "schemaConditionType": {
         "type": "object",
         "description": "Conditions are used in the object status to describe the current state of the\nobject, e.g. Ready, Succeeded, etc.",
@@ -1357,7 +1446,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -1421,7 +1509,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -1487,7 +1574,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -1570,7 +1656,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }
@@ -2015,7 +2100,6 @@
             "type": "boolean",
             "description": " A value of true indicates allowed_tenant is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {

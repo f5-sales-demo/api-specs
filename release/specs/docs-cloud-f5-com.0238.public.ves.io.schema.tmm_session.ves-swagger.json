@@ -1,0 +1,565 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.tmm_session",
+    "description": "TMM Sesssions APIs are used to get metrics related to tmm session",
+    "version": "2026.09.28",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@example.com"
+    }
+  },
+  "paths": {
+    "/api/data/namespaces/{namespace}/tmm_session/metrics": {
+      "post": {
+        "summary": "TMM Session Metrics",
+        "description": "Request to get monitoring data for tmm session.",
+        "operationId": "ves.io.schema.tmm_session.CustomAPI.TMMSessionMetrics",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tmm_sessionTMMSessionMetricsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"value\"\nnamespace is used to scope session metrics. Only virtual server in given namespace will be considered.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/tmm_sessionTMMSessionMetricsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tmm_session-customapi-tmmsessionmetrics"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.tmm_session.CustomAPI.TMMSessionMetrics",
+        "tags": ["data"]
+      },
+      "x-displayname": "TMM Session",
+      "x-ves-proto-service": "ves.io.schema.tmm_session.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "TMM Session",
+  "x-ves-proto-package": "ves.io.schema.tmm_session",
+  "components": {
+    "schemas": {
+      "protobufAny": {
+        "type": "object",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
+        "properties": {
+          "type_url": {
+            "type": "string",
+            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          },
+          "value": {
+            "type": "string",
+            "description": "Must be a valid serialized protocol buffer of the above specified type.",
+            "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "schemaMetricLabelOp": {
+        "type": "string",
+        "description": "The operator to use when filtering metrics based on label values.\n",
+        "title": "Metric Label Operator",
+        "enum": ["EQ", "NEQ"],
+        "default": "EQ",
+        "x-displayname": "Metric Label Operator",
+        "x-ves-proto-enum": "ves.io.schema.MetricLabelOp"
+      },
+      "schemaMetricValue": {
+        "type": "object",
+        "description": "Metric data contains timestamp and the value.",
+        "title": "Metric Value",
+        "x-displayname": "Metric Value",
+        "x-ves-proto-message": "ves.io.schema.MetricValue",
+        "properties": {
+          "timestamp": {
+            "type": "number",
+            "description": " timestamp\n\nExample: ` \"1570007981\"`",
+            "title": "Timestamp",
+            "format": "double",
+            "x-displayname": "Timestamp",
+            "x-ves-example": "1570007981"
+          },
+          "trend_value": {
+            "$ref": "#/components/schemas/schemaTrendValue"
+          },
+          "value": {
+            "type": "string",
+            "description": "\n\nExample: ` \"15\"`",
+            "title": "Value",
+            "x-displayname": "Value",
+            "x-ves-example": "15"
+          }
+        }
+      },
+      "schemaTrendSentiment": {
+        "type": "string",
+        "description": "trend sentiment\n\nIndicates trend sentiment is positive\nIndicates trend sentiment is negative.",
+        "title": "Trend Sentiment",
+        "enum": ["TREND_SENTIMENT_NONE", "TREND_SENTIMENT_POSITIVE", "TREND_SENTIMENT_NEGATIVE"],
+        "default": "TREND_SENTIMENT_NONE",
+        "x-displayname": "Trend Sentiment",
+        "x-ves-proto-enum": "ves.io.schema.TrendSentiment"
+      },
+      "schemaTrendValue": {
+        "type": "object",
+        "description": "Trend value contains trend value, trend sentiment and trend calculation description and window size.",
+        "title": "Trend Value",
+        "x-displayname": "Trend Value",
+        "x-ves-proto-message": "ves.io.schema.TrendValue",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": " description of the method used to calculate trend.\n\nExample: ` \"Trend was calculated by comparing the avg of window size intervals of end-start Time and last window time interval\"`",
+            "title": "Description",
+            "x-displayname": "Description",
+            "x-ves-example": "Trend was calculated by comparing the avg of window size intervals of end-start Time and last window time interval"
+          },
+          "previous_value": {
+            "type": "string",
+            "description": "\n\nExample: ` \"200.00\"`",
+            "title": "Previous Value",
+            "x-displayname": "Previous Value",
+            "x-ves-example": "200.00"
+          },
+          "sentiment": {
+            "$ref": "#/components/schemas/schemaTrendSentiment"
+          },
+          "value": {
+            "type": "string",
+            "description": "\n\nExample: ` \"-15\"`",
+            "title": "Value",
+            "x-displayname": "Value",
+            "x-ves-example": "-15"
+          }
+        }
+      },
+      "schemaUnitType": {
+        "type": "string",
+        "description": "UnitType is enumeration of units for scalar fields",
+        "title": "UnitType",
+        "enum": [
+          "UNIT_MILLISECONDS",
+          "UNIT_SECONDS",
+          "UNIT_MINUTES",
+          "UNIT_HOURS",
+          "UNIT_DAYS",
+          "UNIT_BYTES",
+          "UNIT_KBYTES",
+          "UNIT_MBYTES",
+          "UNIT_GBYTES",
+          "UNIT_TBYTES",
+          "UNIT_KIBIBYTES",
+          "UNIT_MIBIBYTES",
+          "UNIT_GIBIBYTES",
+          "UNIT_TEBIBYTES",
+          "UNIT_BITS_PER_SECOND",
+          "UNIT_BYTES_PER_SECOND",
+          "UNIT_KBITS_PER_SECOND",
+          "UNIT_KBYTES_PER_SECOND",
+          "UNIT_MBITS_PER_SECOND",
+          "UNIT_MBYTES_PER_SECOND",
+          "UNIT_CONNECTIONS_PER_SECOND",
+          "UNIT_ERRORS_PER_SECOND",
+          "UNIT_PACKETS_PER_SECOND",
+          "UNIT_REQUESTS_PER_SECOND",
+          "UNIT_PACKETS",
+          "UNIT_PERCENTAGE",
+          "UNIT_COUNT"
+        ],
+        "default": "UNIT_MILLISECONDS",
+        "x-displayname": "Unit",
+        "x-ves-proto-enum": "ves.io.schema.UnitType"
+      },
+      "schematmm_sessionMetricType": {
+        "type": "string",
+        "description": "x-displayName: TMM Session Metric Type\"\nFieldSelector specifies the metrics that can be queried for virtual servers.\n\nIndicates field not being set\nx-unit: \"count\"\nTotal number of active sessions\nx-unit: \"count\"\nTotal number of allowed sessions\nx-unit: \"count\"\nTotal number of denied Session\nx-unit: \"count\"\nTotal Number of Session\nx-unit: \"count\"\nTotal Number of Session Logout\nx-unit: \"count\"\nTotal Number of Established Timed Out Session\nx-unit: \"count\"\nTotal Number of Evaluation Timed Out Session\nx-unit: \"count\"\nTotal Number of Admin Terminated Session",
+        "title": "TMM Session Metric Type",
+        "enum": [
+          "METRIC_TYPE_NONE",
+          "METRIC_TYPE_ACTIVE",
+          "METRIC_TYPE_ALLOWED",
+          "METRIC_TYPE_DENIED",
+          "METRIC_TYPE_TOTAL",
+          "METRIC_TYPE_LOGOUT",
+          "METRIC_TYPE_ESTABLISHED_TIMEOUT",
+          "METRIC_TYPE_EVALUATION_TIMEOUT",
+          "METRIC_TYPE_ADMIN_TERMINATED"
+        ],
+        "default": "METRIC_TYPE_NONE",
+        "x-displayname": "",
+        "x-ves-proto-enum": "ves.io.schema.tmm_session.MetricType"
+      },
+      "schematmm_sessionMetricTypeData": {
+        "type": "object",
+        "description": "Metric Type Data contains key/value pair that uniquely identifies the group_by labels specified in the request.",
+        "title": "Metric Type Data",
+        "x-displayname": "Metric Type Data",
+        "x-ves-proto-message": "ves.io.schema.tmm_session.MetricTypeData",
+        "properties": {
+          "key": {
+            "type": "object",
+            "description": " Key contains the name/value pair.\n \"name\" is the label name defined in \"MetricLabel\"",
+            "title": "Key",
+            "x-displayname": "Key"
+          },
+          "value": {
+            "type": "array",
+            "description": " List of metric values.",
+            "title": "Value",
+            "items": {
+              "$ref": "#/components/schemas/schemaMetricValue"
+            },
+            "x-displayname": "Value"
+          }
+        }
+      },
+      "tmm_sessionLabelFilter": {
+        "type": "object",
+        "description": "Metrics used to render the session metrics that are tagged with labels listed in the enum Label.\nLabel Filter is used to filter the timeseries that match the specified label key/value\nand the operator.",
+        "title": "Label Filter",
+        "x-displayname": "Label Filter",
+        "x-ves-proto-message": "ves.io.schema.tmm_session.LabelFilter",
+        "properties": {
+          "label": {
+            "$ref": "#/components/schemas/tmm_sessionMetricLabel"
+          },
+          "op": {
+            "$ref": "#/components/schemas/schemaMetricLabelOp"
+          },
+          "value": {
+            "type": "string",
+            "description": " Value of the label\n\nExample: ` \"virtual-server-1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 256\n",
+            "title": "Value",
+            "maxLength": 256,
+            "x-displayname": "Value",
+            "x-ves-example": "virtual-server-1",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "256"
+            }
+          }
+        }
+      },
+      "tmm_sessionMetricLabel": {
+        "type": "string",
+        "description": "Metrics used to construct the session metrics are tagged with these labels and therefore\nthe metrics can be sliced and diced based on one or more of these labels.\n\nIndicates the field not being set\nIdentifies the workspace where the service is deployed\nIdentifies the virtual server",
+        "title": "Label",
+        "enum": ["METRIC_LABEL_NONE", "METRIC_LABEL_NAMESPACE", "METRIC_LABEL_VIRTUAL_SERVER"],
+        "default": "METRIC_LABEL_NONE",
+        "x-displayname": "Label",
+        "x-ves-proto-enum": "ves.io.schema.tmm_session.MetricLabel"
+      },
+      "tmm_sessionTMMSessionData": {
+        "type": "object",
+        "description": "TMM Session data contains the metric type and the corresponding metric value",
+        "title": "TMM Session Data",
+        "x-displayname": "TMM Session Data",
+        "x-ves-proto-message": "ves.io.schema.tmm_session.TMMSessionData",
+        "properties": {
+          "metric": {
+            "type": "array",
+            "description": " List of metrics",
+            "title": "Metrics",
+            "items": {
+              "$ref": "#/components/schemas/schematmm_sessionMetricTypeData"
+            },
+            "x-displayname": "Metric"
+          },
+          "type": {
+            "$ref": "#/components/schemas/schematmm_sessionMetricType"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/schemaUnitType"
+          }
+        }
+      },
+      "tmm_sessionTMMSessionMetricsRequest": {
+        "type": "object",
+        "description": "TMM session API is used to get session metrics.",
+        "title": "TMM Session Request",
+        "x-displayname": "TMM Session Request",
+        "x-ves-proto-message": "ves.io.schema.tmm_session.TMMSessionMetricsRequest",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " end time of metric collection from which data will be considered to build dashboard.\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570197600\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "x-displayname": "End Time",
+            "x-ves-example": "1570197600",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "field_selector": {
+            "type": "array",
+            "description": " Select fields to be returned in the response.\n field_selector is used to specify the fields to be returned in the response, thereby limiting the\n amount of data returned in the response.\n\n Note: Selecting many/all fields may impact the query latency.\n\n Optional: If not specified, only the following fields are returned in the response.\n           ALLOWED, DENIED, EVALUATION_TIMEOUT.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.enum.defined_only: true\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "Field Selector",
+            "items": {
+              "$ref": "#/components/schemas/schematmm_sessionMetricType"
+            },
+            "x-displayname": "Field Selector",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.items.enum.defined_only": "true",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          },
+          "group_by": {
+            "type": "array",
+            "description": " Aggregate data by any or all of namespace, site and virtual_server.\n\n Optional: If not specified, then the data is aggregated/grouped by namespace and service.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 16\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "Group by",
+            "maxItems": 16,
+            "items": {
+              "$ref": "#/components/schemas/tmm_sessionMetricLabel"
+            },
+            "x-displayname": "Group By",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "16",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          },
+          "is_trend_request": {
+            "type": "boolean",
+            "description": " Trend value computation requested by the user\n Optional: default is false\n\nExample: ` \"true\"`",
+            "x-displayname": "Trend calculation requested by the user",
+            "x-ves-example": "true"
+          },
+          "label_filter": {
+            "type": "array",
+            "description": " List of label filter expressions of the form \"label key\" QueryOp \"value\".\n Response will only contain data that matches all the conditions specified in the label_filter.\n\n\nValidation Rules:\n  ves.io.schema.rules.repeated.max_items: 64\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "Label Filter",
+            "maxItems": 64,
+            "items": {
+              "$ref": "#/components/schemas/tmm_sessionLabelFilter"
+            },
+            "x-displayname": "Label Filter",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.max_items": "64",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " namespace is used to scope session metrics. Only virtual server in given namespace will be considered.\n\nExample: ` \"value\"`",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "value"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " start time of metric collection from which data will be considered to build metrics dashboard.\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"1570194000\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "1570194000",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "step": {
+            "type": "string",
+            "description": " step is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\n The timestamps in the response will be t1=start_time, t2=t1+step, ... tn=tn-1+step, where tn <= end_time.\n Format: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\n Optional: If not specified, then step size is evaluated to <end_time - start_time>\n\nExample: ` \"5m\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_step: true\n",
+            "title": "Step",
+            "x-displayname": "Step",
+            "x-ves-example": "5m",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_step": "true"
+            }
+          }
+        }
+      },
+      "tmm_sessionTMMSessionMetricsResponse": {
+        "type": "object",
+        "description": "Response for tmm_session response metrics and their correspond values.\nIf the group_by field in the Request it will return the response at corresponding field level.",
+        "title": "TMM Session Response",
+        "x-displayname": "TMM Session Response",
+        "x-ves-proto-message": "ves.io.schema.tmm_session.TMMSessionMetricsResponse",
+        "properties": {
+          "data": {
+            "type": "array",
+            "description": " Data contains time-series TMM Session data",
+            "title": "Data",
+            "items": {
+              "$ref": "#/components/schemas/tmm_sessionTMMSessionData"
+            },
+            "x-displayname": "Data"
+          },
+          "step": {
+            "type": "string",
+            "description": " Actual step size used in the response. It could be higher than the requested step due to metric rollups and the query duration.\n Format: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\nExample: ` \"30m\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.time_interval: true\n",
+            "title": "step",
+            "x-displayname": "Step",
+            "x-ves-example": "30m",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.time_interval": "true"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    }
+  ]
+}

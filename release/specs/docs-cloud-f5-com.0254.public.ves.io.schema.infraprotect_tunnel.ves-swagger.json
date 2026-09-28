@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.infraprotect_tunnel",
     "description": "DDoS transit tunnel information",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -233,6 +243,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -373,6 +393,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -534,6 +564,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -664,6 +704,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -791,6 +841,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -934,6 +994,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1117,7 +1187,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -1511,7 +1580,6 @@
             "type": "boolean",
             "description": " A value of true indicates infraprotect_tunnel is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -1678,7 +1746,7 @@
       },
       "infraprotect_tunnelTunnelStatus": {
         "type": "string",
-        "description": "Current status of the tunnel.\n\nInactive config status\nDown config status\nActive config status\nActivation Pending config status\nActivation Error - Needs Attention\nActivation Initializing",
+        "description": "Current status of the tunnel.\n\nInactive config status\nDown config status\nActive config status\nActivation Pending config status\nActivation Error - Needs Attention\nActivation Initializing\nUpdate Initializing\nUpdate Pending\nUpdate Error",
         "title": "DDoS transit config status",
         "enum": [
           "TUNNEL_STATUS_INACTIVE",
@@ -1686,7 +1754,10 @@
           "TUNNEL_STATUS_ACTIVE",
           "TUNNEL_STATUS_ACTIVATION_PENDING",
           "TUNNEL_STATUS_ACTIVATION_ERROR",
-          "TUNNEL_STATUS_ACTIVATION_INITIALIZING"
+          "TUNNEL_STATUS_ACTIVATION_INITIALIZING",
+          "TUNNEL_STATUS_UPDATE_INITIALIZING",
+          "TUNNEL_STATUS_UPDATE_PENDING",
+          "TUNNEL_STATUS_UPDATE_ERROR"
         ],
         "default": "TUNNEL_STATUS_INACTIVE",
         "x-displayname": "Config Status",
@@ -1841,6 +1912,27 @@
             "type": "string",
             "description": "Must be a valid serialized protocol buffer of the above specified type.",
             "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -2077,7 +2169,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -2141,7 +2232,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -2207,7 +2297,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -2306,7 +2395,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }

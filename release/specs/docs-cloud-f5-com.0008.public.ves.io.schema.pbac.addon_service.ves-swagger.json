@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.pbac.addon_service",
     "description": "Basic unit of logical representation of a F5XC service.\nAn addon service can be self serviced, partially managed or fully managed depending upon the activation requirement.\nA configuration object belong to exactly one addon service and every addon service will be linked to one or more navigation tile.\nBy default, API Groups consisting of APIs for read, write, admin read/write and subscription management capabality will be auto created.",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -226,6 +236,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -346,6 +366,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -463,6 +493,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -621,6 +661,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -910,7 +960,6 @@
             "type": "boolean",
             "description": " A value of true indicates addon_service is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -1065,15 +1114,13 @@
       },
       "customer_supportSupportService": {
         "type": "string",
-        "description": "Indicates the list of support service\n\nUnknown Support Service\nAccount Protection Support Service\nAdministration Support Service\nApplication Traffic Insight Support Service\nAudit Logs & Alerts Support Service\nAuthentication Intelligence Support Service\nBilling Support Service\nClient Side Defense Support Service\nCloud & Edge Sites Support Service\ndeprecated: use SS_MULTI_CLOUD_NETWORK_CONNECT instead\nDDOS & Transit Support Service\nDeprecated: use SS_ROUTED_DDOS instead\nDistributed Apps Support Service\nDNS Management Support Service\nLoadBalancers Support Service\ndeprecated: use SS_MULTI_CLOUD_APP_CONNECT instead\nShared Configuration Support Service\nWeb App & API Protection Support Service\nOther Support Service\nBot Defense Support Service\nContent delivery network Support Service\nObservability Support Service\nDelegated Access Support Service\nNetworking & security across clouds, edge and on-premises\nConnect apps across clouds, edge and on-premises using Load Balancers\nData Intelligence Support Service\nNGINX One Support Service\nWeb App Scanning Support Service\nRouted DDoS Support Service\nMobile App Shield protects mobile apps from reverse engineering, tampering and malware\nDefault for deprecated services\nAutomation Support Service for Terraform Provider",
+        "description": "Indicates the list of support service\n\nUnknown Support Service\nAccount Protection Support Service\nAdministration Support Service\nApplication Traffic Insight Support Service\nAudit Logs & Alerts Support Service\nAuthentication Intelligence Support Service\nBilling Support Service\nClient Side Defense Support Service\nCloud & Edge Sites Support Service\ndeprecated: use SS_MULTI_CLOUD_NETWORK_CONNECT instead\nDDOS & Transit Support Service\nDeprecated: use SS_ROUTED_DDOS instead\nDistributed Apps Support Service\nDNS Management Support Service\nLoadBalancers Support Service\ndeprecated: use SS_MULTI_CLOUD_APP_CONNECT instead\nShared Configuration Support Service\nWeb App & API Protection Support Service\nOther Support Service\nBot Defense Support Service\nContent delivery network Support Service\nObservability Support Service\nDelegated Access Support Service\nNetworking & security across clouds, edge and on-premises\nConnect apps across clouds, edge and on-premises using Load Balancers\nData Intelligence Support Service\nNGINX One Support Service\nWeb App Scanning Support Service\nRouted DDoS Support Service\nMobile App Shield protects mobile apps from reverse engineering, tampering and malware\nDevice Intelligence Support Service\nDefault for deprecated services\nAutomation Support Service for Terraform Provider",
         "title": "SupportService",
         "enum": [
           "SS_UNKNOWN",
-          "SS_ACCOUNT_PROTECTION",
           "SS_ADMINISTRATION",
           "SS_APPLICATION_TRAFFIC_INSIGHT",
           "SS_AUDIT_LOGS_AND_ALERTS",
-          "SS_AUTHENTICATION_INTELLIGENCE",
           "SS_BILLING",
           "SS_CLIENT_SIDE_DEFENSE",
           "SS_CLOUD_AND_EDGE_SITES",
@@ -1095,6 +1142,7 @@
           "SS_WEB_APP_SCANNING",
           "SS_ROUTED_DDOS",
           "SS_MOBILE_APP_SHIELD",
+          "SS_DEVICE_INTELLIGENCE",
           "SS_DEPRECATED",
           "SS_AUTOMATION"
         ],
@@ -1237,6 +1285,27 @@
           }
         }
       },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "schemaAddonServiceState": {
         "type": "string",
         "description": "State of a service\n\ndefault state\ninitiated subscription request and is pending to activate (requested).\nsuccessfully subscribed\nservice subscription request ended up in error state.",
@@ -1353,9 +1422,9 @@
       },
       "schemaFeatureTag": {
         "type": "string",
-        "description": "FeatureTag is for identifying the tag of feature of an offering (new, preview)\n\nUnknown (undefined) feature tag\nNew feature tag\nPreview feature tag\nPrivate preview feature tag",
+        "description": "FeatureTag is for identifying the tag of feature of an offering (new, preview)\n\nUnknown (undefined) feature tag\nNew feature tag\nPreview feature tag\nPrivate preview feature tag\nUnavailable feature tag",
         "title": "FeatureTag",
-        "enum": ["NONE", "NEW", "PREVIEW", "PRIVATE_PREVIEW"],
+        "enum": ["NONE", "NEW", "PREVIEW", "PRIVATE_PREVIEW", "UNAVAILABLE"],
         "default": "NONE",
         "x-displayname": "Feature Tag",
         "x-ves-proto-enum": "ves.io.schema.FeatureTag"
@@ -1431,7 +1500,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -1560,7 +1628,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }

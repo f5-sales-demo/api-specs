@@ -1,0 +1,1575 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.waf_signatures_changelog",
+    "description": "WAF Signatures Changelog custom APIs",
+    "version": "2026.09.28",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@example.com"
+    }
+  },
+  "paths": {
+    "/api/waf/attack-signatures": {
+      "get": {
+        "summary": "list Attack Signatures",
+        "description": "List all attack signatures",
+        "operationId": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI.ListAttackSignatures",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/waf_signatures_changelogListAttackSignaturesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "known_version",
+            "description": "Version of the attack signatures list that the client currently has, can be used for caching",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Known Version",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturesapi-listattacksignatures"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI.ListAttackSignatures",
+        "tags": ["waf"]
+      },
+      "x-displayname": "WAF Signatures Changelog",
+      "x-ves-proto-service": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/waf/bot-signatures": {
+      "get": {
+        "summary": "list Bot Signatures",
+        "description": "List all bot signatures",
+        "operationId": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI.ListBotSignatures",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/waf_signatures_changelogListBotSignaturesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "known_version",
+            "description": "Version of the bot signatures list that the client currently has, can be used for caching",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Known Version",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturesapi-listbotsignatures"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI.ListBotSignatures",
+        "tags": ["waf"]
+      },
+      "x-displayname": "WAF Signatures Changelog",
+      "x-ves-proto-service": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/waf/latest-signatures-version": {
+      "get": {
+        "summary": "Get Latest Version",
+        "description": "Get the latest version of the WAF signatures",
+        "operationId": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI.GetLatestVersion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/waf_signatures_changelogGetLatestVersionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturesapi-getlatestversion"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI.GetLatestVersion",
+        "tags": ["waf"]
+      },
+      "x-displayname": "WAF Signatures Changelog",
+      "x-ves-proto-service": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/config/namespaces/{namespace}/virtual_hosts/{vh_name}/active_staged_signatures": {
+      "get": {
+        "summary": "Active Staged Signatures",
+        "description": "API to get active Staged Signatures\nDEPRECATED.",
+        "operationId": "ves.io.schema.waf_signatures_changelog.WafSignatureChangelogCustomApi.GetActiveStagedSignatures",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/waf_signatures_changelogReleasedSignaturesRsp"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"shared\"\nFetch waf signatures changelog for the given namespace",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vh_name",
+            "description": "vh_name\n\nx-example: \"blogging-app\"\nVirtual Host for current request",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Virtual Host Name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturechangelogcustomapi-getactivestagedsignatures"
+        },
+        "x-ves-deprecated": "This API is no longer supported",
+        "x-ves-proto-rpc": "ves.io.schema.waf_signatures_changelog.WafSignatureChangelogCustomApi.GetActiveStagedSignatures",
+        "tags": ["config"],
+        "deprecated": true
+      },
+      "x-displayname": "WAF Signatures Changelog",
+      "x-ves-proto-service": "ves.io.schema.waf_signatures_changelog.WafSignatureChangelogCustomApi",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/config/namespaces/{namespace}/virtual_hosts/{vh_name}/released_signatures": {
+      "get": {
+        "summary": "Released Signatures",
+        "description": "API to get Released Signatures\nDEPRECATED.",
+        "operationId": "ves.io.schema.waf_signatures_changelog.WafSignatureChangelogCustomApi.GetReleasedSignatures",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/waf_signatures_changelogReleasedSignaturesRsp"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"shared\"\nFetch waf signatures changelog for the given namespace",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vh_name",
+            "description": "vh_name\n\nx-example: \"blogging-app\"\nVirtual Host for current request",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Virtual Host Name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturechangelogcustomapi-getreleasedsignatures"
+        },
+        "x-ves-deprecated": "This API is no longer supported",
+        "x-ves-proto-rpc": "ves.io.schema.waf_signatures_changelog.WafSignatureChangelogCustomApi.GetReleasedSignatures",
+        "tags": ["config"],
+        "deprecated": true
+      },
+      "x-displayname": "WAF Signatures Changelog",
+      "x-ves-proto-service": "ves.io.schema.waf_signatures_changelog.WafSignatureChangelogCustomApi",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/ml/data/namespaces/{namespace}/virtual_hosts/{vh_name}/staged_signatures": {
+      "post": {
+        "summary": "Staged Signatures",
+        "description": "API to get Staged Signatures",
+        "operationId": "ves.io.schema.waf_signatures_changelog.SignatureCustomApi.GetStagedSignatures",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/waf_signatures_changelogStagedSignaturesRsp"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"shared\"\nFetch staged signatures for the given namespace",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vh_name",
+            "description": "vh_name\n\nx-example: \"blogging-app\"\nVirtual Host for current request",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Virtual Host Name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/waf_signatures_changelogStagedSignaturesReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-signaturecustomapi-getstagedsignatures"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.waf_signatures_changelog.SignatureCustomApi.GetStagedSignatures",
+        "tags": ["ml"]
+      },
+      "x-displayname": "WAF Signatures Changelog",
+      "x-ves-proto-service": "ves.io.schema.waf_signatures_changelog.SignatureCustomApi",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/waf/threat-campaigns": {
+      "get": {
+        "summary": "list Threat Campaigns",
+        "description": "List all threat campaigns",
+        "operationId": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI.ListThreatCampaigns",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/waf_signatures_changelogListThreatCampaignsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "known_version",
+            "description": "Version of the threat campaigns list that the client currently has, can be used for caching",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Known Version",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturesapi-listthreatcampaigns"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI.ListThreatCampaigns",
+        "tags": ["waf"]
+      },
+      "x-displayname": "WAF Signatures Changelog",
+      "x-ves-proto-service": "ves.io.schema.waf_signatures_changelog.WafSignaturesAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "WAF Signatures Changelog",
+  "x-ves-proto-package": "ves.io.schema.waf_signatures_changelog",
+  "components": {
+    "schemas": {
+      "app_securityThreatCampaign": {
+        "type": "object",
+        "description": "Threat Campaign object representing the created threat campaign.",
+        "title": "Threat Campaign",
+        "x-displayname": "Threat Campaign",
+        "x-ves-proto-message": "ves.io.schema.app_security.ThreatCampaign",
+        "properties": {
+          "attack_type": {
+            "type": "string",
+            "description": " The Threat Campaign Attack Type\n\nExample: ` \"Server Side Code Injection\"`",
+            "title": "attack_type",
+            "x-displayname": "Attack Type",
+            "x-ves-example": "Server Side Code Injection"
+          },
+          "description": {
+            "type": "string",
+            "description": " The Threat Campaign Description\n\nExample: ` \"This campaign aims to identify Drupal web servers vulnerable to Drupalgeddon2 RCE vulnerability (CVE-2018-7600). The threat actor instructs the server to download and execute a cryptocurrency miner.   The same threat actor was previously detected exploiting Drupal REST Module RCE vulnerability (CVE-2019-6340).\"`",
+            "title": "description",
+            "x-displayname": "Description",
+            "x-ves-example": "This campaign aims to identify Drupal web servers vulnerable to Drupalgeddon2 RCE vulnerability (CVE-2018-7600). The threat actor instructs the server to download and execute a cryptocurrency miner.   The same threat actor was previously detected exploiting Drupal REST Module RCE vulnerability (CVE-2019-6340)."
+          },
+          "id": {
+            "type": "string",
+            "description": " The Threat Campaign ID\n\nExample: ` \"cmp5641a5adbeabaf2708ce7663ad937df8\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "id",
+            "x-displayname": "ID",
+            "x-ves-example": "cmp5641a5adbeabaf2708ce7663ad937df8",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "intent": {
+            "type": "string",
+            "description": " The Threat Campaign Intent\n\nExample: ` \"Malware Spreading - Crypto Currency Miner\"`",
+            "title": "intent",
+            "x-displayname": "Intent",
+            "x-ves-example": "Malware Spreading - Crypto Currency Miner"
+          },
+          "last_update": {
+            "type": "string",
+            "description": " The Threat Campaign last update time\n\nExample: ` \"2022/11/29 20:19:17\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "last_update",
+            "x-displayname": "Last Update",
+            "x-ves-example": "2022/11/29 20:19:17",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "malwares": {
+            "type": "array",
+            "description": " The Threat Campaign Malwares\n\nExample: ` \"['Cryptocurrency Miner']\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "malwares",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Malwares",
+            "x-ves-example": "['Cryptocurrency Miner']",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": " The Threat Campaign Name\n\nExample: ` \"Drupal 'Drupalgeddon2' RCE - exec48ne\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "Drupal 'Drupalgeddon2' RCE - exec48ne",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "references": {
+            "type": "array",
+            "description": " The Threat Campaign References\n\nExample: ` \"['CVE-2018-7600']\"`",
+            "title": "references",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "References",
+            "x-ves-example": "['CVE-2018-7600']"
+          },
+          "risk": {
+            "type": "string",
+            "description": " The Threat Campaign Risk\n\nExample: ` \"High\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "risk",
+            "x-displayname": "Risk",
+            "x-ves-example": "High",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "systems": {
+            "type": "array",
+            "description": " The Threat Campaign Systems\n\nExample: ` \"['PHP', 'Unix/Linux']\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "systems",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Systems",
+            "x-ves-example": "['PHP', 'Unix/Linux']",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "protobufAny": {
+        "type": "object",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
+        "properties": {
+          "type_url": {
+            "type": "string",
+            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          },
+          "value": {
+            "type": "string",
+            "description": "Must be a valid serialized protocol buffer of the above specified type.",
+            "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "waf_signatures_changelogBotClass": {
+        "type": "string",
+        "description": "Enumeration for Bot Class",
+        "title": "Bot Class",
+        "enum": ["None", "Malicious", "Trusted", "Untrusted"],
+        "default": "None",
+        "x-displayname": "Bot Class",
+        "x-ves-proto-enum": "ves.io.schema.waf_signatures_changelog.BotClass"
+      },
+      "waf_signatures_changelogBotSignature": {
+        "type": "object",
+        "description": "Bot signature information",
+        "title": "Bot Signature",
+        "x-displayname": "Bot Signature",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.BotSignature",
+        "properties": {
+          "bot_class": {
+            "$ref": "#/components/schemas/waf_signatures_changelogBotClass"
+          },
+          "bot_name": {
+            "type": "string",
+            "description": " The Bot name\n\nExample: ` \"Baidu\"`",
+            "title": "Bot Name",
+            "x-displayname": "Bot Name",
+            "x-ves-example": "Baidu"
+          },
+          "category": {
+            "type": "string",
+            "description": " The Bot category\n\nExample: ` \"Crawler\"`",
+            "title": "Bot Category",
+            "x-displayname": "Category",
+            "x-ves-example": "Crawler"
+          },
+          "hostnames": {
+            "type": "array",
+            "description": " A list of hostnames associated with the bot\n\nExample: ` \".googlebot.com\"`",
+            "title": "Hostnames",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Hostnames",
+            "x-ves-example": ".googlebot.com"
+          },
+          "id": {
+            "type": "string",
+            "description": " The Signature ID\n\nExample: ` \"200104853\"`",
+            "title": "ID",
+            "x-displayname": "ID",
+            "x-ves-example": "200104853"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": " The Signature last update time\n\nExample: ` \"2022/11/29 20:19:17\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Last Updated",
+            "x-displayname": "Last Update",
+            "x-ves-example": "2022/11/29 20:19:17",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "risk": {
+            "type": "string",
+            "description": " The Bot risk\n\nExample: ` \"Crawler\"`",
+            "title": "risk",
+            "x-displayname": "Risk",
+            "x-ves-example": "Crawler"
+          }
+        }
+      },
+      "waf_signatures_changelogGetLatestVersionResponse": {
+        "type": "object",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.GetLatestVersionResponse",
+        "properties": {
+          "version": {
+            "type": "string",
+            "description": " The latest version of the WAF signatures",
+            "title": "Version",
+            "x-displayname": "Version"
+          }
+        }
+      },
+      "waf_signatures_changelogListAttackSignaturesResponse": {
+        "type": "object",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.ListAttackSignaturesResponse",
+        "properties": {
+          "attack_signatures": {
+            "type": "array",
+            "description": " A list of all supported attack signatures",
+            "title": "Attack Signatures",
+            "items": {
+              "$ref": "#/components/schemas/waf_signatures_changelogSignature"
+            },
+            "x-displayname": "Attack Signatures"
+          },
+          "not_modified": {
+            "type": "boolean",
+            "description": " Indicates if the attack signatures list has not been modified since the last version",
+            "title": "Not Modified",
+            "x-displayname": "Not Modified"
+          },
+          "version": {
+            "type": "string",
+            "description": " Version of the attack signatures list, can be used for caching",
+            "title": "Version",
+            "x-displayname": "Version"
+          }
+        }
+      },
+      "waf_signatures_changelogListBotSignaturesResponse": {
+        "type": "object",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.ListBotSignaturesResponse",
+        "properties": {
+          "bot_signatures": {
+            "type": "array",
+            "description": " A list of all supported bot signatures",
+            "title": "Bot Signatures",
+            "items": {
+              "$ref": "#/components/schemas/waf_signatures_changelogBotSignature"
+            },
+            "x-displayname": "Bot Signatures"
+          },
+          "not_modified": {
+            "type": "boolean",
+            "description": " Indicates if the attack signatures list has not been modified since the last version",
+            "title": "Not Modified",
+            "x-displayname": "Not Modified"
+          },
+          "version": {
+            "type": "string",
+            "description": " Version of the attack signatures list, can be used for caching",
+            "title": "Version",
+            "x-displayname": "Version"
+          }
+        }
+      },
+      "waf_signatures_changelogListThreatCampaignsResponse": {
+        "type": "object",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.ListThreatCampaignsResponse",
+        "properties": {
+          "not_modified": {
+            "type": "boolean",
+            "description": " Indicates if the attack signatures list has not been modified since the last version",
+            "title": "Not Modified",
+            "x-displayname": "Not Modified"
+          },
+          "threat_campaigns": {
+            "type": "array",
+            "description": " A list of all supported threat campaigns",
+            "title": "Threat Campaigns",
+            "items": {
+              "$ref": "#/components/schemas/app_securityThreatCampaign"
+            },
+            "x-displayname": "Threat Campaigns"
+          },
+          "version": {
+            "type": "string",
+            "description": " Version of the attack signatures list, can be used for caching",
+            "title": "Version",
+            "x-displayname": "Version"
+          }
+        }
+      },
+      "waf_signatures_changelogReleaseSignatures": {
+        "type": "object",
+        "title": "ReleaseSignatures",
+        "x-displayname": "Release Signatures",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.ReleaseSignatures",
+        "properties": {
+          "added_signature_ids": {
+            "type": "array",
+            "description": " A list of new signature ids in the release.\n\nExample: ` [\"200101852\", \"200103290\"]`",
+            "title": "Added Signatures",
+            "items": {
+              "type": "string",
+              "format": "int64"
+            },
+            "x-displayname": "Added Signatures"
+          },
+          "release_date": {
+            "type": "string",
+            "description": " Changelog release date.\n\nExample: ` \"2022-12-06`",
+            "title": "Release Date",
+            "x-displayname": "Release Date"
+          },
+          "updated_signature_ids": {
+            "type": "array",
+            "description": " A list of updated signature ids in the release.\n\nExample: ` [\"200101852\", \"200103290\"]`",
+            "title": "Updated Signatures",
+            "items": {
+              "type": "string",
+              "format": "int64"
+            },
+            "x-displayname": "Updated Signatures"
+          }
+        }
+      },
+      "waf_signatures_changelogReleasedSignaturesRsp": {
+        "type": "object",
+        "description": "Response to get the list of released signatures",
+        "title": "ReleasedSignaturesRes",
+        "x-displayname": "Released Signatures Response",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.ReleasedSignaturesRsp",
+        "properties": {
+          "release_signatures": {
+            "type": "array",
+            "description": " Release Signatures",
+            "title": "release_signatures",
+            "items": {
+              "$ref": "#/components/schemas/waf_signatures_changelogReleaseSignatures"
+            },
+            "x-displayname": "Release Signatures"
+          }
+        }
+      },
+      "waf_signatures_changelogSignature": {
+        "type": "object",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.Signature",
+        "properties": {
+          "accuracy": {
+            "type": "string",
+            "description": " The Signature Accuracy\n\nExample: ` \"Medium\"`",
+            "title": "accuracy",
+            "x-displayname": "Accuracy",
+            "x-ves-example": "Medium"
+          },
+          "applies_to": {
+            "type": "string",
+            "description": " The Signature Applies to\n\nExample: ` \"Request\"`",
+            "title": "applies_to",
+            "x-displayname": "Applies To",
+            "x-ves-example": "Request"
+          },
+          "attack_type": {
+            "type": "string",
+            "description": " The Signature Attack Type\n\nExample: ` \"Server Side Code Injection\"`",
+            "title": "attack_type",
+            "x-displayname": "Attack Type",
+            "x-ves-example": "Server Side Code Injection"
+          },
+          "description": {
+            "type": "string",
+            "description": " The Signature Description",
+            "title": "description",
+            "x-displayname": "Description"
+          },
+          "id": {
+            "type": "string",
+            "description": " The Signature ID\n\nExample: ` \"200104853\"`",
+            "title": "id",
+            "format": "int64",
+            "x-displayname": "ID",
+            "x-ves-example": "200104853"
+          },
+          "last_update": {
+            "type": "string",
+            "description": " The Signature last update time\n\nExample: ` \"2022/11/29 20:19:17\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "last_update",
+            "x-displayname": "Last Update",
+            "x-ves-example": "2022/11/29 20:19:17",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": " The Signature Name\n\nExample: ` \"Java code injection FreeMarker - objectWrapper (URI)\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "Java code injection FreeMarker - objectWrapper (URI)"
+          },
+          "references": {
+            "type": "array",
+            "description": " The Signature References\n\nExample: ` \"['http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-26377']\"`",
+            "title": "references",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "References",
+            "x-ves-example": "['http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-26377']"
+          },
+          "risk": {
+            "type": "string",
+            "description": " The Signature Risk\n\nExample: ` \"High\"`",
+            "title": "risk",
+            "x-displayname": "Risk",
+            "x-ves-example": "High"
+          },
+          "systems": {
+            "type": "array",
+            "description": " The Signature Systems\n\nExample: ` \"['Java Servlets/JSP', 'Apache Struts', 'JavaServer Faces (JSF)']\"`",
+            "title": "systems",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Systems",
+            "x-ves-example": "['Java Servlets/JSP', 'Apache Struts', 'JavaServer Faces (JSF)']"
+          }
+        }
+      },
+      "waf_signatures_changelogStagedSignature": {
+        "type": "object",
+        "description": "Staged signature details",
+        "title": "StagedSignature",
+        "x-displayname": "Staged Signature",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.StagedSignature",
+        "properties": {
+          "accuracy": {
+            "type": "string",
+            "description": " Detected signature accuracy\n\nExample: ` \"Medium\"`",
+            "title": "accuracy",
+            "x-displayname": "Accuracy",
+            "x-ves-example": "Medium"
+          },
+          "attack_type": {
+            "type": "string",
+            "description": " The Signature Attack Type\n\nExample: ` \"Server Side Code Injection\"`",
+            "title": "attack_type",
+            "x-displayname": "Attack Type",
+            "x-ves-example": "Server Side Code Injection"
+          },
+          "context": {
+            "type": "string",
+            "description": " Context of the signature detected.",
+            "title": "context",
+            "x-displayname": "Context"
+          },
+          "count": {
+            "type": "integer",
+            "description": " Number of times signature detected in traffic\n\nExample: ` \"5\"`",
+            "title": "count",
+            "format": "int32",
+            "x-displayname": "Count",
+            "x-ves-example": "5"
+          },
+          "id": {
+            "type": "string",
+            "description": " Detected signature id\n\nExample: ` \"200104853\"`",
+            "title": "id",
+            "x-displayname": "ID",
+            "x-ves-example": "200104853"
+          },
+          "id_name": {
+            "type": "string",
+            "description": " Signature Id name\n\nExample: ` \"200101746, ontransitionrun (URI)\"`",
+            "title": "id_name",
+            "x-displayname": "Id name",
+            "x-ves-example": "200101746, ontransitionrun (URI)"
+          },
+          "matching_info": {
+            "type": "string",
+            "description": " Request details for the matched signature\n\nExample: ` \"Matched 16 characters on offset 22 against value'/ontransitionrun/abbc/ontransitionrun='. \"`",
+            "title": "matching_info",
+            "x-displayname": "Matching Info",
+            "x-ves-example": "Matched 16 characters on offset 22 against value: '/ontransitionrun/abbc/ontransitionrun='. "
+          },
+          "name": {
+            "type": "string",
+            "description": " Detected signature name\n\nExample: ` \"Java code injection FreeMarker - objectWrapper (URI)\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "Java code injection FreeMarker - objectWrapper (URI)"
+          },
+          "state": {
+            "type": "string",
+            "description": " State of the signature\n\nExample: ` \"Staged\"`",
+            "title": "state",
+            "x-displayname": "State",
+            "x-ves-example": "Staged"
+          }
+        }
+      },
+      "waf_signatures_changelogStagedSignaturesReq": {
+        "type": "object",
+        "description": "Request to get the list of all staged signatures",
+        "title": "StagedSignaturesReq",
+        "x-displayname": "Staged Signatures Request",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.StagedSignaturesReq",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " Fetch staged signatures whose timestamp <= end_time\n format: unix_timestamp|rfc 3339\n\nExample: ` \"2019-09-23T12:30:11.733Z\"`",
+            "title": "end_time",
+            "x-displayname": "End Time",
+            "x-ves-example": "2019-09-23T12:30:11.733Z"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Fetch staged signatures for the given namespace\n\nExample: ` \"shared\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "shared"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " Fetch staged signatures whose timestamp >= start_time\n format: unix_timestamp|rfc 3339\n\nExample: ` \"2019-09-23T12:30:11.733Z\"`",
+            "title": "start_time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "2019-09-23T12:30:11.733Z"
+          },
+          "vh_name": {
+            "type": "string",
+            "description": " Virtual Host for current request\n\nExample: ` \"blogging-app\"`",
+            "title": "vh_name",
+            "x-displayname": "Virtual Host Name",
+            "x-ves-example": "blogging-app"
+          }
+        }
+      },
+      "waf_signatures_changelogStagedSignaturesRsp": {
+        "type": "object",
+        "description": "Response to get the list of all staged signatures",
+        "title": "StagedSignaturesRsp",
+        "x-displayname": "Staged Signatures Response",
+        "x-ves-proto-message": "ves.io.schema.waf_signatures_changelog.StagedSignaturesRsp",
+        "properties": {
+          "staged_signatures": {
+            "type": "array",
+            "description": " List of staged signatures",
+            "title": "staged_signatures",
+            "items": {
+              "$ref": "#/components/schemas/waf_signatures_changelogStagedSignature"
+            },
+            "x-displayname": "Staged Signatures"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "waf"
+    },
+    {
+      "name": "config"
+    },
+    {
+      "name": "ml"
+    }
+  ]
+}

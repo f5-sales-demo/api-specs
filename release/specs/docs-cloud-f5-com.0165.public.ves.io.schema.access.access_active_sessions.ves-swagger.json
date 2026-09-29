@@ -1,0 +1,1110 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.access.access_active_sessions",
+    "description": "APIs to monitor and terminate access active sessions on all applications.",
+    "version": "2026.09.28",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@example.com"
+    }
+  },
+  "paths": {
+    "/api/data/namespaces/{namespace}/access/active-sessions": {
+      "get": {
+        "summary": "List Active Sessions",
+        "description": "List all active sessions",
+        "operationId": "ves.io.schema.access.access_active_sessions.CustomAPI.ListActiveSessions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/access_active_sessionsListActiveSessionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nNamespace of the App type for the current request",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "description": "x-example: \"eyJzZXF1ZW5jZV9pZCI6MTIzNDU2fQ==\"\nCursor for pagination. Contains encoded sequence_id for next/previous page",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Cursor",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "x-example: \"25\"\nLimits the number of results to the specified number",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Limit",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "direction",
+            "description": "Direction for pagination (forward or backward)\n\nGet next page of results\nGet previous page of results",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Backward",
+            "schema": {
+              "type": "string",
+              "enum": ["FORWARD", "BACKWARD"],
+              "default": "FORWARD"
+            }
+          },
+          {
+            "name": "username",
+            "description": "x-example: \"joe,bob\"\nFilter sessions by username. Supports a comma-separated list to match any of the specified values (e.g. \"joe,bob\").",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Username Filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "client_ip",
+            "description": "x-example: \"192.0.2.106,192.0.2.233\"\nFilter sessions by client IP address. Supports a comma-separated list to match any of the specified values (e.g. \"192.0.2.106,192.0.2.233\").",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Client IP Filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "virtual_server",
+            "description": "x-example: \"web-app,api-server\"\nFilter sessions by virtual server. Supports a comma-separated list to match any of the specified values (e.g. \"web-app,api-server\").",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Virtual Server Filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "policy",
+            "description": "x-example: \"default-policy,strict-policy\"\nFilter sessions by policy. Supports a comma-separated list to match any of the specified values (e.g. \"default-policy,strict-policy\").",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Policy Filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "site",
+            "description": "x-example: \"us-west-2,eu-west-1\"\nFilter sessions by site. Supports a comma-separated list to match any of the specified values (e.g. \"us-west-2,eu-west-1\").",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Site Filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "description": "Filter sessions by status. If not specified, returns sessions with all statuses.\n\nReturn sessions with any status (default when no status filter is specified)\nFilter for sessions with pending status\nFilter for sessions with established status",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Established Only",
+            "schema": {
+              "type": "string",
+              "enum": ["ANY", "PENDING_ONLY", "ESTABLISHED_ONLY"],
+              "default": "ANY"
+            }
+          },
+          {
+            "name": "start_time_from",
+            "description": "x-example: \"2024-08-06T20:00:00Z\"\nFilter sessions that started from this timestamp (inclusive)\nFormat: RFC 3339 (e.g., 2024-08-06T20:00:00Z)",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Start Time From",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_time_to",
+            "description": "x-example: \"2024-08-07T20:00:00Z\"\nFilter sessions that started up to this timestamp (inclusive)\nFormat: RFC 3339 (e.g., 2024-08-07T20:00:00Z)",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Start Time To",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expiration_time_from",
+            "description": "x-example: \"2024-08-06T20:00:00Z\"\nFilter sessions that expire from this timestamp (inclusive)\nFormat: RFC 3339 (e.g., 2024-08-06T20:00:00Z)",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Expiration Time From",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expiration_time_to",
+            "description": "x-example: \"2024-08-07T20:00:00Z\"\nFilter sessions that expire up to this timestamp (inclusive)\nFormat: RFC 3339 (e.g., 2024-08-07T20:00:00Z)",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Expiration Time To",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-access-access_active_sessions-customapi-listactivesessions"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.access.access_active_sessions.CustomAPI.ListActiveSessions",
+        "tags": ["data"]
+      },
+      "x-displayname": "Manage Access Active Sessions",
+      "x-ves-proto-service": "ves.io.schema.access.access_active_sessions.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/data/namespaces/{namespace}/access/active-sessions/terminate": {
+      "post": {
+        "summary": "Terminate Multiple Access Sessions",
+        "description": "Terminate multiple access sessions in a single request\nReturns HTTP 200 if all sessions terminated successfully,\nHTTP 207 Multi-Status if some sessions succeeded and some failed,\nHTTP 4xx/5xx if the request is invalid or all sessions failed",
+        "operationId": "ves.io.schema.access.access_active_sessions.CustomAPI.TerminateSessions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/access_active_sessionsTerminateSessionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nNamespace of the App type for the current request (path parameter)",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/access_active_sessionsTerminateSessionsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-access-access_active_sessions-customapi-terminatesessions"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.access.access_active_sessions.CustomAPI.TerminateSessions",
+        "tags": ["data"]
+      },
+      "x-displayname": "Manage Access Active Sessions",
+      "x-ves-proto-service": "ves.io.schema.access.access_active_sessions.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/data/namespaces/{namespace}/access/active-sessions/{id}": {
+      "get": {
+        "summary": "Get Active Session",
+        "description": "Get an active session by ID",
+        "operationId": "ves.io.schema.access.access_active_sessions.CustomAPI.GetActiveSession",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/access_active_sessionsGetActiveSessionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nNamespace of the App type for the current request",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "description": "id\n\nx-example: \"9d6d591\"\nID of the session",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Session ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-access-access_active_sessions-customapi-getactivesession"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.access.access_active_sessions.CustomAPI.GetActiveSession",
+        "tags": ["data"]
+      },
+      "delete": {
+        "summary": "Terminate Access Session",
+        "description": "Terminate an access session",
+        "operationId": "ves.io.schema.access.access_active_sessions.CustomAPI.TerminateSession",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nNamespace of the App type for the current request",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "description": "id\n\nx-required\nx-example: \"9d6d591\"\nID of the session to terminate",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Session ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-access-access_active_sessions-customapi-terminatesession"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.access.access_active_sessions.CustomAPI.TerminateSession",
+        "tags": ["data"]
+      },
+      "x-displayname": "Manage Access Active Sessions",
+      "x-ves-proto-service": "ves.io.schema.access.access_active_sessions.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Manage Access Active Sessions",
+  "x-ves-proto-package": "ves.io.schema.access.access_active_sessions",
+  "components": {
+    "schemas": {
+      "access_active_sessionsFailedTermination": {
+        "type": "object",
+        "description": "Information about a session that failed to terminate",
+        "title": "FailedTermination",
+        "x-displayname": "Failed Termination",
+        "x-ves-proto-message": "ves.io.schema.access.access_active_sessions.FailedTermination",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/access_active_sessionsTerminationErrorCode"
+          },
+          "id": {
+            "type": "string",
+            "description": " ID of the session that failed to terminate\n\nExample: ` \"9d6d591\"`",
+            "title": "id",
+            "x-displayname": "Session ID",
+            "x-ves-example": "9d6d591"
+          },
+          "reason": {
+            "type": "string",
+            "description": " Human-readable description of the termination failure\n\nExample: ` \"Session not found or already terminated\"`",
+            "title": "reason",
+            "x-displayname": "Failure Reason",
+            "x-ves-example": "Session not found or already terminated"
+          }
+        }
+      },
+      "access_active_sessionsGetActiveSessionResponse": {
+        "type": "object",
+        "description": "Response structure of active session query",
+        "title": "GetActiveSessionResponse",
+        "x-displayname": "Get Active Session Response",
+        "x-ves-proto-message": "ves.io.schema.access.access_active_sessions.GetActiveSessionResponse",
+        "properties": {
+          "client_ip": {
+            "type": "string",
+            "description": " Client IP of the user that connected via the session\n\nExample: ` \"192.0.2.106\"`",
+            "title": "client_ip",
+            "x-displayname": "Client IP",
+            "x-ves-example": "192.0.2.106"
+          },
+          "expiration_time": {
+            "type": "string",
+            "description": " Expiration time of the session in RFC 3339 format\n\nExample: ` \"2024-08-07T20:58:46Z\"`",
+            "title": "expiration_time",
+            "format": "date-time",
+            "x-displayname": "Expiration Time",
+            "x-ves-example": "2024-08-07T20:58:46Z"
+          },
+          "id": {
+            "type": "string",
+            "description": " ID of the session\n\nExample: ` \"9d6d591\"`",
+            "title": "id",
+            "x-displayname": "Session ID",
+            "x-ves-example": "9d6d591"
+          },
+          "last_activity_time": {
+            "type": "string",
+            "description": " Last activity time of the session in RFC 3339 format\n\nExample: ` \"2024-08-06T21:30:12Z\"`",
+            "title": "last_activity_time",
+            "format": "date-time",
+            "x-displayname": "Last Activity Time",
+            "x-ves-example": "2024-08-06T21:30:12Z"
+          },
+          "policy": {
+            "type": "string",
+            "description": " Policy associated with the session\n\nExample: ` \"default-policy\"`",
+            "title": "policy",
+            "x-displayname": "Policy",
+            "x-ves-example": "default-policy"
+          },
+          "site": {
+            "type": "string",
+            "description": " Site where the session is created\n\nExample: ` \"us-west-2\"`",
+            "title": "site",
+            "x-displayname": "Site",
+            "x-ves-example": "us-west-2"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " Start time of the session in RFC 3339 format\n\nExample: ` \"2024-08-06T20:58:46Z\"`",
+            "title": "start_time",
+            "format": "date-time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "2024-08-06T20:58:46Z"
+          },
+          "status": {
+            "$ref": "#/components/schemas/access_active_sessionsSessionStatus"
+          },
+          "username": {
+            "type": "string",
+            "description": " Username used in authentication of this session\n\nExample: ` \"testUser\"`",
+            "title": "username",
+            "x-displayname": "Username",
+            "x-ves-example": "testUser"
+          },
+          "variables": {
+            "type": "array",
+            "description": " Session variables as key-value pairs",
+            "title": "variables",
+            "items": {
+              "$ref": "#/components/schemas/access_active_sessionsSessionVariable"
+            },
+            "x-displayname": "Variables"
+          },
+          "virtual_server": {
+            "type": "string",
+            "description": " Virtual server associated with the session\n\nExample: ` \"web-app\"`",
+            "title": "virtual_server",
+            "x-displayname": "Virtual Server",
+            "x-ves-example": "web-app"
+          }
+        }
+      },
+      "access_active_sessionsListActiveSessionsItem": {
+        "type": "object",
+        "description": "An object representing an active session",
+        "title": "ListActiveSessionsItem",
+        "x-displayname": "List Active Session Item",
+        "x-ves-proto-message": "ves.io.schema.access.access_active_sessions.ListActiveSessionsItem",
+        "properties": {
+          "client_ip": {
+            "type": "string",
+            "description": " Client IP of the user that connected via the session\n\nExample: ` \"192.0.2.106\"`",
+            "title": "client_ip",
+            "x-displayname": "Client IP",
+            "x-ves-example": "192.0.2.106"
+          },
+          "expiration_time": {
+            "type": "string",
+            "description": " Expiration time of the session in RFC 3339 format\n\nExample: ` \"2024-08-07T20:58:46Z\"`",
+            "title": "expiration_time",
+            "format": "date-time",
+            "x-displayname": "Expiration Time",
+            "x-ves-example": "2024-08-07T20:58:46Z"
+          },
+          "id": {
+            "type": "string",
+            "description": " ID of the session\n\nExample: ` \"9d6d591\"`",
+            "title": "id",
+            "x-displayname": "Session ID",
+            "x-ves-example": "9d6d591"
+          },
+          "last_activity_time": {
+            "type": "string",
+            "description": " Last activity time of the session in RFC 3339 format\n\nExample: ` \"2024-08-06T21:30:12Z\"`",
+            "title": "last_activity_time",
+            "format": "date-time",
+            "x-displayname": "Last Activity Time",
+            "x-ves-example": "2024-08-06T21:30:12Z"
+          },
+          "policy": {
+            "type": "string",
+            "description": " Policy associated with the session\n\nExample: ` \"default-policy\"`",
+            "title": "policy",
+            "x-displayname": "Policy",
+            "x-ves-example": "default-policy"
+          },
+          "site": {
+            "type": "string",
+            "description": " Site where the session is created\n\nExample: ` \"us-west-2\"`",
+            "title": "site",
+            "x-displayname": "Site",
+            "x-ves-example": "us-west-2"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " Start time of the session in RFC 3339 format\n\nExample: ` \"2024-08-06T20:58:46Z\"`",
+            "title": "start_time",
+            "format": "date-time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "2024-08-06T20:58:46Z"
+          },
+          "status": {
+            "$ref": "#/components/schemas/access_active_sessionsSessionStatus"
+          },
+          "username": {
+            "type": "string",
+            "description": " Username used in authentication of this session\n\nExample: ` \"testUser\"`",
+            "title": "username",
+            "x-displayname": "Username",
+            "x-ves-example": "testUser"
+          },
+          "virtual_server": {
+            "type": "string",
+            "description": " Virtual server associated with the session\n\nExample: ` \"web-app\"`",
+            "title": "virtual_server",
+            "x-displayname": "Virtual Server",
+            "x-ves-example": "web-app"
+          }
+        }
+      },
+      "access_active_sessionsListActiveSessionsResponse": {
+        "type": "object",
+        "description": "Response structure for active sessions list with cursor-based pagination",
+        "title": "ListActiveSessionsResponse",
+        "x-displayname": "List Active Sessions Response",
+        "x-ves-proto-message": "ves.io.schema.access.access_active_sessions.ListActiveSessionsResponse",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": " Total count of all active sessions (across all pages, after applying filters)\n\nExample: ` \"150\"`",
+            "title": "count",
+            "format": "int32",
+            "x-displayname": "Total Count",
+            "x-ves-example": "150"
+          },
+          "items": {
+            "type": "array",
+            "description": " List of active sessions",
+            "title": "items",
+            "items": {
+              "$ref": "#/components/schemas/access_active_sessionsListActiveSessionsItem"
+            },
+            "x-displayname": "Sessions"
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": " Cursor for the next page of results\n\nExample: ` \"eyJzZXF1ZW5jZV9pZCI6MTIzNDU2fQ==\"`",
+            "title": "next_cursor",
+            "x-displayname": "Next Cursor",
+            "x-ves-example": "eyJzZXF1ZW5jZV9pZCI6MTIzNDU2fQ=="
+          },
+          "previous_cursor": {
+            "type": "string",
+            "description": " Cursor for the previous page of results\n\nExample: ` \"eyJzZXF1ZW5jZV9pZCI6MTIzNDAwfQ==\"`",
+            "title": "previous_cursor",
+            "x-displayname": "Previous Cursor",
+            "x-ves-example": "eyJzZXF1ZW5jZV9pZCI6MTIzNDAwfQ=="
+          },
+          "total_established": {
+            "type": "integer",
+            "description": " Total count of sessions with ESTABLISHED status (after applying filters)\n\nExample: ` \"105\"`",
+            "title": "total_established",
+            "format": "int32",
+            "x-displayname": "Total Established",
+            "x-ves-example": "105"
+          },
+          "total_pending": {
+            "type": "integer",
+            "description": " Total count of sessions with PENDING status (after applying filters)\n\nExample: ` \"45\"`",
+            "title": "total_pending",
+            "format": "int32",
+            "x-displayname": "Total Pending",
+            "x-ves-example": "45"
+          }
+        }
+      },
+      "access_active_sessionsSessionStatus": {
+        "type": "string",
+        "description": "The actual status of an active session\n\nSession status is pending\nSession status is established",
+        "title": "SessionStatus",
+        "enum": ["PENDING", "ESTABLISHED"],
+        "default": "PENDING",
+        "x-displayname": "Session Status",
+        "x-ves-proto-enum": "ves.io.schema.access.access_active_sessions.SessionStatus"
+      },
+      "access_active_sessionsSessionVariable": {
+        "type": "object",
+        "description": "A key-value pair representing a session variable",
+        "title": "SessionVariable",
+        "x-displayname": "Session Variable",
+        "x-ves-proto-message": "ves.io.schema.access.access_active_sessions.SessionVariable",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": " The value of the session variable\n\nExample: ` \"admin\"`",
+            "title": "value",
+            "x-displayname": "Variable Value",
+            "x-ves-example": "admin"
+          },
+          "variable": {
+            "type": "string",
+            "description": " The name of the session variable\n\nExample: ` \"session.user.role\"`",
+            "title": "variable",
+            "x-displayname": "Variable Name",
+            "x-ves-example": "session.user.role"
+          }
+        }
+      },
+      "access_active_sessionsTerminateSessionsRequest": {
+        "type": "object",
+        "description": "Request structure for batch termination of access sessions",
+        "title": "TerminateSessionsRequest",
+        "x-displayname": "Terminate Multiple Access Sessions Request",
+        "x-ves-proto-message": "ves.io.schema.access.access_active_sessions.TerminateSessionsRequest",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "description": " List of session IDs to terminate (maximum 100 per request)\n\nExample: ` [\"9d6d591\", \"946e4d5c\", \"6b4428e\"]`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 100\n  ves.io.schema.rules.repeated.min_items: 1\n",
+            "title": "ids",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Session IDs",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.repeated.max_items": "100",
+              "ves.io.schema.rules.repeated.min_items": "1"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace of the App type for the current request (path parameter)\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          }
+        }
+      },
+      "access_active_sessionsTerminateSessionsResponse": {
+        "type": "object",
+        "description": "Response structure for batch termination showing which sessions were successfully terminated and which failed.\nWhen both succeeded and failed arrays have entries, HTTP 207 Multi-Status should be returned.\nWhen only succeeded has entries, HTTP 200 OK should be returned.\nWhen only failed has entries, HTTP 4xx/5xx should be returned based on error types.",
+        "title": "TerminateSessionsResponse",
+        "x-displayname": "Terminate Multiple Access Sessions Response",
+        "x-ves-proto-message": "ves.io.schema.access.access_active_sessions.TerminateSessionsResponse",
+        "properties": {
+          "failed": {
+            "type": "array",
+            "description": " List of sessions that failed to terminate with reasons",
+            "title": "failed",
+            "items": {
+              "$ref": "#/components/schemas/access_active_sessionsFailedTermination"
+            },
+            "x-displayname": "Failed Terminations"
+          },
+          "succeeded": {
+            "type": "array",
+            "description": " List of session IDs that were successfully terminated",
+            "title": "succeeded",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Successfully Terminated"
+          }
+        }
+      },
+      "access_active_sessionsTerminationErrorCode": {
+        "type": "string",
+        "description": "Error codes for failed session terminations (uses standard gRPC status codes)\n\nTermination was successful (gRPC OK)\nSession not found or already terminated (gRPC NOT_FOUND)\nInternal system error occurred during termination (gRPC INTERNAL)",
+        "title": "TerminationErrorCode",
+        "enum": ["OK", "NOT_FOUND", "INTERNAL"],
+        "default": "OK",
+        "x-displayname": "Termination Error Code",
+        "x-ves-proto-enum": "ves.io.schema.access.access_active_sessions.TerminationErrorCode"
+      },
+      "protobufAny": {
+        "type": "object",
+        "properties": {
+          "type_url": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string",
+            "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "data"
+    }
+  ]
+}

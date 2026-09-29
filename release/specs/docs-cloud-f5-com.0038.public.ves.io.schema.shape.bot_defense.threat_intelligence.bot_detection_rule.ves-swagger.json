@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule",
     "description": "Configures Bot Detection Rule",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -102,6 +102,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -232,6 +242,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -380,6 +400,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -510,6 +540,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -625,6 +665,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -737,6 +787,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -870,6 +930,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -988,6 +1058,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1148,6 +1228,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1279,6 +1369,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1361,7 +1461,6 @@
             "type": "boolean",
             "description": " Mitigation - true(ON) / false(OFF)",
             "title": "Mitigation",
-            "format": "boolean",
             "x-displayname": "Mitigation"
           }
         }
@@ -1944,7 +2043,6 @@
             "type": "boolean",
             "description": " A value of true indicates bot_detection_rule is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -2214,6 +2312,27 @@
           }
         }
       },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "schemaErrorCode": {
         "type": "string",
         "description": "Union of all possible error-codes from system\n\n - EOK: No error\n - EPERMS: Permissions error\n - EBADINPUT: Input is not correct\n - ENOTFOUND: Not found\n - EEXISTS: Already exists\n - EUNKNOWN: Unknown/catchall error\n - ESERIALIZE: Error in serializing/de-serializing\n - EINTERNAL: Server error\n - EPARTIAL: Partial error",
@@ -2326,7 +2445,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -2611,6 +2729,45 @@
         "x-displayname": "Bot Infrastructure Type",
         "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.threat_intelligence.BotInfrastuctureType"
       },
+      "threat_intelligenceK8sClusterDeliveryStatus": {
+        "type": "object",
+        "description": "Kubernetes Cluster Deliver Status",
+        "title": "Kubernetes Cluster Deliver Status",
+        "x-displayname": "Kubernetes Cluster Deliver Status",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.K8sClusterDeliveryStatus",
+        "properties": {
+          "bot_infra_delivery_status": {
+            "$ref": "#/components/schemas/threat_intelligenceBotInfraDeploymentStatus"
+          },
+          "generated_url": {
+            "type": "string",
+            "description": " Generated URL for the deployment",
+            "title": "Generated URL",
+            "x-displayname": "Generated URL"
+          },
+          "k8s_cluster_tags": {
+            "type": "array",
+            "description": " List of k8s cluster_tag belongs the bot infra",
+            "title": "k8s cluster names",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "K8s Cluster Names"
+          },
+          "policy_id": {
+            "type": "string",
+            "description": " Policy ID associated with the deployment",
+            "title": "Policy ID",
+            "x-displayname": "Policy ID"
+          },
+          "status_message": {
+            "type": "string",
+            "description": " Status message. In case of error, this would contain error details",
+            "title": "StatusMessage",
+            "x-displayname": "Status Message"
+          }
+        }
+      },
       "threat_intelligenceRegionStatus": {
         "type": "object",
         "description": "The status of each bot infrastructure per region",
@@ -2699,45 +2856,6 @@
             "format": "int64",
             "x-displayname": "Version",
             "x-ves-example": "1"
-          }
-        }
-      },
-      "threat_intelligenceK8sClusterDeliveryStatus": {
-        "type": "object",
-        "description": "Kubernetes Cluster Deliver Status",
-        "title": "Kubernetes Cluster Deliver Status",
-        "x-displayname": "Kubernetes Cluster Deliver Status",
-        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.K8sClusterDeliveryStatus",
-        "properties": {
-          "bot_infra_delivery_status": {
-            "$ref": "#/components/schemas/threat_intelligenceBotInfraDeploymentStatus"
-          },
-          "generated_url": {
-            "type": "string",
-            "description": "Generated URL for the deployment",
-            "title": "Generated URL",
-            "x-displayname": "Generated URL"
-          },
-          "k8s_cluster_tags": {
-            "type": "array",
-            "description": "List of k8s cluster_tag belongs the bot infra",
-            "title": "K8s Cluster Names",
-            "items": {
-              "type": "string"
-            },
-            "x-displayname": "K8s Cluster Names"
-          },
-          "policy_id": {
-            "type": "string",
-            "description": "Policy ID associated with the deployment",
-            "title": "Policy ID",
-            "x-displayname": "Policy ID"
-          },
-          "status_message": {
-            "type": "string",
-            "description": "Status message. In case of error, this would contain error details",
-            "title": "Status Message",
-            "x-displayname": "Status Message"
           }
         }
       }

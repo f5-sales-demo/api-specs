@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_zone",
     "description": "DNS Zone object is used for configuring Primary and Secondary DNS zones.\n\nUser configures zone \"example.com\"\n\nStatus for this object will show following\n\n* List of nameservers\n\nUser can configure DNS records for a Primary zone and a Secondary zone will\ntransfer the DNS records from the primary DNS servers.",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -11,6 +11,134 @@
     }
   },
   "paths": {
+    "/api/config/dns/namespaces/system/dns_zone/add_cryptokey": {
+      "post": {
+        "summary": "Add CryptoKey",
+        "description": "Add a CryptoKey (ZSK or KSK) to a zone",
+        "operationId": "ves.io.schema.dns_zone.CustomAPI.AddCryptoKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dns_zoneAddCryptoKeyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dns_zoneAddCryptoKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-addcryptokey"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.AddCryptoKey",
+        "tags": ["config"]
+      },
+      "x-displayname": "DNS Zone",
+      "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
     "/api/config/dns/namespaces/system/dns_zone/clone_from_dns_domain": {
       "post": {
         "summary": "Clone from DNSDomain",
@@ -106,6 +234,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -123,6 +261,390 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-clonefromdnsdomain"
         },
         "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.CloneFromDNSDomain",
+        "tags": ["config"]
+      },
+      "x-displayname": "DNS Zone",
+      "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/config/dns/namespaces/system/dns_zone/delete_cryptokey": {
+      "post": {
+        "summary": "Delete CryptoKey",
+        "description": "Delete a CryptoKey from a zone",
+        "operationId": "ves.io.schema.dns_zone.CustomAPI.DeleteCryptoKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dns_zoneDeleteCryptoKeyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dns_zoneDeleteCryptoKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-deletecryptokey"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.DeleteCryptoKey",
+        "tags": ["config"]
+      },
+      "x-displayname": "DNS Zone",
+      "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/config/dns/namespaces/system/dns_zone/edit_cryptokey": {
+      "post": {
+        "summary": "Update CryptoKey",
+        "description": "Update a CryptoKey on a zone",
+        "operationId": "ves.io.schema.dns_zone.CustomAPI.EditCryptoKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dns_zoneEditCryptoKeyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dns_zoneEditCryptoKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-editcryptokey"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.EditCryptoKey",
+        "tags": ["config"]
+      },
+      "x-displayname": "DNS Zone",
+      "x-ves-proto-service": "ves.io.schema.dns_zone.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/config/dns/namespaces/system/dns_zone/get_cryptokeys": {
+      "post": {
+        "summary": "Get CryptoKeys",
+        "description": "Get all cryptokeys for a zone",
+        "operationId": "ves.io.schema.dns_zone.CustomAPI.GetCryptoKeys",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dns_zoneGetCryptoKeysResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dns_zoneGetCryptoKeysRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_zone-customapi-getcryptokeys"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.dns_zone.CustomAPI.GetCryptoKeys",
         "tags": ["config"]
       },
       "x-displayname": "DNS Zone",
@@ -221,6 +743,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -342,6 +874,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -457,6 +999,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -578,6 +1130,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -696,6 +1258,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -811,6 +1383,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -941,6 +1523,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1084,6 +1676,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1211,6 +1813,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1344,6 +1956,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1474,6 +2096,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1601,6 +2233,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1762,6 +2404,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1892,6 +2544,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -2019,6 +2681,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2165,6 +2837,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -2244,6 +2926,52 @@
           },
           "subtype": {
             "$ref": "#/components/schemas/dns_zoneAFSDBRecordSubtype"
+          }
+        }
+      },
+      "dns_zoneAddCryptoKeyRequest": {
+        "type": "object",
+        "title": "Add CryptoKey Request",
+        "x-displayname": "Add CryptoKey Request",
+        "x-ves-proto-message": "ves.io.schema.dns_zone.AddCryptoKeyRequest",
+        "properties": {
+          "key_type": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Key Type",
+            "x-displayname": "Key Type",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace is always system for dns_zone\n\nExample: ` \"system\"`",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "system"
+          },
+          "zone_name": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Zone Name",
+            "x-displayname": "Zone Name",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "dns_zoneAddCryptoKeyResponse": {
+        "type": "object",
+        "title": "Add CryptoKey Response",
+        "x-displayname": "Add CryptoKey Response",
+        "x-ves-proto-message": "ves.io.schema.dns_zone.AddCryptoKeyResponse",
+        "properties": {
+          "key": {
+            "$ref": "#/components/schemas/dns_zoneCryptoKey"
           }
         }
       },
@@ -2495,6 +3223,57 @@
           },
           "secondary": {
             "$ref": "#/components/schemas/dns_zoneSecondaryDNSCreateSpecType"
+          }
+        }
+      },
+      "dns_zoneCryptoKey": {
+        "type": "object",
+        "description": "x-displayName \"CryptoKey\"\nDetails for a signing key used in DNSSEC",
+        "title": "CryptoKey",
+        "x-ves-proto-message": "ves.io.schema.dns_zone.CryptoKey",
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "description": " Whether the key is currently active for signing",
+            "title": "Active",
+            "x-displayname": "Active"
+          },
+          "algorithm": {
+            "type": "string",
+            "description": " The DNSSEC signing algorithm used by this key",
+            "title": "Algorithm",
+            "x-displayname": "Algorithm"
+          },
+          "dnskey": {
+            "type": "string",
+            "description": " The DNSKEY record data for this key",
+            "title": "DNSKEY",
+            "x-displayname": "DNSKEY"
+          },
+          "key_id": {
+            "type": "integer",
+            "description": " Unique identifier for the cryptographic key",
+            "title": "Key ID",
+            "format": "int64",
+            "x-displayname": "Key ID"
+          },
+          "key_type": {
+            "type": "string",
+            "description": " The cryptographic key type (e.g., CSK, KSK, ZSK)",
+            "title": "Key Type",
+            "x-displayname": "Key Type"
+          },
+          "published": {
+            "type": "boolean",
+            "description": " Whether the key is published in the DNSKEY RRset",
+            "title": "Published",
+            "x-displayname": "Published"
+          },
+          "type": {
+            "type": "string",
+            "description": " Should always be \"CryptoKey\"",
+            "title": "Type",
+            "x-displayname": "Type"
           }
         }
       },
@@ -3055,8 +3834,8 @@
       },
       "dns_zoneDNSSECMode": {
         "type": "object",
-        "title": "DNSSEC Mode Disable",
-        "x-displayname": "Disable",
+        "title": "DNSSEC Mode",
+        "x-displayname": "DNSSEC Mode",
         "x-ves-oneof-field-mode": "[\"disable\",\"enable\"]",
         "x-ves-proto-message": "ves.io.schema.dns_zone.DNSSECMode",
         "properties": {
@@ -3329,6 +4108,48 @@
           }
         }
       },
+      "dns_zoneDeleteCryptoKeyRequest": {
+        "type": "object",
+        "title": "Delete CryptoKey Request",
+        "x-displayname": "Delete CryptoKey Request",
+        "x-ves-proto-message": "ves.io.schema.dns_zone.DeleteCryptoKeyRequest",
+        "properties": {
+          "key_id": {
+            "type": "integer",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Key Id",
+            "format": "int64",
+            "x-displayname": "Key ID",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace is always system for dns_zone\n\nExample: ` \"system\"`",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "system"
+          },
+          "zone_name": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Zone Name",
+            "x-displayname": "Zone Name",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "dns_zoneDeleteCryptoKeyResponse": {
+        "type": "object",
+        "title": "Delete CryptoKey Response",
+        "x-displayname": "Delete CryptoKey Response",
+        "x-ves-proto-message": "ves.io.schema.dns_zone.DeleteCryptoKeyResponse"
+      },
       "dns_zoneDeleteRequest": {
         "type": "object",
         "description": "This is the input message of the 'Delete' RPC.",
@@ -3340,7 +4161,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -3626,6 +4446,58 @@
           }
         }
       },
+      "dns_zoneEditCryptoKeyRequest": {
+        "type": "object",
+        "title": "Edit CryptoKey Request",
+        "x-displayname": "Edit CryptoKey Request",
+        "x-ves-proto-message": "ves.io.schema.dns_zone.EditCryptoKeyRequest",
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Active",
+            "x-displayname": "Active",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "key_id": {
+            "type": "integer",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Key Id",
+            "format": "int64",
+            "x-displayname": "Key ID",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace is always system for dns_zone\n\nExample: ` \"system\"`",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "system"
+          },
+          "zone_name": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Zone Name",
+            "x-displayname": "Zone Name",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "dns_zoneEditCryptoKeyResponse": {
+        "type": "object",
+        "title": "Edit CryptoKey Response",
+        "x-displayname": "Edit CryptoKey Response",
+        "x-ves-proto-message": "ves.io.schema.dns_zone.EditCryptoKeyResponse"
+      },
       "dns_zoneExportZoneFileResponse": {
         "type": "object",
         "description": "Export Zone File Response",
@@ -3660,6 +4532,45 @@
             "description": "Exclusive with [adns_service]\n F5 Cloud Services primary zone configuration",
             "title": "Primary zone configuration",
             "x-displayname": "Primary Zone Configuration"
+          }
+        }
+      },
+      "dns_zoneGetCryptoKeysRequest": {
+        "type": "object",
+        "title": "Get CryptoKeys Request",
+        "x-displayname": "Get CryptoKeys Request",
+        "x-ves-proto-message": "ves.io.schema.dns_zone.GetCryptoKeysRequest",
+        "properties": {
+          "namespace": {
+            "type": "string",
+            "description": " Namespace is always system for dns_zone\n\nExample: ` \"system\"`",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "system"
+          },
+          "zone_name": {
+            "type": "string",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Zone Name",
+            "x-displayname": "Zone Name",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "dns_zoneGetCryptoKeysResponse": {
+        "type": "object",
+        "title": "Get CryptoKeys Response",
+        "x-displayname": "Add CryptoKey Response",
+        "x-ves-proto-message": "ves.io.schema.dns_zone.GetCryptoKeysResponse",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dns_zoneCryptoKey"
+            }
           }
         }
       },
@@ -4222,7 +5133,6 @@
             "type": "boolean",
             "description": " A value of true indicates dns_zone is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -4430,8 +5340,7 @@
         "properties": {
           "allow_http_lb_managed_records": {
             "type": "boolean",
-            "description": " Option to allow user-created HTTP, TCP, and CDN load balancer related resource records to be automatically managed in a protected RRset.",
-            "format": "boolean"
+            "description": " Option to allow user-created HTTP, TCP, and CDN load balancer related resource records to be automatically managed in a protected RRset."
           },
           "default_rr_set_group": {
             "type": "array",
@@ -4480,8 +5389,7 @@
           },
           "allow_http_lb_managed_records": {
             "type": "boolean",
-            "description": " Option to allow user-created HTTP, TCP, and CDN load balancer related resource records to be automatically managed in a protected RRset.",
-            "format": "boolean"
+            "description": " Option to allow user-created HTTP, TCP, and CDN load balancer related resource records to be automatically managed in a protected RRset."
           },
           "default_rr_set_group": {
             "type": "array",
@@ -5316,6 +6224,27 @@
           }
         }
       },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "schemaBlindfoldSecretInfoType": {
         "type": "object",
         "description": "BlindfoldSecretInfoType specifies information about the Secret managed by F5XC Secret Management",
@@ -5610,7 +6539,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -5674,7 +6602,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -5740,7 +6667,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -5848,7 +6774,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }

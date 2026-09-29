@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.bot_infrastructure",
     "description": "Configures Bot Infrastructure by bot infrastructure",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -233,6 +243,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -373,6 +393,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -534,6 +564,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -684,6 +724,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -824,6 +874,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -954,6 +1014,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1081,6 +1151,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1224,6 +1304,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1315,6 +1405,9 @@
           "environment_type": {
             "$ref": "#/components/schemas/bot_infrastructureEnvironmentType"
           },
+          "kubernetes": {
+            "$ref": "#/components/schemas/bot_infrastructureInfraContainerizedHosted"
+          },
           "on_prem": {
             "$ref": "#/components/schemas/bot_infrastructureInfraF5HostedOnPrem"
           },
@@ -1388,6 +1481,9 @@
           },
           "environment_type": {
             "$ref": "#/components/schemas/bot_infrastructureEnvironmentType"
+          },
+          "kubernetes": {
+            "$ref": "#/components/schemas/bot_infrastructureInfraContainerizedHosted"
           },
           "on_prem": {
             "$ref": "#/components/schemas/bot_infrastructureInfraF5HostedOnPrem"
@@ -2205,6 +2301,39 @@
           }
         }
       },
+      "bot_infrastructureInfraContainerizedHosted": {
+        "type": "object",
+        "title": "F5 Containerized Hosted",
+        "x-displayname": "Containerized Hosted",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_infrastructure.InfraContainerizedHosted",
+        "properties": {
+          "infra_host_name": {
+            "type": "string",
+            "description": "\n\nExample: ` \"www.example.com\"`",
+            "title": "Infra host name",
+            "x-displayname": "Infra Host Name",
+            "x-ves-example": "www.example.com"
+          },
+          "kubernetes_cluster": {
+            "type": "array",
+            "description": " A list of Kubernetes Clusters.\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "Kubernetes Clusters",
+            "items": {
+              "$ref": "#/components/schemas/bot_infrastructureKubernetesCluster"
+            },
+            "x-displayname": "Kubernetes Clusters",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          },
+          "target_firmware_version": {
+            "type": "string",
+            "description": " Targeted Firmware Version is the new version.",
+            "title": "Target Firmware Version",
+            "x-displayname": "Target Firmware Version"
+          }
+        }
+      },
       "bot_infrastructureInfraF5HostedOnPrem": {
         "type": "object",
         "description": "Bot infra type is F5 Hosted/F5 On Premises",
@@ -2276,6 +2405,45 @@
           }
         }
       },
+      "bot_infrastructureKubernetesCluster": {
+        "type": "object",
+        "description": "Represents a single Kubernetes cluster associated with the Containerized Hosted infrastructure.\nIncludes identifiers, current firmware version, and deployed policy, version details and sync status for documentation and UI.",
+        "title": "Kubernetes Cluster",
+        "x-displayname": "Kubernetes Cluster",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_infrastructure.KubernetesCluster",
+        "properties": {
+          "cluster_tag": {
+            "type": "string",
+            "description": " The cluster tag of the Kubernetes cluster",
+            "title": "Cluster tag",
+            "x-displayname": "Cluster Tag"
+          },
+          "deployed_allowlist_policy_metadata": {
+            "$ref": "#/components/schemas/bot_infrastructurePolicyMetadata"
+          },
+          "deployed_bot_threat_intelligence_package_name": {
+            "type": "string",
+            "description": " Bot Threat Intelligence Package deployed in the cluster",
+            "title": "Deployed Bot Threat Intelligence Package",
+            "x-displayname": "Deployed Bot Threat Intelligence Package"
+          },
+          "deployed_endpoint_policy_metadata": {
+            "$ref": "#/components/schemas/bot_infrastructurePolicyMetadata"
+          },
+          "deployed_network_policy_metadata": {
+            "$ref": "#/components/schemas/bot_infrastructurePolicyMetadata"
+          },
+          "firmware_version": {
+            "type": "string",
+            "description": " The version of firmware for the Kubernetes cluster",
+            "title": "Firmware Version",
+            "x-displayname": "Firmware Version"
+          },
+          "sync_status": {
+            "$ref": "#/components/schemas/bot_infrastructureSyncStatus"
+          }
+        }
+      },
       "bot_infrastructureListResponse": {
         "type": "object",
         "description": "This is the output message of 'List' RPC.",
@@ -2326,7 +2494,6 @@
             "type": "boolean",
             "description": " A value of true indicates bot_infrastructure is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -2550,6 +2717,15 @@
           }
         }
       },
+      "bot_infrastructureSyncStatus": {
+        "type": "string",
+        "description": "Sync Status\n\nThe Kubernetes cluster status is unknown\nThe Kubernetes cluster is out of sync with the latest policies\nThe Kubernetes cluster is in sync with the latest policies",
+        "title": "Sync Status",
+        "enum": ["SYNC_STATUS_UNKNOWN", "SYNC_STATUS_OUT_OF_SYNC", "SYNC_STATUS_IN_SYNC"],
+        "default": "SYNC_STATUS_UNKNOWN",
+        "x-displayname": "Sync Status",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.SyncStatus"
+      },
       "bot_infrastructureTIPackageInformation": {
         "type": "object",
         "description": "The metadata of threat intelligence policy.",
@@ -2693,6 +2869,27 @@
             "type": "string",
             "description": "Must be a valid serialized protocol buffer of the above specified type.",
             "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -2862,7 +3059,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -2926,7 +3122,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -2992,7 +3187,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -3075,7 +3269,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }

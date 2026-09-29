@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.customer_support",
     "description": "Handles creation and listing of support issues (by tenant and user).\nCurrently supported operations are:\n* create - to create a support request\n* list - to query for all issues created by a customer\nall other operations are taken care of off-the-system (via email or phone calls)",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -106,6 +106,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -123,124 +133,6 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-listctsupporttickets"
         },
         "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.ListCTSupportTickets",
-        "tags": ["web"]
-      },
-      "x-displayname": "Customer Support",
-      "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
-      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
-    },
-    "/api/web/namespaces/system/customer_support/tax_exempt_request": {
-      "post": {
-        "summary": "Tax exemption verification request",
-        "description": "Raises a tax exemption verification request. This will ultimately create a support ticket and assign it to our billing department.\nIf verified and approved then the customer will not be levied sale taxes.",
-        "operationId": "ves.io.schema.customer_support.CustomAPI.RaiseTaxExemptVerificationSupportTicket",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/customer_supportRaiseTaxExemptVerificationSupportTicketResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Returned when operation is not authorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Returned when there is no permission to access resource",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Returned when resource is not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Returned when operation on resource is conflicting with current value",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Returned when operation has been rejected as it is happening too frequently",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Returned when server encountered an error in processing API",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Returned when service is unavailable temporarily",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Returned when server timed out processing request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "format": "string"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/customer_supportRaiseTaxExemptVerificationSupportTicketRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "externalDocs": {
-          "description": "Examples of this operation",
-          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-raisetaxexemptverificationsupportticket"
-        },
-        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.RaiseTaxExemptVerificationSupportTicket",
         "tags": ["web"]
       },
       "x-displayname": "Customer Support",
@@ -342,6 +234,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -381,6 +283,146 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-getattachment"
         },
         "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.GetAttachment",
+        "tags": ["web"]
+      },
+      "x-displayname": "Customer Support",
+      "x-ves-proto-service": "ves.io.schema.customer_support.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/web/namespaces/system/customer_support/{name}/comments": {
+      "get": {
+        "summary": "Get comments",
+        "description": "Get comments for a given customer support ticket.",
+        "operationId": "ves.io.schema.customer_support.CustomAPI.GetComments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/customer_supportGetCommentsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "description": "name\n\nx-example: \"uid-00000000-0000-4000-8000-58ffeb719749\"\nThe name (issue ID) of the customer support ticket object.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "created_until_timestamp",
+            "description": "x-example: \"2025-01-01T00:00:00Z\"\nFilter to retrieve comments created up to the specified timestamp.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Created Until Timestamp",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-customer_support-customapi-getcomments"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.customer_support.CustomAPI.GetComments",
         "tags": ["web"]
       },
       "x-displayname": "Customer Support",
@@ -479,6 +521,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -609,6 +661,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -770,6 +832,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -907,6 +979,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1050,6 +1132,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1187,6 +1279,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1330,6 +1432,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1467,6 +1579,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1625,6 +1747,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1978,6 +2110,30 @@
           }
         }
       },
+      "customer_supportGetCommentsResponse": {
+        "type": "object",
+        "description": "Response containing comments for a given customer support ticket.",
+        "title": "Get comments response",
+        "x-displayname": "Get customer support ticket comments response",
+        "x-ves-proto-message": "ves.io.schema.customer_support.GetCommentsResponse",
+        "properties": {
+          "all_comments_returned": {
+            "type": "boolean",
+            "description": " Indicates if all comments for the issue have been returned",
+            "title": "all_comments_returned",
+            "x-displayname": "All Comments Returned"
+          },
+          "comments": {
+            "type": "array",
+            "description": " List of comments on the customer support ticket.",
+            "title": "comments",
+            "items": {
+              "$ref": "#/components/schemas/customer_supportCommentType"
+            },
+            "x-displayname": "Comments"
+          }
+        }
+      },
       "customer_supportGetResponse": {
         "type": "object",
         "description": "This is the output message of the 'Get' RPC",
@@ -2085,7 +2241,6 @@
             "type": "boolean",
             "description": " A value of true indicates customer_support is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -2258,48 +2413,6 @@
           }
         }
       },
-      "customer_supportRaiseTaxExemptVerificationSupportTicketRequest": {
-        "type": "object",
-        "description": "Provides ability to request tax status of the customer, eventually flagging them as tax exempt (U.S. only)",
-        "title": "Request to verify customer tax exemption status",
-        "x-displayname": "Request to verify customer tax exemption status",
-        "x-ves-proto-message": "ves.io.schema.customer_support.RaiseTaxExemptVerificationSupportTicketRequest",
-        "properties": {
-          "attachments": {
-            "type": "array",
-            "description": " Information about any attachments (such as screenshots, plain text files) to support the tax exemption review request.",
-            "title": "Attachments information",
-            "items": {
-              "$ref": "#/components/schemas/customer_supportAttachmentType"
-            },
-            "x-displayname": "Attachments details"
-          },
-          "request_description": {
-            "type": "string",
-            "description": " Description introducing reasons for tax exemption status verification\n\nExample: ` \"requesting a tax exemption status review as we're a not-for-profit organisation\"`",
-            "title": "Request description",
-            "x-displayname": "Description",
-            "x-ves-example": "requesting a tax exemption status review as we're a not-for-profit organisation"
-          }
-        }
-      },
-      "customer_supportRaiseTaxExemptVerificationSupportTicketResponse": {
-        "type": "object",
-        "description": "Any error that may occurred during tax status verification request. Note that the verification process itself takes\na lot of time (days) - this message only indicates the reception of the request",
-        "title": "Tax exemption status verification response",
-        "x-displayname": "Response to tax status verification call",
-        "x-ves-proto-message": "ves.io.schema.customer_support.RaiseTaxExemptVerificationSupportTicketResponse",
-        "properties": {
-          "err": {
-            "$ref": "#/components/schemas/schemacustomer_supportErrorCode"
-          },
-          "name": {
-            "type": "string",
-            "description": " x-displayName : \"Name\"\n name of the ticket created on the back of the request",
-            "title": "name of ticket"
-          }
-        }
-      },
       "customer_supportReopenRequest": {
         "type": "object",
         "description": "Reopens a closed existing customer support ticket",
@@ -2370,15 +2483,13 @@
       },
       "customer_supportSupportService": {
         "type": "string",
-        "description": "Indicates the list of support service\n\nUnknown Support Service\nAccount Protection Support Service\nAdministration Support Service\nApplication Traffic Insight Support Service\nAudit Logs & Alerts Support Service\nAuthentication Intelligence Support Service\nBilling Support Service\nClient Side Defense Support Service\nCloud & Edge Sites Support Service\ndeprecated: use SS_MULTI_CLOUD_NETWORK_CONNECT instead\nDDOS & Transit Support Service\nDeprecated: use SS_ROUTED_DDOS instead\nDistributed Apps Support Service\nDNS Management Support Service\nLoadBalancers Support Service\ndeprecated: use SS_MULTI_CLOUD_APP_CONNECT instead\nShared Configuration Support Service\nWeb App & API Protection Support Service\nOther Support Service\nBot Defense Support Service\nContent delivery network Support Service\nObservability Support Service\nDelegated Access Support Service\nNetworking & security across clouds, edge and on-premises\nConnect apps across clouds, edge and on-premises using Load Balancers\nData Intelligence Support Service\nNGINX One Support Service\nWeb App Scanning Support Service\nRouted DDoS Support Service\nMobile App Shield protects mobile apps from reverse engineering, tampering and malware\nDefault for deprecated services\nAutomation Support Service for Terraform Provider",
+        "description": "Indicates the list of support service\n\nUnknown Support Service\nAccount Protection Support Service\nAdministration Support Service\nApplication Traffic Insight Support Service\nAudit Logs & Alerts Support Service\nAuthentication Intelligence Support Service\nBilling Support Service\nClient Side Defense Support Service\nCloud & Edge Sites Support Service\ndeprecated: use SS_MULTI_CLOUD_NETWORK_CONNECT instead\nDDOS & Transit Support Service\nDeprecated: use SS_ROUTED_DDOS instead\nDistributed Apps Support Service\nDNS Management Support Service\nLoadBalancers Support Service\ndeprecated: use SS_MULTI_CLOUD_APP_CONNECT instead\nShared Configuration Support Service\nWeb App & API Protection Support Service\nOther Support Service\nBot Defense Support Service\nContent delivery network Support Service\nObservability Support Service\nDelegated Access Support Service\nNetworking & security across clouds, edge and on-premises\nConnect apps across clouds, edge and on-premises using Load Balancers\nData Intelligence Support Service\nNGINX One Support Service\nWeb App Scanning Support Service\nRouted DDoS Support Service\nMobile App Shield protects mobile apps from reverse engineering, tampering and malware\nDevice Intelligence Support Service\nDefault for deprecated services\nAutomation Support Service for Terraform Provider",
         "title": "SupportService",
         "enum": [
           "SS_UNKNOWN",
-          "SS_ACCOUNT_PROTECTION",
           "SS_ADMINISTRATION",
           "SS_APPLICATION_TRAFFIC_INSIGHT",
           "SS_AUDIT_LOGS_AND_ALERTS",
-          "SS_AUTHENTICATION_INTELLIGENCE",
           "SS_BILLING",
           "SS_CLIENT_SIDE_DEFENSE",
           "SS_CLOUD_AND_EDGE_SITES",
@@ -2400,6 +2511,7 @@
           "SS_WEB_APP_SCANNING",
           "SS_ROUTED_DDOS",
           "SS_MOBILE_APP_SHIELD",
+          "SS_DEVICE_INTELLIGENCE",
           "SS_DEPRECATED",
           "SS_AUTOMATION"
         ],
@@ -2454,7 +2566,7 @@
       },
       "customer_supportSupportTopic": {
         "type": "string",
-        "description": "Support Topic indicates the list of topics for service tickets\n\nUnknown/empty priority\nACCOUNT_SUPPORT_TOPIC_ACCESS_REQUEST\nACCOUNT_SUPPORT_TOPIC_ACCOUNT\nACCOUNT_SUPPORT_TOPIC_BILLING\nACCOUNT_SUPPORT_TOPIC_BILLING_PLAN_CHANGE\nACCOUNT_SUPPORT_TOPIC_PUBLIC_IP\nACCOUNT_SUPPORT_TOPIC_QUOTA_INCREASE\nACCOUNT_SUPPORT_TOPIC_RMA\nACCOUNT_SUPPORT_TOPIC_TAX_EXEMPT_VERIFICATION\nACCOUNT_SUPPORT_TOPIC_OTHERS\nTECHNICAL_SUPPORT_TOPIC_CONFIGURATION_CHANGES\nTECHNICAL_SUPPORT_TOPIC_ERROR_MESSAGE\nTECHNICAL_SUPPORT_TOPIC_NEW_CONFIGURATION\nTECHNICAL_SUPPORT_TOPIC_PRODUCT_QUESTION\nTECHNICAL_SUPPORT_TOPIC_TROUBLESHOOTING\nTECHNICAL_SUPPORT_TOPIC_OTHERS\nINCIDENT_SUPPORT_TOPIC_LATENCY\nINCIDENT_SUPPORT_TOPIC_PERFORMANCE_DEGRADATION\nINCIDENT_SUPPORT_TOPIC_PARTIAL_OUTAGE\nINCIDENT_SUPPORT_TOPIC_COMPLETE_OUTAGE\nINCIDENT_SUPPORT_TOPIC_OTHERS\nTASK_TOPIC_PLAN_TRANSITION\nPROBLEM_TOPIC_SUPPORT_ALERT\nQUESTION_TOPIC_INFRASTRUCTURE\nTECHNICAL_SUPPORT_TOPIC_DELEGATED_DOMAIN_MIGRATION\nTECHNICAL_SUPPORT_TOPIC_TERRAFORM_PROVIDER",
+        "description": "Support Topic indicates the list of topics for service tickets\n\nUnknown/empty priority\nACCOUNT_SUPPORT_TOPIC_ACCESS_REQUEST\nACCOUNT_SUPPORT_TOPIC_ACCOUNT\nACCOUNT_SUPPORT_TOPIC_BILLING\nACCOUNT_SUPPORT_TOPIC_BILLING_PLAN_CHANGE\nACCOUNT_SUPPORT_TOPIC_PUBLIC_IP\nACCOUNT_SUPPORT_TOPIC_QUOTA_INCREASE\nACCOUNT_SUPPORT_TOPIC_RMA\nACCOUNT_SUPPORT_TOPIC_TAX_EXEMPT_VERIFICATION\nACCOUNT_SUPPORT_TOPIC_OTHERS\nTECHNICAL_SUPPORT_TOPIC_CONFIGURATION_CHANGES\nTECHNICAL_SUPPORT_TOPIC_ERROR_MESSAGE\nTECHNICAL_SUPPORT_TOPIC_NEW_CONFIGURATION\nTECHNICAL_SUPPORT_TOPIC_PRODUCT_QUESTION\nTECHNICAL_SUPPORT_TOPIC_TROUBLESHOOTING\nTECHNICAL_SUPPORT_TOPIC_OTHERS\nINCIDENT_SUPPORT_TOPIC_LATENCY\nINCIDENT_SUPPORT_TOPIC_PERFORMANCE_DEGRADATION\nINCIDENT_SUPPORT_TOPIC_PARTIAL_OUTAGE\nINCIDENT_SUPPORT_TOPIC_COMPLETE_OUTAGE\nINCIDENT_SUPPORT_TOPIC_OTHERS\nTASK_TOPIC_PLAN_TRANSITION\nPROBLEM_TOPIC_SUPPORT_ALERT\nQUESTION_TOPIC_INFRASTRUCTURE\nTECHNICAL_SUPPORT_TOPIC_DELEGATED_DOMAIN_MIGRATION\nACCOUNT_SUPPORT_TOPIC_PUBLIC_IPv6\nACCOUNT_SUPPORT_TOPIC_DUALSTACK_IP\nTECHNICAL_SUPPORT_TOPIC_TERRAFORM_PROVIDER",
         "title": "SupportTopic",
         "enum": [
           "TOPIC_UNKNOWN",
@@ -2482,6 +2594,8 @@
           "PROBLEM_TOPIC_SUPPORT_ALERT",
           "QUESTION_TOPIC_INFRASTRUCTURE",
           "TECHNICAL_SUPPORT_TOPIC_DELEGATED_DOMAIN_MIGRATION",
+          "ACCOUNT_SUPPORT_TOPIC_PUBLIC_IPV6",
+          "ACCOUNT_SUPPORT_TOPIC_PUBLIC_DUALSTACK_IP",
           "TECHNICAL_SUPPORT_TOPIC_TERRAFORM_PROVIDER"
         ],
         "default": "TOPIC_UNKNOWN",
@@ -2519,6 +2633,27 @@
             "type": "string",
             "description": "Must be a valid serialized protocol buffer of the above specified type.",
             "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -2669,7 +2804,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -2733,7 +2867,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -2862,7 +2995,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }
@@ -3065,7 +3197,6 @@
           "ongoing": {
             "type": "boolean",
             "description": " Ongoing is a flag that indicates whether the issue is ongoing or not.",
-            "format": "boolean",
             "x-displayname": "Ongoing"
           },
           "priority": {
@@ -3186,7 +3317,6 @@
           "escalated": {
             "type": "boolean",
             "description": " Indicates escalated ticket - i.e. a ticket its priority has been increased to PRIORITY_URGENT and L1 support has been notified of it.\n only existing enterprise customer tickets with priority other then PRIORITY_URGENT can be escalated",
-            "format": "boolean",
             "x-displayname": "Escalated"
           },
           "followups": {
@@ -3200,7 +3330,6 @@
           "ongoing": {
             "type": "boolean",
             "description": " Ongoing is a flag that indicates whether the issue is ongoing or not.",
-            "format": "boolean",
             "x-displayname": "Ongoing"
           },
           "priority": {

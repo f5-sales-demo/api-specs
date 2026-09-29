@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.cluster",
     "description": "cluster object represent common set of endpoints (providers of service) that can serve given route for virtual_host\nCluster has list of references to Endpoint which forms the set\nCluster has common properties for this collection\n * Reference to healthcheck object\n * load balancer algorithm\n * Circuit breaker based on\n    * Number of concurrent connections\n    * Outstanding requests\n    * Number of retries\n * Subset of endpoints\n * TLS parameter for the endpoints\n * Protocol Timeouts",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -233,6 +243,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -373,6 +393,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -534,6 +564,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -674,6 +714,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -966,7 +1016,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -1261,7 +1310,6 @@
             "type": "boolean",
             "description": " Enable/disable HTTP2 Protocol for upstream connections",
             "title": "enabled",
-            "format": "boolean",
             "x-displayname": "HTTP2 Enabled"
           }
         }
@@ -1316,7 +1364,6 @@
             "type": "boolean",
             "description": " A value of true indicates cluster is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -1671,6 +1718,27 @@
           }
         }
       },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "schemaBlindfoldSecretInfoType": {
         "type": "object",
         "description": "BlindfoldSecretInfoType specifies information about the Secret managed by F5XC Secret Management",
@@ -1963,7 +2031,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -2027,7 +2094,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -2137,7 +2203,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -2245,7 +2310,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }
@@ -2487,7 +2551,6 @@
             "type": "boolean",
             "description": " When True, skip verification of hostname i.e. CN/Subject Alt Name of certificate\n is not matched to the connecting hostname",
             "title": "skip_hostname_verification",
-            "format": "boolean",
             "x-displayname": "Skip verification of hostname"
           },
           "trusted_ca": {
@@ -2543,7 +2606,8 @@
         "description": "Certificate Parameters for authentication, TLS ciphers, and trust store",
         "title": "UpstreamCertificateParamsType",
         "x-displayname": "Upstream Certificate Parameters",
-        "x-ves-displayorder": "1,2,3,4,5",
+        "x-ves-displayorder": "1,6,3,4,5",
+        "x-ves-oneof-field-server_validation_choice": "[\"skip_server_verification\",\"tls_validation_params\",\"volterra_trusted_ca\"]",
         "x-ves-proto-message": "ves.io.schema.UpstreamCertificateParamsType",
         "properties": {
           "certificates": {
@@ -2581,8 +2645,14 @@
           "minimum_protocol_version": {
             "$ref": "#/components/schemas/schemaTlsProtocol"
           },
-          "validation_params": {
+          "skip_server_verification": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "tls_validation_params": {
             "$ref": "#/components/schemas/schemaTlsValidationParamsType"
+          },
+          "volterra_trusted_ca": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
           }
         }
       },

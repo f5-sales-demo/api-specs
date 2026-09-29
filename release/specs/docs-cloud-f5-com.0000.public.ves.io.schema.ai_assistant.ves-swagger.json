@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.ai_assistant",
     "description": "Custom handler for ai assistant related microservice",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -236,6 +246,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -366,6 +386,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -493,6 +523,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -964,7 +1004,6 @@
             "type": "boolean",
             "description": "\n\nExample: ` \"true\"`",
             "title": "is_error",
-            "format": "boolean",
             "x-displayname": "is_error",
             "x-ves-example": "true"
           },
@@ -1603,15 +1642,15 @@
         "properties": {
           "external_links": {
             "type": "array",
-            "description": " External doc links, that will be presented to the user\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.max_len: 6\n",
+            "description": " External doc links, that will be presented to the user\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.max_len: 6\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "external links",
             "items": {
               "$ref": "#/components/schemas/commonLink"
             },
             "x-displayname": "External Links",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.unique": "true",
-              "ves.io.schema.rules.string.max_len": "6"
+              "ves.io.schema.rules.repeated.items.string.max_len": "6",
+              "ves.io.schema.rules.repeated.unique": "true"
             }
           },
           "items": {
@@ -1666,6 +1705,27 @@
             "type": "string",
             "description": "Must be a valid serialized protocol buffer of the above specified type.",
             "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -1726,28 +1786,28 @@
         "properties": {
           "external_links": {
             "type": "array",
-            "description": " External doc links, that will be presented to the user\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.max_len: 6\n",
+            "description": " External doc links, that will be presented to the user\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.max_len: 6\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "external links",
             "items": {
               "$ref": "#/components/schemas/commonLink"
             },
             "x-displayname": "External Links",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.unique": "true",
-              "ves.io.schema.rules.string.max_len": "6"
+              "ves.io.schema.rules.repeated.items.string.max_len": "6",
+              "ves.io.schema.rules.repeated.unique": "true"
             }
           },
           "internal_links": {
             "type": "array",
-            "description": " Internal Link like dashboard links, that will be presented to the user\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.max_len: 6\n",
+            "description": " Internal Link like dashboard links, that will be presented to the user\n\nValidation Rules:\n  ves.io.schema.rules.repeated.items.string.max_len: 6\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "internal links",
             "items": {
               "$ref": "#/components/schemas/commonLink"
             },
             "x-displayname": "Internal Links",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.repeated.unique": "true",
-              "ves.io.schema.rules.string.max_len": "6"
+              "ves.io.schema.rules.repeated.items.string.max_len": "6",
+              "ves.io.schema.rules.repeated.unique": "true"
             }
           },
           "overlay_content": {

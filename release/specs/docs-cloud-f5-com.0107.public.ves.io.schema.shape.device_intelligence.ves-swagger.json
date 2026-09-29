@@ -1,0 +1,2246 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.device_intelligence",
+    "description": "Custom handler in Device Intelligence microservice will forward request(s) to backend API(s)",
+    "version": "2026.09.28",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@example.com"
+    }
+  },
+  "paths": {
+    "/api/device-intelligence/namespaces/{namespace}/analytics/devices/multi-account": {
+      "post": {
+        "summary": "Get Multi-Account Devices",
+        "description": "Get distribution of devices by linked account ranges",
+        "operationId": "ves.io.schema.shape.device_intelligence.CustomAPI.GetMultiAccountDevices",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_intelligenceMultiAccountDevicesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"default\"\nx-required\nNamespace name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/device_intelligenceMultiAccountDevicesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-customapi-getmultiaccountdevices"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.CustomAPI.GetMultiAccountDevices",
+        "tags": ["device-intelligence"]
+      },
+      "x-displayname": "Device Intelligence APIs",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/device-intelligence/namespaces/{namespace}/analytics/devices/risk-score-distribution": {
+      "post": {
+        "summary": "Get Risk Score Distribution",
+        "description": "Get distribution of risk scores across devices",
+        "operationId": "ves.io.schema.shape.device_intelligence.CustomAPI.GetRiskScoreDistribution",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_intelligenceRiskScoreDistributionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"default\"\nx-required\nNamespace name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/device_intelligenceRiskScoreDistributionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-customapi-getriskscoredistribution"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.CustomAPI.GetRiskScoreDistribution",
+        "tags": ["device-intelligence"]
+      },
+      "x-displayname": "Device Intelligence APIs",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/device-intelligence/namespaces/{namespace}/analytics/summary": {
+      "post": {
+        "summary": "Get Summary",
+        "description": "Get summary statistics for devices",
+        "operationId": "ves.io.schema.shape.device_intelligence.CustomAPI.GetSummary",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_intelligenceSummaryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"default\"\nx-required\nNamespace name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/device_intelligenceSummaryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-customapi-getsummary"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.CustomAPI.GetSummary",
+        "tags": ["device-intelligence"]
+      },
+      "x-displayname": "Device Intelligence APIs",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/device-intelligence/namespaces/{namespace}/analytics/transactions/high-risk": {
+      "post": {
+        "summary": "Get High-Risk Transactions",
+        "description": "Get time series for high-risk transactions",
+        "operationId": "ves.io.schema.shape.device_intelligence.CustomAPI.GetHighRiskTransactions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_intelligenceHighRiskTransactionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"default\"\nx-required\nNamespace name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/device_intelligenceHighRiskTransactionsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-customapi-gethighrisktransactions"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.CustomAPI.GetHighRiskTransactions",
+        "tags": ["device-intelligence"]
+      },
+      "x-displayname": "Device Intelligence APIs",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/device-intelligence/namespaces/{namespace}/devices": {
+      "post": {
+        "summary": "List Devices",
+        "description": "List devices with filtering and pagination",
+        "operationId": "ves.io.schema.shape.device_intelligence.CustomAPI.ListDevices",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_intelligenceDevicesListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"default\"\nx-required\nNamespace name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/device_intelligenceDevicesListRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-customapi-listdevices"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.CustomAPI.ListDevices",
+        "tags": ["device-intelligence"]
+      },
+      "x-displayname": "Device Intelligence APIs",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/device-intelligence/namespaces/{namespace}/devices/{device_id}/history": {
+      "post": {
+        "summary": "Get Device History",
+        "description": "Get history details for a specific device",
+        "operationId": "ves.io.schema.shape.device_intelligence.CustomAPI.GetDeviceHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_intelligenceDeviceHistoryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"default\"\nx-required\nNamespace name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "device_id",
+            "description": "DeviceID\n\nx-example: \"device-123\"\nx-required\nDevice identifier",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Device ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/device_intelligenceDeviceHistoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-customapi-getdevicehistory"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.CustomAPI.GetDeviceHistory",
+        "tags": ["device-intelligence"]
+      },
+      "x-displayname": "Device Intelligence APIs",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/device-intelligence/namespaces/{namespace}/devices/{device_id}/summary": {
+      "post": {
+        "summary": "Get Device Summary",
+        "description": "Get summary details for a specific device",
+        "operationId": "ves.io.schema.shape.device_intelligence.CustomAPI.GetDeviceSummary",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device_intelligenceDeviceDetailsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"default\"\nx-required\nNamespace name",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "device_id",
+            "description": "DeviceID\n\nx-example: \"device-123\"\nx-required\nDevice identifier",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Device ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/device_intelligenceDeviceSummaryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-customapi-getdevicesummary"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.CustomAPI.GetDeviceSummary",
+        "tags": ["device-intelligence"]
+      },
+      "x-displayname": "Device Intelligence APIs",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Device Intelligence APIs",
+  "x-ves-proto-package": "ves.io.schema.shape.device_intelligence",
+  "components": {
+    "schemas": {
+      "device_intelligenceBotDefenseRegion": {
+        "type": "string",
+        "description": "Defines a selection for Bot Defense region\n\n - US: US\n\nUnited States of America\n - EU: EU\n\nEuropean Union\n - ASIA: ASIA\n\nAsia\n - CA: CA\n\nCanada",
+        "title": "BotDefenseRegion",
+        "enum": ["US", "EU", "ASIA", "CA"],
+        "default": "US",
+        "x-displayname": "Bot Defense Region",
+        "x-ves-proto-enum": "ves.io.schema.shape.device_intelligence.BotDefenseRegion"
+      },
+      "device_intelligenceDeviceDetailsResponse": {
+        "type": "object",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.DeviceDetailsResponse",
+        "properties": {
+          "action_taken": {
+            "type": "string",
+            "description": " Action taken or recommended based on the risk assessment\n\nExample: ` \"Block\"`",
+            "title": "ActionTaken",
+            "x-displayname": "Action Taken",
+            "x-ves-example": "Block"
+          },
+          "channel": {
+            "type": "string",
+            "description": " Channel or platform used by the device (e.g., Web, Mobile)\n\nExample: ` \"Mobile\"`",
+            "title": "Channel",
+            "x-displayname": "Channel",
+            "x-ves-example": "Mobile"
+          },
+          "confidence": {
+            "type": "integer",
+            "description": " Confidence level of the risk assessment (0\u2013100)\n\nExample: ` \"98\"`",
+            "title": "Confidence",
+            "format": "int32",
+            "x-displayname": "Confidence",
+            "x-ves-example": "98"
+          },
+          "detected_signals": {
+            "type": "array",
+            "description": " List of risk or integrity signals detected for this device\n\nExample: ` \"[\"vm\",\"devtools\",\"tor\",\"vpn\",\"incognito\",\"factory_reset\",\"device_reuse\",\"behavioural_velocity_pattern\",\"suspicious_login_journey\",\"screen_signals\",\"browser_integrity_signals\"]\"`",
+            "title": "DetectedSignals",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Detected Signals",
+            "x-ves-example": "[\"vm\",\"devtools\",\"tor\",\"vpn\",\"incognito\",\"factory_reset\",\"device_reuse\",\"behavioural_velocity_pattern\",\"suspicious_login_journey\",\"screen_signals\",\"browser_integrity_signals\"]"
+          },
+          "device_risk_score": {
+            "type": "integer",
+            "description": " Overall risk score for the device (0\u2013100)\n\nExample: ` \"94\"`",
+            "title": "DeviceRiskScore",
+            "format": "int32",
+            "x-displayname": "Device Risk Score",
+            "x-ves-example": "94"
+          },
+          "high_risk_txn_count": {
+            "type": "string",
+            "description": " Number of high-risk transactions linked to the device\n\nExample: ` \"6\"`",
+            "title": "HighRiskTxnCount",
+            "format": "int64",
+            "x-displayname": "High-Risk Transaction Count",
+            "x-ves-example": "6"
+          },
+          "hosting": {
+            "type": "string",
+            "description": " Type of hosting or network environment detected for the device\n\nExample: ` \"Residential\"`",
+            "title": "Hosting",
+            "x-displayname": "Hosting Type",
+            "x-ves-example": "Residential"
+          },
+          "ip_address": {
+            "type": "string",
+            "description": " IP address observed for the device\n\nExample: ` \"192.0.2.56\"`",
+            "title": "IpAddress",
+            "x-displayname": "IP Address",
+            "x-ves-example": "192.0.2.56"
+          },
+          "location": {
+            "type": "array",
+            "description": " Geographic coordinates associated with the device\n\nExample: ` \"[-79.379997253417969, 43.669998168945312]\"`",
+            "title": "Location",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "x-displayname": "Location",
+            "x-ves-example": "[-79.379997253417969, 43.669998168945312]"
+          },
+          "new_or_returning_device": {
+            "type": "string",
+            "description": " Indicates whether the device is new or returning\n\nExample: ` \"Returning\"`",
+            "title": "NewOrReturningDevice",
+            "x-displayname": "New or Returning Device",
+            "x-ves-example": "Returning"
+          },
+          "os": {
+            "type": "string",
+            "description": " Operating system and version reported for the device\n\nExample: ` \"Androd 14\"`",
+            "title": "Os",
+            "x-displayname": "Operating System",
+            "x-ves-example": "Androd 14"
+          },
+          "user_agent": {
+            "type": "string",
+            "description": " User agent string reported by the device/browser\n\nExample: ` \"Mobile Chrome 121\"`",
+            "title": "UserAgent",
+            "x-displayname": "User Agent",
+            "x-ves-example": "Mobile Chrome 121"
+          }
+        }
+      },
+      "device_intelligenceDeviceHistoryRequest": {
+        "type": "object",
+        "description": "Request for device history details.",
+        "title": "DeviceHistoryRequest",
+        "x-displayname": "Device History Request",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.DeviceHistoryRequest",
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "description": " Device identifier\n\nExample: ` \"device-123\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "DeviceID",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "Device ID",
+            "x-ves-example": "device-123",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "256",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "end_time": {
+            "type": "string",
+            "description": " end time of the query period\n\nExample: ` \"1772495400\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "maxLength": 64,
+            "x-displayname": "End Time",
+            "x-ves-example": "1772495400",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "filters": {
+            "$ref": "#/components/schemas/device_intelligenceGlobalFilters"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace name\n\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Namespace",
+            "minLength": 1,
+            "maxLength": 64,
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/device_intelligencePagination"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/device_intelligenceSortOption"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " start time of the query period\n\nExample: ` \"1772473200\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "maxLength": 64,
+            "x-displayname": "Start Time",
+            "x-ves-example": "1772473200",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "device_intelligenceDeviceHistoryResponse": {
+        "type": "object",
+        "description": "x-example: \"{\"records\":[{\"timestamp\":\"2026-03-26T06:49:39.128Z\",\"risk_score\":\"94\",\"endpoint_label\":\"Login\",\"txn_id\":\"XXXX\",\"detected_signals\":[\"vpn\",\"incognito_mode\"],\"url\":\"api.example.com\",\"action_taken\":\"Continue\"}]}\"\nResponse containing a list of recent activity records with timestamps, risk scores, detected signals, and actions taken.",
+        "title": "DeviceHistoryResponse",
+        "x-displayname": "Device History Response (Last 60 Days)",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.DeviceHistoryResponse",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/device_intelligencePaginationInfo"
+          },
+          "records": {
+            "type": "array",
+            "description": " List of activity records\n\nExample: ` \"[{\"timestamp\":\"2026-03-26T06:49:39.128Z\",\"risk_score\":\"94\",\"endpoint_label\":\"Login\",\"txn_id\":\"XXXX\",\"detected_signals\":[\"vpn\",\"incognito_mode\"],\"url\":\"api.example.com\",\"action_taken\":\"Continue\"}]\"`",
+            "title": "Records",
+            "items": {
+              "$ref": "#/components/schemas/device_intelligenceRecord"
+            },
+            "x-displayname": "Records",
+            "x-ves-example": "[{\"timestamp\":\"2026-03-26T06:49:39.128Z\",\"risk_score\":\"94\",\"endpoint_label\":\"Login\",\"txn_id\":\"XXXX\",\"detected_signals\":[\"vpn\",\"incognito_mode\"],\"url\":\"api.example.com\",\"action_taken\":\"Continue\"}]"
+          }
+        }
+      },
+      "device_intelligenceDeviceRow": {
+        "type": "object",
+        "description": "Device information for display in a list",
+        "title": "DeviceRow",
+        "x-displayname": "Device Row",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.DeviceRow",
+        "properties": {
+          "action_taken": {
+            "type": "string",
+            "description": " Action taken or recommended based on the risk assessment\n\nExample: ` \"Block\"`",
+            "title": "ActionTaken",
+            "x-displayname": "Action Taken",
+            "x-ves-example": "Block"
+          },
+          "confidence": {
+            "type": "integer",
+            "description": " Confidence level of the risk assessment (0\u2013100)\n\nExample: ` \"98\"`",
+            "title": "Confidence",
+            "format": "int32",
+            "x-displayname": "Confidence",
+            "x-ves-example": "98"
+          },
+          "device_id": {
+            "type": "string",
+            "description": " Unique identifier for the device\n\nExample: ` \"dev_a2c8f5b9d1e3\"`",
+            "title": "DeviceId",
+            "x-displayname": "Device ID",
+            "x-ves-example": "dev_a2c8f5b9d1e3"
+          },
+          "high_risk_txn_count": {
+            "type": "string",
+            "description": " Number of high-risk transactions linked to the device\n\nExample: ` \"24\"`",
+            "title": "HighRiskTxnCount",
+            "format": "int64",
+            "x-displayname": "High-Risk Transaction Count",
+            "x-ves-example": "24"
+          },
+          "latest_txn_id": {
+            "type": "string",
+            "description": " Identifier of the most recent transaction associated with the device\n\nExample: ` \"3rj2u3j89\"`",
+            "title": "LatestTxnId",
+            "x-displayname": "Latest Transaction ID",
+            "x-ves-example": "3rj2u3j89"
+          },
+          "linked_accounts": {
+            "type": "string",
+            "description": " Number of distinct accounts linked to this device\n\nExample: ` \"8\"`",
+            "title": "LinkedAccounts",
+            "format": "int64",
+            "x-displayname": "Linked Accounts",
+            "x-ves-example": "8"
+          },
+          "risk_score": {
+            "type": "integer",
+            "description": " Overall risk score for the device (0\u2013100)\n\nExample: ` \"97\"`",
+            "title": "RiskScore",
+            "format": "int32",
+            "x-displayname": "Risk Score",
+            "x-ves-example": "97"
+          },
+          "risk_signals": {
+            "type": "array",
+            "description": " List of risk signals detected for this device\n\nExample: ` \"[\"Emulator\", \"Root/Jailbreak\"]\"`",
+            "title": "RiskSignals",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Risk Signals",
+            "x-ves-example": "[\"Emulator\", \"Root/Jailbreak\"]"
+          }
+        }
+      },
+      "device_intelligenceDeviceSummaryRequest": {
+        "type": "object",
+        "description": "Request for device summary details.",
+        "title": "DeviceSummaryRequest",
+        "x-displayname": "Device Summary Request",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.DeviceSummaryRequest",
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "description": " Device identifier\n\nExample: ` \"device-123\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 256\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "DeviceID",
+            "minLength": 1,
+            "maxLength": 256,
+            "x-displayname": "Device ID",
+            "x-ves-example": "device-123",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "256",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "end_time": {
+            "type": "string",
+            "description": " end time of the query period\n\nExample: ` \"1772495400\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "maxLength": 64,
+            "x-displayname": "End Time",
+            "x-ves-example": "1772495400",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "filters": {
+            "$ref": "#/components/schemas/device_intelligenceGlobalFilters"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace name\n\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Namespace",
+            "minLength": 1,
+            "maxLength": 64,
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "start_time": {
+            "type": "string",
+            "description": " start time of the query period\n\nExample: ` \"1772473200\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "maxLength": 64,
+            "x-displayname": "Start Time",
+            "x-ves-example": "1772473200",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "device_intelligenceDevicesListRequest": {
+        "type": "object",
+        "description": "Request to list devices with filtering and pagination",
+        "title": "DevicesListRequest",
+        "x-displayname": "Devices List Request",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.DevicesListRequest",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " end time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570197600\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "maxLength": 64,
+            "x-displayname": "End Time",
+            "x-ves-example": "1570197600",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "filters": {
+            "$ref": "#/components/schemas/device_intelligenceGlobalFilters"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace name\n\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Namespace",
+            "minLength": 1,
+            "maxLength": 64,
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/device_intelligencePagination"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/device_intelligenceSortOption"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " start time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"1570194000\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "maxLength": 64,
+            "x-displayname": "Start Time",
+            "x-ves-example": "1570194000",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "device_intelligenceDevicesListResponse": {
+        "type": "object",
+        "description": "Response containing paginated list of devices",
+        "title": "DevicesListResponse",
+        "x-displayname": "Devices List Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.DevicesListResponse",
+        "properties": {
+          "devices": {
+            "type": "array",
+            "description": " List of devices for this page",
+            "title": "Devices",
+            "items": {
+              "$ref": "#/components/schemas/device_intelligenceDeviceRow"
+            },
+            "x-displayname": "Devices"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/device_intelligencePaginationInfo"
+          }
+        }
+      },
+      "device_intelligenceFilterKey": {
+        "type": "string",
+        "description": "x-example: \"TIMESTAMP\"\nKey for query filter\n\n - TIMESTAMP: Timestamp Filter Key\n\nUse Timestamp as key to query",
+        "title": "Filter Key",
+        "enum": [
+          "TIMESTAMP",
+          "USERNAME",
+          "CLIENT_TOKEN",
+          "IP_ADDRESS",
+          "ASN",
+          "AS_ORGANIZATION",
+          "COUNTRY",
+          "METHOD",
+          "HOST",
+          "PATH",
+          "URL",
+          "REFERER",
+          "TRAFFIC_CHANNEL",
+          "IS_ATTACK",
+          "BOT_REASON",
+          "TRAFFIC_TYPE",
+          "THREAT_TYPE",
+          "SDK_VERSION",
+          "ACTION_TAKEN",
+          "COOKIE_AGE",
+          "BOT_COOKIE",
+          "USER_AGENT",
+          "USER_AGENT_OS_FAMILY",
+          "USER_AGENT_FAMILY",
+          "BROWSER_FINGERPRINT",
+          "USER_FINGERPRINT",
+          "HEADER_FINGERPRINT",
+          "DEVICE_ID",
+          "FLOW",
+          "AGENT",
+          "APPLICATION_NAME",
+          "PROTECTED_APPLICATION",
+          "RESPONSE_CODE",
+          "SERVER_RESPONSE_CODE",
+          "TRANSACTION_RESULT",
+          "MOBILE_TRANSACTION_INSIGHT",
+          "WEB_TRANSACTION_INSIGHT",
+          "TRIGGERED_RULE",
+          "FLOW_CATEGORY",
+          "FLOW_LABEL",
+          "ENDPOINT_NAME",
+          "ENDPOINT_LABEL",
+          "BOT_ENDPOINT_POLICY",
+          "KNOWN_BOT_NAME",
+          "KNOWN_BOT_CATEGORY",
+          "KNOWN_BOT_PROVIDER",
+          "KNOWN_BOT_CATEGORY_TYPE",
+          "KNOWN_BOT_MITIGATION",
+          "ABSOLUTE",
+          "PERCENTAGE",
+          "TREND",
+          "ENDPOINT_POLICY"
+        ],
+        "default": "TIMESTAMP",
+        "x-displayname": "Filter Key",
+        "x-ves-proto-enum": "ves.io.schema.shape.device_intelligence.FilterKey"
+      },
+      "device_intelligenceFilterOperator": {
+        "type": "string",
+        "description": "x-example: \"IN or NOT_IN\"\nOperator for query filter\n\n - IN: Filter Operator\n\nSpecifies that query result includes filter values\n - NOT_IN: Filter Operator\n\nSpecifies that query result excludes filter values\n - MATCHES_REGEX: Filter Operator\n\nSpecifies that query result matches filter regex\n - DOES_NOT_MATCH_REGEX: Filter Operator\n\nSpecifies that query result not matches filter regex\n - INCLUDES: Filter Operator\n\nSpecifies that query result includes filter values\n - DOES_NOT_INCLUDE: Filter Operator\n\nSpecifies that query result not include filter values\n - STARTS_WITH: Filter Operator\n\nSpecifies that query result starts with filter values\n - ENDS_WITH: Filter Operator\n\nSpecifies that query result ends with filter values",
+        "title": "Filter Operator",
+        "enum": [
+          "IN",
+          "NOT_IN",
+          "MATCHES_REGEX",
+          "DOES_NOT_MATCH_REGEX",
+          "INCLUDES",
+          "DOES_NOT_INCLUDE",
+          "STARTS_WITH",
+          "ENDS_WITH"
+        ],
+        "default": "IN",
+        "x-displayname": "Filter Operator",
+        "x-ves-proto-enum": "ves.io.schema.shape.device_intelligence.FilterOperator"
+      },
+      "device_intelligenceGlobalFilter": {
+        "type": "object",
+        "description": "Query Global Filter",
+        "title": "Global Filter",
+        "x-displayname": "Global Filter",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.GlobalFilter",
+        "properties": {
+          "key": {
+            "$ref": "#/components/schemas/device_intelligenceFilterKey"
+          },
+          "op": {
+            "$ref": "#/components/schemas/device_intelligenceFilterOperator"
+          },
+          "values": {
+            "type": "array",
+            "description": " An unordered list of filter strings\n\nExample: ` \"['Google LLC', 'Facebook, Inc']\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.max_len: 1024\n  ves.io.schema.rules.repeated.max_items: 64\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "Values",
+            "minItems": 1,
+            "maxItems": 64,
+            "items": {
+              "type": "string",
+              "maxLength": 1024
+            },
+            "x-displayname": "Values",
+            "x-ves-example": "['Google LLC', 'Facebook, Inc']",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.repeated.items.string.max_len": "1024",
+              "ves.io.schema.rules.repeated.max_items": "64",
+              "ves.io.schema.rules.repeated.min_items": "1",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
+          }
+        }
+      },
+      "device_intelligenceGlobalFilters": {
+        "type": "object",
+        "description": "Query Global Filters",
+        "title": "Global Filters",
+        "x-displayname": "Global Filters",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.GlobalFilters",
+        "properties": {
+          "global_filters": {
+            "type": "array",
+            "description": " list of global filters\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Filters",
+            "items": {
+              "$ref": "#/components/schemas/device_intelligenceGlobalFilter"
+            },
+            "x-displayname": "Global Filters",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "region_filter": {
+            "$ref": "#/components/schemas/device_intelligenceBotDefenseRegion"
+          }
+        }
+      },
+      "device_intelligenceHighRiskTransactionsRequest": {
+        "type": "object",
+        "description": "x-example: \"{\"namespace\":\"default\",\"start_time\":\"1570194000\",\"end_time\":\"1570197600\",\"filters\":{}}\"\nRequest parameters for retrieving high-risk transaction time series over a specified interval and optional global filters.",
+        "title": "HighRiskTransactionsRequest",
+        "x-displayname": "High-Risk Transactions Request",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.HighRiskTransactionsRequest",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " end time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570197600\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "maxLength": 64,
+            "x-displayname": "End Time",
+            "x-ves-example": "1570197600",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "filters": {
+            "$ref": "#/components/schemas/device_intelligenceGlobalFilters"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace name\n\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Namespace",
+            "minLength": 1,
+            "maxLength": 64,
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "start_time": {
+            "type": "string",
+            "description": " start time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"1570194000\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "maxLength": 64,
+            "x-displayname": "Start Time",
+            "x-ves-example": "1570194000",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "device_intelligenceHighRiskTransactionsResponse": {
+        "type": "object",
+        "description": "x-example: \"{\"time_series_results\":[{\"series_key\":\"total\",\"time_series\":[{\"timestamp\":\"1772067000\",\"value\":\"20\"}]},{\"series_key\":\"high_risk\",\"time_series\":[{\"timestamp\":\"1772067000\",\"value\":\"18\"}]}]}\"\nTime series data grouped by series key, providing timestamped counts for each series (e.g., total, high_risk).",
+        "title": "HighRiskTransactionsResponse",
+        "x-displayname": "High-Risk Transactions Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.HighRiskTransactionsResponse",
+        "properties": {
+          "time_series_results": {
+            "type": "array",
+            "description": " Collection of time series grouped by a series key\n\nExample: ` \"[{\"series_key\":\"total\",\"time_series\":[{\"timestamp\":\"1772067000\",\"value\":20}]}]\"`",
+            "title": "TimeSeriesResults",
+            "items": {
+              "$ref": "#/components/schemas/device_intelligenceTimeSeries"
+            },
+            "x-displayname": "Time Series Results",
+            "x-ves-example": "[{\"series_key\":\"total\",\"time_series\":[{\"timestamp\":\"1772067000\",\"value\":20}]}]"
+          }
+        }
+      },
+      "device_intelligenceMultiAccountDevice": {
+        "type": "object",
+        "description": "x-example: \"{\"account_range\":\"2-3\",\"device_count\":\"150\"}\"\nRepresents a bucket of devices grouped by the number of accounts linked to each device.",
+        "title": "MultiAccountDevice",
+        "x-displayname": "Multi-Account Device",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.MultiAccountDevice",
+        "properties": {
+          "account_range": {
+            "type": "string",
+            "description": " Bucket representing the number of accounts linked to a device (e.g., \"1\", \"2-3\", \"10+\")\n\nExample: ` \"2-3\"`",
+            "title": "AccountRange",
+            "x-displayname": "Account Range",
+            "x-ves-example": "2-3"
+          },
+          "device_count": {
+            "type": "string",
+            "description": " Number of devices in this account range\n\nExample: ` \"150\"`",
+            "title": "DeviceCount",
+            "format": "int64",
+            "x-displayname": "Device Count",
+            "x-ves-example": "150"
+          }
+        }
+      },
+      "device_intelligenceMultiAccountDevicesRequest": {
+        "type": "object",
+        "description": "Request to retrieve the distribution of devices by number of linked accounts.",
+        "title": "MultiAccountDevicesRequest",
+        "x-displayname": "Multi-Account Devices Request",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.MultiAccountDevicesRequest",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " end time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570197600\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "maxLength": 64,
+            "x-displayname": "End Time",
+            "x-ves-example": "1570197600",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "filters": {
+            "$ref": "#/components/schemas/device_intelligenceGlobalFilters"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace name\n\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Namespace",
+            "minLength": 1,
+            "maxLength": 64,
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "start_time": {
+            "type": "string",
+            "description": " start time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"1570194000\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "maxLength": 64,
+            "x-displayname": "Start Time",
+            "x-ves-example": "1570194000",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "device_intelligenceMultiAccountDevicesResponse": {
+        "type": "object",
+        "description": "x-example: \"{\"multi_account_devices\":[{\"account_range\":\"2-3\",\"device_count\":\"150\"},{\"account_range\":\"10+\",\"device_count\":\"12\"}]}\"\nResponse containing the distribution of devices bucketed by the number of linked accounts.",
+        "title": "MultiAccountDevicesResponse",
+        "x-displayname": "Multi-Account Devices Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.MultiAccountDevicesResponse",
+        "properties": {
+          "multi_account_devices": {
+            "type": "array",
+            "description": " Distribution of devices by account range buckets\n\nExample: ` \"[{\"account_range\":\"2-3\",\"device_count\":\"150\"}]\"`",
+            "title": "MultiAccountDevices",
+            "items": {
+              "$ref": "#/components/schemas/device_intelligenceMultiAccountDevice"
+            },
+            "x-displayname": "Multi-Account Devices",
+            "x-ves-example": "[{\"account_range\":\"2-3\",\"device_count\":\"150\"}]"
+          }
+        }
+      },
+      "device_intelligencePagination": {
+        "type": "object",
+        "description": "Pagination for Request with number and size",
+        "title": "Pagination",
+        "x-displayname": "Pagination",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.Pagination",
+        "properties": {
+          "page_number": {
+            "type": "integer",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Page Number",
+            "format": "int64",
+            "x-displayname": "Page Number",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "page_size": {
+            "type": "integer",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.uint32.gt: 0\n  ves.io.schema.rules.uint32.lte: 500\n",
+            "title": "Page Size",
+            "format": "int64",
+            "x-displayname": "Page Size",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.uint32.gt": "0",
+              "ves.io.schema.rules.uint32.lte": "500"
+            }
+          }
+        }
+      },
+      "device_intelligencePaginationInfo": {
+        "type": "object",
+        "description": "Pagination Info for Response, includes total rows, page number and page size",
+        "title": "Pagination Info",
+        "x-displayname": "Pagination Info",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.PaginationInfo",
+        "properties": {
+          "page_number": {
+            "type": "integer",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.uint32.gt: 0\n",
+            "title": "Page Number",
+            "format": "int64",
+            "x-displayname": "Page Number",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.uint32.gt": "0"
+            }
+          },
+          "page_size": {
+            "type": "integer",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.uint32.gt: 0\n  ves.io.schema.rules.uint32.lte: 500\n",
+            "title": "Page Size",
+            "format": "int64",
+            "x-displayname": "Page Size",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.uint32.gt": "0",
+              "ves.io.schema.rules.uint32.lte": "500"
+            }
+          },
+          "total_rows": {
+            "type": "string",
+            "description": "\n\nExample: ` \"4000\"`",
+            "title": "Total Rows",
+            "format": "uint64",
+            "x-displayname": "Total Rows",
+            "x-ves-example": "4000"
+          }
+        }
+      },
+      "device_intelligencePoint": {
+        "type": "object",
+        "description": "x-example: \"{\"timestamp\":\"1772067000\",\"value\":\"20\"}\"\nA single data point in a time series, containing a Unix epoch timestamp (seconds) and the observed value.",
+        "title": "Point",
+        "x-displayname": "Time Series Point",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.Point",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "description": " Unix epoch timestamp in seconds\n\nExample: ` \"1772067000\"`",
+            "title": "Timestamp",
+            "format": "int64",
+            "x-displayname": "Timestamp (epoch seconds)",
+            "x-ves-example": "1772067000"
+          },
+          "value": {
+            "type": "string",
+            "description": " Value observed at the given timestamp\n\nExample: ` \"20\"`",
+            "title": "Value",
+            "format": "int64",
+            "x-displayname": "Value",
+            "x-ves-example": "20"
+          }
+        }
+      },
+      "device_intelligenceRecord": {
+        "type": "object",
+        "description": "x-example: \"{\"timestamp\":\"2026-03-26T06:49:39.128Z\",\"risk_score\":\"94\",\"endpoint_label\":\"Login\",\"txn_id\":\"XXXX\",\"detected_signals\":[\"vpn\",\"incognito_mode\"],\"url\":\"api.example.com\",\"action_taken\":\"Continue\"}\"\nactivity record for device history.",
+        "title": "DeviceHistoryRecord",
+        "x-displayname": "DeviceHistoryRecord",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.Record",
+        "properties": {
+          "action_taken": {
+            "type": "string",
+            "description": " Action taken in response to the risk evaluation for this event\n\nExample: ` \"Continue\"`",
+            "title": "ActionTaken",
+            "x-displayname": "Action Taken",
+            "x-ves-example": "Continue"
+          },
+          "detected_signals": {
+            "type": "array",
+            "description": " Risk or integrity signals observed for this event\n\nExample: ` \"[\\\"vpn\\\",\\\"incognito_mode\\\"]\"`",
+            "title": "DetectedSignals",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Detected Signals",
+            "x-ves-example": "[\\\"vpn\\\",\\\"incognito_mode\\\"]"
+          },
+          "endpoint_label": {
+            "type": "string",
+            "description": " Human-readable label for the endpoint or action\n\nExample: ` \"Login\"`",
+            "title": "EndpointLabel",
+            "x-displayname": "Endpoint Label",
+            "x-ves-example": "Login"
+          },
+          "risk_score": {
+            "type": "integer",
+            "description": " Risk score assigned to this event (0\u2013100)\n\nExample: ` \"94\"`",
+            "title": "RiskScore",
+            "format": "int32",
+            "x-displayname": "Risk Score",
+            "x-ves-example": "94"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": " Event timestamp in RFC 3339 format with milliseconds (UTC)\n\nExample: ` \"2026-03-26T06:49:39.128Z\"`",
+            "title": "Timestamp",
+            "x-displayname": "Timestamp",
+            "x-ves-example": "2026-03-26T06:49:39.128Z"
+          },
+          "txn_id": {
+            "type": "string",
+            "description": " Identifier of the associated transaction\n\nExample: ` \"XXXX\"`",
+            "title": "TxnId",
+            "x-displayname": "Transaction ID",
+            "x-ves-example": "XXXX"
+          },
+          "url": {
+            "type": "string",
+            "description": " Endpoint URL or host associated with the event\n\nExample: ` \"api.example.com\"`",
+            "title": "Url",
+            "x-displayname": "URL",
+            "x-ves-example": "api.example.com"
+          }
+        }
+      },
+      "device_intelligenceRiskScore": {
+        "type": "object",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.RiskScore",
+        "properties": {
+          "device_count": {
+            "type": "string",
+            "description": " Number of devices in this risk rank\n\nExample: ` \"250\"`",
+            "title": "DeviceCount",
+            "format": "int64",
+            "x-displayname": "Device Count",
+            "x-ves-example": "250"
+          },
+          "risk_rank": {
+            "type": "string",
+            "description": " Risk rank label (e.g., low, medium, high)\n\nExample: ` \"high\"`",
+            "title": "RiskRank",
+            "x-displayname": "Risk Rank",
+            "x-ves-example": "high"
+          }
+        }
+      },
+      "device_intelligenceRiskScoreDistributionRequest": {
+        "type": "object",
+        "description": "Request to retrieve the distribution of devices across risk ranks.",
+        "title": "RiskScoreDistributionRequest",
+        "x-displayname": "Risk Score Distribution Request",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.RiskScoreDistributionRequest",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " end time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570197600\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "maxLength": 64,
+            "x-displayname": "End Time",
+            "x-ves-example": "1570197600",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "filters": {
+            "$ref": "#/components/schemas/device_intelligenceGlobalFilters"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace name\n\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Namespace",
+            "minLength": 1,
+            "maxLength": 64,
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "start_time": {
+            "type": "string",
+            "description": " start time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"1570194000\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "maxLength": 64,
+            "x-displayname": "Start Time",
+            "x-ves-example": "1570194000",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "device_intelligenceRiskScoreDistributionResponse": {
+        "type": "object",
+        "description": "x-example: \"[{\"risk_rank\":\"high\",\"device_count\":\"250\"},{\"risk_rank\":\"medium\",\"device_count\":\"500\"}]\"\nDistribution of devices across risk ranks. Each item contains the risk rank and the number of devices in that rank.",
+        "title": "RiskScoreDistributionResponse",
+        "x-displayname": "Risk Score Distribution Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.RiskScoreDistributionResponse",
+        "properties": {
+          "risk_score_distribution": {
+            "type": "array",
+            "description": " Distribution of devices across risk ranks\n\nExample: ` \"[{\"risk_rank\":\"high\",\"device_count\":\"250\"},{\"risk_rank\":\"medium\",\"device_count\":\"500\"}]\"`",
+            "title": "RiskScoreDistribution",
+            "items": {
+              "$ref": "#/components/schemas/device_intelligenceRiskScore"
+            },
+            "x-displayname": "Risk Score Distribution",
+            "x-ves-example": "[{\"risk_rank\":\"high\",\"device_count\":\"250\"},{\"risk_rank\":\"medium\",\"device_count\":\"500\"}]"
+          }
+        }
+      },
+      "device_intelligenceSortOption": {
+        "type": "object",
+        "description": "Query Result Sort Option",
+        "title": "Sort Option",
+        "x-displayname": "Sort Option",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.SortOption",
+        "properties": {
+          "key": {
+            "$ref": "#/components/schemas/device_intelligenceFilterKey"
+          },
+          "order": {
+            "$ref": "#/components/schemas/schemaSortOrder"
+          }
+        }
+      },
+      "device_intelligenceSummaryRequest": {
+        "type": "object",
+        "description": "Request for dashboard summary data",
+        "title": "SummaryRequest",
+        "x-displayname": "Summary Request",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.SummaryRequest",
+        "properties": {
+          "end_time": {
+            "type": "string",
+            "description": " end time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570197600\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "End time",
+            "maxLength": 64,
+            "x-displayname": "End Time",
+            "x-ves-example": "1570197600",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "filters": {
+            "$ref": "#/components/schemas/device_intelligenceGlobalFilters"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace name\n\nExample: ` \"default\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.min_len: 1\n",
+            "title": "Namespace",
+            "minLength": 1,
+            "maxLength": 64,
+            "x-displayname": "Namespace",
+            "x-ves-example": "default",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.min_len": "1"
+            }
+          },
+          "start_time": {
+            "type": "string",
+            "description": " start time of the query period\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"1570194000\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 64\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "Start time",
+            "maxLength": 64,
+            "x-displayname": "Start Time",
+            "x-ves-example": "1570194000",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "64",
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "device_intelligenceSummaryResponse": {
+        "type": "object",
+        "description": "Response containing summary data",
+        "title": "SummaryResponse",
+        "x-displayname": "Summary Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.SummaryResponse",
+        "properties": {
+          "high_risk_device_count": {
+            "type": "string",
+            "description": " Number of devices classified as high risk\n\nExample: ` \"300\"`",
+            "title": "HighRiskDeviceCount",
+            "format": "int64",
+            "x-displayname": "High-Risk Device Count",
+            "x-ves-example": "300"
+          },
+          "high_risk_device_rate": {
+            "type": "number",
+            "description": " High-risk devices as a percentage of total devices\n\nExample: ` \"3.0\"`",
+            "title": "HighRiskDeviceRate",
+            "format": "double",
+            "x-displayname": "High-Risk Device Rate (%)",
+            "x-ves-example": "3.0"
+          },
+          "high_risk_txn_count": {
+            "type": "string",
+            "description": " Number of transactions classified as high risk\n\nExample: ` \"1000\"`",
+            "title": "HighRiskTxnCount",
+            "format": "int64",
+            "x-displayname": "High-Risk Transaction Count",
+            "x-ves-example": "1000"
+          },
+          "high_risk_txn_rate": {
+            "type": "number",
+            "description": " High-risk transactions as a percentage of total transactions\n\nExample: ` \"10.0\"`",
+            "title": "HighRiskTxnRate",
+            "format": "double",
+            "x-displayname": "High-Risk Transaction Rate (%)",
+            "x-ves-example": "10.0"
+          },
+          "multi_acc_high_risk_device_count": {
+            "type": "string",
+            "description": " Number of high-risk devices associated with multiple accounts\n\nExample: ` \"40\"`",
+            "title": "MultiAccHighRiskDeviceCount",
+            "format": "int64",
+            "x-displayname": "Multi-Account High-Risk Device Count",
+            "x-ves-example": "40"
+          },
+          "total_device_count": {
+            "type": "string",
+            "description": " Total number of devices observed\n\nExample: ` \"10000\"`",
+            "title": "TotalDeviceCount",
+            "format": "int64",
+            "x-displayname": "Total Device Count",
+            "x-ves-example": "10000"
+          },
+          "total_evaluated_txn_count": {
+            "type": "string",
+            "description": " Total number of transactions evaluated\n\nExample: ` \"10000\"`",
+            "title": "TotalEvaluatedTxnCount",
+            "format": "int64",
+            "x-displayname": "Total Evaluated Transaction Count",
+            "x-ves-example": "10000"
+          },
+          "total_multi_acc_device_count": {
+            "type": "string",
+            "description": " Total number of devices associated with multiple accounts\n\nExample: ` \"150\"`",
+            "title": "TotalMultiAccDeviceCount",
+            "format": "int64",
+            "x-displayname": "Total Multi-Account Device Count",
+            "x-ves-example": "150"
+          },
+          "total_txn_count": {
+            "type": "string",
+            "description": " Total number of transactions\n\nExample: ` \"10000\"`",
+            "title": "TotalTxnCount",
+            "format": "int64",
+            "x-displayname": "Total Transaction Count",
+            "x-ves-example": "10000"
+          }
+        }
+      },
+      "device_intelligenceTimeSeries": {
+        "type": "object",
+        "description": "x-example: \"{\"series_key\":\"high_risk\",\"time_series\":[{\"timestamp\":\"1772067000\",\"value\":\"18\"}\"\nTime series data point.",
+        "title": "TimeSeries",
+        "x-displayname": "Time Series points by key",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.TimeSeries",
+        "properties": {
+          "series_key": {
+            "type": "string",
+            "description": " Identifier for the time series (e.g., \"total\", \"high_risk\")\n\nExample: ` \"total\"`",
+            "title": "SeriesKey",
+            "x-displayname": "Series Key",
+            "x-ves-example": "total"
+          },
+          "time_series": {
+            "type": "array",
+            "description": " Sequence of timestamped values for this series\n\nExample: ` \"[{\\\"timestamp\\\":\\\"1772067000\\\",\\\"value\\\":20}]\"`",
+            "title": "TimeSeries",
+            "items": {
+              "$ref": "#/components/schemas/device_intelligencePoint"
+            },
+            "x-displayname": "Time Series",
+            "x-ves-example": "[{\\\"timestamp\\\":\\\"1772067000\\\",\\\"value\\\":20}]"
+          }
+        }
+      },
+      "protobufAny": {
+        "type": "object",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
+        "properties": {
+          "type_url": {
+            "type": "string",
+            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          },
+          "value": {
+            "type": "string",
+            "description": "Must be a valid serialized protocol buffer of the above specified type.",
+            "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "schemaSortOrder": {
+        "type": "string",
+        "description": "Sort algorithm\n\nSort in descending order\nSort in ascending order",
+        "title": "SortOrder",
+        "enum": ["DESCENDING", "ASCENDING"],
+        "default": "DESCENDING",
+        "x-displayname": "Sort Order",
+        "x-ves-proto-enum": "ves.io.schema.SortOrder"
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "device-intelligence"
+    }
+  ]
+}

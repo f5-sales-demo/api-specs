@@ -338,8 +338,8 @@ def test_spectral_dependency_override_uses_the_audited_fast_uri_release():
     package = json.loads(PACKAGE_JSON.read_text())
     lock = json.loads(PACKAGE_LOCK.read_text())
 
-    assert package["overrides"]["fast-uri"] == "3.1.6"
-    assert lock["packages"]["node_modules/fast-uri"]["version"] == "3.1.6"
+    assert package["overrides"]["fast-uri"] == "3.1.7"
+    assert lock["packages"]["node_modules/fast-uri"]["version"] == "3.1.7"
 
 
 def test_release_workflow_runs_the_identifier_example_gate_after_reconciliation():

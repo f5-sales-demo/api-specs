@@ -163,22 +163,3 @@ corrections:
       reportingAutomationTypeData, whose probe
       (top/type/malicious/dimension/automation) returned
       HTTP 200 with an empty result set.
-
-  # --- Unverifiable: addon not provisioned on any reachable tenant ---
-
-  - schema: recognizeRescueItem
-    old_key: OBSOLOTE_upperBound
-    new_key: OBSOLETE_upperBound
-    verified: false
-    api_status: unverifiable
-    probe_endpoint: /api/shape/recognize/namespaces/system/recognize/addon/state
-    probe_method: GET
-    notes: >-
-      Re-probed 2026-07-25 on f5-amer-ent: every Shape
-      Recognize operation returns HTTP 503 (addon/state,
-      addon/provision, dashboard/health, dashboard/rescue,
-      dashboard/lift). 'shape-recognize' is listed by
-      GET /api/web/namespaces/system/addon_services but is
-      not provisioned, and addon_subscriptions returns
-      HTTP 403, so entitlement cannot even be read. The
-      wire key is preserved, so this costs nothing.

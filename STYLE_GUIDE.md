@@ -122,25 +122,32 @@ Use short, culture-neutral given names with a surname initial: `Dana R.`, `Kiran
   otherwise. Do not assign gender to roles.
 - Do not distribute names by stereotype. The security engineer, the finance approver, and the
   attacker in a scenario should not be drawn from predictable demographics.
-- Never cast a real colleague, customer contact, or executive as an example persona — not even
-  favorably, and not in internal drafts.
+- Never cast a real colleague, customer contact, or executive as an example persona.
 
 ### Email addresses
 
 A placeholder name at a reserved domain: `dana@example.com`, `kiran.m@example.net`. Role
 addresses are fine: `security@example.com`, `noreply@example.com`.
 
-### Never use real customer data
+### Keep public content synthetic
 
-This applies to internal drafts, demo tenants, and screenshots, not only to published work. When
-you need realistic-looking data, generate it. A sanitized real dataset is still a real dataset;
-treat removal of identifying details as unreliable and synthesis as the default.
+Every repository example, template, and fixture remains fictional or placeholder-based. Generate
+realistic-looking data for public documentation, demo tenants, screenshots, issues, pull requests,
+logs, telemetry, and other published evidence. A sanitized real dataset is still a real dataset;
+treat removal of identifying details as unreliable and synthesis as the public-content default.
+
+Private local drafts and installed-tool outputs may contain authorized real customer data when a
+workflow requires it. This includes model context and user-selected local files containing names,
+contact details, account names, customer relationship management identifiers, correspondence, or
+source-system data. Authorization from the organization or source system is sufficient; the tool
+does not need to add a second authorization mode or activation gate. Keep that data within the
+operator's approved access and retention boundary, and never copy it into Git or public artifacts.
 
 ### Personally identifiable information across the repository
 
-The same rule applies outside prose. Do not commit personally identifiable information (PII) to
-source code, fixtures, test snapshots, generated files, logs, telemetry examples, error output,
-media metadata, filenames, or commit messages. PII includes direct identifiers and values that can
+Do not commit personally identifiable information (PII) to source code, fixtures, test snapshots,
+generated files, logs, telemetry examples, error output, media metadata, filenames, or commit
+messages. PII includes direct identifiers and values that can
 identify or single out a party when combined:
 
 - Real names, person-specific email addresses, phone numbers, postal addresses, avatars, and

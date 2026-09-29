@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_load_balancer",
     "description": "DNS Load Balancer Record is used for configuring DNS Load Balancer for a record.",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -221,6 +231,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -351,6 +371,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -491,6 +521,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -652,6 +692,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -772,6 +822,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -889,6 +949,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1029,6 +1099,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1182,6 +1262,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1325,6 +1415,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1462,6 +1562,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1870,7 +1980,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -2034,7 +2143,6 @@
             "type": "boolean",
             "description": " A value of true indicates dns_load_balancer is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -2429,7 +2537,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert IP Matcher"
           },
           "prefix_sets": {
@@ -2460,7 +2567,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Match Result"
           },
           "ip_prefixes": {
@@ -2494,6 +2600,27 @@
             "type": "string",
             "description": "Must be a valid serialized protocol buffer of the above specified type.",
             "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -2768,7 +2895,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -2832,7 +2958,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -2898,7 +3023,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -2981,7 +3105,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }
@@ -3217,7 +3340,7 @@
       },
       "schemadns_load_balancerErrorCode": {
         "type": "string",
-        "description": "All possible error-codes for dns load balancer pool member health check failure\n\n - ERR_NIL: No error\n - ERR_UNDEFINED: Undefined error\n - ERR_RECEIVE_STRING_MISMATCH: Received string mismatch error\n - ERR_INTERNAL: Encountered internal error\n - ERR_MSG_SEND: Message send error\n - ERR_TIMEOUT: Waithing response timeout error\n - ERR_MSG_RECEIVE: Message receive error\n - ERR_MAX_RECEIVE_BYTES: Bytes limit exceeded error\n - ERR_ICMP_PING: ICMP ping failure\n - ERR_CONNECTION_REFUSED: Connection refused error\n - ERR_CONNECTION_ABORTED: Connection aborted error\n - ERR_CONNECTION_RESET: Connection reset error\n - ERR_NET_UN_REACHABLE: Network not reachable\n - ERR_HOST_UN_REACHABLE: Host not reachable\n - ERR_UNKNOWN: Unknown error\n - ERR_TLS_HANDSHAKE_FAILURE: TLS handshake failure\n - ERR_CONNECTION_TIMEDOUT: Connection timeout error",
+        "description": "All possible error-codes for dns load balancer pool member health check failure\n\n - ERR_NIL: No error\n - ERR_UNDEFINED: Undefined error\n - ERR_RECEIVE_STRING_MISMATCH: Received string mismatch error\n - ERR_INTERNAL: Encountered internal error\n - ERR_MSG_SEND: Message send error\n - ERR_TIMEOUT: Waithing response timeout error\n - ERR_MSG_RECEIVE: Message receive error\n - ERR_MAX_RECEIVE_BYTES: Bytes limit exceeded error\n - ERR_ICMP_PING: ICMP ping failure\n - ERR_CONNECTION_REFUSED: Connection refused error\n - ERR_CONNECTION_ABORTED: Connection aborted error\n - ERR_CONNECTION_RESET: Connection reset error\n - ERR_NET_UN_REACHABLE: Network not reachable\n - ERR_HOST_UN_REACHABLE: Host not reachable\n - ERR_UNKNOWN: Unknown error\n - ERR_TLS_HANDSHAKE_FAILURE: TLS handshake failure\n - ERR_CONNECTION_TIMEDOUT: Connection timeout error\n - ERR_INVALID_MONITOR_CONFIGURATION: Invalid monitor configuration error",
         "title": "ErrorCode",
         "enum": [
           "ERR_NIL",
@@ -3236,7 +3359,8 @@
           "ERR_HOST_UN_REACHABLE",
           "ERR_UNKNOWN",
           "ERR_TLS_HANDSHAKE_FAILURE",
-          "ERR_CONNECTION_TIMEDOUT"
+          "ERR_CONNECTION_TIMEDOUT",
+          "ERR_INVALID_MONITOR_CONFIGURATION"
         ],
         "default": "ERR_NIL",
         "x-displayname": "Error Code",

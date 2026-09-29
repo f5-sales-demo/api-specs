@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.bot_endpoint_policy",
     "description": "Configures Bot Endpoint Policy",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -234,6 +244,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -378,6 +398,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -518,6 +548,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -645,6 +685,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -796,6 +846,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -957,6 +1017,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1103,6 +1173,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1300,13 +1380,11 @@
           "case_sensitive": {
             "type": "boolean",
             "title": "Case sensitive",
-            "format": "boolean",
             "x-displayname": "Case Sensitive"
           },
           "not": {
             "type": "boolean",
             "title": "Check not",
-            "format": "boolean",
             "x-displayname": "Not(!)"
           },
           "operator": {
@@ -1666,14 +1744,12 @@
             "type": "boolean",
             "description": " case insensitive checker",
             "title": "Check case insensitive",
-            "format": "boolean",
             "x-displayname": "Case-Insensitive"
           },
           "not": {
             "type": "boolean",
             "description": " not checker",
             "title": "Check not",
-            "format": "boolean",
             "x-displayname": "Not(!)"
           },
           "value": {
@@ -1689,6 +1765,35 @@
               "ves.io.schema.rules.string.max_len": "256",
               "ves.io.schema.rules.string.min_len": "1"
             }
+          }
+        }
+      },
+      "bot_defenseMobileConfigFetchPaths": {
+        "type": "object",
+        "description": "Android and iOS mobile SDK config fetch paths.",
+        "title": "Mobile Config Fetch Paths",
+        "x-displayname": "Mobile Config Fetch Paths",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.MobileConfigFetchPaths",
+        "properties": {
+          "path_android": {
+            "type": "string",
+            "description": " Android mobile client will fetch F5 Client mobile configuration SDK from this path.\n This path must not conflict with any other website/mobile/application paths.\n\nExample: ` \"/somepath\"`",
+            "title": "Android Mobile Config Fetch Path",
+            "x-displayname": "Android Mobile Config Fetch Path",
+            "x-ves-example": "/somepath"
+          },
+          "path_ios": {
+            "type": "string",
+            "description": " iOS mobile client will fetch F5 Client mobile configuration SDK from this path.\n This path must not conflict with any other website/mobile/application paths.\n\nExample: ` \"/somepath\"`",
+            "title": "iOS Mobile Config Fetch Path",
+            "x-displayname": "iOS Mobile Config Fetch Path",
+            "x-ves-example": "/somepath"
+          },
+          "unavailable_text": {
+            "type": "string",
+            "description": " Certain mobile policies rely on older mobile components.",
+            "title": "Unavailable Text",
+            "x-displayname": "Unavailable"
           }
         }
       },
@@ -1735,14 +1840,12 @@
             "type": "boolean",
             "description": " case insensitive checker",
             "title": "Check case insensitive",
-            "format": "boolean",
             "x-displayname": "Case-Insensitive"
           },
           "not": {
             "type": "boolean",
             "description": " not checker",
             "title": "Check not",
-            "format": "boolean",
             "x-displayname": "Not(!)"
           },
           "value": {
@@ -1834,7 +1937,7 @@
         "description": "Configures Endpoint Policy Content",
         "title": "Endpoint Policy Content",
         "x-displayname": "Protected Endpoint",
-        "x-ves-displayorder": "4,1",
+        "x-ves-displayorder": "4,5,6,1",
         "x-ves-oneof-field-endpoint_type_choice": "[\"protected_mobile_endpoints\",\"protected_web_endpoints\"]",
         "x-ves-proto-message": "ves.io.schema.shape.bot_defense.ProtectedEndpoints",
         "properties": {
@@ -1845,11 +1948,20 @@
             "x-displayname": "Web Client JavaScript Path",
             "x-ves-example": "/common.js?single"
           },
+          "mobile_config_fetch_paths": {
+            "$ref": "#/components/schemas/bot_defenseMobileConfigFetchPaths"
+          },
           "protected_mobile_endpoints": {
             "$ref": "#/components/schemas/bot_defenseProtectedMobileEndpointList"
           },
           "protected_web_endpoints": {
             "$ref": "#/components/schemas/bot_defenseProtectedWebEndpointList"
+          },
+          "telemetry_prefix": {
+            "type": "string",
+            "description": " Defines a set of headers used to detect signals based on telemetry prefix",
+            "title": "Telemetry Prefix",
+            "x-displayname": "Telemetry Prefix"
           }
         }
       },
@@ -2226,13 +2338,11 @@
           "case_sensitive": {
             "type": "boolean",
             "title": "Case sensitive",
-            "format": "boolean",
             "x-displayname": "Case Sensitive"
           },
           "not": {
             "type": "boolean",
             "title": "Check not",
-            "format": "boolean",
             "x-displayname": "Not(!)"
           },
           "operator": {
@@ -2370,13 +2480,11 @@
           "case_sensitive": {
             "type": "boolean",
             "title": "Case sensitive",
-            "format": "boolean",
             "x-displayname": "Case Sensitive"
           },
           "not": {
             "type": "boolean",
             "title": "Check not",
-            "format": "boolean",
             "x-displayname": "Not(!)"
           },
           "operator": {
@@ -2910,7 +3018,6 @@
             "type": "boolean",
             "description": " A value of true indicates bot_endpoint_policy is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -3122,6 +3229,27 @@
             "type": "string",
             "description": "Must be a valid serialized protocol buffer of the above specified type.",
             "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -3885,7 +4013,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -3951,7 +4078,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -4034,7 +4160,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }

@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_security",
     "description": "API to create API endpoint protection rule suggestion from App Security Monitoring pages",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -224,6 +234,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -342,6 +362,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -457,6 +487,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -590,6 +630,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -720,6 +770,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -845,6 +905,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -874,6 +944,146 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityeventsscrollquery"
         },
         "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery",
+        "tags": ["data"]
+      },
+      "x-displayname": "Application Security Monitoring APIs",
+      "x-ves-proto-service": "ves.io.schema.app_security.AppSecurityMonitoringAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/data/namespaces/{namespace}/app_security/evidence": {
+      "post": {
+        "summary": "Security Evidence Query",
+        "description": "Get security evidence for the given namespace.",
+        "operationId": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEvidenceQuery",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app_securitySecurityEvidenceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nfetch security evidence for a given namespace\nx-example: \"bloggin-app-namespace-1\"",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securitySecurityEvidenceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-appsecuritymonitoringapi-securityevidencequery"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEvidenceQuery",
         "tags": ["data"]
       },
       "x-displayname": "Application Security Monitoring APIs",
@@ -972,6 +1182,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1105,6 +1325,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1235,6 +1465,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1357,6 +1597,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1490,6 +1740,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1617,6 +1877,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1750,6 +2020,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1877,6 +2157,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2010,6 +2300,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -2132,6 +2432,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2262,6 +2572,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2405,6 +2725,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -2542,6 +2872,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2685,6 +3025,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -2822,6 +3172,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2967,6 +3327,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -3100,6 +3470,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -3245,6 +3625,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -3382,6 +3772,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -3527,6 +3927,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -3669,6 +4079,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -3802,6 +4222,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -3945,6 +4375,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -3964,6 +4404,134 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-threatcampaignapi-getthreatcampaignbyid"
         },
         "x-ves-proto-rpc": "ves.io.schema.app_security.ThreatCampaignAPI.GetThreatCampaignById",
+        "tags": ["waf"]
+      },
+      "x-displayname": "Application Security Monitoring APIs",
+      "x-ves-proto-service": "ves.io.schema.app_security.ThreatCampaignAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/waf/threats": {
+      "post": {
+        "summary": "Get Threats",
+        "description": "Returns a list of threats tracked by F5 XC Threat Intelligence. A threat is a rollup of articles.\nAn article originates from a public web page or blog post discussing a cybersecurity threat campaign,\nthreat actor (or both combined). The public source is fed through a content pipeline to extract\nthreat intelligence information that could be valuable.",
+        "operationId": "ves.io.schema.app_security.ThreatCampaignAPI.GetThreats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app_securityThreatsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app_securityThreatsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-app_security-threatcampaignapi-getthreats"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.app_security.ThreatCampaignAPI.GetThreats",
         "tags": ["waf"]
       },
       "x-displayname": "Application Security Monitoring APIs",
@@ -4085,6 +4653,34 @@
             "description": " HTTP method\n\nExample: ` GET`",
             "title": "method",
             "x-displayname": "Method"
+          }
+        }
+      },
+      "app_securityCVEIDList": {
+        "type": "object",
+        "description": "A list of CVE IDs",
+        "title": "CVEIDList",
+        "x-displayname": "CVE ID List",
+        "x-ves-proto-message": "ves.io.schema.app_security.CVEIDList",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "description": " A list of CVE IDs\n\nExample: ` \"CVE-2021-44228\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 16\n  ves.io.schema.rules.repeated.min_items: 1\n  ves.io.schema.rules.repeated.unique: true\n",
+            "title": "ids",
+            "minItems": 1,
+            "maxItems": 16,
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "IDs",
+            "x-ves-example": "CVE-2021-44228",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.repeated.max_items": "16",
+              "ves.io.schema.rules.repeated.min_items": "1",
+              "ves.io.schema.rules.repeated.unique": "true"
+            }
           }
         }
       },
@@ -4533,7 +5129,6 @@
             "type": "boolean",
             "description": " Indicates whether the security event is ip reputation\n\nExample: ` \"true\"`",
             "title": "IP Reputation Security Event",
-            "format": "boolean",
             "x-displayname": "IP Reputation Security Event",
             "x-ves-example": "true"
           },
@@ -4577,7 +5172,6 @@
             "type": "boolean",
             "description": " Indicates whether the security event is threat mesh\n\nExample: ` \"true\"`",
             "title": "Threat Mesh Security Event",
-            "format": "boolean",
             "x-displayname": "Threat Mesh Security Event",
             "x-ves-example": "true"
           },
@@ -5187,7 +5781,6 @@
             "type": "boolean",
             "description": " Scroll is used to retrieve large number of security events (or all security events) that matches the query.\n If scroll is set to true, the scroll_id in the response can be used in the scroll API to fetch the next\n batch of security events until there are no more security events left to return. The number of messages in each batch is determined\n by the limit field.\n Note: Scroll is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
             "title": "scroll",
-            "format": "boolean",
             "x-displayname": "Scroll",
             "x-ves-example": "true"
           },
@@ -5195,7 +5788,6 @@
             "type": "boolean",
             "description": " Search After is used to retrieve large number of log messages (or all log messages) that matches the query.\n If search_after is set to true, the sort_values in the response can be used in the API to fetch the next\n batch of logs. The number of messages in each batch is determined by the limit field.\n Note: Search After is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
             "title": "search after",
-            "format": "boolean",
             "x-displayname": "Search After",
             "x-ves-example": "true"
           },
@@ -5286,6 +5878,118 @@
             "title": "scroll id",
             "x-displayname": "Scroll ID",
             "x-ves-example": "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAD4WYm9laVYtZndUQlNsdDcwakFMNjU1QQ=="
+          }
+        }
+      },
+      "app_securitySecurityEvidenceRequest": {
+        "type": "object",
+        "description": "Request to fetch security evidence",
+        "title": "Security Evidence Request",
+        "x-displayname": "Security Evidence Request",
+        "x-ves-proto-message": "ves.io.schema.app_security.SecurityEvidenceRequest",
+        "properties": {
+          "aggs": {
+            "type": "object",
+            "description": " Aggregations provide summary/analytics data over the security evidence response. If the number of security evidence that matched the query\n is large and cannot be returned in a single response message, user can get helpful insights/summary using aggregations.\n The aggregations are key'ed by user-defined aggregation name. The response will be key'ed with the same name.\n Optional",
+            "title": "aggregations",
+            "x-displayname": "Aggregations"
+          },
+          "end_time": {
+            "type": "string",
+            "description": " fetch security evidence whose timestamp <= end_time\n format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n           If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570007981\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "end time",
+            "x-displayname": "End Time",
+            "x-ves-example": "1570007981",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          },
+          "limit": {
+            "type": "integer",
+            "description": " limits the number of security evidence returned in the response\n Optional: If not specified, first or last 500 security evidence that matches the query (depending on the sort order) will be returned in the response.\n           The maximum value for limit is 500.\n\nExample: ` \"100\"`",
+            "title": "limit",
+            "format": "int32",
+            "x-displayname": "Limit",
+            "x-ves-example": "100"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " fetch security evidence for a given namespace\n\nExample: ` \"bloggin-app-namespace-1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "bloggin-app-namespace-1"
+          },
+          "query": {
+            "type": "string",
+            "description": " query is used to specify the list of matchers\n syntax for query := {[<matcher>]}\n <matcher> := <field_name><operator>\"<value>\"\n <field_name> := string\n   One or more of these fields in the security evidence may be specified in the query.\n     domain - domain\n     endpoint - endpoint\n     evidence_id - evidence Id\n <value> := string\n <operator> := [\"=\"|\"!=\"|\"=~\"|\"!~\"]\n   = : equal to\n   != : not equal to\n   =~ : regex match\n   !~ : not regex match\n When more than one matcher is specified in the query, then security evidence matching ALL the matchers will be returned in the response.\n Example: query={evidence_id=\"evd_2026021315_abc123\", endpoint=\"/cart_api/cart\"} will return all security evidence with evidence id evd_2026021315_abc123 and endoint /cart_api/cart.\n\n Optional: If not specified, all the security evidence matching the given tenant and namespace will be returned in the response.\n\nExample: ` \"query={evidence_id=\"evd_2026021315_abc123\"}\"`",
+            "title": "query",
+            "x-displayname": "Query",
+            "x-ves-example": "query={evidence_id=\"evd_2026021315_abc123\"}"
+          },
+          "search_after": {
+            "type": "boolean",
+            "description": " Search After is used to retrieve large number of log messages (or all log messages) that matches the query.\n If search_after is set to true, the sort_values in the response can be used in the API to fetch the next\n batch of logs. The number of messages in each batch is determined by the limit field.\n Note: Search After is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
+            "title": "search after",
+            "x-displayname": "Search After",
+            "x-ves-example": "true"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/schemaSortOrder"
+          },
+          "sort_by": {
+            "type": "string",
+            "description": " Optional: default is sort by last_event_time",
+            "title": "sort by",
+            "x-displayname": "Sort By"
+          },
+          "sort_values": {
+            "$ref": "#/components/schemas/app_securitySearchAfterSortValues"
+          },
+          "start_time": {
+            "type": "string",
+            "description": " fetch security evidence whose timestamp >= start_time\n format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n           If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"1570007981\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.query_time: true\n",
+            "title": "start time",
+            "x-displayname": "Start Time",
+            "x-ves-example": "1570007981",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.query_time": "true"
+            }
+          }
+        }
+      },
+      "app_securitySecurityEvidenceResponse": {
+        "type": "object",
+        "description": "Response message for SecurityEvidenceRequest",
+        "title": "Security Evidence Response",
+        "x-displayname": "Security Incidents Response",
+        "x-ves-proto-message": "ves.io.schema.app_security.SecurityEvidenceResponse",
+        "properties": {
+          "aggs": {
+            "type": "object",
+            "description": " Aggregations provide summary/analytics data over the security evidences response. If the number of security evidences\n that matched the query is large and cannot be returned in a single response message, user can get helpful\n insights/summary using aggregations.",
+            "title": "aggregations",
+            "x-displayname": "Aggregations"
+          },
+          "evidences": {
+            "type": "array",
+            "description": " list of security evidences that matched the query. Contains no more than 500 messages.\n\nExample: ` \"value\"`",
+            "title": "evidences",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "evidences",
+            "x-ves-example": "value"
+          },
+          "last_sort_values": {
+            "$ref": "#/components/schemas/app_securitySearchAfterSortValues"
+          },
+          "total_hits": {
+            "type": "string",
+            "description": " total number of security events that matched the query.\n\nExample: ` \"0\"`",
+            "title": "total hits",
+            "format": "uint64",
+            "x-displayname": "Total Hits",
+            "x-ves-example": "0"
           }
         }
       },
@@ -5410,7 +6114,6 @@
             "type": "boolean",
             "description": " Scroll is used to retrieve large number of security incidents (or all security incidents) that matches the query.\n If scroll is set to true, the scroll_id in the response can be used in the scroll API to fetch the next\n batch of security events until there are no more security events left to return. The number of messages in each\n batch is determined by the limit field.\n Note: Scroll is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
             "title": "scroll",
-            "format": "boolean",
             "x-displayname": "Scroll",
             "x-ves-example": "true"
           },
@@ -5418,7 +6121,6 @@
             "type": "boolean",
             "description": " Search After is used to retrieve large number of log messages (or all log messages) that matches the query.\n If search_after is set to true, the sort_values in the response can be used in the API to fetch the next\n batch of logs. The number of messages in each batch is determined by the limit field.\n Note: Search After is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
             "title": "search after",
-            "format": "boolean",
             "x-displayname": "Search After",
             "x-ves-example": "true"
           },
@@ -5633,7 +6335,6 @@
             "type": "boolean",
             "description": " Scroll is used to retrieve large number of logs (or all logs) that matches the query.\n If scroll is set to true, the scroll_id in the response can be used in the scroll API to fetch the next\n batch of logs until there are no logs left to return. The number of logs in each batch is determined\n by the limit field.\n Note: Scroll is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
             "title": "scroll",
-            "format": "boolean",
             "x-displayname": "Scroll",
             "x-ves-example": "true"
           },
@@ -5641,7 +6342,6 @@
             "type": "boolean",
             "description": " Search After is used to retrieve large number of log messages (or all log messages) that matches the query.\n If search_after is set to true, the sort_values in the response can be used in the API to fetch the next\n batch of logs. The number of messages in each batch is determined by the limit field.\n Note: Search After is used for processing large amount of data and therefore is not intended for real time user request.\n Optional: default is false\n\nExample: ` \"true\"`",
             "title": "search after",
-            "format": "boolean",
             "x-displayname": "Search After",
             "x-ves-example": "true"
           },
@@ -5844,6 +6544,75 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
             }
+          }
+        }
+      },
+      "app_securityThreatsRequest": {
+        "type": "object",
+        "description": "Returns threats associated with the given CVE IDs, which can be supplied explicitly or\nderived from a WAF security event.",
+        "title": "ThreatsRequest",
+        "x-displayname": "ThreatsRequest",
+        "x-ves-oneof-field-threats_filter": "[\"cve_ids\",\"primary_tag\",\"waf_sec_event_id\"]",
+        "x-ves-proto-message": "ves.io.schema.app_security.ThreatsRequest",
+        "properties": {
+          "cursor": {
+            "type": "string",
+            "description": " Opaque pagination cursor returned from previous response\n\nExample: ` \"eyJpZCI6ICJjbnBjNTg0ODg1LWU4YjAtNDQ5ZC05YjA4LWFhYjA4ZDEyZDYifQ==\"`",
+            "title": "Cursor",
+            "x-displayname": "Cursor",
+            "x-ves-example": "eyJpZCI6ICJjbnBjNTg0ODg1LWU4YjAtNDQ5ZC05YjA4LWFhYjA4ZDEyZDYifQ=="
+          },
+          "cve_ids": {
+            "$ref": "#/components/schemas/app_securityCVEIDList"
+          },
+          "primary_tag": {
+            "type": "string",
+            "description": "Exclusive with [cve_ids waf_sec_event_id]\n Primary tag to filter threats. A primary tag is a high level categorization of a threat,\n such as an associated threat actor, malware family or CVE.\n\nExample: ` \"APT42\"`",
+            "title": "Primary Tag",
+            "x-displayname": "Primary Tag",
+            "x-ves-example": "APT42"
+          },
+          "report_fields": {
+            "type": "array",
+            "description": " Optional list of fields to include in threat representation\n\nExample: ` \"['title', 'severity', 'summary']\"`",
+            "title": "Report Fields",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Report Fields",
+            "x-ves-example": "['title', 'severity', 'summary']"
+          },
+          "waf_sec_event_id": {
+            "type": "string",
+            "description": "Exclusive with [cve_ids primary_tag]\n WAF Security Event ID to get associated threats information\n\nExample: ` \"00000000-0000-4000-8000-a3a9e1ed9732\"`",
+            "title": "WAFSecEventID",
+            "x-displayname": "WAF Security Event ID",
+            "x-ves-example": "00000000-0000-4000-8000-a3a9e1ed9732"
+          }
+        }
+      },
+      "app_securityThreatsResponse": {
+        "type": "object",
+        "description": "Returns a list of threats tracked by F5 XC Threat Intelligence that match the query.",
+        "title": "ThreatsResponse",
+        "x-displayname": "ThreatsResponse",
+        "x-ves-proto-message": "ves.io.schema.app_security.ThreatsResponse",
+        "properties": {
+          "next_cursor": {
+            "type": "string",
+            "description": " Opaque cursor for fetching next page\n\nExample: ` \"eyJpZCI6ICJjbnBjNTg0ODg1LWU4YjAtNDQ5ZC05YjA4LWFhYjA4ZDEyZDYifQ==\"`",
+            "title": "Next Cursor",
+            "x-displayname": "Next Cursor",
+            "x-ves-example": "eyJpZCI6ICJjbnBjNTg0ODg1LWU4YjAtNDQ5ZC05YjA4LWFhYjA4ZDEyZDYifQ=="
+          },
+          "threats": {
+            "type": "array",
+            "description": " A list of threats that match the query.",
+            "title": "threats",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Threats"
           }
         }
       },
@@ -6446,7 +7215,7 @@
         "properties": {
           "actions": {
             "type": "array",
-            "description": " Actions that should be taken when client identifier matches the rule\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.enum.defined_only: true\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " Actions that should be taken when client identifier matches the rule\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.enum.defined_only: true\n  ves.io.schema.rules.repeated.max_items: 10\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "actions",
             "maxItems": 10,
             "items": {
@@ -6455,8 +7224,8 @@
             "x-displayname": "Actions",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
-              "ves.io.schema.rules.enum.defined_only": "true",
               "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.repeated.items.enum.defined_only": "true",
               "ves.io.schema.rules.repeated.max_items": "10",
               "ves.io.schema.rules.repeated.unique": "true"
             }
@@ -6640,7 +7409,6 @@
             "type": "boolean",
             "description": " Invert the result of the match to detect missing header or non-matching value",
             "title": "invert_match",
-            "format": "boolean",
             "x-displayname": "NOT of match"
           },
           "name": {
@@ -6663,18 +7431,16 @@
             "type": "boolean",
             "description": "Exclusive with [exact regex]\n If true, check for presence of header",
             "title": "presence",
-            "format": "boolean",
             "x-displayname": "Presence"
           },
           "regex": {
             "type": "string",
-            "description": "Exclusive with [exact presence]\n Regex match of the header value in re2 format\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 256\n  ves.io.schema.rules.string.not_empty: true\n  ves.io.schema.rules.string.regex: true\n",
+            "description": "Exclusive with [exact presence]\n Regex match of the header value in re2 format\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 256\n  ves.io.schema.rules.string.regex: true\n",
             "title": "regex",
             "maxLength": 256,
             "x-displayname": "Regex",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "256",
-              "ves.io.schema.rules.string.not_empty": "true",
               "ves.io.schema.rules.string.regex": "true"
             }
           }
@@ -7135,7 +7901,6 @@
             "type": "boolean",
             "description": " Invert Match of the expression defined",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Matcher"
           },
           "item": {
@@ -7450,7 +8215,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Method Matcher"
           },
           "methods": {
@@ -7504,7 +8268,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert IP Matcher"
           },
           "prefix_sets": {
@@ -7567,7 +8330,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Matcher"
           },
           "item": {
@@ -7683,7 +8445,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Match Result"
           },
           "ip_prefixes": {
@@ -7943,6 +8704,21 @@
         "x-displayname": "Transformer",
         "x-ves-proto-enum": "ves.io.schema.policy.Transformer"
       },
+      "protobufAny": {
+        "type": "object",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
+        "properties": {
+          "type_url": {
+            "type": "string",
+            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          },
+          "value": {
+            "type": "string",
+            "description": "Must be a valid serialized protocol buffer of the above specified type.",
+            "format": "byte"
+          }
+        }
+      },
       "rate_limiterRateLimitPeriodUnit": {
         "type": "string",
         "description": "Unit for the period per which the rate limit is applied.\n\n - SECOND: Second\n\nRate limit period unit is seconds\n - MINUTE: Minute\n\nRate limit period unit is minutes\n - HOUR: Hour\n\nRate limit period unit is hours\n - DAY: Day\n\nRate limit period unit is days",
@@ -7951,6 +8727,27 @@
         "default": "SECOND",
         "x-displayname": "Rate Limit Period Unit",
         "x-ves-proto-enum": "ves.io.schema.rate_limiter.RateLimitPeriodUnit"
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
       },
       "schemaEmpty": {
         "type": "object",
@@ -8078,7 +8875,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Header Matcher"
           },
           "item": {
@@ -8144,7 +8940,6 @@
             "type": "boolean",
             "description": " Invert the match result.",
             "title": "invert_matcher",
-            "format": "boolean",
             "x-displayname": "Invert Query Parameter Matcher"
           },
           "item": {

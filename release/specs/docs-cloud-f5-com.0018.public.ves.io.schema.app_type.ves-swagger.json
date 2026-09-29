@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.app_type",
-    "description": "App Type object defines a application profile type from an advanced monitoring/security point of view.\nAn App type is a set of (micro) services that interact with one another and function as an application.\nServices can be made members of a particular AppType set by adding label ves.io/app_type=app_type.metadata.name to services.\nApp type object is the profile for one such application label. One can define various AI/ML features that can\nbe enabled for a given application in this object. All services in a given namespace that are labeled with\nsame ves.io/app_type label are assumed to be a single application. In a different namespace as two different\ninstances of same application.\napp_type object is recommended per tenant and present only in shared namespace.\nThis way AI/ML modeled developed for a given application can be shared across namespaces or deployments.\napp_setting object can be used to enable a app_type monitoring profile in a given namespace.",
-    "version": "2026.09.25",
+    "description": "App Type object defines a application profile type from an advanced monitoring/security point of view.\nAn App type is a set of (micro) services that interact with one another and function as an application.\nServices can be made members of a particular AppType set by adding label ves.io/app_type=app_type.metadata.name to services.\nApp type object is the profile for one such application label. One can define various advanced security features that can\nbe enabled for a given application in this object. All services in a given namespace that are labeled with\nsame ves.io/app_type label are assumed to be a single application. In a different namespace as two different\ninstances of same application.\napp_type object is recommended per tenant and present only in shared namespace.\nThis way advanced security modeled developed for a given application can be shared across namespaces or deployments.\napp_setting object can be used to enable a app_type monitoring profile in a given namespace.",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -233,6 +243,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -373,6 +393,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -534,6 +564,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -671,6 +711,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -824,6 +874,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -965,6 +1025,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1092,6 +1162,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1235,6 +1315,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1375,6 +1465,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1502,6 +1602,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -1655,6 +1765,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1805,6 +1925,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1945,6 +2075,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -2189,7 +2329,6 @@
             "type": "boolean",
             "description": "Has Learnt Schema flag for request API endpoint.\n\nExample: ` true`",
             "title": "Has Learnt Schema",
-            "format": "boolean",
             "x-displayname": "Has Learnt Schema"
           },
           "last_tested": {
@@ -2684,7 +2823,7 @@
           },
           "features": {
             "type": "array",
-            "description": " List of various AI/ML features enabled\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " List of various advanced security features enabled\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n",
             "items": {
               "$ref": "#/components/schemas/app_typeFeature"
             },
@@ -2706,7 +2845,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -2786,7 +2924,7 @@
       },
       "app_typeFeatureType": {
         "type": "string",
-        "description": "Enumeration for AI/ML features supported\n\nAPI Discovery enables generation of model for various API interactions between services of App type.\nEnable analysis of timeseries for various metric collected like requests, errors, latency etc.\nEnable anomaly detection per API request, i.e. the probability density function (PDF) charts generation for API endpoints\nEnable user behavior analysis",
+        "description": "Enumeration for advanced security features supported\n\nAPI Discovery enables generation of model for various API interactions between services of App type.\nEnable analysis of timeseries for various metric collected like requests, errors, latency etc.\nEnable anomaly detection per API request, i.e. the probability density function (PDF) charts generation for API endpoints\nEnable user behavior analysis",
         "title": "FeatureType",
         "enum": [
           "BUSINESS_LOGIC_MARKUP",
@@ -2795,7 +2933,7 @@
           "USER_BEHAVIOR_ANALYSIS"
         ],
         "default": "BUSINESS_LOGIC_MARKUP",
-        "x-displayname": "AI/ML Features",
+        "x-displayname": "Advanced Security Features",
         "x-ves-proto-enum": "ves.io.schema.app_type.FeatureType"
       },
       "app_typeGetResponse": {
@@ -2870,7 +3008,7 @@
           },
           "features": {
             "type": "array",
-            "description": " List of various AI/ML features enabled\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " List of various advanced security features enabled\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n",
             "items": {
               "$ref": "#/components/schemas/app_typeFeature"
             },
@@ -2931,7 +3069,6 @@
             "type": "boolean",
             "description": " A value of true indicates app_type is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -3009,7 +3146,6 @@
             "type": "boolean",
             "description": " Enable or Disable component to be considered as dynamic to collapse or expand API URL\n\nExample: ` \"False\"`",
             "title": "Override Value",
-            "format": "boolean",
             "x-displayname": "Enable/Disable",
             "x-ves-example": "False"
           }
@@ -3049,7 +3185,6 @@
             "type": "boolean",
             "description": " Status of the add operation (success or fail)\n\nExample: ` \"true\"`",
             "title": "Status",
-            "format": "boolean",
             "x-displayname": "Status",
             "x-ves-example": "true"
           },
@@ -3099,7 +3234,6 @@
             "type": "boolean",
             "description": " Status of the add operation (success or fail)\n\nExample: ` \"true\"`",
             "title": "Status",
-            "format": "boolean",
             "x-displayname": "Status",
             "x-ves-example": "true"
           },
@@ -3210,7 +3344,7 @@
           },
           "features": {
             "type": "array",
-            "description": " List of various AI/ML features enabled\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n",
+            "description": " List of various advanced security features enabled\n\nValidation Rules:\n  ves.io.schema.rules.repeated.unique: true\n",
             "items": {
               "$ref": "#/components/schemas/app_typeFeature"
             },
@@ -3505,6 +3639,27 @@
           }
         }
       },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "schemaConditionType": {
         "type": "object",
         "description": "Conditions are used in the object status to describe the current state of the\nobject, e.g. Ready, Succeeded, etc.",
@@ -3671,7 +3826,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -3735,7 +3889,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -3845,7 +3998,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -3951,7 +4103,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }

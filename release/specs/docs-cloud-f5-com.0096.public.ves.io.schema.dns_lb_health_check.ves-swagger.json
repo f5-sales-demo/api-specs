@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.dns_lb_health_check",
     "description": "DNS Load Balancer Health Check object is used for configuring DNS Load Balancer Health Checks",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -233,6 +243,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -373,6 +393,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -534,6 +564,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -677,6 +717,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -796,7 +846,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -916,7 +965,7 @@
         "title": "HTTP Health Check",
         "x-displayname": "HTTP Health Check",
         "x-ves-displayorder": "1,2,3,4",
-        "x-ves-oneof-field-virtual_host_choice": "[\"disable_virtual_host\",\"virtual_host\"]",
+        "x-ves-oneof-field-virtual_host_choice": "[\"disable_virtual_host\",\"inherit_load_balancer_fqdn\",\"virtual_host\"]",
         "x-ves-proto-message": "ves.io.schema.dns_lb_health_check.HttpHealthCheck",
         "properties": {
           "disable_virtual_host": {
@@ -948,6 +997,9 @@
               "ves.io.schema.rules.uint32.lte": "65535"
             }
           },
+          "inherit_load_balancer_fqdn": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
           "receive": {
             "type": "string",
             "description": " Regular expression used to match against the response to the health check's request. Mark node up upon receipt of a successful regular expression match. Uses re2 regular expression syntax.\n\nExample: ` \"HTTP/1\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 2048\n  ves.io.schema.rules.string.regex: true\n",
@@ -973,12 +1025,13 @@
           },
           "virtual_host": {
             "type": "string",
-            "description": "Exclusive with [disable_virtual_host]\n Name of the virtual host to use for SNI.\n\nExample: ` \"example.com\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 2048\n",
+            "description": "Exclusive with [disable_virtual_host inherit_load_balancer_fqdn]\n Name of the virtual host to use for SNI.\n\nExample: ` \"example.com\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.hostname: true\n  ves.io.schema.rules.string.max_len: 2048\n",
             "title": "Enable Virtual Host",
             "maxLength": 2048,
             "x-displayname": "Enable Virtual Host",
             "x-ves-example": "example.com",
             "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.hostname": "true",
               "ves.io.schema.rules.string.max_len": "2048"
             }
           }
@@ -1034,7 +1087,6 @@
             "type": "boolean",
             "description": " A value of true indicates dns_lb_health_check is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {
@@ -1416,6 +1468,27 @@
           }
         }
       },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "schemaConditionType": {
         "type": "object",
         "description": "Conditions are used in the object status to describe the current state of the\nobject, e.g. Ready, Succeeded, etc.",
@@ -1582,7 +1655,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -1646,7 +1718,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -1712,7 +1783,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -1795,7 +1865,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }

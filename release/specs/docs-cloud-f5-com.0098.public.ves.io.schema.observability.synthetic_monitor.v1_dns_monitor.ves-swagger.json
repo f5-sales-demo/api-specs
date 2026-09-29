@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 Distributed Cloud Services API for ves.io.schema.observability.synthetic_monitor.v1_dns_monitor",
     "description": "\nDNS Monitor defines a DNS synthetic monitor.",
-    "version": "2026.09.25",
+    "version": "2026.09.28",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com",
@@ -103,6 +103,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -233,6 +243,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -373,6 +393,16 @@
               "application/json": {
                 "schema": {
                   "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
                 }
               }
             }
@@ -538,6 +568,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -696,6 +736,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -839,6 +889,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -908,6 +968,27 @@
             "type": "string",
             "description": "Must be a valid serialized protocol buffer of the above specified type.",
             "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -1077,7 +1158,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -1141,7 +1221,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -1207,7 +1286,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable",
             "x-ves-example": "true"
           },
@@ -1324,7 +1402,6 @@
             "type": "boolean",
             "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
             "title": "disable",
-            "format": "boolean",
             "x-displayname": "Disable"
           },
           "labels": {
@@ -1407,7 +1484,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }
@@ -1651,7 +1727,6 @@
             "type": "boolean",
             "description": " This should be set to true If VES/SRE operator wants to suppress an object from being\n presented to business-logic of a daemon(e.g. due to bad-form/issue-causing Object).\n This is meant only to be used in temporary situations for operational continuity till\n a fix is rolled out in business-logic.\n\nExample: ` \"true\"`",
             "title": "sre_disable",
-            "format": "boolean",
             "x-displayname": "SRE Disable",
             "x-ves-example": "true"
           },
@@ -1686,7 +1761,6 @@
             "type": "boolean",
             "description": " Indicate whether mars deems this object to be stale via graceful restart timer information",
             "title": "vtrp_stale",
-            "format": "boolean",
             "x-displayname": "VTRP Stale"
           }
         }
@@ -1737,7 +1811,7 @@
         "properties": {
           "regions": {
             "type": "array",
-            "description": " A specific source location within AWS\n\nExample: ` \"us-east-1\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.not_empty: true\n",
+            "description": " A specific source location within AWS\n\nExample: ` \"us-east-1\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.not_empty: true\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "AWS Regions",
             "items": {
               "type": "string"
@@ -1747,8 +1821,8 @@
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
-              "ves.io.schema.rules.repeated.unique": "true",
-              "ves.io.schema.rules.string.not_empty": "true"
+              "ves.io.schema.rules.repeated.items.string.not_empty": "true",
+              "ves.io.schema.rules.repeated.unique": "true"
             }
           }
         }
@@ -1762,7 +1836,7 @@
         "properties": {
           "regions": {
             "type": "array",
-            "description": " A specific source location within AWS\n\nExample: ` \"us-east-1\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.not_empty: true\n",
+            "description": " A specific source location within AWS\n\nExample: ` \"us-east-1\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.not_empty: true\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "AWS Regions",
             "items": {
               "type": "string"
@@ -1772,8 +1846,8 @@
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
-              "ves.io.schema.rules.repeated.unique": "true",
-              "ves.io.schema.rules.string.not_empty": "true"
+              "ves.io.schema.rules.repeated.items.string.not_empty": "true",
+              "ves.io.schema.rules.repeated.unique": "true"
             }
           }
         }
@@ -1839,7 +1913,7 @@
         "properties": {
           "regions": {
             "type": "array",
-            "description": " A specific source location within F5 Distributed Cloud\n\nExample: ` \"ves-io-us\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.not_empty: true\n",
+            "description": " A specific source location within F5 Distributed Cloud\n\nExample: ` \"ves-io-us\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.not_empty: true\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "F5 Distributed Cloud Regions",
             "items": {
               "type": "string"
@@ -1849,8 +1923,8 @@
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
-              "ves.io.schema.rules.repeated.unique": "true",
-              "ves.io.schema.rules.string.not_empty": "true"
+              "ves.io.schema.rules.repeated.items.string.not_empty": "true",
+              "ves.io.schema.rules.repeated.unique": "true"
             }
           }
         }
@@ -1864,7 +1938,7 @@
         "properties": {
           "regions": {
             "type": "array",
-            "description": " A specific source location within F5 Distributed Cloud\n\nExample: ` \"ves-io-us\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.unique: true\n  ves.io.schema.rules.string.not_empty: true\n",
+            "description": " A specific source location within F5 Distributed Cloud\n\nExample: ` \"ves-io-us\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.repeated.items.string.not_empty: true\n  ves.io.schema.rules.repeated.unique: true\n",
             "title": "F5 Distributed Cloud Regions",
             "items": {
               "type": "string"
@@ -1874,8 +1948,8 @@
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
-              "ves.io.schema.rules.repeated.unique": "true",
-              "ves.io.schema.rules.string.not_empty": "true"
+              "ves.io.schema.rules.repeated.items.string.not_empty": "true",
+              "ves.io.schema.rules.repeated.unique": "true"
             }
           }
         }
@@ -2169,7 +2243,6 @@
             "type": "boolean",
             "description": " Fail the delete operation if this object is being referred by other objects",
             "title": "fail_if_referred",
-            "format": "boolean",
             "x-displayname": "Fail-If-Referred"
           },
           "name": {
@@ -2648,7 +2721,6 @@
             "type": "boolean",
             "description": " A value of true indicates v1_dns_monitor is administratively disabled",
             "title": "disabled",
-            "format": "boolean",
             "x-displayname": "Disabled"
           },
           "get_spec": {

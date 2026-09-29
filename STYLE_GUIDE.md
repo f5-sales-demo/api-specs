@@ -163,11 +163,15 @@ describe the system. Preserve legally required license and copyright notices, au
 upstream attribution, and normal Git or GitHub contributor provenance. These are narrow provenance
 exceptions, not permission to reuse their values as examples or fixtures.
 
-Demo and lab software does not need a person's profile. Remove name, email, avatar, address, and
-similar inputs and outputs unless the behavior genuinely cannot work without them. Authentication
-may use a provider-issued opaque subject only for the active authorization decision. Do not log it,
-expose it in errors, or persist it unless the design documents why persistence is indispensable and
-how access and deletion are controlled.
+Repository PII sweeps replace stored personal values with synthetic data; they do not remove
+collection functions, inspection commands, profile interfaces, authentication behavior, or schema
+field names that support authorized private workflows. Source aliases and type declarations describe
+the system; literal personal values in source fixtures, comments, generated content, and serialized
+records remain subject to the publication boundary.
+
+Minimize personal data that a workflow does not need. Keep authorized private runtime processing,
+including provider identity and profile persistence, within the operator's approved access and
+retention boundary. Do not copy private values into published logs, telemetry, errors, or evidence.
 
 Use the managed scanner as a first pass; it cannot prove that free-form prose or pixels are clean:
 

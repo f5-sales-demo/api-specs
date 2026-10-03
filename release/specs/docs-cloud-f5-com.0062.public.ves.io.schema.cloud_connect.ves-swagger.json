@@ -1898,6 +1898,11 @@
               "ves.io.schema.rules.map.keys.string.max_len": "127",
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "255"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 255
             }
           },
           "tgw_attachment_id": {
@@ -1999,6 +2004,11 @@
               "ves.io.schema.rules.map.keys.string.max_len": "127",
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "255"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 255
             }
           },
           "transit_gateway_asn": {
@@ -2081,6 +2091,11 @@
               "ves.io.schema.rules.map.keys.string.max_len": "127",
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "255"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 255
             }
           },
           "transit_gateway_gre_address": {
@@ -2406,6 +2421,11 @@
               "ves.io.schema.rules.map.keys.string.max_len": "127",
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "255"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 255
             }
           },
           "tgw_rt_deployment_state": {
@@ -2549,6 +2569,11 @@
               "ves.io.schema.rules.map.keys.string.max_len": "127",
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "255"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 255
             }
           }
         }
@@ -2713,6 +2738,11 @@
               "ves.io.schema.rules.map.keys.string.max_len": "127",
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "255"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 255
             }
           },
           "vnet_attachment_id": {
@@ -4529,6 +4559,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -4592,6 +4627,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -4657,6 +4697,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {

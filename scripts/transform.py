@@ -30,6 +30,7 @@ from .transforms.corrections import (
     sanitize_example_placeholders,
     sanitize_pii_placeholders,
 )
+from .utils.map_constraints import project_map, schema_nodes
 from .utils.nullable_response import apply_nullable_response_corrections
 from .utils.spec_loader import save_spec_to_file
 from .utils.spec_sanitizers import strip_scripts_recursive
@@ -371,6 +372,14 @@ def inject_operation_descriptions(
 
 # This explicit order is a compatibility contract: later transforms depend on
 # results from earlier ones. Keep changes here deliberate and tested.
+def project_native_map_constraints(spec: dict, _config: TransformConfig, _filename: str) -> dict:
+    """Publish exact map cardinality and compatible value bounds from vendor rules."""
+    schemas = spec.get("components", {}).get("schemas", {})
+    for _, node in schema_nodes(spec):
+        project_map(node, schemas)
+    return spec
+
+
 TRANSFORM_REGISTRY: list[tuple[str, Callable[..., dict]]] = [
     ("inject_info_version", inject_info_version),
     ("inject_contact", inject_contact),
@@ -380,6 +389,7 @@ TRANSFORM_REGISTRY: list[tuple[str, Callable[..., dict]]] = [
     ("deduplicate_operation_ids", deduplicate_operation_ids),
     ("strip_script_tags", strip_script_tags),
     ("fix_invalid_examples", fix_invalid_examples),
+    ("project_native_map_constraints", project_native_map_constraints),
     ("rename_colliding_schemas", rename_colliding_schemas),
     ("remove_deprecated_paths", remove_deprecated_paths),
     ("mark_deprecated_operations", mark_deprecated_operations),

@@ -1700,6 +1700,13 @@
               "ves.io.schema.rules.map.values.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.regex": "true",
               "ves.io.schema.rules.message.required": "true"
+            },
+            "maxProperties": 20,
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 256,
+              "minLength": 1
             }
           }
         }
@@ -3971,6 +3978,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -4034,6 +4046,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -4099,6 +4116,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {

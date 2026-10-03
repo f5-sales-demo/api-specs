@@ -1237,6 +1237,10 @@
               "ves.io.schema.rules.map.max_pairs": "128",
               "ves.io.schema.rules.map.unique_values": "true",
               "ves.io.schema.rules.map.values.string.ipv6": "true"
+            },
+            "maxProperties": 128,
+            "additionalProperties": {
+              "type": "string"
             }
           },
           "interface_ip_map": {
@@ -1262,6 +1266,10 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.max_pairs": "64",
               "ves.io.schema.rules.map.values.string.ipv6": "true"
+            },
+            "maxProperties": 64,
+            "additionalProperties": {
+              "type": "string"
             }
           }
         }
@@ -1423,7 +1431,8 @@
               "ves.io.schema.rules.map.keys.string.max_len": "128",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.max_pairs": "128"
-            }
+            },
+            "maxProperties": 128
           }
         }
       },
@@ -1761,6 +1770,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -1824,6 +1838,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -1889,6 +1908,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -2747,6 +2771,12 @@
               "ves.io.schema.rules.map.max_pairs": "16",
               "ves.io.schema.rules.map.values.string.max_len": "64",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 16,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 1
             }
           },
           "monitor": {
@@ -2865,6 +2895,12 @@
               "ves.io.schema.rules.map.max_pairs": "64",
               "ves.io.schema.rules.map.values.string.max_len": "63",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 64,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 63,
+              "minLength": 1
             }
           },
           "not_managed": {
@@ -3451,6 +3487,12 @@
               "ves.io.schema.rules.map.max_pairs": "16",
               "ves.io.schema.rules.map.values.string.max_len": "64",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 16,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 1
             }
           },
           "nameserver": {

@@ -39,6 +39,7 @@ EXPECTED_TRANSFORM_ORDER = [
     "deduplicate_operation_ids",
     "strip_script_tags",
     "fix_invalid_examples",
+    "project_native_map_constraints",
     "rename_colliding_schemas",
     "remove_deprecated_paths",
     "mark_deprecated_operations",

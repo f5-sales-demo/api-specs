@@ -1125,6 +1125,12 @@
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "128",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
             }
           },
           "mgmt_dns_name": {
@@ -1274,6 +1280,12 @@
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "128",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
             }
           },
           "mgmt_dns_name": {
@@ -1581,6 +1593,12 @@
               "ves.io.schema.rules.map.max_pairs": "64",
               "ves.io.schema.rules.map.values.string.max_len": "128",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 64,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
             }
           },
           "allow_volume_expansion": {
@@ -1701,6 +1719,12 @@
               "ves.io.schema.rules.map.max_pairs": "64",
               "ves.io.schema.rules.map.values.string.max_len": "128",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 64,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
             }
           },
           "custom_storage": {
@@ -1981,6 +2005,12 @@
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "128",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
             }
           },
           "volume_defaults": {
@@ -2667,6 +2697,12 @@
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "128",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
             }
           },
           "limit_aggregate_usage": {
@@ -2870,6 +2906,12 @@
               "ves.io.schema.rules.map.max_pairs": "20",
               "ves.io.schema.rules.map.values.string.max_len": "128",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "maxProperties": 20,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
             }
           },
           "limit_aggregate_usage": {
@@ -3609,6 +3651,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -3672,6 +3719,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -3737,6 +3789,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {

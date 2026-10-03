@@ -997,7 +997,8 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.max_pairs": "50",
               "ves.io.schema.rules.message.required": "true"
-            }
+            },
+            "maxProperties": 50
           },
           "namespace": {
             "type": "string",
@@ -1152,7 +1153,8 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
               "ves.io.schema.rules.map.max_pairs": "3"
-            }
+            },
+            "maxProperties": 3
           },
           "alertname": {
             "$ref": "#/components/schemas/alert_policyLabelMatcher"
@@ -1880,6 +1882,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -1943,6 +1950,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -2052,6 +2064,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {

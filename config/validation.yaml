@@ -159,6 +159,7 @@ transform:
     deduplicate_operation_ids: true
     strip_script_tags: true
     fix_invalid_examples: true
+    project_native_map_constraints: true
     mark_nullable_response_fields: true
     rename_colliding_schemas: true
     remove_deprecated_paths: true

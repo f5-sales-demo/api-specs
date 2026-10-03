@@ -5346,6 +5346,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -5409,6 +5414,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -5474,6 +5484,11 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
             }
           },
           "description": {
@@ -6407,6 +6422,11 @@
               "ves.io.schema.rules.map.max_pairs": "16",
               "ves.io.schema.rules.map.values.string.max_len": "65536",
               "ves.io.schema.rules.map.values.string.uri_ref": "true"
+            },
+            "maxProperties": 16,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 65536
             }
           },
           "default_header": {
@@ -6783,6 +6803,11 @@
               "ves.io.schema.rules.map.max_pairs": "16",
               "ves.io.schema.rules.map.values.string.max_len": "65536",
               "ves.io.schema.rules.map.values.string.uri_ref": "true"
+            },
+            "maxProperties": 16,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 65536
             }
           },
           "ddos_js_challenge": {
@@ -7190,6 +7215,11 @@
               "ves.io.schema.rules.map.max_pairs": "16",
               "ves.io.schema.rules.map.values.string.max_len": "65536",
               "ves.io.schema.rules.map.values.string.uri_ref": "true"
+            },
+            "maxProperties": 16,
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 65536
             }
           },
           "default_header": {
@@ -8463,7 +8493,8 @@
             "x-displayname": "Labels",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.max_pairs": "16"
-            }
+            },
+            "maxProperties": 16
           },
           "name": {
             "type": "string",

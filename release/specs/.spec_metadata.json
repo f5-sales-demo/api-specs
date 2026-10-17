@@ -1,12 +1,12 @@
 {
-  "spec_date": "2026.10.15",
-  "spec_timestamp": "2026-10-15T21:50:59+00:00",
-  "download_date": "2026.10.16",
-  "download_timestamp": "2026-10-16T10:22:25.091514+00:00",
-  "etag": "W/\"363f3b-1a1418c09b8\"",
-  "last_modified": "Thu, 15 Oct 2026 21:50:59 GMT",
+  "spec_date": "2026.10.16",
+  "spec_timestamp": "2026-10-16T20:35:23+00:00",
+  "download_date": "2026.10.17",
+  "download_timestamp": "2026-10-17T09:58:53.141946+00:00",
+  "etag": "W/\"363f3b-1a1466d2ef8\"",
+  "last_modified": "Fri, 16 Oct 2026 20:35:23 GMT",
   "file_count": 283,
-  "archive_sha256": "4cd8818fa55708b799421afdb0209478474e09ec24515b929ffa5f318b9df5a9",
+  "archive_sha256": "0f014a5e9e4d575d3301d0a75046b6e63b4561a28534b1ffc9d120d89958b066",
   "archive_size_bytes": 3555131,
   "source_url": "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
 }

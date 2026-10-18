@@ -23,7 +23,7 @@ jobs:
       pull-requests: read # inspect linked issues or authenticated release metadata
     steps:
       - name: Check this pull request's linked issues
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           RELEASE_AUTOMATION_LOGIN: ${{ vars.RELEASE_AUTOMATION_LOGIN }}
           RENOVATE_GITHUB_APP_BOT_ID: ${{ vars.RENOVATE_GITHUB_APP_BOT_ID }}
@@ -94,7 +94,7 @@ jobs:
       github.repository != 'f5-sales-demo/xcsh'
     # No `secrets:` — least privilege. The reusable uses only the automatic
     # GITHUB_TOKEN, so passing repository secrets would over-provision it.
-    uses: f5-sales-demo/docs-control/.github/workflows/super-linter.yml@db9dce21bb4c095ef22a4f7268c5ede7bec1a43a
+    uses: f5-sales-demo/docs-control/.github/workflows/super-linter.yml@6a3c539235ab5ee327d3736c678f48181349de04
     with:
       rust_edition: ${{ github.repository == 'f5-sales-demo/xcsh' && '2024' || '2021' }}
       classify_xc_minimum_configs: ${{ github.repository == 'f5-sales-demo/terraform-provider-xcsh' }}
@@ -120,7 +120,7 @@ jobs:
       needs.linked-issue.result == 'success'
     # No `secrets:` — least privilege. The reusable uses only the automatic
     # GITHUB_TOKEN, so passing repository secrets would over-provision it.
-    uses: f5-sales-demo/docs-control/.github/workflows/super-linter.yml@db9dce21bb4c095ef22a4f7268c5ede7bec1a43a
+    uses: f5-sales-demo/docs-control/.github/workflows/super-linter.yml@6a3c539235ab5ee327d3736c678f48181349de04
     with:
       rust_edition: ${{ github.repository == 'f5-sales-demo/xcsh' && '2024' || '2021' }}
       classify_xc_minimum_configs: ${{ github.repository == 'f5-sales-demo/terraform-provider-xcsh' }}

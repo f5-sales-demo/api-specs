@@ -1,0 +1,1296 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.bot_defense.bot_deployments",
+    "description": "Public Custom API definition for Bot Deployment APIs",
+    "version": "2026.11.10",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@example.com"
+    }
+  },
+  "paths": {
+    "/api/shape/bot/custom/namespaces/{namespace}/bot_deployments": {
+      "get": {
+        "summary": "Get List of Bot Deployments",
+        "description": "Returns a unified list of deployments across multiple bot policy types and rules.",
+        "operationId": "ves.io.schema.shape.bot_defense.bot_deployments.CustomAPI.ListBotDeployments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bot_deploymentsListBotDeploymentsResp"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nNamespace is used to scope the query.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "deployment_status",
+            "description": "x-example: \"[BOT_DEPLOYMENT_STATUS_INITIATED, BOT_DEPLOYMENT_STATUS_PARTIALLY_INITIATED]\"\nOptional list of canonical deployment statuses to include.\nIf specified, only deployments with the specified deployment statuses will be included.\nIf not specified, deployments with all deployment statuses will be included.\n\nInitiated represents the status when SAPI returns successful deployment acknowledgement for all the clusters/policies within the batch\nDeployed represents the status when SAPI's deployment status API returns success for all the clusters/policies within the batch\nFailed represents the status when SAPI's deployment status API returns failure for all the clusters/policies within the batch\nPartially Deployed represents the status when SAPI's deployment status API returns success for some clusters/policies while failure for other clusters/policies within the batch\nInitiation failed represents the status when SAPI returns failed deployment acknowledgement for all the clusters/policies within the batch.\nPartially initiated represents the status when SAPI returns success deployment acknowledgement for some clusters/policies while failed deployment acknowledgement for other clusters/policies within the batch\nDeployment scheduled represents the status when a deployment is scheduled but not yet initiated.\nDelivered represents the status when deployment is delivered to the coSSE kubernetes cluster\nPartially delivered represents the status when deployment is partially delivered to some CoSSE (Kubernetes) bot infrastructures but not all.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Partially Delivered",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "BOT_DEPLOYMENT_STATUS_UNKNOWN",
+                  "BOT_DEPLOYMENT_STATUS_IN_DRAFT",
+                  "BOT_DEPLOYMENT_STATUS_INITIATED",
+                  "BOT_DEPLOYMENT_STATUS_DEPLOYED",
+                  "BOT_DEPLOYMENT_STATUS_FAILED",
+                  "BOT_DEPLOYMENT_STATUS_PARTIALLY_DEPLOYED",
+                  "BOT_DEPLOYMENT_STATUS_DISCARDED_DRAFT",
+                  "BOT_DEPLOYMENT_STATUS_INITIATION_FAILED",
+                  "BOT_DEPLOYMENT_STATUS_PARTIALLY_INITIATED",
+                  "BOT_DEPLOYMENT_STATUS_SCHEDULED",
+                  "BOT_DEPLOYMENT_STATUS_DELIVERED",
+                  "BOT_DEPLOYMENT_STATUS_PARTIALLY_DELIVERED"
+                ]
+              }
+            }
+          },
+          {
+            "name": "policy_or_rule_type",
+            "description": "x-example: \"[BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_BOT_DETECTION]\"\nOptional list of bot policy or rule types.\nIf specified, only deployments that has specified policy or rule types will be included.\nIf not specified, deployments with all bot policy or rule types will be included.\n",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Threat Intelligence Package",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_UNKNOWN",
+                  "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_ENDPOINT",
+                  "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_ALLOWLIST",
+                  "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_NETWORK",
+                  "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_BOT_DETECTION",
+                  "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_DEVICE_INTELLIGENCE",
+                  "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_THREAT_INTELLIGENCE_PACKAGE"
+                ]
+              }
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_deployments-customapi-listbotdeployments"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_deployments.CustomAPI.ListBotDeployments",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Bot Deployments",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_deployments.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/custom/namespaces/{namespace}/bot_deployments/stats": {
+      "get": {
+        "summary": "Get Bot Deployment Stats",
+        "description": "Returns deployment-activity counts bucketed over a time window and grouped by status,\nfor the deployments tab bar chart. Aggregates across all deployment sources\n(endpoint, allowlist and network policies, plus detection rules).",
+        "operationId": "ves.io.schema.shape.bot_defense.bot_deployments.CustomAPI.GetBotDeploymentStats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bot_deploymentsGetBotDeploymentStatsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"system\"\nx-required\nNamespace is used to scope the query",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_time",
+            "description": "x-example: \"1780272000\"\nx-required\nStart of the time window, in unix epoch seconds. The frontend computes this from its\nduration selection and the client's current time (or the user-picked value for a custom range).",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Start Time",
+            "schema": {
+              "type": "string",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "end_time",
+            "description": "x-example: \"1780876800\"\nx-required\nEnd of the time window, in unix epoch seconds.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "End Time",
+            "schema": {
+              "type": "string",
+              "format": "int64"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_deployments-customapi-getbotdeploymentstats"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_deployments.CustomAPI.GetBotDeploymentStats",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Bot Deployments",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_deployments.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/shape/bot/custom/namespaces/{namespace}/bot_deployments/{deployment_id}/details": {
+      "get": {
+        "summary": "Get Bot Deployment Details",
+        "description": "Returns deployment details for a given deployment ID and deployment kind.",
+        "operationId": "ves.io.schema.shape.bot_defense.bot_deployments.CustomAPI.GetBotDeploymentDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bot_deploymentsGetBotDeploymentDetailsResp"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nNamespace is used to scope the query.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "deployment_id",
+            "description": "Deployment ID\n\nx-required\nDeployment ID to retrieve details for.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Deployment ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-bot_deployments-customapi-getbotdeploymentdetails"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.bot_defense.bot_deployments.CustomAPI.GetBotDeploymentDetails",
+        "tags": ["shape"]
+      },
+      "x-displayname": "Bot Deployments",
+      "x-ves-proto-service": "ves.io.schema.shape.bot_defense.bot_deployments.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    }
+  },
+  "x-displayname": "Bot Deployments",
+  "x-ves-proto-package": "ves.io.schema.shape.bot_defense.bot_deployments",
+  "components": {
+    "schemas": {
+      "bot_defensebot_deploymentsBotInfraDeploymentDetails": {
+        "type": "object",
+        "description": "Detailed view of a bot deployment on a specific infrastructure.",
+        "title": "Bot Infrastructure Deployment Details",
+        "x-displayname": "Bot Infrastructure Deployment Details",
+        "x-ves-oneof-field-status": "[\"bot_infra_status\",\"k8s_cluster_status\",\"region_status\"]",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.BotInfraDeploymentDetails",
+        "properties": {
+          "bot_infra_status": {
+            "$ref": "#/components/schemas/bot_defensebot_deploymentsBotInfraDeploymentStatusDetails"
+          },
+          "environment_type": {
+            "$ref": "#/components/schemas/bot_deploymentsBotInfrastructureEnvironmentType"
+          },
+          "k8s_cluster_status": {
+            "$ref": "#/components/schemas/bot_defensebot_deploymentsK8sClusterDeliveryStatus"
+          },
+          "name": {
+            "type": "string",
+            "description": " Name of the bot-infrastructure",
+            "title": "Name",
+            "x-displayname": "Name"
+          },
+          "policy_or_rule_config_changes": {
+            "type": "array",
+            "description": " The config change details of the deployed policy or rule associated with the deployment on the bot infrastructure",
+            "title": "Policy or Rule Config Change Details",
+            "items": {
+              "$ref": "#/components/schemas/bot_deploymentsBotPolicyOrRuleConfigChange"
+            },
+            "x-displayname": "Policy or Rule Config Change Details"
+          },
+          "region_status": {
+            "$ref": "#/components/schemas/bot_defensebot_deploymentsRegionStatus"
+          },
+          "type": {
+            "$ref": "#/components/schemas/bot_deploymentsBotInfrastructureType"
+          }
+        }
+      },
+      "bot_defensebot_deploymentsBotInfraDeploymentStatus": {
+        "type": "string",
+        "description": "Deployment status of bot-infrastructure\n\nInitiated represents the status when SAPI returns successful deployment acknowledgement for the cluster\nSuccess represents the status when SAPI's deployment status API returns success for the cluster\nFailed represents the status when SAPI's deployment status API returns failure for the cluster\nInitiation failed represents the status when SAPI returns failed deployment acknowledgement for the cluster",
+        "title": "BotInfraDeploymentStatus",
+        "enum": [
+          "BOT_INFRA_DEPLOYMENT_STATUS_UNKNOWN",
+          "BOT_INFRA_DEPLOYMENT_STATUS_INITIATED",
+          "BOT_INFRA_DEPLOYMENT_STATUS_SUCCESS",
+          "BOT_INFRA_DEPLOYMENT_STATUS_FAILED",
+          "BOT_INFRA_DEPLOYMENT_STATUS_INITIATION_FAILED"
+        ],
+        "default": "BOT_INFRA_DEPLOYMENT_STATUS_UNKNOWN",
+        "x-displayname": "Bot-Infra Deployment Status",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_deployments.BotInfraDeploymentStatus"
+      },
+      "bot_defensebot_deploymentsBotInfraDeploymentStatusDetails": {
+        "type": "object",
+        "description": "Bot Infrastructure Deployment Status Details",
+        "title": "BotInfraDeploymentStatusDetails",
+        "x-displayname": "Bot Infrastructure Deployment Status Details",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.BotInfraDeploymentStatusDetails",
+        "properties": {
+          "bot_infra_deployment_status": {
+            "$ref": "#/components/schemas/bot_defensebot_deploymentsBotInfraDeploymentStatus"
+          },
+          "status_message": {
+            "type": "string",
+            "description": " Status message. In case of error, this would contain error details",
+            "title": "StatusMessage",
+            "x-displayname": "Status Message"
+          }
+        }
+      },
+      "bot_defensebot_deploymentsK8sClusterDeliveryStatus": {
+        "type": "object",
+        "description": "Kubernetes Cluster Deliver Status",
+        "title": "Kubernetes Cluster Deliver Status",
+        "x-displayname": "Kubernetes Cluster Deliver Status",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.K8sClusterDeliveryStatus",
+        "properties": {
+          "bot_infra_delivery_status": {
+            "$ref": "#/components/schemas/bot_defensebot_deploymentsBotInfraDeploymentStatus"
+          },
+          "generated_url": {
+            "type": "string",
+            "description": " Generated URL for the deployment",
+            "title": "Generated URL",
+            "x-displayname": "Generated URL"
+          },
+          "k8s_cluster_tags": {
+            "type": "array",
+            "description": " List of k8s cluster_tag belongs the bot infra",
+            "title": "k8s cluster names",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "K8s Cluster Names"
+          },
+          "policy_id": {
+            "type": "string",
+            "description": " Policy ID associated with the deployment",
+            "title": "Policy ID",
+            "x-displayname": "Policy ID"
+          },
+          "status_message": {
+            "type": "string",
+            "description": " Status message. In case of error, this would contain error details",
+            "title": "StatusMessage",
+            "x-displayname": "Status Message"
+          }
+        }
+      },
+      "bot_defensebot_deploymentsRegionStatus": {
+        "type": "object",
+        "description": "The status of each bot infrastructure per region",
+        "title": "Bot Infra Deployment Status Per Region",
+        "x-displayname": "Bot Infra Deployment Status Per Region",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.RegionStatus",
+        "properties": {
+          "region_status_details": {
+            "type": "object",
+            "description": " Bot Infra Deployment Status Details Per Region",
+            "title": "Bot Infra Deployment Status Details Per Region",
+            "x-displayname": "Bot Infra Deployment Status Details Per Region"
+          }
+        }
+      },
+      "bot_deploymentsBotDeploymentInfrastructure": {
+        "type": "object",
+        "description": "Summary view of a bot deployment infrastructure.",
+        "title": "Bot Deployment Infrastructure",
+        "x-displayname": "Bot Deployment Infrastructure",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.BotDeploymentInfrastructure",
+        "properties": {
+          "environment_type": {
+            "$ref": "#/components/schemas/bot_deploymentsBotInfrastructureEnvironmentType"
+          },
+          "name": {
+            "type": "string",
+            "description": " Name of the bot-infrastructure",
+            "title": "Name",
+            "x-displayname": "Name"
+          },
+          "type": {
+            "$ref": "#/components/schemas/bot_deploymentsBotInfrastructureType"
+          }
+        }
+      },
+      "bot_deploymentsBotDeploymentPolicyOrRule": {
+        "type": "object",
+        "description": "Summary view of a bot deployment policy or rule.",
+        "title": "Bot Deployment Policy Rule Summary",
+        "x-displayname": "Bot Deployment Policy or Rule Summary",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.BotDeploymentPolicyOrRule",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": " Name of the bot policy or rule",
+            "title": "Name",
+            "x-displayname": "Name"
+          },
+          "type": {
+            "$ref": "#/components/schemas/bot_deploymentsBotDeploymentPolicyOrRuleType"
+          },
+          "version": {
+            "type": "string",
+            "description": " Version of the bot policy or rule.",
+            "title": "Version",
+            "x-displayname": "Version"
+          }
+        }
+      },
+      "bot_deploymentsBotDeploymentPolicyOrRuleType": {
+        "type": "string",
+        "description": "Canonical bot policy or rule type used across different bot policy types.\n",
+        "title": "Bot Deployment Policy or Rule Type",
+        "enum": [
+          "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_UNKNOWN",
+          "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_ENDPOINT",
+          "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_ALLOWLIST",
+          "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_NETWORK",
+          "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_BOT_DETECTION",
+          "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_DEVICE_INTELLIGENCE",
+          "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_THREAT_INTELLIGENCE_PACKAGE"
+        ],
+        "default": "BOT_DEPLOYMENT_POLICY_OR_RULE_TYPE_UNKNOWN",
+        "x-displayname": "Deployed Policy/Rule",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_deployments.BotDeploymentPolicyOrRuleType"
+      },
+      "bot_deploymentsBotDeploymentStatus": {
+        "type": "string",
+        "description": "Canonical deployment status used across policy/rules types.\n\nInitiated represents the status when SAPI returns successful deployment acknowledgement for all the clusters/policies within the batch\nDeployed represents the status when SAPI's deployment status API returns success for all the clusters/policies within the batch\nFailed represents the status when SAPI's deployment status API returns failure for all the clusters/policies within the batch\nPartially Deployed represents the status when SAPI's deployment status API returns success for some clusters/policies while failure for other clusters/policies within the batch\nInitiation failed represents the status when SAPI returns failed deployment acknowledgement for all the clusters/policies within the batch.\nPartially initiated represents the status when SAPI returns success deployment acknowledgement for some clusters/policies while failed deployment acknowledgement for other clusters/policies within the batch\nDeployment scheduled represents the status when a deployment is scheduled but not yet initiated.\nDelivered represents the status when deployment is delivered to the coSSE kubernetes cluster\nPartially delivered represents the status when deployment is partially delivered to some CoSSE (Kubernetes) bot infrastructures but not all.",
+        "title": "BotDeploymentStatus",
+        "enum": [
+          "BOT_DEPLOYMENT_STATUS_UNKNOWN",
+          "BOT_DEPLOYMENT_STATUS_IN_DRAFT",
+          "BOT_DEPLOYMENT_STATUS_INITIATED",
+          "BOT_DEPLOYMENT_STATUS_DEPLOYED",
+          "BOT_DEPLOYMENT_STATUS_FAILED",
+          "BOT_DEPLOYMENT_STATUS_PARTIALLY_DEPLOYED",
+          "BOT_DEPLOYMENT_STATUS_DISCARDED_DRAFT",
+          "BOT_DEPLOYMENT_STATUS_INITIATION_FAILED",
+          "BOT_DEPLOYMENT_STATUS_PARTIALLY_INITIATED",
+          "BOT_DEPLOYMENT_STATUS_SCHEDULED",
+          "BOT_DEPLOYMENT_STATUS_DELIVERED",
+          "BOT_DEPLOYMENT_STATUS_PARTIALLY_DELIVERED"
+        ],
+        "default": "BOT_DEPLOYMENT_STATUS_UNKNOWN",
+        "x-displayname": "Bot Deployment Status",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_deployments.BotDeploymentStatus"
+      },
+      "bot_deploymentsBotDeploymentSummary": {
+        "type": "object",
+        "description": "Summary view of a bot deployment.",
+        "title": "BotDeploymentSummary",
+        "x-displayname": "Bot Deployment Summary",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.BotDeploymentSummary",
+        "properties": {
+          "bot_infrastructures": {
+            "type": "array",
+            "title": "Bot Infrastructure",
+            "items": {
+              "$ref": "#/components/schemas/bot_deploymentsBotDeploymentInfrastructure"
+            },
+            "x-displayname": "Bot Infrastructure"
+          },
+          "deployed_policies_or_rules": {
+            "type": "array",
+            "description": " List of policies/rules that were deployed in this deployment batch.",
+            "title": "Deployed Policies/Rules",
+            "items": {
+              "$ref": "#/components/schemas/bot_deploymentsBotDeploymentPolicyOrRule"
+            },
+            "x-displayname": "Deployed Policies/Rules"
+          },
+          "deployment_date": {
+            "type": "string",
+            "description": " Timestamp at which deployment was initiated.",
+            "title": "Deployment Date",
+            "format": "date-time",
+            "x-displayname": "Deployment Date"
+          },
+          "deployment_id": {
+            "type": "string",
+            "description": " Unique identifier for a deployment batch.",
+            "title": "Deployment ID",
+            "x-displayname": "Deployment ID"
+          },
+          "deployment_status": {
+            "$ref": "#/components/schemas/bot_deploymentsBotDeploymentStatus"
+          },
+          "modified_by": {
+            "type": "string",
+            "description": " User or service that last modified the deployment.",
+            "title": "Modified By",
+            "x-displayname": "Modified By"
+          },
+          "notes": {
+            "type": "string",
+            "title": "Notes",
+            "x-displayname": "Notes"
+          },
+          "traffic_types": {
+            "type": "array",
+            "title": "Traffic Channel",
+            "items": {
+              "$ref": "#/components/schemas/bot_deploymentsBotDeploymentTrafficType"
+            },
+            "x-displayname": "Traffic Channel"
+          }
+        }
+      },
+      "bot_deploymentsBotDeploymentTrafficType": {
+        "type": "string",
+        "description": "Traffic type used in bot deployment summaries.\n",
+        "title": "Bot Deployment Traffic Type",
+        "enum": [
+          "BOT_DEPLOYMENT_TRAFFIC_TYPE_UNKNOWN",
+          "BOT_DEPLOYMENT_TRAFFIC_TYPE_WEB",
+          "BOT_DEPLOYMENT_TRAFFIC_TYPE_MOBILE"
+        ],
+        "default": "BOT_DEPLOYMENT_TRAFFIC_TYPE_UNKNOWN",
+        "x-displayname": "Traffic Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_deployments.BotDeploymentTrafficType"
+      },
+      "bot_deploymentsBotDeploymentUserType": {
+        "type": "string",
+        "description": "Actor category that initiated the deployment.\n",
+        "title": "DeploymentUserType",
+        "enum": [
+          "DEPLOYMENT_USER_TYPE_UNKNOWN",
+          "DEPLOYMENT_USER_TYPE_XC_TENANT_USER",
+          "DEPLOYMENT_USER_TYPE_XC_F5_USER"
+        ],
+        "default": "DEPLOYMENT_USER_TYPE_UNKNOWN",
+        "x-displayname": "Deployment User Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_deployments.BotDeploymentUserType"
+      },
+      "bot_deploymentsBotInfrastructureEnvironmentType": {
+        "type": "string",
+        "description": "Deployment environment type used in bot deployment summaries.\n",
+        "title": "Bot Deployment Environment Type",
+        "enum": [
+          "BOT_INFRASTRUCTURE_ENVIRONMENT_TYPE_UNKNOWN",
+          "BOT_INFRASTRUCTURE_ENVIRONMENT_TYPE_PRODUCTION",
+          "BOT_INFRASTRUCTURE_ENVIRONMENT_TYPE_TESTING"
+        ],
+        "default": "BOT_INFRASTRUCTURE_ENVIRONMENT_TYPE_UNKNOWN",
+        "x-displayname": "Environment Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_deployments.BotInfrastructureEnvironmentType"
+      },
+      "bot_deploymentsBotInfrastructureType": {
+        "type": "string",
+        "description": "Type of the Bot Infrastructure\n\n - BOT_INFRASTRUCTURE_TYPE_UNKNOWN: Unknown\n\n - BOT_INFRASTRUCTURE_TYPE_CLOUD_HOSTED: F5 Cloud Hosted\n\n - BOT_INFRASTRUCTURE_TYPE_HOSTED: F5 Hosted\n\n - BOT_INFRASTRUCTURE_TYPE_ON_PREM: F5 On Premises\n\n - BOT_INFRASTRUCTURE_TYPE_K8S_CLUSTER: Kubernetes Cluster\n",
+        "title": "BotInfrastructureType",
+        "enum": [
+          "BOT_INFRASTRUCTURE_TYPE_UNKNOWN",
+          "BOT_INFRASTRUCTURE_TYPE_CLOUD_HOSTED",
+          "BOT_INFRASTRUCTURE_TYPE_HOSTED",
+          "BOT_INFRASTRUCTURE_TYPE_ON_PREM",
+          "BOT_INFRASTRUCTURE_TYPE_K8S_CLUSTER"
+        ],
+        "default": "BOT_INFRASTRUCTURE_TYPE_UNKNOWN",
+        "x-displayname": "Bot Infrastructure Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_deployments.BotInfrastructureType"
+      },
+      "bot_deploymentsBotPolicyOrRuleConfigChange": {
+        "type": "object",
+        "description": "Config change details for bot policy or rule deployments",
+        "title": "BotPolicyConfigChange",
+        "x-displayname": "Bot Policy or Rule Config Change",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.BotPolicyOrRuleConfigChange",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": " Unique identifier for a bot policy or rule",
+            "title": "Policy or Rule ID",
+            "x-displayname": "ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Policy or Rule Name",
+            "x-displayname": "Policy or Rule Name"
+          },
+          "older_policy_name": {
+            "type": "string",
+            "x-displayname": "Older Policy Name"
+          },
+          "older_version": {
+            "type": "string",
+            "x-displayname": "Older Version"
+          },
+          "policy_type": {
+            "$ref": "#/components/schemas/bot_deploymentsBotDeploymentPolicyOrRuleType"
+          },
+          "updated_version": {
+            "type": "string",
+            "title": "updated version of the deployed policy or rule",
+            "x-displayname": "Updated Version"
+          }
+        }
+      },
+      "bot_deploymentsGetBotDeploymentDetailsResp": {
+        "type": "object",
+        "description": "Placeholder response message for deployment details.\nAdd detailed response fields as needed.",
+        "title": "GetBotDeploymentDetailsResp",
+        "x-displayname": "Get Bot Deployment Details Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.GetBotDeploymentDetailsResp",
+        "properties": {
+          "config_change_per_bot_detection_rule": {
+            "type": "array",
+            "description": " Config change per bot detection rule (Populated for bot detection rule deployments)",
+            "title": "Config Change Per Bot Detection Rule",
+            "items": {
+              "$ref": "#/components/schemas/bot_detection_ruleBotDetectionRuleConfigChange"
+            },
+            "x-displayname": "Config Change Per Bot Detection Rule"
+          },
+          "deployed_by": {
+            "type": "string",
+            "description": " Deployed By",
+            "title": "Deployed By",
+            "x-displayname": "Deployed By"
+          },
+          "deployed_by_user_type": {
+            "$ref": "#/components/schemas/bot_deploymentsBotDeploymentUserType"
+          },
+          "deployment_details_per_bot_infra": {
+            "type": "array",
+            "description": " Deployment details per bot infrastructure",
+            "title": "DeploymentDetailsPerBotInfra",
+            "items": {
+              "$ref": "#/components/schemas/bot_defensebot_deploymentsBotInfraDeploymentDetails"
+            },
+            "x-displayname": "Deployment Details Per Bot Infrastructure"
+          },
+          "deployment_id": {
+            "type": "string",
+            "description": " Unique identifier for a deployment.",
+            "title": "Deployment ID",
+            "x-displayname": "Deployment ID"
+          },
+          "deployment_status": {
+            "$ref": "#/components/schemas/bot_deploymentsBotDeploymentStatus"
+          },
+          "deployment_time": {
+            "type": "string",
+            "description": " Timestamp at which the deployment was initiated",
+            "title": "DeploymentTime",
+            "format": "date-time",
+            "x-displayname": "Deployment Time"
+          },
+          "environment_type": {
+            "type": "array",
+            "description": " Infrastructure Environments to which deployment was made on",
+            "title": "Deploy To",
+            "items": {
+              "$ref": "#/components/schemas/bot_deploymentsBotInfrastructureEnvironmentType"
+            },
+            "x-displayname": "Deploy To"
+          }
+        }
+      },
+      "bot_deploymentsGetBotDeploymentStatsResponse": {
+        "type": "object",
+        "description": "Deployment-activity counts bucketed over the requested window, grouped by status.\nEach status is one stacked-bar series.",
+        "title": "GetBotDeploymentStatsResponse",
+        "x-displayname": "Response for GetBotDeploymentStats",
+        "x-ves-oneof-field-deployment_success_choice": "[\"delivered\",\"deployed\"]",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.GetBotDeploymentStatsResponse",
+        "properties": {
+          "delivered": {
+            "$ref": "#/components/schemas/bot_deploymentsStatusTimeSeries"
+          },
+          "deployed": {
+            "$ref": "#/components/schemas/bot_deploymentsStatusTimeSeries"
+          },
+          "failed": {
+            "$ref": "#/components/schemas/bot_deploymentsStatusTimeSeries"
+          },
+          "other": {
+            "$ref": "#/components/schemas/bot_deploymentsStatusTimeSeries"
+          }
+        }
+      },
+      "bot_deploymentsListBotDeploymentsResp": {
+        "type": "object",
+        "description": "Response containing bot deployment summaries.",
+        "title": "ListBotDeploymentsResp",
+        "x-displayname": "List Bot Deployments Response",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.ListBotDeploymentsResp",
+        "properties": {
+          "deployments": {
+            "type": "array",
+            "description": " List of deployments.",
+            "title": "Deployments",
+            "items": {
+              "$ref": "#/components/schemas/bot_deploymentsBotDeploymentSummary"
+            },
+            "x-displayname": "Deployments"
+          }
+        }
+      },
+      "bot_deploymentsStatusTimeSeries": {
+        "type": "object",
+        "description": "Time series of deployment counts for a single status",
+        "title": "StatusTimeSeries",
+        "x-displayname": "Status Time Series",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.StatusTimeSeries",
+        "properties": {
+          "time_series": {
+            "type": "array",
+            "description": " One point per bucket, ordered by timestamp ascending. All four status series share the\n same bucket timestamps so they can be stacked into a single bar chart.",
+            "title": "time_series",
+            "items": {
+              "$ref": "#/components/schemas/bot_deploymentsTimeSeriesPoint"
+            },
+            "x-displayname": "Time Series"
+          }
+        }
+      },
+      "bot_deploymentsTimeSeriesPoint": {
+        "type": "object",
+        "description": "A single bucket in a deployment-stats time series",
+        "title": "TimeSeriesPoint",
+        "x-displayname": "Time Series Point",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.bot_deployments.TimeSeriesPoint",
+        "properties": {
+          "count": {
+            "type": "string",
+            "description": " Number of deployments with this status whose deployment time falls in this bucket\n\nExample: ` \"4\"`",
+            "title": "count",
+            "format": "uint64",
+            "x-displayname": "Count",
+            "x-ves-example": "4"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": " Bucket start time, in unix epoch seconds. The bucket interval (minute/hour/day) is derived\n server-side from the requested window span and is implied by the spacing of timestamps.\n\nExample: ` \"1780272000\"`",
+            "title": "timestamp",
+            "format": "int64",
+            "x-displayname": "Timestamp",
+            "x-ves-example": "1780272000"
+          }
+        }
+      },
+      "bot_detection_ruleBotDetectionRuleConfig": {
+        "type": "object",
+        "description": "Rule configuration",
+        "title": "BotDetectionRuleConfig",
+        "x-displayname": "Rule configuration",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.BotDetectionRuleConfig",
+        "properties": {
+          "mitigation": {
+            "type": "boolean",
+            "description": " Mitigation - true(ON) / false(OFF)",
+            "title": "Mitigation",
+            "x-displayname": "Mitigation"
+          }
+        }
+      },
+      "bot_detection_ruleBotDetectionRuleConfigChange": {
+        "type": "object",
+        "description": "Bot Detection Rule Config Change",
+        "title": "BotDetectionRuleConfigChange",
+        "x-displayname": "Bot Detection Rule Config Change",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.BotDetectionRuleConfigChange",
+        "properties": {
+          "deploy_to": {
+            "type": "array",
+            "description": " Environments to which new rule configuration has to be deployed onto",
+            "title": "Deploy To",
+            "items": {
+              "$ref": "#/components/schemas/bot_infrastructureEnvironmentType"
+            },
+            "x-displayname": "Deploy To"
+          },
+          "desired_rule_config": {
+            "$ref": "#/components/schemas/bot_detection_ruleBotDetectionRuleConfig"
+          },
+          "desired_rule_config_per_bot_infra": {
+            "type": "array",
+            "title": "Desired Rule Configuration Per Bot Infra",
+            "items": {
+              "$ref": "#/components/schemas/bot_detection_ruleBotDetectionRuleConfigPerBotInfra"
+            },
+            "x-displayname": "Desired Rule Configuration Per Bot Infra"
+          },
+          "existing_rule_config_per_bot_infra": {
+            "type": "array",
+            "title": "Existing Rule Configuration Per Bot Infra",
+            "items": {
+              "$ref": "#/components/schemas/bot_detection_ruleBotDetectionRuleConfigPerBotInfra"
+            },
+            "x-displayname": "Existing Rule Configuration Per Bot Infra"
+          },
+          "last_modified_at": {
+            "type": "string",
+            "description": " Last Modified At as per SAPI's database",
+            "title": "Last Modified At",
+            "format": "date-time",
+            "x-displayname": "Last Modified At"
+          },
+          "reason": {
+            "$ref": "#/components/schemas/bot_detection_ruleBotDetectionRuleConfigChangeReason"
+          },
+          "rule_id": {
+            "type": "string",
+            "description": " Unique identifier for a bot detection rule as per SAPI's database",
+            "title": "Rule ID",
+            "x-displayname": "Rule ID"
+          },
+          "rule_name": {
+            "type": "string",
+            "title": "Rule Name",
+            "x-displayname": "Rule Name"
+          },
+          "traffic_type": {
+            "$ref": "#/components/schemas/bot_infrastructureTrafficType"
+          }
+        }
+      },
+      "bot_detection_ruleBotDetectionRuleConfigChangeReason": {
+        "type": "object",
+        "description": "Reason for changing the bot detection rule configuration",
+        "title": "BotDetectionRuleConfigChangeReason",
+        "x-displayname": "Bot Detection Rule Config Change Reason",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.BotDetectionRuleConfigChangeReason",
+        "properties": {
+          "comments": {
+            "type": "string",
+            "description": " Comments are required when the reason type is selected as 'Other'",
+            "title": "Comments",
+            "x-displayname": "Comments"
+          },
+          "reasons": {
+            "type": "array",
+            "description": " List of reasons why the rule configuration is changed",
+            "title": "Reasons",
+            "items": {
+              "$ref": "#/components/schemas/bot_detection_ruleBotDetectionRuleConfigChangeReasonType"
+            },
+            "x-displayname": "Reasons"
+          }
+        }
+      },
+      "bot_detection_ruleBotDetectionRuleConfigChangeReasonType": {
+        "type": "string",
+        "description": "Reason type for changing the bot detection rule configuration\n",
+        "title": "BotDetectionRuleConfigChangeReasonType",
+        "enum": [
+          "BOT_DETECTION_RULE_CHANGE_REASON_UNKNOWN",
+          "BOT_DETECTION_RULE_CHANGE_REASON_FALSE_POSITIVE",
+          "BOT_DETECTION_RULE_CHANGE_REASON_TRUE_POSITIVE",
+          "BOT_DETECTION_RULE_CHANGE_REASON_TESTING",
+          "BOT_DETECTION_RULE_CHANGE_REASON_OTHER"
+        ],
+        "default": "BOT_DETECTION_RULE_CHANGE_REASON_UNKNOWN",
+        "x-displayname": "Bot Detection Rule Config Change Reason Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.BotDetectionRuleConfigChangeReasonType"
+      },
+      "bot_detection_ruleBotDetectionRuleConfigPerBotInfra": {
+        "type": "object",
+        "description": "Bot detection rule configuration per bot infrastructure",
+        "title": "BotDetectionRuleConfigPerBotInfra",
+        "x-displayname": "Bot detection rule configuration per bot infrastructure",
+        "x-ves-oneof-field-rule_config": "[\"bot_detection_rule_config\",\"k8s_cluster_rule_config\",\"region_rule_config\"]",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.BotDetectionRuleConfigPerBotInfra",
+        "properties": {
+          "bot_detection_rule_config": {
+            "$ref": "#/components/schemas/bot_detection_ruleBotDetectionRuleConfig"
+          },
+          "bot_infra_id": {
+            "type": "string",
+            "description": " Bot Infrastructure ID as per SAPI's database",
+            "title": "Bot Infrastructure ID",
+            "x-displayname": "Bot Infrastructure ID"
+          },
+          "bot_infra_name": {
+            "type": "string",
+            "description": " Name of the bot infrastructure as per SAPI's database",
+            "title": "BotInfraName",
+            "x-displayname": "Bot Infrastructure Name"
+          },
+          "bot_infrastructure_type": {
+            "$ref": "#/components/schemas/threat_intelligenceBotInfrastuctureType"
+          },
+          "environment_type": {
+            "$ref": "#/components/schemas/bot_infrastructureEnvironmentType"
+          },
+          "k8s_cluster_rule_config": {
+            "$ref": "#/components/schemas/bot_detection_ruleK8sClusterRuleConfig"
+          },
+          "region_rule_config": {
+            "$ref": "#/components/schemas/bot_detection_ruleRegionRuleConfig"
+          }
+        }
+      },
+      "bot_detection_ruleK8sClusterRuleConfig": {
+        "type": "object",
+        "description": "Kubernetes cluster rule config",
+        "title": "K8sClusterRuleConfig",
+        "x-displayname": "Kubernetes Cluster Rule Config",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.K8sClusterRuleConfig",
+        "properties": {
+          "in_used_k8s_cluster_rule_config": {
+            "type": "object",
+            "title": "In-Used Kubernetes Cluster Rule Config",
+            "x-displayname": "In-Used Kubernetes Cluster Rule Config"
+          },
+          "sync_status_per_k8s_cluster": {
+            "type": "object",
+            "title": "Sync status for k8s cluster",
+            "x-displayname": "Sync Status"
+          },
+          "target_k8s_cluster_rule_config": {
+            "type": "object",
+            "title": "Target Kubernetes Cluster Rule Config",
+            "x-displayname": "Target Kubernetes Cluster Rule Config"
+          }
+        }
+      },
+      "bot_detection_ruleRegionRuleConfig": {
+        "type": "object",
+        "description": "Rule config per region",
+        "title": "RegionRuleConfig",
+        "x-displayname": "Rule Config Per Region",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.RegionRuleConfig",
+        "properties": {
+          "region_config": {
+            "type": "object",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.map.min_pairs: 1\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Rule Config Per Region",
+            "x-displayname": "Rule Config Per Region",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.map.min_pairs": "1",
+              "ves.io.schema.rules.message.required": "true"
+            },
+            "minProperties": 1
+          }
+        }
+      },
+      "bot_infrastructureEnvironmentType": {
+        "type": "string",
+        "description": "Identifies the environment as either Production or Testing. Production environments have two infrastructure regions in an Active-Active configuration where traffic is routed equally between the two regions. Test environments have a single infrastructure region.\n\nProduction Protect live production applications and services from automated attacks.\nTest Evaluate new features, settings, and system performance.",
+        "title": "EnvironmentType",
+        "enum": ["PRODUCTION", "TESTING"],
+        "default": "PRODUCTION",
+        "x-displayname": "Environment Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.EnvironmentType"
+      },
+      "bot_infrastructureTrafficType": {
+        "type": "string",
+        "description": "The type of traffic that is routed to and processed by this infrastructure (Web or Mobile).\n\nOnly web traffic, including browser-based traffic from mobile devices, is routed through this Bot Defense infrastructure.\nOnly mobile traffic from native mobile apps with the Bot Defense SDK are routed through this Bot Defense infrastructure.",
+        "title": "TrafficType",
+        "enum": ["WEB", "MOBILE"],
+        "default": "WEB",
+        "x-displayname": "Traffic Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.TrafficType"
+      },
+      "protobufAny": {
+        "type": "object",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
+        "properties": {
+          "type_url": {
+            "type": "string",
+            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          },
+          "value": {
+            "type": "string",
+            "description": "Must be a valid serialized protocol buffer of the above specified type.",
+            "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "threat_intelligenceBotInfrastuctureType": {
+        "type": "string",
+        "description": "Type of the Bot Infrastructure\n\n - BOT_INFRA_TYPE_UNKNOWN: Unknown\n\n - BOT_INFRA_TYPE_CLOUD_HOSTED: F5 Cloud Hosted\n\n - BOT_INFRA_TYPE_HOSTED: F5 Hosted\n\n - BOT_INFRA_TYPE_ON_PREM: F5 On Premises\n\n - BOT_INFRA_TYPE_K8S_CLUSTER: Kubernetes Cluster\n",
+        "title": "BotInfrastructureType",
+        "enum": [
+          "BOT_INFRA_TYPE_UNKNOWN",
+          "BOT_INFRA_TYPE_CLOUD_HOSTED",
+          "BOT_INFRA_TYPE_HOSTED",
+          "BOT_INFRA_TYPE_ON_PREM",
+          "BOT_INFRA_TYPE_K8S_CLUSTER"
+        ],
+        "default": "BOT_INFRA_TYPE_UNKNOWN",
+        "x-displayname": "Bot Infrastructure Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.threat_intelligence.BotInfrastuctureType"
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "shape"
+    }
+  ]
+}

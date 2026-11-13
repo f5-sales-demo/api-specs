@@ -9,6 +9,46 @@ SCANNER="${REPO_ROOT}/scripts/check-pii.sh"
 PYTHON_SCANNER="${REPO_ROOT}/scripts/check_pii.py"
 SYNTHETIC_USER=realperson
 
+# Address-field matches share the structured-value interface with identity fields.
+python3 - "$PYTHON_SCANNER" <<'PYTEST'
+import importlib.util
+import sys
+spec = importlib.util.spec_from_file_location("scanner_address_regression", sys.argv[1])
+module = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = module
+spec.loader.exec_module(module)
+for line in ["ssn: str", "ssn = '123-45-6789'", "{'ssn': '123-45-6789'}"]:
+    match = module.ADDRESS_FIELD_RE.search(line)
+    assert match is not None
+    assert match.group("separator") in {":", "="}
+print("[OK] address-field match preserves the structured separator contract")
+assert module.safe_email("xorgctl-session@console.service")
+assert not module.safe_email("person@console.service")
+assert not module.safe_email("person@company.invalid")
+print("[OK] software unit identifiers remain distinct from contact addresses")
+for path, line in [
+    ("fixture.md", "Supported Namespace: system/shared"),
+    ("fixture.html", '<p class="mui-style-example">Supported Namespace: system/shared</p>'),
+]:
+    findings = set()
+    module.scan_text(path, line, findings)
+    assert not findings, (path, findings)
+for line in [
+    "Supported Namespace: system/private-namespace",
+    "Supported Namespace: system/shared-private-namespace",
+    "Supported Tenant: system/shared",
+    "Namespace: system/shared",
+    "Supported Namespace: system/shared, tenant: private-namespace",
+]:
+    findings = set()
+    module.scan_text("fixture.md", line, findings)
+    assert len(findings) == 1 and next(iter(findings)).category == "customer-identifier", findings
+findings = set()
+module.scan_text("fixture.md", "Supported Namespace: system/shared, email: person@company.invalid", findings)
+assert len(findings) == 1 and next(iter(findings)).category == "email", findings
+print("[OK] fixed supported-namespace prose preserves literal-identity enforcement")
+PYTEST
+
 FAIL=0
 WORK=$(mktemp -d)
 cleanup() { rm -rf "$WORK"; }
@@ -280,6 +320,90 @@ git -C "$repo" add fixture.json
 git -C "$repo" commit -qm vscode-simple-snippet-literal-default
 assert_customer_identifier "direct VS Code snippet defaults remain enforced" "$repo" --scope head --mode enforce
 
+repo=$(new_repo source-field-aliases)
+cat >"${repo}/aliases.ts" <<'EOF'
+const aliases = { first_name: "first_name" };
+type NameField = { first_name: "given_name" };
+type IdentityField = { account: "account" };
+const multiline = {
+  first_name: "given_name",
+  account: "account",
+};
+EOF
+cat >"${repo}/README.md" <<'EOF'
+# Source field aliases
+
+```typescript
+const aliases = { first_name: "first_name" };
+type NameField = { first_name: "given_name" };
+type IdentityField = { account: "account" };
+```
+EOF
+git -C "$repo" add -A
+git -C "$repo" commit -qm source-field-aliases
+assert_clean "source field aliases are schema names rather than personal values" "$repo" --scope head --mode enforce
+
+repo=$(new_repo source-field-display-labels)
+cat >"${repo}/labels.ts" <<'EOF'
+const labels = {
+  namespace: 'Namespace',
+  projectId: 'Project ID',
+  account_id: 'Account ID',
+};
+EOF
+git -C "$repo" add labels.ts
+git -C "$repo" commit -qm source-field-display-labels
+assert_clean "source field display labels are structural aliases" "$repo" --scope head --mode enforce
+
+repo=$(new_repo source-field-display-label-boundary)
+cat >"${repo}/fixture.ts" <<'EOF'
+const record = { namespace: 'private-customer' };
+// namespace: 'Namespace'
+const serialized = "{ projectId: 'Project ID' }";
+const composed = { namespace: 'Namespace' + '-customer' };
+EOF
+cat >"${repo}/data.json" <<'EOF'
+{"namespace": "Namespace", "projectId": "Project ID"}
+EOF
+git -C "$repo" add -A
+git -C "$repo" commit -qm source-field-display-label-boundary
+assert_violation "display labels remain enforced outside structural aliases" "$repo" --scope head --mode enforce
+if ! python3 - "${WORK}/stdout" <<'PYTEST'; then
+import sys
+from pathlib import Path
+output = Path(sys.argv[1]).read_text()
+assert all(f"fixture.ts:{line}" in output for line in range(1, 5)), output
+assert "data.json:1" in output, output
+PYTEST
+  echo "[FAIL] non-structural display labels remain enforced"
+  FAIL=1
+fi
+
+repo=$(new_repo source-field-alias-boundary)
+cat >"${repo}/fixture.ts" <<'EOF'
+const record = { first_name: "Private Person", account: "private-customer" };
+// first_name: "given_name"
+/* account: "account" */
+const serialized = '{ first_name: "given_name", account: "account" }';
+const prefixed = { first_name: "given_name-person", account: "account-customer" };
+EOF
+cat >"${repo}/generated.json" <<'EOF'
+{"first_name": "given_name", "account": "account"}
+EOF
+git -C "$repo" add -A
+git -C "$repo" commit -qm source-field-alias-boundary
+assert_violation "comments, serialized records and identity fixtures remain enforced" "$repo" --scope head --mode enforce
+if ! python3 - "${WORK}/stdout" <<'PYTEST'; then
+import sys
+from pathlib import Path
+output = Path(sys.argv[1]).read_text()
+assert all(f"fixture.ts:{line}" in output for line in range(1, 6)), output
+assert "generated.json:1" in output, output
+PYTEST
+  echo "[FAIL] each non-structural field remains enforced"
+  FAIL=1
+fi
+
 repo=$(new_repo numeric-enum-members)
 cat >"${repo}/fixture.ts" <<'EOF'
 export enum ResourceKind
@@ -298,6 +422,23 @@ printf 'export const namespace = 987654321;\n' >"${repo}/fixture.ts"
 git -C "$repo" add fixture.ts
 git -C "$repo" commit -qm numeric-identifier-assignment
 assert_customer_identifier "numeric identifiers outside enum scope remain enforced" "$repo" --scope head --mode enforce
+
+repo=$(new_repo source-code-fixture)
+cat >"${repo}/protocol.source" <<'EOF'
+pub struct DynamicToolCallParams {
+    pub namespace: Option<String>,
+    pub project_id: Option<String>,
+}
+EOF
+git -C "$repo" add protocol.source
+git -C "$repo" commit -qm source-code-fixture
+assert_clean "typed declarations in source-code fixtures are not customer identifiers" "$repo" --scope head --mode enforce
+
+repo=$(new_repo source-code-fixture-literal)
+printf 'const namespace = "private-customer";\n' >"${repo}/protocol.source"
+git -C "$repo" add protocol.source
+git -C "$repo" commit -qm source-code-fixture-literal
+assert_customer_identifier "literal identities in source-code fixtures remain enforced" "$repo" --scope head --mode enforce
 
 repo=$(new_repo string-shaped-enum-declaration)
 cat >"${repo}/fixture.ts" <<'EOF'
@@ -325,6 +466,40 @@ EOF
 git -C "$repo" add fixture.ts
 git -C "$repo" commit -qm explicit-person-name
 assert_single_finding "explicit person-name fields remain enforced" "$repo" person-name high --scope head --mode enforce
+
+repo=$(new_repo repository-full-name)
+cat >"${repo}/fixture.json" <<'EOFJSON'
+{"login":"example-org","full_name":"example-org/example-repo","default_branch":"main"}
+EOFJSON
+cat >"${repo}/fixture.py" <<'EOFPY'
+result = {"text": '{"login":"example-org","full_name":"example-org/example-repo","default_branch":"main"}'}
+EOFPY
+cat >"${repo}/multiline.json" <<'EOFJSON'
+{
+  "full_name": "example-org/example-repo",
+  "default_branch": "main"
+}
+EOFJSON
+git -C "$repo" add fixture.json fixture.py multiline.json
+git -C "$repo" commit -qm repository-metadata
+assert_clean "repository full_name metadata is not a human identity" "$repo" --scope head --mode enforce
+assert_clean "serialized repository metadata is not a human identity" "$repo" --scope head --mode audit
+
+repo=$(new_repo repository-with-person-name)
+cat >"${repo}/fixture.json" <<'EOFJSON'
+{"full_name":"example-org/example-repo","default_branch":"main","owner":{"full_name":"Synthetic Person"}}
+EOFJSON
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm repository-person-metadata
+assert_single_finding "repository metadata does not exempt nested human full names" "$repo" person-name high --scope head --mode enforce
+
+repo=$(new_repo contextless-repository-shaped-name)
+cat >"${repo}/fixture.json" <<'EOFJSON'
+{"full_name":"example-org/example-repo"}
+EOFJSON
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm contextless-repository-shape
+assert_single_finding "repository-shaped full names without metadata remain enforced" "$repo" person-name high --scope head --mode enforce
 
 repo=$(new_repo documentation-expressions)
 cat >"${repo}/fixture.mdx" <<'EOF'
@@ -673,6 +848,32 @@ EOF
 git -C "$repo" add fixture.mdx
 git -C "$repo" commit -qm unrelated-jq
 assert_customer_identifier "an earlier jq command cannot exempt a later field" "$repo" --scope head --mode enforce
+
+repo=$(new_repo jq-identity-comparison)
+cat >"${repo}/fixture.mdx" <<'EOF'
+```bash
+jq -e --arg namespace "$NS" '.metadata.namespace == $namespace and .spec.custom_errors["5"] == $page' response.json
+```
+EOF
+git -C "$repo" add fixture.mdx
+git -C "$repo" commit -qm jq-identity-comparison
+assert_clean "jq identity comparisons do not emit organization literals" "$repo" --scope head --mode enforce
+
+repo=$(new_repo jq-continued-options)
+cat >"${repo}/fixture.md" <<'EOF'
+```bash
+jq -e \
+  --arg namespace "$NS" \
+  '.metadata.namespace == $namespace' \
+  response.json
+jq -n \
+  --arg label 'sample' \
+  '{namespace: "unsafe-org-fixture"}'
+```
+EOF
+git -C "$repo" add fixture.md
+git -C "$repo" commit -qm jq-continued-options
+assert_customer_identifier "continued jq options retain literal enforcement" "$repo" --scope head --mode enforce
 
 repo=$(new_repo jq-expressions)
 cat >"${repo}/fixture.mdx" <<'EOF'
@@ -2015,6 +2216,22 @@ git -C "$repo" add fixture.txt
 git -C "$repo" commit -qm syntax
 assert_clean "URI, package, and anchor syntax are not contact emails" "$repo" --scope head --mode enforce
 
+repo=$(new_repo scoped-npm-coordinate)
+cat >"${repo}/package.json" <<'EOF'
+{
+  "patchedDependencies": {
+    "@tobilu/qmd@2.8.3": "patches/@tobilu%2Fqmd@2.8.3.patch"
+  }
+}
+EOF
+cat >"${repo}/bun.lock" <<'EOF'
+"patchedDependencies": {
+  "@tobilu/qmd@2.8.3": "patches/@tobilu%2Fqmd@2.8.3.patch",
+}
+EOF
+git -C "$repo" add package.json bun.lock
+assert_clean "staged scoped npm package coordinates are not contact emails" "$repo" --scope staged --mode enforce
+
 repo=$(new_repo email)
 printf 'email: person@customer.local\n' >"${repo}/fixture.yaml"
 git -C "$repo" add fixture.yaml
@@ -2062,10 +2279,12 @@ git -C "$repo" commit -qm path
 assert_violation "personal home path" "$repo" --scope head --mode enforce
 
 repo=$(new_repo placeholder-paths)
-printf 'mac=/Users/you/work ci=/home/runner/work variable=/home/${USERNAME}/work route=/home/%s\n' index >"${repo}/config.ini"
+SYNTHETIC_SERVICE_USER=xcsh
+printf 'mac=/Users/you/work ci=/home/runner/work service=/home/%s/.config variable=/home/${USERNAME}/work route=/home/%s\n' \
+  "$SYNTHETIC_SERVICE_USER" index >"${repo}/config.ini"
 git -C "$repo" add config.ini
 git -C "$repo" commit -qm paths
-assert_clean "placeholder, CI, and variable home paths" "$repo" --scope head --mode enforce
+assert_clean "placeholder, CI, service, and variable home paths" "$repo" --scope head --mode enforce
 
 repo=$(new_repo embedded-home-tokens)
 printf 'keys=Shift+page/%s/%s route=service/%s/%s windows=prefixC:\\%s\\%s\n' home end Users list Users record >"${repo}/config.ini"
@@ -2183,6 +2402,33 @@ git -C "$repo" add fixture.ts
 git -C "$repo" commit -qm source-template-and-signature-expressions
 assert_clean "source template expressions and signatures are not YAML data" "$repo" --scope head --mode enforce
 
+repo=$(new_repo source-generated-identity-name)
+cat >"${repo}/fixture.ts" <<'EOF'
+const subscriptionName = `${serviceName}-subscription`;
+const subscriptionId = `${addonServiceName.replace(/[^a-z0-9-]/gi, '-').toLowerCase()}-subscription`;
+EOF
+git -C "$repo" add fixture.ts
+git -C "$repo" commit -qm generated-identity-name
+assert_clean "runtime templates with field-noun labels are generated names" "$repo" --scope head --mode enforce
+
+index=0
+while IFS= read -r expression; do
+  index=$((index + 1))
+  repo=$(new_repo "source-generated-identity-literal-${index}")
+  printf '%s\n' "$expression" >"${repo}/fixture.ts"
+  git -C "$repo" add fixture.ts
+  git -C "$repo" commit -qm generated-identity-literal
+  assert_customer_identifier "generated-name syntax retains literal identity case ${index}" "$repo" --scope head --mode enforce
+done <<'EOF'
+const subscriptionName = `${"private-customer"}-subscription`;
+const subscriptionName = `${serviceName}-private-customer`;
+const subscriptionName = `${serviceName}-subscription` + "private-customer";
+const subscriptionName = "${serviceName}-subscription";
+// subscriptionName = `${serviceName}-subscription`;
+const subscriptionName = `${serviceName}-subscription;
+const subscriptionName = `${`private-customer`}-subscription`;
+EOF
+
 repo=$(new_repo source-template-literal-composition)
 cat >"${repo}/fixture.ts" <<'EOF'
 const literal = `tenant:${"private-customer"}`;
@@ -2213,16 +2459,49 @@ git -C "$repo" add fixture.ts
 git -C "$repo" commit -qm schema
 assert_clean "escaped serialized key headings are not field values" "$repo" --scope head --mode enforce
 
+repo=$(new_repo escaped-structured-placeholder)
+cat >"${repo}/fixture.mdx" <<'EOF'
+Example: `{NAMESPACE=\"example-namespace"}`
+EOF
+git -C "$repo" add fixture.mdx
+git -C "$repo" commit -qm escaped-structured-placeholder
+assert_clean "escaped structured placeholder remains clean" "$repo" --scope head --mode enforce
+
+repo=$(new_repo escaped-structured-literal)
+cat >"${repo}/fixture.mdx" <<'EOF'
+Example: `{NAMESPACE=\"private-namespace"}`
+EOF
+git -C "$repo" add fixture.mdx
+git -C "$repo" commit -qm escaped-structured-literal
+assert_customer_identifier "escaped structured literal remains enforced" "$repo" --scope head --mode enforce
+
 repo=$(new_repo schematic-identities)
 cat >"${repo}/fixture.yaml" <<'EOF'
 tenant: staging
 namespace: default
 project: demo
 account: value
+extension_namespace: x-f5xc-
+tenant: x-f5xc-tenant
+namespace: x-f5xc-tenant-namespace
+example_namespace: user_namespace
+security_namespace: security
+domain: tenant_and_identity
+display_name: xc container services
+person_name: xc kubernetes service
+empty_tenant: {}
+empty_namespace: []
+zip_code: '90210'
 EOF
 git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm schematic
-assert_clean "generic environment and schema identities" "$repo" --scope head --mode enforce
+assert_clean "generic environment, schema identities, and reserved records" "$repo" --scope head --mode enforce
+
+repo=$(new_repo x-f5xc-customer-identifier)
+printf 'tenant: x-f5xc-real-customer\n' >"${repo}/fixture.yaml"
+git -C "$repo" add fixture.yaml
+git -C "$repo" commit -qm x-f5xc-customer
+assert_violation "x-f5xc customer identifiers remain enforced" "$repo" --scope head --mode enforce
 
 repo=$(new_repo composite-schematic-identities)
 cat >"${repo}/fixture.yaml" <<'EOF'
@@ -2242,6 +2521,37 @@ EOF
 git -C "$repo" add fixture.yaml
 git -C "$repo" commit -qm composite-customer
 assert_violation "composite literal customer identifiers" "$repo" --scope head --mode enforce
+
+repo=$(new_repo json-schema-identity-context)
+cat >"${repo}/fixture.json" <<'EOF'
+{
+  "description": "Set namespace: customer-selected and first_name: customer-selected.",
+  "properties": {
+    "namespace": {"type": "string"},
+    "first_name": {"type": "string"},
+    "zip_code": {"type": "string"}
+  }
+}
+EOF
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm json-schema-context
+assert_clean \
+  "JSON schema prose and property containers are not literal identity values" \
+  "$repo" --scope head --mode enforce
+
+repo=$(new_repo json-scalar-identity)
+printf '%s\n' \
+  '{"namespace":"customer-selected","first_name":"Customer Selected","zip_code":"12345"}' \
+  >"${repo}/fixture.json"
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm json-scalar-identity
+assert_violation "JSON scalar identity values remain enforced" "$repo" --scope head --mode enforce
+
+repo=$(new_repo json-array-identity)
+printf '%s\n' '{"tenant":["customer-selected"]}' >"${repo}/fixture.json"
+git -C "$repo" add fixture.json
+git -C "$repo" commit -qm json-array-identity
+assert_violation "JSON identity arrays remain enforced" "$repo" --scope head --mode enforce
 
 repo=$(new_repo sensitive-query)
 printf 'redirect=/done?email=person%%40customer.local\n' >"${repo}/config.ini"
@@ -2437,6 +2747,43 @@ assert_violation "inline suppression markers are not an escape hatch" "$repo" --
 
 mkdir -p "${WORK}/not-a-repository"
 assert_error "non-repository fails closed" "${WORK}/not-a-repository" --scope head --mode enforce
+
+repo=$(new_repo personalized-shell-blocks)
+cat >"${repo}/fixture.mdx" <<'EOF'
+<div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE">
+
+```bash
+operation=$1 kind=$2 namespace=$3 name=$4 result=$5
+jq -e --arg name "$name" --arg ns "$XCSH_NAMESPACE" --arg domain "$domain" '
+  .metadata.name == $name and .metadata.namespace == $ns and
+  .spec.mitigated_domain == $domain
+' response.json
+jq -er '
+  def rank: {mitigated_domain:1,namespace:6}[.];
+  sort_by(.kind | rank)[] | [.kind,.namespace,.name] | @tsv
+' ledger.json
+curl "https://example.com/api/web/namespaces/system/quota/usage?namespace=system"
+```
+
+</div>
+EOF
+git -C "$repo" add fixture.mdx
+git -C "$repo" commit -qm personalized-shell-blocks
+assert_clean "personalized shell dynamic values and API constants" "$repo" --scope head --mode enforce
+
+repo=$(new_repo personalized-shell-literal)
+cat >"${repo}/fixture.mdx" <<'EOF'
+<div data-xcsh-context="shell">
+
+```bash
+namespace=private-customer
+```
+
+</div>
+EOF
+git -C "$repo" add fixture.mdx
+git -C "$repo" commit -qm personalized-shell-literal
+assert_customer_identifier "personalized shell literal identities remain enforced" "$repo" --scope head --mode enforce
 
 if [ "$FAIL" -ne 0 ]; then
   echo "check-pii tests FAILED"

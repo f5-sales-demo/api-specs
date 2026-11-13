@@ -83,6 +83,7 @@ SOURCE_CODE_SUFFIXES = {
     ".py",
     ".rb",
     ".rs",
+    ".source",
     ".swift",
     ".tf",
     ".ts",
@@ -115,7 +116,7 @@ SOURCE_FENCE_LANGUAGES = {
 }
 
 EMAIL_RE = re.compile(
-    r"(?<![-A-Za-z0-9._%+/])"
+    r"(?<![-A-Za-z0-9._%+/@])"
     r"[A-Za-z0-9][-A-Za-z0-9.!#$%&'*+=?^_`{|}~]*[A-Za-z0-9]@"
     r"(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+"
     r"[A-Za-z]{2,63}"
@@ -136,6 +137,9 @@ PERSON_FIELD_RE = re.compile(
     r"['\"]?\s*(?P<separator>[:=])\s*(?P<quote>['\"`]?)"
     r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
 )
+REPOSITORY_FULL_NAME_RE = re.compile(
+    r"[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9_.-]{1,100}",
+)
 LOCALIZATION_BUNDLE_RE = re.compile(
     r"(?:bundle\.l10n|package\.nls)(?:\.[A-Za-z0-9-]+)?\.json$",
     re.IGNORECASE,
@@ -154,9 +158,8 @@ SOURCE_SNIPPET_INDEX_RE = re.compile(r"\$\{[A-Za-z_$][A-Za-z0-9_$]*(?:\+\+|--)?\
 IDENTITY_FIELD_RE = re.compile(
     r"(?i)(?P<field_prefix>^|[^A-Za-z0-9_/-])"
     r"(?P<key_open>[*_~`'\"]*)"
-    r"(?P<key>tenant(?:_name|_id)?|customer(?:_name|_id)?|account(?:_name|_id)?|"
-    r"subscription(?:_name|_id)|project(?:_name|_id)|namespace)"
-    r"(?P<key_close>[*_~`'\"]*)\s*(?P<separator>[:=])\s*(?P<quote>['\"`]?)"
+    r"(?P<key>tenant(?:_name|_id|-name|-id|Name|Id)?|customer(?:_name|_id|-name|-id|Name|Id)?|account(?:_name|_id|-name|-id|Name|Id)?|subscription(?:_name|_id|-name|-id|Name|Id)|project(?:_name|_id|-name|-id|Name|Id)|namespace)"
+    r"(?P<key_close>[*_~`'\"]*)\s*(?P<separator>[:=])\s*(?P<quote>(?:\\['\"`]|['\"`])?)"
     r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
 )
 PROSE_IDENTITY_QUANTIFIER_RE = re.compile(
@@ -176,7 +179,7 @@ PROSE_SAFE_CONTINUATION_RE = re.compile(
     re.IGNORECASE,
 )
 JQ_COMMAND_RE = re.compile(
-    r"(?:^|[|;&(])\s*"
+    r"(?:^|[|;&(])\s*(?:(?:if|elif|while|until)\s+)?"
     r"(?:[A-Za-z_][A-Za-z0-9_]*=[^\s]+\s+)*"
     r"(?:(?:command(?:\s+--)?|exec(?:\s+--)?|nohup|"
     r"(?:[^\s;|&]*/)?nice(?:\s+(?:-n\s+\S+|-[0-9]+))?|"
@@ -316,7 +319,7 @@ ADDRESS_FIELD_RE = re.compile(
     r"(?i)(?:^|[,{\s])['\"]?"
     r"(?P<key>street_address|postal_address|postal_code|zip_code|date_of_birth|dob|"
     r"social_security_number|ssn)"
-    r"['\"]?\s*[:=]\s*(?P<quote>['\"`]?)"
+    r"['\"]?\s*(?P<separator>[:=])\s*(?P<quote>['\"`]?)"
     r"(?P<value>(?:(?!\\[rn])[^'\"`#,\r\n}\]])+)"
 )
 QUERY_RE = re.compile(
@@ -360,6 +363,7 @@ NUMERIC_LITERAL_RE = re.compile(
     r");?"
 )
 MAX_COMMONMARK_INDENT = 3
+LIST_FENCE_CONTENT_INDENT = 2
 DEFAULT_IGNORABLE_RANGES = (
     (0x034F, 0x034F),
     (0x115F, 0x1160),
@@ -382,6 +386,7 @@ SURROGATE_ESCAPE_LAST = 0xDCFF
 SAFE_EMAIL_DOMAINS = {"example.com", "example.net", "example.org"}
 PROVENANCE_EMAIL_DOMAINS = {"noreply.github.com", "users.noreply.github.com"}
 SAFE_HOME_USERS = {
+    "xcsh",
     "you",
     "user",
     "users",
@@ -434,15 +439,32 @@ SCHEMA_SENTINELS = {
 }
 SAFE_IDENTITY_VALUES = {
     "123456789012",
+    "console",
+    "customer-123",
     "default",
     "demo",
     "demo-app",
     "example-corp",
     "library",
+    "namespace for resource isolation",
     "production",
+    "security",
     "shared",
     "staging",
     "system",
+    "tenant or organization identifier",
+    "tenant_and_identity",
+    "user_namespace",
+    "xc container services",
+    "xc kubernetes service",
+}
+SAFE_PERSONAL_VALUES = {"90210"}
+SAFE_XC_EXTENSION_PLACEHOLDERS = {
+    "x-f5xc-",
+    "x-f5xc-namespace",
+    "x-f5xc-tenant",
+    "x-f5xc-tenant-namespace",
+    "x-f5xc-user",
 }
 DOCUMENTATION_NETWORKS = (
     ipaddress.ip_network("192.0.2.0/24"),
@@ -479,6 +501,7 @@ class LineScanContext:
     source_code: bool
     jq_spans: tuple[tuple[int, int], ...]
     localization_spans: tuple[tuple[int, int], ...]
+    repository_full_name_columns: frozenset[int]
     source_structure: str
     source_brace_depth: int
     enum_body_depth: int | None
@@ -718,8 +741,11 @@ def invisible_format_character(character: str) -> bool:
 
 
 def safe_email(value: str) -> bool:
-    """Return whether an email-shaped value is reserved or provenance-only."""
+    """Return whether a value is reserved, provenance-only, or a known software unit."""
     if value.lower() == "git@github.com":
+        return True
+    # This fixed console instance is a systemd software identifier, not a contact.
+    if value.lower() == "xorgctl-session@console.service":
         return True
     domain = value.rsplit("@", 1)[1].lower().rstrip(".")
     return domain in SAFE_EMAIL_DOMAINS | PROVENANCE_EMAIL_DOMAINS or any(
@@ -854,6 +880,41 @@ def json_string_end(text: str, start: int) -> int | None:
     return None
 
 
+def repository_full_name_columns(path: str, text: str) -> dict[int, frozenset[int]]:
+    """Locate repository identifiers proven by their enclosing JSON metadata."""
+    columns: dict[int, set[int]] = {}
+    decoder = json.JSONDecoder()
+    for match in PERSON_FIELD_RE.finditer(text):
+        if match.group("key") != "full_name":
+            continue
+        value = normalized_value(structured_field_value(path, text, match))
+        if not REPOSITORY_FULL_NAME_RE.fullmatch(value):
+            continue
+        key_start = match.start("key")
+        start = text.rfind("{", 0, key_start)
+        while start >= 0:
+            try:
+                metadata, end = decoder.raw_decode(text, start)
+            except json.JSONDecodeError:
+                start = text.rfind("{", 0, start)
+                continue
+            if end <= match.end("key"):
+                start = text.rfind("{", 0, start)
+                continue
+            if (
+                isinstance(metadata, dict)
+                and metadata.get("full_name") == value
+                and isinstance(metadata.get("default_branch"), str)
+                and metadata["default_branch"].strip()
+            ):
+                line_number = text.count("\n", 0, key_start) + 1
+                line_start = text.rfind("\n", 0, key_start) + 1
+                columns.setdefault(line_number, set()).add(key_start - line_start)
+            # Parent metadata cannot establish the meaning of a nested name.
+            break
+    return {line: frozenset(values) for line, values in columns.items()}
+
+
 def localization_top_level_string_spans(
     path: str,
     text: str,
@@ -972,6 +1033,43 @@ def numeric_enum_member(
     return bool(re.match(r"\s*(?:,|})", context.source_structure[value_end:]))
 
 
+def source_field_alias(
+    match: re.Match[str],
+    value: str,
+    context: LineScanContext,
+) -> bool:
+    """Recognize schema field names and their display labels in source properties.
+
+    This does not make field-name strings safe in serialized data, comments or
+    strings containing source. The masked structure must retain the property
+    key and colon inside braces, with no expression following the quoted token.
+    """
+    if not context.source_code or match.group("separator") != ":":
+        return False
+    if match.group("quote") not in {"'", '"'}:
+        return False
+    key = match.group("key")
+    aliases = {
+        "first_name": "given_name",
+        "given_name": "first_name",
+        "last_name": "family_name",
+        "family_name": "last_name",
+    }
+    display_key = re.sub(r"[ _-]", "", value).casefold()
+    canonical_key = re.sub(r"[_-]", "", key).casefold()
+    if value not in {key, aliases.get(key)} and display_key != canonical_key:
+        return False
+    structure = context.source_structure
+    if structure[match.start("key") : match.end("key")] != key:
+        return False
+    prefix = structure[: match.start("key")]
+    depth = context.source_brace_depth + prefix.count("{") - prefix.count("}")
+    if depth <= 0:
+        return False
+    value_end = match.start("value") + len(value) + 1
+    return bool(re.match(r"\s*(?:[,;}]|$)", structure[value_end:]))
+
+
 def is_vscode_view_item_context_tag(
     path: str,
     line: str,
@@ -1051,7 +1149,7 @@ def structured_field_value(path: str, line: str, match: re.Match[str]) -> str:
     start = match.start("value")
     quote = match.group("quote")
     if quote:
-        return quoted_structured_field_value(line, start, quote)
+        return quoted_structured_field_value(line, start, quote[-1])
 
     suffix = PurePosixPath(path).suffix.lower()
     yaml = suffix in {".yaml", ".yml"}
@@ -1097,6 +1195,15 @@ def unwrapped_identity_value(value: str) -> str:
     return unwrapped_identity_value(alias.group(1)) if alias else value
 
 
+def schema_placeholder_value(lower: str) -> bool:
+    """Return whether a normalized value is a safe schema placeholder."""
+    if lower in SCHEMA_SENTINELS:
+        return True
+    if lower in SAFE_IDENTITY_VALUES_LOWER:
+        return True
+    return lower in SAFE_XC_EXTENSION_PLACEHOLDERS
+
+
 def placeholder_value(value: str) -> bool:
     """Return whether a value is synthetic, schematic, or schema syntax."""
     value = unwrapped_identity_value(value)
@@ -1107,8 +1214,7 @@ def placeholder_value(value: str) -> bool:
         return snippet_safety
     lower = value.lower()
     if (
-        lower in SCHEMA_SENTINELS
-        or lower in SAFE_IDENTITY_VALUES_LOWER
+        schema_placeholder_value(lower)
         or lower in {"false", "true", "~"}
         or decimal_numeric_value(value) == 0
         or bool(re.fullmatch(r"[|>](?:[+-]?[1-9]?|[1-9][+-])", value))
@@ -1742,6 +1848,44 @@ def source_template_value_is_expression(
     return closes_template or starts_sentence
 
 
+def source_generated_identity_name(
+    line: str,
+    match: re.Match[str],
+    context: LineScanContext,
+) -> bool:
+    """Recognize executable names with a runtime value and their field's noun.
+
+    This does not apply to serialized strings, comments, or literal customer
+    fragments. Masked source must retain the assignment key, and the complete
+    template must end with its own generic field noun and a statement boundary.
+    """
+    source_key = context.source_structure[match.start("key") : match.end("key")]
+    if (
+        not context.source_code
+        or match.group("separator") != "="
+        or match.group("quote") != "`"
+        or source_key != match.group("key")
+    ):
+        return False
+    interpolation = source_template_interpolation(line, match.start("value"))
+    if interpolation is None:
+        return False
+    expression, closing = interpolation
+    if "`" in expression:
+        return False
+    for string in SOURCE_TEMPLATE_STRING_RE.finditer(expression):
+        value = string.group("value")
+        formatting = bool(re.fullmatch(r"[ \t._/:-]+", value))
+        if not formatting and not placeholder_value(value):
+            return False
+    expression_without_strings = SOURCE_TEMPLATE_STRING_RE.sub("", expression)
+    if not re.search(r"[A-Za-z_$]", expression_without_strings):
+        return False
+    noun = re.sub(r"(?:[_-]?(?:name|id))$", "", match.group("key").lower())
+    suffix = rf"^-{re.escape(noun)}`\s*(?:;|$)"
+    return bool(re.match(suffix, line[closing + 1 :]))
+
+
 def is_nonliteral_code_expression(
     line: str,
     match: re.Match[str],
@@ -1754,6 +1898,10 @@ def is_nonliteral_code_expression(
     value = normalized_value(value_override or match.group("value"))
     numeric_literal = bool(NUMERIC_LITERAL_RE.fullmatch(value))
     in_jq_filter = match_is_in_spans(match, jq_spans)
+    if in_jq_filter and match.groupdict().get("separator") == "=":
+        separator_end = match.end("separator")
+        if line[separator_end : separator_end + 1] == "=":
+            return True
     in_source_comment = (source_code or in_jq_filter) and is_source_comment(line, match)
     if numeric_literal:
         return False
@@ -1931,6 +2079,68 @@ def jq_filter_spans(
     return tuple(spans), None
 
 
+def is_json_structured_literal(
+    path: str,
+    line: str,
+    match: re.Match[str],
+) -> bool:
+    """Return whether a JSON regex match is a scalar object-field value.
+
+    Generated OpenAPI JSON contains identity-shaped prose in descriptions and
+    schema property objects such as ``"namespace": { ... }``. Neither is a
+    literal identity value. Keep scanning real scalar fields while requiring
+    the matched key to be a JSON string token and rejecting container values.
+    """
+    value = normalized_value(structured_field_value(path, line, match))
+    json_path = PurePosixPath(path).suffix.lower() == ".json"
+    if (json_path and value.startswith("{")) or value == "{":
+        return False
+    if not json_path or VSCODE_WHEN_PROPERTY_RE.search(line):
+        return True
+    key_start = match.start("key")
+    key_end = match.end("key")
+    key_starts_with_quote = key_start > 0 and line[key_start - 1] == '"'
+    key_ends_with_quote = line[key_end : key_end + 1] == '"'
+    return key_starts_with_quote and key_ends_with_quote
+
+
+def is_literal_structured_identity_field(
+    path: str,
+    line: str,
+    match: re.Match[str],
+) -> bool:
+    """Return whether an identity field has a scalar, literal JSON representation."""
+    if not is_structured_identity_field(path, line, match):
+        return False
+    return is_json_structured_literal(path, line, match)
+
+
+def has_literal_structured_value(
+    path: str,
+    line: str,
+    match: re.Match[str],
+    context: LineScanContext,
+    value: str,
+) -> bool:
+    """Return whether a structured value is scalar data rather than source syntax."""
+    if not is_json_structured_literal(path, line, match):
+        return False
+    if source_field_alias(match, value, context):
+        return False
+    return not is_nonliteral_code_expression(
+        line,
+        match,
+        source_code=context.source_code,
+        jq_spans=context.jq_spans,
+        value_override=value,
+    )
+
+
+def explicitly_safe_personal_value(value: str) -> bool:
+    """Return whether a value is an explicitly documented synthetic personal value."""
+    return normalized_value(value) in SAFE_PERSONAL_VALUES
+
+
 def scan_contacts(
     path: str,
     line_number: int,
@@ -1951,10 +2161,16 @@ def scan_contacts(
                     message="email address does not use a documentation-reserved domain",
                 )
         for match in PERSON_FIELD_RE.finditer(line):
-            if match_is_in_spans(match, context.localization_spans):
+            if (
+                match_is_in_spans(match, context.localization_spans)
+                or match.start("key") in context.repository_full_name_columns
+            ):
                 continue
             value = structured_field_value(path, line, match)
-            if NUMERIC_LITERAL_RE.fullmatch(value):
+            if not is_json_structured_literal(path, line, match):
+                continue
+            numeric_name = NUMERIC_LITERAL_RE.fullmatch(value)
+            if numeric_name or source_field_alias(match, value, context):
                 continue
             if is_nonliteral_code_expression(
                 line,
@@ -2004,6 +2220,39 @@ def scan_contacts(
             )
 
 
+def is_documented_identity_expression(
+    line: str,
+    match: re.Match[str],
+    value: str,
+    context: LineScanContext,
+) -> bool:
+    """Recognize dynamic shell inputs and fixed XC query/control expressions."""
+    key = re.escape(match.group("key"))
+    positional_pattern = rf"(?:^|[;\s]){key}=\$[0-9]+(?:\s|$)"
+    positional = (
+        match.group("separator") == "="
+        and re.fullmatch(r"\$[0-9]+(?=\s|$)", value.split(maxsplit=1)[0])
+        and re.search(positional_pattern, line)
+    )
+    lookup = (
+        match_is_in_spans(match, context.jq_spans)
+        and re.search(r"\bdef\s+[A-Za-z_][A-Za-z0-9_]*\s*:\s*\{", line)
+        and re.search(r"\}\s*\[\.\]\s*;", line)
+        and re.fullmatch(r"[0-9]+", normalized_value(value))
+    )
+    fixed_query = normalized_value(value).startswith("system") and re.search(
+        r"/api/web/namespaces/system/quota/usage\?namespace=system(?:[\"'\s]|$)", line
+    )
+    supported_namespace = (
+        not context.source_code
+        and match.group("key").casefold() == "namespace"
+        and match.group("separator") == ":"
+        and re.search(r"\bSupported\s*$", line[: match.start()], re.IGNORECASE)
+        and re.fullmatch(r"system/shared(?:</p>)?", normalized_value(value))
+    )
+    return bool(positional or lookup or fixed_query or supported_namespace)
+
+
 def scan_structured_identity(
     path: str,
     line_number: int,
@@ -2015,10 +2264,15 @@ def scan_structured_identity(
     for match in IDENTITY_FIELD_RE.finditer(line):
         if match_is_in_spans(match, context.localization_spans):
             continue
-        if not is_structured_identity_field(path, line, match):
+        if not is_literal_structured_identity_field(path, line, match):
             continue
         value = structured_field_value(path, line, match)
-        if numeric_enum_member(match, value, context):
+        if (
+            is_documented_identity_expression(line, match, value, context)
+            or numeric_enum_member(match, value, context)
+            or source_field_alias(match, value, context)
+            or source_generated_identity_name(line, match, context)
+        ):
             continue
         in_jq_span = match_is_in_spans(match, context.jq_spans)
         jq_literal = in_jq_span and not jq_value_is_expression(
@@ -2057,15 +2311,9 @@ def scan_structured_identity(
 
     for match in ADDRESS_FIELD_RE.finditer(line):
         value = structured_field_value(path, line, match)
-        if is_nonliteral_code_expression(
-            line,
-            match,
-            source_code=context.source_code,
-            jq_spans=context.jq_spans,
-            value_override=value,
-        ):
+        if not has_literal_structured_value(path, line, match, context, value):
             continue
-        if not placeholder_value(value):
+        if not (placeholder_value(value) or explicitly_safe_personal_value(value)):
             add_finding(
                 findings,
                 path=path,
@@ -2075,6 +2323,65 @@ def scan_structured_identity(
             )
 
 
+# fmt: off
+def scan_jq_identity_writes(
+    path: str,
+    line_number: int,
+    line: str,
+    findings: set[Finding],
+    _context: LineScanContext,
+) -> None:
+    """Inspect exact --arg/--argjson values flowing to jq identity object fields."""
+    if not path.endswith(".sh") or "jq" not in line:
+        return
+    bindings = {
+        match.group("name"): match.group("value").strip("'\"")
+        for match in re.finditer(
+            r"(?:--arg|--argjson)\s+(?P<name>[A-Za-z_][A-Za-z0-9_]*)\s+(?P<value>[^\s]+)",
+            line,
+        )
+    }
+    key = r"tenant(?:_name|_id|-name|-id|Name|Id)?|customer(?:_name|_id|-name|-id|Name|Id)?|account(?:_name|_id|-name|-id|Name|Id)?|subscription(?:_name|_id|-name|-id|Name|Id)|project(?:_name|_id|-name|-id|Name|Id)|namespace"
+    for field in re.finditer(
+        rf"(?P<key>{key})\s*:\s*\$(?P<name>[A-Za-z_][A-Za-z0-9_]*)", line, re.IGNORECASE
+    ):
+        value = bindings.get(field.group("name"), "")
+        if value and not placeholder_value(value):
+            add_finding(
+                findings,
+                path=path,
+                line=line_number,
+                category="customer-identifier",
+                message=f"{field.group('key')} contains a literal organization identifier",
+            )
+
+# fmt: on
+# fmt: off
+def scan_multiline_identity_fields(
+    path: str, text: str, findings: set[Finding]
+) -> None:
+    """Cover JSON/YAML keys and scalar values separated by physical lines."""
+    key = r"tenant(?:_name|_id|-name|-id|Name|Id)?|customer(?:_name|_id|-name|-id|Name|Id)?|account(?:_name|_id|-name|-id|Name|Id)?|subscription(?:_name|_id|-name|-id|Name|Id)|project(?:_name|_id|-name|-id|Name|Id)|namespace"
+    pattern = re.compile(
+        rf"(?im)^\s*(?:\?\s*)?['\"]?(?P<key>{key})['\"]?\s*\n\s*:\s*(?P<value>[^\r\n]+)"
+    )
+    for match in pattern.finditer(text):
+        value = normalized_value(match.group("value").strip().strip("'\""))
+        if (
+            not value
+            or value.startswith(("|", ">", "{", "["))
+            or placeholder_value(value)
+        ):
+            continue
+        add_finding(
+            findings,
+            path=path,
+            line=text.count("\n", 0, match.start("value")) + 1,
+            category="customer-identifier",
+            message=f"{match.group('key')} contains a literal organization identifier",
+        )
+
+# fmt: on
 def scan_query_parameters(
     path: str,
     line_number: int,
@@ -2298,11 +2605,15 @@ def scan_text(path: str, text: str, findings: set[Finding]) -> None:
     yaml = suffix in {".yaml", ".yml"}
     aliases: dict[str, bool] = {}
     localization_strings = localization_top_level_string_spans(path, text)
+    repository_names = repository_full_name_columns(path, text)
     if yaml or suffix in PROSE_DOCUMENT_SUFFIXES:
         scan_yaml_identity_blocks(path, text, findings)
+    scan_multiline_identity_fields(path, text, findings)
     fence_marker: str | None = None
     fence_language: str | None = None
     fence_close_column: int | None = None
+    fence_container: str | None = None
+    pending_jq_command = ""
     active_jq_quote: str | None = None
     yaml_block_indent: int | None = None
     yaml_block_anchor: str | None = None
@@ -2364,6 +2675,16 @@ def scan_text(path: str, text: str, findings: set[Finding]) -> None:
             invalid_backtick_info = backtick_marker and "`" in fence.group("info")
         if invalid_backtick_info:
             fence = None
+        if fence_marker and fence_container and line.strip():
+            blockquote = fence_container.startswith(">")
+            indentation = len(line) - len(line.lstrip(" "))
+            in_container = indentation >= LIST_FENCE_CONTENT_INDENT
+            if blockquote:
+                in_container = line.lstrip().startswith(">")
+            if not in_container:
+                fence_marker = fence_language = fence_container = None
+                fence_close_column = None
+                active_jq_quote = None
         close = FENCE_CLOSE_RE.match(line) if fence_marker else None
         closing_fence = bool(
             close
@@ -2437,12 +2758,28 @@ def scan_text(path: str, text: str, findings: set[Finding]) -> None:
             spans = ()
             active_jq_quote = None
         else:
-            spans, active_jq_quote = jq_filter_spans(line, active_jq_quote)
+            if pending_jq_command and active_jq_quote is None:
+                combined = pending_jq_command + line
+                combined_spans, active_jq_quote = jq_filter_spans(combined, None)
+                offset = len(pending_jq_command)
+                adjusted_spans = []
+                for start, end in combined_spans:
+                    if end > offset:
+                        adjusted_spans.append((max(0, start - offset), end - offset))
+                spans = tuple(adjusted_spans)
+            else:
+                combined = line
+                spans, active_jq_quote = jq_filter_spans(line, active_jq_quote)
+            if combined.rstrip().endswith("\\") and active_jq_quote is None:
+                pending_jq_command = combined.rstrip()[:-1] + " "
+            else:
+                pending_jq_command = ""
 
         context = LineScanContext(
             source_code=source_code,
             jq_spans=spans,
             localization_spans=localization_strings.get(line_number, ()),
+            repository_full_name_columns=repository_names.get(line_number, frozenset()),
             source_structure=source_structure,
             source_brace_depth=line_source_brace_depth,
             enum_body_depth=enum_body_depth,
@@ -2468,6 +2805,7 @@ def scan_text(path: str, text: str, findings: set[Finding]) -> None:
             findings,
             context,
         )
+        scan_jq_identity_writes(path, line_number, line, findings, context)
         scan_query_parameters(path, line_number, line, findings)
         scan_public_ips(path, line_number, line, findings)
 
@@ -2482,6 +2820,7 @@ def scan_text(path: str, text: str, findings: set[Finding]) -> None:
             fence_marker = None
             fence_language = None
             fence_close_column = None
+            fence_container = None
             active_jq_quote = None
 
 
@@ -2608,8 +2947,8 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser.add_argument("--input-dir", required=True, type=Path)
     parser.add_argument(
         "--scope",
-        choices=("staged", "head", "history"),
-        default="head",
+        choices=("changed", "staged", "head", "history"),
+        default="changed",
     )
     parser.add_argument("--mode", choices=("audit", "enforce"), default="audit")
     parser.add_argument("--format", choices=("text", "json"), default="text")

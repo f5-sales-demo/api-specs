@@ -1,0 +1,1966 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "F5 Distributed Cloud Services API for ves.io.schema.shape.device_intelligence.di_rule",
+    "description": "Configures Device Intelligence Rule",
+    "version": "2026.11.10",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com",
+      "email": "support@example.com"
+    }
+  },
+  "paths": {
+    "/api/device-intelligence/custom/namespaces/{namespace}/di_rules": {
+      "post": {
+        "summary": "Deploy Device Intelligence Rules",
+        "operationId": "ves.io.schema.shape.device_intelligence.di_rule.CustomAPI.DeployDeviceIntelligenceRules",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/di_ruleDeployDeviceIntelligenceRulesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-required\nx-example: \"system\"\nNamespace is used to scope the query",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/di_ruleDeployDeviceIntelligenceRulesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-di_rule-customapi-deploydeviceintelligencerules"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.di_rule.CustomAPI.DeployDeviceIntelligenceRules",
+        "tags": ["device-intelligence"],
+        "description": "DeployDeviceIntelligenceRules di_rules."
+      },
+      "x-displayname": "Device Intelligence Rule",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.di_rule.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/device-intelligence/custom/namespaces/{namespace}/di_rules/deployments/pending": {
+      "get": {
+        "summary": "Get device intelligence rule IDs with pending deployment",
+        "operationId": "ves.io.schema.shape.device_intelligence.di_rule.CustomAPI.GetDeviceIntelligenceRuleIdsWithPendingDeployment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/di_ruleGetDeviceIntelligenceRuleIdsWithPendingDeploymentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"system\"\nx-required\nNamespace is used to scope the query",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-di_rule-customapi-getdeviceintelligenceruleidswithpendingdeployment"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.di_rule.CustomAPI.GetDeviceIntelligenceRuleIdsWithPendingDeployment",
+        "tags": ["device-intelligence"],
+        "description": "GetDeviceIntelligenceRuleIdsWithPendingDeployment pending."
+      },
+      "x-displayname": "Device Intelligence Rule",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.di_rule.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/device-intelligence/namespaces/{namespace}/di_rules": {
+      "get": {
+        "summary": "List Device Intelligence Rule",
+        "description": "List the set of di_rule in a namespace",
+        "operationId": "ves.io.schema.shape.device_intelligence.di_rule.API.List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/di_ruleListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nNamespace to scope the listing of di_rule",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "label_filter",
+            "description": "x-example: \"env in (staging, testing), tier in (web, db)\"\nA LabelSelectorType expression that every item in list response will satisfy",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Label Filter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "report_fields",
+            "description": "x-example: \"\"\nExtra fields to return along with summary fields",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Report Fields",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "report_status_fields",
+            "description": "x-example: \"\"\nExtra status fields to return along with summary fields",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Report Status Fields",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-di_rule-api-list"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.di_rule.API.List",
+        "tags": ["device-intelligence"]
+      },
+      "x-displayname": "Device Intelligence Rule",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.di_rule.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    },
+    "/api/device-intelligence/namespaces/{namespace}/di_rules/{id}/history": {
+      "get": {
+        "summary": "Get the change history for a device intelligence rule",
+        "operationId": "ves.io.schema.shape.device_intelligence.di_rule.CustomAPI.GetDeviceIntelligenceRuleChangeHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/di_ruleGetDeviceIntelligenceRuleChangeHistoryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\n\nx-example: \"system\"\nx-required\nNamespace is used to scope the query",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "description": "ID\n\nx-example: \"Rule_CB_DUBEXLDQKV\"\nx-required\nRule ID is the unique identifier for a Rule",
+            "in": "path",
+            "required": true,
+            "x-displayname": "ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-di_rule-customapi-getdeviceintelligencerulechangehistory"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.di_rule.CustomAPI.GetDeviceIntelligenceRuleChangeHistory",
+        "tags": ["device-intelligence"],
+        "description": "GetDeviceIntelligenceRuleChangeHistory history."
+      },
+      "x-displayname": "Device Intelligence Rule",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.di_rule.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/device-intelligence/namespaces/{namespace}/di_rules/{name}": {
+      "get": {
+        "summary": "Get Device Intelligence Rule",
+        "description": "Get Device Intelligence Rule",
+        "operationId": "ves.io.schema.shape.device_intelligence.di_rule.API.Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/di_ruleGetResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "namespace\n\nx-example: \"ns1\"\nThe namespace in which the configuration object is present",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "description": "name\n\nx-example: \"name\"\nThe name of the configuration object to be fetched",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "response_format",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n    - in GetSpec form for the contents of object\n    - in CreateRequest form to create a new similar object\n    - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referred by this object",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Broken Referred Objects",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "GET_RSP_FORMAT_DEFAULT",
+                "GET_RSP_FORMAT_READ",
+                "GET_RSP_FORMAT_REFERRING_OBJECTS",
+                "GET_RSP_FORMAT_BROKEN_REFERENCES"
+              ],
+              "default": "GET_RSP_FORMAT_DEFAULT"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-device_intelligence-di_rule-api-get"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.shape.device_intelligence.di_rule.API.Get",
+        "tags": ["device-intelligence"]
+      },
+      "x-displayname": "Device Intelligence Rule",
+      "x-ves-proto-service": "ves.io.schema.shape.device_intelligence.di_rule.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    }
+  },
+  "x-displayname": "Device Intelligence Rule",
+  "x-ves-proto-package": "ves.io.schema.shape.device_intelligence.di_rule",
+  "components": {
+    "schemas": {
+      "bot_infrastructureEnvironmentType": {
+        "type": "string",
+        "description": "Identifies the environment as either Production or Testing. Production environments have two infrastructure regions in an Active-Active configuration where traffic is routed equally between the two regions. Test environments have a single infrastructure region.\n\nProduction Protect live production applications and services from automated attacks.\nTest Evaluate new features, settings, and system performance.",
+        "title": "EnvironmentType",
+        "enum": ["PRODUCTION", "TESTING"],
+        "default": "PRODUCTION",
+        "x-displayname": "Environment Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.EnvironmentType"
+      },
+      "bot_infrastructureTrafficType": {
+        "type": "string",
+        "description": "The type of traffic that is routed to and processed by this infrastructure (Web or Mobile).\n\nOnly web traffic, including browser-based traffic from mobile devices, is routed through this Bot Defense infrastructure.\nOnly mobile traffic from native mobile apps with the Bot Defense SDK are routed through this Bot Defense infrastructure.",
+        "title": "TrafficType",
+        "enum": ["WEB", "MOBILE"],
+        "default": "WEB",
+        "x-displayname": "Traffic Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.bot_infrastructure.TrafficType"
+      },
+      "device_intelligencedi_ruleGetSpecType": {
+        "type": "object",
+        "description": "Get Device Intelligence Rule",
+        "title": "Get Device Intelligence Rule",
+        "x-displayname": "Get Device Intelligence Rule",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.GetSpecType",
+        "properties": {
+          "classification": {
+            "type": "array",
+            "description": "\n\nExample: ` \"[\\\"Account Creation Abuse\\\", \\\"Account Sharing\\\"]\"`",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Rule Classification",
+            "x-ves-example": "[\\\"Account Creation Abuse\\\", \\\"Account Sharing\\\"]"
+          },
+          "created_at": {
+            "type": "string",
+            "description": " Created at as per SAPI's database",
+            "format": "date-time",
+            "x-displayname": "Created At"
+          },
+          "description": {
+            "type": "string",
+            "description": "\n\nExample: ` \"Device Risk Score > 60 and Confidence Score < 70\"`",
+            "x-displayname": "Conditions",
+            "x-ves-example": "Device Risk Score > 60 and Confidence Score < 70"
+          },
+          "device_intelligence_rule_configs_per_bot_infras": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfigPerBotInfra"
+            },
+            "x-displayname": "Rule state per Bot-Infras"
+          },
+          "flow_labels": {
+            "type": "array",
+            "description": " Endpoint category labels associated with this rule\n\nExample: ` \"[\\\"Login\\\", \\\"CreateAccount\\\"]\"`",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Flow",
+            "x-ves-example": "[\\\"Login\\\", \\\"CreateAccount\\\"]"
+          },
+          "last_modified_at": {
+            "type": "string",
+            "description": " Last modified at as per SAPI's database",
+            "format": "date-time",
+            "x-displayname": "Last Modified At"
+          },
+          "last_modified_by": {
+            "type": "string",
+            "description": " Last Modified By as per SAPI's database",
+            "x-displayname": "Last Modified By"
+          },
+          "rule_name": {
+            "type": "string",
+            "description": "\n\nExample: ` \"Rule_CB_DUBEXLDQKV\"`",
+            "x-displayname": "Rule Identifier",
+            "x-ves-example": "Rule_CB_DUBEXLDQKV"
+          },
+          "rule_type": {
+            "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleType"
+          },
+          "traffic_type": {
+            "$ref": "#/components/schemas/bot_infrastructureTrafficType"
+          },
+          "version": {
+            "type": "integer",
+            "description": "\n\nExample: ` \"1\"`",
+            "format": "int64",
+            "x-displayname": "Version",
+            "x-ves-example": "1"
+          }
+        }
+      },
+      "di_ruleDeployDeviceIntelligenceRulesRequest": {
+        "type": "object",
+        "description": "Request for deploy device intelligence rules",
+        "title": "DeployDeviceIntelligenceRulesRequest",
+        "x-displayname": "Deploy Device Intelligence Rules Request",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.DeployDeviceIntelligenceRulesRequest",
+        "properties": {
+          "comments": {
+            "type": "string",
+            "description": " Deployment comments\n\nValidation Rules:\n  ves.io.schema.rules.string.max_len: 256\n",
+            "title": "Comments",
+            "maxLength": 256,
+            "x-displayname": "Comments",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_len": "256"
+            }
+          },
+          "config_change_per_device_intelligence_rule": {
+            "type": "array",
+            "description": " Config change per device intelligence rules\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Config Change Per Device Intelligence Rules",
+            "items": {
+              "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfigChange"
+            },
+            "x-displayname": "Config Change Per Device Intelligence Rules",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " Namespace is used to scope the query\n\nExample: ` \"system\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n  ves.io.schema.rules.string.min_len: 1\n  ves.io.schema.rules.string.ves_object_name: true\n",
+            "title": "Namespace",
+            "minLength": 1,
+            "x-displayname": "Namespace",
+            "x-ves-example": "system",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.min_len": "1",
+              "ves.io.schema.rules.string.ves_object_name": "true"
+            }
+          }
+        }
+      },
+      "di_ruleDeployDeviceIntelligenceRulesResponse": {
+        "type": "object",
+        "description": "Response for deploy device intelligence rules",
+        "title": "DeployDeviceIntelligenceRulesResponse",
+        "x-displayname": "Deploy Device Intelligence Rules Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.DeployDeviceIntelligenceRulesResponse",
+        "properties": {
+          "deployment_status": {
+            "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRulesDeploymentStatus"
+          }
+        }
+      },
+      "di_ruleDeviceIntelligenceRuleChangeType": {
+        "type": "string",
+        "description": "Type of device intelligence rule change\n",
+        "title": "DeviceIntelligenceRuleChangeType",
+        "enum": [
+          "DEVICE_INTELLIGENCE_RULE_CHANGE_TYPE_UNKNOWN",
+          "DEVICE_INTELLIGENCE_RULE_CHANGE_TYPE_CREATION",
+          "DEVICE_INTELLIGENCE_RULE_CHANGE_TYPE_MODIFICATION",
+          "DEVICE_INTELLIGENCE_RULE_CHANGE_TYPE_DELETION"
+        ],
+        "default": "DEVICE_INTELLIGENCE_RULE_CHANGE_TYPE_UNKNOWN",
+        "x-displayname": "Device Intelligence Rule Change Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.device_intelligence.di_rule.DeviceIntelligenceRuleChangeType"
+      },
+      "di_ruleDeviceIntelligenceRuleConfig": {
+        "type": "object",
+        "description": "Rule configuration",
+        "title": "DeviceIntelligenceRuleConfig",
+        "x-displayname": "Rule configuration",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.DeviceIntelligenceRuleConfig",
+        "properties": {
+          "mitigation": {
+            "type": "boolean",
+            "description": " Mitigation - true(ON) / false(OFF)",
+            "title": "Mitigation",
+            "x-displayname": "Mitigation"
+          }
+        }
+      },
+      "di_ruleDeviceIntelligenceRuleConfigChange": {
+        "type": "object",
+        "description": "Device Intelligence Rule Config Change",
+        "title": "DeviceIntelligenceRuleConfigChange",
+        "x-displayname": "Device Intelligence Rule Config Change",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.DeviceIntelligenceRuleConfigChange",
+        "properties": {
+          "deploy_to": {
+            "type": "array",
+            "description": " Environments to which new rule configuration has to be deployed onto",
+            "title": "Deploy To",
+            "items": {
+              "$ref": "#/components/schemas/bot_infrastructureEnvironmentType"
+            },
+            "x-displayname": "Deploy To"
+          },
+          "desired_rule_config": {
+            "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfig"
+          },
+          "desired_rule_config_per_bot_infra": {
+            "type": "array",
+            "title": "Desired Rule Configuration Per Bot Infra",
+            "items": {
+              "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfigPerBotInfra"
+            },
+            "x-displayname": "Desired Rule Configuration Per Bot Infra"
+          },
+          "existing_rule_config_per_bot_infra": {
+            "type": "array",
+            "title": "Existing Rule Configuration Per Bot Infra",
+            "items": {
+              "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfigPerBotInfra"
+            },
+            "x-displayname": "Existing Rule Configuration Per Bot Infra"
+          },
+          "last_modified_at": {
+            "type": "string",
+            "description": " Last Modified At as per SAPI's database",
+            "title": "Last Modified At",
+            "format": "date-time",
+            "x-displayname": "Last Modified At"
+          },
+          "reason": {
+            "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfigChangeReason"
+          },
+          "rule_id": {
+            "type": "string",
+            "description": " Unique identifier for a device intelligence rule as per SAPI's database",
+            "title": "Rule ID",
+            "x-displayname": "Rule ID"
+          },
+          "rule_name": {
+            "type": "string",
+            "title": "Rule Name",
+            "x-displayname": "Rule Name"
+          },
+          "traffic_type": {
+            "$ref": "#/components/schemas/bot_infrastructureTrafficType"
+          }
+        }
+      },
+      "di_ruleDeviceIntelligenceRuleConfigChangeReason": {
+        "type": "object",
+        "description": "Reason for changing the device intelligence rule configuration",
+        "title": "DeviceIntelligenceRuleConfigChangeReason",
+        "x-displayname": "Device Intelligence Rule Config Change Reason",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.DeviceIntelligenceRuleConfigChangeReason",
+        "properties": {
+          "comments": {
+            "type": "string",
+            "description": " Comments are required when the reason type is selected as 'Other'",
+            "title": "Comments",
+            "x-displayname": "Comments"
+          },
+          "reasons": {
+            "type": "array",
+            "description": " List of reasons why the rule configuration is changed",
+            "title": "Reasons",
+            "items": {
+              "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfigChangeReasonType"
+            },
+            "x-displayname": "Reasons"
+          }
+        }
+      },
+      "di_ruleDeviceIntelligenceRuleConfigChangeReasonType": {
+        "type": "string",
+        "description": "Reason type for changing the device intelligence rule configuration\n",
+        "title": "DeviceIntelligenceRuleConfigChangeReasonType",
+        "enum": [
+          "DEVICE_INTELLIGENCE_RULE_CHANGE_REASON_UNKNOWN",
+          "DEVICE_INTELLIGENCE_RULE_CHANGE_REASON_FALSE_POSITIVE",
+          "DEVICE_INTELLIGENCE_RULE_CHANGE_REASON_TRUE_POSITIVE",
+          "DEVICE_INTELLIGENCE_RULE_CHANGE_REASON_TESTING",
+          "DEVICE_INTELLIGENCE_RULE_CHANGE_REASON_OTHER"
+        ],
+        "default": "DEVICE_INTELLIGENCE_RULE_CHANGE_REASON_UNKNOWN",
+        "x-displayname": "Device Intelligence Rule Config Change Reason Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.device_intelligence.di_rule.DeviceIntelligenceRuleConfigChangeReasonType"
+      },
+      "di_ruleDeviceIntelligenceRuleConfigDeploymentDetailsPerBotInfra": {
+        "type": "object",
+        "title": "DeviceIntelligenceRuleConfigDeploymentDetailsPerBotInfra",
+        "x-displayname": "Rule configuration per bot infrastructure",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.DeviceIntelligenceRuleConfigDeploymentDetailsPerBotInfra",
+        "properties": {
+          "bot_infra_deployment_details": {
+            "$ref": "#/components/schemas/threat_intelligenceBotInfraDeploymentDetails"
+          },
+          "device_intelligence_rule_config": {
+            "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfig"
+          }
+        }
+      },
+      "di_ruleDeviceIntelligenceRuleConfigPerBotInfra": {
+        "type": "object",
+        "description": "Device intelligence rule configuration per bot infrastructure",
+        "title": "DeviceIntelligenceRuleConfigPerBotInfra",
+        "x-displayname": "Device intelligence rule configuration per bot infrastructure",
+        "x-ves-oneof-field-rule_config": "[\"device_intelligence_rule_config\",\"k8s_cluster_rule_config\",\"region_rule_config\"]",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.DeviceIntelligenceRuleConfigPerBotInfra",
+        "properties": {
+          "bot_infra_id": {
+            "type": "string",
+            "description": " Bot Infrastructure ID as per SAPI's database",
+            "title": "Bot Infrastructure ID",
+            "x-displayname": "Bot Infrastructure ID"
+          },
+          "bot_infra_name": {
+            "type": "string",
+            "description": " Name of the bot infrastructure as per SAPI's database",
+            "title": "BotInfraName",
+            "x-displayname": "Bot Infrastructure Name"
+          },
+          "bot_infrastructure_type": {
+            "$ref": "#/components/schemas/threat_intelligenceBotInfrastuctureType"
+          },
+          "device_intelligence_rule_config": {
+            "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfig"
+          },
+          "environment_type": {
+            "$ref": "#/components/schemas/bot_infrastructureEnvironmentType"
+          },
+          "k8s_cluster_rule_config": {
+            "$ref": "#/components/schemas/di_ruleK8sClusterRuleConfig"
+          },
+          "region_rule_config": {
+            "$ref": "#/components/schemas/di_ruleRegionRuleConfig"
+          }
+        }
+      },
+      "di_ruleDeviceIntelligenceRuleType": {
+        "type": "string",
+        "title": "DeviceIntelligenceRuleType",
+        "enum": [
+          "DEVICE_INTELLIGENCE_RULE_TYPE_UNKNOWN",
+          "DEVICE_INTELLIGENCE_RULE_TYPE_ENFORCED_BLOCKING",
+          "DEVICE_INTELLIGENCE_RULE_TYPE_CONTROL_BLOCKING"
+        ],
+        "default": "DEVICE_INTELLIGENCE_RULE_TYPE_UNKNOWN",
+        "x-displayname": "Device Intelligence Rule Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.device_intelligence.di_rule.DeviceIntelligenceRuleType"
+      },
+      "di_ruleDeviceIntelligenceRulesDeploymentStatus": {
+        "type": "string",
+        "description": "Deployment status of device intelligence rule(s)\n\nUnused for device intelligence today; retained for parity with bot detection rule deployment statuses\nInitiated represents the status when SAPI returns successful deployment acknowledgement for all the clusters within the batch\nDeployed represents the status when SAPI's deployment status API returns success for all the clusters within the batch\nFailed represents the status when SAPI's deployment status API returns failure for all the clusters within the batch\nPartially Deployed represents the status when SAPI's deployment status API returns success for some clusters while failure for other clusters within the batch\nUnused for device intelligence today; retained for parity with bot detection rule deployment statuses\nInitiation failed represents the status when SAPI returns failed deployment acknowledgement for all the clusters within the batch\nPartially initiated represents the status when SAPI returns success deployment acknowledgement for some clusters while failed deployment acknowledgement for other clusters within the batch",
+        "title": "DeviceIntelligenceRulesDeploymentStatus",
+        "enum": [
+          "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_UNKNOWN",
+          "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_DRAFT",
+          "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_INITIATED",
+          "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_DEPLOYED",
+          "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_FAILED",
+          "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_PARTIALLY_DEPLOYED",
+          "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_DISCARDED_DRAFT",
+          "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_INITIATION_FAILED",
+          "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_PARTIALLY_INITIATED"
+        ],
+        "default": "DEVICE_INTELLIGENCE_RULES_DEPLOYMENT_STATUS_UNKNOWN",
+        "x-displayname": "Device Intelligence Rules Deployment Status",
+        "x-ves-proto-enum": "ves.io.schema.shape.device_intelligence.di_rule.DeviceIntelligenceRulesDeploymentStatus"
+      },
+      "di_ruleGetDeviceIntelligenceRuleChangeHistoryResponse": {
+        "type": "object",
+        "description": "Response for get device intelligence rule change history",
+        "title": "GetDeviceIntelligenceRuleChangeHistoryResponse",
+        "x-displayname": "Get Device Intelligence Rule Change History Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.GetDeviceIntelligenceRuleChangeHistoryResponse",
+        "properties": {
+          "rule_changes": {
+            "type": "array",
+            "description": " Rule changes holds the details for changes made to a device intelligence rule",
+            "title": "RuleChanges",
+            "items": {
+              "$ref": "#/components/schemas/di_ruleRuleChange"
+            },
+            "x-displayname": "Rule Changes"
+          }
+        }
+      },
+      "di_ruleGetDeviceIntelligenceRuleIdsWithPendingDeploymentResponse": {
+        "type": "object",
+        "description": "Response containing device intelligence rule IDs with pending deployment",
+        "title": "GetDeviceIntelligenceRuleIdsWithPendingDeploymentResponse",
+        "x-displayname": "Get Device Intelligence Rule IDs With Pending Deployment Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.GetDeviceIntelligenceRuleIdsWithPendingDeploymentResponse",
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "description": " Device intelligence rule IDs whose deployment status is pending",
+            "title": "Rule IDs",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Rule IDs"
+          }
+        }
+      },
+      "di_ruleGetResponse": {
+        "type": "object",
+        "description": "This is the output message of the 'Get' RPC",
+        "title": "GetResponse is the shape of a read di_rule",
+        "x-displayname": "Get Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.GetResponse",
+        "properties": {
+          "deleted_referred_objects": {
+            "type": "array",
+            "description": "The set of deleted objects that are referred by this object",
+            "title": "deleted_referred_objects",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Deleted Referred Objects"
+          },
+          "disabled_referred_objects": {
+            "type": "array",
+            "description": "The set of deleted objects that are referred by this object",
+            "title": "disabled_referred_objects",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Disabled Referred Objects"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+          },
+          "referring_objects": {
+            "type": "array",
+            "description": "The set of objects that are referring to this object in their spec",
+            "title": "referring_objects",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Referring Objects"
+          },
+          "spec": {
+            "$ref": "#/components/schemas/device_intelligencedi_ruleGetSpecType"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+          }
+        }
+      },
+      "di_ruleK8sClusterRuleConfig": {
+        "type": "object",
+        "description": "Kubernetes cluster rule config",
+        "title": "K8sClusterRuleConfig",
+        "x-displayname": "Kubernetes Cluster Rule Config",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.K8sClusterRuleConfig",
+        "properties": {
+          "in_used_k8s_cluster_rule_config": {
+            "type": "object",
+            "title": "In-Use Kubernetes Cluster Rule Config",
+            "x-displayname": "In-Use Kubernetes Cluster Rule Config"
+          },
+          "sync_status_per_k8s_cluster": {
+            "type": "object",
+            "title": "Sync status for k8s cluster",
+            "x-displayname": "Sync Status"
+          },
+          "target_k8s_cluster_rule_config": {
+            "type": "object",
+            "title": "Target Kubernetes Cluster Rule Config",
+            "x-displayname": "Target Kubernetes Cluster Rule Config"
+          }
+        }
+      },
+      "di_ruleListResponse": {
+        "type": "object",
+        "description": "This is the output message of 'List' RPC.",
+        "title": "ListResponse is the collection of di_rule",
+        "x-displayname": "List Response",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.ListResponse",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": " Errors(if any) while listing items from collection",
+            "title": "errors",
+            "items": {
+              "$ref": "#/components/schemas/schemaErrorType"
+            },
+            "x-displayname": "Errors"
+          },
+          "items": {
+            "type": "array",
+            "description": " items represents the collection in response",
+            "title": "items",
+            "items": {
+              "$ref": "#/components/schemas/di_ruleListResponseItem"
+            },
+            "x-displayname": "Items"
+          }
+        }
+      },
+      "di_ruleListResponseItem": {
+        "type": "object",
+        "description": "By default a summary of di_rule is returned in 'List'. By setting\n'report_fields' in the ListRequest more details of each item can be got.",
+        "title": "ListResponseItem is an individual item in a collection of di_rule",
+        "x-displayname": "List Item",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.ListResponseItem",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "description": " The set of annotations present on this di_rule",
+            "title": "annotations",
+            "x-displayname": "Annotations"
+          },
+          "description": {
+            "type": "string",
+            "description": " The description set for this di_rule",
+            "title": "description",
+            "x-displayname": "Description"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": " A value of true indicates di_rule is administratively disabled",
+            "title": "disabled",
+            "x-displayname": "Disabled"
+          },
+          "get_spec": {
+            "$ref": "#/components/schemas/device_intelligencedi_ruleGetSpecType"
+          },
+          "labels": {
+            "type": "object",
+            "description": " The set of labels present on this di_rule",
+            "title": "labels",
+            "x-displayname": "Labels"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+          },
+          "name": {
+            "type": "string",
+            "description": " The name of this di_rule\n\nExample: ` \"name\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "name"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " The namespace this item belongs to\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          },
+          "owner_view": {
+            "$ref": "#/components/schemas/schemaViewRefType"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+          },
+          "tenant": {
+            "type": "string",
+            "description": " The tenant this item belongs to\n\nExample: ` \"example-corp\"`",
+            "title": "tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "example-corp"
+          },
+          "uid": {
+            "type": "string",
+            "description": " The unique uid of this di_rule\n\nExample: ` \"00000000-0000-4000-8000-d36e055b3ea2\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "00000000-0000-4000-8000-d36e055b3ea2"
+          }
+        }
+      },
+      "di_ruleRegionRuleConfig": {
+        "type": "object",
+        "description": "Rule config per region",
+        "title": "RegionRuleConfig",
+        "x-displayname": "Rule Config Per Region",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.RegionRuleConfig",
+        "properties": {
+          "region_config": {
+            "type": "object",
+            "description": "\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.map.min_pairs: 1\n  ves.io.schema.rules.message.required: true\n",
+            "title": "Rule Config Per Region",
+            "x-displayname": "Rule Config Per Region",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.map.min_pairs": "1",
+              "ves.io.schema.rules.message.required": "true"
+            },
+            "minProperties": 1
+          }
+        }
+      },
+      "di_ruleRuleChange": {
+        "type": "object",
+        "description": "Rule change holds the details of the changes made to a device intelligence rule",
+        "title": "RuleChange",
+        "x-displayname": "Rule Change",
+        "x-ves-oneof-field-change": "[\"creation\",\"deletion\",\"modification\"]",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.RuleChange",
+        "properties": {
+          "change_type": {
+            "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleChangeType"
+          },
+          "changed_by": {
+            "type": "string",
+            "description": " EmailID of the official who made the change. In case the changed is made by F5 official, the value will be 'F5'",
+            "title": "Changed By",
+            "x-displayname": "Changed By"
+          },
+          "creation": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "deletion": {
+            "$ref": "#/components/schemas/ioschemaEmpty"
+          },
+          "modification": {
+            "$ref": "#/components/schemas/di_ruleRuleChangeTypeModification"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": " Timestamp at which the change was made",
+            "title": "Timestamp",
+            "format": "date-time",
+            "x-displayname": "Timestamp"
+          }
+        }
+      },
+      "di_ruleRuleChangeTypeModification": {
+        "type": "object",
+        "description": "Rule change type - Modification",
+        "title": "RuleChangeTypeModification",
+        "x-displayname": "Rule change type - Modification",
+        "x-ves-proto-message": "ves.io.schema.shape.device_intelligence.di_rule.RuleChangeTypeModification",
+        "properties": {
+          "comments": {
+            "type": "string",
+            "description": " Comments provided for when making changes to the configuration of a rule",
+            "title": "Comments",
+            "x-displayname": "Comments"
+          },
+          "reasons": {
+            "type": "array",
+            "description": " List of reasons why the rule configuration was changed",
+            "title": "Reasons",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Reasons"
+          },
+          "rule_config_deployment_details_per_bot_infra": {
+            "type": "array",
+            "title": "Rule configuration deployment details per bot infrastructure",
+            "items": {
+              "$ref": "#/components/schemas/di_ruleDeviceIntelligenceRuleConfigDeploymentDetailsPerBotInfra"
+            },
+            "x-displayname": "Rule configuration deployment details per bot infrastructure"
+          }
+        }
+      },
+      "ioschemaEmpty": {
+        "type": "object",
+        "description": "This can be used for messages where no values are needed",
+        "title": "Empty",
+        "x-displayname": "Empty",
+        "x-ves-proto-message": "ves.io.schema.Empty"
+      },
+      "ioschemaObjectRefType": {
+        "type": "object",
+        "description": "This type establishes a 'direct reference' from one object(the referrer) to another(the referred).\nSuch a reference is in form of tenant/namespace/name for public API and Uid for private API\nThis type of reference is called direct because the relation is explicit and concrete (as opposed\nto selector reference which builds a group based on labels of selectee objects)",
+        "title": "ObjectRefType",
+        "x-displayname": "Object reference",
+        "x-ves-proto-message": "ves.io.schema.ObjectRefType",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then kind will hold the referred object's kind (e.g. \"route\")\n\nExample: ` \"virtual_site\"`",
+            "title": "kind",
+            "x-displayname": "Kind",
+            "x-ves-example": "virtual_site"
+          },
+          "name": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. route's) name.\n\nExample: ` \"contactus-route\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "contactus-route"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. route's) namespace.\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          },
+          "tenant": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. route's) tenant.\n\nExample: ` \"example-corp\"`",
+            "title": "tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "example-corp"
+          },
+          "uid": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. route's) uid.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
+          }
+        }
+      },
+      "protobufAny": {
+        "type": "object",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
+        "properties": {
+          "type_url": {
+            "type": "string",
+            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          },
+          "value": {
+            "type": "string",
+            "description": "Must be a valid serialized protocol buffer of the above specified type.",
+            "format": "byte"
+          }
+        }
+      },
+      "runtimeError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "schemaErrorCode": {
+        "type": "string",
+        "description": "Union of all possible error-codes from system\n\n - EOK: No error\n - EPERMS: Permissions error\n - EBADINPUT: Input is not correct\n - ENOTFOUND: Not found\n - EEXISTS: Already exists\n - EUNKNOWN: Unknown/catchall error\n - ESERIALIZE: Error in serializing/de-serializing\n - EINTERNAL: Server error\n - EPARTIAL: Partial error",
+        "title": "ErrorCode",
+        "enum": [
+          "EOK",
+          "EPERMS",
+          "EBADINPUT",
+          "ENOTFOUND",
+          "EEXISTS",
+          "EUNKNOWN",
+          "ESERIALIZE",
+          "EINTERNAL",
+          "EPARTIAL"
+        ],
+        "default": "EOK",
+        "x-displayname": "Error Code",
+        "x-ves-proto-enum": "ves.io.schema.ErrorCode"
+      },
+      "schemaErrorType": {
+        "type": "object",
+        "description": "Information about a error in API operation",
+        "title": "ErrorType",
+        "x-displayname": "Error Type",
+        "x-ves-proto-message": "ves.io.schema.ErrorType",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/schemaErrorCode"
+          },
+          "error_obj": {
+            "$ref": "#/components/schemas/protobufAny"
+          },
+          "message": {
+            "type": "string",
+            "description": " A human readable string of the error\n\nExample: ` \"value\"`",
+            "title": "message",
+            "x-displayname": "Message",
+            "x-ves-example": "value"
+          }
+        }
+      },
+      "schemaInitializerType": {
+        "type": "object",
+        "description": "Initializer is information about an initializer that has not yet completed.",
+        "title": "InitializerType",
+        "x-displayname": "Initializer",
+        "x-ves-proto-message": "ves.io.schema.InitializerType",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": " name of the service that is responsible for initializing this object.",
+            "title": "name",
+            "x-displayname": "Name"
+          }
+        }
+      },
+      "schemaInitializersType": {
+        "type": "object",
+        "description": "Initializers tracks the progress of initialization of a configuration object",
+        "title": "InitializersType",
+        "x-displayname": "Initializers",
+        "x-ves-proto-message": "ves.io.schema.InitializersType",
+        "properties": {
+          "pending": {
+            "type": "array",
+            "description": " Pending is a list of initializers that must execute in order before this object is initialized.\n When the last pending initializer is removed, and no failing result is set, the initializers\n struct will be set to nil and the object is considered as initialized and visible to all\n clients.",
+            "title": "pending",
+            "items": {
+              "$ref": "#/components/schemas/schemaInitializerType"
+            },
+            "x-displayname": "Pending"
+          },
+          "result": {
+            "$ref": "#/components/schemas/schemaStatusType"
+          }
+        }
+      },
+      "schemaObjectGetMetaType": {
+        "type": "object",
+        "description": "ObjectGetMetaType is metadata that can be specified in Get/Create response of an object.",
+        "title": "ObjectGetMetaType",
+        "x-displayname": "Get Metadata",
+        "x-ves-proto-message": "ves.io.schema.ObjectGetMetaType",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "description": " Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n  ves.io.schema.rules.map.keys.string.max_len: 64\n  ves.io.schema.rules.map.keys.string.min_len: 1\n  ves.io.schema.rules.map.values.string.max_len: 1024\n  ves.io.schema.rules.map.values.string.min_len: 1\n",
+            "title": "annotations",
+            "x-displayname": "Annotation",
+            "x-ves-example": "value",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.map.keys.string.max_len": "64",
+              "ves.io.schema.rules.map.keys.string.min_len": "1",
+              "ves.io.schema.rules.map.values.string.max_len": "1024",
+              "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 1
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": " Human readable description for the object\n\nExample: ` \"Virtual Host for Example Corp website\"`\n\nValidation Rules:\n  ves.io.schema.rules.string.max_bytes: 1200\n",
+            "title": "description",
+            "maxLength": 1200,
+            "x-displayname": "Description",
+            "x-ves-example": "Virtual Host for Example Corp website",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.string.max_bytes": "1200"
+            }
+          },
+          "disable": {
+            "type": "boolean",
+            "description": " A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "title": "disable",
+            "x-displayname": "Disable",
+            "x-ves-example": "true"
+          },
+          "labels": {
+            "type": "object",
+            "description": " Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "title": "labels",
+            "x-displayname": "Labels",
+            "x-ves-example": "value"
+          },
+          "name": {
+            "type": "string",
+            "description": " This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"example-corp-web\"`\n\nRequired: YES\n\nValidation Rules:\n  ves.io.schema.rules.message.required: true\n",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "example-corp-web",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            }
+          },
+          "namespace": {
+            "type": "string",
+            "description": " This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "staging"
+          }
+        }
+      },
+      "schemaStatusType": {
+        "type": "object",
+        "description": "Status is a return value for calls that don't return other objects.",
+        "title": "StatusType",
+        "x-displayname": "Status",
+        "x-ves-proto-message": "ves.io.schema.StatusType",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": " Suggested HTTP return code for this status, 0 if not set.\n\nExample: ` \"0\"`",
+            "title": "code",
+            "format": "int32",
+            "x-displayname": "Code",
+            "x-ves-example": "0"
+          },
+          "reason": {
+            "type": "string",
+            "description": " A human-readable description of why this operation is in the\n \"Failure\" status. If this value is empty there\n is no information available.\n\nExample: ` \"value\"`",
+            "title": "reason",
+            "x-displayname": "Reason",
+            "x-ves-example": "value"
+          },
+          "status": {
+            "type": "string",
+            "description": " Status of the operation.\n One of: \"Success\" or \"Failure\".\n\nExample: ` \"value\"`",
+            "title": "status",
+            "x-displayname": "Status",
+            "x-ves-example": "value"
+          }
+        }
+      },
+      "schemaSystemObjectGetMetaType": {
+        "type": "object",
+        "description": "SystemObjectGetMetaType is metadata generated or populated by the system for all persisted objects and\ncannot be updated directly by users.",
+        "title": "SystemObjectGetMetaType",
+        "x-displayname": "System Metadata",
+        "x-ves-proto-message": "ves.io.schema.SystemObjectGetMetaType",
+        "properties": {
+          "creation_timestamp": {
+            "type": "string",
+            "description": " CreationTimestamp is a timestamp representing the server time when this object was\n created. It is not guaranteed to be set in happens-before order across separate operations.\n Clients may not set this value. It is represented in RFC3339 form and is in UTC.",
+            "title": "creation_timestamp",
+            "format": "date-time",
+            "x-displayname": "Creation Timestamp"
+          },
+          "creator_class": {
+            "type": "string",
+            "description": " A value identifying the class of the user or service which created this configuration object.\n\nExample: ` \"value\"`",
+            "title": "creator_class",
+            "x-displayname": "Creator Class",
+            "x-ves-example": "prism"
+          },
+          "creator_id": {
+            "type": "string",
+            "description": " A value identifying the exact user or service that created this configuration object\n\nExample: ` \"value\"`",
+            "title": "creator_id",
+            "x-displayname": "Creator ID",
+            "x-ves-example": "admin@example.com"
+          },
+          "deletion_timestamp": {
+            "type": "string",
+            "description": " DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This\n field is set by the server when a graceful deletion is requested by the user, and is not\n directly settable by a client. The resource is expected to be deleted (no longer visible\n from resource lists, and not reachable by name) after the time in this field, once the\n finalizers list is empty. As long as the finalizers list contains items, deletion is blocked.\n Once the deletionTimestamp is set, this value may not be unset or be set further into the\n future, although it may be shortened or the resource may be deleted prior to this time.\n For example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react\n by sending a graceful termination signal to the containers in the pod. After that 30 seconds,\n the Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup,\n remove the pod from the API. In the presence of network partitions, this object may still\n exist after this timestamp, until an administrator or automated process can determine the\n resource is fully terminated.\n If not set, graceful deletion of the object has not been requested.\n\n Populated by the system when a graceful deletion is requested.\n Read-only.",
+            "title": "deletion_timestamp",
+            "format": "date-time",
+            "x-displayname": "Deletion Timestamp"
+          },
+          "finalizers": {
+            "type": "array",
+            "description": " Must be empty before the object is deleted from the registry. Each entry\n is an identifier for the responsible component that will remove the entry\n from the list. If the deletionTimestamp of the object is non-nil, entries\n in this list can only be removed.\n\nExample: ` \"value\"`",
+            "title": "finalizers",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "Finalizers",
+            "x-ves-example": "value"
+          },
+          "initializers": {
+            "$ref": "#/components/schemas/schemaInitializersType"
+          },
+          "labels": {
+            "type": "object",
+            "description": " Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the operator or software. Values here can be interpreted\n by software(backend or frontend) to enable certain behavior e.g. things marked as soft-deleted(restorable).\n\nExample: ` \"'ves.io/soft-deleted''true'\"`",
+            "title": "labels",
+            "x-displayname": "Labels",
+            "x-ves-example": "'ves.io/soft-deleted': 'true'"
+          },
+          "modification_timestamp": {
+            "type": "string",
+            "description": " ModificationTimestamp is a timestamp representing the server time when this object was\n last modified.",
+            "title": "modification_timestamp",
+            "format": "date-time",
+            "x-displayname": "Modification Timestamp"
+          },
+          "object_index": {
+            "type": "integer",
+            "description": " Unique index for the object. Some objects need a unique integer index to be allocated\n for each object type. This field will be populated for all objects that need it and will\n be zero otherwise.\n\nExample: ` \"0\"`",
+            "title": "object_index",
+            "format": "int64",
+            "x-displayname": "Object Index",
+            "x-ves-example": "0"
+          },
+          "owner_view": {
+            "$ref": "#/components/schemas/schemaViewRefType"
+          },
+          "tenant": {
+            "type": "string",
+            "description": " Tenant to which this configuration object belongs to. The value for this is found from\n presented credentials.\n\nExample: ` \"example-corp\"`",
+            "title": "tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "example-corp"
+          },
+          "uid": {
+            "type": "string",
+            "description": " uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"00000000-0000-4000-8000-0df41b679859\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "00000000-0000-4000-8000-0df41b679859"
+          }
+        }
+      },
+      "schemaViewRefType": {
+        "type": "object",
+        "description": "ViewRefType represents a reference to a view",
+        "title": "ViewRefType",
+        "x-displayname": "View Reference",
+        "x-ves-proto-message": "ves.io.schema.ViewRefType",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": " Kind of the view object\n\nExample: ` \"http_proxy\"`",
+            "title": "kind",
+            "x-displayname": "Kind",
+            "x-ves-example": "http_proxy"
+          },
+          "name": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. route's) name.\n\nExample: ` \"contactus-route\"`",
+            "title": "name",
+            "x-displayname": "Name",
+            "x-ves-example": "contactus-route"
+          },
+          "namespace": {
+            "type": "string",
+            "description": " When a configuration object(e.g. virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. route's) namespace.\n\nExample: ` \"ns1\"`",
+            "title": "namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "ns1"
+          },
+          "uid": {
+            "type": "string",
+            "description": " UID of the view object\n\nExample: ` \"00000000-0000-4000-8000-d543fad8e1f8\"`",
+            "title": "uid",
+            "x-displayname": "UID",
+            "x-ves-example": "00000000-0000-4000-8000-d543fad8e1f8"
+          }
+        }
+      },
+      "threat_intelligenceBotInfraDeploymentDetails": {
+        "type": "object",
+        "description": "Bot Infrastructure Deployment Details",
+        "title": "BotInfraDeploymentDetails",
+        "x-displayname": "Bot Infrastructure Deployment Details",
+        "x-ves-oneof-field-status": "[\"bot_infra_status\",\"k8s_cluster_status\",\"region_status\"]",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.BotInfraDeploymentDetails",
+        "properties": {
+          "bot_infra_name": {
+            "type": "string",
+            "description": " Name of the bot infrastructure as per SAPI's database",
+            "title": "BotInfraName",
+            "x-displayname": "Bot Infrastructure Name"
+          },
+          "bot_infra_status": {
+            "$ref": "#/components/schemas/threat_intelligenceBotInfraDeploymentStatusDetails"
+          },
+          "bot_infrastructure_type": {
+            "$ref": "#/components/schemas/threat_intelligenceBotInfrastuctureType"
+          },
+          "environment": {
+            "$ref": "#/components/schemas/bot_infrastructureEnvironmentType"
+          },
+          "k8s_cluster_status": {
+            "$ref": "#/components/schemas/threat_intelligenceK8sClusterDeliveryStatus"
+          },
+          "region_status": {
+            "$ref": "#/components/schemas/threat_intelligenceRegionStatus"
+          }
+        }
+      },
+      "threat_intelligenceBotInfraDeploymentStatus": {
+        "type": "string",
+        "description": "Deployment status of bot-infrastructure\n\nInitiated represents the status when SAPI returns successful deployment acknowledgement for the cluster\nSuccess represents the status when SAPI's deployment status API returns success for the cluster\nFailed represents the status when SAPI's deployment status API returns failure for the cluster\nInitiation failed represents the status when SAPI returns failed deployment acknowledgement for the cluster",
+        "title": "BotInfraDeploymentStatus",
+        "enum": [
+          "BOT_INFRA_DEPLOYMENT_STATUS_UNKNOWN",
+          "BOT_INFRA_DEPLOYMENT_STATUS_INITIATED",
+          "BOT_INFRA_DEPLOYMENT_STATUS_SUCCESS",
+          "BOT_INFRA_DEPLOYMENT_STATUS_FAILED",
+          "BOT_INFRA_DEPLOYMENT_STATUS_INITIATION_FAILED"
+        ],
+        "default": "BOT_INFRA_DEPLOYMENT_STATUS_UNKNOWN",
+        "x-displayname": "Bot-Infra Deployment Status",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.threat_intelligence.BotInfraDeploymentStatus"
+      },
+      "threat_intelligenceBotInfraDeploymentStatusDetails": {
+        "type": "object",
+        "description": "Bot Infrastructure Deployment Status Details",
+        "title": "BotInfraDeploymentStatusDetails",
+        "x-displayname": "Bot Infrastructure Deployment Status Details",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.BotInfraDeploymentStatusDetails",
+        "properties": {
+          "bot_infra_deployment_status": {
+            "$ref": "#/components/schemas/threat_intelligenceBotInfraDeploymentStatus"
+          },
+          "status_message": {
+            "type": "string",
+            "description": " Status message. In case of error, this would contain error details",
+            "title": "StatusMessage",
+            "x-displayname": "Status Message"
+          }
+        }
+      },
+      "threat_intelligenceBotInfrastuctureType": {
+        "type": "string",
+        "description": "Type of the Bot Infrastructure\n\n - BOT_INFRA_TYPE_UNKNOWN: Unknown\n\n - BOT_INFRA_TYPE_CLOUD_HOSTED: F5 Cloud Hosted\n\n - BOT_INFRA_TYPE_HOSTED: F5 Hosted\n\n - BOT_INFRA_TYPE_ON_PREM: F5 On Premises\n\n - BOT_INFRA_TYPE_K8S_CLUSTER: Kubernetes Cluster\n",
+        "title": "BotInfrastructureType",
+        "enum": [
+          "BOT_INFRA_TYPE_UNKNOWN",
+          "BOT_INFRA_TYPE_CLOUD_HOSTED",
+          "BOT_INFRA_TYPE_HOSTED",
+          "BOT_INFRA_TYPE_ON_PREM",
+          "BOT_INFRA_TYPE_K8S_CLUSTER"
+        ],
+        "default": "BOT_INFRA_TYPE_UNKNOWN",
+        "x-displayname": "Bot Infrastructure Type",
+        "x-ves-proto-enum": "ves.io.schema.shape.bot_defense.threat_intelligence.BotInfrastuctureType"
+      },
+      "threat_intelligenceK8sClusterDeliveryStatus": {
+        "type": "object",
+        "description": "Kubernetes Cluster Deliver Status",
+        "title": "Kubernetes Cluster Deliver Status",
+        "x-displayname": "Kubernetes Cluster Deliver Status",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.K8sClusterDeliveryStatus",
+        "properties": {
+          "bot_infra_delivery_status": {
+            "$ref": "#/components/schemas/threat_intelligenceBotInfraDeploymentStatus"
+          },
+          "generated_url": {
+            "type": "string",
+            "description": " Generated URL for the deployment",
+            "title": "Generated URL",
+            "x-displayname": "Generated URL"
+          },
+          "k8s_cluster_tags": {
+            "type": "array",
+            "description": " List of k8s cluster_tag belongs the bot infra",
+            "title": "k8s cluster names",
+            "items": {
+              "type": "string"
+            },
+            "x-displayname": "K8s Cluster Names"
+          },
+          "policy_id": {
+            "type": "string",
+            "description": " Policy ID associated with the deployment",
+            "title": "Policy ID",
+            "x-displayname": "Policy ID"
+          },
+          "status_message": {
+            "type": "string",
+            "description": " Status message. In case of error, this would contain error details",
+            "title": "StatusMessage",
+            "x-displayname": "Status Message"
+          }
+        }
+      },
+      "threat_intelligenceRegionStatus": {
+        "type": "object",
+        "description": "The status of each bot infrastructure per region",
+        "title": "Bot Infra Deployment Status Per Region",
+        "x-displayname": "Bot Infra Deployment Status Per Region",
+        "x-ves-proto-message": "ves.io.schema.shape.bot_defense.threat_intelligence.RegionStatus",
+        "properties": {
+          "region_status_details": {
+            "type": "object",
+            "description": " Bot Infra Deployment Status Details Per Region",
+            "title": "Bot Infra Deployment Status Details Per Region",
+            "x-displayname": "Bot Infra Deployment Status Details Per Region"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "F5 XC API Token (format: APIToken <token>)"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io",
+      "description": "F5 Distributed Cloud API",
+      "variables": {
+        "tenant": {
+          "default": "example-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "device-intelligence"
+    }
+  ]
+}

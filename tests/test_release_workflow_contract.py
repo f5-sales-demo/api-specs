@@ -60,7 +60,9 @@ def test_downstream_dispatch_requires_the_verified_release_job_to_succeed():
     notify = _jobs()["notify-downstream"]
 
     assert "release" in notify["needs"]
-    assert "needs.release.result == 'success'" in notify["if"]
+    assert notify["if"] == (
+        "needs.release.result == 'success' && vars.API_SPECS_ENRICHED_DISPATCH_PAUSED != 'true'"
+    )
 
     release = _jobs()["release"]
     assert release["outputs"]["release_receipt"] == (
@@ -178,7 +180,8 @@ def test_release_recovery_verifies_and_dispatches_without_creating_a_new_release
     assert '--expected-commit "${RELEASE_COMMIT}"' in verify["run"]
 
     notify = _jobs()["notify-downstream"]
-    assert notify["if"] == "needs.release.result == 'success'"
+    assert "needs.release.result == 'success'" in notify["if"]
+    assert "vars.API_SPECS_ENRICHED_DISPATCH_PAUSED != 'true'" in notify["if"]
 
 
 def test_release_build_clock_comes_only_from_spec_timestamp():
@@ -770,3 +773,33 @@ def test_no_direct_github_repository_interpolation_in_run_blocks():
                     assert "${{ github.repository }}" not in run_script, (
                         f"Direct interpolation of ${{ github.repository }} is forbidden in run script of step '{step.get('name', 'unnamed')}' in job '{job_name}' to prevent template-injection. Use step-level env instead."
                     )
+
+
+def test_generated_publication_reuses_branches_with_exact_head_leases():
+    for job, name, branch, issue in (
+        (
+            "commit-release-specs",
+            "Open a PR if the published specs changed",
+            "sync/regenerate-release-specs",
+            681,
+        ),
+        ("update-docs", "Commit and PR if changed", "docs/update-validation-report", 723),
+    ):
+        command = next(step["run"] for step in _jobs()[job]["steps"] if step.get("name") == name)
+        assert f'BRANCH="{branch}"' in command
+        assert "$(date" not in command
+        assert "git ls-remote --heads" in command
+        assert '"refs/heads/${BRANCH}" | cut -f1' in command
+        assert "git fetch " in command
+        assert "+refs/heads/main:refs/remotes/origin/main" in command
+        assert 'git checkout -B "${BRANCH}" origin/main' in command
+        assert '--force-with-lease="refs/heads/${BRANCH}:${EXPECTED_HEAD}"' in command
+        assert "git push --force " not in command
+        assert command.index("EXPECTED_HEAD=") < command.index("git push ")
+        assert command.index("git fetch ") < command.index("git checkout -B ")
+        assert command.index("git checkout -B ") < command.index("git add ")
+        assert 'gh pr list --head "${BRANCH}" --state open' in command
+        assert 'gh pr edit "${BRANCH}"' in command
+        assert command.count(f"Closes #{issue}") == 2
+        assert '--base main --head "${BRANCH}"' in command
+        assert 'gh pr merge --auto --squash "${BRANCH}"' in command

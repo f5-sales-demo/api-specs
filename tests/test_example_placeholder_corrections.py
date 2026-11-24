@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+import pytest
+
 from scripts import transform as transform_module
 from scripts.transform import TransformConfig, load_config
 
@@ -32,32 +34,53 @@ def _collect_documentation_strings(obj: Any, trail: str = "") -> list[tuple[str,
     return found
 
 
-def test_published_specs_contain_no_ambiguous_organization_placeholders() -> None:
-    """Only RFC 8555 protocol references may retain the overloaded name."""
+def _configured_placeholders(value: str, config: TransformConfig) -> list[str]:
+    """Reject exact configured fictitious examples, not an overloaded protocol name."""
+    return [
+        placeholder
+        for placeholder in config.metadata["example_placeholder_corrections"]
+        if placeholder in value
+    ]
+
+
+def test_published_specs_contain_no_configured_organization_placeholders() -> None:
+    config = load_config(CONFIG_PATH)
     offenders: list[str] = []
     for spec_path in sorted(RELEASE_SPECS_DIR.glob("*.json")):
         spec = json.loads(spec_path.read_text())
         for pointer, value in _collect_documentation_strings(spec):
-            lowered = value.lower()
-            candidate = lowered.replace(PROTOCOL_RECORD, "")
-            if "rfc 8555" in candidate:
-                candidate = candidate.replace(PLACEHOLDER_NAME, "")
-            if PLACEHOLDER_NAME in candidate:
+            if _configured_placeholders(value, config):
                 offenders.append(f"{spec_path.name}{pointer}")
 
     assert not offenders, (
-        f"{len(offenders)} published documentation field(s) retain the ambiguous "
-        "organization placeholder:\n" + "\n".join(offenders[:20])
+        f"{len(offenders)} published documentation field(s) retain configured "
+        "organization placeholders:\n" + "\n".join(offenders[:20])
     )
 
 
-def test_published_specs_retain_all_rfc8555_challenge_records() -> None:
-    """The sanitizer must not erase certificate-validation DNS record names."""
-    references = 0
-    for spec_path in sorted(RELEASE_SPECS_DIR.glob("*.json")):
-        references += spec_path.read_text().lower().count(PROTOCOL_RECORD)
+@pytest.mark.parametrize("field", DOC_FIELDS)
+def test_protocol_terminology_and_urls_are_preserved(field: str) -> None:
+    config = load_config(CONFIG_PATH)
+    text = (
+        "ACME client, ACME server, ACME certificate authority and AcmeChallenge resource; "
+        "https://acme-v02.api.letsencrypt.org/directory; "
+        "https://acme-staging-v02.api.letsencrypt.org/directory; "
+        f"{PROTOCOL_RECORD}.example.com"
+    )
+    assert not _configured_placeholders(text, config)
+    result = transform_module.sanitize_example_placeholders({field: text}, config, "test.json")
+    assert result[field] == text
 
-    assert references == 10
+
+@pytest.mark.parametrize("field", DOC_FIELDS)
+def test_every_configured_placeholder_is_detected_and_corrected(field: str) -> None:
+    config = load_config(CONFIG_PATH)
+    for unsafe, safe in config.metadata["example_placeholder_corrections"].items():
+        text = f"Example: {unsafe}."
+        assert unsafe in _configured_placeholders(text, config)
+        result = transform_module.sanitize_example_placeholders({field: text}, config, "test.json")
+        assert result[field] == f"Example: {safe}."
+        assert not _configured_placeholders(result[field], config)
 
 
 def test_placeholder_sanitizer_changes_only_configured_documentation_fields() -> None:
@@ -72,6 +95,7 @@ def test_placeholder_sanitizer_changes_only_configured_documentation_fields() ->
         }
     )
     spec = {
+        "paths": {f"/{unsafe_tenant}": {"get": {"operationId": unsafe_tenant}}},
         "components": {
             "schemas": {
                 unsafe_tenant: {
@@ -86,7 +110,7 @@ def test_placeholder_sanitizer_changes_only_configured_documentation_fields() ->
                     },
                 }
             }
-        }
+        },
     }
 
     result = sanitizer(spec, config, "test.json")
@@ -98,6 +122,7 @@ def test_placeholder_sanitizer_changes_only_configured_documentation_fields() ->
     assert unsafe_tenant in schema["properties"]
     assert schema["properties"][unsafe_tenant]["enum"] == [unsafe_tenant]
     assert schema["properties"][unsafe_tenant]["example"] == unsafe_tenant
+    assert result["paths"][f"/{unsafe_tenant}"]["get"]["operationId"] == unsafe_tenant
 
 
 def test_placeholder_correction_config_is_enabled_and_loaded() -> None:

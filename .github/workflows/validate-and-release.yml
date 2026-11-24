@@ -657,7 +657,8 @@ jobs:
     # cases, so a skipped or failed release never dispatches. This job is
     # deliberately separate from `release` rather than a step inside it, so
     # release publication and downstream delivery have separate permissions.
-    if: needs.release.result == 'success'
+    # Producer releases remain available for consumers to pull while delivery is paused.
+    if: needs.release.result == 'success' && vars.API_SPECS_ENRICHED_DISPATCH_PAUSED != 'true'
     runs-on: managed-socketless
     environment: api-specs-enriched-release-delivery
     # The cross-repo dispatch authenticates with a PAT because a repository's
@@ -978,29 +979,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/
-          if git diff --cached --quiet; then
-            echo "No docs changes"
-            exit 0
-          fi
-          # One stable branch, force-updated, rather than a new timestamped branch per run.
-          #
-          # The old `docs/update-validation-report-$(date +%s)` orphaned any run whose PR was
-          # wedged on a transient check: the next run opened a different PR on a different
-          # branch and nothing ever revisited the stuck one. Twelve accumulated between
-          # 2026-06-12 and 2026-07-05 (#723). With a fixed branch a wedged run is repaired by
-          # the next one instead of abandoned, and at most one report PR is ever open.
-          #
-          # Same shape as docs-control's sync-managed-files, which uses the fixed
-          # `governance/sync-managed-files` branch for exactly this reason.
-          #
-          # The name still starts with `docs/update-`, which both gates require: it is in
-          # docs-control's EXCLUDE_BRANCHES for require-linked-issue, and in both branch lists
-          # in code-review.yml.
           BRANCH="docs/update-validation-report"
-          # -B, not -b: the branch may already exist locally on a re-run, and -b would abort.
-          git checkout -B "${BRANCH}"
-          git commit -m "docs: update validation report"
 
           # Setup secure, ephemeral git credentials helper
           ASKPASS_PATH="${RUNNER_TEMP}/git-askpass-helper.sh"
@@ -1009,16 +988,31 @@ jobs:
           echo 'echo "${GH_TOKEN}"' >> "${ASKPASS_PATH}"
           chmod 700 "${ASKPASS_PATH}"
           trap 'rm -f "${ASKPASS_PATH}"' EXIT
+          # Bind the lease to the observed branch head, including absence on first creation.
+          EXPECTED_HEAD=$(GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git ls-remote --heads "https://github.com/${GITHUB_REPOSITORY}.git" "refs/heads/${BRANCH}" | cut -f1)
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git fetch "https://github.com/${GITHUB_REPOSITORY}.git" +refs/heads/main:refs/remotes/origin/main
 
-          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push --force "https://github.com/${GITHUB_REPOSITORY}.git" "${BRANCH}"
+          # Keep the generated report while rebuilding the candidate on current main.
+          cp docs/en/01-validation-report.mdx "${RUNNER_TEMP}/validation-report.mdx"
+          git restore --source=HEAD --staged --worktree docs/
+          git checkout -B "${BRANCH}" origin/main
+          cp "${RUNNER_TEMP}/validation-report.mdx" docs/en/01-validation-report.mdx
+          git add docs/
+          if git diff --cached --quiet; then
+            echo "No docs changes"
+            exit 0
+          fi
+          git commit -m "docs: update validation report"
 
-          # Reuse the open PR if there is one; --force above has already updated its head.
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push --force-with-lease="refs/heads/${BRANCH}:${EXPECTED_HEAD}" "https://github.com/${GITHUB_REPOSITORY}.git" "${BRANCH}"
+
           if [ -z "$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[].number')" ]; then
             gh pr create --title "docs: update validation report" \
-              --body "Auto-generated from validation pipeline run." \
-              --head "${BRANCH}"
+              --body "Auto-generated from validation pipeline run. Closes #723." \
+              --base main --head "${BRANCH}"
           else
-            echo "Refreshed the existing PR for ${BRANCH}."
+            gh pr edit "${BRANCH}" \
+              --body "Auto-generated from validation pipeline run. Closes #723."
           fi
           gh pr merge --auto --squash "${BRANCH}"
 
@@ -1089,26 +1083,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # -A so deletions are staged; a removed upstream domain must leave the artifact.
-          git add -A release/specs
-
-          # Only the specs decide whether to publish. .spec_metadata.json carries
-          # download_date and a microsecond download_timestamp that every non-304 download
-          # rewrites, so keying off the whole directory would open a timestamp-only PR every
-          # single day.
-          if git diff --cached --quiet -- 'release/specs/*.json'; then
-            echo "No spec changes; discarding any metadata-only churn."
-            git reset --quiet
-            git checkout -- release/specs || true
-            exit 0
-          fi
-
-          # The generated PR still follows linked-issue governance. Issue #681 is the
-          # durable specification for committing regenerated release/specs.
-          BRANCH="sync/regenerate-release-specs-$(date +%s)"
-          git checkout -b "${BRANCH}"
-          git commit -m "chore: publish regenerated release/specs"
+          # One repairable candidate governed by #681, rather than abandoned daily PRs.
+          BRANCH="sync/regenerate-release-specs"
 
           # Setup secure, ephemeral git credentials helper
           ASKPASS_PATH="${RUNNER_TEMP}/git-askpass-helper.sh"
@@ -1117,11 +1093,40 @@ jobs:
           echo 'echo "${GH_TOKEN}"' >> "${ASKPASS_PATH}"
           chmod 700 "${ASKPASS_PATH}"
           trap 'rm -f "${ASKPASS_PATH}"' EXIT
+          # Bind the lease to the observed branch head, including absence on first creation.
+          EXPECTED_HEAD=$(GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git ls-remote --heads "https://github.com/${GITHUB_REPOSITORY}.git" "refs/heads/${BRANCH}" | cut -f1)
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git fetch "https://github.com/${GITHUB_REPOSITORY}.git" +refs/heads/main:refs/remotes/origin/main
 
-          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push "https://github.com/${GITHUB_REPOSITORY}.git" "${BRANCH}"
+          # Preserve the generated artifact, then refresh the candidate from current main.
+          GENERATED_SPECS=$(mktemp -d "${RUNNER_TEMP}/generated-specs.XXXXXX")
+          cp -a release/specs/. "${GENERATED_SPECS}/"
+          git restore --source=HEAD --staged --worktree release/specs/
+          git clean -fd -- release/specs/
+          git checkout -B "${BRANCH}" origin/main
+          rm -rf release/specs
+          mkdir -p release/specs
+          cp -a "${GENERATED_SPECS}/." release/specs/
+          rm -rf "${GENERATED_SPECS}"
+          # -A includes deleted domains. Ignore only download-time metadata churn;
+          # a changed upstream archive receipt must reach main even if specs are identical.
+          git add -A release/specs
+          git show HEAD:release/specs/.spec_metadata.json | jq -S 'del(.download_date, .download_timestamp)' > "${RUNNER_TEMP}/previous-metadata.json"
+          jq -S 'del(.download_date, .download_timestamp)' release/specs/.spec_metadata.json > "${RUNNER_TEMP}/generated-metadata.json"
+          if git diff --cached --quiet -- 'release/specs/*.json' ':(exclude)release/specs/.spec_metadata.json' && cmp -s "${RUNNER_TEMP}/previous-metadata.json" "${RUNNER_TEMP}/generated-metadata.json"; then
+            echo "No spec changes; discarding any metadata-only churn."
+            git restore --source=HEAD --staged --worktree release/specs/
+            exit 0
+          fi
+          git commit -m "chore: publish regenerated release/specs"
 
-          gh pr create \
-            --title "chore: publish regenerated release/specs" \
-            --body "Auto-generated: the pipeline produced a \`release/specs\` that differs from the committed artifact. Closes #681." \
-            --head "${BRANCH}"
+          GIT_ASKPASS="${ASKPASS_PATH}" GIT_TERMINAL_PROMPT=0 git push --force-with-lease="refs/heads/${BRANCH}:${EXPECTED_HEAD}" "https://github.com/${GITHUB_REPOSITORY}.git" "${BRANCH}"
+
+          if [ -z "$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[].number')" ]; then
+            gh pr create --title "chore: publish regenerated release/specs" \
+              --body "Auto-generated: the pipeline produced release/specs that differs from the committed artifact. Closes #681." \
+              --base main --head "${BRANCH}"
+          else
+            gh pr edit "${BRANCH}" \
+              --body "Auto-generated: the pipeline produced release/specs that differs from the committed artifact. Closes #681."
+          fi
           gh pr merge --auto --squash "${BRANCH}"
